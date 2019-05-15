@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "ES6",
+    "experimentalDecorators": true,
+    "baseUrl": ".",
+    "paths": {
+      "@walkinsole/walkin-nearx": ["./packages/walkin-nearx"],
+      "@walkinsole/walkin-refinex": ["./packages/walkin-refinex"],
+      "@walkinsole/walkin-hyperx": ["./packages/walkin-nearx"],
+      "@walkinsole/walkin-components": ["./packages/walkin-components"],
+      "@walkinsole/walkin-core": ["./packages/walkin-core"]
+    }
+  },
+  "exclude": ["node_modules"],
+  "include": ["packages"]
+}
