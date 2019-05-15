@@ -37,6 +37,7 @@ _For more details on the apps, please refer to the README in the individual repo
 
 - Want to style your components, create a .css file with the name of your component and import it in your component. NWB will take care of the rest.
 - Hot module reloading is enabled by default
+- Lazy loading is enabled by default for the different routes
 - Please only use **YARN** !!!
 - Please follow the naming convention based on the existing files and directory structure.
 - Use ES6/7+ syntax, Babel preparser will take care of the versioning.
