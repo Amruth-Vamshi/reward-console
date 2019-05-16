@@ -33,5 +33,10 @@
   "repository": "",
   "keywords": [
     "react-component"
-  ]
+  ],
+  "dependencies": {
+    "apollo-boost": "^0.3.1",
+    "graphql": "^14.3.0",
+    "react-apollo": "^2.5.5"
+  }
 }
