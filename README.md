@@ -19,7 +19,7 @@ To start the Walkin platform
 
 **packages/walkin-app** : This is the entry point for the app, it essentially serves as a Shell and router for all other walkin apps. All the dependencies and global/app level configuration is handled here. It lazy loads all the child apps so that app serving is faster. Serving as a shell it'll only include base features of the app like state management, and component configurations.
 
-**packages/walkin-components** : This is the shared library of components used across all the apps. Exporting all the components present. Currently implemented using the [wieldly template](http://docs.g-axon.com/wieldy/).
+**packages/walkin-components** : This is the shared library of components used across all the apps. Exporting all the components present. Currently implemented using the [wieldly template](http://docs.g-axon.com/wieldy/). It also has a storybook to run follow instructions in the package.
 
 > **IMPORTANT : Wiedly was not written keeping in mind the tools we are using (e.g They use Redux we use Apollo) hence it might be required for us to modify it as we use it !!!**
 
