@@ -19,10 +19,15 @@
     "react": "^16.8.6",
     "react-apollo": "^2.5.5",
     "react-dom": "^16.8.6",
+    "react-intl": "^2.9.0",
     "react-router-dom": "^5.0.0"
   },
   "devDependencies": {
-    "nwb": "0.23.x"
+    "css-loader": "^2.1.1",
+    "less": "^3.9.0",
+    "less-loader": "^5.0.0",
+    "nwb": "0.23.x",
+    "style-loader": "^0.23.1"
   },
   "author": "",
   "license": "MIT",

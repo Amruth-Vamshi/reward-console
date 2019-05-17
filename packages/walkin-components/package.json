@@ -30,6 +30,7 @@
     "@storybook/addons": "^5.0.11",
     "@storybook/react": "^5.0.11",
     "babel-loader": "^8.0.6",
+    "less": "^3.9.0",
     "nwb": "0.23.x",
     "react": "^16.8.6",
     "react-dom": "^16.8.6"
@@ -45,6 +46,12 @@
     "antd": "^3.18.1",
     "apollo-boost": "^0.3.1",
     "graphql": "^14.3.0",
-    "react-apollo": "^2.5.5"
+    "less-loader": "^5.0.0",
+    "react-apollo": "^2.5.5",
+    "react-big-calendar": "^0.21.0",
+    "react-custom-scrollbars": "^4.2.1",
+    "react-intl": "^2.9.0",
+    "react-notifications": "^1.4.3",
+    "style-loader": "^0.23.1"
   }
 }
