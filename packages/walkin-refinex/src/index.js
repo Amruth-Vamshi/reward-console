@@ -4,28 +4,16 @@ import { gql } from "apollo-boost";
 
 export default class extends Component {
   render() {
+    const IS_LOGGED_IN = gql`
+      query isLoggedin {
+        isLoggedIn @client
+      }
+    `;
     return (
-      <Query
-        query={gql`
-          {
-            rates(currency: "USD") {
-              currency
-              rate
-            }
-          }
-        `}
-      >
-        {({ loading, error, data }) => {
-          if (loading) return <p>Loading...</p>;
-          if (error) return <p>Error :(</p>;
-
-          return data.rates.map(({ currency, rate }) => (
-            <div key={currency}>
-              <p>
-                {currency}: {rate}
-              </p>
-            </div>
-          ));
+      <Query query={IS_LOGGED_IN}>
+        {({ data }) => {
+          console.log(data);
+          return data ? <div>No</div> : <div>Yes</div>;
         }}
       </Query>
     );

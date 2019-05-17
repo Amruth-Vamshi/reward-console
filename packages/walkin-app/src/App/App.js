@@ -6,11 +6,14 @@ import { ApolloProvider } from "react-apollo";
 import ApolloClient from "apollo-boost";
 import { InMemoryCache } from "apollo-cache-inmemory";
 import { persistCache } from "apollo-cache-persist";
-
+import { Layout } from "antd";
 const RefineX = lazy(() => import("@walkinsole/walkin-refinex"));
 const HyperX = lazy(() => import("@walkinsole/walkin-hyperx"));
 const Core = lazy(() => import("@walkinsole/walkin-core"));
 const NearX = lazy(() => import("@walkinsole/walkin-nearx"));
+import { resolvers, typeDefs } from "../Graphql/resolvers";
+
+const { Content, Footer } = Layout;
 
 class App extends Component {
   constructor() {
@@ -26,7 +29,9 @@ class App extends Component {
 
     const client = new ApolloClient({
       cache,
-      uri: "https://48p1r2roz4.sse.codesandbox.io"
+      uri: "http://178.128.220.91:4000/graphql",
+      typeDefs,
+      resolvers
     });
 
     try {
@@ -54,6 +59,22 @@ class App extends Component {
 
     return (
       <ApolloProvider client={client}>
+        <Layout className="gx-app-layout">
+          {/* {this.getSidebar(navStyle, width)}
+          <Layout>
+            {this.getNavStyles(navStyle)}
+            <Content
+              className={`gx-layout-content ${this.getContainerClass(
+                navStyle
+              )} `}
+            >
+              <App match={match} />
+              <Footer>
+                <div className="gx-layout-footer-content">{footerText}</div>
+              </Footer>
+            </Content>
+          </Layout> */}
+        </Layout>
         <div className="App">
           <div className="App-heading App-flex">
             <h2>
