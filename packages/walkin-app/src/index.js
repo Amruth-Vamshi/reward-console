@@ -5,6 +5,7 @@ import { render } from "react-dom";
 // import App from "./App/App";
 
 import WalkinApp from "./WalkinApp";
+
 // Render once
 render(<WalkinApp />, document.getElementById("root"));
 

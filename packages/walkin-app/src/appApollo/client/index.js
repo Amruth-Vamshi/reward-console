@@ -27,7 +27,5 @@ export const configureClient = async () => {
   } catch (error) {
     console.error("Error restoring Apollo cache", error);
   }
-  client.writeData({ data: { locale: "en" } });
-
   return client;
 };
