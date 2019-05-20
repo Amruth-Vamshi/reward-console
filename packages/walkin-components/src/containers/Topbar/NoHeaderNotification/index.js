@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import IntlMessages from "util/IntlMessages";
+import IntlMessages from "../../../util/IntlMessages";
 
 class NoHeaderNotification extends Component {
   render() {

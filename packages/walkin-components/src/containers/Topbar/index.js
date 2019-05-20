@@ -2,13 +2,13 @@ import React, { Component } from "react";
 import { Layout, Popover } from "antd";
 import { Link } from "react-router-dom";
 
-import CustomScrollbars from "util/CustomScrollbars";
+import CustomScrollbars from "../../util/CustomScrollbars";
 import languageData from "./languageData";
-import SearchBox from "components/SearchBox";
-import UserInfo from "components/UserInfo";
-import AppNotification from "components/AppNotification";
-import MailNotification from "components/MailNotification";
-import Auxiliary from "util/Auxiliary";
+import SearchBox from "../../components/SearchBox";
+import UserInfo from "../../components/UserInfo";
+import AppNotification from "../../components/AppNotification";
+import MailNotification from "../../components/MailNotification";
+import Auxiliary from "../../util/Auxiliary";
 
 import {
   NAV_STYLE_DRAWER,
@@ -16,7 +16,6 @@ import {
   NAV_STYLE_MINI_SIDEBAR,
   TAB_SIZE
 } from "../../constants/ThemeSetting";
-import { connect } from "net";
 
 const { Header } = Layout;
 
@@ -67,7 +66,7 @@ class Topbar extends Component {
             </div>
           ) : null}
           <Link to="/" className="gx-d-block gx-d-lg-none gx-pointer">
-            <img alt="" src={require("assets/images/w-logo.png")} />
+            <img alt="" src={require("../../assets/images/w-logo.png")} />
           </Link>
 
           <SearchBox

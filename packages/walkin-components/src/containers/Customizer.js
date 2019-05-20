@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { Button, Drawer, Form, message, Radio } from "antd";
 
 import ColorPicker from "./ColorPicker";
-import Auxiliary from "util/Auxiliary";
-import CustomScrollbars from "util/CustomScrollbars";
+import Auxiliary from "../util/Auxiliary";
+import CustomScrollbars from "../util/CustomScrollbars";
 
 import {
   BLUE,
@@ -390,7 +390,7 @@ class Customizer extends Component {
               "active"}`}
           >
             <img
-              src={require("assets/images/layouts/framed.png")}
+              src={require("../assets/images/layouts/framed.png")}
               alt="framed"
             />
           </span>
@@ -402,7 +402,7 @@ class Customizer extends Component {
               "active"}`}
           >
             <img
-              src={require("assets/images/layouts/full width.png")}
+              src={require("../assets/images/layouts/full width.png")}
               alt="full width"
             />
           </span>
@@ -413,7 +413,10 @@ class Customizer extends Component {
             className={`gx-pointer ${layoutType === LAYOUT_TYPE_BOXED &&
               "active"}`}
           >
-            <img src={require("assets/images/layouts/boxed.png")} alt="boxed" />
+            <img
+              src={require("../assets/images/layouts/boxed.png")}
+              alt="boxed"
+            />
           </span>
         </li>
       </ul>
@@ -427,7 +430,10 @@ class Customizer extends Component {
             onClick={this.onNavStyleChange.bind(this, NAV_STYLE_FIXED)}
             className={`gx-pointer ${navStyle === NAV_STYLE_FIXED && "active"}`}
           >
-            <img src={require("assets/images/layouts/fixed.png")} alt="fixed" />
+            <img
+              src={require("../assets/images/layouts/fixed.png")}
+              alt="fixed"
+            />
           </span>
         </li>
         <li>
@@ -437,7 +443,7 @@ class Customizer extends Component {
               "active"}`}
           >
             <img
-              src={require("assets/images/layouts/mini sidebar.png")}
+              src={require("../assets/images/layouts/mini sidebar.png")}
               alt="mini sidebar"
             />
           </span>
@@ -449,7 +455,7 @@ class Customizer extends Component {
               "active"}`}
           >
             <img
-              src={require("assets/images/layouts/drawer nav.png")}
+              src={require("../assets/images/layouts/drawer nav.png")}
               alt="drawer nav"
             />
           </span>
@@ -464,7 +470,7 @@ class Customizer extends Component {
               NAV_STYLE_NO_HEADER_MINI_SIDEBAR && "active"}`}
           >
             <img
-              src={require("assets/images/layouts/no header mini sidebar.png")}
+              src={require("../assets/images/layouts/no header mini sidebar.png")}
               alt="no hader mini sidebar"
             />
           </span>
@@ -479,7 +485,7 @@ class Customizer extends Component {
               NAV_STYLE_NO_HEADER_EXPANDED_SIDEBAR && "active"}`}
           >
             <img
-              src={require("assets/images/layouts/vertical no header.png")}
+              src={require("../assets/images/layouts/vertical no header.png")}
               alt="vertical no header"
             />
           </span>
@@ -494,7 +500,7 @@ class Customizer extends Component {
               NAV_STYLE_DEFAULT_HORIZONTAL && "active"}`}
           >
             <img
-              src={require("assets/images/layouts/default horizontal.png")}
+              src={require("../assets/images/layouts/default horizontal.png")}
               alt="default horizontal"
             />
           </span>
@@ -509,7 +515,7 @@ class Customizer extends Component {
               "active"}`}
           >
             <img
-              src={require("assets/images/layouts/dark horizontal.png")}
+              src={require("../assets/images/layouts/dark horizontal.png")}
               alt="dark horizontal"
             />
           </span>
@@ -524,7 +530,7 @@ class Customizer extends Component {
               NAV_STYLE_INSIDE_HEADER_HORIZONTAL && "active"}`}
           >
             <img
-              src={require("assets/images/layouts/inside header horizontal.png")}
+              src={require("../assets/images/layouts/inside header horizontal.png")}
               alt="inside header horizontal"
             />
           </span>
@@ -536,7 +542,7 @@ class Customizer extends Component {
               "active"}`}
           >
             <img
-              src={require("assets/images/layouts/below header.png")}
+              src={require("../assets/images/layouts/below header.png")}
               alt="below header"
             />
           </span>
@@ -549,7 +555,7 @@ class Customizer extends Component {
               "active"}`}
           >
             <img
-              src={require("assets/images/layouts/top to header.png")}
+              src={require("../assets/images/layouts/top to header.png")}
               alt="top to header"
             />
           </span>

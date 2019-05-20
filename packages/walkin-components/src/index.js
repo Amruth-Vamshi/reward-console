@@ -3,7 +3,6 @@
 import Sidebar from "./containers/Sidebar";
 import HorizontalDefault from "./containers/Topbar/HorizontalDefault";
 import HorizontalDark from "./containers/Topbar/HorizontalDark";
-import AppLocale from "./lngProvider/index";
 import SignIn from "./containers/SignIn";
 import SignUp from "./containers/SignUp";
 import InsideHeader from "./containers/Topbar/InsideHeader";
@@ -17,7 +16,6 @@ import NoHeaderNotification from "./containers/Topbar/NoHeaderNotification";
 export {
   Sidebar,
   HorizontalDefault,
-  AppLocale,
   SignIn,
   SignUp,
   HorizontalDark,

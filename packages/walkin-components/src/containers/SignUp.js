@@ -2,9 +2,9 @@ import React from "react";
 import { Button, Checkbox, Form, Icon, Input } from "antd";
 import { Link } from "react-router-dom";
 
-import IntlMessages from "util/IntlMessages";
+import IntlMessages from "../util/IntlMessages";
 import { message } from "antd/lib/index";
-import CircularProgress from "components/CircularProgress/index";
+import CircularProgress from "../components/CircularProgress/index";
 
 const FormItem = Form.Item;
 
@@ -62,7 +62,7 @@ class SignUp extends React.Component {
                 </p>
               </div>
               <div className="gx-app-logo">
-                <img alt="example" src={require("assets/images/logo.png")} />
+                <img alt="example" src={require("../assets/images/logo.png")} />
               </div>
             </div>
 
@@ -219,11 +219,6 @@ const SET_THEME_TYPE = gql`
     setThemeType(themeType: $themeType)
   }
 `;
-const mapStateToProps = ({ auth }) => {
-  const { locale, navStyle, themeType, layoutType } = auth.auth;
-  return { locale, navStyle, themeType, layoutType };
-};
-
 export default compose(
   // Write mutations for all of these
   // userSignUp,

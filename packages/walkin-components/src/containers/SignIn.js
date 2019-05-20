@@ -2,8 +2,8 @@ import React from "react";
 import { Button, Checkbox, Form, Icon, Input, message } from "antd";
 import { Link } from "react-router-dom";
 
-import IntlMessages from "util/IntlMessages";
-import CircularProgress from "components/CircularProgress/index";
+import IntlMessages from "../util/IntlMessages";
+import CircularProgress from "../components/CircularProgress/index";
 import { compose, graphql } from "react-apollo";
 
 const FormItem = Form.Item;
@@ -54,7 +54,7 @@ class SignIn extends React.Component {
                 </p>
               </div>
               <div className="gx-app-logo">
-                <img alt="example" src={require("assets/images/logo.png")} />
+                <img alt="example" src={require("../assets/images/logo.png")} />
               </div>
             </div>
             <div className="gx-app-login-content">
