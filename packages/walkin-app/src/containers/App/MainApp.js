@@ -122,4 +122,19 @@ const mapStateToProps = ({ settings }) => {
   const { width, navStyle } = settings;
   return { width, navStyle };
 };
-export default connect(mapStateToProps)(MainApp);
+
+// export default connect(mapStateToProps)(MainApp);
+
+const GET_SETTINGS = gql`
+  query getSettings {
+    settings {
+      width
+      navStyle
+    }
+  }
+`;
+
+export default graphql(GET_SETTINGS, {
+  props: mapStateToProps,
+  name: "settings"
+})(MainApp);

@@ -16223,6 +16223,11 @@ url-parse@^1.1.8, url-parse@^1.4.3, url-parse@~1.4.3:
     querystringify "^2.1.1"
     requires-port "^1.0.0"
 
+url-search-params@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/url-search-params/-/url-search-params-1.1.0.tgz#865669a6e4e9e5543f86fc972b27c91485375326"
+  integrity sha512-XiO5GLAxmlZgdLob/RmKZRc2INHrssMbpwD6O46JkB1aEJO4fkV3x3mR6+CDX01ijfEUwvfwCiUQZrKqfm1ILw==
+
 url-template@^2.0.8:
   version "2.0.8"
   resolved "https://registry.yarnpkg.com/url-template/-/url-template-2.0.8.tgz#fc565a3cccbff7730c775f5641f9555791439f21"

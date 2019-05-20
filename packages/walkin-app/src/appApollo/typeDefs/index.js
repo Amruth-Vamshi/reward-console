@@ -31,7 +31,7 @@ const typeDefs = gql`
     setThemeColorSelection(colorSelection: String): String
     onNavStyleChange(navStyle: String): String
     onLayoutTypeChange(layoutType: String): String
-    switchLanguag(locale: String): String
+    switchLanguage(locale: String): String
   }
 `;
 
