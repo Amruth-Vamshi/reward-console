@@ -1,7 +1,12 @@
-import "./index.css";
+import registerServiceWorker from "./registerServiceWorker";
 
 import React from "react";
 import { render } from "react-dom";
-import App from "./App/App";
+// import App from "./App/App";
 
-render(<App />, document.querySelector("#app"));
+import WalkinApp from "./WalkinApp";
+// Render once
+render(<WalkinApp />, document.getElementById("root"));
+
+// Do this once
+registerServiceWorker();

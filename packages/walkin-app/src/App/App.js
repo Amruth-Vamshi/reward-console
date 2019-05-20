@@ -9,14 +9,13 @@ import { InMemoryCache } from "apollo-cache-inmemory";
 import { persistCache } from "apollo-cache-persist";
 import { Layout, LocaleProvider } from "antd";
 
-import { typeDefs } from "../apollo-state";
+import { typeDefs } from "../Providers/Apollo";
 
 import {
   Sidebar,
   HorizontalDefault,
   AppLocale
 } from "@walkinsole/walkin-components";
-import AppRouter from "./Router";
 import { IntlProvider } from "react-intl";
 
 const { Content, Footer } = Layout;

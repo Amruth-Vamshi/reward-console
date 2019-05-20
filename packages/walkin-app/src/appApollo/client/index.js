@@ -1,0 +1,33 @@
+import { InMemoryCache } from "apollo-boost";
+import { persistCache } from "apollo-cache-persist";
+import typeDefs from "../typeDefs";
+import resolvers from "../resolvers";
+import ApolloClient from "apollo-boost";
+import defaults from "../defaults";
+
+export const configureClient = async () => {
+  const cache = new InMemoryCache();
+
+  const client = new ApolloClient({
+    cache,
+    uri: "http://178.128.220.91:4000/graphql",
+    clientState: {
+      defaults,
+      resolvers,
+      typeDefs
+    }
+  });
+
+  try {
+    // See above for additional options, including other storage providers.
+    await persistCache({
+      cache,
+      storage: window.localStorage
+    });
+  } catch (error) {
+    console.error("Error restoring Apollo cache", error);
+  }
+  client.writeData({ data: { locale: "en" } });
+
+  return client;
+};
