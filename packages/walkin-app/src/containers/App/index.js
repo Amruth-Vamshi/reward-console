@@ -67,7 +67,11 @@ class App extends Component {
       this.props.setThemeType(params.get("theme"));
     }
     if (params.has("nav-style")) {
-      this.props.onNavStyleChange(params.get("nav-style"));
+      this.props.onNavStyleChange({
+        variables: {
+          themeType: params.get("nav-style")
+        }
+      });
     }
     if (params.has("layout-type")) {
       this.props.onLayoutTypeChange(params.get("layout-type"));
@@ -103,7 +107,7 @@ class App extends Component {
           locale={currentAppLocale.locale}
           messages={currentAppLocale.messages}
         >
-          <Route path={`${match.url}`} component={MainApp} />
+          <MainApp />
         </IntlProvider>
       </LocaleProvider>
     );

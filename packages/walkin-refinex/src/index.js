@@ -9,13 +9,6 @@ export default class extends Component {
         isLoggedIn @client
       }
     `;
-    return (
-      <Query query={IS_LOGGED_IN}>
-        {({ data }) => {
-          console.log(data);
-          return data ? <div>No</div> : <div>Yes</div>;
-        }}
-      </Query>
-    );
+    return <h2>Welcome to RefineX</h2>;
   }
 }

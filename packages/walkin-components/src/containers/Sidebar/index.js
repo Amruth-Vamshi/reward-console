@@ -86,7 +86,6 @@ export class Sidebar extends Component {
             theme={themeType === THEME_TYPE_LITE ? "lite" : "dark"}
             collapsible
           >
-            {JSON.stringify(data)}
             {navStyle === NAV_STYLE_DRAWER || width < TAB_SIZE ? (
               <Drawer
                 className={`gx-drawer-sidebar ${

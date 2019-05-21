@@ -40,8 +40,6 @@ class SidebarContent extends Component {
     const { themeType, navStyle, pathname } = this.props;
     const selectedKeys = pathname.substr(1);
     const defaultOpenKeys = selectedKeys.split("/")[1];
-    console.log(defaultOpenKeys, selectedKeys);
-
     return (
       <Auxiliary>
         <SidebarLogo />

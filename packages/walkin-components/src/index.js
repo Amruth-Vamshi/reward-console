@@ -13,7 +13,7 @@ import { footerText } from "./util/config";
 import Customizer from "./containers/Customizer";
 import NoHeaderNotification from "./containers/Topbar/NoHeaderNotification";
 import asyncComponent from "./util/asyncComponent";
-
+import Widget from "./components/Widget";
 export {
   Sidebar,
   HorizontalDefault,
@@ -27,5 +27,6 @@ export {
   footerText,
   Customizer,
   NoHeaderNotification,
-  asyncComponent
+  asyncComponent,
+  Widget
 };
