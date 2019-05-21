@@ -10,6 +10,8 @@ import MailNotification from "../../../components/MailNotification";
 import HorizontalNav from "../HorizontalNav";
 import { Link } from "react-router-dom";
 import IntlMessages from "../../../util/IntlMessages";
+import gql from "graphql-tag";
+import { compose, graphql } from "react-apollo";
 
 const { Header } = Layout;
 

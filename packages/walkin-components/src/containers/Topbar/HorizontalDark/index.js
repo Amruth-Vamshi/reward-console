@@ -19,6 +19,8 @@ import MailNotification from "../../../components/MailNotification";
 import { Link } from "react-router-dom";
 import HorizontalNav from "../HorizontalNav";
 import IntlMessages from "../../../util/IntlMessages";
+import gql from "graphql-tag";
+import { compose, graphql } from "react-apollo";
 
 const { Header } = Layout;
 

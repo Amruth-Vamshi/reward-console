@@ -62,6 +62,7 @@ import {
   THEME_TYPE_SEMI_DARK
 } from "../constants/ThemeSetting";
 import { compose, graphql } from "react-apollo";
+import gql from "graphql-tag";
 
 class Customizer extends Component {
   onChangeComplete = (varName, color) => {

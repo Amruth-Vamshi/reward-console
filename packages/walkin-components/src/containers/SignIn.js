@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import IntlMessages from "../util/IntlMessages";
 import CircularProgress from "../components/CircularProgress/index";
 import { compose, graphql } from "react-apollo";
+import gql from "graphql-tag";
 
 const FormItem = Form.Item;
 
@@ -173,6 +174,12 @@ const mapStateToProps = ({ auth }) => {
   const { loader, alertMessage, showMessage, authUser } = auth;
   return { loader, alertMessage, showMessage, authUser };
 };
+
+const GET_AUTH_DETAILS = gql`
+  query {
+    testAuth
+  }
+`;
 
 export default compose(
   // Create resolvers and add as graphql mutation here

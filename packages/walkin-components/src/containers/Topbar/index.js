@@ -16,6 +16,8 @@ import {
   NAV_STYLE_MINI_SIDEBAR,
   TAB_SIZE
 } from "../../constants/ThemeSetting";
+import { compose, graphql } from "react-apollo";
+import gql from "graphql-tag";
 
 const { Header } = Layout;
 

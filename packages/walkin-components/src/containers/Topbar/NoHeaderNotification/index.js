@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 
 import IntlMessages from "../../../util/IntlMessages";
+import gql from "graphql-tag";
+import { compose, graphql } from "react-apollo";
 
 class NoHeaderNotification extends Component {
   render() {

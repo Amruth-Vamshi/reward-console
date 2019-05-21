@@ -5,6 +5,8 @@ import { Link } from "react-router-dom";
 import IntlMessages from "../util/IntlMessages";
 import { message } from "antd/lib/index";
 import CircularProgress from "../components/CircularProgress/index";
+import gql from "graphql-tag";
+import { compose, graphql } from "react-apollo";
 
 const FormItem = Form.Item;
 

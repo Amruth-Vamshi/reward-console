@@ -12,6 +12,7 @@ import Topbar from "./containers/Topbar";
 import { footerText } from "./util/config";
 import Customizer from "./containers/Customizer";
 import NoHeaderNotification from "./containers/Topbar/NoHeaderNotification";
+import asyncComponent from "./util/asyncComponent";
 
 export {
   Sidebar,
@@ -25,5 +26,6 @@ export {
   Topbar,
   footerText,
   Customizer,
-  NoHeaderNotification
+  NoHeaderNotification,
+  asyncComponent
 };

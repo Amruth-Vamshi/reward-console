@@ -28,6 +28,8 @@ import {
   NAV_STYLE_NO_HEADER_MINI_SIDEBAR,
   TAB_SIZE
 } from "@walkinsole/walkin-components/src/constants/ThemeSetting";
+import gql from "graphql-tag";
+import { graphql } from "react-apollo";
 
 const { Content, Footer } = Layout;
 
