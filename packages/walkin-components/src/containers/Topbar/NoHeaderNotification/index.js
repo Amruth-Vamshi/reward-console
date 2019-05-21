@@ -30,8 +30,8 @@ class NoHeaderNotification extends Component {
   }
 }
 
-const mapStateToProps = ({ localSettings }) => {
-  const { navCollapsed } = localSettings.settings;
+const mapStateToProps = ({ settings }) => {
+  const { navCollapsed } = settings.settings;
   return { navCollapsed };
 };
 // export default connect(
@@ -40,7 +40,7 @@ const mapStateToProps = ({ localSettings }) => {
 // )(NoHeaderNotification);
 
 const GET_SETTINGS = gql`
-  query localSettings {
+  query settings {
     settings @client {
       navCollapsed
     }
@@ -57,6 +57,6 @@ export default compose(
   graphql(TOGGLE_COLLAPSED_SIDE_NAV, { name: "toggleCollapsedSideNav" }),
   graphql(GET_SETTINGS, {
     props: mapStateToProps,
-    name: "localSettings"
+    name: "settings"
   })
 )(NoHeaderNotification);

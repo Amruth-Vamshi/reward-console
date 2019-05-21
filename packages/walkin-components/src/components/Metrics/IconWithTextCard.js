@@ -30,7 +30,7 @@ const IconWithTextCard = props => {
 };
 
 const mapStateToProps = ({ settings }) => {
-  const { themeType } = settings;
+  const { themeType } = settings.settings;
   return { themeType };
 };
 // export default connect(mapStateToProps, null)(IconWithTextCard);

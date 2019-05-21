@@ -11,25 +11,32 @@ import {
   TAB_SIZE,
   THEME_TYPE_LITE
 } from "../../constants/ThemeSetting";
-import { withApollo, Query } from "react-apollo";
+import { withApollo, Query, compose, graphql } from "react-apollo";
 import gql from "graphql-tag";
 
 const { Sider } = Layout;
 
 export class Sidebar extends Component {
   onToggleCollapsedNav = () => {
-    this.props.toggleCollapsedSideNav(!this.props.navCollapsed);
+    this.props.toggleCollapsedSideNav({
+      variables: {
+        navCollapsed: !this.props.navCollapsed
+      }
+    });
   };
 
   componentDidMount() {
     window.addEventListener("resize", () => {
-      this.props.updateWindowWidth(window.innerWidth);
+      this.props.updateWindowWidth({
+        variables: {
+          width: window.innerWidth
+        }
+      });
     });
   }
 
   render() {
     const { themeType, navCollapsed, width, navStyle } = this.props;
-
     let drawerStyle = "gx-collapsed-sidebar";
 
     if (navStyle === NAV_STYLE_FIXED) {
@@ -82,7 +89,7 @@ export class Sidebar extends Component {
             {JSON.stringify(data)}
             {navStyle === NAV_STYLE_DRAWER || width < TAB_SIZE ? (
               <Drawer
-                wrapClassName={`gx-drawer-sidebar ${
+                className={`gx-drawer-sidebar ${
                   themeType !== THEME_TYPE_LITE
                     ? "gx-drawer-sidebar-dark"
                     : null
@@ -104,4 +111,36 @@ export class Sidebar extends Component {
   }
 }
 
-export default withApollo(Sidebar);
+const UPDATE_WINDOW_WIDTH = gql`
+  mutation updateWindowWidth($width: Int) {
+    updateWindowWidth(width: $width) @client
+  }
+`;
+
+const GET_SETTINGS = gql`
+  query settings {
+    settings @client {
+      themeType
+      navCollapsed
+      width
+      navStyle
+    }
+  }
+`;
+
+const TOGGLE_COLLAPSED_SIDENAV = gql`
+  mutation toggleSideNav($navCollapsed: Boolean) {
+    toggleCollapsedSideNav(navCollapsed: $navCollapsed) @client
+  }
+`;
+
+const mapStateToProps = ({ settings }) => {
+  const { themeType, navCollapsed, width, navStyle } = settings.settings;
+  return { themeType, navCollapsed, width, navStyle };
+};
+
+export default compose(
+  graphql(GET_SETTINGS, { name: "settings", props: mapStateToProps }),
+  graphql(UPDATE_WINDOW_WIDTH, { name: "updateWindowWidth" }),
+  graphql(TOGGLE_COLLAPSED_SIDENAV, { name: "toggleCollapsedSideNav" })
+)(Sidebar);

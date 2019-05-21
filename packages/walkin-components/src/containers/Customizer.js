@@ -74,16 +74,16 @@ class Customizer extends Component {
     const { vars } = this.state;
     if (varname) vars[varname] = color;
     console.log("vars: ", vars);
-    window.less
-      .modifyVars(vars)
-      .then(() => {
-        message.success(`Theme updated successfully`);
-        this.setState({ vars });
-        localStorage.setItem("app-theme", JSON.stringify(vars));
-      })
-      .catch(error => {
-        message.error(`Failed to update theme`);
-      });
+    // window.less
+    //   .modifyVars(vars)
+    //   .then(() => {
+    //     message.success(`Theme updated successfully`);
+    //     this.setState({ vars });
+    //     localStorage.setItem("app-theme", JSON.stringify(vars));
+    //   })
+    //   .catch(error => {
+    //     message.error(`Failed to update theme`);
+    //   });
   };
   getColorPicker = varName => (
     <div key={varName} className="gx-media gx-mb-1">
@@ -120,9 +120,9 @@ class Customizer extends Component {
   resetTheme = () => {
     localStorage.setItem("app-theme", "{}");
     this.setState({ vars: this.state.initialValue });
-    window.less.modifyVars(this.state.initialValue).catch(error => {
-      message.error(`Failed to reset theme`);
-    });
+    // window.less.modifyVars(this.state.initialValue).catch(error => {
+    //   message.error(`Failed to reset theme`);
+    // });
   };
   toggleCustomizer = () => {
     this.setState(previousState => ({
@@ -138,7 +138,7 @@ class Customizer extends Component {
   };
 
   onNavStyleChange = navStyle => {
-    this.props.onNavStyleChange(navStyle);
+    this.props.onNavStyleChange({ variables: { navStyle } });
   };
 
   getCustomizerContent = () => {
@@ -590,12 +590,12 @@ class Customizer extends Component {
       );
     } finally {
       this.state = { vars, initialValue, isCustomizerOpened: false };
-      window.less
-        .modifyVars(vars)
-        .then(() => {})
-        .catch(error => {
-          message.error(`Failed to update theme`);
-        });
+      // window.less
+      //   .modifyVars(vars)
+      //   .then(() => {})
+      //   .catch(error => {
+      //     message.error(`Failed to update theme`);
+      //   });
     }
   }
 
@@ -638,7 +638,7 @@ const mapStateToProps = ({ settings }) => {
 // )(Customizer);
 
 const GET_SETTINGS = gql`
-  query localSettings {
+  query settings {
     settings @client {
       locale {
         locale
@@ -655,29 +655,29 @@ const GET_SETTINGS = gql`
 
 const SET_THEME_TYPE = gql`
   mutation setThemeType($themeType: String) {
-    setThemeType(themeType: $themeType)
+    setThemeType(themeType: $themeType) @client
   }
 `;
 
 const ON_NAV_STYLE_CHANGE = gql`
   mutation onNavStyleChange($navStyle: String) {
-    onNavStyleChange(navStyle: $navStyle)
+    onNavStyleChange(navStyle: $navStyle) @client
   }
 `;
 const ON_LAYOUT_TYPE_CHANGE = gql`
   mutation onNavStyleChange($layoutType: String) {
-    onLayoutTypeChange(layoutType: $layoutType)
+    onLayoutTypeChange(layoutType: $layoutType) @client
   }
 `;
 
 const SET_THEME_COLOR_SELECTION = gql`
   mutation setThemeColorSelection($colorSelection: String) {
-    setThemeColorSelection(colorSelection: $colorSelection)
+    setThemeColorSelection(colorSelection: $colorSelection) @client
   }
 `;
 
 const mapQueryToProps = ({ settings }) => {
-  const { locale, navStyle, themeType, layoutType } = settings;
+  const { locale, navStyle, themeType, layoutType } = settings.settings;
   return { locale, navStyle, themeType, layoutType };
 };
 

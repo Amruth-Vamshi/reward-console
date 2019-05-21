@@ -10,7 +10,8 @@ import {
   BelowHeader,
   footerText,
   Customizer,
-  NoHeaderNotification
+  NoHeaderNotification,
+  Topbar
 } from "@walkinsole/walkin-components";
 
 import App from "../../routes";
@@ -121,11 +122,9 @@ export class MainApp extends Component {
 }
 
 const mapStateToProps = ({ settings }) => {
-  const { width, navStyle } = settings;
+  const { width, navStyle } = settings.settings;
   return { width, navStyle };
 };
-
-// export default connect(mapStateToProps)(MainApp);
 
 const GET_SETTINGS = gql`
   query getSettings {

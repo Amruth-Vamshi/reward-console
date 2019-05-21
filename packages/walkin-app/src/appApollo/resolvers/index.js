@@ -9,48 +9,142 @@ import {
   THEME_COLOR_SELECTION,
   THEME_TYPE
 } from "@walkinsole/walkin-components/src/constants/ThemeSetting";
+import gql from "graphql-tag";
 
 const toggleCollapsedSideNav = (_, { navCollapsed }, { client }) => {
-  return client.writeData({
-    data: { type: TOGGLE_COLLAPSED_NAV, navCollapsed }
+  return client.writeQuery({
+    query: gql`
+      query navCollapsed {
+        settings {
+          navCollapsed
+        }
+      }
+    `,
+    data: {
+      settings: {
+        navCollapsed,
+        __typename: "settings"
+      }
+    }
   });
 };
 
 const updateWindowWidth = (_, { width }, { client }) => {
-  return client.writeData({
-    data: { type: WINDOW_WIDTH, width }
+  return client.writeQuery({
+    query: gql`
+      query navCollapsed {
+        settings {
+          width
+        }
+      }
+    `,
+    data: {
+      settings: {
+        width,
+        __typename: "settings"
+      }
+    }
   });
 };
 
 const setThemeType = (_, { themeType }, { client }) => {
-  return client.writeData({
-    data: { type: THEME_TYPE, themeType }
+  return client.writeQuery({
+    query: gql`
+      query navCollapsed {
+        settings {
+          themeType
+        }
+      }
+    `,
+    data: {
+      settings: {
+        themeType,
+        __typename: "settings"
+      }
+    }
   });
 };
 
 const setThemeColorSelection = (_, { colorSelection }, { client }) => {
-  return client.writeData({
-    data: { type: THEME_COLOR_SELECTION, colorSelection }
+  return client.writeQuery({
+    query: gql`
+      query navCollapsed {
+        settings {
+          colorSelection
+        }
+      }
+    `,
+    data: {
+      settings: {
+        colorSelection,
+        __typename: "settings"
+      }
+    }
   });
 };
 
 const onNavStyleChange = (_, { navStyle }, { client }) => {
-  return client.writeData({
-    data: { type: NAV_STYLE, navStyle }
+  return client.writeQuery({
+    query: gql`
+      query navCollapsed {
+        settings {
+          navStyle
+        }
+      }
+    `,
+    data: {
+      settings: {
+        navStyle,
+        __typename: "settings"
+      }
+    }
   });
 };
 
 const onLayoutTypeChange = (_, { layoutType }, { client }) => {
-  return client.writeData({
-    data: { type: LAYOUT_TYPE, layoutType }
+  return client.writeQuery({
+    query: gql`
+      query navCollapsed {
+        settings {
+          layoutType
+        }
+      }
+    `,
+    data: {
+      settings: {
+        layoutType,
+        __typename: "settings"
+      }
+    }
   });
 };
 
-const switchLanguage = (_, { locale }, { client }) => {
-  return client.writeData({
+const switchLanguage = (_, input, { client }) => {
+  const inpuLocale = input.locale;
+  const { icon, languageId, locale, name } = inpuLocale;
+  return client.writeQuery({
+    query: gql`
+      query navCollapsed {
+        settings {
+          locale {
+            icon
+            languageId
+            locale
+            name
+          }
+        }
+      }
+    `,
     data: {
-      type: SWITCH_LANGUAGE,
-      payload: locale
+      settings: {
+        locale: {
+          icon,
+          languageId,
+          locale,
+          name,
+          __typename: "locale"
+        }
+      }
     }
   });
 };

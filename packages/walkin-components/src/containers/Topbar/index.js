@@ -62,7 +62,9 @@ class Topbar extends Component {
               <i
                 className="gx-icon-btn icon icon-menu"
                 onClick={() => {
-                  this.props.toggleCollapsedSideNav(!navCollapsed);
+                  this.props.toggleCollapsedSideNav({
+                    variables: { navCollapsed: !navCollapsed }
+                  });
                 }}
               />
             </div>
@@ -158,7 +160,7 @@ class Topbar extends Component {
 }
 
 const mapStateToProps = ({ settings }) => {
-  const { locale, navStyle, navCollapsed, width } = settings;
+  const { locale, navStyle, navCollapsed, width } = settings.settings;
   return { locale, navStyle, navCollapsed, width };
 };
 
@@ -168,7 +170,7 @@ const mapStateToProps = ({ settings }) => {
 // )(Topbar);
 
 const GET_SETTINGS = gql`
-  query localSettings {
+  query settings {
     settings @client {
       locale {
         locale
@@ -185,13 +187,13 @@ const GET_SETTINGS = gql`
 
 const TOGGLE_COLLAPSED_SIDE_NAV = gql`
   mutation toggleCollapsedSideNav($navCollapsed: Boolean) {
-    toggleCollapsedSideNav(navCollapsed: $navCollapsed)
+    toggleCollapsedSideNav(navCollapsed: $navCollapsed) @client
   }
 `;
 
 const SWITCH_LANGUAGE = gql`
   mutation switchLanguage($locale: String) {
-    switchLanguage(locale: $locale)
+    switchLanguage(locale: $locale) @client
   }
 `;
 
@@ -200,6 +202,6 @@ export default compose(
   graphql(SWITCH_LANGUAGE, { name: "switchLanguage" }),
   graphql(GET_SETTINGS, {
     props: mapStateToProps,
-    name: "localSettings"
+    name: "settings"
   })
 )(Topbar);

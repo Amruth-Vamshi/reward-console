@@ -200,7 +200,7 @@ const mapStateToProps = ({ auth }) => {
 // )(WrappedSignUpForm);
 
 const GET_AUTH = gql`
-  query localSettings {
+  query settings {
     # Replace with auth query
     settings @client {
       locale {

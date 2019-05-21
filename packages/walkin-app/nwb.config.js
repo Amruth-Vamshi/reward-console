@@ -1,9 +1,6 @@
 module.exports = {
   type: "react-app",
   webpack: {
-    extra: {
-      devtool: "cheap-source-map"
-    },
     config: config => {
       config.module.rules.push({
         test: /\.less$/,

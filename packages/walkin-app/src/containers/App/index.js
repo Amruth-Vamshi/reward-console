@@ -122,7 +122,7 @@ class App extends Component {
 // New graphql code
 
 const GET_SETTINGS = gql`
-  query localSettings {
+  query settings {
     settings @client {
       locale {
         locale
@@ -139,23 +139,23 @@ const GET_SETTINGS = gql`
 
 const SET_THEME_TYPE = gql`
   mutation setThemeType($themeType: String) {
-    setThemeType(themeType: $themeType)
+    setThemeType(themeType: $themeType) @client
   }
 `;
 
 const ON_NAV_STYLE_CHANGE = gql`
   mutation onNavStyleChange($navStyle: String) {
-    onNavStyleChange(navStyle: $navStyle)
+    onNavStyleChange(navStyle: $navStyle) @client
   }
 `;
 const ON_LAYOUT_TYPE_CHANGE = gql`
   mutation onLayoutTypeChange($layoutType: String) {
-    onLayoutTypeChange(layoutType: $layoutType)
+    onLayoutTypeChange(layoutType: $layoutType) @client
   }
 `;
 
-const mapStateToProps = ({ localSettings }) => {
-  const { locale, navStyle, themeType, layoutType } = localSettings.settings;
+const mapStateToProps = ({ settings }) => {
+  const { locale, navStyle, themeType, layoutType } = settings.settings;
   return { locale, navStyle, themeType, layoutType };
 };
 
@@ -165,6 +165,6 @@ export default compose(
   graphql(ON_LAYOUT_TYPE_CHANGE, { name: "onLayoutTypeChange" }),
   graphql(GET_SETTINGS, {
     props: mapStateToProps,
-    name: "localSettings"
+    name: "settings"
   })
 )(App);

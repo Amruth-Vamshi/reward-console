@@ -247,12 +247,12 @@ class AboveHeader extends Component {
 }
 
 const mapStateToProps = ({ settings }) => {
-  const { locale, navCollapsed, width } = settings;
+  const { locale, navCollapsed, width } = settings.settings;
   return { locale, navCollapsed, width };
 };
 
 const GET_SETTINGS = gql`
-  query localSettings {
+  query settings {
     settings @client {
       locale {
         locale
@@ -283,6 +283,6 @@ export default compose(
   graphql(SWITCH_LANGUAGE, { name: "switchLanguage" }),
   graphql(GET_SETTINGS, {
     props: mapStateToProps,
-    name: "localSettings"
+    name: "settings"
   })
 )(AboveHeader);

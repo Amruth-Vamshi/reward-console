@@ -53,7 +53,7 @@ const TotalRevenueCard = ({ width }) => {
 };
 
 const mapStateToProps = ({ settings }) => {
-  const { width } = settings;
+  const { width } = settings.settings;
   return { width };
 };
 

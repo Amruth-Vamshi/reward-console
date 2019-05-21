@@ -22,7 +22,6 @@ export default {
     layoutType: LAYOUT_TYPE_FULL,
     themeType: THEME_TYPE_SEMI_DARK,
     colorSelection: THEME_COLOR_SELECTION_PRESET,
-
     pathname: "",
     width: window.innerWidth,
     isDirectionRTL: false,

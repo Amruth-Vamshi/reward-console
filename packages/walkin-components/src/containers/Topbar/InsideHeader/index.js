@@ -186,13 +186,13 @@ class InsideHeader extends Component {
 }
 
 const mapStateToProps = ({ settings }) => {
-  const { locale, navCollapsed } = settings;
+  const { locale, navCollapsed } = settings.settings;
   return { locale, navCollapsed };
 };
 // export default connect(mapStateToProps, {toggleCollapsedSideNav, switchLanguage})(InsideHeader);
 
 const GET_SETTINGS = gql`
-  query localSettings {
+  query settings {
     settings @client {
       locale {
         locale
@@ -222,6 +222,6 @@ export default compose(
   graphql(SWITCH_LANGUAGE, { name: "switchLanguage" }),
   graphql(GET_SETTINGS, {
     props: mapStateToProps,
-    name: "localSettings"
+    name: "settings"
   })
 )(InsideHeader);
