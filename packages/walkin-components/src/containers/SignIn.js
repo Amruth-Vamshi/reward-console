@@ -177,7 +177,7 @@ const mapStateToProps = ({ auth }) => {
 
 const GET_AUTH_DETAILS = gql`
   query testAuth {
-    testAuth
+    testAuth @client
   }
 `;
 

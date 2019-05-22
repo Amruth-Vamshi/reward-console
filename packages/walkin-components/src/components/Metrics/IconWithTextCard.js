@@ -36,7 +36,7 @@ const mapStateToProps = ({ settings }) => {
 // export default connect(mapStateToProps, null)(IconWithTextCard);
 const GET_SETTINGS = gql`
   query getSettings {
-    settings {
+    settings @client {
       themeType
     }
   }

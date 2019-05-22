@@ -19,10 +19,9 @@ import MailNotification from "../../../components/MailNotification";
 
 import HorizontalNav from "../HorizontalNav";
 import { Link } from "react-router-dom";
-
 import IntlMessages from "../../../util/IntlMessages";
-import { withApollo } from "react-apollo";
 import gql from "graphql-tag";
+import { compose, graphql } from "react-apollo";
 
 const { Header } = Layout;
 const Option = Select.Option;
@@ -54,7 +53,13 @@ class HorizontalDefault extends Component {
           <li
             className="gx-media gx-pointer"
             key={JSON.stringify(language)}
-            onClick={e => this.props.switchLanguage(language)}
+            onClick={e =>
+              this.props.switchLanguage({
+                variables: {
+                  locale: language
+                }
+              })
+            }
           >
             <i className={`flag flag-24 gx-mr-2 flag-${language.icon}`} />
             <span className="gx-language-text">{language.name}</span>
@@ -70,18 +75,8 @@ class HorizontalDefault extends Component {
     });
   };
 
-  async componentDidMount() {
-    // const data = await this.props.client.query({
-    //   query: gql`
-    //     query {
-    //       locale
-    //     }
-    //   `
-    // });
-    // console.log(data);
-  }
-
   render() {
+    const { locale, navCollapsed } = this.props;
     return (
       <div className="gx-header-horizontal">
         <div className="gx-header-horizontal-top">
@@ -108,7 +103,11 @@ class HorizontalDefault extends Component {
                 <i
                   className="gx-icon-btn icon icon-menu"
                   onClick={() => {
-                    this.props.toggleCollapsedSideNav(!navCollapsed);
+                    this.props.toggleCollapsedSideNav({
+                      variables: {
+                        navCollapsed: !navCollapsed
+                      }
+                    });
                   }}
                 />
               </div>
@@ -211,7 +210,7 @@ class HorizontalDefault extends Component {
                     trigger="click"
                   >
                     <span className="gx-pointer gx-flex-row gx-align-items-center">
-                      {/* <i className={`flag flag-24 flag-${locale.icon}`} /> */}
+                      <i className={`flag flag-24 flag-${locale.icon}`} />
                     </span>
                   </Popover>
                 </li>
@@ -251,4 +250,41 @@ class HorizontalDefault extends Component {
   }
 }
 
-export default withApollo(HorizontalDefault);
+const mapStateToProps = ({ settings }) => {
+  const { locale, navCollapsed } = settings.settings;
+  return { locale, navCollapsed };
+};
+// export default connect(
+//   mapStateToProps,
+//   { toggleCollapsedSideNav, switchLanguage }
+// )(HorizontalDefault);
+
+const GET_SETTINGS = gql`
+  query settings {
+    settings @client {
+      locale {
+        icon
+        languageId
+        locale
+        name
+      }
+      navCollapsed
+    }
+  }
+`;
+const TOGGLE_COLLAPSED_SIDENAV = gql`
+  mutation toggleCollapsedSideNav($navCollapsed: Boolean) {
+    toggleCollapsedSideNav(navCollapsed: $navCollapsed) @client
+  }
+`;
+const SWITCH_LANGUAGE = gql`
+  mutation switchLanguage($locale: LocaleInput) {
+    switchLanguage(locale: $locale) @client
+  }
+`;
+
+export default compose(
+  graphql(GET_SETTINGS, { name: "settings", props: mapStateToProps }),
+  graphql(TOGGLE_COLLAPSED_SIDENAV, { name: "toggleCollapsedSideNav" }),
+  graphql(SWITCH_LANGUAGE, { name: "switchLanguage" })
+)(HorizontalDefault);

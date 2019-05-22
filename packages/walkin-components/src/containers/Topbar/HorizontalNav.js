@@ -8,8 +8,8 @@ import {
   NAV_STYLE_DEFAULT_HORIZONTAL,
   NAV_STYLE_INSIDE_HEADER_HORIZONTAL
 } from "../../constants/ThemeSetting";
-import { withApollo, graphql } from "react-apollo";
 import gql from "graphql-tag";
+import { compose, graphql } from "react-apollo";
 
 const SubMenu = Menu.SubMenu;
 
@@ -29,50 +29,56 @@ class HorizontalNav extends Component {
     }
   };
 
-  async componentWillMount() {
-    const LOCALE_QUERY = gql`
-      query LocaleQuery {
-        locale @client
-      }
-    `;
-    this.props.client
-      .query({
-        query: LOCALE_QUERY
-      })
-      .then(({ data }) => {
-        console.log(data);
-      })
-      .catch(err => {
-        console.log("componentWillMount", err);
-      });
-  }
-
   render() {
-    // const { pathname, navStyle } = this.props;
-    // const selectedKeys = pathname.substr(1);
-    // const defaultOpenKeys = selectedKeys.split("/")[1];
+    const { pathname, navStyle } = this.props;
+    const selectedKeys = pathname.substr(1);
+    const defaultOpenKeys = selectedKeys.split("/")[1];
     return (
-      // <Menu
-      //   defaultOpenKeys={[defaultOpenKeys]}
-      //   selectedKeys={[selectedKeys]}
-      //   mode="horizontal"
-      // >
-      //   <SubMenu
-      //     className={this.getNavStyleSubMenuClass(navStyle)}
-      //     key="main"
-      //     title={<IntlMessages id="sidebar.main" />}
-      //   >
-      //     <Menu.Item key="sample">
-      //       <Link to="/sample">
-      //         <i className="icon icon-widgets" />
-      //         <IntlMessages id="sidebar.samplePage" />
-      //       </Link>
-      //     </Menu.Item>
-      //   </SubMenu>
-      // </Menu>
-      <div>Horizontal</div>
+      <Menu
+        defaultOpenKeys={[defaultOpenKeys]}
+        selectedKeys={[selectedKeys]}
+        mode="horizontal"
+      >
+        <SubMenu
+          className={this.getNavStyleSubMenuClass(navStyle)}
+          key="main"
+          title={<IntlMessages id="sidebar.main" />}
+        >
+          <Menu.Item key="sample">
+            <Link to="/sample">
+              <i className="icon icon-widgets" />
+              <IntlMessages id="sidebar.samplePage" />
+            </Link>
+          </Menu.Item>
+        </SubMenu>
+      </Menu>
     );
   }
 }
 
-export default withApollo(HorizontalNav);
+HorizontalNav.propTypes = {};
+const mapStateToProps = ({ settings }) => {
+  const { themeType, navStyle, pathname, locale } = settings.settings;
+  return { themeType, navStyle, pathname, locale };
+};
+// export default connect(mapStateToProps)(HorizontalNav);
+
+const GET_SETTINGS = gql`
+  query settings @client {
+    settings {
+      themeType
+      navStyle
+      pathname
+      locale {
+        icon
+        languageId
+        locale
+        name
+      }
+    }
+  }
+`;
+
+export default compose(
+  graphql(GET_SETTINGS, { name: "settings", props: mapStateToProps })
+)(HorizontalNav);

@@ -24,6 +24,13 @@ const typeDefs = gql`
     icon: String
   }
 
+  input LocaleInput {
+    languageId: String
+    locale: String
+    name: String
+    icon: String
+  }
+
   extend type Mutation {
     toggleCollapsedSideNav(navCollapsed: Boolean): String
     updateWindowWidth(width: Int): String
@@ -31,7 +38,7 @@ const typeDefs = gql`
     setThemeColorSelection(colorSelection: String): String
     onNavStyleChange(navStyle: String): String
     onLayoutTypeChange(layoutType: String): String
-    switchLanguage(locale: String): String
+    switchLanguage(locale: LocaleInput): String
   }
 `;
 

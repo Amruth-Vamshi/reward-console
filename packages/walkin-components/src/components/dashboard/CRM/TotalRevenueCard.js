@@ -61,7 +61,7 @@ const mapStateToProps = ({ settings }) => {
 
 const GET_SETTINGS = gql`
   query getSettings {
-    settings {
+    settings @client {
       width
     }
   }

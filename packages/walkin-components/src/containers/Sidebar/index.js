@@ -11,7 +11,7 @@ import {
   TAB_SIZE,
   THEME_TYPE_LITE
 } from "../../constants/ThemeSetting";
-import { withApollo, Query, compose, graphql } from "react-apollo";
+import { Query, compose, graphql } from "react-apollo";
 import gql from "graphql-tag";
 
 const { Sider } = Layout;

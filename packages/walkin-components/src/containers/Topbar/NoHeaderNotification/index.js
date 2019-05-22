@@ -49,7 +49,7 @@ const GET_SETTINGS = gql`
 
 const TOGGLE_COLLAPSED_SIDE_NAV = gql`
   mutation toggleCollapsedSideNav($navCollapsed: Boolean) {
-    toggleCollapsedSideNav(navCollapsed: $navCollapsed)
+    toggleCollapsedSideNav(navCollapsed: $navCollapsed) @client
   }
 `;
 

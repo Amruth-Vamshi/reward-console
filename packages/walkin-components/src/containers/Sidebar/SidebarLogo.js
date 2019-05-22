@@ -9,7 +9,8 @@ import {
   TAB_SIZE,
   THEME_TYPE_LITE
 } from "../../constants/ThemeSetting";
-import { withApollo } from "react-apollo";
+import { compose, graphql } from "react-apollo";
+import gql from "graphql-tag";
 
 class SidebarLogo extends Component {
   render() {
@@ -30,13 +31,29 @@ class SidebarLogo extends Component {
               } ${themeType !== THEME_TYPE_LITE ? "gx-text-white" : ""}`}
               onClick={() => {
                 if (navStyle === NAV_STYLE_DRAWER) {
-                  this.props.toggleCollapsedSideNav(!navCollapsed);
+                  this.props.toggleCollapsedSideNav({
+                    variables: {
+                      navCollapsed: !navCollapsed
+                    }
+                  });
                 } else if (navStyle === NAV_STYLE_FIXED) {
-                  this.props.onNavStyleChange(NAV_STYLE_MINI_SIDEBAR);
+                  this.props.onNavStyleChange({
+                    variables: {
+                      navStyle: NAV_STYLE_MINI_SIDEBAR
+                    }
+                  });
                 } else if (navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR) {
-                  this.props.toggleCollapsedSideNav(!navCollapsed);
+                  this.props.toggleCollapsedSideNav({
+                    variables: {
+                      navCollapsed: !navCollapsed
+                    }
+                  });
                 } else {
-                  this.props.onNavStyleChange(NAV_STYLE_FIXED);
+                  this.props.onNavStyleChange({
+                    variables: {
+                      navStyle: NAV_STYLE_FIXED
+                    }
+                  });
                 }
               }}
             />
@@ -59,8 +76,41 @@ class SidebarLogo extends Component {
 }
 
 const mapStateToProps = ({ settings }) => {
-  const { navStyle, themeType, width, navCollapsed } = settings;
+  const { navStyle, themeType, width, navCollapsed } = settings.settings;
   return { navStyle, themeType, width, navCollapsed };
 };
 
-export default withApollo(SidebarLogo);
+// export default connect(
+//   mapStateToProps,
+//   {
+//     onNavStyleChange,
+//     toggleCollapsedSideNav
+//   }
+// )(SidebarLogo);
+
+const GET_SETTINGS = gql`
+  query settings @client {
+    settings {
+      navStyle
+      themeType
+      width
+      navCollapsed
+    }
+  }
+`;
+const TOGGLE_COLLAPSED_SIDENAV = gql`
+  mutation toggleCollapsedSideNav($navCollapsed: Boolean) {
+    toggleCollapsedSideNav(navCollapsed: $navCollapsed) @client
+  }
+`;
+const ON_NAV_STYLE_CHANGE = gql`
+  mutation onNavStyleChange($navStyle: String) {
+    onNavStyleChange(navStyle: $navStyle) @client
+  }
+`;
+
+export default compose(
+  graphql(GET_SETTINGS, { name: "settings", props: mapStateToProps }),
+  graphql(TOGGLE_COLLAPSED_SIDENAV, { name: "toggleCollapsedSideNav" }),
+  graphql(ON_NAV_STYLE_CHANGE, { name: "onNavStyleChange" })
+)(SidebarLogo);

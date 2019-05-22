@@ -55,7 +55,13 @@ class AboveHeader extends Component {
           <li
             className="gx-media gx-pointer"
             key={JSON.stringify(language)}
-            onClick={e => this.props.switchLanguage(language)}
+            onClick={e =>
+              this.props.switchLanguage({
+                variables: {
+                  locale: language
+                }
+              })
+            }
           >
             <i className={`flag flag-24 gx-mr-2 flag-${language.icon}`} />
             <span className="gx-language-text">{language.name}</span>
@@ -268,13 +274,13 @@ const GET_SETTINGS = gql`
 
 const TOGGLE_COLLAPSED_SIDE_NAV = gql`
   mutation toggleCollapsedSideNav($navCollapsed: Boolean) {
-    toggleCollapsedSideNav(navCollapsed: $navCollapsed)
+    toggleCollapsedSideNav(navCollapsed: $navCollapsed) @client
   }
 `;
 
 const SWITCH_LANGUAGE = gql`
-  mutation switchLanguage($locale: String) {
-    switchLanguage(locale: $locale)
+  mutation switchLanguage($locale: LocaleInput) {
+    switchLanguage(locale: $locale) @client
   }
 `;
 

@@ -33,7 +33,13 @@ class Topbar extends Component {
           <li
             className="gx-media gx-pointer"
             key={JSON.stringify(language)}
-            onClick={e => this.props.switchLanguage(language)}
+            onClick={e =>
+              this.props.switchLanguage({
+                variables: {
+                  locale: language
+                }
+              })
+            }
           >
             <i className={`flag flag-24 gx-mr-2 flag-${language.icon}`} />
             <span className="gx-language-text">{language.name}</span>
@@ -192,7 +198,7 @@ const TOGGLE_COLLAPSED_SIDE_NAV = gql`
 `;
 
 const SWITCH_LANGUAGE = gql`
-  mutation switchLanguage($locale: String) {
+  mutation switchLanguage($locale: LocaleInput) {
     switchLanguage(locale: $locale) @client
   }
 `;

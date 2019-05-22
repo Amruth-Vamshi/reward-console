@@ -74,7 +74,7 @@ const mapStateToProps = ({ auth }) => {
 const GET_AUTH = gql`
   # replace with GQL to get auth details
   query getSettings {
-    settings {
+    settings @client {
       themeType
     }
   }

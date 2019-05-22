@@ -16,7 +16,7 @@ import {
   THEME_TYPE_LITE
 } from "../../constants/ThemeSetting";
 import IntlMessages from "../../util/IntlMessages";
-import { withApollo, compose, graphql } from "react-apollo";
+import { compose, graphql } from "react-apollo";
 import gql from "graphql-tag";
 
 class SidebarContent extends Component {
@@ -83,7 +83,7 @@ const mapStateToProps = ({ settings, ownProps }) => {
 
 const GET_SETTINGS = gql`
   query settings {
-    settings {
+    settings @client {
       navStyle
       themeType
       locale {

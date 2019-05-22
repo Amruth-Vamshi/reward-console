@@ -143,7 +143,8 @@ const switchLanguage = (_, input, { client }) => {
           locale,
           name,
           __typename: "locale"
-        }
+        },
+        __typename: "settings"
       }
     }
   });
