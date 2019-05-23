@@ -2,6 +2,7 @@ import React, { Suspense, lazy } from "react";
 import { Route, Switch } from "react-router-dom";
 
 import { asyncComponent } from "@walkinsole/walkin-components";
+import ErrorPage from "./errorPages/404";
 
 const RefineX = lazy(() => import("@walkinsole/walkin-refinex"));
 const HyperX = lazy(() => import("@walkinsole/walkin-hyperx"));
@@ -12,10 +13,11 @@ const App = () => (
   <div className="gx-main-content-wrapper">
     <Suspense fallback={<div>Loading...</div>}>
       <Switch>
-        <Route exact path="/" component={Core} />
+        <Route path="/core" component={Core} />
         <Route path="/hyperx" component={HyperX} />
         <Route path="/nearx" component={NearX} />
         <Route path="/refinex" component={RefineX} />
+        <Route component={ErrorPage} />
       </Switch>
     </Suspense>
   </div>

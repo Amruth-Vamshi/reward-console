@@ -52,21 +52,41 @@ class SidebarContent extends Component {
             <UserProfile />
             <AppsNavigation />
           </div>
-          <CustomScrollbars className="gx-layout-sider-scrollbar">
-            <Menu
-              defaultOpenKeys={[defaultOpenKeys]}
-              selectedKeys={[selectedKeys]}
-              theme={themeType === THEME_TYPE_LITE ? "lite" : "dark"}
-              mode="inline"
-            >
-              <Menu.Item key="sample">
-                <Link to="/sample">
-                  <i className="icon icon-widgets" />
-                  <IntlMessages id="sidebar.samplePage" />
-                </Link>
-              </Menu.Item>
-            </Menu>
-          </CustomScrollbars>
+          <Menu
+            defaultOpenKeys={[defaultOpenKeys]}
+            selectedKeys={[selectedKeys]}
+            theme={themeType === THEME_TYPE_LITE ? "lite" : "dark"}
+            mode="inline"
+          >
+            <Menu.Item key="core">
+              <Link to="/core">
+                <i className="icon icon-setting" />
+                {/* <IntlMessages id="sidebar.samplePage" /> */}
+                Core
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="hyperx">
+              <Link to="/hyperx">
+                <i className="icon icon-alert" />
+                {/* <IntlMessages id="sidebar.samplePage" /> */}
+                HyperX
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="refinex">
+              <Link to="/refinex">
+                <i className="icon icon-select" />
+                {/* <IntlMessages id="sidebar.samplePage" /> */}
+                RefineX
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="nearx">
+              <Link to="/nearx">
+                <i className="icon icon-geo-location" />
+                {/* <IntlMessages id="sidebar.samplePage" /> */}
+                NearX
+              </Link>
+            </Menu.Item>
+          </Menu>
         </div>
       </Auxiliary>
     );

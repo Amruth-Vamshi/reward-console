@@ -44,12 +44,12 @@ class HorizontalNav extends Component {
           key="main"
           title={<IntlMessages id="sidebar.main" />}
         >
-          <Menu.Item key="sample">
+          {/* <Menu.Item key="sample">
             <Link to="/sample">
               <i className="icon icon-widgets" />
               <IntlMessages id="sidebar.samplePage" />
             </Link>
-          </Menu.Item>
+          </Menu.Item> */}
         </SubMenu>
       </Menu>
     );
