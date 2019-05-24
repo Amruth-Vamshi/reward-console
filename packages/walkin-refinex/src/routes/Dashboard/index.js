@@ -1,128 +1,195 @@
 import React from "react";
 import { Col, Row } from "antd";
 
-import TaskList from "components/dashboard/CRM/TaskList";
-import SiteVisit from "components/dashboard/CRM/SiteVisit";
-import RecentActivity from "components/dashboard/CRM/RecentActivity";
-import TicketList from "components/dashboard/CRM/TicketList";
-import TaskByStatus from "components/dashboard/CRM/TaskByStatus";
-import WelComeCard from "components/dashboard/CRM/WelComeCard";
-import Overview from "components/dashboard/CRM/Overview";
-import SiteAudience from "components/dashboard/CRM/SiteAudience";
-import Auxiliary from "util/Auxiliary";
-import TotalRevenueCard from "components/dashboard/CRM/TotalRevenueCard";
-import NewCustomers from "components/dashboard/CRM/NewCustomers";
-import GrowthCard from "components/dashboard/CRM/GrowthCard";
-import Widget from "components/Widget";
-import CurrencyCalculator from "components/dashboard/Crypto/CurrencyCalculator";
-import IconWithTextCard from "components/dashboard/CRM/IconWithTextCard";
-import { recentActivity, taskList, trafficData } from "./data";
+import {
+  Area,
+  AreaChart,
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip
+} from "recharts";
+import {
+  ChartCard,
+  Auxiliary,
+  Portfolio,
+  BalanceHistory,
+  SendMoney,
+  RewardCard,
+  CurrencyCalculator,
+  CryptoNews,
+  DownloadMobileApps,
+  OrderHistory
+} from "@walkinsole/walkin-components";
+import { increamentData, lineData } from "./data";
 
-const CRM = () => {
+const Dashboard = () => {
   return (
     <Auxiliary>
       <Row>
-        <Col span={24}>
-          <div className="gx-card">
-            <div className="gx-card-body">
-              <Row>
-                <Col xl={6} lg={12} md={12} sm={12} xs={24}>
-                  <WelComeCard />
-                </Col>
-
-                <Col
-                  xl={6}
-                  lg={12}
-                  md={12}
-                  sm={12}
-                  xs={24}
-                  className="gx-audi-col"
+        <Col xl={6} lg={12} md={12} sm={12} xs={24}>
+          <ChartCard
+            prize="$9,626"
+            title="23"
+            icon="bitcoin"
+            children={
+              <ResponsiveContainer width="100%" height={75}>
+                <AreaChart
+                  data={increamentData}
+                  margin={{ top: 0, right: 0, left: 0, bottom: 0 }}
                 >
-                  <SiteAudience />
-                </Col>
-
-                <Col
-                  xl={12}
-                  lg={24}
-                  md={24}
-                  sm={24}
-                  xs={24}
-                  className="gx-visit-col"
+                  <Tooltip />
+                  <defs>
+                    <linearGradient id="color3" x1="0" y1="0" x2="1" y2="0">
+                      <stop offset="5%" stopColor="#163469" stopOpacity={0.9} />
+                      <stop
+                        offset="95%"
+                        stopColor="#FE9E15"
+                        stopOpacity={0.9}
+                      />
+                    </linearGradient>
+                  </defs>
+                  <Area
+                    dataKey="price"
+                    strokeWidth={0}
+                    stackId="2"
+                    stroke="#4D95F3"
+                    fill="url(#color3)"
+                    fillOpacity={1}
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
+            }
+            styleName="up"
+            desc="Bitcoin Price"
+          />
+        </Col>
+        <Col xl={6} lg={12} md={12} sm={12} xs={24}>
+          <ChartCard
+            prize="$7,831"
+            title="07"
+            icon="etherium"
+            children={
+              <ResponsiveContainer width="100%" height={75}>
+                <AreaChart
+                  data={increamentData}
+                  margin={{ top: 0, right: 0, left: 0, bottom: 0 }}
                 >
-                  <SiteVisit />
-                </Col>
-              </Row>
-            </div>
-          </div>
+                  <Tooltip />
+                  <defs>
+                    <linearGradient id="color4" x1="0" y1="0" x2="1" y2="0">
+                      <stop offset="5%" stopColor="#4ECDE4" stopOpacity={0.9} />
+                      <stop
+                        offset="95%"
+                        stopColor="#06BB8A"
+                        stopOpacity={0.9}
+                      />
+                    </linearGradient>
+                  </defs>
+                  <Area
+                    dataKey="price"
+                    type="monotone"
+                    strokeWidth={0}
+                    stackId="2"
+                    stroke="#4D95F3"
+                    fill="url(#color4)"
+                    fillOpacity={1}
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
+            }
+            styleName="up"
+            desc="Etherium Price"
+          />
         </Col>
-        <Col xl={8} lg={24} md={8} sm={24} xs={24}>
-          <TotalRevenueCard />
+        <Col xl={6} lg={12} md={12} sm={12} xs={24}>
+          <ChartCard
+            prize="$1,239"
+            title="08"
+            icon="ripple"
+            children={
+              <ResponsiveContainer width="100%" height={75}>
+                <AreaChart
+                  data={increamentData}
+                  margin={{ top: 0, right: 0, left: 0, bottom: 0 }}
+                >
+                  <Tooltip />
+                  <defs>
+                    <linearGradient id="color5" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#e81a24" stopOpacity={0.8} />
+                      <stop
+                        offset="95%"
+                        stopColor="#FEEADA"
+                        stopOpacity={0.8}
+                      />
+                    </linearGradient>
+                  </defs>
+                  <Area
+                    dataKey="price"
+                    strokeWidth={0}
+                    stackId="2"
+                    stroke="#FEEADA"
+                    fill="url(#color5)"
+                    fillOpacity={1}
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
+            }
+            styleName="down"
+            desc="Ripple Price"
+          />
         </Col>
-        <Col xl={8} lg={12} md={8} sm={24} xs={24}>
-          <NewCustomers />
+        <Col xl={6} lg={12} md={12} sm={12} xs={24}>
+          <ChartCard
+            prize="$849"
+            title="47"
+            icon="litcoin"
+            children={
+              <ResponsiveContainer width="100%" height={75}>
+                <LineChart
+                  data={lineData}
+                  margin={{ top: 5, right: 5, left: 5, bottom: 5 }}
+                >
+                  <Tooltip />
+                  <Line
+                    dataKey="price"
+                    stroke="#038FDE"
+                    dot={{ stroke: "#FEA931", strokeWidth: 2 }}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            }
+            styleName="down"
+            desc="Litecoin Price"
+          />
         </Col>
-        <Col xl={8} lg={12} md={8} sm={24} xs={24}>
-          <GrowthCard trafficData={trafficData} />
+        <Col xl={12} lg={24} md={12} sm={24} xs={24}>
+          <Portfolio />
+        </Col>
+        <Col xl={12} lg={24} md={12} sm={24} xs={24}>
+          <BalanceHistory />
         </Col>
 
-        <Col xl={8} lg={24} md={24} sm={24} xs={24} className="gx-order-sm-2">
-          <Widget>
-            <RecentActivity recentList={recentActivity} shape="circle" />
-          </Widget>
+        <Col xl={9} lg={24} md={24} sm={24} xs={24}>
+          <SendMoney />
+        </Col>
+        <Col xl={6} lg={12} md={12} sm={24} xs={24}>
+          <RewardCard />
+        </Col>
+        <Col xl={9} lg={12} md={12} sm={24} xs={24}>
           <CurrencyCalculator />
         </Col>
 
-        <Col xl={16} lg={24} md={24} sm={24} xs={24} className="gx-order-sm-1">
-          <Row>
-            <Col xl={6} lg={6} md={6} sm={12} xs={12}>
-              <IconWithTextCard
-                cardColor="cyan"
-                icon="diamond"
-                title="09"
-                subTitle="Projects"
-              />
-            </Col>
-            <Col xl={6} lg={6} md={6} sm={12} xs={12}>
-              <IconWithTextCard
-                cardColor="orange"
-                icon="tasks"
-                title="687"
-                subTitle="Tasks"
-              />
-            </Col>
-            <Col xl={6} lg={6} md={6} sm={12} xs={12}>
-              <IconWithTextCard
-                cardColor="teal"
-                icon="team"
-                title="04"
-                subTitle="Teams"
-              />
-            </Col>
-            <Col xl={6} lg={6} md={6} sm={12} xs={12}>
-              <IconWithTextCard
-                cardColor="red"
-                icon="files"
-                title="09"
-                subTitle="Files"
-              />
-            </Col>
-            <Col xl={24} lg={24} md={24} sm={24} xs={24}>
-              <TaskList taskList={taskList} />
-            </Col>
-            <Col xl={16} lg={16} md={16} sm={24} xs={24}>
-              <TicketList />
-            </Col>
-            <Col xl={8} lg={8} md={8} sm={24} xs={24}>
-              <TaskByStatus />
-            </Col>
-            <Col xl={24} lg={24} md={24} sm={24} xs={24}>
-              <Overview />
-            </Col>
-          </Row>
+        <Col xl={15} lg={24} md={24} sm={24} xs={24}>
+          <CryptoNews />
+        </Col>
+        <Col xl={9} lg={24} md={24} sm={24} xs={24}>
+          <DownloadMobileApps />
+          <OrderHistory />
         </Col>
       </Row>
     </Auxiliary>
   );
 };
 
-export default CRM;
+export default Dashboard;

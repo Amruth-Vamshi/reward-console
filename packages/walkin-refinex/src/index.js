@@ -1,14 +1,12 @@
 import React, { Component } from "react";
 import { Query } from "react-apollo";
 import { gql } from "apollo-boost";
+import RefineXRoutes from "./routes";
+import { Redirect, Route, Switch } from "react-router-dom";
+import { asyncComponent } from "@walkinsole/walkin-components";
 
 export default class extends Component {
   render() {
-    const IS_LOGGED_IN = gql`
-      query isLoggedin {
-        isLoggedIn @client
-      }
-    `;
-    return <h2>Welcome to RefineX</h2>;
+    return <Route path={`${this.props.match.url}`} component={RefineXRoutes} />;
   }
 }

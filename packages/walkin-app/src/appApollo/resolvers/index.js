@@ -11,8 +11,8 @@ import {
 } from "@walkinsole/walkin-components/src/constants/ThemeSetting";
 import gql from "graphql-tag";
 
-const toggleCollapsedSideNav = (_, { navCollapsed }, { client }) => {
-  return client.writeQuery({
+const toggleCollapsedSideNav = async (_, { navCollapsed }, { client }) => {
+  const data = await client.writeQuery({
     query: gql`
       query navCollapsed {
         settings {
@@ -27,6 +27,8 @@ const toggleCollapsedSideNav = (_, { navCollapsed }, { client }) => {
       }
     }
   });
+
+  return data;
 };
 
 const updateWindowWidth = (_, { width }, { client }) => {

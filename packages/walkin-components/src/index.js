@@ -14,6 +14,17 @@ import Customizer from "./containers/Customizer";
 import NoHeaderNotification from "./containers/Topbar/NoHeaderNotification";
 import asyncComponent from "./util/asyncComponent";
 import Widget from "./components/Widget";
+import ChartCard from "./components/dashboard/Crypto/ChartCard";
+import Auxiliary from "./util/Auxiliary";
+import Portfolio from "./components/dashboard/Crypto/Portfolio";
+import BalanceHistory from "./components/dashboard/Crypto/BalanceHistory";
+import SendMoney from "./components/dashboard/Crypto/SendMoney";
+import RewardCard from "./components/dashboard/Crypto/RewardCard";
+import CurrencyCalculator from "./components/dashboard/Crypto/CurrencyCalculator";
+import CryptoNews from "./components/dashboard/Crypto/CryptoNews";
+import DownloadMobileApps from "./components/dashboard/Crypto/DownloadMobileApps";
+import OrderHistory from "./components/dashboard/Crypto/OrderHistory";
+
 export {
   Sidebar,
   HorizontalDefault,
@@ -28,5 +39,15 @@ export {
   Customizer,
   NoHeaderNotification,
   asyncComponent,
-  Widget
+  Widget,
+  ChartCard,
+  Auxiliary,
+  Portfolio,
+  BalanceHistory,
+  SendMoney,
+  RewardCard,
+  CurrencyCalculator,
+  CryptoNews,
+  DownloadMobileApps,
+  OrderHistory
 };

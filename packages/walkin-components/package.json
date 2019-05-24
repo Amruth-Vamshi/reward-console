@@ -56,6 +56,7 @@
     "react-intl": "^2.9.0",
     "react-notifications": "^1.4.3",
     "react-placeholder": "^3.0.2",
+    "recharts": "^1.6.2",
     "style-loader": "^0.23.1",
     "url-search-params": "^1.1.0"
   }
