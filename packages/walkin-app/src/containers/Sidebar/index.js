@@ -1,7 +1,13 @@
 import React, { Component } from "react";
 import { Drawer, Layout } from "antd";
 
-import SidebarContent from "./SidebarContent";
+import CoreSidebarContent from "@walkinsole/walkin-core/src/containers/SidebarContent";
+import HyperXSidebarContent from "@walkinsole/walkin-hyperx/src/containers/SidebarContent";
+import NearXSidebarContent from "@walkinsole/walkin-nearx/src/containers/SidebarContent";
+import RefineXSidebarContent from "@walkinsole/walkin-refinex/src/containers/SidebarContent";
+
+import { withRouter } from "react-router-dom";
+
 import {
   NAV_STYLE_DRAWER,
   NAV_STYLE_FIXED,
@@ -10,7 +16,7 @@ import {
   NAV_STYLE_NO_HEADER_MINI_SIDEBAR,
   TAB_SIZE,
   THEME_TYPE_LITE
-} from "../../constants/ThemeSetting";
+} from "@walkinsole/walkin-components/src/constants/ThemeSetting";
 import { Query, compose, graphql } from "react-apollo";
 import gql from "graphql-tag";
 
@@ -18,25 +24,39 @@ const { Sider } = Layout;
 
 export class Sidebar extends Component {
   onToggleCollapsedNav = () => {
-    this.props.toggleCollapsedSideNav({
-      variables: {
-        navCollapsed: !this.props.navCollapsed
-      }
-    });
+    this.props.toggleCollapsedSideNav(!this.props.navCollapsed);
   };
 
   componentDidMount() {
     window.addEventListener("resize", () => {
-      this.props.updateWindowWidth({
-        variables: {
-          width: window.innerWidth
-        }
-      });
+      this.props.updateWindowWidth(window.innerWidth);
     });
   }
 
+  getSideBar() {
+    const { location } = this.props;
+    const appName = location.pathname.split("/")[1];
+    console.log(appName);
+
+    switch (appName) {
+      case "core":
+        return <CoreSidebarContent />;
+      case "refinex":
+        return <RefineXSidebarContent />;
+      case "hyperx":
+        return <HyperXSidebarContent />;
+      case "nearx":
+        return <NearXSidebarContent />;
+      default:
+        return <CoreSidebarContent />;
+    }
+  }
+
   render() {
+    console.log(this.props);
+
     const { themeType, navCollapsed, width, navStyle } = this.props;
+
     let drawerStyle = "gx-collapsed-sidebar";
 
     if (navStyle === NAV_STYLE_FIXED) {
@@ -58,58 +78,40 @@ export class Sidebar extends Component {
     ) {
       drawerStyle = "gx-collapsed-sidebar";
     }
-
-    const QUERY_STRING = gql`
-      query SIDEBAR_QUERY {
-        themeType @client
-        navStyle @client
-        navCollapsed @client
-        width @client
-        locale @client
-      }
-    `;
-
     return (
-      <Query query={QUERY_STRING}>
-        {({ data, client }) => (
-          <Sider
-            className={`gx-app-sidebar ${drawerStyle} ${
-              themeType !== THEME_TYPE_LITE ? "gx-layout-sider-dark" : null
+      <Sider
+        className={`gx-app-sidebar ${drawerStyle} ${
+          themeType !== THEME_TYPE_LITE ? "gx-layout-sider-dark" : null
+        }`}
+        trigger={null}
+        collapsed={
+          width < TAB_SIZE
+            ? false
+            : navStyle === NAV_STYLE_MINI_SIDEBAR ||
+              navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR
+        }
+        theme={themeType === THEME_TYPE_LITE ? "lite" : "dark"}
+        collapsible
+      >
+        {navStyle === NAV_STYLE_DRAWER || width < TAB_SIZE ? (
+          <Drawer
+            wrapClassName={`gx-drawer-sidebar ${
+              themeType !== THEME_TYPE_LITE ? "gx-drawer-sidebar-dark" : null
             }`}
-            trigger={null}
-            collapsed={
-              width < TAB_SIZE
-                ? false
-                : navStyle === NAV_STYLE_MINI_SIDEBAR ||
-                  navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR
-            }
-            theme={themeType === THEME_TYPE_LITE ? "lite" : "dark"}
-            collapsible
+            placement="left"
+            closable={false}
+            onClose={this.onToggleCollapsedNav.bind(this)}
+            visible={navCollapsed}
           >
-            {navStyle === NAV_STYLE_DRAWER || width < TAB_SIZE ? (
-              <Drawer
-                className={`gx-drawer-sidebar ${
-                  themeType !== THEME_TYPE_LITE
-                    ? "gx-drawer-sidebar-dark"
-                    : null
-                }`}
-                placement="left"
-                closable={false}
-                onClose={this.onToggleCollapsedNav.bind(this)}
-                visible={navCollapsed}
-              >
-                <SidebarContent />
-              </Drawer>
-            ) : (
-              <SidebarContent />
-            )}
-          </Sider>
+            {this.getSideBar()}
+          </Drawer>
+        ) : (
+          this.getSideBar()
         )}
-      </Query>
+      </Sider>
     );
   }
 }
-
 const UPDATE_WINDOW_WIDTH = gql`
   mutation updateWindowWidth($width: Int) {
     updateWindowWidth(width: $width) @client
@@ -139,6 +141,7 @@ const mapStateToProps = ({ settings }) => {
 };
 
 export default compose(
+  withRouter,
   graphql(GET_SETTINGS, { name: "settings", props: mapStateToProps }),
   graphql(UPDATE_WINDOW_WIDTH, { name: "updateWindowWidth" }),
   graphql(TOGGLE_COLLAPSED_SIDENAV, { name: "toggleCollapsedSideNav" })

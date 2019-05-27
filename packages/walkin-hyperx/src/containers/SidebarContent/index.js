@@ -2,10 +2,13 @@ import React, { Component } from "react";
 import { Menu } from "antd";
 import { Link } from "react-router-dom";
 
-import CustomScrollbars from "../../util/CustomScrollbars";
+import {
+  CustomScrollbars,
+  Auxiliary,
+  IntlMessages
+} from "@walkinsole/walkin-components";
 import SidebarLogo from "./SidebarLogo";
 
-import Auxiliary from "../../util/Auxiliary";
 import UserProfile from "./UserProfile";
 import AppsNavigation from "./AppsNavigation";
 import { withRouter } from "react-router-dom";
@@ -14,8 +17,7 @@ import {
   NAV_STYLE_NO_HEADER_EXPANDED_SIDEBAR,
   NAV_STYLE_NO_HEADER_MINI_SIDEBAR,
   THEME_TYPE_LITE
-} from "../../constants/ThemeSetting";
-import IntlMessages from "../../util/IntlMessages";
+} from "@walkinsole/walkin-components/src/constants/ThemeSetting";
 import { compose, graphql } from "react-apollo";
 import gql from "graphql-tag";
 

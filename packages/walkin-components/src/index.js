@@ -1,6 +1,5 @@
 // export all components here
 
-import Sidebar from "./containers/Sidebar";
 import HorizontalDefault from "./containers/Topbar/HorizontalDefault";
 import HorizontalDark from "./containers/Topbar/HorizontalDark";
 import SignIn from "./containers/SignIn";
@@ -24,9 +23,10 @@ import CurrencyCalculator from "./components/dashboard/Crypto/CurrencyCalculator
 import CryptoNews from "./components/dashboard/Crypto/CryptoNews";
 import DownloadMobileApps from "./components/dashboard/Crypto/DownloadMobileApps";
 import OrderHistory from "./components/dashboard/Crypto/OrderHistory";
+import CustomScrollbars from "./util/CustomScrollbars";
+import IntlMessages from "./util/IntlMessages";
 
 export {
-  Sidebar,
   HorizontalDefault,
   SignIn,
   SignUp,
@@ -49,5 +49,7 @@ export {
   CurrencyCalculator,
   CryptoNews,
   DownloadMobileApps,
-  OrderHistory
+  OrderHistory,
+  CustomScrollbars,
+  IntlMessages
 };

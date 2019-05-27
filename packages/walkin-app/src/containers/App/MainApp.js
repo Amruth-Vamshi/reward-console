@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Layout } from "antd";
 
 import {
-  Sidebar,
   HorizontalDefault,
   HorizontalDark,
   InsideHeader,
@@ -13,7 +12,7 @@ import {
   NoHeaderNotification,
   Topbar
 } from "@walkinsole/walkin-components";
-
+import Sidebar from "../Sidebar";
 import App from "../../routes";
 
 import {

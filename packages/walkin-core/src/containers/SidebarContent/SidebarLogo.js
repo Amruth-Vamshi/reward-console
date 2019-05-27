@@ -8,7 +8,7 @@ import {
   NAV_STYLE_NO_HEADER_MINI_SIDEBAR,
   TAB_SIZE,
   THEME_TYPE_LITE
-} from "../../constants/ThemeSetting";
+} from "@walkinsole/walkin-components/src/constants/ThemeSetting";
 import { compose, graphql } from "react-apollo";
 import gql from "graphql-tag";
 
@@ -63,11 +63,20 @@ class SidebarLogo extends Component {
         <Link to="/" className="gx-site-logo">
           {navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR &&
           width >= TAB_SIZE ? (
-            <img alt="" src={require("../../assets/images/w-logo.png")} />
+            <img
+              alt=""
+              src={require("@walkinsole/walkin-components/src/assets/images/w-logo.png")}
+            />
           ) : themeType === THEME_TYPE_LITE ? (
-            <img alt="" src={require("../../assets/images/logo-white.png")} />
+            <img
+              alt=""
+              src={require("@walkinsole/walkin-components/src/assets/images/logo-white.png")}
+            />
           ) : (
-            <img alt="" src={require("../../assets/images/logo.png")} />
+            <img
+              alt=""
+              src={require("@walkinsole/walkin-components/src/assets/images/logo.png")}
+            />
           )}
         </Link>
       </div>
