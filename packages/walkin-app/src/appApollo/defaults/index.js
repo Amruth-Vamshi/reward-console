@@ -32,5 +32,6 @@ export default {
       name: "English",
       icon: "us"
     }
-  }
+  },
+  
 };

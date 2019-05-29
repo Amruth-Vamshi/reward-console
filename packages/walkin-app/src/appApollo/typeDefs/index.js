@@ -3,6 +3,12 @@ import gql from "graphql-tag";
 const typeDefs = gql`
   extend type Query {
     settings: settings
+    loggedInUser: LoggedInuser
+  }
+
+  type LoggedInuser {
+    id: ID!
+    org_id: ID!
   }
 
   type settings {

@@ -36,8 +36,6 @@ export class Sidebar extends Component {
   getSideBar() {
     const { location } = this.props;
     const appName = location.pathname.split("/")[1];
-    console.log(appName);
-
     switch (appName) {
       case "core":
         return <CoreSidebarContent />;
@@ -53,8 +51,6 @@ export class Sidebar extends Component {
   }
 
   render() {
-    console.log(this.props);
-
     const { themeType, navCollapsed, width, navStyle } = this.props;
 
     let drawerStyle = "gx-collapsed-sidebar";

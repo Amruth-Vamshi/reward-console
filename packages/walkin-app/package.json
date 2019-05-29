@@ -1,8 +1,11 @@
 {
-  "name": "walkin-app",
-  "version": "1.0.0",
-  "description": "Describe walkin-app here",
   "private": true,
+  "name": "walkin-app",
+  "description": "Describe walkin-app here",
+  "license": "MIT",
+  "author": "",
+  "repository": "",
+  "version": "1.0.0",
   "scripts": {
     "build": "nwb build-react-app",
     "clean": "nwb clean-app",
@@ -12,7 +15,7 @@
     "test:watch": "nwb test-react --server"
   },
   "dependencies": {
-    "antd": "^3.18.1",
+    "antd": "3.19.0",
     "apollo-boost": "^0.3.1",
     "apollo-cache-persist": "^0.1.1",
     "graphql": "^14.3.0",
@@ -34,8 +37,5 @@
     "less-loader": "^5.0.0",
     "nwb": "0.23.x",
     "style-loader": "^0.23.1"
-  },
-  "author": "",
-  "license": "MIT",
-  "repository": ""
+  }
 }

@@ -25,7 +25,7 @@ import DownloadMobileApps from "./components/dashboard/Crypto/DownloadMobileApps
 import OrderHistory from "./components/dashboard/Crypto/OrderHistory";
 import CustomScrollbars from "./util/CustomScrollbars";
 import IntlMessages from "./util/IntlMessages";
-
+import CardBox from "./components/CardBox";
 export {
   HorizontalDefault,
   SignIn,
@@ -51,5 +51,6 @@ export {
   DownloadMobileApps,
   OrderHistory,
   CustomScrollbars,
-  IntlMessages
+  IntlMessages,
+  CardBox
 };

@@ -135,7 +135,7 @@ class Topbar extends Component {
                 </li>
               </Auxiliary>
             )}
-            <li className="gx-language">
+            {/* <li className="gx-language">
               <Popover
                 overlayClassName="gx-popover-horizantal"
                 placement="bottomRight"
@@ -150,14 +150,12 @@ class Topbar extends Component {
                   <i className="icon icon-chevron-down gx-pl-2" />
                 </span>
               </Popover>
-            </li>
-            {width >= TAB_SIZE ? null : (
-              <Auxiliary>
-                <li className="gx-user-nav">
-                  <UserInfo />
-                </li>
-              </Auxiliary>
-            )}
+            </li> */}
+            <Auxiliary>
+              <li className="gx-user-nav">
+                <UserInfo />
+              </li>
+            </Auxiliary>
           </ul>
         </Header>
       </Auxiliary>
