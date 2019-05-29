@@ -33,5 +33,14 @@ export default {
       icon: "us"
     }
   },
-  
+  auth: {
+    __typename: "auth",
+    loader: false,
+    alertMessage: "",
+    showMessage: false,
+    initURL: "",
+    userId: null,
+    organizationId: null,
+    jwt: null
+  }
 };

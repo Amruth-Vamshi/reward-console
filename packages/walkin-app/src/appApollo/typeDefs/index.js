@@ -3,12 +3,17 @@ import gql from "graphql-tag";
 const typeDefs = gql`
   extend type Query {
     settings: settings
-    loggedInUser: LoggedInuser
+    auth: auth
   }
 
-  type LoggedInuser {
-    id: ID!
-    org_id: ID!
+  type auth {
+    loader: Boolean
+    alertMessage: String
+    showMessage: Boolean
+    initURL: String
+    userId: String
+    organizationId: String
+    jwt: String
   }
 
   type settings {
@@ -37,6 +42,11 @@ const typeDefs = gql`
     icon: String
   }
 
+  input SignInInput {
+    email: String
+    password: String
+  }
+
   extend type Mutation {
     toggleCollapsedSideNav(navCollapsed: Boolean): String
     updateWindowWidth(width: Int): String
@@ -45,6 +55,9 @@ const typeDefs = gql`
     onNavStyleChange(navStyle: String): String
     onLayoutTypeChange(layoutType: String): String
     switchLanguage(locale: LocaleInput): String
+    signIn(input: SignInInput!): Boolean
+    hideMessage: String
+    showAuthLoader: String
   }
 `;
 

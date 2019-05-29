@@ -6,7 +6,8 @@ import { IntlProvider } from "react-intl";
 
 import AppLocale from "../../lngProvider";
 import MainApp from "./MainApp";
-// import { SignIn, SignUp } from "@walkinsole/walkin-components";
+import SignIn from "../../routes/SignIn";
+import SignUp from "../../routes/SignUp";
 
 import {
   LAYOUT_TYPE_BOXED,
@@ -22,6 +23,24 @@ import {
 
 import gql from "graphql-tag";
 import { graphql, compose } from "react-apollo";
+
+const RestrictedRoute = ({ component: Component, userId, ...rest }) => (
+  <Route
+    {...rest}
+    render={props =>
+      userId ? (
+        <Component {...props} />
+      ) : (
+        <Redirect
+          to={{
+            pathname: "/signin",
+            state: { from: props.location }
+          }}
+        />
+      )
+    }
+  />
+);
 
 class App extends Component {
   constructor() {
@@ -85,7 +104,8 @@ class App extends Component {
       themeType,
       layoutType,
       navStyle,
-      locale
+      locale,
+      userId
     } = this.props;
 
     if (themeType === THEME_TYPE_DARK) {
@@ -107,7 +127,15 @@ class App extends Component {
           locale={currentAppLocale.locale}
           messages={currentAppLocale.messages}
         >
-          <MainApp />
+          <Switch>
+            <Route exact path="/signin" component={SignIn} />
+            <Route exact path="/signup" component={SignUp} />
+            <RestrictedRoute
+              path={`${match.url}`}
+              userId={userId}
+              component={MainApp}
+            />
+          </Switch>
         </IntlProvider>
       </LocaleProvider>
     );
@@ -126,7 +154,7 @@ class App extends Component {
 // New graphql code
 
 const GET_SETTINGS = gql`
-  query settings {
+  query localData {
     settings @client {
       locale {
         locale
@@ -137,6 +165,9 @@ const GET_SETTINGS = gql`
       navStyle
       themeType
       layoutType
+    }
+    auth @client {
+      userId
     }
   }
 `;
@@ -158,9 +189,10 @@ const ON_LAYOUT_TYPE_CHANGE = gql`
   }
 `;
 
-const mapStateToProps = ({ settings }) => {
-  const { locale, navStyle, themeType, layoutType } = settings.settings;
-  return { locale, navStyle, themeType, layoutType };
+const mapStateToProps = ({ localData }) => {
+  const { locale, navStyle, themeType, layoutType } = localData.settings;
+  const { userId } = localData.auth;
+  return { locale, navStyle, themeType, layoutType, userId };
 };
 
 export default compose(
@@ -169,6 +201,6 @@ export default compose(
   graphql(ON_LAYOUT_TYPE_CHANGE, { name: "onLayoutTypeChange" }),
   graphql(GET_SETTINGS, {
     props: mapStateToProps,
-    name: "settings"
+    name: "localData"
   })
 )(App);
