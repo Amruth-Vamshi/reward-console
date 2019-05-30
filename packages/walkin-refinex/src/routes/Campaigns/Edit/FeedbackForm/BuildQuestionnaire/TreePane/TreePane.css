@@ -1,0 +1,8 @@
+.QuestionnaireTree {
+  height: 94%;
+  overflow: scroll;
+}
+
+.TreePane {
+  width: 30%;
+}

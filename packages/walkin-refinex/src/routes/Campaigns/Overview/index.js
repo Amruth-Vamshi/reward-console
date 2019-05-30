@@ -33,10 +33,6 @@ class CampaignOverview extends Component {
     history.push("/refinex/edit?campaignId=");
   };
 
-  Overview() {
-    return;
-  }
-
   render() {
     const CREATE_DRAFT_CAMPAIGN = gql`
       mutation createDraftCampaign {
@@ -62,7 +58,9 @@ class CampaignOverview extends Component {
                           const { data } = await createCampaign();
                           const { createDraftCampaign } = data;
                           history.push(
-                            match.url + "/" + createDraftCampaign.id + "/edit"
+                            "/refinex/campaign/" +
+                              createDraftCampaign.id +
+                              "/edit"
                           );
                         }}
                         type="ghost"
@@ -144,16 +142,16 @@ class CampaignOverview extends Component {
 }
 
 const GET_USER_IDENTITY = gql`
-  query loggedInUser {
-    loggedInUser @client {
-      id
-      org_id
+  query auth {
+    auth {
+      userId
+      organizationId
     }
   }
 `;
 
 export default compose(
   graphql(GET_USER_IDENTITY, {
-    name: "loggedInUser"
+    name: "auth"
   })
 )(CampaignOverview);
