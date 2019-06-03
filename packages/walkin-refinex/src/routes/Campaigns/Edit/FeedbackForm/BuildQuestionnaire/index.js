@@ -3,34 +3,40 @@ import React, { Component } from "react";
 import { Tree, Divider, Drawer, Button, Row, Col } from "antd";
 import SearchTree from "./TreePane";
 import FormPane from "./FormPane";
+import { Query } from "react-apollo";
 
 class Questionnaire extends Component {
   constructor() {
     super();
-    this.state = { visible: false };
+    this.state = {
+      questionnaire: [],
+      questionToEdit: null
+    };
   }
-  onSelect = (selectedKeys, info) => {
-    console.log("selected", selectedKeys, info);
-  };
 
-  showDrawer = () => {
+  onQuestionSelected = question => {
     this.setState({
-      visible: true
+      questionToEdit: question
     });
   };
 
-  onClose = () => {
-    this.setState({
-      visible: false
-    });
+  onQuestionEdited = editedQuestion => {
+    // GQL to edit the question and update questionnaire in state
   };
 
   render() {
     const { TreeNode } = Tree;
+    const { questionnaire, questionToEdit } = this.state;
     return (
       <div className="BuildPane">
-        <SearchTree />
-        <FormPane />
+        <SearchTree
+          questionnaire={questionnaire}
+          onQuestionSelected={this.onQuestionSelected}
+        />
+        <FormPane
+          questionToEdit={questionToEdit}
+          onQuestionEdited={this.onQuestionEdited}
+        />
       </div>
     );
   }
