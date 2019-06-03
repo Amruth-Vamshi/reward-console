@@ -1,0 +1,145 @@
+
+.GoogleSearchBar{
+    margin-bottom:5;
+    width: 100%;
+}
+
+.headerRow {
+	padding:13px 20px;
+	margin: 0;
+	background-color:#b3faff;
+}
+
+.headerRow1 {
+	padding:13px 20px;
+	margin: 0;
+    background-color:#affdff;
+    
+    border: #e9e9e9 solid 1px
+}
+
+.buttonPrimary {
+	background-color: #3d31eb;
+    color: white;
+}
+
+.bold{
+    font-weight: bold
+}
+
+
+.hotspot{   
+    font-size: 2.2em;
+    font-weight: bold;
+    font-family: sans-serif;
+    color: rgb(128, 128, 128);
+}
+
+.placesListCard{
+    margin: 0px 10px 10px 10px;
+    color: #757575;
+
+    box-shadow: 0 3px 6px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+}
+
+.card-shadow{
+    box-shadow: 0 3px 6px 0 rgba(0,0,0,0.2);
+}
+
+.placesListCard .ant-card-body{
+   padding: 15px 0px
+
+}
+
+.placesListCard .ant-row {
+    margin: 0
+}
+
+.placeCardLocation{
+}
+
+.placeCardLocation span{
+    color: #1f1f1f;
+    padding-left: 7px
+    
+}
+  
+.placesListCard:hover {
+box-shadow: -1px 6px 12px 6px rgba(0, 0, 0, 0.384);
+}
+
+.placeTableHeaders{
+    font-size: 17px;
+    margin: 0px 20px 5px 20px
+}
+
+.headerCard{
+	margin-bottom: 0
+}
+
+.createPlaceCard{
+    margin-bottom:0;
+    position:"absolute";
+    background-color:'#fffffff';
+    padding:24px;
+    width:100%;
+    bottom:0
+}
+
+.createPlaceCard .ant-card-body{
+    background-color: #ffffff;
+}
+
+.hotspotCard{
+    background-color: #ececec;
+    margin: 0px;
+}
+
+.hotspotCard{
+    background-color: #ececec;
+    margin: 10px 15px;
+    padding: 10px 0;
+}
+
+.hotspotCard .ant-checkbox-inner{
+    width: 20px;
+    height: 20px;
+
+}
+
+
+/* .upload-list-inline .ant-upload-list-item {
+    float: left;
+    width: 500px;
+    margin-right: 8px;
+  }
+  .upload-list-inline .ant-upload-animate-enter {
+    animation-name: uploadAnimateInlineIn;
+  }
+  .upload-list-inline .ant-upload-animate-leave {
+    animation-name: uploadAnimateInlineOut;
+  }*/
+  
+
+  .upload-list-csv .ant-upload-list-item-info .anticon-paper-clip {
+    font-size: 18px;
+    padding: 0px 5px;
+  } 
+  .upload-list-csv .ant-upload-list-item-name{
+    padding-left: 30px;
+  }
+
+  .upload-list-csv span{
+        font-size: 20px;
+        color: #4facd8;
+        
+  }
+
+  .upload-list-csv .anticon-close{
+    font-size: 18px !important;
+  }
+
+  .upload-list-csv .ant-upload-list-item{
+      height: 30px;
+  }

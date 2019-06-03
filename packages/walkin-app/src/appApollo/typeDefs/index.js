@@ -14,6 +14,8 @@ const typeDefs = gql`
     userId: String
     organizationId: String
     jwt: String
+    firstName: String
+    lastName: String
   }
 
   type settings {

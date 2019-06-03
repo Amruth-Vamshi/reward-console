@@ -1,0 +1,17 @@
+.appHeader .name{
+    font-size: 35px
+}
+
+.appHeader{
+    margin: 25px 10px 20px 40px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow'
+}
+
+.appHeader .title{
+    font-size: 20px;
+    margin-top: 5px;
+}
+
+.appForm label{
+    color: #848484
+}
