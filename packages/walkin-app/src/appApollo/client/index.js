@@ -8,6 +8,8 @@ import defaults from "../defaults";
 export const configureClient = async () => {
   const cache = new InMemoryCache();
 
+  const token = localStorage.getItem("jwt");
+
   const client = new ApolloClient({
     cache,
     uri: "http://178.128.220.91:4000/graphql",
@@ -15,6 +17,9 @@ export const configureClient = async () => {
       defaults,
       resolvers,
       typeDefs
+    },
+    headers: {
+      authorization: token ? `Bearer ${token}` : ""
     }
   });
 

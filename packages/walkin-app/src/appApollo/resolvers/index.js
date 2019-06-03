@@ -171,6 +171,26 @@ const signIn = async (_, { input }, { client }) => {
     }
     const jwt = data.data.login.jwt;
     const { id, org_id } = decode(jwt);
+
+    const USER_DATA = gql`
+      query queryUser($id: ID!) {
+        user(id: $id) {
+          firstName
+          email
+          lastName
+          organization {
+            name
+          }
+        }
+      }
+    `;
+    const userData = await client.query({
+      query: USER_DATA,
+      variables: { id }
+    });
+
+    localStorage.setItem("jwt", jwt);
+
     await client.writeQuery({
       query: gql`
         query auth {
@@ -178,6 +198,8 @@ const signIn = async (_, { input }, { client }) => {
             jwt
             organizationId
             userId
+            firstName
+            lastName
           }
         }
       `,
@@ -186,7 +208,9 @@ const signIn = async (_, { input }, { client }) => {
           __typename: "auth",
           jwt,
           organizationId: org_id,
-          userId: id
+          userId: id,
+          firstName: userData.data.user.firstName,
+          lastName: userData.data.user.lastName
         }
       }
     });

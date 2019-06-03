@@ -1,11 +1,8 @@
 import React, { Component } from "react";
-
+import { Route } from "react-router-dom";
+import NearXRoutes from "./routes";
 export default class extends Component {
   render() {
-    return (
-      <div>
-        <h2>Welcome to NearX</h2>
-      </div>
-    );
+    return <Route path={`${this.props.match.url}`} component={NearXRoutes} />;
   }
 }
