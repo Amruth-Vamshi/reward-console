@@ -27,6 +27,7 @@ import CustomScrollbars from "./util/CustomScrollbars";
 import IntlMessages from "./util/IntlMessages";
 import CardBox from "./components/CardBox";
 import CircularProgress from "./components/CircularProgress";
+import ManageCampaignCard from "./components/Cards/ManageCampaignCard";
 
 export {
   CircularProgress,
@@ -55,5 +56,6 @@ export {
   OrderHistory,
   CustomScrollbars,
   IntlMessages,
-  CardBox
+  CardBox,
+  ManageCampaignCard
 };

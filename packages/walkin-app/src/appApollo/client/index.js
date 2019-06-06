@@ -12,7 +12,7 @@ export const configureClient = async () => {
 
   const client = new ApolloClient({
     cache,
-    uri: "http://178.128.220.91:4000/graphql",
+    uri: "http://localhost:4000/graphql",
     clientState: {
       defaults,
       resolvers,

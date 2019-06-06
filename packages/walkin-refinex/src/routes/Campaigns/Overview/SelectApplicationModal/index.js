@@ -116,9 +116,11 @@ class SelectApplicationModal extends Component {
     console.log(this.props);
 
     console.log(organizationHierarchy.organizationHierarchyJSON);
-    const treeData = this.createOrganizationTree(
-      organizationHierarchy.organizationHierarchyJSON
-    );
+    const treeData = organizationHierarchy.organizationHierarchyJSON
+      ? this.createOrganizationTree(
+          organizationHierarchy.organizationHierarchyJSON
+        )
+      : [];
     return (
       <Modal
         title="Select an Application"
@@ -129,7 +131,7 @@ class SelectApplicationModal extends Component {
       >
         <Row>
           <Col span={6}>Organization</Col>
-          <Col>
+          <Col span={6}>
             <TreeSelect
               showSearch={false}
               style={{ width: 300 }}
