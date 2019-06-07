@@ -46,46 +46,38 @@ class SidebarContent extends Component {
       <Auxiliary>
         <SidebarLogo />
         <div className="gx-sidebar-content">
-          <div
-            className={`gx-sidebar-notifications ${this.getNoHeaderClass(
-              navStyle
-            )}`}
-          >
-            <UserProfile />
-            <AppsNavigation />
-          </div>
           <Menu
             defaultOpenKeys={[defaultOpenKeys]}
             selectedKeys={[selectedKeys]}
             theme={themeType === THEME_TYPE_LITE ? "lite" : "dark"}
             mode="inline"
           >
-            <Menu.Item key="core">
-              <Link to="/core">
+            <Menu.Item key="places">
+              <Link to="/nearx/places">
                 <i className="icon icon-setting" />
                 {/* <IntlMessages id="sidebar.samplePage" /> */}
-                Core
+                Places
               </Link>
             </Menu.Item>
-            <Menu.Item key="hyperx">
-              <Link to="/hyperx">
-                <i className="icon icon-alert" />
+            <Menu.Item key="apps">
+              <Link to="/nearx/apps">
+                <i className="icon icon-setting" />
                 {/* <IntlMessages id="sidebar.samplePage" /> */}
-                HyperX
+                Apps
               </Link>
             </Menu.Item>
-            <Menu.Item key="refinex">
-              <Link to="/refinex">
-                <i className="icon icon-select" />
+            <Menu.Item key="developers">
+              <Link to="/nearx/developers">
+                <i className="icon icon-setting" />
                 {/* <IntlMessages id="sidebar.samplePage" /> */}
-                RefineX
+                Developers
               </Link>
             </Menu.Item>
-            <Menu.Item key="nearx">
-              <Link to="/nearx">
-                <i className="icon icon-geo-location" />
+            <Menu.Item key="settings">
+              <Link to="/nearx/settings">
+                <i className="icon icon-setting" />
                 {/* <IntlMessages id="sidebar.samplePage" /> */}
-                NearX
+                Settings
               </Link>
             </Menu.Item>
           </Menu>

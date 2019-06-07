@@ -27,7 +27,7 @@ const Dashboard = () => {
   return (
     <Auxiliary>
       <Row>
-        <Col xl={6} lg={12} md={12} sm={12} xs={24}>
+        {/*  <Col xl={6} lg={12} md={12} sm={12} xs={24}>
           <ChartCard
             prize="$9,626"
             title="23"
@@ -187,6 +187,7 @@ const Dashboard = () => {
           <DownloadMobileApps />
           <OrderHistory />
         </Col>
+        */}
       </Row>
     </Auxiliary>
   );

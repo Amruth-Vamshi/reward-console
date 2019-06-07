@@ -46,14 +46,6 @@ class SidebarContent extends Component {
       <Auxiliary>
         <SidebarLogo />
         <div className="gx-sidebar-content">
-          <div
-            className={`gx-sidebar-notifications ${this.getNoHeaderClass(
-              navStyle
-            )}`}
-          >
-            <UserProfile />
-            <AppsNavigation />
-          </div>
           <Menu
             defaultOpenKeys={[defaultOpenKeys]}
             selectedKeys={[selectedKeys]}

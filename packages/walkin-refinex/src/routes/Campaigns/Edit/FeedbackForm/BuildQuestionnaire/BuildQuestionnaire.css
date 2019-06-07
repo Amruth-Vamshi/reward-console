@@ -1,0 +1,4 @@
+.BuildPane {
+  display: flex;
+  flex-direction: row;
+}

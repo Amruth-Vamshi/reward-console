@@ -109,9 +109,6 @@ export class MainApp extends Component {
             className={`gx-layout-content ${this.getContainerClass(navStyle)} `}
           >
             <App />
-            <Footer>
-              <div className="gx-layout-footer-content">{footerText}</div>
-            </Footer>
           </Content>
         </Layout>
         <Customizer />

@@ -40,55 +40,45 @@ class SidebarContent extends Component {
 
   render() {
     const { themeType, navStyle, pathname, match } = this.props;
-    console.log(match);
-
     const selectedKeys = pathname.substr(1);
     const defaultOpenKeys = selectedKeys.split("/")[1];
     return (
       <Auxiliary>
         <SidebarLogo />
         <div className="gx-sidebar-content">
-          <div
-            className={`gx-sidebar-notifications ${this.getNoHeaderClass(
-              navStyle
-            )}`}
-          >
-            <UserProfile />
-            <AppsNavigation />
-          </div>
           <Menu
             defaultOpenKeys={[defaultOpenKeys]}
             selectedKeys={[selectedKeys]}
             theme={themeType === THEME_TYPE_LITE ? "lite" : "dark"}
             mode="inline"
           >
-            <Menu.Item key="core">
-              <Link to="/core">
+            <Menu.Item key="dashboard">
+              <Link to="/refinex/dashboard">
                 <i className="icon icon-setting" />
                 {/* <IntlMessages id="sidebar.samplePage" /> */}
-                Home
+                Dashboard
               </Link>
             </Menu.Item>
             <Menu.Item key="hyperx">
-              <Link to="/hyperx">
+              <Link to="/refinex/campaign">
                 <i className="icon icon-alert" />
                 {/* <IntlMessages id="sidebar.samplePage" /> */}
-                Feedback Overview
+                Manage Campaigns
               </Link>
             </Menu.Item>
             <Menu.Item key="refinex">
-              <Link to="/refinex">
-                <i className="icon icon-select" />
-                {/* <IntlMessages id="sidebar.samplePage" /> */}
-                Settings
-              </Link>
+              {/* <Link to="/refinex"> */}
+              <i className="icon icon-select" />
+              {/* <IntlMessages id="sidebar.samplePage" /> */}
+              Settings
+              {/* </Link> */}
             </Menu.Item>
             <Menu.Item key="nearx">
-              <Link to="/nearx">
-                <i className="icon icon-geo-location" />
-                {/* <IntlMessages id="sidebar.samplePage" /> */}
-                create
-              </Link>
+              {/* <Link to="/nearx"> */}
+              <i className="icon icon-geo-location" />
+              {/* <IntlMessages id="sidebar.samplePage" /> */}
+              create
+              {/* </Link> */}
             </Menu.Item>
           </Menu>
         </div>
