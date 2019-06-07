@@ -7,6 +7,7 @@ import SelectHotspots from "./SelectHotspots";
 import { nearXClient as client } from "../../../nearXApollo";
 import { SEARCH_PLACES, GET_NAERBY_PLACES } from "../../../queries";
 import { withApollo } from "react-apollo";
+import { HOTSPOT_RADIUS } from "../../../Constants";
 
 const TabPane = Tabs.TabPane;
 
@@ -23,7 +24,7 @@ class AddHotspot extends Component {
           placeName: "",
           address: "",
           selected: true,
-          radius: [50],
+          radius: [HOTSPOT_RADIUS],
           center: {
             lat: null,
             lng: null
@@ -62,7 +63,7 @@ class AddHotspot extends Component {
               placeName: p.geofenceName,
               address: p.address,
               center: { lat: p.location.lat, lng: p.location.lng },
-              radius: [50],
+              radius: [HOTSPOT_RADIUS],
               selected: false
             });
         });
@@ -92,7 +93,7 @@ class AddHotspot extends Component {
               placeName: p.geofenceName,
               address: p.address,
               center: { lat: p.location.lat, lng: p.location.lng },
-              radius: [50],
+              radius: [HOTSPOT_RADIUS],
               selected: false
             });
         });
@@ -145,14 +146,14 @@ class AddHotspot extends Component {
     places.map(place => {
       place.errors = {};
       if (place.placeName.trim() == "")
-        place.errors.placeName = "* place Name is mandetory";
+        place.errors.placeName = "* place Name is mandatory";
       if (place.address.trim() == "")
-        place.errors.address = "* place Name is mandetory";
-      // if(place.storeId.trim()=='') place.errors.storeId = "* storeId is mandetory"
+        place.errors.address = "* place Name is mandatory";
+      // if(place.storeId.trim()=='') place.errors.storeId = "* storeId is mandatory"
       if (place.center.lat == null || place.center.lat == NaN)
-        place.errors.latitude = "* latitude is mandetory";
+        place.errors.latitude = "* latitude is mandatory";
       if (place.center.lng == null || place.center.lng == NaN)
-        place.errors.longitude = "* longitude is mandetory";
+        place.errors.longitude = "* longitude is mandatory";
       if (Object.keys(place.errors).length !== 0) err++;
     });
 
@@ -168,7 +169,7 @@ class AddHotspot extends Component {
           selected: true,
           center: { lat: null, lng: null },
           errors: {},
-          radius: [50]
+          radius: [HOTSPOT_RADIUS]
         }
       ];
       this.setState({ places2: place });
@@ -186,10 +187,10 @@ class AddHotspot extends Component {
     this.state.markerPlace
       ? this.setState({ places2: places, getLoc: false })
       : this.setState({
-          places2: places,
-          center: places[0].center,
-          getLoc: false
-        });
+        places2: places,
+        center: places[0].center,
+        getLoc: false
+      });
   };
 
   addHotspot = () => {
@@ -197,10 +198,9 @@ class AddHotspot extends Component {
       placeName: "",
       address: "",
       selected: true,
-      //radius1: 0,  radius2: 0,  radius3: 0,
       center: { lat: null, lng: null },
       errors: {},
-      radius: [50]
+      radius: [HOTSPOT_RADIUS]
     };
 
     let places = [...this.state.places2, place];

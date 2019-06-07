@@ -7,7 +7,9 @@ export const GET_ALL_ORGANIZATION_HIERARCHIES = gql`
 }`
 
 export const GET_ALL_ORGANIZATION = gql`
-     query{ organizationHierarchies{ id name address code status phoneNumber website }
+     query { organizationHierarchies {
+       id name address code status phoneNumber website
+     }
 }`
 
 export const GENERATE_API_KEY = gql`
