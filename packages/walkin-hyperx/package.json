@@ -27,6 +27,7 @@
     "nprogress": "^0.2.0",
     "react-apollo": "^2.5.5",
     "react-placeholder": "^3.0.2",
+    "react-querybuilder": "https://github.com/FourthLion/react-querybuilder.git",
     "react-router-dom": "^5.0.0",
     "recharts": "^1.6.2",
     "url-search-params": "^1.1.0"

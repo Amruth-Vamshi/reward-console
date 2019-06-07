@@ -1,0 +1,15 @@
+.allButtonStyle {
+	background-color: #cecece;
+}
+.allButtonStyle:not(:last-child) {
+	margin-right: 3px !important;
+}
+
+.allButtonStyle:focus {
+	color: whitesmoke;
+	background-color: #038fde;
+}
+.allButtonStyle:hover {
+	color: whitesmoke;
+	background-color: #038fde;
+}
