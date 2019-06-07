@@ -33,11 +33,14 @@ class CreateCampaignRow extends Component {
       variables: { applicationId: selectedApplication.id }
     });
 
+    console.log(campaign);
+
     const feedbackForm = await createFeedbackForm({
       variables: {
         campaignId: campaign.data.createDraftCampaign.id
       }
     });
+    console.log(feedbackForm);
 
     history.push(
       "/refinex/campaign/" + campaign.data.createDraftCampaign.id + "/edit"
