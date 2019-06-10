@@ -7,6 +7,10 @@ import { asyncComponent } from "@walkinsole/walkin-components";
 
 export default class extends Component {
   render() {
-    return <Route path={`${this.props.match.url}`} component={RefineXRoutes} />;
+    return (
+      <div className="gx-main-content-wrapper">
+        <Route path={`${this.props.match.url}`} component={RefineXRoutes} />
+      </div>
+    )
   }
 }

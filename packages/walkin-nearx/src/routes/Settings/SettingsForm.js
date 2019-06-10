@@ -1,25 +1,11 @@
 import React, { Component } from "react";
-import {
-  Col,
-  Row,
-  Form,
-  Input,
-  Button,
-  Slider,
-  message,
-  InputNumber,
-  Icon
-} from "antd";
+import { Col, Row, Form, Input, Button, Slider, message, InputNumber, Icon } from "antd";
 import Auxiliary from "../../util/Auxiliary";
 import { GET_CONFIGURATION, SET_CONFIGURATION } from "../../queries";
 import { nearXClient as client } from "../../nearXApollo";
 import {
-  GOOGLE_API_KEY,
-  FACEBOOK_API_KEY,
-  RADIUS_1,
-  RADIUS_2,
-  RADIUS_3,
-  TYPE
+  GOOGLE_API_KEY, FACEBOOK_API_KEY, RADIUS_1, RADIUS_2, RADIUS_3, TYPE,
+  RADIUS_1_MIN, RADIUS_1_MAX, RADIUS_2_MAX, RADIUS_3_MAX
 } from "../../Constants/index";
 
 const formItemLayout = {
@@ -58,7 +44,7 @@ export default class SettingsForm extends Component {
       errors: {},
       googleAPIkey: "",
       facebookAPIkey: "",
-      radius: [0],
+      radius: [RADIUS_1_MIN],
       loading: false,
       loading1: false
     };
@@ -67,7 +53,7 @@ export default class SettingsForm extends Component {
   componentWillMount() {
     let googleAPIkey,
       facebookAPIkey = "";
-    let radius = [];
+    let radius = [RADIUS_1_MIN];
     client
       .query({
         query: GET_CONFIGURATION,
@@ -108,29 +94,33 @@ export default class SettingsForm extends Component {
       <Row>
         <Col span={18}>
           <Slider
-            min={n ? this.state.radius[n - 1] : 0}
-            max={n ? (n != 1 ? 500 : 300) : 100}
+            min={n ? this.state.radius[n - 1] : RADIUS_1_MIN}
+            // max={n ? (n != 1 ? RADIUS_1_MAX : RADIUS_2_MAX) : RADIUS_1_MAX}
+            max={RADIUS_3_MAX}
+
             marks={this.slideMarks(
-              n ? this.state.radius[n - 1] : 0,
-              n ? (n != 1 ? 500 : 300) : 100
+              n ? this.state.radius[n - 1] : RADIUS_1_MIN,
+              // n ? (n != 1 ? RADIUS_3_MAX : RADIUS_2_MAX) : RADIUS_1_MAX
+              RADIUS_3_MAX
             )}
             onChange={e => this.onChangeRadius(e, n)}
             value={
               typeof this.state.radius[n] === "number"
                 ? this.state.radius[n]
-                : 0
+                : n ? this.state.radius[n - 1] : RADIUS_1_MIN
             }
           />
         </Col>
         <Col span={4}>
           <InputNumber
             min={n ? this.state.radius[n - 1] : 0}
-            max={n ? (n != 1 ? 500 : 300) : 100}
+            // max={n ? (n != 1 ? RADIUS_3_MAX : RADIUS_2_MAX) : RADIUS_1_MAX}
+            max={RADIUS_3_MAX}
             style={{ marginLeft: 0 }}
             value={
               typeof this.state.radius[n] === "number"
                 ? this.state.radius[n]
-                : 0
+                : n ? this.state.radius[n - 1] : RADIUS_1_MIN
             }
             onChange={e => this.onChangeRadius(e, n)}
           />
@@ -168,11 +158,11 @@ export default class SettingsForm extends Component {
     this.setState({ loading1: true });
     let { radius } = this.state;
     let radii = [];
-    if (radius[0] && radius[0] > 0)
+    if (radius[0] && radius[0] >= RADIUS_1_MIN)
       radii.push({ name: RADIUS_1, key: radius[0].toString(), type: TYPE });
-    if (radius[1] && radius[1] > 0)
+    if (radius[1] && radius[1] > radius[0])
       radii.push({ name: RADIUS_2, key: radius[1].toString(), type: TYPE });
-    if (radius[2] && radius[2] > 0)
+    if (radius[2] && radius[2] > radius[1])
       radii.push({ name: RADIUS_3, key: radius[2].toString(), type: TYPE });
     client
       .mutate({
@@ -199,7 +189,13 @@ export default class SettingsForm extends Component {
 
   radiusArr = n => {
     var radi = [];
-    for (let j = 0; j < n; j++) radi.push(this.createRadius(j));
+    for (let j = 0; j < n; j++)
+      // if (j) {
+      //   if (this.state.radius[j - 1] < this.state.radius[j]) radi.push(this.createRadius(j))
+      //   else break
+      // } else 
+
+      radi.push(this.createRadius(j))
     return radi;
   };
 
@@ -216,6 +212,8 @@ export default class SettingsForm extends Component {
 
   render() {
     var { formData } = this.props;
+
+    let { radius } = this.state
 
     return (
       <div className="gx-main-content-wrapper">
@@ -293,21 +291,23 @@ export default class SettingsForm extends Component {
                       Default Radius
                     </p>
 
-                    {this.radiusArr(this.state.radius.length)}
+                    {this.radiusArr(radius.length)}
 
-                    {this.state.radius.length >= 3 ? (
+                    {/* {console.log(radius.length >= 3 && radius[radius.length-1]==500)} */}
+
+                    {radius.length >= 3 || radius[radius.length-1]==500 ? (
                       ""
                     ) : (
-                      <Form.Item {...tailFormItemLayout}>
-                        <span
-                          onClick={() => this.addRadius()}
-                          style={{ color: "#34bfe2" }}
-                        >
-                          {" "}
-                          <a to="#"> +Add Radius </a>
-                        </span>
-                      </Form.Item>
-                    )}
+                        <Form.Item {...tailFormItemLayout}>
+                          <span
+                            onClick={() => this.addRadius()}
+                            style={{ color: "#34bfe2" }}
+                          >
+                            {" "}
+                            <a to="#"> +Add Radius </a>
+                          </span>
+                        </Form.Item>
+                      )}
                     <Form.Item {...tailFormItemLayout1}>
                       <Button
                         type="primary"

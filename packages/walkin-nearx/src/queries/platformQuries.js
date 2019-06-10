@@ -7,7 +7,9 @@ export const GET_ALL_ORGANIZATION_HIERARCHIES = gql`
 }`
 
 export const GET_ALL_ORGANIZATION = gql`
-     query{ organizationHierarchies{ id name address code status phoneNumber website }
+     query { organizationHierarchies {
+       id name address code status phoneNumber website
+     }
 }`
 
 export const GENERATE_API_KEY = gql`
@@ -51,3 +53,18 @@ mutation createApplication($organizationId:ID!,$input: ApplicationInput!){
       }
     }
   }`
+
+
+export const GET_WEBHOOKS = gql`
+query webhooks($org_id:ID!,$event:String,$status:STATUS!){
+  webhooks(organization_id:$org_id,event:$event,status:$status){
+    id event url headers method  status
+  }
+}`
+
+export const CREATE_WEBHOOK = gql`
+mutation createWebhook($input:WebhookAddInput){
+  createWebhook(input:$input){
+    id organization_id event url headers method status
+  }
+}`

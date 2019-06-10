@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Menu } from "antd";
 import { Link } from "react-router-dom";
-
+import '../../styles/sidebar.css'
 import {
   CustomScrollbars,
   Auxiliary,
@@ -45,39 +45,52 @@ class SidebarContent extends Component {
     return (
       <Auxiliary>
         <SidebarLogo />
-        <div className="gx-sidebar-content">
+        <div className="gx-sidebar-content NearX-sidebar">
           <Menu
             defaultOpenKeys={[defaultOpenKeys]}
             selectedKeys={[selectedKeys]}
             theme={themeType === THEME_TYPE_LITE ? "lite" : "dark"}
             mode="inline"
           >
+            <Menu.Item key="nearx/dashboard/landing">
+              <Link to="/nearx/dashboard/landing">
+                <i className="icon icon-home" />
+                <span>Home</span>
+              </Link>
+            </Menu.Item>
             <Menu.Item key="places">
               <Link to="/nearx/places">
-                <i className="icon icon-setting" />
+                <i className="icon icon-geo-location" />
                 {/* <IntlMessages id="sidebar.samplePage" /> */}
-                Places
+                <span>Places</span>
               </Link>
             </Menu.Item>
             <Menu.Item key="apps">
               <Link to="/nearx/apps">
-                <i className="icon icon-setting" />
+                <i className="icon icon-apps" />
                 {/* <IntlMessages id="sidebar.samplePage" /> */}
-                Apps
+                <span>Apps</span>
               </Link>
             </Menu.Item>
-            <Menu.Item key="developers">
-              <Link to="/nearx/developers">
-                <i className="icon icon-setting" />
+            <Menu.Item key="developer">
+              <Link to="/nearx/developer">
+                <i className="icon icon-timeline-left-align" />
                 {/* <IntlMessages id="sidebar.samplePage" /> */}
-                Developers
+                <span>Developers</span>
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="webhooks">
+              <Link to="/nearx/hooks">
+                <i className="icon icon-link" />
+                {/* <IntlMessages id="sidebar.samplePage" /> */}
+                <span>Web Hooks</span>
               </Link>
             </Menu.Item>
             <Menu.Item key="settings">
               <Link to="/nearx/settings">
                 <i className="icon icon-setting" />
                 {/* <IntlMessages id="sidebar.samplePage" /> */}
-                Settings
+                <span>Settings</span>
               </Link>
             </Menu.Item>
           </Menu>

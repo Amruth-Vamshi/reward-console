@@ -7,15 +7,16 @@ import { nearXClient as client } from "../../../nearXApollo";
 import raf from "raf";
 import { CREATE_PLACE, PLACES_BY_ID } from "../../../queries";
 import AddHotspot from "./AddHotspot";
+import { RADIUS_1_MAX, RADIUS_1_MIN, RADIUS_2_MAX, RADIUS_3_MAX, HOTSPOT_RADIUS } from "../../../Constants";
 
 const geolocation =
   canUseDOM && navigator.geolocation
     ? navigator.geolocation
     : {
-        getCurrentPosition(success, failure) {
-          failure(`Your browser doesn't support geolocation.`);
-        }
-      };
+      getCurrentPosition(success, failure) {
+        failure(`Your browser doesn't support geolocation.`);
+      }
+    };
 
 export default class CreatePlaceManually extends Component {
   constructor(props) {
@@ -29,7 +30,7 @@ export default class CreatePlaceManually extends Component {
           selected: true,
           mainPlace: true,
           address: "",
-          radius: [0],
+          radius: [RADIUS_1_MIN],
           center: {
             lat: null,
             lng: null
@@ -87,7 +88,7 @@ export default class CreatePlaceManually extends Component {
             placeName: p.geofenceName,
             address: p.address,
             center: { lat: p.location.lat, lng: p.location.lng },
-            radius: [50],
+            radius: [HOTSPOT_RADIUS],
             selected: true,
             errors: {}
           });
@@ -122,7 +123,7 @@ export default class CreatePlaceManually extends Component {
       //radius1: 0,  radius2: 0,  radius3: 0,
       center: { lat: null, lng: null },
       errors: {},
-      radius: [0],
+      radius: [RADIUS_1_MIN],
       storeId: ""
     };
 
@@ -195,14 +196,14 @@ export default class CreatePlaceManually extends Component {
     places.map(place => {
       place.errors = {};
       if (place.placeName.trim() == "")
-        place.errors.placeName = "* place Name is mandetory";
+        place.errors.placeName = "* place Name is mandatory";
       if (place.address.trim() == "")
-        place.errors.address = "* place Name is mandetory";
-      // if(place.storeId.trim()=='') place.errors.storeId = "* storeId is mandetory"
+        place.errors.address = "* place Name is mandatory";
+      // if(place.storeId.trim()=='') place.errors.storeId = "* storeId is mandatory"
       if (place.center.lat == null || place.center.lat == NaN)
-        place.errors.latitude = "* latitude is mandetory";
+        place.errors.latitude = "* latitude is mandatory";
       if (place.center.lng == null || place.center.lng == NaN)
-        place.errors.longitude = "* longitude is mandetory";
+        place.errors.longitude = "* longitude is mandatory";
       if (Object.keys(place.errors).length !== 0) err++;
     });
 

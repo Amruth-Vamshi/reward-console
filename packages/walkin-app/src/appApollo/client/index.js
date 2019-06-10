@@ -4,6 +4,7 @@ import typeDefs from "../typeDefs";
 import resolvers from "../resolvers";
 import ApolloClient from "apollo-boost";
 import defaults from "../defaults";
+import { GRAPHQL_URL, NEARX_GRAPHQL_URL } from "@walkinsole/walkin-components/src/constants/config";
 
 export const configureClient = async () => {
   const cache = new InMemoryCache();
@@ -12,7 +13,7 @@ export const configureClient = async () => {
 
   const client = new ApolloClient({
     cache,
-    uri: "http://localhost:4000/graphql", // http://178.128.220.91:4000/graphql
+    uri: GRAPHQL_URL,
     clientState: {
       defaults,
       resolvers,
