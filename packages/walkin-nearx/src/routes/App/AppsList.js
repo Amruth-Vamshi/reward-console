@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Col, Row, Pagination, Card, Timeline, Modal, Spin, Tooltip, Input, Icon, Button } from "antd";
 import AppListCard from "./AppListCard";
-import { GET_ALL_APPS_OF_ORGANIZATION, GENERATE_API_KEY } from "../../queries/appAndOrgQueries";
+import { GET_ALL_APPS_OF_ORGANIZATION, GENERATE_API_KEY } from "../../queries/platformQuries";
 import jwt from "jsonwebtoken";
 import { withApollo } from "react-apollo";
 // import { nearXClient as client } from "../../nearXApollo";

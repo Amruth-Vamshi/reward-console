@@ -4,7 +4,7 @@ import "../../styles/app.css";
 import {
   GET_ALL_APPS_OF_ORGANIZATION,
   CREATE_APP
-} from "../../queries/appAndOrgQueries";
+} from "../../queries/platformQuries";
 import jwt from "jsonwebtoken";
 import { withApollo, compose, graphql } from "react-apollo";
 import gql from "graphql-tag";
