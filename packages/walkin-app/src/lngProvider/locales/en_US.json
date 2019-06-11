@@ -307,5 +307,11 @@
   "sidebar.map.weather": "Weather map",
   "sidebar.extensions.shuffle": "Shuffle",
   "sidebar.extensions.profile": "Profile",
-  "sidebar.social": "Social Apps"
+  "sidebar.social": "Social Apps",
+  "sidebar.refinex.campaigns": "Campaigns",
+  "sidebar.refinex.analytics": "Analytics",
+  "sidebar.refinex.feedbacks": "Feedbacks",
+  "sidebar.refinex.settings": "Settings",
+  "sidebar.refinex.dashboard": "Dashboard",
+  "sidebar.refinex.help": "Help"
 }

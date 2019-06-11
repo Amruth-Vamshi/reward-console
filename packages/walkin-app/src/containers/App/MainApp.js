@@ -113,7 +113,7 @@ export class MainApp extends Component {
           </Content>
           {/* <Footer>  <div className="gx-layout-footer-content">Copyright First Walkin Technologies © 2019</div> </Footer> */}
         </Layout>
-        <Customizer />
+        {/* <Customizer /> */}
       </Layout>
     );
   }

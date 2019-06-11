@@ -28,6 +28,7 @@ import IntlMessages from "./util/IntlMessages";
 import CardBox from "./components/CardBox";
 import CircularProgress from "./components/CircularProgress";
 import ManageCampaignCard from "./components/Cards/ManageCampaignCard";
+import ErrorBoundary from "./util/ErrorBoundary";
 
 export {
   CircularProgress,
@@ -57,5 +58,6 @@ export {
   CustomScrollbars,
   IntlMessages,
   CardBox,
-  ManageCampaignCard
+  ManageCampaignCard,
+  ErrorBoundary
 };

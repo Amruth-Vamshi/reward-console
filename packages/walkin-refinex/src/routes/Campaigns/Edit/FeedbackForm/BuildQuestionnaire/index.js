@@ -5,6 +5,7 @@ import FormPane from "./FormPane";
 import { Query, graphql } from "react-apollo";
 import gql from "graphql-tag";
 import { Row, Col } from "antd";
+import QuestionsList from "./QuestionsList";
 
 class Questionnaire extends Component {
   constructor() {
@@ -38,10 +39,11 @@ class Questionnaire extends Component {
             }
           }
         });
-        if (data.data.createQuestionnaire.id) {
-          this.props.refetchQuestionnaire();
-        }
+        // if (data.data.createQuestionnaire.id) {
+        //   this.props.refetchQuestionnaire();
+        // }
       } catch (e) {
+        console.log("Error in creating questionnaire");
         console.log(e);
       }
     }
@@ -65,7 +67,6 @@ class Questionnaire extends Component {
             id
             title
           }
-
           choices {
             id
             choiceText
@@ -95,9 +96,19 @@ class Questionnaire extends Component {
           }
           const questionnaire = data ? data.questionHierarchy : [];
           return (
-            <Row>
+            <Row
+              style={{
+                height: "calc(100vh - 240px)"
+              }}
+            >
               <Col span={8}>
-                <SearchTree
+                {/* <SearchTree
+                  questionnaire={questionnaire}
+                  onQuestionSelected={this.onQuestionSelected}
+                  addNewQuestion={this.addNewQuestion}
+                /> */}
+
+                <QuestionsList
                   questionnaire={questionnaire}
                   onQuestionSelected={this.onQuestionSelected}
                   addNewQuestion={this.addNewQuestion}

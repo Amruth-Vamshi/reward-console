@@ -54,6 +54,33 @@ class SearchTree extends React.Component {
     });
   };
 
+  addRootQuestionButton = () => {
+    if (this.props.questionnaire.length > 0) {
+      return null;
+    } else {
+      return (
+        <Row
+          style={{
+            paddingTop: "2%"
+          }}
+          type="flex"
+          justify="center"
+        >
+          <Col>
+            <Button
+              type="dashed"
+              onClick={() => {
+                this.props.addNewQuestion(null);
+              }}
+            >
+              Add Question
+            </Button>
+          </Col>
+        </Row>
+      );
+    }
+  };
+
   loopQuestions = questions => {
     const { searchValue } = this.state;
     const quesionnaireTree = questions.map(question => {
@@ -78,7 +105,16 @@ class SearchTree extends React.Component {
           </TreeNode>
         );
       }
-      return <TreeNode key={question.id} title={question.questionText} />;
+      return [
+        <TreeNode key={question.id} title={question.questionText} />,
+        <TreeNode
+          key="add"
+          icon={<Icon type="plus-circle" />}
+          selectable={false}
+          title=" "
+          className="AddButton"
+        />
+      ];
     });
     return quesionnaireTree;
   };
@@ -107,30 +143,14 @@ class SearchTree extends React.Component {
                 autoExpandParent={autoExpandParent}
                 onSelect={this.questionSelected}
                 multiple={false}
+                showIcon
               >
                 {this.loopQuestions(questionnaire)}
               </Tree>
             </div>
           </Col>
         </Row>
-        <Row
-          style={{
-            paddingTop: "2%"
-          }}
-          type="flex"
-          justify="center"
-        >
-          <Col>
-            <Button
-              type="dashed"
-              onClick={() => {
-                this.props.addNewQuestion(null);
-              }}
-            >
-              Add Question
-            </Button>
-          </Col>
-        </Row>
+        {this.addRootQuestionButton()}
       </div>
     );
   }

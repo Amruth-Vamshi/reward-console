@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Row, Col, Button } from "antd";
-import { CardBox } from "@walkinsole/walkin-components";
+import { CardBox, ErrorBoundary } from "@walkinsole/walkin-components";
 import SelectApplicationModal from "../SelectApplicationModal";
 import { compose, graphql } from "react-apollo";
 import gql from "graphql-tag";
@@ -51,113 +51,115 @@ class CreateCampaignRow extends Component {
     const { auth } = this.props;
 
     return (
-      <div>
-        <SelectApplicationModal
-          visible={this.state.showModal}
-          onConfirm={this.onConfirm}
-          onCancel={this.onCancel}
-          organizationId={auth.auth.organizationId}
-        />
-        <Row>
-          <Col span={24}>
-            <Row style={{ marginBottom: "1%" }}>
-              <Col span={24}>
-                <h1>Create Feedback Campaign</h1>
-              </Col>
-            </Row>
-            <Row gutter={12} type="flex" justify="space-around">
-              <Col span={4}>
-                <CardBox styleName="gx-card-full">
-                  <Row type="flex" justify="center">
-                    <Col>
-                      <Button
-                        onClick={this.createFeedbackCampaign.bind(
-                          this,
-                          "blank"
-                        )}
-                        type="ghost"
-                        icon="plus"
-                        shape="round"
-                      />
-                    </Col>
-                  </Row>
-                  <Row type="flex" justify="center">
-                    <Col>
-                      <span>Blank Feedback</span>
-                    </Col>
-                  </Row>
-                </CardBox>
-              </Col>
-              <Col span={4}>
-                <CardBox styleName="gx-card-full" heading={""}>
-                  <Row type="flex" justify="center">
-                    <Col>
-                      <Button
-                        onClick={this.createFeedbackCampaign.bind(
-                          this,
-                          "blank"
-                        )}
-                        type="ghost"
-                        icon="shopping-cart"
-                        shape="round"
-                      />
-                    </Col>
-                  </Row>
-                  <Row type="flex" justify="center">
-                    <Col>
-                      <span>Customer Survey</span>
-                    </Col>
-                  </Row>
-                </CardBox>
-              </Col>
-              <Col span={4}>
-                <CardBox styleName="gx-card-full" heading={""}>
-                  <Row type="flex" justify="center">
-                    <Col>
-                      <Button
-                        onClick={this.createFeedbackCampaign.bind(
-                          this,
-                          "blank"
-                        )}
-                        type="ghost"
-                        icon="team"
-                        shape="round"
-                      />
-                    </Col>
-                  </Row>
-                  <Row type="flex" justify="center">
-                    <Col>
-                      <span>Employee Feedback</span>
-                    </Col>
-                  </Row>
-                </CardBox>
-              </Col>
-              <Col span={4}>
-                <CardBox styleName="gx-card-full" heading={""}>
-                  <Row type="flex" justify="center">
-                    <Col>
-                      <Button
-                        onClick={this.createFeedbackCampaign.bind(
-                          this,
-                          "blank"
-                        )}
-                        type="ghost"
-                        icon="user"
-                        shape="round"
-                      />
-                    </Col>
-                  </Row>
-                  <Row type="flex" justify="center">
-                    <Col>
-                      <span>User Feedback</span>
-                    </Col>
-                  </Row>
-                </CardBox>
-              </Col>
-            </Row>
-          </Col>
-        </Row>
-      </div>
+      <ErrorBoundary>
+        <div>
+          <SelectApplicationModal
+            visible={this.state.showModal}
+            onConfirm={this.onConfirm}
+            onCancel={this.onCancel}
+            organizationId={auth.auth.organizationId}
+          />
+          <Row>
+            <Col span={24}>
+              <Row style={{ marginBottom: "1%" }}>
+                <Col span={24}>
+                  <h1>Create Feedback Campaign</h1>
+                </Col>
+              </Row>
+              <Row gutter={12} type="flex" justify="space-around">
+                <Col span={4}>
+                  <CardBox styleName="gx-card-full">
+                    <Row type="flex" justify="center">
+                      <Col>
+                        <Button
+                          onClick={this.createFeedbackCampaign.bind(
+                            this,
+                            "blank"
+                          )}
+                          type="ghost"
+                          icon="plus"
+                          shape="round"
+                        />
+                      </Col>
+                    </Row>
+                    <Row type="flex" justify="center">
+                      <Col>
+                        <span>Blank Feedback</span>
+                      </Col>
+                    </Row>
+                  </CardBox>
+                </Col>
+                <Col span={4}>
+                  <CardBox styleName="gx-card-full" heading={""}>
+                    <Row type="flex" justify="center">
+                      <Col>
+                        <Button
+                          onClick={this.createFeedbackCampaign.bind(
+                            this,
+                            "blank"
+                          )}
+                          type="ghost"
+                          icon="shopping-cart"
+                          shape="round"
+                        />
+                      </Col>
+                    </Row>
+                    <Row type="flex" justify="center">
+                      <Col>
+                        <span>Customer Survey</span>
+                      </Col>
+                    </Row>
+                  </CardBox>
+                </Col>
+                <Col span={4}>
+                  <CardBox styleName="gx-card-full" heading={""}>
+                    <Row type="flex" justify="center">
+                      <Col>
+                        <Button
+                          onClick={this.createFeedbackCampaign.bind(
+                            this,
+                            "blank"
+                          )}
+                          type="ghost"
+                          icon="team"
+                          shape="round"
+                        />
+                      </Col>
+                    </Row>
+                    <Row type="flex" justify="center">
+                      <Col>
+                        <span>Employee Feedback</span>
+                      </Col>
+                    </Row>
+                  </CardBox>
+                </Col>
+                <Col span={4}>
+                  <CardBox styleName="gx-card-full" heading={""}>
+                    <Row type="flex" justify="center">
+                      <Col>
+                        <Button
+                          onClick={this.createFeedbackCampaign.bind(
+                            this,
+                            "blank"
+                          )}
+                          type="ghost"
+                          icon="user"
+                          shape="round"
+                        />
+                      </Col>
+                    </Row>
+                    <Row type="flex" justify="center">
+                      <Col>
+                        <span>User Feedback</span>
+                      </Col>
+                    </Row>
+                  </CardBox>
+                </Col>
+              </Row>
+            </Col>
+          </Row>
+        </div>
+      </ErrorBoundary>
     );
   }
 }
