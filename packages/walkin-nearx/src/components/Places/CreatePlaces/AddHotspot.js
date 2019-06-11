@@ -8,6 +8,7 @@ import { nearXClient as client } from "../../../nearXApollo";
 import { SEARCH_PLACES, GET_NAERBY_PLACES } from "../../../queries";
 import { withApollo } from "react-apollo";
 import { HOTSPOT_RADIUS } from "../../../Constants";
+import CustomScrollbars from "../../../util/CustomScrollbars";
 
 const TabPane = Tabs.TabPane;
 
@@ -266,6 +267,7 @@ class AddHotspot extends Component {
       <div>
         <Row>
           <Col span={12}>
+
             <Tabs onChange={this.onTabChange} defaultActiveKey="1">
               <TabPane tab="Connect To Existing Hotspot" key="1">
                 <SelectHotspots

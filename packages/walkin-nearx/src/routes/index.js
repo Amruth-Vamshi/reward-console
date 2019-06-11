@@ -14,7 +14,7 @@ export default class NearXRoutes extends Component {
   render() {
     // console.log('props',this.props)
     return (
-      <div>
+      <div className="NearX-Main">
         <Switch>
           <Redirect exact from="/nearx" to="/nearx/places" />
           <Route path="/nearx/dashboard" component={Dashboard} />
