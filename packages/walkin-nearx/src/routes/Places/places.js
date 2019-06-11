@@ -93,7 +93,7 @@ export default class Places extends Component {
 
   pagination = (e, n) => {
     console.log(e - 1, n);
-    this.getPlacesData(e - 1, n, this.state.search);
+    this.getPlacesData((e - 1)*n, n, this.state.search);
     // this.setState({offset:e})
   };
 

@@ -71,7 +71,7 @@ box-shadow: -1px 6px 12px 6px rgba(0, 0, 0, 0.384);
 
 .placeTableHeaders{
     font-size: 17px;
-    margin: 0px 20px 5px 20px
+    margin: 0px 20px 5px 10px
 }
 
 .headerCard{
@@ -88,7 +88,7 @@ box-shadow: -1px 6px 12px 6px rgba(0, 0, 0, 0.384);
 }
 
 .createPlaceCard .ant-card-body{
-    background-color: #ffffff;
+    background-color: #ffffff !important;
 }
 
 .hotspotCard{
@@ -143,3 +143,4 @@ box-shadow: -1px 6px 12px 6px rgba(0, 0, 0, 0.384);
   .upload-list-csv .ant-upload-list-item{
       height: 30px;
   }
+

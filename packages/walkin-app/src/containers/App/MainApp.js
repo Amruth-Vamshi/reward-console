@@ -100,6 +100,7 @@ export class MainApp extends Component {
   render() {
     const { match, width, navStyle } = this.props;
 
+    console.log(width)
     return (
       <Layout className="gx-app-layout">
         {this.getSidebar(navStyle, width)}
@@ -110,6 +111,7 @@ export class MainApp extends Component {
           >
             <App />
           </Content>
+          {/* <Footer>  <div className="gx-layout-footer-content">Copyright First Walkin Technologies © 2019</div> </Footer> */}
         </Layout>
         <Customizer />
       </Layout>

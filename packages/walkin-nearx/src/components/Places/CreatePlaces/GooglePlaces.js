@@ -19,14 +19,7 @@ import axios from "axios";
 import canUseDOM from "can-use-dom";
 import "../../../styles/styles.css";
 import { GET_CONFIGURATION, SET_CONFIGURATION } from "../../../queries";
-import {
-  GOOGLE_API_KEY,
-  FACEBOOK_API_KEY,
-  RADIUS_1,
-  RADIUS_2,
-  RADIUS_3,
-  TYPE
-} from "../../../Constants";
+import { GOOGLE_API_KEY, FACEBOOK_API_KEY, RADIUS_1, RADIUS_2, RADIUS_3, RADIUS_1_MIN, TYPE } from "../../../Constants";
 
 // AIzaSyCwRQqzyQuopL0CQ212q97uFVyXn5EMLbs
 
@@ -34,10 +27,10 @@ const geolocation =
   canUseDOM && navigator.geolocation
     ? navigator.geolocation
     : {
-        getCurrentPosition(success, failure) {
-          failure(`Your browser doesn't support geolocation.`);
-        }
-      };
+      getCurrentPosition(success, failure) {
+        failure(`Your browser doesn't support geolocation.`);
+      }
+    };
 export default class GooglePlaces extends Component {
   constructor(props) {
     super(props);
@@ -67,11 +60,12 @@ export default class GooglePlaces extends Component {
 
   componentWillMount() {
     let googleAPIkey = "";
-    let defaultRadius = [];
+    let defaultRadius = [RADIUS_1_MIN];
     client
       .query({
         query: GET_CONFIGURATION,
-        variables: {}
+        variables: {},
+        fetchPolicy: "network-only"
       })
       .then(res => {
         // console.log()
@@ -82,6 +76,7 @@ export default class GooglePlaces extends Component {
           if (k.name === RADIUS_2) defaultRadius[1] = parseInt(k.key);
           if (k.name === RADIUS_3) defaultRadius[2] = parseInt(k.key);
         });
+
         // console.log(googleAPIkey)
         if (googleAPIkey !== "") this.setState({ googleAPIkey, defaultRadius });
         else this.setState({ visible: true });
@@ -107,7 +102,7 @@ export default class GooglePlaces extends Component {
     // e.preventDefault();
     let errors = {};
     if (this.state.search.trim() == "")
-      errors.search = "* this field is mandetory";
+      errors.search = "* this field is mandatory";
     if (this.state.searchRadius !== null && this.state.searchRadius !== NaN) {
       if (this.state.searchRadius < 100)
         errors.searchRadius = "Radius should be greater than 100";
@@ -201,7 +196,6 @@ export default class GooglePlaces extends Component {
         address: i.vicinity ? i.vicinity : i.formatted_address,
         sroreId: i.id,
         selected: true,
-        noOfRadius: 3,
         radius: this.state.defaultRadius,
         center: i.geometry.location,
         errors: {}
@@ -414,11 +408,11 @@ export default class GooglePlaces extends Component {
             {this.state.places1.length ? (
               <Affix
                 style={{ position: "absolute", width: "100%", bottom: 0 }}
-                offsetBottom={45}
+                offsetBottom={10}
               >
                 <Card
                   className="createPlaceCard"
-                  // style={{marginBottom:0, position:"absolute",backgroundColor:'#fffffff',padding:24, width:'100%', bottom:0}}
+                // style={{marginBottom:0, position:"absolute",backgroundColor:'#fffffff',padding:24, width:'100%', bottom:0}}
                 >
                   {this.state.places.length ? (
                     <Row>
@@ -441,50 +435,50 @@ export default class GooglePlaces extends Component {
                       </Col>
                     </Row>
                   ) : (
-                    <Row>
-                      <Col span={16}>
-                        <div className="divCenterVertical">
+                      <Row>
+                        <Col span={16}>
+                          <div className="divCenterVertical">
+                            {" "}
+                            <span>Select some places to create</span>{" "}
+                          </div>
+                        </Col>
+                        <Col span={8}>
                           {" "}
-                          <span>Select some places to create</span>{" "}
-                        </div>
-                      </Col>
-                      <Col span={8}>
-                        {" "}
-                        <Link to="/nearx/places/createplace/manually">
-                          <Button
-                            disabled
-                            className="buttonPrimary"
-                            style={{ float: "right", marginBottom: 0 }}
-                          >
-                            CREATE
+                          <Link to="/nearx/places/createplace/manually">
+                            <Button
+                              disabled
+                              className="buttonPrimary"
+                              style={{ float: "right", marginBottom: 0 }}
+                            >
+                              CREATE
                           </Button>
-                        </Link>
-                      </Col>
-                    </Row>
-                  )}
+                          </Link>
+                        </Col>
+                      </Row>
+                    )}
                 </Card>{" "}
               </Affix>
             ) : (
-              <div className="">
-                {" "}
-                <br />
-                <br /> <br />
-                <br /> <br />
-                <div style={{ textAlign: "center" }}>
-                  <Icon
-                    type="environment"
-                    style={{
-                      color: "#CACACA",
-                      fontSize: 150,
-                      marginBottom: 20
-                    }}
-                    theme="filled"
-                  />
-                  <p> Search for restaurants, malls... etc to create place </p>
-                  {/* <Link to='/nearx/places/createplace/manually'> <Button className='buttonPrimary'>CREATE</Button></Link> */}
+                <div className="">
+                  {" "}
+                  <br />
+                  <br /> <br />
+                  <br /> <br />
+                  <div style={{ textAlign: "center" }}>
+                    <Icon
+                      type="environment"
+                      style={{
+                        color: "#CACACA",
+                        fontSize: 150,
+                        marginBottom: 20
+                      }}
+                      theme="filled"
+                    />
+                    <p> Search for restaurants, malls... etc to create place </p>
+                    {/* <Link to='/nearx/places/createplace/manually'> <Button className='buttonPrimary'>CREATE</Button></Link> */}
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
             <div />
           </Col>
 
@@ -508,13 +502,13 @@ export default class GooglePlaces extends Component {
             {this.state.moreOptions ? (
               ""
             ) : (
-              <div>
-                <br />
-                <br />
-                <br />
-                <br />
-              </div>
-            )}
+                <div>
+                  <br />
+                  <br />
+                  <br />
+                  <br />
+                </div>
+              )}
           </Col>
         </Row>
 

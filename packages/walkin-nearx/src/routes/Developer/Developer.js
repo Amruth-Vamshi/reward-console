@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import {Col, Row, Card} from "antd"; 
-import Auxiliary from "../../util/Auxiliary"; 
+import { Col, Row, Card } from "antd";
+import Auxiliary from "../../util/Auxiliary";
 // import marked from "marked";
 // import axios from 'axios'
 import readmePath from './docs_api.md'
@@ -14,7 +14,7 @@ export default class Developer extends Component {
 
   // componentDidMount() {
   //   // const readmePath = require("./docs_api.md");
-  
+
   //   axios(readmePath)
   //     .then(response => {
   //       return response.text()
@@ -26,23 +26,23 @@ export default class Developer extends Component {
   //     })
   // }
 
-    render() {
-        return (
-          <Auxiliary>
-            <Row>
-              <Col span={24}>
-                <div className="gx-card">
-                  <div className="gx-card-body">
-                      <Card title="Documentation">
-                          {/* <div>Development SDK documentation here</div> */}
-                          {/* <article dangerouslySetInnerHTML={{__html: this.state.markdown}}></article> */}
-                          <p dangerouslySetInnerHTML={{ __html: readmePath }} />
-                      </Card>
-                  </div>
-                </div>
-              </Col>
-            </Row>
-          </Auxiliary>
-        )
-    }
+  render() {
+    return (
+      <Auxiliary>
+        <Row>
+          <Col span={24}>
+            <div className="gx-card">
+              <div className="gx-card-body">
+                <Card title="Documentation">
+                  {/* <div>Development SDK documentation here</div> */}
+                  {/* <article dangerouslySetInnerHTML={{__html: this.state.markdown}}></article> */}
+                  <p dangerouslySetInnerHTML={{ __html: readmePath }} />
+                </Card>
+              </div>
+            </div>
+          </Col>
+        </Row>
+      </Auxiliary>
+    )
+  }
 }
