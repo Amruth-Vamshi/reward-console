@@ -91,10 +91,6 @@ box-shadow: -1px 6px 12px 6px rgba(0, 0, 0, 0.384);
     background-color: #ffffff !important;
 }
 
-.ant-layout > .gx-layout-content {
-    background-color: #eeeeee;
-}
-
 .hotspotCard{
     background-color: #ececec;
     margin: 0px;
@@ -147,3 +143,4 @@ box-shadow: -1px 6px 12px 6px rgba(0, 0, 0, 0.384);
   .upload-list-csv .ant-upload-list-item{
       height: 30px;
   }
+

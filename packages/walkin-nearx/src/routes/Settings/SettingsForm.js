@@ -7,6 +7,7 @@ import {
   GOOGLE_API_KEY, FACEBOOK_API_KEY, RADIUS_1, RADIUS_2, RADIUS_3, TYPE,
   RADIUS_1_MIN, RADIUS_1_MAX, RADIUS_2_MAX, RADIUS_3_MAX
 } from "../../Constants/index";
+import axios from "axios";
 
 const formItemLayout = {
   labelCol: {
@@ -130,28 +131,67 @@ export default class SettingsForm extends Component {
   );
 
   keysUpdate = () => {
-    this.setState({ loading: true });
-    let keys = [
-      { name: GOOGLE_API_KEY, key: this.state.googleAPIkey, type: TYPE },
-      { name: FACEBOOK_API_KEY, key: this.state.facebookAPIkey, type: TYPE }
-    ];
+    let errors = {};
+    let keys = []
 
-    console.log(keys);
-    client
-      .mutate({
-        mutation: SET_CONFIGURATION,
-        variables: { input: keys }
+    // if (this.state.googleAPIkey && this.state.googleAPIkey != ' ') {
+    this.setState({ loading: true });
+    var req = axios.create({
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*"
+      }
+    });
+    let url =
+      "https://cors-anywhere.herokuapp.com/" +
+      "https://maps.googleapis.com/maps/api/geocode/json?address=bengaluru&key=" +
+      this.state.googleAPIkey;
+    req
+      .get(url)
+      .then(response => {
+        console.log(response);
+        if (
+          response.data.error_message === "The provided API key is invalid."
+        ) {
+          errors.googleAPIkey = "Invalid API key";
+          this.setState({ loading: false, errors });
+          message.warning("Invalid API key");
+        } else {
+          keys = [{ name: GOOGLE_API_KEY, key: this.state.googleAPIkey, type: TYPE }];
+
+          if (this.state.facebookAPIkey.trim() != '')
+            keys.push({ name: FACEBOOK_API_KEY, key: this.state.facebookAPIkey, type: TYPE })
+
+          console.log(keys);
+          client
+            .mutate({
+              mutation: SET_CONFIGURATION,
+              variables: { input: keys }
+            })
+            .then(res => {
+              message.success("success");
+              console.log("Results", res);
+              this.setState({ loading: false });
+            })
+            .catch(err => {
+              this.setState({ loading: false });
+              console.log("Fail " + err);
+              message.warning("ERROR");
+            });
+
+        }
       })
-      .then(res => {
-        message.success("success");
-        console.log("Results", res);
-        this.setState({ loading: false });
-      })
-      .catch(err => {
-        this.setState({ loading: false });
-        console.log("Fail " + err);
-        message.warning("ERROR");
-      });
+    // }
+
+
+    // let keys = [
+    //   { name: GOOGLE_API_KEY, key: this.state.googleAPIkey, type: TYPE },
+    //   { name: FACEBOOK_API_KEY, key: this.state.facebookAPIkey, type: TYPE }
+    // ];
+
+    // if (Object.entries(errors).length === 0) 
+
   };
 
   radiusUpdate = () => {
@@ -229,7 +269,7 @@ export default class SettingsForm extends Component {
             Settings
           </p>
 
-          <div className="gx-card ant-col ant-col-xs-24 ant-col-sm-20 ant-col-md-18 ant-col-xl-16">
+          <div className="gx-card ant-col ant-col-xs-24 ant-col-sm-22 ant-col-md-20 ant-col-xl-18 ant-col-xxl-16">
             <div className="gx-card-body">
               <div>
                 <Col>
@@ -248,9 +288,16 @@ export default class SettingsForm extends Component {
                       <span style={{ color: "Red" }}>
                         {this.state.errors.googleAPIkey}
                       </span>
+                      <div style={{ color: "#34bfe2", margin: 10, float: "right" }} >
+                        <a target="_blank" href="https://developers.google.com/maps/documentation/javascript/get-api-key" > Get Google API key </a>
+                      </div>
                     </Form.Item>
 
-                    <Form.Item {...formItemLayout} label="Facebook API key">
+                    {/* <Form.Item {...tailFormItemLayout}> */}
+
+                    {/* </Form.Item> */}
+
+                    {/* <Form.Item {...formItemLayout} label="Facebook API key">
                       <Input
                         required
                         placeholder="Facebook API key"
@@ -261,7 +308,7 @@ export default class SettingsForm extends Component {
                       <span style={{ color: "Red" }}>
                         {this.state.errors.facebookAPIkey}
                       </span>
-                    </Form.Item>
+                    </Form.Item> */}
                     <Form.Item {...tailFormItemLayout1}>
                       <Button
                         type="primary"
@@ -295,7 +342,7 @@ export default class SettingsForm extends Component {
 
                     {/* {console.log(radius.length >= 3 && radius[radius.length-1]==500)} */}
 
-                    {radius.length >= 3 || radius[radius.length-1]==500 ? (
+                    {radius.length >= 3 || radius[radius.length - 1] == 500 ? (
                       ""
                     ) : (
                         <Form.Item {...tailFormItemLayout}>
