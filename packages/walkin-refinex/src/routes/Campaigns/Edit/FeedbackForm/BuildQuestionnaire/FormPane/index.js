@@ -42,8 +42,15 @@ class QuestionnaireFormPane extends Component {
   };
 
   getQuestionTypes = () => {
+    const { questionTypesQuery } = this.props;
     const { TreeNode } = TreeSelect;
-
+    const { questionTypes } = questionTypesQuery;
+    console.log(questionTypes);
+    for (const questionType in questionTypes) {
+      if (questionTypes.hasOwnProperty(questionType)) {
+        console.log(questionType);
+      }
+    }
     return (
       <TreeNode value="parent 1" title="parent 1" key="0-1">
         <TreeNode value="parent 1-0" title="parent 1-0" key="0-1-1">
@@ -62,11 +69,10 @@ class QuestionnaireFormPane extends Component {
   };
 
   render() {
-    const { questionToEdit, form, questionTypesQuery } = this.props;
+    const { questionToEdit, form } = this.props;
     const { getFieldDecorator } = form;
     const { Item } = Form;
     console.log(this.props);
-    const { questionTypes } = questionTypesQuery;
     return (
       <Row>
         <Col span={22}>
@@ -83,7 +89,6 @@ class QuestionnaireFormPane extends Component {
                 {getFieldDecorator("type")(
                   <TreeSelect
                     showSearch
-                    style={{ width: 300 }}
                     dropdownStyle={{ maxHeight: 400, overflow: "auto" }}
                     placeholder="Please select"
                     allowClear
