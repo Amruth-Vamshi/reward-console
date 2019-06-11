@@ -14,8 +14,8 @@ export default class ErrorBoundary extends Component {
   componentDidCatch(error, info) {
     // You can also log the error to an error reporting service
     console.log(error, info);
-    // localStorage.clear();
-    // location.reload();
+    localStorage.clear();
+    location.reload();
   }
 
   render() {
