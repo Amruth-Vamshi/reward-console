@@ -58,7 +58,8 @@ export default class SettingsForm extends Component {
     client
       .query({
         query: GET_CONFIGURATION,
-        variables: {}
+        variables: {},
+        fetchPolicy: "network-only"
       })
       .then(res => {
         console.log("Results", res.data.getConfiguration);

@@ -49,7 +49,7 @@ class AddHotspot extends Component {
 
   componentWillMount() {
     let location = this.props.formData.places[0].center;
-    this.props.client
+    client
       .query({
         query: GET_NAERBY_PLACES,
         variables: { limit: 5, offset: 0, distance: 1000, location: location }
@@ -68,13 +68,13 @@ class AddHotspot extends Component {
               selected: false
             });
         });
-        console.log("Results", res);
+        console.log("Near by Places Results", res);
         this.setState({
           places1: places,
           totalPlaces: res.data.getNearByPlaces.pageInfo.total
         });
       })
-      .catch(err => console.log("Failed to get Places Details" + err));
+      .catch(err => console.log("Failed to get Nearby Places Details" + err));
   }
 
   getPlacesData = (offset, limit, search) => {

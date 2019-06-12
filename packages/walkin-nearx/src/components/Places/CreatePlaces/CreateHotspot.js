@@ -152,31 +152,31 @@ export default class CreateHotspot extends Component {
 
     return (
       <Auxiliary>
-        <div style={{maxHeight:600}}>
-        <CustomScrollbars className="gx-layout-sider-scrollbar">
-          <div className="gx-card">
-            <div className="gx-card-body" style={{ overflow: "hidden" }}>
-              <div>
-                <Col>
-                  <Form onSubmit={this.props.handleSubmit}>{form}</Form>
-                  <p>
-                    <Button onClick={this.props.addHotspot}>Add Hotspot</Button>
-                  </p>
-                  <div style={{ overflow: "hidden" }}>
-                    {/* <Button htmlType='submit' type="primary" style={{float:"right",marginRight:20}}>CREATE</Button> */}
-                    <Button
-                      onClick={this.props.handleSubmit}
-                      className="buttonPrimary"
-                      style={{ float: "right", marginRight: 20 }}
-                    >
-                      CREATE
+
+        <div className="gx-card">
+          <div className="gx-card-body addHpForm" style={{ overflow: "hidden" }}>
+            {/* <CustomScrollbars className="gx-layout-sider-scrollbar addHpForm"> */}
+            <div>
+              <Col>
+                <Form onSubmit={this.props.handleSubmit}>{form}</Form>
+                <p>
+                  <Button onClick={this.props.addHotspot}>Add Hotspot</Button>
+                </p>
+                <div style={{ overflow: "hidden" }}>
+                  {/* <Button htmlType='submit' type="primary" style={{float:"right",marginRight:20}}>CREATE</Button> */}
+                  <Button
+                    onClick={this.props.handleSubmit}
+                    className="buttonPrimary"
+                    style={{ float: "right", marginRight: 20 }}
+                  >
+                    CREATE
                   </Button>
-                  </div>
-                </Col>
-              </div>
+                </div>
+              </Col>
             </div>
+
+            {/* </CustomScrollbars> */}
           </div>
-        </CustomScrollbars>
         </div>
       </Auxiliary>
     );
