@@ -27,11 +27,12 @@ export class Sidebar extends Component {
     this.props.toggleCollapsedSideNav(!this.props.navCollapsed);
   };
 
-  componentDidMount() {
-    window.addEventListener("resize", () => {
-      this.props.updateWindowWidth(window.innerWidth);
-    });
-  }
+  // componentDidMount() {
+  //   window.addEventListener("resize", () => {
+  //     this.props.updateWindowWidth(window.innerWidth);
+  //     console.log(window.innerWidth)
+  //   });
+  // }
 
   getSideBar() {
     const { location } = this.props;
@@ -78,22 +79,22 @@ export class Sidebar extends Component {
       <Sider
         className={`gx-app-sidebar ${drawerStyle} ${
           themeType !== THEME_TYPE_LITE ? "gx-layout-sider-dark" : null
-        }`}
+          }`}
         trigger={null}
         collapsed={
           width < TAB_SIZE
             ? false
             : navStyle === NAV_STYLE_MINI_SIDEBAR ||
-              navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR
+            navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR
         }
         theme={themeType === THEME_TYPE_LITE ? "lite" : "dark"}
         collapsible
       >
         {navStyle === NAV_STYLE_DRAWER || width < TAB_SIZE ? (
           <Drawer
-            wrapClassName={`gx-drawer-sidebar ${
+            className={`gx-drawer-sidebar ${
               themeType !== THEME_TYPE_LITE ? "gx-drawer-sidebar-dark" : null
-            }`}
+              }`}
             placement="left"
             closable={false}
             onClose={this.onToggleCollapsedNav.bind(this)}
@@ -102,17 +103,17 @@ export class Sidebar extends Component {
             {this.getSideBar()}
           </Drawer>
         ) : (
-          this.getSideBar()
-        )}
+            this.getSideBar()
+          )}
       </Sider>
     );
   }
 }
-const UPDATE_WINDOW_WIDTH = gql`
-  mutation updateWindowWidth($width: Int) {
-    updateWindowWidth(width: $width) @client
-  }
-`;
+// const UPDATE_WINDOW_WIDTH = gql`
+//   mutation updateWindowWidth($width: Int) {
+//     updateWindowWidth(width: $width) @client
+//   }
+// `;
 
 const GET_SETTINGS = gql`
   query settings {
@@ -139,6 +140,6 @@ const mapStateToProps = ({ settings }) => {
 export default compose(
   withRouter,
   graphql(GET_SETTINGS, { name: "settings", props: mapStateToProps }),
-  graphql(UPDATE_WINDOW_WIDTH, { name: "updateWindowWidth" }),
+  // graphql(UPDATE_WINDOW_WIDTH, { name: "updateWindowWidth" }),
   graphql(TOGGLE_COLLAPSED_SIDENAV, { name: "toggleCollapsedSideNav" })
 )(Sidebar);
