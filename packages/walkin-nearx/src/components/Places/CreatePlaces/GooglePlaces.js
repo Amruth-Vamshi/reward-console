@@ -162,7 +162,7 @@ export default class GooglePlaces extends Component {
             message.success(
               "success: " + response.data.results.length + " Places Found"
             );
-          } else message.warning("No Places Found");
+          } else message.warning(response.data.error_message ? response.data.error_message : 'No Places Found');
         })
         .catch(err => {
           setTimeout(hide, 0);
