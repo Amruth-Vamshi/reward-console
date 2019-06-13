@@ -1,6 +1,6 @@
 import "./Edit.css";
 import React, { Component } from "react";
-import { Steps, Icon, Card, Row, Col } from "antd";
+import { Steps, Icon, Card, Row, Col, Button } from "antd";
 import CampaignConfig from "./Campaign";
 import FeedbackFormConfig from "./FeedbackForm";
 import GoLive from "./GoLive";
@@ -64,6 +64,15 @@ export default class EditCampaign extends Component {
         <Row>
           <Col span={24}>
             <div className="stepperContainer">{this.getContainer()}</div>
+          </Col>
+        </Row>
+        <Row className="BottomBar">
+          <Col offset={1}>
+            <Button type="primary">Next</Button>
+          </Col>
+
+          <Col offset={1}>
+            <Button>Save as Draft</Button>
           </Col>
         </Row>
       </div>

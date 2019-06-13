@@ -2,7 +2,7 @@ import "./BuildQuestionnaire.css";
 import React, { Component } from "react";
 import SearchTree from "./TreePane";
 import FormPane from "./FormPane";
-import { Query, graphql } from "react-apollo";
+import { Query, graphql, compose } from "react-apollo";
 import gql from "graphql-tag";
 import { Row, Col } from "antd";
 import QuestionsList from "./QuestionsList";
@@ -12,7 +12,8 @@ class Questionnaire extends Component {
     super();
     this.state = {
       questionnaire: [],
-      questionToEdit: null
+      questionToEdit: null,
+      loading: true
     };
   }
 
@@ -24,6 +25,25 @@ class Questionnaire extends Component {
 
   onQuestionEdited = editedQuestion => {
     // GQL to edit the question and update questionnaire in state
+    const questionToSave = {
+      id: this.state.questionToEdit.id,
+      ...editedQuestion
+    };
+    console.log(questionToSave);
+
+    this.props
+      .editQuestion({
+        variables: {
+          editQuestionInput: questionToSave
+        }
+      })
+      .then(data => {
+        console.log(data);
+        this.props.refetchQuestionnaire();
+      })
+      .catch(err => {
+        console.log(err);
+      });
   };
 
   addNewQuestion = async parent => {
@@ -51,81 +71,27 @@ class Questionnaire extends Component {
 
   render() {
     const { questionToEdit } = this.state;
-    const { feedbackForm } = this.props;
-    const questionId = feedbackForm.questionnaireRoot
-      ? feedbackForm.questionnaireRoot.id
-      : null;
-    const GET_QUESTIONNAIRE = gql`
-      query getQuestionnaireHierarchy($questionId: ID!) {
-        questionHierarchy(questionId: $questionId) {
-          id
-          questionText
-          type
-          rangeMax
-          rangeMin
-          feedbackCategory {
-            id
-            title
-          }
-          choices {
-            id
-            choiceText
-            rangeStart
-            rangeEnd
-            toQuestion {
-              id
-              questionText
-              type
-              rangeMax
-              rangeMin
-              feedbackCategory {
-                id
-                title
-              }
-            }
-          }
-        }
-      }
-    `;
 
     return (
-      <Query query={GET_QUESTIONNAIRE} variables={{ questionId }}>
-        {({ data, loading, error }) => {
-          if (loading) {
-            return <div>loading...</div>;
-          }
-          const questionnaire = data ? data.questionHierarchy : [];
-          return (
-            <Row
-              style={{
-                height: "calc(100vh - 240px)"
+      <Row className="QuestionnaireArea">
+        <Col span={8}>
+          <QuestionsList
+            questionnaire={this.props.questionnaire}
+            onQuestionSelected={this.onQuestionSelected}
+            addNewQuestion={this.addNewQuestion}
+          />
+        </Col>
+        <Col span={16}>
+          {this.state.questionToEdit ? (
+            <FormPane
+              questionToEdit={questionToEdit}
+              onQuestionEdited={questionData => {
+                this.onQuestionEdited(questionData);
               }}
-            >
-              <Col span={8}>
-                {/* <SearchTree
-                  questionnaire={questionnaire}
-                  onQuestionSelected={this.onQuestionSelected}
-                  addNewQuestion={this.addNewQuestion}
-                /> */}
-
-                <QuestionsList
-                  questionnaire={questionnaire}
-                  onQuestionSelected={this.onQuestionSelected}
-                  addNewQuestion={this.addNewQuestion}
-                />
-              </Col>
-              <Col span={16}>
-                {this.state.questionToEdit ? (
-                  <FormPane
-                    questionToEdit={questionToEdit}
-                    onQuestionEdited={this.onQuestionEdited}
-                  />
-                ) : null}
-              </Col>
-            </Row>
-          );
-        }}
-      </Query>
+            />
+          ) : null}
+        </Col>
+      </Row>
     );
   }
 }
@@ -148,6 +114,21 @@ const CREAT_BLANK_QUESITON = gql`
   }
 `;
 
-export default graphql(CREAT_BLANK_QUESITON, {
-  name: "createQuestionnaire"
-})(Questionnaire);
+const EDIT_QUESTION = gql`
+  mutation editQuestion($editQuestionInput: EditQuestionInput) {
+    editQuestion(input: $editQuestionInput) {
+      id
+      questionText
+      rangeMin
+      rangeMax
+      type
+    }
+  }
+`;
+
+export default compose(
+  graphql(EDIT_QUESTION, { name: "editQuestion" }),
+  graphql(CREAT_BLANK_QUESITON, {
+    name: "createQuestionnaire"
+  })
+)(Questionnaire);

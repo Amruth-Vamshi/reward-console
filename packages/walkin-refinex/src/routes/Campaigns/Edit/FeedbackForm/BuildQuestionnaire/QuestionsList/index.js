@@ -13,22 +13,26 @@ export default class QuestionsList extends Component {
     this.props.onQuestionSelected(questionnaire[index]);
   };
 
-  Row = ({ index, style }) => {
+  getRow = (index, style) => {
     const { questionnaire } = this.props;
+    console.log(questionnaire);
+
     return (
       <div style={style}>
-        <CardBox if>
-          <div
-            onClick={() => {
-              this.toggleClick(index);
-            }}
-            style={{
-              cursor: "pointer"
-            }}
-          >
-            {questionnaire[index].questionText}
-          </div>
-        </CardBox>
+        <div style={{ margin: "1%" }}>
+          <CardBox>
+            <div
+              onClick={() => {
+                this.toggleClick(index);
+              }}
+              style={{
+                cursor: "pointer"
+              }}
+            >
+              {questionnaire[index].questionText}
+            </div>
+          </CardBox>
+        </div>
       </div>
     );
   };
@@ -36,7 +40,6 @@ export default class QuestionsList extends Component {
   render() {
     const { addNewQuestion, questionnaire } = this.props;
     console.log(questionnaire);
-
     return (
       <ErrorBoundary>
         <AutorSizer>
@@ -47,7 +50,9 @@ export default class QuestionsList extends Component {
               itemSize={100}
               width={width}
             >
-              {this.Row}
+              {({ index, style }) => {
+                return this.getRow(index, style);
+              }}
             </List>
           )}
         </AutorSizer>
