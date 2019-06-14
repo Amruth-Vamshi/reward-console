@@ -14,7 +14,6 @@ export default class EditCampaign extends Component {
   }
 
   onChange = current => {
-    console.log("onChange:", current);
     this.setState({ current });
   };
 
@@ -38,7 +37,6 @@ export default class EditCampaign extends Component {
   render() {
     const { Step } = Steps;
     const { current } = this.state;
-    console.log(this.props);
     return (
       <div className="PageContainer">
         <Row>

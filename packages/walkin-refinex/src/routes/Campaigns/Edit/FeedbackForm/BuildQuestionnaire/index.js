@@ -1,6 +1,5 @@
 import "./BuildQuestionnaire.css";
 import React, { Component } from "react";
-import SearchTree from "./TreePane";
 import FormPane from "./FormPane";
 import { Query, graphql, compose } from "react-apollo";
 import gql from "graphql-tag";
@@ -23,14 +22,16 @@ class Questionnaire extends Component {
     });
   };
 
-  onQuestionEdited = editedQuestion => {
+  onQuestionSubmitted = editedQuestion => {
     // GQL to edit the question and update questionnaire in state
+    const { type, questionText, rangeMax, rangeMin } = editedQuestion;
     const questionToSave = {
       id: this.state.questionToEdit.id,
-      ...editedQuestion
+      type,
+      questionText,
+      rangeMax,
+      rangeMin
     };
-    console.log(questionToSave);
-
     this.props
       .editQuestion({
         variables: {
@@ -38,7 +39,6 @@ class Questionnaire extends Component {
         }
       })
       .then(data => {
-        console.log(data);
         this.props.refetchQuestionnaire();
       })
       .catch(err => {
@@ -46,32 +46,47 @@ class Questionnaire extends Component {
       });
   };
 
-  addNewQuestion = async parent => {
+  addNewQuestion = async () => {
     const { feedbackForm } = this.props;
-    if (!parent) {
-      try {
-        const data = await this.props.createQuestionnaire({
-          variables: {
-            feedbackFormId: feedbackForm.id,
-            questionnaireRootInput: {
-              questionText: "Enter question details",
-              type: "SINGLE_ANSWER"
-            }
+    console.log("fetching");
+    try {
+      const data = await this.props.createQuestionnaire({
+        variables: {
+          feedbackFormId: feedbackForm.id,
+          questionnaireInput: {
+            questionText: "Enter question details",
+            type: "SINGLE_ANSWER"
           }
-        });
-        // if (data.data.createQuestionnaire.id) {
-        //   this.props.refetchQuestionnaire();
-        // }
-      } catch (e) {
-        console.log("Error in creating questionnaire");
-        console.log(e);
-      }
+        }
+      });
+      console.log(data);
+
+      // if (data.data.createQuestionnaire.id) {
+      //   this.props.refetchQuestionnaire();
+      // }
+    } catch (e) {
+      console.log("Error in creating questionnaire");
+      console.log(e);
     }
+  };
+
+  addChoice = () => {
+    this.props
+      .addChoice({
+        variables: {
+          questionId: this.state.questionToEdit.id
+        }
+      })
+      .then(data => {
+        console.log(data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
   };
 
   render() {
     const { questionToEdit } = this.state;
-
     return (
       <Row className="QuestionnaireArea">
         <Col span={8}>
@@ -85,9 +100,8 @@ class Questionnaire extends Component {
           {this.state.questionToEdit ? (
             <FormPane
               questionToEdit={questionToEdit}
-              onQuestionEdited={questionData => {
-                this.onQuestionEdited(questionData);
-              }}
+              onQuestionSubmitted={this.onQuestionSubmitted}
+              addChoice={this.addChoice}
             />
           ) : null}
         </Col>
@@ -99,11 +113,11 @@ class Questionnaire extends Component {
 const CREAT_BLANK_QUESITON = gql`
   mutation createQuestionnaire(
     $feedbackFormId: ID!
-    $questionnaireRootInput: QuestionInput
+    $questionnaireInput: QuestionInput
   ) {
     createQuestionnaire(
       feedbackFormId: $feedbackFormId
-      input: $questionnaireRootInput
+      input: $questionnaireInput
     ) {
       id
       questionText
@@ -126,9 +140,18 @@ const EDIT_QUESTION = gql`
   }
 `;
 
+const ADD_CHOICE = gql`
+  mutation addChoice($questionId: ID!) {
+    addChoice(questionId: $questionId) {
+      id
+    }
+  }
+`;
+
 export default compose(
   graphql(EDIT_QUESTION, { name: "editQuestion" }),
   graphql(CREAT_BLANK_QUESITON, {
     name: "createQuestionnaire"
-  })
+  }),
+  graphql(ADD_CHOICE, { name: "addChoice" })
 )(Questionnaire);

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import AutorSizer from "react-virtualized-auto-sizer";
 import { FixedSizeList as List } from "react-window";
 import { ErrorBoundary, CardBox } from "@walkinsole/walkin-components";
+import { Icon, Row, Col, Button } from "antd";
 
 export default class QuestionsList extends Component {
   constructor() {
@@ -15,8 +16,6 @@ export default class QuestionsList extends Component {
 
   getRow = (index, style) => {
     const { questionnaire } = this.props;
-    console.log(questionnaire);
-
     return (
       <div style={style}>
         <div style={{ margin: "1%" }}>
@@ -39,22 +38,46 @@ export default class QuestionsList extends Component {
 
   render() {
     const { addNewQuestion, questionnaire } = this.props;
-    console.log(questionnaire);
     return (
       <ErrorBoundary>
         <AutorSizer>
-          {({ height, width }) => (
-            <List
-              height={height}
-              itemCount={questionnaire.length}
-              itemSize={100}
-              width={width}
-            >
-              {({ index, style }) => {
-                return this.getRow(index, style);
-              }}
-            </List>
-          )}
+          {({ height, width }) =>
+            questionnaire.length > 0 ? (
+              <List
+                height={height}
+                itemCount={questionnaire.length}
+                itemSize={100}
+                width={width}
+              >
+                {({ index, style }) => {
+                  return this.getRow(index, style);
+                }}
+              </List>
+            ) : (
+              <Row
+                style={{
+                  height,
+                  width
+                }}
+              >
+                <Col span={24}>
+                  <Row type="flex" justify="center">
+                    <Col>
+                      <Button
+                        type="dashed"
+                        onClick={e => {
+                          e.preventDefault();
+                          this.props.addNewQuestion();
+                        }}
+                      >
+                        <Icon type="plus" /> CreateQuestionnaire
+                      </Button>
+                    </Col>
+                  </Row>
+                </Col>
+              </Row>
+            )
+          }
         </AutorSizer>
       </ErrorBoundary>
     );

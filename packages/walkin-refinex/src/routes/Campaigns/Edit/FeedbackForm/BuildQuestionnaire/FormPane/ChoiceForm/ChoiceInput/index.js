@@ -18,7 +18,6 @@ const ChoiceInput = ({ questionType }) => {
     RANKING: getMultiChoice(),
     DICHOTOMOUS: getMultiChoice()
   };
-  console.log(questionType);
 
   return ChoiceMap[questionType];
 };

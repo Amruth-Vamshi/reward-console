@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import ChoiceInput from "./ChoiceInput";
 import { ErrorBoundary, CardBox } from "@walkinsole/walkin-components";
-import { Row, Col } from "antd";
+import { Row, Col, Button, Icon } from "antd";
 
 const ChoiceMap = {
   SINGLE_ANSWER: true,
@@ -13,49 +13,58 @@ const ChoiceMap = {
 };
 
 export default class ChoiceForm extends Component {
-  showChoices = () => {
-    if (this.state.showChoices) {
+  getChoiceRows = () => {
+    return this.props.questionToEdit.choices.map(choice => {
       return (
-        <Row>
-          <Col span={24}>
-            <Row>
-              <Col span={24}>
-                <h2>Choices</h2>
-              </Col>
-            </Row>
-            {this.getChoiceRows()}
-            <Row>
-              <Col span={24}>
-                <Row type="flex" justify="center">
-                  <Col>
-                    <Button type="dashed" onClick={this.addChoice}>
-                      <Icon type="plus" /> Add Choice
-                    </Button>
-                  </Col>
-                </Row>
-              </Col>
-            </Row>
+        <Row
+          gutter={12}
+          style={{
+            marginTop: "1%"
+          }}
+        >
+          <Col span={8}>
+            <CardBox>
+              <ChoiceInput questionType={this.props.questionToEdit.type} />
+            </CardBox>
           </Col>
         </Row>
       );
-    } else {
-      return null;
-    }
+    });
+  };
+
+  addChoiceCard = () => {
+    return (
+      <Row>
+        <Col span={24}>
+          <Row type="flex" justify="center">
+            <Col>
+              <Button
+                type="dashed"
+                onClick={e => {
+                  e.preventDefault();
+                  this.props.addChoice();
+                }}
+              >
+                <Icon type="plus" /> Add Choice
+              </Button>
+            </Col>
+          </Row>
+        </Col>
+      </Row>
+    );
   };
 
   render() {
-    console.log(this.props.questionToEdit.type);
-
     if (ChoiceMap[this.props.questionToEdit.type]) {
       return (
         <ErrorBoundary>
-          <Row gutter={12}>
-            <Col span={8}>
-              <CardBox>
-                <ChoiceInput questionType={this.props.questionToEdit.type} />
-              </CardBox>
+          <Row>
+            <Col>
+              <h2>Configure choices</h2>
             </Col>
           </Row>
+          {this.getChoiceRows()}
+          {this.addChoiceCard()}
         </ErrorBoundary>
       );
     }
