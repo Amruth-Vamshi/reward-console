@@ -18,19 +18,19 @@ export default class GooglePlacesMap extends Component {
   render() {
     var formData = this.props.data
     var options = placeTypesArr.map((item, index) => <Option key={index} value={item.replace(' ', '_').toLowerCase()}>{item}</Option>)
-      return (
-        // <div>
-        // {/* <Affix style={{zIndex: 1}}  offsetBottom={45}> */}
+    return (
+      // <div>
+      // {/* <Affix style={{zIndex: 1}}  offsetBottom={45}> */}
 
-        <div style={{marginTop:30}}>
+      <div style={{ marginTop: 30 }}>
 
-        {formData.moreOptions?<div>
+        {formData.moreOptions ? <div>
 
-          <p><span onClick={() => this.props.getloc()} style={{padding:'30px', whiteSpace: "nowrap", fontSize:'17px'}} className="gx-text-primary gx-pointer">Get Location From Map</span>
-          <span>(or) </span>
-          <span onClick={() => this.props.myloc()} style={{padding:'30px', whiteSpace: "nowrap", fontSize:'17px'}} className="gx-text-primary gx-pointer">Get Current Location</span></p>
+          <p><span onClick={() => this.props.getloc()} style={{ padding: '30px', whiteSpace: "nowrap", fontSize: '17px' }} className="gx-text-primary gx-pointer">Get Location From Map</span>
+            <span>(or) </span>
+            <span onClick={() => this.props.myloc()} style={{ padding: '30px', whiteSpace: "nowrap", fontSize: '17px' }} className="gx-text-primary gx-pointer">Get Current Location</span></p>
           {/* <Button onClick={() => this.props.getloc()} style={{ margin: "10px" }}>Get location from map</Button> */}
-          
+
 
 
           <Row style={{ padding: 10, paddingLeft: 30, float: "center" }} >
@@ -49,41 +49,35 @@ export default class GooglePlacesMap extends Component {
 
           <Row style={{ padding: 10, paddingLeft: 30, float: "center" }}>
             <Col span={10}>
-              Search radius:
-                              <Input required placeholder="Search Radius" value={formData.searchRadius} name="searchRadius" min={100} type="number" step="1" onChange={c => this.props.changeSearchRadius(c)} />
+              Search radius: <Input required placeholder="Search Radius" value={formData.searchRadius} name="searchRadius" min={100} type="number" step="1" onChange={c => this.props.changeSearchRadius(c)} />
               <span style={{ color: 'Red' }}>{formData.errors.searchRadius}</span>
             </Col>
 
-            
+
             <Col style={{ overflow: "hidden" }} span={10}>
               Type:
               <Select
-                showSearch
-                value={formData.type}
-                name="type"
-                style={{ width: '250px' }}
-                placeholder="Select Type"
-                optionFilterProp="children"
-                onChange={e=>this.props.handleOnTypeChange(e)}
-                filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-              >
+                showSearch value={formData.type} name="type" style={{ width: '250px' }}
+                placeholder="Select Type" optionFilterProp="children"
+                onChange={e => this.props.handleOnTypeChange(e)}
+                filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}  >
                 {options}
               </Select>
               <span style={{ color: 'Red' }}>{formData.errors.type}</span>
             </Col>
           </Row>
 
-          </div>:''}
+        </div> : ''}
 
-          {/* <Affix style={{  top: 200 }} offsetTop={180}> */}
-            <div style={{ padding: 20 }}>
-              <GeofenceMap mapData={this.props.data} setlocationDetails={this.props.setlocationDetails} />
-            </div>
-          {/* </Affix> */}
-
+        {/* <Affix style={{  top: 200 }} offsetTop={180}> */}
+        <div style={{ padding: 20 }}>
+          <GeofenceMap mapData={this.props.data} setlocationDetails={this.props.setlocationDetails} />
         </div>
-        // {/* </Affix> */}
-        // </div>
-      )
+        {/* </Affix> */}
+
+      </div>
+      // {/* </Affix> */}
+      // </div>
+    )
   }
 }
