@@ -27,29 +27,29 @@ class SidebarLogo extends Component {
               <i
                 className={`gx-icon-btn icon icon-arrow-left ${
                   themeType !== THEME_TYPE_LITE ? "gx-text-white" : ""
-                }`}
+                  }`}
               />
             </Link>
           </div>
         ) : null}
         <Link to="/" className="gx-site-logo">
           {navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR &&
-          width >= TAB_SIZE ? (
-            <img
-              alt=""
-              src={require("@walkinsole/walkin-components/src/assets/images/w-logo.png")}
-            />
-          ) : themeType === THEME_TYPE_LITE ? (
-            <img
-              alt=""
-              src={require("@walkinsole/walkin-components/src/assets/images/logo-white.png")}
-            />
-          ) : (
-            <img
-              alt=""
-              src={require("@walkinsole/walkin-components/src/assets/images/logo.png")}
-            />
-          )}
+            width >= TAB_SIZE ? (
+              <img
+                alt=""
+                src={require("@walkinsole/walkin-components/src/assets/images/w-logo.png")}
+              />
+            ) : themeType === THEME_TYPE_LITE ? (
+              <img
+                alt=""
+                src={require("@walkinsole/walkin-components/src/assets/images/logo-white.png")}
+              />
+            ) : (
+                <img
+                  alt=""
+                  src={require("@walkinsole/walkin-components/src/assets/images/nearx-logo-small1.png")}
+                />
+              )}
         </Link>
       </div>
     );

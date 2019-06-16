@@ -6,6 +6,7 @@ import AnalyticsManager from "./Analytics/index";
 import Places from "./Places";
 import settings from "./Settings";
 import NearxApps from "./App";
+import Hooks from "./Webhooks";
 import DeveloperManager from "./Developer";
 import TestUpload from "./TestUpload";
 
@@ -13,7 +14,7 @@ export default class NearXRoutes extends Component {
   render() {
     // console.log('props',this.props)
     return (
-      <div>
+      <div className="NearX-Main">
         <Switch>
           <Redirect exact from="/nearx" to="/nearx/places" />
           <Route path="/nearx/dashboard" component={Dashboard} />
@@ -21,10 +22,10 @@ export default class NearXRoutes extends Component {
           <Route path="/nearx/places" component={Places} />
           <Route path="/nearx/developer" component={DeveloperManager} />
           <Route path="/nearx/settings" component={settings} />
+          <Route path="/nearx/hooks" component={Hooks} />
           <Route path="/nearx/apps" component={NearxApps} />
-          <Route path="/nearx/settings" component={settings} />
           <Route path="/nearx/testUpload" component={TestUpload} />
-          <Route path="/nearx/*" component={Dashboard} />
+          <Redirect from="/nearx/" to="/nearx/dashboard" />
         </Switch>
       </div>
     );

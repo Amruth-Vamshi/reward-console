@@ -12,6 +12,7 @@ import {
   Icon
 } from "antd";
 import { Auxiliary } from "@walkinsole/walkin-components";
+import CustomScrollbars from "../../../util/CustomScrollbars";
 
 const formItemLayout = {
   labelCol: {
@@ -151,8 +152,10 @@ export default class CreateHotspot extends Component {
 
     return (
       <Auxiliary>
+
         <div className="gx-card">
-          <div className="gx-card-body" style={{ overflow: "hidden" }}>
+          <div className="gx-card-body addHpForm" style={{ overflow: "hidden" }}>
+            {/* <CustomScrollbars className="gx-layout-sider-scrollbar addHpForm"> */}
             <div>
               <Col>
                 <Form onSubmit={this.props.handleSubmit}>{form}</Form>
@@ -171,6 +174,8 @@ export default class CreateHotspot extends Component {
                 </div>
               </Col>
             </div>
+
+            {/* </CustomScrollbars> */}
           </div>
         </div>
       </Auxiliary>

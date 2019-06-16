@@ -13,6 +13,7 @@ import {
 } from "antd";
 import { Auxiliary } from "@walkinsole/walkin-components";
 import HotspotCard from "./HotspotCard";
+import { RADIUS_1_MAX, RADIUS_1_MIN, RADIUS_2_MAX, RADIUS_3_MAX } from "../../../Constants";
 
 const marks = {
   // 0: '0',
@@ -90,29 +91,33 @@ export default class CreatePlaceForm extends Component {
       <Row>
         <Col span={18}>
           <Slider
-            min={n ? formData.places[i].radius[n - 1] : 0}
-            max={n ? (n != 1 ? 500 : 300) : 100}
+            min={n ? formData.places[i].radius[n - 1] : RADIUS_1_MIN}
+            // max={n ? (n != 1 ? RADIUS_3_MAX : RADIUS_2_MAX) : RADIUS_1_MAX}
+            max={RADIUS_3_MAX}
+
             marks={this.slideMarks(
-              n ? formData.places[i].radius[n - 1] : 0,
-              n ? (n != 1 ? 500 : 300) : 100
+              n ? formData.places[i].radius[n - 1] : RADIUS_1_MIN,
+              // n ? (n != 1 ? RADIUS_3_MAX : RADIUS_2_MAX) : RADIUS_1_MAX
+              RADIUS_3_MAX
             )}
             onChange={e => this.props.onChangeRadius(e, i, n)}
             value={
               typeof formData.places[i].radius[n] === "number"
                 ? formData.places[i].radius[n]
-                : 0
+                : n ? formData.places[i].radius[n - 1] : RADIUS_1_MIN
             }
           />
         </Col>
         <Col span={4}>
           <InputNumber
-            min={n ? formData.places[i].radius[n - 1] : 0}
-            max={n ? (n != 1 ? 500 : 300) : 100}
+            min={n ? formData.places[i].radius[n - 1] : RADIUS_1_MIN}
+            // max={n ? (n != 1 ? RADIUS_3_MAX : RADIUS_2_MAX) : RADIUS_1_MAX}
+            max={RADIUS_3_MAX}
             style={{ marginLeft: 0 }}
             value={
               typeof formData.places[i].radius[n] === "number"
                 ? formData.places[i].radius[n]
-                : 0
+                : n ? formData.places[i].radius[n - 1] : RADIUS_1_MIN
             }
             onChange={e => this.props.onChangeRadius(e, i, n)}
           />
@@ -145,8 +150,8 @@ export default class CreatePlaceForm extends Component {
               deleteHotspot={this.props.deleteHotspot}
             />
           ) : (
-            ""
-          )}
+              ""
+            )}
         </div>
       );
 
@@ -250,21 +255,23 @@ export default class CreatePlaceForm extends Component {
                       formData
                     )}
 
-                    {formData.places[0].radius.length >= 3 ? (
-                      ""
-                    ) : (
-                      <Form.Item {...tailFormItemLayout}>
-                        <div style={{ float: "right" }}>
-                          <p
-                            onClick={() => this.props.addRadius(0)}
-                            style={{ float: "right", color: "#34bfe2" }}
-                          >
-                            {" "}
-                            <a to="#"> + Add Fence </a>
-                          </p>
-                        </div>
-                      </Form.Item>
-                    )}
+
+                    {formData.places[0].radius.length >= 3 ||
+                      formData.places[0].radius[formData.places[0].radius.length - 1] == 500 ? (
+                        ""
+                      ) : (
+                        <Form.Item {...tailFormItemLayout}>
+                          <div style={{ float: "right" }}>
+                            <p
+                              onClick={() => this.props.addRadius(0)}
+                              style={{ float: "right", color: "#34bfe2" }}
+                            >
+                              {" "}
+                              <a to="#"> + Add Fence </a>
+                            </p>
+                          </div>
+                        </Form.Item>
+                      )}
                     <br />
                     <br />
                   </div>
@@ -283,8 +290,8 @@ export default class CreatePlaceForm extends Component {
                       </span>{" "}
                     </p>
                   ) : (
-                    ""
-                  )}
+                      ""
+                    )}
 
                   {form}
 

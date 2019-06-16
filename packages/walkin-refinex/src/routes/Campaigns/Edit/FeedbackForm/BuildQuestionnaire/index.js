@@ -1,9 +1,10 @@
 import "./BuildQuestionnaire.css";
 import React, { Component } from "react";
-import { Tree, Divider, Drawer, Button, Row, Col } from "antd";
 import SearchTree from "./TreePane";
 import FormPane from "./FormPane";
-import { Query } from "react-apollo";
+import { Query, graphql } from "react-apollo";
+import gql from "graphql-tag";
+import { Row, Col } from "antd";
 
 class Questionnaire extends Component {
   constructor() {
@@ -24,21 +25,118 @@ class Questionnaire extends Component {
     // GQL to edit the question and update questionnaire in state
   };
 
+  addNewQuestion = async parent => {
+    const { feedbackForm } = this.props;
+    if (!parent) {
+      try {
+        const data = await this.props.createQuestionnaire({
+          variables: {
+            feedbackFormId: feedbackForm.id,
+            questionnaireRootInput: {
+              questionText: "Enter question details",
+              type: "SINGLE_ANSWER"
+            }
+          }
+        });
+        if (data.data.createQuestionnaire.id) {
+          this.props.refetchQuestionnaire();
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  };
+
   render() {
-    const { TreeNode } = Tree;
-    const { questionnaire, questionToEdit } = this.state;
+    const { questionToEdit } = this.state;
+    const { feedbackForm } = this.props;
+    const questionId = feedbackForm.questionnaireRoot
+      ? feedbackForm.questionnaireRoot.id
+      : null;
+    const GET_QUESTIONNAIRE = gql`
+      query getQuestionnaireHierarchy($questionId: ID!) {
+        questionHierarchy(questionId: $questionId) {
+          id
+          questionText
+          type
+          rangeMax
+          rangeMin
+          feedbackCategory {
+            id
+            title
+          }
+
+          choices {
+            id
+            choiceText
+            rangeStart
+            rangeEnd
+            toQuestion {
+              id
+              questionText
+              type
+              rangeMax
+              rangeMin
+              feedbackCategory {
+                id
+                title
+              }
+            }
+          }
+        }
+      }
+    `;
+
     return (
-      <div className="BuildPane">
-        <SearchTree
-          questionnaire={questionnaire}
-          onQuestionSelected={this.onQuestionSelected}
-        />
-        <FormPane
-          questionToEdit={questionToEdit}
-          onQuestionEdited={this.onQuestionEdited}
-        />
-      </div>
+      <Query query={GET_QUESTIONNAIRE} variables={{ questionId }}>
+        {({ data, loading, error }) => {
+          if (loading) {
+            return <div>loading...</div>;
+          }
+          const questionnaire = data ? data.questionHierarchy : [];
+          return (
+            <Row>
+              <Col span={8}>
+                <SearchTree
+                  questionnaire={questionnaire}
+                  onQuestionSelected={this.onQuestionSelected}
+                  addNewQuestion={this.addNewQuestion}
+                />
+              </Col>
+              <Col span={16}>
+                {this.state.questionToEdit ? (
+                  <FormPane
+                    questionToEdit={questionToEdit}
+                    onQuestionEdited={this.onQuestionEdited}
+                  />
+                ) : null}
+              </Col>
+            </Row>
+          );
+        }}
+      </Query>
     );
   }
 }
-export default Questionnaire;
+
+const CREAT_BLANK_QUESITON = gql`
+  mutation createQuestionnaire(
+    $feedbackFormId: ID!
+    $questionnaireRootInput: QuestionInput
+  ) {
+    createQuestionnaire(
+      feedbackFormId: $feedbackFormId
+      input: $questionnaireRootInput
+    ) {
+      id
+      questionText
+      type
+      rangeMin
+      rangeMax
+    }
+  }
+`;
+
+export default graphql(CREAT_BLANK_QUESITON, {
+  name: "createQuestionnaire"
+})(Questionnaire);

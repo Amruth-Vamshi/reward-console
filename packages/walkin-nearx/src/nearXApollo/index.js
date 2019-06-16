@@ -1,12 +1,13 @@
 import { InMemoryCache } from "apollo-boost";
 import ApolloClient from "apollo-boost";
+import { NEARX_GRAPHQL_URL } from "@walkinsole/walkin-components/src/constants/config";
 
 const cache = new InMemoryCache();
 const token = localStorage.getItem("jwt");
 
 export const nearXClient = new ApolloClient({
   cache,
-  uri: "https://dev-api.getwalkin.in/nearx/graphql",
+  uri: NEARX_GRAPHQL_URL,
   credentials: "same-origin",
   headers: {
     api_key: "0X3bmLq5sBImabgEXkDVBfnOyUOkD2WN",

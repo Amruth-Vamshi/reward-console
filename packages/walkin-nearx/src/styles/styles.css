@@ -26,6 +26,16 @@
     margin-top: -45px;
 }
 
+  /* .ant-layout > .gx-layout-content {
+    background-color: #eeeeee;
+} */
+
+
+.NearX-Main{
+    min-height: 92vh;
+    background-color: #e6e6e6
+}
+
 
 /* .headerRow {
 	padding:13px 30px;
@@ -38,9 +48,9 @@
 
 }
 
-.mainDrawer div.ant-drawer-wrapper-body{
+/* .mainDrawer div.ant-drawer-wrapper-body{
 	background-color: #003366
-}
+} */
 
 /* 
 .ant-row > [class*=ant-col-] {

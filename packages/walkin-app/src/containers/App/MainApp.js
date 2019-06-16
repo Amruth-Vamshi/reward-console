@@ -29,7 +29,7 @@ import {
   TAB_SIZE
 } from "@walkinsole/walkin-components/src/constants/ThemeSetting";
 import gql from "graphql-tag";
-import { graphql } from "react-apollo";
+import { compose, graphql } from "react-apollo";
 
 const { Content, Footer } = Layout;
 
@@ -97,9 +97,16 @@ export class MainApp extends Component {
     }
   };
 
-  render() {
-    const { match, width, navStyle } = this.props;
+  componentDidMount() {
+    window.addEventListener("resize", () => {
+      this.props.updateWindowWidth({ variables: { width: window.innerWidth } })
+      console.log(window.innerWidth)
+    });
+  }
 
+  render() {
+    const { match, navStyle } = this.props;
+    let width = window.innerWidth
     return (
       <Layout className="gx-app-layout">
         {this.getSidebar(navStyle, width)}
@@ -110,12 +117,19 @@ export class MainApp extends Component {
           >
             <App />
           </Content>
+          {/* <Footer>  <div className="gx-layout-footer-content">Copyright First Walkin Technologies © 2019</div> </Footer> */}
         </Layout>
         <Customizer />
       </Layout>
     );
   }
 }
+
+const UPDATE_WINDOW_WIDTH = gql`
+  mutation updateWindowWidth($width: Int) {
+    updateWindowWidth(width: $width) @client
+  }
+`;
 
 const mapStateToProps = ({ settings }) => {
   const { width, navStyle } = settings.settings;
@@ -131,7 +145,10 @@ const GET_SETTINGS = gql`
   }
 `;
 
-export default graphql(GET_SETTINGS, {
-  props: mapStateToProps,
-  name: "settings"
-})(MainApp);
+export default compose(
+  graphql(UPDATE_WINDOW_WIDTH, { name: "updateWindowWidth" }),
+  graphql(GET_SETTINGS, {
+    props: mapStateToProps,
+    name: "settings"
+  })
+)(MainApp);
