@@ -10,7 +10,7 @@ const Core = lazy(() => import('@walkinsole/walkin-core'));
 const NearX = lazy(() => import('@walkinsole/walkin-nearx'));
 
 const App = () => (
-	<div style={{ position: 'relative' }} className="gx-main-content-wrapper">
+	<div className="gx-main-content-wrapper">
 		<Suspense fallback={<div>Loading...</div>}>
 			<Switch>
 				<Route path="/core" component={Core} />
