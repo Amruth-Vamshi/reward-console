@@ -2,14 +2,18 @@ import React from 'react';
 import { Row, Col, Button } from 'antd';
 import './style.css';
 
-const CampaignFooter = ({ text, stepData, current, onChange }) => {
+const CampaignFooter = ({ nextButtonText, saveDraftText, onPage1SaveDraft, goToPage2 }) => {
 	return (
 		<Row className="campaignFooterStyle">
 			<Col span={8}>
-				<Button type="primary">Next</Button>
+				<Button onClick={goToPage2} type="primary">
+					{nextButtonText}
+				</Button>
 			</Col>
 			<Col span={4}>
-				<Button type="link">Save Draft</Button>
+				<Button onClick={onPage1SaveDraft} type="link">
+					{saveDraftText}
+				</Button>
 			</Col>
 		</Row>
 	);

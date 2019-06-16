@@ -5,12 +5,20 @@ import { Link } from 'react-router-dom';
 
 const { Step } = Steps;
 
-const Stepper = ({ stepData, current, onChange }) => {
+// onChange method is not available on antd (might have to upgrade)
+const Stepper = ({ stepData, current, onChange, onClick }) => {
 	return (
-		<Steps className="stepsStyle" size="small" labelPlacement="vertical" current={current}>
+		<Steps
+			onChange={() => console.log('im clicked')}
+			className="stepsStyle"
+			size="small"
+			labelPlacement="vertical"
+			current={current}
+			onChange={onChange}
+		>
 			{stepData &&
 				stepData.map((val, index) => (
-					<Step key={`col-${index}`} title={<Link to={`/hyperx/${val.title}`}>{val.title}</Link>} />
+					<Step key={`col-${index}`} title={<Link to={`/hyperx/${val.route}`}>{val.title}</Link>} />
 				))}
 		</Steps>
 	);

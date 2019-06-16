@@ -35,3 +35,6 @@
 	border: 0.1px solid #956fe7;
 	color: #956fe7;
 }
+.flex-box-outer > hr {
+	display: none;
+}

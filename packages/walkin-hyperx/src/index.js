@@ -6,11 +6,10 @@ import Audience from './containers/campaignCreation/audience';
 
 const App = ({ match }) => {
 	return (
-		<div className="gx-main-content-wrapper">
+		<div>
 			<Switch>
-				<Redirect exact from="/hyperx/basicInfo" to={NEW_CAMPAIGN_BASIC_INFO} />
+				<Route exact path={'/hyperx'} render={() => <Redirect from="/hyperx" to={NEW_CAMPAIGN_BASIC_INFO} />} />
 				<Route path={NEW_CAMPAIGN_BASIC_INFO} component={BasicInfo} />
-				<Route path={NEW_CAMPAIGN_AUDIENCE} component={Audience} />
 				<Route path="/hyperx/*" component={BasicInfo} />
 			</Switch>
 		</div>

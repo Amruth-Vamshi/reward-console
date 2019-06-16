@@ -3,44 +3,46 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './style.css';
 
-// function renameQueryProperties(query) {
-// 	console.log('q', query);
-// 	let str = JSON.stringify(query);
-// 	var mapObj = {
-// 		field: 'attributeName',
-// 		value: 'attributeValue',
-// 		operator: 'expressionType',
-// 	};
-// 	str = str.replace(/field|value|operator/gi, function(matched) {
-// 		return mapObj[matched];
-// 	});
-// 	query = JSON.parse(str);
-// 	console.log('new', query);
-// }
+class WalkinQueryBuilder extends React.Component {
+	renameQueryProperties = query => {
+		let str = JSON.stringify(query);
+		var mapObj = {
+			field: 'attributeName',
+			value: 'attributeValue',
+			operator: 'expressionType',
+		};
+		str = str.replace(/field|value|operator/gi, function(matched) {
+			return mapObj[matched];
+		});
+		query = JSON.parse(str);
+		this.props.onQueryChange(query);
+	};
 
-const WalkinQueryBuilder = ({ translations, operators, fields, handleQueryChange }) => {
-	return (
-		<div className="flex-box-outer">
-			<hr />
-			<div className="flex-box">
-				<div className="scroll">
-					<QueryBuilder
-						fields={fields}
-						controlClassnames={{ fields: 'form-control' }}
-						onQueryChange={handleQueryChange}
-						operators={operators}
-					/>
+	render() {
+		const { translations, operators, fields, handleQueryChange } = this.props;
+		return (
+			<div className="flex-box-outer">
+				<hr />
+				<div className="flex-box">
+					<div className="scroll">
+						<QueryBuilder
+							fields={fields}
+							controlClassnames={{ fields: 'form-control' }}
+							onQueryChange={this.renameQueryProperties}
+							operators={operators}
+						/>
+					</div>
 				</div>
 			</div>
-		</div>
-	);
-};
+		);
+	}
+}
 
 WalkinQueryBuilder.propTypes = {
 	fields: PropTypes.arrayOf(
 		PropTypes.shape({
-			name: PropTypes.string.isRequired,
-			label: PropTypes.string.isRequired,
+			name: PropTypes.string,
+			label: PropTypes.string,
 		}).isRequired
 	),
 	onQueryChange: PropTypes.func,

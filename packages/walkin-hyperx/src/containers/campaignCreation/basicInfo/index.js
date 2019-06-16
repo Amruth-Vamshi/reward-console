@@ -1,51 +1,43 @@
 import React, { Component, Fragment } from 'react';
-import { Row, Col } from 'antd';
+import { Row, Col, Typography } from 'antd';
 import CampaignHeader from '../../../components/molecules/campaignHeader';
 import CampaignFooter from '../../../components/molecules/campaignFooter';
 import CampaignPriority from '../../../components/organisms/campaignPriority';
 import BasicInfoForm from '../../../components/molecules/basicInfoForm';
-import HeaderTitle from '../../../components/atoms/headerTitle';
 import { Route, Switch } from 'react-router-dom';
 import WalkinQueryBuilder from '../../../components/atoms/queryBuilder';
+import Audience from '../audience';
+import BasicSlider from '../../../components/atoms/testAndControlSlider';
+import Popup from '../../../components/atoms/popup';
+import { withRouter } from 'react-router-dom';
+
+const { Text } = Typography;
 
 const stepData = [
 	{
 		id: 1,
+		route: 'basicInfo',
 		title: 'Basic Info',
 	},
 	{
 		id: 2,
 		title: 'Audience',
+		route: 'audience',
 	},
 	{
 		id: 3,
 		title: 'Communication',
+		route: 'ommunication',
 	},
 	{
 		id: 4,
 		title: 'Offer',
+		route: 'offer',
 	},
 	{
 		id: 5,
 		title: 'Overview',
-	},
-];
-
-const buttonData = [
-	{
-		text: 1,
-	},
-	{
-		text: 2,
-	},
-	{
-		text: 3,
-	},
-	{
-		text: 4,
-	},
-	{
-		text: 5,
+		route: 'overview',
 	},
 ];
 
@@ -66,67 +58,147 @@ class BasicInfo extends Component {
 		this.state = {
 			formValues: {},
 			current: 0,
+			priorityChosen: '',
+			priorityNumberError: false,
+			showTestAndControl: false,
+			testValue: 95,
+			controlValue: 5,
+			testControlSelected: '',
 		};
 	}
 	saveFormRef = formRef => {
 		this.formRef = formRef;
 	};
 
-	logQuery = query => {
-		console.log('quu', query);
+	onTestAndControlEdit = () => {
+		this.setState({
+			showTestAndControl: true,
+		});
+	};
+
+	handleCancel = () => {
+		this.setState({ showTestAndControl: false });
 	};
 
 	onFormNext = e => {
 		e.preventDefault();
+	};
+
+	goToPage2(e) {
 		const form = this.formRef.props.form;
 		form.validateFields((err, values) => {
 			if (err) {
 				return;
+			} else {
+				this.setState({
+					formValues: values,
+				});
+				// e.stopPropagation();
+				// e.stopPropagation();
+				const { history } = this.props;
+				history.push({
+					pathname: '/hyperx/audience',
+				});
 			}
-			this.setState({
-				formValues: values,
-			});
 		});
+	}
+
+	onControlValueChange = val => {
+		this.setState({ controlValue: val });
+	};
+
+	onTestValueChange = val => {
+		this.setState({ testValue: val });
+	};
+
+	applyTestControlChange = () => {
+		const { testValue, controlValue } = this.state;
+		this.setState({ testControlSelected: `${testValue} % - ${controlValue}%`, showTestAndControl: false });
 	};
 
 	render() {
-		const { formValues, current } = this.state;
+		const { formValues, current, showTestAndControl, testValue, controlValue, testControlSelected } = this.state;
 		return (
 			<div style={{ margin: '-32px' }}>
-				<CampaignHeader text="Create Campaign" current={current} stepData={stepData} onChange={this.onChange} />
-				<div style={{ margin: '32px' }}>
-					{' '}
-					<HeaderTitle text="Basic Information" />
-				</div>
-				<Row style={{ margin: '32px' }}>
-					<Col span={14}>
-						<BasicInfoForm
-							onFormNext={this.onFormNext}
-							wrappedComponentRef={this.saveFormRef}
-							formValues={formValues}
-						/>
-					</Col>
-					<Col span={10}>
-						<CampaignPriority
-							buttons={buttonData}
-							text="Test & Control"
-							promptText="prompt text"
-							tootTipText="what is test and control"
-							prioritySelectionTitle="Campaign Priority"
-							priorityButtonText="Custom"
-							testControlTitle="Test & Control"
-							testControlPercentage="95% - 5%"
-							testControlPercentageEditText="Edit"
-						/>
-					</Col>
-				</Row>
+				<CampaignHeader text="Create Campaign" current={current} stepData={stepData} />
+				<Switch>
+					<Route
+						exact
+						path={'/hyperx/basicInfo'}
+						render={props => {
+							return (
+								<Fragment>
+									<div style={{ margin: '32px' }}>
+										{' '}
+										<h3 className="gx-text-grey">Basic information</h3>
+									</div>
+									<Row style={{ margin: '32px' }}>
+										<Col span={14}>
+											<BasicInfoForm
+												onFormNext={this.onFormNext}
+												wrappedComponentRef={this.saveFormRef}
+												formValues={formValues}
+											/>
+										</Col>
+										<Col span={10}>
+											<CampaignPriority
+												text="Test & Control"
+												promptText="prompt text"
+												tootTipText="what is test and control"
+												prioritySelectionTitle="Campaign Priority"
+												priorityButtonText="Custom no"
+												testControlTitle="Test & Control"
+												testControlPercentage={
+													testControlSelected ? testControlSelected : '95% - 5%'
+												}
+												testControlPercentageEditText="Edit"
+												onClick={this.onPriorityButtonClick}
+												priorityNumberInvalidErrorMessage="Enter a value between 1 and 99"
+												onTestAndControlEdit={this.onTestAndControlEdit}
+											/>
+										</Col>
+									</Row>
+									<Popup
+										visible={showTestAndControl}
+										title="Test & Control"
+										handleOk={this.handleOk}
+										handleCancel={this.handleCancel}
+										handleOnClick={this.applyTestControlChange}
+										popupContent={
+											<Fragment>
+												<Text>
+													Divide customers selected for a specific audience into local test
+													and local control groups
+												</Text>
+												<BasicSlider
+													controlValue={controlValue}
+													testValue={testValue}
+													maxValueAllowed={75}
+													onTestValueChange={this.onTestValueChange}
+													onControlValueChange={this.onControlValueChange}
+												/>
+											</Fragment>
+										}
+										buttonText="Apply"
+									/>
+								</Fragment>
+							);
+						}}
+					/>
+					<Route path={'/hyperx/audience'} component={Audience} />
+				</Switch>
 
 				<div style={{ margin: '32px' }}>
-					<CampaignFooter />
+					<CampaignFooter
+						nextButtonText="Next"
+						saveDraftText="Save Draft"
+						onPage1SaveDraft={this.onPage1SaveDraft}
+						goToPage2={this.goToPage2.bind(this)}
+					/>
 				</div>
 			</div>
 		);
 	}
 }
 
-export default BasicInfo;
+export default withRouter(BasicInfo);

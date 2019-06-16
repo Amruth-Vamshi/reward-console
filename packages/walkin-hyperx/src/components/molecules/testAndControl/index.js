@@ -11,6 +11,7 @@ const TestAndControl = ({
 	tootTipText,
 	testControlPercentage,
 	testControlPercentageEditText,
+	onTestAndControlEdit,
 }) => {
 	return (
 		<Fragment>
@@ -23,7 +24,7 @@ const TestAndControl = ({
 			</div>
 			<div className="testControlPercentageStyle">
 				<Text>{testControlPercentage}</Text>
-				<Button className="testAndControlButtonStyle" type="link">
+				<Button className="testAndControlButtonStyle" type="link" onClick={onTestAndControlEdit}>
 					{testControlPercentageEditText}
 				</Button>
 			</div>
