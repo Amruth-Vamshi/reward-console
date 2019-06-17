@@ -107,7 +107,7 @@ class AddHotspot extends Component {
       .catch(err => console.log("Failed to get Places Details" + err));
   };
 
-  pagination = (e, n) => this.getPlacesData(e - 1, n, this.state.search);
+  pagination = (e, n) => this.getPlacesData((e - 1)*n, n, this.state.search);
 
   onPlaceSelect = (id, e) => {
     console.log(e.target.checked, id);
