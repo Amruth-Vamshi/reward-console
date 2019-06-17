@@ -1,0 +1,6 @@
+.allButtonStyle {
+	background-color: #cecece;
+}
+.allButtonStyle:not(:last-child) {
+	margin-right: 3px !important;
+}
