@@ -36,7 +36,9 @@ export default class Developer extends Component {
                 <Card title="Documentation">
                   {/* <div>Development SDK documentation here</div> */}
                   {/* <article dangerouslySetInnerHTML={{__html: this.state.markdown}}></article> */}
-                  <p dangerouslySetInnerHTML={{ __html: readmePath }} />
+                  {/* <p dangerouslySetInnerHTML={{ __html: readmePath }} /> */}
+                  <a target="_blank" href="https://distracted-easley-4dc5d1.netlify.com/docs/overview"  >
+                    Click Here for Documentation</a>
                 </Card>
               </div>
             </div>

@@ -13454,9 +13454,9 @@ rc-dialog@~7.4.0:
     rc-util "^4.4.0"
 
 rc-drawer@~1.9.3:
-  version "1.9.8"
-  resolved "https://registry.yarnpkg.com/rc-drawer/-/rc-drawer-1.9.8.tgz#241dae399d6fc3d8ea117e768b27088d97cb5946"
-  integrity sha512-LUOsMdax6yFhCbHpzpPBpf4GlQaLQ1OoBrpyImREghynfVoCs8WT6WUfE3FWWG1PM0Fs8f+yY4uiR7rMFQxl5A==
+  version "1.9.6"
+  resolved "https://registry.yarnpkg.com/rc-drawer/-/rc-drawer-1.9.6.tgz#d9c314e4bc8d8207bc2be44f80d7371f2356fe01"
+  integrity sha512-F9Ng9GztUge9HF+aTXu4FCl6fMCi+DZbi0iJ9MLL/9m8WCqrwBAyri9/nsJpmEXMDvfkYrxTT6ed27yBv6y8UQ==
   dependencies:
     babel-runtime "6.x"
     classnames "^2.2.5"
@@ -13915,7 +13915,7 @@ react-docgen@^3.0.0:
     node-dir "^0.1.10"
     recast "^0.16.0"
 
-react-dom@^16.2.0, react-dom@^16.8.1, react-dom@^16.8.6:
+react-dom@^16.8.1, react-dom@^16.8.6:
   version "16.8.6"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.8.6.tgz#71d6303f631e8b0097f56165ef608f051ff6e10f"
   integrity sha512-1nL7PIq9LTL3fthPqwkvr2zY7phIPjYrT0jp4HjyEQrEROnw4dG41VVwi/wfoCneoleqrNX7iAD+pXebJZwrwA==
@@ -14095,16 +14095,6 @@ react-proxy@^1.1.7:
     lodash "^4.6.1"
     react-deep-force-update "^1.0.0"
 
-"react-querybuilder@https://github.com/FourthLion/react-querybuilder.git":
-  version "1.4.3"
-  resolved "https://github.com/FourthLion/react-querybuilder.git#816b93d796aad7d21f654e3aa4a89315aa350e2e"
-  dependencies:
-    lodash "^4.17.4"
-    prop-types "^15.6.0"
-    react "^16.2.0"
-    react-dom "^16.2.0"
-    uuid "^3.0.1"
-
 react-resize-detector@^2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/react-resize-detector/-/react-resize-detector-2.3.0.tgz#57bad1ae26a28a62a2ddb678ba6ffdf8fa2b599c"
@@ -14238,7 +14228,7 @@ react-transition-group@^2.5.0:
     prop-types "^15.6.2"
     react-lifecycles-compat "^3.0.4"
 
-react@^16.2.0, react@^16.8.1, react@^16.8.6:
+react@^16.8.1, react@^16.8.6:
   version "16.8.6"
   resolved "https://registry.yarnpkg.com/react/-/react-16.8.6.tgz#ad6c3a9614fd3a4e9ef51117f54d888da01f2bbe"
   integrity sha512-pC0uMkhLaHm11ZSJULfOBqV4tIZkx87ZLvbbQYunNixAAvjnC+snJCg0XQXn9VIsttVsbZP/H/ewzgsd5fxKXw==

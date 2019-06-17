@@ -51,6 +51,7 @@ export default class GooglePlaces extends Component {
       searchRadius: null,
       getLoc: false,
       moreOptions: false,
+      selectAll: false,
       loading: false,
       visible: false,
       loading1: false,
@@ -95,6 +96,17 @@ export default class GooglePlaces extends Component {
       console.log("My Location  " + center);
     });
   };
+
+  selAll = sel => {
+    let { places, places1, selectAll } = this.state
+    console.log(selectAll)
+    places1.map(i => { i.selected = !selectAll })
+
+    if (!selectAll) places = places1
+    else places = []
+
+    this.setState({ places, places1, selectAll: !this.state.selectAll });
+  }
 
   handleSubmit = e => {
     let { googleAPIkey } = this.state;
@@ -195,23 +207,25 @@ export default class GooglePlaces extends Component {
         placeName: i.name,
         address: i.vicinity ? i.vicinity : i.formatted_address,
         sroreId: i.id,
-        selected: true,
+        selected: false,
         radius: this.state.defaultRadius,
         center: i.geometry.location,
         errors: {}
       });
     });
     // console.log(places)
-    this.setState({ places, places1: places, center: places[0].center });
+    this.setState({ places1: places, center: places[0].center });
   };
 
   onPlaceSelect = id => {
-    let { places1 } = this.state;
+    let { places1, selectAll } = this.state;
     places1.filter(place => {
       if (place.sroreId === id) place.selected = !place.selected;
     });
     let places = places1.filter(place => place.selected);
-    this.setState({ places, places1 });
+    if (places.length == places1.length) selectAll = true
+    else selectAll = false
+    this.setState({ places, places1, selectAll });
   };
 
   createPlaces = () => {
@@ -399,6 +413,7 @@ export default class GooglePlaces extends Component {
               formData={this.state}
               handleSubmit={this.handleSubmit}
               moreOpt={this.moreOpt}
+              selAll={this.selAll}
               handleOnChange={this.handleOnChange}
               addHotspot={this.addHotspot}
               deleteHotspot={this.deleteHotspot}
@@ -408,10 +423,8 @@ export default class GooglePlaces extends Component {
             {this.state.places1.length ? (
               <Affix
                 style={{ position: "absolute", width: "100%", bottom: 0 }}
-                offsetBottom={10}
-              >
-                <Card
-                  className="createPlaceCard"
+                offsetBottom={10} >
+                <Card className="createPlaceCard"
                 // style={{marginBottom:0, position:"absolute",backgroundColor:'#fffffff',padding:24, width:'100%', bottom:0}}
                 >
                   {this.state.places.length ? (
@@ -428,8 +441,7 @@ export default class GooglePlaces extends Component {
                           onClick={() => this.createPlaces()}
                           style={{ float: "right", marginBottom: 0 }}
                           loading={this.state.loading}
-                          className="buttonPrimary"
-                        >
+                          className="buttonPrimary" >
                           CREATE
                         </Button>
                       </Col>
@@ -459,11 +471,7 @@ export default class GooglePlaces extends Component {
                 </Card>{" "}
               </Affix>
             ) : (
-                <div className="">
-                  {" "}
-                  <br />
-                  <br /> <br />
-                  <br /> <br />
+                <div className=""> {" "}  <br /> <br /> <br /> <br /> <br />
                   <div style={{ textAlign: "center" }}>
                     <Icon
                       type="environment"
@@ -482,12 +490,7 @@ export default class GooglePlaces extends Component {
             <div />
           </Col>
 
-          <Col
-            xs={24}
-            sm={10}
-            style={{ height: "100hv", backgroundColor: "rgb(234, 234, 234)" }}
-            span={10}
-          >
+          <Col xs={24} sm={10} style={{ height: "100hv", backgroundColor: "rgb(234, 234, 234)" }} >
             <GooglePlacesMap
               getloc={this.getloc}
               data={this.state}
@@ -499,16 +502,7 @@ export default class GooglePlaces extends Component {
               setlocationDetails={this.setlocationDetails}
               handleOnTypeChange={this.handleOnTypeChange}
             />
-            {this.state.moreOptions ? (
-              ""
-            ) : (
-                <div>
-                  <br />
-                  <br />
-                  <br />
-                  <br />
-                </div>
-              )}
+            {this.state.moreOptions ? "" : <div> <br /> <br />  <br /> <br />  <br /> <br /> </div>}
           </Col>
         </Row>
 
