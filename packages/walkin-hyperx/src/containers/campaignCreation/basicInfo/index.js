@@ -144,7 +144,7 @@ class BasicInfo extends Component {
 											<CampaignPriority
 												text="Test & Control"
 												promptText="prompt text"
-												tootTipText="what is test and control"
+												tootTipText="what is test and control?"
 												prioritySelectionTitle="Campaign Priority"
 												priorityButtonText="Custom no"
 												testControlTitle="Test & Control"
