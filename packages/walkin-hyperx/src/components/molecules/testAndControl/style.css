@@ -1,0 +1,17 @@
+.testControlContainer {
+	display: flex;
+	justify-content: space-between;
+}
+.testAndControlButtonStyle {
+	margin: 0;
+	padding: 0;
+	padding-left: 20px;
+}
+.testControlPercentageStyle {
+	display: flex;
+	align-items: center;
+}
+.tooltipTextStyle {
+	color: #038fde;
+	font-style: italic;
+}

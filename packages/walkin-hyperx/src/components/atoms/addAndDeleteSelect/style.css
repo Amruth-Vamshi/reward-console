@@ -1,0 +1,15 @@
+.selectSegmentBoxContainer > i:first-child {
+	display: none !important;
+}
+.segmentSelectIcon {
+	padding-left: 10px;
+}
+.selectSegmentBoxContainer {
+	padding-top: 10px;
+}
+.newSegmentAddButton {
+	margin-top: 10px;
+}
+.selectSegmentBoxContainer > i {
+	padding-left: 10px;
+}
