@@ -43,7 +43,7 @@ class NormalLoginForm extends React.Component {
               <div className="gx-app-logo">
                 <img
                   alt="example"
-                  src={require("@walkinsole/walkin-components/src/assets/images/logo.png")}
+                  src={require("@walkinsole/walkin-components/src/assets/images/walkin_logo.png")}
                 />
               </div>
             </div>
