@@ -41,78 +41,46 @@ class SidebarContent extends Component {
 			<Auxiliary>
 				<SidebarLogo />
 				<div className="gx-sidebar-content">
-					<div className={`gx-sidebar-notifications ${this.getNoHeaderClass(navStyle)}`}>
-						<UserProfile />
-						<AppsNavigation />
-					</div>
 					<Menu
 						defaultOpenKeys={[defaultOpenKeys]}
 						selectedKeys={[selectedKeys]}
 						theme={themeType === THEME_TYPE_LITE ? 'lite' : 'dark'}
 						mode="inline"
 					>
-						<Menu.Item key="core">
-							<Link to="/core">
+						<Menu.Item key="createCampaign">
+							<Link to="/hyperx/campaign/campaignManagement">
 								<i className="icon icon-setting" />
 								{/* <IntlMessages id="sidebar.samplePage" /> */}
-								Core
+								Campaigns
 							</Link>
 						</Menu.Item>
-						<SubMenu
-							key="hyperx"
-							title={
-								<span>
-									{' '}
-									<i className="icon icon-dasbhoard" />
-									<span>HyperX</span>
-								</span>
-							}
-						>
-							<Menu.Item key="hyperx/campaigns">
-								<Link to="/hyperx/campaigns">
-									<i className="icon icon-listing-dbrd" />
-									Campaigns
-								</Link>
-							</Menu.Item>
-
-							<Menu.Item key="hyperx/segments">
-								<Link to="/hyperx/segments">
-									<i className="icon icon-crypto" />
-									Segments
-								</Link>
-							</Menu.Item>
-							<Menu.Item key="main/dashboard/listing">
-								<a to="/main/dashboard/listing">
-									<i className="icon icon-listing-dbrd" />
-									Offers
-								</a>
-							</Menu.Item>
-							<Menu.Item key="main/dashboard/crm">
-								<a to="/main/dashboard/crm">
-									<i className="icon icon-crm" />
-									Analytics
-								</a>
-							</Menu.Item>
-							<Menu.Item key="main/dashboard/setting">
-								<a to="/main/dashboard/listing">
-									<i className="icon icon-listing-dbrd" />
-									Settings
-								</a>
-							</Menu.Item>
-						</SubMenu>
-						<Menu.Item key="refinex">
-							<Link to="/refinex">
-								<i className="icon icon-select" />
+						<Menu.Item key="segment">
+							<Link to="/hyperx/segment/newSegment">
+								<i className="icon icon-alert" />
 								{/* <IntlMessages id="sidebar.samplePage" /> */}
-								RefineX
+								Segments
 							</Link>
 						</Menu.Item>
-						<Menu.Item key="nearx">
-							<Link to="/nearx">
-								<i className="icon icon-geo-location" />
-								{/* <IntlMessages id="sidebar.samplePage" /> */}
-								NearX
-							</Link>
+						<Menu.Item key="offers">
+							{/* <Link to="/refinex"> */}
+							<i className="icon icon-select" />
+							{/* <IntlMessages id="sidebar.samplePage" /> */}
+							Offers
+							{/* </Link> */}
+						</Menu.Item>
+						<Menu.Item key="analytics">
+							{/* <Link to="/nearx"> */}
+							<i className="icon icon-geo-location" />
+							{/* <IntlMessages id="sidebar.samplePage" /> */}
+							Analytics
+							{/* </Link> */}
+						</Menu.Item>
+						<Menu.Item key="settings">
+							{/* <Link to="/nearx"> */}
+							<i className="icon icon-geo-location" />
+							{/* <IntlMessages id="sidebar.samplePage" /> */}
+							Settings
+							{/* </Link> */}
 						</Menu.Item>
 					</Menu>
 				</div>

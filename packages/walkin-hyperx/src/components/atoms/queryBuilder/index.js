@@ -30,21 +30,6 @@ class WalkinQueryBuilder extends React.Component {
 		console.log('val,', value);
 	};
 
-	onValueEditor = h => {
-		return (
-			<Select
-				mode="multiple"
-				size="default"
-				placeholder="Please select"
-				defaultValue={['a10', 'c12']}
-				onChange={this.handleMultiSelect}
-				style={{ width: '100%' }}
-			>
-				{children}
-			</Select>
-		);
-	};
-
 	render() {
 		const { translations, operators, fields, handleQueryChange } = this.props;
 		return (
@@ -57,22 +42,23 @@ class WalkinQueryBuilder extends React.Component {
 							controlClassnames={{ fields: 'form-control' }}
 							onQueryChange={this.renameQueryProperties}
 							operators={operators}
-							controlElements={{
-								valueEditor: () => {
-									return (
-										<Select
-											mode="multiple"
-											size="default"
-											placeholder="Please select"
-											defaultValue={['a10', 'c12']}
-											onChange={this.handleMultiSelect}
-											style={{ width: '500px' }}
-										>
-											{children}
-										</Select>
-									);
-								},
-							}}
+							// required to allow multiple values
+							// controlElements={{
+							// 	valueEditor: () => {
+							// 		return (
+							// 			<Select
+							// 				mode="multiple"
+							// 				size="default"
+							// 				placeholder="Please select"
+							// 				defaultValue={['a10', 'c12']}
+							// 				onChange={this.handleMultiSelect}
+							// 				style={{ width: '500px' }}
+							// 			>
+							// 				{children}
+							// 			</Select>
+							// 		);
+							// 	},
+							// }}
 						/>
 					</div>
 				</div>

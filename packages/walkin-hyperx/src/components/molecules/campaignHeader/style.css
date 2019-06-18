@@ -1,9 +1,23 @@
 .campaignHeaderStyle {
-	padding: 9px;
+	padding: 12px;
 	background-color: #f7f4f4;
 	border-bottom: #f1f1f1 solid 0.2px;
 }
 .campaignHeaderContentStyle {
+	display: block;
+}
+.campaignHeaderTitleStyle {
 	display: flex;
 	align-items: center;
+}
+.campaignHeaderButtonStyle {
+	margin-bottom: 0px;
+	float: right;
+}
+.campaignHeaderTitleStyle {
+	padding-left: 10px;
+	margin-bottom: 0px;
+}
+.paddingLeftStyle {
+	padding-left: 12px;
 }
