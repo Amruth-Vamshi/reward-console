@@ -84,23 +84,26 @@ class BasicInfo extends Component {
 		e.preventDefault();
 	};
 
-	goToPage2(e) {
-		const form = this.formRef.props.form;
-		form.validateFields((err, values) => {
-			if (err) {
-				return;
-			} else {
-				this.setState({
-					formValues: values,
-				});
-				// e.stopPropagation();
-				// e.stopPropagation();
-				const { history } = this.props;
-				history.push({
-					pathname: '/hyperx/audience',
-				});
-			}
-		});
+	goToAudiencePage(current) {
+		const form = this.formRef && this.formRef.props && this.formRef.props.form;
+		if (form) {
+			form.validateFields((err, values) => {
+				if (err) {
+					return;
+				} else {
+					this.setState({
+						formValues: values,
+						current: current,
+					});
+					// e.stopPropagation();
+					// e.stopPropagation();
+					const { history } = this.props;
+					history.push({
+						pathname: '/hyperx/audience',
+					});
+				}
+			});
+		}
 	}
 
 	onControlValueChange = val => {
@@ -116,11 +119,20 @@ class BasicInfo extends Component {
 		this.setState({ testControlSelected: `${testValue} % - ${controlValue}%`, showTestAndControl: false });
 	};
 
+	handleButtonGroupChange = e => {
+		console.log('vvv', e.target.value);
+	};
+
 	render() {
 		const { formValues, current, showTestAndControl, testValue, controlValue, testControlSelected } = this.state;
 		return (
 			<div style={{ margin: '-32px' }}>
-				<CampaignHeader text="Create Campaign" current={current} stepData={stepData} />
+				<CampaignHeader
+					text="Create Campaign"
+					current={current}
+					stepData={stepData}
+					onChange={this.goToAudiencePage.bind(this)}
+				/>
 				<Switch>
 					<Route
 						exact
@@ -144,16 +156,17 @@ class BasicInfo extends Component {
 											<CampaignPriority
 												text="Test & Control"
 												promptText="prompt text"
-												tootTipText="what is test and control"
+												tootTipText="what is test and control?"
 												prioritySelectionTitle="Campaign Priority"
 												priorityButtonText="Custom no"
 												testControlTitle="Test & Control"
 												testControlPercentage={
 													testControlSelected ? testControlSelected : '95% - 5%'
 												}
+												handleChange={this.handleButtonGroupChange}
 												testControlPercentageEditText="Edit"
 												onClick={this.onPriorityButtonClick}
-												priorityNumberInvalidErrorMessage="Enter a value between 1 and 99"
+												priorityNumberInvalidErrorMessage="Enter a value between 6 and 99"
 												onTestAndControlEdit={this.onTestAndControlEdit}
 											/>
 										</Col>
@@ -185,7 +198,11 @@ class BasicInfo extends Component {
 							);
 						}}
 					/>
+					{/* {Object.keys(formValues).length > 0 ? ( */}
 					<Route path={'/hyperx/audience'} component={Audience} />
+					{/* ) : (
+						<Route path={'/hyperx/basicInfo'} component={BasicInfo} />
+					)} */}
 				</Switch>
 
 				<div style={{ margin: '32px' }}>
@@ -193,7 +210,7 @@ class BasicInfo extends Component {
 						nextButtonText="Next"
 						saveDraftText="Save Draft"
 						onPage1SaveDraft={this.onPage1SaveDraft}
-						goToPage2={this.goToPage2.bind(this)}
+						goToPage2={this.goToAudiencePage.bind(this, 1)}
 					/>
 				</div>
 			</div>

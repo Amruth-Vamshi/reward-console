@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 import { Form, Input, DatePicker } from 'antd';
+import moment from 'moment';
 
 const BasicInfoForm = Form.create({ name: 'form_in_modal' })(
 	// eslint-disable-next-line
@@ -34,7 +35,6 @@ const BasicInfoForm = Form.create({ name: 'form_in_modal' })(
 						{...dateItemLayout}
 					>
 						{getFieldDecorator('startDate', {
-							initialValue: `${Object.keys(formValues).length != 0 ? formValues.startDate : ''}`,
 							rules: [{ type: 'object', required: true, message: 'Please select start time!' }],
 						})(<DatePicker showTime format="DD-MM-YYYY HH:mm:ss" />)}
 					</Form.Item>
@@ -44,7 +44,6 @@ const BasicInfoForm = Form.create({ name: 'form_in_modal' })(
 						{...dateItemLayout}
 					>
 						{getFieldDecorator('endDate', {
-							initialValue: `${Object.keys(formValues).length != 0 ? formValues.endDate : ''}`,
 							rules: [{ type: 'object', required: true, message: 'Please select end time!' }],
 						})(<DatePicker showTime format="DD-MM-YYYY HH:mm:ss" />)}
 					</Form.Item>

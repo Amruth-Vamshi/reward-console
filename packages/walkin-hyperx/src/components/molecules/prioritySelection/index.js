@@ -10,6 +10,7 @@ class PrioritySelection extends React.Component {
 		this.state = {
 			priorityChosen: '',
 			priorityNumberError: false,
+			buttonGroupValue: 3,
 		};
 	}
 
@@ -24,7 +25,7 @@ class PrioritySelection extends React.Component {
 	validateCampaignPriority = e => {
 		const { value } = e.target;
 		let priorityChosen;
-		const reg = /^(([1-9][0-9])|([1-9]))$/;
+		const reg = /^(([6-9][0-9])|([6-9]))$/;
 		if ((!Number.isNaN(value) && reg.test(value)) || value === '' || value === '-') {
 			this.setState({ priorityChosen: value });
 		} else {
@@ -34,6 +35,7 @@ class PrioritySelection extends React.Component {
 
 	handleButtonGroup = e => {
 		const { value } = e.target;
+		this.setState({ buttonGroupValue: value });
 	};
 
 	render() {
@@ -43,12 +45,16 @@ class PrioritySelection extends React.Component {
 			priorityNumberInvalidErrorMessage,
 			selectedPriorityButton,
 		} = this.props;
-		const { priorityChosen, priorityNumberError } = this.state;
+		const { priorityChosen, priorityNumberError, buttonGroupValue } = this.state;
 		return (
 			<Fragment>
 				<Text>{prioritySelectionTitle}</Text>
 				<div className="prioritySelectionContainer">
-					<ButtonGroups selectedPriorityButton={priorityChosen} handleChange={this.handleButtonGroup} />
+					<ButtonGroups
+						selectedPriorityButton={priorityChosen}
+						handleChange={this.handleButtonGroup}
+						value={buttonGroupValue}
+					/>
 					<Input
 						className="prioritySelectionInputStyle"
 						placeholder={priorityButtonText}

@@ -7,7 +7,9 @@ const CampaignHeader = ({ text, stepData, current, onChange }) => {
 	return (
 		<Row className="campaignHeaderStyle">
 			<Col className="campaignHeaderContentStyle" span={12}>
-				<h3 className="gx-text-grey">{text}</h3>
+				<h3 style={{ paddingLeft: '10px' }} className="gx-text-grey">
+					{text}
+				</h3>
 			</Col>
 			<Col className="campaignHeaderContentStyle" span={12}>
 				<Stepper stepData={stepData} current={current} onChange={onChange} />

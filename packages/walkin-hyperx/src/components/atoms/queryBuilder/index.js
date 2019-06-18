@@ -2,6 +2,14 @@ import QueryBuilder from 'react-querybuilder';
 import React from 'react';
 import PropTypes from 'prop-types';
 import './style.css';
+import { Select } from 'antd';
+
+const Option = Select.Option;
+
+const children = [];
+for (let i = 10; i < 36; i++) {
+	children.push(<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
+}
 
 class WalkinQueryBuilder extends React.Component {
 	renameQueryProperties = query => {
@@ -18,6 +26,25 @@ class WalkinQueryBuilder extends React.Component {
 		this.props.onQueryChange(query);
 	};
 
+	handleMultiSelect = value => {
+		console.log('val,', value);
+	};
+
+	onValueEditor = h => {
+		return (
+			<Select
+				mode="multiple"
+				size="default"
+				placeholder="Please select"
+				defaultValue={['a10', 'c12']}
+				onChange={this.handleMultiSelect}
+				style={{ width: '100%' }}
+			>
+				{children}
+			</Select>
+		);
+	};
+
 	render() {
 		const { translations, operators, fields, handleQueryChange } = this.props;
 		return (
@@ -30,6 +57,22 @@ class WalkinQueryBuilder extends React.Component {
 							controlClassnames={{ fields: 'form-control' }}
 							onQueryChange={this.renameQueryProperties}
 							operators={operators}
+							controlElements={{
+								valueEditor: () => {
+									return (
+										<Select
+											mode="multiple"
+											size="default"
+											placeholder="Please select"
+											defaultValue={['a10', 'c12']}
+											onChange={this.handleMultiSelect}
+											style={{ width: '500px' }}
+										>
+											{children}
+										</Select>
+									);
+								},
+							}}
 						/>
 					</div>
 				</div>
@@ -45,6 +88,9 @@ WalkinQueryBuilder.propTypes = {
 			label: PropTypes.string,
 		}).isRequired
 	),
+	controlElements: PropTypes.shape({
+		valueEditor: PropTypes.func,
+	}),
 	onQueryChange: PropTypes.func,
 	operators: PropTypes.arrayOf(
 		PropTypes.shape({
@@ -57,6 +103,7 @@ WalkinQueryBuilder.propTypes = {
 WalkinQueryBuilder.defaultProps = {
 	fields: [{ name: '', label: '' }],
 	onQueryChange: () => {},
+	valueEditor: () => {},
 	operators: [
 		{ name: 'EQUALS', label: 'Equal to' },
 		{ name: 'NOT_EQUALS', label: 'Not equal to' },

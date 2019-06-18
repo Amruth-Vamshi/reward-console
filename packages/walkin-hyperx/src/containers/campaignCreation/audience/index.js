@@ -20,9 +20,11 @@ class Audience extends Component {
 		const { formValues, current, rows, values } = this.state;
 
 		let attributeData = this.props.allAttributes.ruleAttributes.map(el => ({
-			name: el.name,
-			label: el.id,
+			name: el.attributeName,
+			id: el.id,
+			label: el.attributeName,
 		}));
+		console.log('attributeData', this.props.allAttributes.ruleAttributes);
 		const props = {
 			name: 'file',
 			action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
@@ -52,7 +54,7 @@ class Audience extends Component {
 							</Upload>
 						</span>
 					</div>
-					<div>
+					<div style={{ marginTop: '50px' }}>
 						<Divider orientation="left">
 							<p className="gx-text-grey gx-mb-1">Filter</p>
 						</Divider>
