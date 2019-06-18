@@ -27,7 +27,9 @@ class NormalLoginForm extends React.Component {
           <div className="gx-app-login-main-content">
             <div className="gx-app-logo-content">
               <div className="gx-app-logo-content-bg">
-                <img src="https://via.placeholder.com/272x395" alt="Neature" />
+                <img src="https://media.golfdigest.com/photos/569688b4273cde6003f797c8/master/w_768,c_limit/El-Camaleon-15-hole-Riviera-Maya.jpg" alt="Neature" />
+                {/* https://via.placeholder.com/272x395 */}
+
               </div>
               <div className="gx-app-logo-wid">
                 <h1>
@@ -43,7 +45,8 @@ class NormalLoginForm extends React.Component {
               <div className="gx-app-logo">
                 <img
                   alt="example"
-                  src={require("@walkinsole/walkin-components/src/assets/images/walkin_logo.png")}
+                  src={require("@walkinsole/walkin-components/src/assets/images/walkin_logo_white.png")}
+                  style={{ width: 100 }}
                 />
               </div>
             </div>
@@ -132,11 +135,12 @@ class NormalLoginForm extends React.Component {
                         type="primary"
                         htmlType="submit"
                         className="login-form-button"
+                        style={{ marginTop: 10 }}
                       >
                         Log in
                       </Button>
-                      Or
-                      <Link to="/signup"> Sign Up!</Link>
+                      {/* Or
+                      <Link to="/signup"> Sign Up!</Link> */}
                     </Form.Item>
                   </Form>
                 )}

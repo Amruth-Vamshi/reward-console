@@ -47,7 +47,8 @@ class SidebarLogo extends Component {
             ) : (
                 <img
                   alt=""
-                  src={require("@walkinsole/walkin-components/src/assets/images/nearx-logo-small1.png")}
+                  src={require("@walkinsole/walkin-components/src/assets/images/nearx_small_white.png")}
+                  style={{ width: 130, marginLeft: -5 }}
                 />
               )}
         </Link>
