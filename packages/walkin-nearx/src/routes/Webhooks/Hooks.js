@@ -76,7 +76,7 @@ class Hooks extends Component {
         <Row className="headerRow1">
           <div style={{ width: "100%" }}>
             <span style={{ fontSize: 25 }}>Web Hooks</span>
-            <div style={{ float: "right", flexFlow: "right" }}>
+            {/* <div style={{ float: "right", flexFlow: "right" }}>
               <Button
                 style={{ margin: 0 }}
                 onClick={() => this.addHook()}
@@ -84,7 +84,7 @@ class Hooks extends Component {
               >
                 Add Hook
                 </Button>
-            </div>
+            </div> */}
           </div>
         </Row>
         <br />

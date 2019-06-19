@@ -48,33 +48,36 @@ class AddHotspot extends Component {
   }
 
   componentWillMount() {
-    let location = this.props.formData.places[0].center;
-    client
-      .query({
-        query: GET_NAERBY_PLACES,
-        variables: { limit: 5, offset: 0, distance: 1000, location: location }
-      })
-      .then(res => {
-        var places = [...this.state.places];
+    // let location = this.props.formData.places[0].center;
+    // client
+    //   .query({
+    //     query: GET_NAERBY_PLACES,
+    //     variables: { limit: 5, offset: 0, distance: 1000, location: location }
+    //   })
+    //   .then(res => {
+    //     var places = [...this.state.places];
 
-        res.data.getNearByPlaces.places.map(p => {
-          if (!places.find(e => p.id === e.id))
-            places.push({
-              id: p.id,
-              placeName: p.geofenceName,
-              address: p.address,
-              center: { lat: p.location.lat, lng: p.location.lng },
-              radius: [HOTSPOT_RADIUS],
-              selected: false
-            });
-        });
-        console.log("Near by Places Results", res);
-        this.setState({
-          places1: places,
-          totalPlaces: res.data.getNearByPlaces.pageInfo.total
-        });
-      })
-      .catch(err => console.log("Failed to get Nearby Places Details" + err));
+    //     res.data.getNearByPlaces.places.map(p => {
+    //       if (!places.find(e => p.id === e.id))
+    //         places.push({
+    //           id: p.id,
+    //           placeName: p.geofenceName,
+    //           address: p.address,
+    //           center: { lat: p.location.lat, lng: p.location.lng },
+    //           radius: [HOTSPOT_RADIUS],
+    //           selected: false
+    //         });
+    //     });
+    //     console.log("Near by Places Results", res);
+    //     this.setState({
+    //       places1: places,
+    //       totalPlaces: res.data.getNearByPlaces.pageInfo.total
+    //     });
+    //   })
+    //   .catch(err => console.log("Failed to get Nearby Places Details" + err));
+
+    this.getPlacesData(0, 5, '')
+
   }
 
   getPlacesData = (offset, limit, search) => {
@@ -107,7 +110,7 @@ class AddHotspot extends Component {
       .catch(err => console.log("Failed to get Places Details" + err));
   };
 
-  pagination = (e, n) => this.getPlacesData((e - 1)*n, n, this.state.search);
+  pagination = (e, n) => this.getPlacesData((e - 1) * n, n, this.state.search);
 
   onPlaceSelect = (id, e) => {
     console.log(e.target.checked, id);
