@@ -107,12 +107,12 @@ export default class CreatePlaces extends Component {
         <Widget
           title={<p style={{ fontSize: 23 }}>Create Places</p>}
           styleName="gx-card-tabs headerCard"
-          // extra={<i className="icon icon-search-new gx-pointer gx-fs-xxl gx-text-primary"/>}>
-          extra={
-            <Button onClick={this.showModal} type="primary">
-              Upload CSV
-            </Button>
-          }
+        // extra={<i className="icon icon-search-new gx-pointer gx-fs-xxl gx-text-primary"/>}>
+        // extra={
+        //   <Button onClick={this.showModal} type="primary">
+        //     Upload CSV
+        //   </Button>
+        // }
         >
           <Tabs
             defaultActiveKey={this.props.tab}

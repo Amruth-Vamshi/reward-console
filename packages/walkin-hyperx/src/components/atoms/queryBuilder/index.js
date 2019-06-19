@@ -1,4 +1,4 @@
-import QueryBuilder from 'react-querybuilder';
+// import QueryBuilder from 'react-querybuilder';
 import React from 'react';
 import PropTypes from 'prop-types';
 import './style.css';
@@ -11,7 +11,7 @@ class WalkinQueryBuilder extends React.Component {
 			value: 'attributeValue',
 			operator: 'expressionType',
 		};
-		str = str.replace(/field|value|operator/gi, function(matched) {
+		str = str.replace(/field|value|operator/gi, function (matched) {
 			return mapObj[matched];
 		});
 		query = JSON.parse(str);
@@ -25,12 +25,12 @@ class WalkinQueryBuilder extends React.Component {
 				<hr />
 				<div className="flex-box">
 					<div className="scroll">
-						<QueryBuilder
+						{/* <QueryBuilder
 							fields={fields}
 							controlClassnames={{ fields: 'form-control' }}
 							onQueryChange={this.renameQueryProperties}
 							operators={operators}
-						/>
+						/> */}
 					</div>
 				</div>
 			</div>
@@ -56,7 +56,7 @@ WalkinQueryBuilder.propTypes = {
 
 WalkinQueryBuilder.defaultProps = {
 	fields: [{ name: '', label: '' }],
-	onQueryChange: () => {},
+	onQueryChange: () => { },
 	operators: [
 		{ name: 'EQUALS', label: 'Equal to' },
 		{ name: 'NOT_EQUALS', label: 'Not equal to' },
