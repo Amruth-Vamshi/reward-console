@@ -60,10 +60,7 @@ class Questionnaire extends Component {
         }
       });
       console.log(data);
-
-      // if (data.data.createQuestionnaire.id) {
-      //   this.props.refetchQuestionnaire();
-      // }
+      this.props.refetchFeedbackForm();
     } catch (e) {
       console.log("Error in creating questionnaire");
       console.log(e);

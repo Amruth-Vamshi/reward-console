@@ -21,6 +21,7 @@ export default class ChoiceForm extends Component {
           style={{
             marginTop: "1%"
           }}
+          key={choice.id}
         >
           <Col span={8}>
             <CardBox>

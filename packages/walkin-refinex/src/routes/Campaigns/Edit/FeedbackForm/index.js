@@ -94,21 +94,13 @@ class FeedbackFormConfig extends Component {
                     : {}
                 }
                 displayName="questionnaire"
+                fetchPolicy="cache-and-network"
               >
                 {({
                   data: questionnaireData,
                   refetch: refetchQuestionnaire,
                   error: questionnaireDataError
                 }) => {
-                  if (questionnaireDataError) {
-                    console.log(
-                      "questionnaireDataError",
-                      questionnaireDataError
-                    );
-                    return <div>Error Fetching Data</div>;
-                  }
-                  console.log("questionnaireData", questionnaireData);
-
                   return (
                     <Tabs
                       size="large"
@@ -120,31 +112,27 @@ class FeedbackFormConfig extends Component {
                       <TabPane tab="Build" key="1">
                         <Build
                           feedbackForm={campaignData.campaign.feedbackForm}
-                          refetchQuestionnaire={() => {
-                            refetchQuestionnaire().catch(err => {
-                              console.log(err);
-                            });
-                          }}
+                          refetchFeedbackForm={refetchFeedbackForm}
                           questionnaire={
                             questionnaireData &&
                             questionnaireData.questionHierarchy
                               ? questionnaireData.questionHierarchy
                               : []
                           }
+                          refetchQuestionnaire={refetchQuestionnaire}
                         />
                       </TabPane>
                       <TabPane tab="Design" key="2">
                         <Design
                           feedbackForm={campaignData.campaign.feedbackForm}
-                          refetchQuestionnaire={() => {
-                            refetchQuestionnaire();
-                          }}
+                          refetchFeedbackForm={refetchFeedbackForm}
                           questionnaire={
                             questionnaireData &&
                             questionnaireData.questionHierarchy
                               ? questionnaireData.questionHierarchy
                               : []
                           }
+                          refetchQuestionnaire={refetchQuestionnaire}
                         />
                       </TabPane>
                     </Tabs>
