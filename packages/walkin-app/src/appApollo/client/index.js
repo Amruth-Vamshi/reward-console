@@ -4,7 +4,10 @@ import typeDefs from "../typeDefs";
 import resolvers from "../resolvers";
 import ApolloClient from "apollo-boost";
 import defaults from "../defaults";
-import { GRAPHQL_URL, NEARX_GRAPHQL_URL } from "@walkinsole/walkin-components/src/constants/config";
+import {
+  GRAPHQL_URL,
+  NEARX_GRAPHQL_URL
+} from "@walkinsole/walkin-components/src/constants/config";
 
 export const configureClient = async () => {
   const cache = new InMemoryCache();
