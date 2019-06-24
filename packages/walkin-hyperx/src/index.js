@@ -9,7 +9,7 @@ import NewSegment from './containers/segment/newSegment';
 const App = ({ match }) => {
 	console.log('this.props.match.url', match.url);
 	return (
-		<div>
+		<div className="gx-main-content-wrapper">
 			<Switch>
 				<Route exact path={'/hyperx'} render={() => <Redirect from="/hyperx" to={CAMPAIGN_MANAGEMENT} />} />
 				<Route path={CAMPAIGN_MANAGEMENT} component={CampaignList} />
