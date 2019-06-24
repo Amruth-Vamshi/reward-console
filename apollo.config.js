@@ -3,7 +3,7 @@ module.exports = {
     name: "walkin-console",
     service: {
       name: "walkin-app",
-      url: "http://178.128.220.91:4000/graphql"
+      url: "https://dev-api.getwalkin.in/core_dev/graphql"
     },
     includes: ["packages/**/*.js"]
   }

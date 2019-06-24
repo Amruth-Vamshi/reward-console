@@ -29,7 +29,13 @@ export class Sidebar extends Component {
 
   componentDidMount() {
     window.addEventListener("resize", () => {
-      this.props.updateWindowWidth(window.innerWidth);
+      const data = await this.props.updateWindowWidth({
+        variables: {
+          width: window.innerWidth
+        }
+      });
+      console.log(data);
+      
     });
   }
 
