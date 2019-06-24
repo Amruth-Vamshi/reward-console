@@ -55,7 +55,7 @@ class SidebarContent extends Component {
 							</Link>
 						</Menu.Item>
 						<Menu.Item key="segment">
-							<Link to="/hyperx/segment/newSegment">
+							<Link to="/hyperx/segment/segmentList">
 								<i className="icon icon-alert" />
 								{/* <IntlMessages id="sidebar.samplePage" /> */}
 								Segments

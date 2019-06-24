@@ -115,6 +115,7 @@ class CampaignCreation extends Component {
 
 	handleButtonGroupChange = e => {
 		console.log('vvv', e.target.value);
+		this.setState({ value: e.target.value });
 	};
 
 	logQuery = query => {

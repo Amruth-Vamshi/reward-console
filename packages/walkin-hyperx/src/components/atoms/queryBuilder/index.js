@@ -12,6 +12,21 @@ for (let i = 10; i < 36; i++) {
 }
 
 class WalkinQueryBuilder extends React.Component {
+	removeProp = (obj, propToDelete) => {
+		for (var property in obj) {
+			if (typeof obj[property] == 'object') {
+				let objectToCheck = obj[property];
+				delete obj.property;
+				let newJsonData = this.removeProp(obj[property], propToDelete);
+				obj[property] = newJsonData;
+			} else {
+				if (property === propToDelete) {
+					delete obj[property];
+				}
+			}
+		}
+		return obj;
+	};
 	renameQueryProperties = query => {
 		let str = JSON.stringify(query);
 		var mapObj = {
@@ -23,7 +38,8 @@ class WalkinQueryBuilder extends React.Component {
 			return mapObj[matched];
 		});
 		query = JSON.parse(str);
-		this.props.onQueryChange(query);
+		let refinedQuery = this.removeProp(query, 'id');
+		this.props.onQueryChange(refinedQuery);
 	};
 
 	handleMultiSelect = value => {

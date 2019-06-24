@@ -38,7 +38,7 @@ class AddAndDeleteSelectDynamically extends React.Component {
 							<Select
 								classname="segmentSelectBoxStyle"
 								value={el || ''}
-								style={{ width: 200 }}
+								style={{ width: '50%' }}
 								onChange={this.handleChange.bind(this, i)}
 							>
 								{segmentSelectionData &&
