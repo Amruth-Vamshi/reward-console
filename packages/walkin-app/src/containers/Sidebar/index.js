@@ -27,12 +27,15 @@ export class Sidebar extends Component {
     this.props.toggleCollapsedSideNav(!this.props.navCollapsed);
   };
 
-  // componentDidMount() {
-  //   window.addEventListener("resize", () => {
-  //     this.props.updateWindowWidth(window.innerWidth);
-  //     console.log(window.innerWidth)
-  //   });
-  // }
+  componentDidMount() {
+    window.addEventListener("resize", () => {
+      this.props.updateWindowWidth({
+        variables: {
+          width: window.innerWidth
+        }
+      });
+    });
+  }
 
   getSideBar() {
     const { location } = this.props;

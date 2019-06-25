@@ -66,11 +66,17 @@ class CampaignOverviewGrid extends Component {
               return <span>Loading</span>;
             } else if (error) {
               return <span>Error</span>;
-            } else if (data) {
+            } else if (data.user) {
               console.log(data);
               return (
                 <Row gutter={6}>
                   {this.campaignList(data.user.createdCampaigns)}
+                </Row>
+              );
+            } else {
+              return (
+                <Row gutter={6}>
+                  <Col>No Campaigns</Col>
                 </Row>
               );
             }
