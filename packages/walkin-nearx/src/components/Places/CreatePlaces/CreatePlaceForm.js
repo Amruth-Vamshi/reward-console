@@ -36,6 +36,19 @@ const formItemLayout = {
   }
 };
 
+const radiusLayout = {
+  labelCol: {
+    md: { span: 24 },
+    lg: { span: 24 },
+    xl: { span: 7 }
+  },
+  wrapperCol: {
+    md: { span: 24 },
+    lg: { span: 24 },
+    xl: { span: 17 }
+  }
+};
+
 const formItemLocation = {
   labelCol: {
     sm: { span: 24 },
@@ -87,9 +100,9 @@ export default class CreatePlaceForm extends Component {
   };
 
   createRadius = (i, n, formData) => (
-    <Form.Item key={n} {...formItemLayout} label={`Radius ${n + 1}`}>
+    <Form.Item key={n} {...radiusLayout} label={`Radius ${n + 1}`}>
       <Row>
-        <Col span={18}>
+        <Col span={16}>
           <Slider
             min={n ? formData.places[i].radius[n - 1] : RADIUS_1_MIN}
             // max={n ? (n != 1 ? RADIUS_3_MAX : RADIUS_2_MAX) : RADIUS_1_MAX}
@@ -108,19 +121,20 @@ export default class CreatePlaceForm extends Component {
             }
           />
         </Col>
-        <Col span={4}>
-          <InputNumber
-            min={n ? formData.places[i].radius[n - 1] : RADIUS_1_MIN}
-            // max={n ? (n != 1 ? RADIUS_3_MAX : RADIUS_2_MAX) : RADIUS_1_MAX}
-            max={RADIUS_3_MAX}
-            style={{ marginLeft: 0 }}
-            value={
-              typeof formData.places[i].radius[n] === "number"
-                ? formData.places[i].radius[n]
-                : n ? formData.places[i].radius[n - 1] : RADIUS_1_MIN
-            }
-            onChange={e => this.props.onChangeRadius(e, i, n)}
-          />
+        <Col span={8} style={{ whiteSpace: "nowrap" }}>
+          <div style={{ display: "inline-block" }}>
+            <InputNumber
+              min={n ? formData.places[i].radius[n - 1] : RADIUS_1_MIN}
+              // max={n ? (n != 1 ? RADIUS_3_MAX : RADIUS_2_MAX) : RADIUS_1_MAX}
+              max={RADIUS_3_MAX}
+              style={{ marginLeft: 0 }}
+              value={
+                typeof formData.places[i].radius[n] === "number"
+                  ? formData.places[i].radius[n]
+                  : n ? formData.places[i].radius[n - 1] : RADIUS_1_MIN
+              }
+              onChange={e => this.props.onChangeRadius(e, i, n)}
+            /></div> {n && (n == formData.places[i].radius.length - 1) ? <div style={{ display: "inline-block" }}> <Icon onClick={() => this.props.deleteRedi(i)} type='close' /> </div> : ''}
         </Col>
       </Row>
     </Form.Item>

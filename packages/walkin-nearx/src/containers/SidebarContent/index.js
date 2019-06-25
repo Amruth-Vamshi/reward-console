@@ -73,11 +73,11 @@ class SidebarContent extends Component {
               </Link>
             </Menu.Item>
             <Menu.Item key="developer">
-              <Link to="/nearx/developer">
+              <a target="_blank" href="https://distracted-easley-4dc5d1.netlify.com/docs/overview"  >
                 <i className="icon icon-timeline-left-align" />
                 {/* <IntlMessages id="sidebar.samplePage" /> */}
                 <span>Developers</span>
-              </Link>
+              </a>
             </Menu.Item>
             <Menu.Item key="webhooks">
               <Link to="/nearx/hooks">

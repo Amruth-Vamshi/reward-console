@@ -214,7 +214,7 @@ export default class GooglePlaces extends Component {
       });
     });
     // console.log(places)
-    this.setState({ places1: places, center: places[0].center });
+    this.setState({ places: [], selectAll: false, places1: places, center: places[0].center });
   };
 
   onPlaceSelect = id => {

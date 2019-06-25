@@ -28,7 +28,7 @@ class SidebarLogo extends Component {
                 navStyle === NAV_STYLE_MINI_SIDEBAR
                   ? "menu-unfold"
                   : "menu-fold"
-              } ${themeType !== THEME_TYPE_LITE ? "gx-text-white" : ""}`}
+                } ${themeType !== THEME_TYPE_LITE ? "gx-text-white" : ""}`}
               onClick={() => {
                 if (navStyle === NAV_STYLE_DRAWER) {
                   this.props.toggleCollapsedSideNav({
@@ -62,22 +62,23 @@ class SidebarLogo extends Component {
 
         <Link to="/" className="gx-site-logo">
           {navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR &&
-          width >= TAB_SIZE ? (
-            <img
-              alt=""
-              src={require("@walkinsole/walkin-components/src/assets/images/w-logo.png")}
-            />
-          ) : themeType === THEME_TYPE_LITE ? (
-            <img
-              alt=""
-              src={require("@walkinsole/walkin-components/src/assets/images/logo-white.png")}
-            />
-          ) : (
-            <img
-              alt=""
-              src={require("@walkinsole/walkin-components/src/assets/images/logo.png")}
-            />
-          )}
+            width >= TAB_SIZE ? (
+              <img
+                alt=""
+                src={require("@walkinsole/walkin-components/src/assets/images/w-logo.png")}
+              />
+            ) : themeType === THEME_TYPE_LITE ? (
+              <img
+                alt=""
+                src={require("@walkinsole/walkin-components/src/assets/images/logo-white.png")}
+              />
+            ) : (
+                <img
+                  style={{ width: 105 }}
+                  alt=""
+                  src={require("@walkinsole/walkin-components/src/assets/images/walkin_logo_white.png")}
+                />
+              )}
         </Link>
       </div>
     );

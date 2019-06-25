@@ -220,9 +220,10 @@ const signIn = async (_, { input }, { client }) => {
     return false;
   }
 };
-const hideMessage = (_, input, { client }) => {};
 
-const showAuthLoader = (_, input, { client }) => {};
+const hideMessage = (_, input, { client }) => { };
+
+const showAuthLoader = (_, input, { client }) => { };
 
 const resolvers = {
   Mutation: {

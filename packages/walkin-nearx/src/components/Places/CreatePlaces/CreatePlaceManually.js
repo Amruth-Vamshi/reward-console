@@ -270,6 +270,12 @@ export default class CreatePlaceManually extends Component {
     });
   };
 
+  deleteRedi = n => {
+    let { places } = this.state
+    places[n].radius.pop()
+    this.setState({ places })
+  }
+
   handleOk = () => {
     this.setState({ loading: true });
     setTimeout(() => {
@@ -296,6 +302,7 @@ export default class CreatePlaceManually extends Component {
               getloc={this.getloc}
               handleSubmit={this.handleSubmit}
               handleOnChange={this.handleOnChange}
+              deleteRedi={this.deleteRedi}
               addHotspot={this.addHotspot}
               deleteHotspot={this.deleteHotspot}
               onPlaceSelect={this.onPlaceSelect}
