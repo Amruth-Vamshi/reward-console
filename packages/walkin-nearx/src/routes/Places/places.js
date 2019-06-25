@@ -93,7 +93,7 @@ export default class Places extends Component {
 
   pagination = (e, n) => {
     console.log(e - 1, n);
-    this.getPlacesData((e - 1)*n, n, this.state.search);
+    this.getPlacesData((e - 1) * n, n, this.state.search);
     // this.setState({offset:e})
   };
 
@@ -188,23 +188,23 @@ export default class Places extends Component {
               ))}
             </div>
           ) : (
-            <div style={{ margin: 60, fontSize: 25 }}>
-              <div className="divCenter">
-                <div>No Places Found</div>
-              </div>
-              <div className="divCenter">
-                <Link to="/nearx/places/createplace">
-                  <Button
-                    style={{ margin: 22, fontSize: 18 }}
-                    className="buttonPrimary"
-                  >
-                    Create New Place
+                <div style={{ margin: 60, fontSize: 25 }}>
+                  <div className="divCenter">
+                    <div>No Places Found</div>
+                  </div>
+                  <div className="divCenter">
+                    <Link to="/nearx/places/createplace">
+                      <Button
+                        style={{ margin: 22, fontSize: 18 }}
+                        className="buttonPrimary"
+                      >
+                        Create New Place
                   </Button>
-                </Link>
-                {/* <div style={{margin:10, fontSize:20}}>Create A new Place</div> */}
-              </div>
-            </div>
-          )}
+                    </Link>
+                    {/* <div style={{margin:10, fontSize:20}}>Create A new Place</div> */}
+                  </div>
+                </div>
+              )}
 
           <div style={{ margin: 20 }} className="divCenter">
             <Pagination
@@ -214,6 +214,7 @@ export default class Places extends Component {
               total={this.state.totalPlaces}
             />
           </div>
+
 
           {/* </CustomScrollbars> */}
         </Auxiliary>
