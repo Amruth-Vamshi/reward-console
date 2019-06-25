@@ -13920,7 +13920,7 @@ react-docgen@^3.0.0:
     node-dir "^0.1.10"
     recast "^0.16.0"
 
-react-dom@^16.2.0, react-dom@^16.8.1, react-dom@^16.8.6:
+react-dom@^16.8.1, react-dom@^16.8.6:
   version "16.8.6"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.8.6.tgz#71d6303f631e8b0097f56165ef608f051ff6e10f"
   integrity sha512-1nL7PIq9LTL3fthPqwkvr2zY7phIPjYrT0jp4HjyEQrEROnw4dG41VVwi/wfoCneoleqrNX7iAD+pXebJZwrwA==
@@ -14099,16 +14099,6 @@ react-proxy@^1.1.7:
   dependencies:
     lodash "^4.6.1"
     react-deep-force-update "^1.0.0"
-
-"react-querybuilder@https://github.com/FourthLion/react-querybuilder.git":
-  version "1.4.3"
-  resolved "https://github.com/FourthLion/react-querybuilder.git#816b93d796aad7d21f654e3aa4a89315aa350e2e"
-  dependencies:
-    lodash "^4.17.4"
-    prop-types "^15.6.0"
-    react "^16.2.0"
-    react-dom "^16.2.0"
-    uuid "^3.0.1"
 
 react-resize-detector@^2.3.0:
   version "2.3.0"
