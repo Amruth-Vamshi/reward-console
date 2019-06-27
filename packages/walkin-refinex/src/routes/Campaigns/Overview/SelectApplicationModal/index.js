@@ -82,7 +82,8 @@ class SelectApplicationModal extends Component {
       query: GET_APPLICATIONS,
       variables: {
         organizationId
-      }
+      },
+      fetchPolicy: "network-only"
     });
 
     this.setState({

@@ -6,6 +6,7 @@ import "./styles/wieldy.less";
 import App from "./containers/App";
 import { configureClient } from "./appApollo/client";
 import { ApolloProvider } from "react-apollo";
+import { ErrorBoundary } from "@walkinsole/walkin-components";
 
 class WalkinApp extends Component {
   constructor() {
@@ -30,13 +31,15 @@ class WalkinApp extends Component {
       return <div>Loading...</div>;
     }
     return (
-      <ApolloProvider client={client}>
-        <BrowserRouter>
-          <Switch>
-            <Route path="/" component={App} />
-          </Switch>
-        </BrowserRouter>
-      </ApolloProvider>
+      <ErrorBoundary>
+        <ApolloProvider client={client}>
+          <BrowserRouter>
+            <Switch>
+              <Route path="/" component={App} />
+            </Switch>
+          </BrowserRouter>
+        </ApolloProvider>
+      </ErrorBoundary>
     );
   }
 }
