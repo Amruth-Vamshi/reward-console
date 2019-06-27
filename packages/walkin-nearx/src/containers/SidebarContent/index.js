@@ -58,35 +58,35 @@ class SidebarContent extends Component {
                 <span>Home</span>
               </Link>
             </Menu.Item>
-            <Menu.Item key="places">
+            <Menu.Item key="nearx/places">
               <Link to="/nearx/places">
                 <i className="icon icon-geo-location" />
                 {/* <IntlMessages id="sidebar.samplePage" /> */}
                 <span>Places</span>
               </Link>
             </Menu.Item>
-            <Menu.Item key="apps">
+            <Menu.Item key="nearx/apps">
               <Link to="/nearx/apps">
                 <i className="icon icon-apps" />
                 {/* <IntlMessages id="sidebar.samplePage" /> */}
                 <span>Apps</span>
               </Link>
             </Menu.Item>
-            <Menu.Item key="developer">
+            <Menu.Item key="nearx/developer">
               <a target="_blank" href="https://distracted-easley-4dc5d1.netlify.com/docs/overview"  >
                 <i className="icon icon-timeline-left-align" />
                 {/* <IntlMessages id="sidebar.samplePage" /> */}
                 <span>Developers</span>
               </a>
             </Menu.Item>
-            <Menu.Item key="webhooks">
+            <Menu.Item key="nearx/hooks">
               <Link to="/nearx/hooks">
                 <i className="icon icon-link" />
                 {/* <IntlMessages id="sidebar.samplePage" /> */}
                 <span>Web Hooks</span>
               </Link>
             </Menu.Item>
-            <Menu.Item key="settings">
+            <Menu.Item key="nearx/settings">
               <Link to="/nearx/settings">
                 <i className="icon icon-setting" />
                 {/* <IntlMessages id="sidebar.samplePage" /> */}

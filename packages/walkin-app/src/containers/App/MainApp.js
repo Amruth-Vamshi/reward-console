@@ -105,13 +105,14 @@ export class MainApp extends Component {
   }
 
   render() {
-    const { match, navStyle } = this.props;
+    const { match, navStyle, location } = this.props;
+    console.log(location)
     let width = window.innerWidth
     return (
       <Layout className="gx-app-layout">
         {this.getSidebar(navStyle, width)}
         <Layout>
-          {this.getNavStyles(navStyle)}
+          {this.getNavStyles(navStyle, location)}
           <Content
             className={`gx-layout-content ${this.getContainerClass(navStyle)} `}
           >

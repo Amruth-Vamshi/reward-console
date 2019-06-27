@@ -120,7 +120,7 @@ class AppCreation extends Component {
         {item.name}
       </Option>
     ));
-    console.log(this.props.localdata.auth.firstName);
+    // console.log(this.props.localdata.auth.firstName);
     let { auth } = this.props.localdata
     return (
       // <div>Auth consumer here</div>
@@ -139,8 +139,8 @@ class AppCreation extends Component {
             <div className="name">
               Hi,{" "}
               {auth.firstName +
-                      " " +
-                      `${auth.lastName ? auth.lastName : ""}`}
+                " " +
+                `${auth.lastName ? auth.lastName : ""}`}
             </div>
             <div className="title"> Welcome to NearX Application</div>
           </div>
