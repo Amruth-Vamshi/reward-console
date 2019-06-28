@@ -4,11 +4,38 @@ import { withRouter } from 'react-router-dom';
 import { NEW_CAMPAIGN } from '../../../utils/RouterConstants';
 import { campaigns } from '../../../query/campaign';
 import SortableDataTable from '../../../components/atoms/sortableDataTable';
-import { Card, Menu, Dropdown, Input, Progress } from 'antd';
+import { Card, Menu, Dropdown, Input, Progress, Tabs } from 'antd';
 import moment from 'moment';
 import { withApollo, graphql } from 'react-apollo';
 // import './style.css';
-
+const { TabPane } = Tabs;
+const data = [
+	{
+		name: 'welcome push',
+		startTime: '2019-05-06T09:10:22.574Z',
+		endTime: '2019-06-06T09:10:22.574Z',
+	},
+	{
+		name: 'welcome push',
+		startTime: '2019-08-06T09:10:22.574Z',
+		endTime: '2019-09-06T09:10:22.574Z',
+	},
+	{
+		name: 'welcome push',
+		startTime: '2019-06-21T09:10:22.574Z',
+		endTime: '2019-07-06T09:10:22.574Z',
+	},
+	{
+		name: 'welcome push',
+		startTime: '2019-07-06T09:10:22.574Z',
+		endTime: '2019-0-096T09:10:22.574Z',
+	},
+	{
+		name: 'welcome push',
+		startTime: '2019-04-06T09:10:22.574Z',
+		endTime: '2019-06-06T09:10:22.574Z',
+	},
+];
 class CampaignList extends Component {
 	constructor(props) {
 		super(props);
@@ -57,7 +84,7 @@ class CampaignList extends Component {
 		let newList = [];
 
 		if (e.target.value !== '') {
-			currentList = this.props.campaigns;
+			currentList = data;
 			// Use .filter() to determine which items should be displayed
 			// based on the search terms
 			newList = currentList.filter(item => {
@@ -72,7 +99,7 @@ class CampaignList extends Component {
 			});
 		} else {
 			// If the search bar is empty, set newList to original task list
-			newList = this.props.campaigns;
+			newList = data;
 		}
 
 		// Set the filtered state based on what our rules added to newList
@@ -85,17 +112,20 @@ class CampaignList extends Component {
 		let { sortedInfo, filteredInfo, filtered } = this.state;
 		sortedInfo = sortedInfo || {};
 		filteredInfo = filteredInfo || {};
+		//Format start and end date according to status of the campaign using moment
+		// let liveCampaigns = campaigns.filter(val => {
+		// 	if (val.status === 'ACTIVE') {
+		// 		return moment(val.endTime).isBefore(moment(), 'day')
+		// 		}
+		// })
+		// console.log("liveCampaigns",liveCampaigns)
 		let campaignData = [];
 		if (filtered != null) {
 			campaignData = filtered;
 		} else {
-			campaignData = this.props.campaigns;
+			campaignData = data;
 		}
-		// 		var startDate = moment(new Date("2019-05-21T17:27:18.794Z")).format("YYYY-MM-DD HH:mm:ss")
-		// 		var endDate = moment(new Date("2019-06-21T17:27:18.794Z")).format("YYYY-MM-DD HH:mm:ss")
-		// 		var now = moment().format("YYYY-MM-DD HH:mm:s")
-		// 		var percentage_complete = (now - startDate) / (endDate - startDate) * 100;
-		//  console.log("percentage_rounded", percentage_complete)
+
 		const columns = [
 			{
 				title: 'Name',
@@ -111,7 +141,13 @@ class CampaignList extends Component {
 				render: (text, row) => (
 					<div>
 						{moment(text).format('DD-MM-YYYY')}
-						<Progress style={{ width: '40%' }} percent={100} showInfo={false} />
+						<Progress
+							style={{ width: '35%', margin: '0px 5px 0px 5px' }}
+							percent={Math.round(
+								((moment() - moment(text)) / (moment(row.endTime) - moment(text))) * 100
+							)}
+							showInfo={false}
+						/>
 						{moment(row.endTime).format('DD-MM-YYYY')}
 					</div>
 				),
@@ -128,7 +164,7 @@ class CampaignList extends Component {
 				),
 			},
 		];
-		console.log('campaigns', this.props.campaigns);
+		console.log('campaigns', data);
 		return (
 			<div style={{ margin: '-32px' }}>
 				<CampaignHeader
@@ -145,8 +181,21 @@ class CampaignList extends Component {
 							allowClear
 							onChange={this.onCampaignSearch}
 						/>
+						<Tabs defaultActiveKey="1" onChange={this.callback}>
+							<TabPane tab="Live" key="1">
+								<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} />
+							</TabPane>
+							<TabPane tab="A/B Testing" key="2">
+								Content of Tab Pane 2
+							</TabPane>
+							<TabPane tab="Completed" key="3">
+								Content of Tab Pane 3
+							</TabPane>
+							<TabPane tab="Draft" key="4">
+								Content of Tab Pane 4
+							</TabPane>
+						</Tabs>
 					</div>
-					<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} />
 				</Card>
 			</div>
 		);
@@ -156,6 +205,11 @@ class CampaignList extends Component {
 export default withRouter(
 	withApollo(
 		graphql(campaigns, {
+			options: () => ({
+				variables: {
+					status: 'ACTIVE',
+				},
+			}),
 			props: ({ data: { loading, error, campaigns } }) => ({
 				loading,
 				campaigns,

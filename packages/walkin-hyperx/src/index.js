@@ -16,6 +16,7 @@ const App = ({ match }) => {
 				<Route path={NEW_CAMPAIGN} component={CampaignCreation} />
 				<Route path={SEGMENT_LIST} component={SegmentList} />
 				<Route path={NEW_SEGMENT} component={NewSegment} />
+				<Route path={`${NEW_SEGMENT}/:id`} component={NewSegment} />>
 				<Route path="/hyperx/*" component={CampaignList} />
 			</Switch>
 		</div>

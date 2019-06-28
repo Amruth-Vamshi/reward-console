@@ -38,8 +38,8 @@ class WalkinQueryBuilder extends React.Component {
 			return mapObj[matched];
 		});
 		query = JSON.parse(str);
-		let refinedQuery = this.removeProp(query, 'id');
-		this.props.onQueryChange(refinedQuery);
+		// let refinedQuery = this.removeProp(query, 'id');
+		this.props.onQueryChange(query);
 	};
 
 	handleMultiSelect = value => {
@@ -47,7 +47,7 @@ class WalkinQueryBuilder extends React.Component {
 	};
 
 	render() {
-		const { translations, operators, fields, handleQueryChange } = this.props;
+		const { operators, fields, query } = this.props;
 		return (
 			<div className="flex-box-outer">
 				<hr />
@@ -58,6 +58,7 @@ class WalkinQueryBuilder extends React.Component {
 							controlClassnames={{ fields: 'form-control' }}
 							onQueryChange={this.renameQueryProperties}
 							operators={operators}
+							query={query}
 							// required to allow multiple values
 							// controlElements={{
 							// 	valueEditor: () => {

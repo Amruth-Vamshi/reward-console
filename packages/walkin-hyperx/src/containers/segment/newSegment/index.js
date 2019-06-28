@@ -7,19 +7,24 @@ import { withApollo, graphql, compose, mutate } from 'react-apollo';
 import { attributes, createRule, createSegment } from '../../../query/audience';
 import './style.css';
 import { SEGMENT_LIST } from '../../../utils/RouterConstants';
+import get from 'lodash/get';
 
 class NewSegment extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			value: '',
-			query: {},
+			query: { id: '1', combinator: 'and', rules: [] },
 			newSegmentError: false,
+			isDuplicateSegment: false,
 		};
 	}
 	logQuery = query => {
 		console.log('quu', query);
-		this.setState({ query });
+		this.setState({
+			query: query,
+			newSegmentError: false,
+		});
 	};
 	onChange = e => {
 		console.log(e);
@@ -37,11 +42,12 @@ class NewSegment extends Component {
 
 	onNewSegment = () => {
 		const { value, query } = this.state;
-		console.log('query', query);
+		console.log('this.state.value', this.state.value);
 		if (value === '') {
 			this.displayError('newSegmentError');
 		}
 		let { client } = this.props;
+		let org_id = get(client, 'cache.data.data["$ROOT_QUERY.auth"].organizationId');
 		client
 			.mutate({
 				mutation: createRule,
@@ -51,7 +57,7 @@ class NewSegment extends Component {
 						.substring(7),
 					description: '',
 					type: 'SIMPLE',
-					organizationId: '7fe4e525-2457-4f19-980b-a0dd4a363eeb',
+					organizationId: org_id,
 					status: 'ACTIVE',
 					ruleConfiguration: JSON.stringify(query),
 				},
@@ -66,10 +72,10 @@ class NewSegment extends Component {
 							description: Math.random()
 								.toString(36)
 								.substr(2, 5),
-							segmentType: 'customer',
-							organization_id: '7fe4e525-2457-4f19-980b-a0dd4a363eeb',
+							segmentType: 'CUSTOM',
+							organization_id: org_id,
 							application_id: '1',
-							rule_configurations_id: data.createRule.id,
+							rule_id: data.createRule.id,
 							status: 'ACTIVE',
 						},
 					})
@@ -90,21 +96,58 @@ class NewSegment extends Component {
 			});
 	};
 
+	componentWillMount = () => {
+		const { location } = this.props;
+		console.log('location.state.segmentSelected.name', location.state.segmentSelected.name);
+		if (location && location.state) {
+			if (location.state.segmentSelected) {
+				let str = location.state.segmentSelected.rule.ruleConfiguration;
+				var mapObj = {
+					attributeName: 'field',
+					attributeValue: 'value',
+					expressionType: 'operator',
+				};
+				str = str.replace(/attributeName|attributeValue|expressionType/gi, function(matched) {
+					return mapObj[matched];
+				});
+				this.setState({ query: JSON.parse(str) });
+				if (location.state.segmentSelected.name !== '') {
+					if (location.state.segmentSelected.name.includes('copy')) {
+						this.setState({ value: segmentNameCopy, isDuplicateSegment: true });
+					} else {
+						console.log('nocopy');
+						this.setState({
+							value: location.state.segmentSelected.name + ' ' + 'copy 1',
+							isDuplicateSegment: true,
+						});
+					}
+				}
+			}
+		}
+	};
+
 	render() {
-		const { value, newSegmentError } = this.state;
-		console.log('ruleAttributes', this.props.ruleAttributes, this.props.error);
+		const { value, newSegmentError, query, isDuplicateSegment } = this.state;
+		const { loading, error, ruleAttributes } = this.props;
+		if (loading) {
+			return <p>Please wait...</p>;
+		}
+		if (error) {
+			return <p>{error}</p>;
+		}
 		let attributeData =
-			this.props.ruleAttributes.length > 0 &&
-			this.props.ruleAttributes.map(el => ({
+			ruleAttributes.length > 0 &&
+			ruleAttributes.map(el => ({
 				name: el.attributeName,
-				id: el.id,
+				key: el.id,
 				label: el.attributeName,
 			}));
+		console.log('checkckeck', this.state.value, this.state.segmentName);
 		return (
 			<Fragment>
 				<div style={{ margin: '-32px -32px 0px' }}>
 					<CampaignHeader
-						text="New Segment"
+						text={isDuplicateSegment ? 'Duplicate segment' : 'New Segment'}
 						onCampaignHeaderButtonClick={this.onNewSegment}
 						isTitleOnly={true}
 					/>
@@ -112,12 +155,12 @@ class NewSegment extends Component {
 				<div style={{ margin: '32px' }}>
 					<p className="gx-text-grey gx-mb-1">Segment Name</p>
 					<Input
-						defaultValue="Enter segment name"
+						defaultValue={isDuplicateSegment ? value : 'Enter segment name'}
 						style={{ width: '50%', marginBottom: '40px' }}
 						value={value}
 						onChange={this.onChange}
 					/>
-					<WalkinQueryBuilder fields={attributeData} onQueryChange={this.logQuery} />
+					<WalkinQueryBuilder fields={attributeData} onQueryChange={this.logQuery} query={query} />
 				</div>
 				{newSegmentError && <Alert message="Not a valid Segment" type="error" />}
 				<div className="segmentFooterButton">

@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 export const campaigns = gql`
-	query {
-		campaigns(status: ACTIVE) {
+	query($status: STATUS!) {
+		campaigns(status: $status) {
 			id
 			name
 			description

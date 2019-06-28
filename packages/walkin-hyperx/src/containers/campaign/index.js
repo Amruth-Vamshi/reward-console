@@ -133,11 +133,14 @@ class CampaignCreation extends Component {
 			rows,
 			values,
 		} = this.state;
-		let attributeData = this.props.allAttributes.ruleAttributes.map(el => ({
-			name: el.attributeName,
-			id: el.id,
-			label: el.attributeName,
-		}));
+		let attributeData =
+			this.props.allAttributes &&
+			this.props.allAttributes.ruleAttributes &&
+			this.props.allAttributes.ruleAttributes.map(el => ({
+				name: el.attributeName,
+				id: el.id,
+				label: el.attributeName,
+			}));
 		console.log('attributeData', this.props.allAttributes.ruleAttributes);
 		const props = {
 			name: 'file',
@@ -220,6 +223,13 @@ export default withRouter(
 		compose(
 			graphql(allSegments, {
 				name: 'segmentList',
+				options: ownProps => ({
+					variables: {
+						organization_id: ownProps.client.cache.data.data['$ROOT_QUERY.auth'].organizationId,
+						status: 'ACTIVE',
+					},
+					fetchPolicy: 'network-only',
+				}),
 			}),
 			graphql(attributes, {
 				name: 'allAttributes',

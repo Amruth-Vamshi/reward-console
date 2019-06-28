@@ -1,14 +1,18 @@
 import gql from 'graphql-tag';
 export const allSegments = gql`
-	query {
-		segments(status: ACTIVE, organization_id: "7fe4e525-2457-4f19-980b-a0dd4a363eeb") {
+	query($organization_id: ID!, $status: STATUS!) {
+		segments(status: $status, organization_id: $organization_id) {
 			id
 			name
 			description
+			segmentType
+			rule {
+				id
+				ruleConfiguration
+			}
 		}
 	}
 `;
-
 export const attributes = gql`
 	query {
 		ruleAttributes {
@@ -53,7 +57,7 @@ export const createSegment = gql`
 		$segmentType: String!
 		$organization_id: ID!
 		$application_id: ID!
-		$rule_configurations_id: ID!
+		$rule_id: ID!
 		$status: STATUS!
 	) {
 		createSegment(
@@ -64,9 +68,18 @@ export const createSegment = gql`
 				status: $status
 				organization_id: $organization_id
 				application_id: $application_id
-				rule_configurations_id: $rule_configurations_id
+				rule_id: $rule_id
 			}
 		) {
+			id
+			name
+		}
+	}
+`;
+
+export const disableSegment = gql`
+	mutation disableSegment($id: ID!) {
+		disableSegment(id: $id) {
 			id
 			name
 		}
