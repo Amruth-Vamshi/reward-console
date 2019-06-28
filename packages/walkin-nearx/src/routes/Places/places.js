@@ -54,7 +54,10 @@ export default class Places extends Component {
           totalPlaces: res.data.Places.pageInfo.total
         });
       })
-      .catch(err => console.log("Failed to get Places Details" + err));
+      .catch(err => {
+        this.setState({ spin: false });
+        console.log("Failed to get Places Details" + err)
+      });
   };
 
   componentWillMount() {
@@ -83,12 +86,14 @@ export default class Places extends Component {
         console.log("Results", res);
         // console.log(JSON.stringify(places))
         this.setState({
-          places,
-          spin: false,
+          places, spin: false,
           totalPlaces: res.data.Places.pageInfo.total
         });
       })
-      .catch(err => console.log("Failed to get Places Details" + err));
+      .catch(err => {
+        this.setState({ spin: false });
+        console.log("Failed to get Places Details" + err)
+      });
   }
 
   pagination = (e, n) => {
@@ -156,18 +161,10 @@ export default class Places extends Component {
 
           {/* <CustomScrollbars className="gx-layout-sider-scrollbar"> */}
           {this.state.spin ? (
-            <div>
-              <br />
-              <br />
-              <br />
-              <br />{" "}
+            <div> <br /> <br /> <br /> <br />{" "}
               <div className="divCenter">
                 <Spin size="large" />
-              </div>
-              <br />
-              <br />
-              <br />
-            </div>
+              </div> <br /> <br /> <br /> </div>
           ) : demoData.length ? (
             <div>
               <Row className="placeTableHeaders">

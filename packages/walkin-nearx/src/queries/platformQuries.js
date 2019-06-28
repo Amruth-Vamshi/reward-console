@@ -62,9 +62,19 @@ query webhooks($org_id:ID!,$event:String,$status:STATUS!){
   }
 }`
 
+
+export const LIST_WEBHOOK_EVENTS = gql`
+  query webhookEventTypes{
+    webhookEventTypes(status: ACTIVE) {
+      event id status
+    }
+  }
+`
+
+
 export const CREATE_WEBHOOK = gql`
 mutation createWebhook($input:WebhookAddInput){
   createWebhook(input:$input){
-    id organization_id event url headers method status
+    id event url headers method status
   }
 }`
