@@ -31,7 +31,7 @@ export const configureClient = async () => {
     // See above for additional options, including other storage providers.
     await persistCache({
       cache,
-      storage: window.localStorage
+      storage: window.sessionStorage
     });
   } catch (error) {
     console.error("Error restoring Apollo cache", error);
