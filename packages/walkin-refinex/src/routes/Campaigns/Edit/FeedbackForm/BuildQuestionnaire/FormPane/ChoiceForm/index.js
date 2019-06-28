@@ -23,36 +23,18 @@ export default class ChoiceForm extends Component {
           }}
           key={choice.id}
         >
-          <Col span={8}>
+          <Col span={24}>
             <CardBox>
-              <ChoiceInput questionType={this.props.questionToEdit.type} />
+              <ChoiceInput
+                choice={choice}
+                questionType={this.props.questionToEdit.type}
+                removeChoice={this.props.removeChoice}
+              />
             </CardBox>
           </Col>
         </Row>
       );
     });
-  };
-
-  addChoiceCard = () => {
-    return (
-      <Row>
-        <Col span={24}>
-          <Row type="flex" justify="center">
-            <Col>
-              <Button
-                type="dashed"
-                onClick={e => {
-                  e.preventDefault();
-                  this.props.addChoice();
-                }}
-              >
-                <Icon type="plus" /> Add Choice
-              </Button>
-            </Col>
-          </Row>
-        </Col>
-      </Row>
-    );
   };
 
   render() {
@@ -65,7 +47,23 @@ export default class ChoiceForm extends Component {
             </Col>
           </Row>
           {this.getChoiceRows()}
-          {this.addChoiceCard()}
+          <Row>
+            <Col span={24}>
+              <Row type="flex" justify="center">
+                <Col>
+                  <Button
+                    type="dashed"
+                    onClick={e => {
+                      e.preventDefault();
+                      this.props.addChoice();
+                    }}
+                  >
+                    <Icon type="plus" /> Add Choice
+                  </Button>
+                </Col>
+              </Row>
+            </Col>
+          </Row>
         </ErrorBoundary>
       );
     }

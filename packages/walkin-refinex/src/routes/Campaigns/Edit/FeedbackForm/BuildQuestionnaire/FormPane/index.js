@@ -16,7 +16,7 @@ class QuestionnaireFormPane extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      questionToEdit: props.questionToEdit
+      questionToEdit: null
     };
   }
 
@@ -36,6 +36,7 @@ class QuestionnaireFormPane extends Component {
   };
 
   render() {
+    const { questionToEdit, addChoice, removeChoice } = this.props;
     return (
       <Row
         style={{
@@ -47,17 +48,18 @@ class QuestionnaireFormPane extends Component {
           <Row>
             <Col span={24}>
               <QuestionForm
-                onQuestionEdited={this.onQuestionEdited}
-                onQuestionSubmitted={this.onQuestionSubmitted}
-                questionToEdit={this.state.questionToEdit}
+                onQuestionEdited={() => this.onQuestionEdited}
+                onQuestionSubmitted={() => this.onQuestionSubmitted}
+                questionToEdit={questionToEdit}
               />
             </Col>
           </Row>
           <Row>
             <Col span={24}>
               <ChoiceForm
-                questionToEdit={this.state.questionToEdit}
-                addChoice={this.props.addChoice}
+                questionToEdit={questionToEdit}
+                addChoice={addChoice}
+                removeChoice={removeChoice}
               />
             </Col>
           </Row>

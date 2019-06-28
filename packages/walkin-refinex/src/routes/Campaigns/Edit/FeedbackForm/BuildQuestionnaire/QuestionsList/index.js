@@ -11,7 +11,7 @@ export default class QuestionsList extends Component {
 
   toggleClick = index => {
     const { questionnaire } = this.props;
-    this.props.onQuestionSelected(questionnaire[index]);
+    this.props.onQuestionSelected(index);
   };
 
   getRow = (index, style) => {

@@ -10,19 +10,20 @@ class Questionnaire extends Component {
   constructor() {
     super();
     this.state = {
-      questionnaire: [],
       questionToEdit: null,
-      loading: true
+      loading: true,
+      questionIndex: null
     };
   }
 
-  onQuestionSelected = question => {
+  onQuestionSelected = questionIndex => {
     this.setState({
-      questionToEdit: question
+      questionToEdit: this.props.questionnaire[questionIndex],
+      questionIndex
     });
   };
 
-  onQuestionSubmitted = editedQuestion => {
+  onQuestionSubmitted = async editedQuestion => {
     // GQL to edit the question and update questionnaire in state
     const { type, questionText, rangeMax, rangeMin } = editedQuestion;
     const questionToSave = {
@@ -76,14 +77,33 @@ class Questionnaire extends Component {
       })
       .then(data => {
         console.log(data);
+        this.props.refetchQuestionnaire();
       })
       .catch(err => {
         console.log(err);
       });
   };
 
+  removeChoice = choice => {
+    console.log("removing choice", choice);
+    this.props
+      .removeChoice({
+        variables: {
+          id: choice.id
+        }
+      })
+      .then(mutationData => {
+        console.log(mutationData);
+        this.props.refetchQuestionnaire();
+      });
+  };
+
   render() {
-    const { questionToEdit } = this.state;
+    console.log(this.props);
+
+    const { questionIndex } = this.state;
+    console.log(questionIndex);
+
     return (
       <Row className="QuestionnaireArea">
         <Col span={8}>
@@ -94,11 +114,12 @@ class Questionnaire extends Component {
           />
         </Col>
         <Col span={16}>
-          {this.state.questionToEdit ? (
+          {questionIndex !== null ? (
             <FormPane
-              questionToEdit={questionToEdit}
+              questionToEdit={this.props.questionnaire[questionIndex]}
               onQuestionSubmitted={this.onQuestionSubmitted}
               addChoice={this.addChoice}
+              removeChoice={this.removeChoice}
             />
           ) : null}
         </Col>
@@ -145,10 +166,19 @@ const ADD_CHOICE = gql`
   }
 `;
 
+const REMOVE_CHOICE = gql`
+  mutation removeChoice($id: ID!) {
+    removeChoice(id: $id) {
+      choiceText
+    }
+  }
+`;
+
 export default compose(
   graphql(EDIT_QUESTION, { name: "editQuestion" }),
   graphql(CREAT_BLANK_QUESITON, {
     name: "createQuestionnaire"
   }),
-  graphql(ADD_CHOICE, { name: "addChoice" })
+  graphql(ADD_CHOICE, { name: "addChoice" }),
+  graphql(REMOVE_CHOICE, { name: "removeChoice" })
 )(Questionnaire);
