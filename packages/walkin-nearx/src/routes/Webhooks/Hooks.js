@@ -66,7 +66,7 @@ class Hooks extends Component {
       }).catch(err => console.log("Failed to get Event Types" + err))
   }
 
-  getWebhooks = () =>{
+  getWebhooks = () => {
     this.setState({ spin: true });
 
     const jwtData = jwt.decode(localStorage.getItem("jwt"));
@@ -97,12 +97,13 @@ class Hooks extends Component {
   };
 
   createHook = () => {
+    this.setState({ loading: true })
     let errors = {};
     // if (this.state.hookName.trim() == "")
     //   errors.hookName = "* this field is mandatory";
-    if (this.state.event == "") errors.platform = "* this field is mandatory";
+    if (this.state.event == "") errors.event = "* this field is mandatory";
     if (this.state.url.trim() == "") errors.url = "* this field is mandatory";
-    if (this.state.method == "") errors.url = "* this field is mandatory";
+    if (this.state.method == "") errors.method = "* this field is mandatory";
 
     if (Object.keys(errors).length !== 0) {
       this.setState({ errors });
@@ -127,7 +128,10 @@ class Hooks extends Component {
           this.setState({ visible: false, loading: false })
           this.getWebhooks()
         })
-        .catch(err => console.log("Failed to get Places Details" + err));
+        .catch(err => {
+          this.setState({ loading: false });
+          console.log("Failed to get Places Details" + err)
+        });
     }
   }
 
