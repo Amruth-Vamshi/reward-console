@@ -34,11 +34,11 @@ const RestrictedRoute = ({
     {...rest}
     render={props => {
       if (userId) {
-        console.log("Authenticated!");
+        // console.log("Authenticated!");
 
         return <Component {...props} />;
       } else {
-        console.log("Redirecting!");
+        // console.log("Redirecting!");
         setRedirectRoute({
           variables: {
             route: props.location.pathname
@@ -210,6 +210,8 @@ const ON_LAYOUT_TYPE_CHANGE = gql`
 `;
 
 const mapStateToProps = ({ localData }) => {
+  console.log(localData);
+
   const { locale, navStyle, themeType, layoutType } = localData.settings;
   const { userId } = localData.auth;
   return { locale, navStyle, themeType, layoutType, userId };

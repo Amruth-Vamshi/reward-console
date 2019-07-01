@@ -100,7 +100,7 @@ export class MainApp extends Component {
   componentDidMount() {
     window.addEventListener("resize", () => {
       this.props.updateWindowWidth({ variables: { width: window.innerWidth } })
-      console.log(window.innerWidth)
+      // console.log(window.innerWidth)
     });
   }
 

@@ -193,7 +193,7 @@ const signIn = async (_, { input }, { client }) => {
     });
     return true;
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return false;
   }
 };
@@ -277,11 +277,11 @@ const jwt = () => {
 };
 
 const resolvers = {
-  Query: {
-    userId,
-    organizationId,
-    jwt
-  },
+  // Query: {
+  //   userId,
+  //   organizationId,
+  //   jwt
+  // },
   Mutation: {
     toggleCollapsedSideNav,
     updateWindowWidth,

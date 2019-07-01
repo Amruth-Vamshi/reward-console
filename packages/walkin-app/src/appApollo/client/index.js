@@ -11,6 +11,7 @@ import {
 
 export const configureClient = async () => {
   const cache = new InMemoryCache();
+  console.log("cache", cache);
 
   const token = localStorage.getItem("jwt");
 
