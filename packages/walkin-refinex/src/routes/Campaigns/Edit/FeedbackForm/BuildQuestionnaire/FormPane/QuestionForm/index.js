@@ -2,7 +2,17 @@ import React, { Component } from "react";
 import { CardBox, ErrorBoundary } from "@walkinsole/walkin-components";
 import gql from "graphql-tag";
 import { graphql } from "react-apollo";
-import { Form, Slider, Button, Input, TreeSelect, Row, Col } from "antd";
+import {
+  Form,
+  Slider,
+  Button,
+  Input,
+  TreeSelect,
+  Row,
+  Col,
+  Popconfirm,
+  message
+} from "antd";
 
 const QUESTION_WITH_SLIDER = {
   RATING_SCALE: "RATING_SCALE",
@@ -10,6 +20,14 @@ const QUESTION_WITH_SLIDER = {
 };
 
 class QuestionForm extends Component {
+  constructor() {
+    super();
+    this.state = {
+      popUpVisible: false,
+      newTypeValue: null,
+      validationStatus: "success"
+    };
+  }
   componentDidMount() {
     const {
       questionText,
@@ -69,6 +87,35 @@ class QuestionForm extends Component {
     this.props.onQuestionSubmitted();
   };
 
+  triggerPopup = (_, __, { preValue, triggerValue }) => {
+    this.props.form.setFieldsValue({
+      type: triggerValue
+    });
+    if (preValue && preValue.value !== triggerValue) {
+      this.setState({
+        popUpVisible: true,
+        newTypeValue: triggerValue
+        // validationStatus: "validating"
+      });
+    }
+  };
+
+  confirmTypeChange = () => {
+    const { newTypeValue } = this.state;
+    this.props.form.setFieldsValue({
+      type: newTypeValue
+    });
+    this.closeTypeChange();
+  };
+
+  closeTypeChange = () => {
+    this.setState({
+      popUpVisible: false,
+      newTypeValue: null,
+      validationStatus: "success"
+    });
+  };
+
   render() {
     const { questionToEdit, form } = this.props;
     const { getFieldDecorator } = form;
@@ -101,19 +148,33 @@ class QuestionForm extends Component {
                     ]
                   })(<Input />)}
                 </Item>
-                <Item label="Type">
-                  {getFieldDecorator("type", {
-                    rules: [
-                      {
-                        required: true
-                      }
-                    ]
-                  })(
-                    <TreeSelect placeholder="Please select">
-                      {this.getQuestionTypes()}
-                    </TreeSelect>
-                  )}
-                </Item>
+                <Popconfirm
+                  title="Changin question type will delete the existing choices, continue?"
+                  visible={this.state.popUpVisible}
+                  onConfirm={this.confirmTypeChange}
+                  onCancel={this.closeTypeChange}
+                  okText="Yes"
+                  cancelText="No"
+                >
+                  <Item
+                    label="Type"
+                    validateStatus={this.state.validationStatus}
+                  >
+                    {getFieldDecorator("type", {
+                      rules: [
+                        {
+                          required: true
+                        }
+                      ],
+                      getValueFromEvent: this.triggerPopup
+                    })(
+                      <TreeSelect placeholder="Please select">
+                        {this.getQuestionTypes()}
+                      </TreeSelect>
+                    )}
+                  </Item>
+                </Popconfirm>
+
                 <Item
                   label="Range Min"
                   style={
@@ -142,8 +203,8 @@ class QuestionForm extends Component {
   }
 }
 
-const onValuesChange = (props, changedValues, allValues) => {
-  props.onQuestionEdited(allValues);
+const onValuesChange = ({ onQuestionEdited }, __, formValue) => {
+  onQuestionEdited(formValue);
 };
 
 const FormPane = Form.create({ name: "QuestionForm", onValuesChange })(

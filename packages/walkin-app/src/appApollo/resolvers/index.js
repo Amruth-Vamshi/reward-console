@@ -170,36 +170,15 @@ const signIn = async (_, { input }, { client }) => {
       return false;
     }
     const jwt = data.data.login.jwt;
-    const { id, org_id } = decode(jwt);
-
-    const USER_DATA = gql`
-      query queryUser($id: ID!) {
-        user(id: $id) {
-          firstName
-          email
-          lastName
-          organization {
-            name
-          }
-        }
-      }
-    `;
-    const userData = await client.query({
-      query: USER_DATA,
-      variables: { id }
-    });
-
     localStorage.setItem("jwt", jwt);
+    const { id } = decode(jwt);
 
     await client.writeQuery({
       query: gql`
         query auth {
           auth {
             jwt
-            organizationId
             userId
-            firstName
-            lastName
           }
         }
       `,
@@ -207,10 +186,7 @@ const signIn = async (_, { input }, { client }) => {
         auth: {
           __typename: "auth",
           jwt,
-          organizationId: org_id,
-          userId: id,
-          firstName: userData.data.user.firstName,
-          lastName: userData.data.user.lastName
+          userId: id
         }
       }
     });
@@ -225,6 +201,66 @@ const hideMessage = (_, input, { client }) => { };
 
 const showAuthLoader = (_, input, { client }) => { };
 
+const setRedirectRoute = async (_, { route }, { client }) => {
+  await client.writeQuery({
+    query: gql`
+      query redirectRoute {
+        redirectRoute
+      }
+    `,
+    data: {
+      redirectRoute: route
+    }
+  });
+  return route;
+};
+
+const setLocalUserData = async (_, __, { client }) => {
+  const jwt = localStorage.getItem("jwt");
+  const { id, org_id } = decode(jwt);
+  const USER_DATA = gql`
+    query queryUser($id: ID!) {
+      user(id: $id) {
+        firstName
+        email
+        lastName
+        organization {
+          name
+        }
+      }
+    }
+  `;
+  const userData = await client.query({
+    query: USER_DATA,
+    variables: { id }
+  });
+
+  await client.writeQuery({
+    query: gql`
+      query auth {
+        auth {
+          jwt
+          organizationId
+          userId
+          firstName
+          lastName
+        }
+      }
+    `,
+    data: {
+      auth: {
+        __typename: "auth",
+        jwt,
+        organizationId: org_id,
+        userId: id,
+        firstName: userData.data.user.firstName,
+        lastName: userData.data.user.lastName
+      }
+    }
+  });
+  return true;
+};
+
 const resolvers = {
   Mutation: {
     toggleCollapsedSideNav,
@@ -236,7 +272,9 @@ const resolvers = {
     switchLanguage,
     signIn,
     hideMessage,
-    showAuthLoader
+    showAuthLoader,
+    setRedirectRoute,
+    setLocalUserData
   }
 };
 

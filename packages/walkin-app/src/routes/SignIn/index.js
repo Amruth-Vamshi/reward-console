@@ -7,15 +7,8 @@ import IntlMessages from "@walkinsole/walkin-components/src/util/IntlMessages";
 
 class NormalLoginForm extends React.Component {
   render() {
-    const { history } = this.props;
+    const { history, routeQuery } = this.props;
     const { getFieldDecorator } = this.props.form;
-    // const LOGIN = gql`
-    //   mutation login($input: LoginInput!) {
-    //     login(input: $input) {
-    //       jwt
-    //     }
-    //   }
-    // `;
     const SIGN_IN = gql`
       mutation signIn($input: SignInInput!) {
         signIn(input: $input) @client
@@ -27,9 +20,11 @@ class NormalLoginForm extends React.Component {
           <div className="gx-app-login-main-content">
             <div className="gx-app-logo-content">
               <div className="gx-app-logo-content-bg">
-                <img src="https://media.golfdigest.com/photos/569688b4273cde6003f797c8/master/w_768,c_limit/El-Camaleon-15-hole-Riviera-Maya.jpg" alt="Neature" />
+                <img
+                  src="https://media.golfdigest.com/photos/569688b4273cde6003f797c8/master/w_768,c_limit/El-Camaleon-15-hole-Riviera-Maya.jpg"
+                  alt="Neature"
+                />
                 {/* https://via.placeholder.com/272x395 */}
-
               </div>
               <div className="gx-app-logo-wid">
                 <h1>
@@ -51,7 +46,7 @@ class NormalLoginForm extends React.Component {
               </div>
             </div>
             <div className="gx-app-login-content">
-              <Mutation mutation={SIGN_IN}>
+              <Mutation mutation={SIGN_IN} fetchPolicy="no-cache">
                 {(signIn, { data }) => (
                   <Form
                     onSubmit={async e => {
@@ -70,8 +65,14 @@ class NormalLoginForm extends React.Component {
                           });
 
                           if (data && data.data && data.data.signIn) {
-                            console.log("Login Successfull. Redirecting...");
-                            history.push("/");
+                            const redirectRoute = routeQuery.redirectRoute
+                              ? routeQuery.redirectRoute
+                              : "/core";
+                            console.log(
+                              "Login Successfull. Redirecting...",
+                              redirectRoute
+                            );
+                            history.push(redirectRoute);
                           } else {
                             console.log("Login Failed");
                           }
@@ -153,4 +154,15 @@ class NormalLoginForm extends React.Component {
   }
 }
 
-export default Form.create({ name: "vertical_login" })(NormalLoginForm);
+const GET_REDIRECT_ROUTE = gql`
+  query redirectRoute {
+    redirectRoute @client
+  }
+`;
+
+export default compose(
+  graphql(GET_REDIRECT_ROUTE, {
+    name: "routeQuery"
+  }),
+  Form.create({ name: "vertical_login" })
+)(NormalLoginForm);

@@ -24,21 +24,36 @@ import {
 import gql from "graphql-tag";
 import { graphql, compose } from "react-apollo";
 
-const RestrictedRoute = ({ component: Component, userId, ...rest }) => (
+const RestrictedRoute = ({
+  setRedirectRoute,
+  component: Component,
+  userId,
+  ...rest
+}) => (
   <Route
     {...rest}
-    render={props =>
-      userId ? (
-        <Component {...props} />
-      ) : (
-        <Redirect
-          to={{
-            pathname: "/signin",
-            state: { from: props.location }
-          }}
-        />
-      )
-    }
+    render={props => {
+      if (userId) {
+        console.log("Authenticated!");
+
+        return <Component {...props} />;
+      } else {
+        console.log("Redirecting!");
+        setRedirectRoute({
+          variables: {
+            route: props.location.pathname
+          }
+        });
+        return (
+          <Redirect
+            to={{
+              pathname: "/signin",
+              state: { from: props.location }
+            }}
+          />
+        );
+      }
+    }}
   />
 );
 
@@ -95,6 +110,10 @@ class App extends Component {
     if (params.has("layout-type")) {
       this.props.onLayoutTypeChange(params.get("layout-type"));
     }
+
+    if (!this.props.userId && localStorage.getItem("jwt")) {
+      this.props.setLocalUserData();
+    }
   }
 
   render() {
@@ -134,6 +153,7 @@ class App extends Component {
               path={`${match.url}`}
               userId={userId}
               component={MainApp}
+              setRedirectRoute={this.props.setRedirectRoute}
             />
           </Switch>
         </IntlProvider>
@@ -195,7 +215,19 @@ const mapStateToProps = ({ localData }) => {
   return { locale, navStyle, themeType, layoutType, userId };
 };
 
+const SET_REDIRECT_ROUTE = gql`
+  mutation setRedirectRoute($route: String) {
+    setRedirectRoute(route: $route) @client
+  }
+`;
+const SET_LOCAL_USER_DATA = gql`
+  mutation setLocalUserData {
+    setLocalUserData @client
+  }
+`;
 export default compose(
+  graphql(SET_LOCAL_USER_DATA, { name: "setLocalUserData" }),
+  graphql(SET_REDIRECT_ROUTE, { name: "setRedirectRoute" }),
   graphql(SET_THEME_TYPE, { name: "setThemeType" }),
   graphql(ON_NAV_STYLE_CHANGE, { name: "onNavStyleChange" }),
   graphql(ON_LAYOUT_TYPE_CHANGE, { name: "onLayoutTypeChange" }),
