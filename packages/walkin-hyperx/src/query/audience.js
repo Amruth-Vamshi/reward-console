@@ -54,7 +54,7 @@ export const createSegment = gql`
 	mutation createSegment(
 		$name: String!
 		$description: String!
-		$segmentType: String!
+		$segmentType: SEGMENT_TYPE!
 		$organization_id: ID!
 		$application_id: ID!
 		$rule_id: ID!

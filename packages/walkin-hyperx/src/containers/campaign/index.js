@@ -4,6 +4,8 @@ import CampaignFooter from '../../components/molecules/campaignFooter';
 import { withRouter } from 'react-router-dom';
 import BasicInfo from './campaignCreation/basicInfo';
 import Audience from './campaignCreation/audience';
+import Offer from './campaignCreation/offer';
+import Communication from './campaignCreation/communication';
 import { allSegments, attributes } from '../../query/audience';
 import { withApollo, graphql, compose } from 'react-apollo';
 
@@ -20,13 +22,13 @@ const stepData = [
 	},
 	{
 		id: 3,
-		title: 'Communication',
-		route: 'ommunication',
+		title: 'Offer',
+		route: 'offer',
 	},
 	{
 		id: 4,
-		title: 'Offer',
-		route: 'offer',
+		title: 'Communication',
+		route: 'ommunication',
 	},
 	{
 		id: 5,
@@ -46,6 +48,27 @@ const fields = [
 	{ name: 'isDev', label: 'Is a Developer?', value: false },
 ];
 
+const communicationData = [
+	{ value: '1', title: 'SMS' },
+	{ value: '2', title: 'Push Notification' },
+	{ value: '3', title: 'Email' },
+];
+const smsFormData = [
+	{ label: 'SMS Tag', value: 'smsTag', errorMessage: 'sms tag is required' },
+	{ label: 'SMS Body', value: 'smsBody', inputType: 'textarea', errorMessage: 'sms body is required' },
+];
+
+const pushFormData = [
+	{ label: 'Push notification Tag', value: 'pushTag', errorMessage: 'push notification tag is required' },
+	{ label: 'Title for notification', value: 'pushTitle', errorMessage: 'push notification title is required' },
+	{
+		label: 'Push notification Body',
+		value: 'pushBody',
+		inputType: 'textarea',
+		errorMessage: 'push notification is required',
+	},
+];
+
 class CampaignCreation extends Component {
 	constructor(props) {
 		super(props);
@@ -58,9 +81,14 @@ class CampaignCreation extends Component {
 			testValue: 95,
 			controlValue: 5,
 			testControlSelected: '',
+			communicationSelected: '1',
+			communicationFormValues: {},
 		};
 	}
 	saveFormRef = formRef => {
+		this.formRef = formRef;
+	};
+	communicationWrappedComponentRef = formRef => {
 		this.formRef = formRef;
 	};
 
@@ -78,7 +106,8 @@ class CampaignCreation extends Component {
 		e.preventDefault();
 	};
 
-	goToAudiencePage(current) {
+	goToNextPage(current) {
+		console.log('current', current);
 		if (current === 1) {
 			const form = this.formRef && this.formRef.props && this.formRef.props.form;
 			if (form) {
@@ -99,6 +128,20 @@ class CampaignCreation extends Component {
 			});
 		}
 	}
+	OnCommunicationFormNext = () => {
+		const form = this.formRef && this.formRef.props && this.formRef.props.form;
+		if (form) {
+			form.validateFields((err, values) => {
+				if (err) {
+					return;
+				} else {
+					this.setState({
+						communicationFormValues: values,
+					});
+				}
+			});
+		}
+	};
 
 	onControlValueChange = val => {
 		this.setState({ controlValue: val });
@@ -122,6 +165,11 @@ class CampaignCreation extends Component {
 		console.log('quu', query);
 	};
 
+	onCommunicationChange = e => {
+		console.log('onCommunicationChange', e.target.value);
+		this.setState({ communicationSelected: e.target.value });
+	};
+
 	render() {
 		const {
 			formValues,
@@ -132,6 +180,8 @@ class CampaignCreation extends Component {
 			testControlSelected,
 			rows,
 			values,
+			communicationSelected,
+			communicationFormValues,
 		} = this.state;
 		let attributeData =
 			this.props.allAttributes &&
@@ -155,7 +205,7 @@ class CampaignCreation extends Component {
 					text="Create Campaign"
 					current={current}
 					stepData={stepData}
-					onChange={this.goToAudiencePage.bind(this)}
+					onChange={this.goToNextPage.bind(this)}
 					isHeaderStepper={true}
 				/>
 				{current === 0 && (
@@ -205,12 +255,27 @@ class CampaignCreation extends Component {
 						logQuery={this.logQuery}
 					/>
 				)}
+				{current === 2 && <Offer subTitle="Offer" />}
+				{current === 3 && (
+					<Communication
+						subTitle="Communication"
+						onChange={this.onCommunicationChange}
+						communicationData={communicationData}
+						defaultValue="1"
+						value={communicationSelected}
+						OnCommunicationFormNext={this.OnCommunicationFormNext}
+						communicationWrappedComponentRef={this.communicationWrappedComponentRef}
+						communicationFormValues={communicationFormValues}
+						smsFormData={smsFormData}
+						pushFormData={pushFormData}
+					/>
+				)}
 				<div style={{ margin: '32px' }}>
 					<CampaignFooter
 						nextButtonText="Next"
 						saveDraftText="Save Draft"
 						onPage1SaveDraft={this.onPage1SaveDraft}
-						goToPage2={this.goToAudiencePage.bind(this, 1)}
+						goToPage2={this.goToNextPage.bind(this, 1)}
 					/>
 				</div>
 			</div>

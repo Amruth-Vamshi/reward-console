@@ -69,6 +69,8 @@ class SegmentList extends Component {
 			})
 			.then(({ data }) => {
 				console.log('delete segment', data);
+				const { refetchSegments } = this.props;
+				refetchSegments();
 			})
 			.catch(error => {
 				console.log('err', error);
@@ -260,10 +262,19 @@ export default withRouter(
 				forceFetch: true,
 				fetchPolicy: 'network-only',
 			}),
-			props: ({ data: { loading, error, segments } }) => ({
+			props: ({ data: { loading, error, segments, refetch } }) => ({
 				loading,
 				segments,
 				error,
+				refetchSegments: ownProps => {
+					console.log('ownProps', ownProps);
+					refetch({
+						variables: {
+							organization_id: '6ec84af7-d323-4ef7-aa42-a3007055f5b7',
+							status: 'ACTIVE',
+						},
+					});
+				},
 			}),
 		})(SegmentList)
 	)

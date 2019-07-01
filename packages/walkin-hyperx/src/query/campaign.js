@@ -7,6 +7,7 @@ export const campaigns = gql`
 			description
 			startTime
 			endTime
+			status
 		}
 	}
 `;

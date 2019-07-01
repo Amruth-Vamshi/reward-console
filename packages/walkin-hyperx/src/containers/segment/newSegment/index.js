@@ -98,7 +98,6 @@ class NewSegment extends Component {
 
 	componentWillMount = () => {
 		const { location } = this.props;
-		console.log('location.state.segmentSelected.name', location.state.segmentSelected.name);
 		if (location && location.state) {
 			if (location.state.segmentSelected) {
 				let str = location.state.segmentSelected.rule.ruleConfiguration;

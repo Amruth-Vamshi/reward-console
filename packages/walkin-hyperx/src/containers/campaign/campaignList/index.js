@@ -7,33 +7,53 @@ import SortableDataTable from '../../../components/atoms/sortableDataTable';
 import { Card, Menu, Dropdown, Input, Progress, Tabs } from 'antd';
 import moment from 'moment';
 import { withApollo, graphql } from 'react-apollo';
-// import './style.css';
+import './style.css';
+
+const DEFAULT_STATUS = 'ACTIVE';
+
 const { TabPane } = Tabs;
 const data = [
 	{
 		name: 'welcome push',
 		startTime: '2019-05-06T09:10:22.574Z',
 		endTime: '2019-06-06T09:10:22.574Z',
+		status: 'ACTIVE',
 	},
 	{
-		name: 'welcome push',
+		name: 'birthday offer',
 		startTime: '2019-08-06T09:10:22.574Z',
 		endTime: '2019-09-06T09:10:22.574Z',
+		status: 'ACTIVE',
 	},
 	{
-		name: 'welcome push',
+		name: 'bean redemption',
 		startTime: '2019-06-21T09:10:22.574Z',
 		endTime: '2019-07-06T09:10:22.574Z',
+		status: 'ACTIVE',
 	},
 	{
-		name: 'welcome push',
+		name: '30% offer',
 		startTime: '2019-07-06T09:10:22.574Z',
 		endTime: '2019-0-096T09:10:22.574Z',
+		status: 'ACTIVE',
 	},
 	{
-		name: 'welcome push',
+		name: 'store opening offer',
 		startTime: '2019-04-06T09:10:22.574Z',
 		endTime: '2019-06-06T09:10:22.574Z',
+		status: 'ACTIVE',
+	},
+	{
+		name: '50% on beverages',
+		startTime: '2019-08-06T09:10:22.574Z',
+		endTime: '2019-10-06T09:10:22.574Z',
+		status: 'DRAFT',
+	},
+	{
+		name: 'draft test',
+		startTime: '2019-06-06T09:10:22.574Z',
+		endTime: '2019-07-06T09:10:22.574Z',
+		status: 'DRAFT',
 	},
 ];
 class CampaignList extends Component {
@@ -42,6 +62,11 @@ class CampaignList extends Component {
 		this.state = {
 			sortedInfo: null,
 			filtered: null,
+			data: data.filter(val => {
+				if (val.status == 'ACTIVE') {
+					return moment().isBetween(val.startTime, val.endTime);
+				}
+			}),
 		};
 	}
 	onNewCampaign = () => {
@@ -84,7 +109,7 @@ class CampaignList extends Component {
 		let newList = [];
 
 		if (e.target.value !== '') {
-			currentList = data;
+			currentList = this.state.data;
 			// Use .filter() to determine which items should be displayed
 			// based on the search terms
 			newList = currentList.filter(item => {
@@ -99,7 +124,7 @@ class CampaignList extends Component {
 			});
 		} else {
 			// If the search bar is empty, set newList to original task list
-			newList = data;
+			newList = this.state.data;
 		}
 
 		// Set the filtered state based on what our rules added to newList
@@ -108,17 +133,51 @@ class CampaignList extends Component {
 		});
 	};
 
+	onTabChange = key => {
+		console.log('jhdj', key);
+		if (key == 2) {
+			let upcomingCampaigns = data.filter(val => {
+				if (val.status == 'ACTIVE') {
+					return moment(val.startTime).isAfter(moment(), 'day');
+				}
+			});
+			this.setState({ data: upcomingCampaigns });
+		}
+		if (key == 3) {
+			this.setState({ data: data });
+		}
+		if (key == 4) {
+			let completedCampaigns = data.filter(val => {
+				if (val.status == 'ACTIVE') {
+					return moment(val.endTime).isBefore(moment(), 'day');
+				}
+			});
+			this.setState({ data: completedCampaigns });
+		}
+		if (key == 5) {
+			const { changeStatus } = this.props;
+			//If api works
+			// changeStatus('DRAFT')
+			// this.setState({data: this.props.campaigns})
+			let draftCampaigns = data.filter(val => {
+				return val.status == 'DRAFT';
+			});
+			this.setState({ data: draftCampaigns });
+		}
+		if (key == 1) {
+			let liveCampaigns = data.filter(val => {
+				if (val.status == 'ACTIVE') {
+					return moment().isBetween(val.startTime, val.endTime);
+				}
+			});
+			this.setState({ data: liveCampaigns });
+		}
+	};
+
 	render() {
-		let { sortedInfo, filteredInfo, filtered } = this.state;
+		let { sortedInfo, filteredInfo, filtered, data } = this.state;
 		sortedInfo = sortedInfo || {};
 		filteredInfo = filteredInfo || {};
-		//Format start and end date according to status of the campaign using moment
-		// let liveCampaigns = campaigns.filter(val => {
-		// 	if (val.status === 'ACTIVE') {
-		// 		return moment(val.endTime).isBefore(moment(), 'day')
-		// 		}
-		// })
-		// console.log("liveCampaigns",liveCampaigns)
 		let campaignData = [];
 		if (filtered != null) {
 			campaignData = filtered;
@@ -173,26 +232,31 @@ class CampaignList extends Component {
 					onCampaignHeaderButtonClick={this.onNewCampaign}
 					campaignHeaderButtonText="CREATE CAMPAIGN"
 				/>
-				<Card style={{ margin: '32px' }}>
+				<Card>
 					<div style={{ marginBottom: '24px' }}>
-						<Input
-							style={{ width: 200 }}
-							placeholder="Search campaign"
-							allowClear
-							onChange={this.onCampaignSearch}
-						/>
-						<Tabs defaultActiveKey="1" onChange={this.callback}>
+						<div className="searchInputStyle">
+							<Input
+								style={{ width: 200 }}
+								placeholder="Search campaign"
+								allowClear
+								onChange={this.onCampaignSearch}
+							/>
+						</div>
+						<Tabs defaultActiveKey="1" onChange={this.onTabChange}>
 							<TabPane tab="Live" key="1">
 								<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} />
 							</TabPane>
-							<TabPane tab="A/B Testing" key="2">
-								Content of Tab Pane 2
+							<TabPane tab="Upcoming" key="2">
+								<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} />
 							</TabPane>
-							<TabPane tab="Completed" key="3">
-								Content of Tab Pane 3
+							<TabPane tab="A/B Testing" key="3">
+								<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} />
 							</TabPane>
-							<TabPane tab="Draft" key="4">
-								Content of Tab Pane 4
+							<TabPane tab="Completed" key="4">
+								<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} />
+							</TabPane>
+							<TabPane tab="Draft" key="5">
+								<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} />
 							</TabPane>
 						</Tabs>
 					</div>
@@ -207,13 +271,17 @@ export default withRouter(
 		graphql(campaigns, {
 			options: () => ({
 				variables: {
-					status: 'ACTIVE',
+					status: DEFAULT_STATUS,
 				},
 			}),
-			props: ({ data: { loading, error, campaigns } }) => ({
+			props: ({ data: { loading, error, campaigns, refetch } }) => ({
 				loading,
 				campaigns,
 				error,
+				changeStatus: status => {
+					const variables = { status };
+					refetch(variables);
+				},
 			}),
 		})(CampaignList)
 	)
