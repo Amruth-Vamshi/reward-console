@@ -38,11 +38,6 @@ export default {
     loader: false,
     alertMessage: "",
     showMessage: false,
-    initURL: "",
-    userId: null,
-    organizationId: null,
-    jwt: null,
-    firstName: null,
-    lastName: null
+    initURL: ""
   }
 };

@@ -11,6 +11,7 @@ import {
 } from "@walkinsole/walkin-components/src/constants/ThemeSetting";
 import gql from "graphql-tag";
 import { decode } from "jsonwebtoken";
+
 const toggleCollapsedSideNav = async (_, { navCollapsed }, { client }) => {
   const data = await client.writeQuery({
     query: gql`
@@ -260,7 +261,27 @@ const setLocalUserData = async (_, __, { client }) => {
   return true;
 };
 
+const userId = () => {
+  const jwt = localStorage.getItem("jwt");
+  const jwtData = decode(jwt);
+  return jwtData.userId;
+};
+
+const organizationId = () => {
+  const jwt = localStorage.getItem("jwt");
+  const jwtData = decode(jwt);
+  return jwtData.organizationId;
+};
+const jwt = () => {
+  return localStorage.getItem("jwt");
+};
+
 const resolvers = {
+  Query: {
+    userId,
+    organizationId,
+    jwt
+  },
   Mutation: {
     toggleCollapsedSideNav,
     updateWindowWidth,
