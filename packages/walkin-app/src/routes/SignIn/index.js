@@ -6,6 +6,10 @@ import { Link } from "react-router-dom";
 import IntlMessages from "@walkinsole/walkin-components/src/util/IntlMessages";
 
 class NormalLoginForm extends React.Component {
+  componentWillMount() {
+    if (localStorage.getItem('jwt'))
+      this.props.history.push('/');
+  }
   render() {
     const { history, routeQuery } = this.props;
     const { getFieldDecorator } = this.props.form;

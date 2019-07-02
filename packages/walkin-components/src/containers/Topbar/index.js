@@ -57,7 +57,7 @@ class Topbar extends Component {
   };
 
   getLocalHeaderStyle() {
-    console.log("TOPBAR>>> ", this.props)
+    // console.log("TOPBAR>>> ", this.props)
     const { location } = this.props;
     const appName = location.pathname.split("/")[1];
     switch (appName) {
@@ -77,7 +77,7 @@ class Topbar extends Component {
             ((navStyle === NAV_STYLE_FIXED ||
               navStyle === NAV_STYLE_MINI_SIDEBAR) &&
               width < TAB_SIZE) ? (
-              <div className="gx-linebar gx-mr-3">
+              <div className="gx-linebar gx-mr-3" style={{ color: "#ffffff" }}>
                 <i
                   className="gx-icon-btn icon icon-menu"
                   onClick={() => {
@@ -89,7 +89,7 @@ class Topbar extends Component {
               </div>
             ) : null}
           <Link to="/" className="gx-d-block gx-d-lg-none gx-pointer">
-            <img alt="" src={require("../../assets/images/w-logo.png")} />
+            <img alt="" src={require("../../assets/images/walkin_logo_white.png")} style={{ width: 80 }} />
           </Link>
 
           {/* <SearchBox
@@ -99,7 +99,7 @@ class Topbar extends Component {
             value={this.state.searchText}
           /> */}
           <ul className="gx-header-notifications gx-ml-auto">
-            <li className="gx-notify gx-notify-search gx-d-inline-block gx-d-lg-none">
+            {/* <li className="gx-notify gx-notify-search gx-d-inline-block gx-d-lg-none">
               <Popover
                 overlayClassName="gx-popover-horizantal"
                 placement="bottomRight"
@@ -117,7 +117,7 @@ class Topbar extends Component {
                   <i className="icon icon-search-new" />
                 </span>
               </Popover>
-            </li>
+            </li> */}
             {/* {width >= TAB_SIZE ? null : (
               <Auxiliary>
                 <li className="gx-notify">

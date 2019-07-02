@@ -106,7 +106,7 @@ export class MainApp extends Component {
 
   render() {
     const { match, navStyle, location } = this.props;
-    console.log(location)
+    // console.log(location)
     let width = window.innerWidth
     return (
       <Layout className="gx-app-layout">

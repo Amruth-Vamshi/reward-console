@@ -38,7 +38,7 @@ export class Sidebar extends Component {
   // }
 
   getSideBar1() {
-    console.log("SIDEBAR>>>", this.props)
+    // console.log("SIDEBAR>>>", this.props)
     const { location } = this.props;
     const appName = location.pathname.split("/")[1];
     switch (appName) {

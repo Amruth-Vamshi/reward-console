@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Col, Row, Pagination, Card, Timeline, Modal, Spin, Tooltip, Input, Icon, Button } from "antd";
 import AppListCard from "./AppListCard";
-import { GET_ALL_APPS_OF_ORGANIZATION, GENERATE_API_KEY } from "../../queries/platformQuries";
+import { GET_ALL_APPS_OF_ORGANIZATION, GENERATE_API_KEY } from "@walkinsole/walkin-components/src/PlatformQueries";
 import jwt from "jsonwebtoken";
 import { withApollo } from "react-apollo";
 // import { nearXClient as client } from "../../nearXApollo";
@@ -46,12 +46,12 @@ class AppsList extends Component {
   // }
 
   componentWillMount() {
-    this.setState({ spin: true });
 
+    this.setState({ spin: true });
     const jwtData = jwt.decode(localStorage.getItem("jwt"));
 
-    jwtData
-      ? this.props.client
+    if (jwtData) {
+      this.props.client
         .query({
           query: GET_ALL_APPS_OF_ORGANIZATION,
           variables: { id: jwtData.org_id },
@@ -67,6 +67,7 @@ class AppsList extends Component {
               org.applications.map(app =>
                 apps.push({
                   id: app.id,
+                  org_id: org.id,
                   appName: app.name,
                   industry: org.name,
                   platform: app.platform,
@@ -77,15 +78,18 @@ class AppsList extends Component {
           }
 
           recOrg(org, apps);
-
           console.log(apps);
 
           this.setState({ appsList: apps, spin: false });
         })
         .catch(err => {
+          this.setState({ spin: false });
           console.log("Failed to get User Details" + err);
         })
-      : console.log("Error getting JwtData");
+    } else {
+      this.setState({ spin: false });
+      console.log("Error getting JwtData");
+    }
   }
 
   genereteToken = (i, appId) => {
@@ -147,6 +151,7 @@ class AppsList extends Component {
               {this.state.appsList.map((item, i) => (
                 <AppListCard
                   genereteToken={this.genereteToken}
+                  history={this.props.history}
                   test={this.test}
                   key={i}
                   index={i}
@@ -224,11 +229,7 @@ class AppsList extends Component {
                   <TextArea
                     suffix={
                       <Tooltip title="Copy">
-                        <Icon
-                          type="copy"
-                          onClick={() => this.copy()}
-                          theme="twoTone"
-                        />
+                        <Icon type="copy" onClick={() => this.copy()} theme="twoTone" />
                       </Tooltip>
                     }
                     placeholder="Autosize height with minimum and maximum number of lines"

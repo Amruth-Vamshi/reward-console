@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Col, Row, Pagination, Card, Select, Timeline, Form, Modal, Spin, Tooltip, Input, Icon, Button } from "antd";
 // import AppListCard from "./AppListCard";
-import { GET_WEBHOOKS, LIST_WEBHOOK_EVENTS, CREATE_WEBHOOK } from "../../queries/platformQuries";
+import { GET_WEBHOOKS, LIST_WEBHOOK_EVENTS, CREATE_WEBHOOK, UPDATE_WEBHOOK } from "@walkinsole/walkin-components/src/PlatformQueries";
 import jwt from "jsonwebtoken";
 import { withApollo } from "react-apollo";
 // import { nearXClient as client } from "../../nearXApollo";
@@ -33,8 +33,8 @@ class Hooks extends Component {
     this.state = {
       visible: false,
       hooksList: [],
+      update: false,
       spin: false,
-      visible: false,
       loading: false,
       eventTypes: [],
       hookName: '',
@@ -47,12 +47,17 @@ class Hooks extends Component {
   }
 
   addHook = () => {
-    this.setState({ visible: true });
+    this.setState({
+      visible: true, errors: {},// hookName: '', event:'',
+      // id: '', headers: '', url: '', method: '' 
+    });
   };
 
   handleCancel = () => {
-    this.setState({ visible: false });
-
+    this.state.update ? this.setState({
+      visible: false, errors: {}, hookName: '', event: '', update: false,
+      id: '', headers: '', url: '', method: '', loading: false,
+    }) : this.setState({ visible: false, update: false });
   };
 
 
@@ -88,12 +93,21 @@ class Hooks extends Component {
       : console.log("Error getting JwtData");
   }
 
-  onChange = (e, n) => this.setState({ event: e });
-  onChangeMethod = (e, n) => this.setState({ method: e });
+  onChange = (e, n) => {
+    let { errors } = this.state
+    errors.event = ''
+    this.setState({ event: e, errors })
+  };
+  onChangeMethod = (e, n) => {
+    let { errors } = this.state
+    errors.method = ''
+    this.setState({ method: e, errors })
+  };
 
   handleOnChange = (e, n) => {
-    this.setState({ [e.target.name]: e.target.value });
-
+    let { errors } = this.state
+    errors[e.target.name] = ''
+    this.setState({ [e.target.name]: e.target.value, errors });
   };
 
   createHook = () => {
@@ -106,35 +120,67 @@ class Hooks extends Component {
     if (this.state.method == "") errors.method = "* this field is mandatory";
 
     if (Object.keys(errors).length !== 0) {
-      this.setState({ errors });
+      this.setState({ errors, loading: false });
       console.log("Errors in submition" + Object.keys(errors).length);
     } else {
       const { org_id } = jwt.decode(localStorage.getItem("jwt"));
-      this.props.client
-        .mutate({
-          mutation: CREATE_WEBHOOK,
-          variables: {
-            input: {
-              event: this.state.event,
-              method: this.state.method,
-              url: this.state.url,
-              headers: this.state.headers,
-              organization_id: org_id
+
+      if (this.state.update) {
+        this.props.client
+          .mutate({
+            mutation: UPDATE_WEBHOOK,
+            variables: {
+              input: {
+                id: this.state.id,
+                method: this.state.method,
+                url: this.state.url,
+                headers: this.state.headers
+              }
             }
-          }
-        })
-        .then(res => {
-          console.log("Results", res);
-          this.setState({ visible: false, loading: false })
-          this.getWebhooks()
-        })
-        .catch(err => {
-          this.setState({ loading: false });
-          console.log("Failed to get Places Details" + err)
-        });
+          })
+          .then(res => {
+            console.log("Results", res);
+            this.handleCancel()
+            this.getWebhooks()
+          })
+          .catch(err => {
+            this.setState({ loading: false });
+            console.log("Failed to get Places Details" + err)
+          });
+      } else {
+        this.props.client
+          .mutate({
+            mutation: CREATE_WEBHOOK,
+            variables: {
+              input: {
+                event: this.state.event,
+                method: this.state.method,
+                url: this.state.url,
+                headers: this.state.headers,
+                organization_id: org_id
+              }
+            }
+          })
+          .then(res => {
+            console.log("Results", res);
+            this.setState({ visible: false, loading: false })
+            this.getWebhooks()
+          })
+          .catch(err => {
+            this.setState({ loading: false });
+            console.log("Failed to get Places Details" + err)
+          });
+      }
     }
   }
 
+  updateHook = hook => {
+    console.log(hook);
+    this.setState({
+      loading: false, update: true, visible: true,
+      event: hook.event, id: hook.id, headers: hook.headers, url: hook.url, method: hook.method
+    })
+  }
 
   render() {
     var options = this.state.eventTypes.map((item, index) => (
@@ -173,7 +219,7 @@ class Hooks extends Component {
                 <Col span={7}>url</Col>
               </Row>
               {this.state.hooksList.map((item, i) => (
-                <HooksListCard key={i} index={i} data={item}
+                <HooksListCard key={i} index={i} updateHook={this.updateHook} data={item}
                 />
               ))}
             </div>
@@ -201,16 +247,7 @@ class Hooks extends Component {
           onOk={this.createHook}
           onCancel={this.handleCancel}
           title="Create Webhook"
-          footer={[
-            <Button
-              key="submit"
-              type="primary"
-              loading={this.state.loading}
-              onClick={this.createHook}
-            >
-              Submit
-            </Button>
-          ]}
+          footer={null}
         >
           {/* <p>Submit your Google API key to search places</p> */}
 
@@ -221,28 +258,30 @@ class Hooks extends Component {
               <span style={{ color: "Red" }}> {this.state.errors.hookName} </span>
             </Form.Item> */}
 
-            <Form.Item {...formItemLayout} label="Event Type">
-              <Select
-                showSearch
-                size="large"
-                style={{ width: "100%" }}
-                placeholder="Select Event Type"
-                // value = { auth.user.organization.name }
-                optionFilterProp="children"
-                onChange={this.onChange}
-              // onSearch={onSearch}
-              >
-                {options}
-              </Select>
-              <span style={{ color: "Red" }}>
-                {this.state.errors.event}
-              </span>
-            </Form.Item>
+            {this.state.update ? '' :
+              <Form.Item {...formItemLayout} label="Event Type">
+                <Select
+                  showSearch
+                  size="large"
+                  style={{ width: "100%" }}
+                  placeholder="Select Event Type"
+                  // value = { auth.user.organization.name }
+                  optionFilterProp="children"
+                  onChange={this.onChange}
+                // onSearch={onSearch}
+                >
+                  {options}
+                </Select>
+                <span style={{ color: "Red" }}>
+                  {this.state.errors.event}
+                </span>
+              </Form.Item>}
 
             <Form.Item {...formItemLayout} label="Method">
               <Select size="large" style={{ width: "100%" }}
                 placeholder="Select method"
                 optionFilterProp="children"
+                value={this.state.method}
                 onChange={this.onChangeMethod}
               // onSearch={onSearch}
               >
@@ -287,21 +326,17 @@ class Hooks extends Component {
             </Form.Item>
 
             {/* <p><Button  onClick={this.props.showModal}>Add Hotspot</Button></p> */}
-            {/* <div style={{ overflow: "hidden", textAlign: "center" }}>
+            <div style={{ overflow: "hidden", textAlign: "center" }}>
               <Button
-                onClick={() => this.handleSubmit()}
                 loading={this.state.loading}
+                // type='primary'
+                onClick={() => this.createHook()}
                 className="buttonPrimary"
-                style={{
-                  textAlign: "center",
-                  width: "200px",
-                  float: "center",
-                  margin: "25px 30px 20px 0"
-                }}
+                style={{ textAlign: "center", width: "200px", float: "center", margin: "25px 30px 20px 0" }}
               >
-                CREATE APP
-                          </Button>
-            </div> */}
+                Submit
+              </Button>
+            </div>
           </Form>
 
 

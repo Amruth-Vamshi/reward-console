@@ -139,7 +139,7 @@ export default class GooglePlaces extends Component {
           this.state.mark.lng +
           "&key=" +
           googleAPIkey;
-        if (this.state.searchRadius !== null && this.state.searchRadius > 100)
+        if (this.state.searchRadius !== null && this.state.searchRadius >= 100)
           url += "&radius=" + this.state.searchRadius;
         else url += "&rankby=distance";
         url += "&keyword=" + this.state.search;
