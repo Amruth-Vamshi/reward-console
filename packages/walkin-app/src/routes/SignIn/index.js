@@ -53,7 +53,7 @@ class NormalLoginForm extends React.Component {
                       e.preventDefault();
                       this.props.form.validateFields(async (err, values) => {
                         if (!err) {
-                          // console.log("Received values of form: ", values);
+                          console.log("Received values of form: ", values);
                           const { email, password, remember } = values;
                           const data = await signIn({
                             variables: {
@@ -68,9 +68,13 @@ class NormalLoginForm extends React.Component {
                             const redirectRoute = routeQuery.redirectRoute
                               ? routeQuery.redirectRoute
                               : "/core";
+                            console.log(
+                              "Login Successfull. Redirecting...",
+                              redirectRoute
+                            );
                             history.push(redirectRoute);
                           } else {
-                            // console.log("Login Failed");
+                            console.log("Login Failed");
                           }
                         }
                       });
