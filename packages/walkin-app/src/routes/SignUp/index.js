@@ -200,11 +200,11 @@ const mapStateToProps = ({ localData }) => {
 //   }
 // )(WrappedSignUpForm);
 
-// const USER_SIGN_IN = gql`
-//   mutation userSignIn {
-//     userSignIn @client
-//   }
-// `;
+const USER_SIGN_IN = gql`
+  mutation userSignIn {
+    userSignIn @client
+  }
+`;
 
 const HIDE_MESSAGE = gql`
   mutation hideMessage {
@@ -238,7 +238,7 @@ const GET_AUTH = gql`
 `;
 export default compose(
   graphql(GET_AUTH, { name: "localData", props: mapStateToProps }),
-  // graphql(USER_SIGN_IN, { name: "userSignIn" }),
+  graphql(USER_SIGN_IN, { name: "userSignIn" }),
   graphql(HIDE_MESSAGE, { name: "hideMessage" }),
   graphql(SHOW_AUTH_LOADER, { name: "showAuthLoader" }),
   create()
