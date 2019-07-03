@@ -8,6 +8,7 @@ import Offer from './campaignCreation/offer';
 import Communication from './campaignCreation/communication';
 import { allSegments, attributes } from '../../query/audience';
 import { withApollo, graphql, compose } from 'react-apollo';
+import isEmpty from 'lodash/isEmpty';
 
 const stepData = [
 	{
@@ -53,21 +54,6 @@ const communicationData = [
 	{ value: '2', title: 'Push Notification' },
 	{ value: '3', title: 'Email' },
 ];
-const smsFormData = [
-	{ label: 'SMS Tag', value: 'smsTag', errorMessage: 'sms tag is required' },
-	{ label: 'SMS Body', value: 'smsBody', inputType: 'textarea', errorMessage: 'sms body is required' },
-];
-
-const pushFormData = [
-	{ label: 'Push notification Tag', value: 'pushTag', errorMessage: 'push notification tag is required' },
-	{ label: 'Title for notification', value: 'pushTitle', errorMessage: 'push notification title is required' },
-	{
-		label: 'Push notification Body',
-		value: 'pushBody',
-		inputType: 'textarea',
-		errorMessage: 'push notification is required',
-	},
-];
 
 class CampaignCreation extends Component {
 	constructor(props) {
@@ -108,7 +94,8 @@ class CampaignCreation extends Component {
 
 	goToNextPage(current) {
 		console.log('current', current);
-		if (current === 1) {
+		const { formValues } = this.state;
+		if (isEmpty(formValues)) {
 			const form = this.formRef && this.formRef.props && this.formRef.props.form;
 			if (form) {
 				form.validateFields((err, values) => {
@@ -183,6 +170,7 @@ class CampaignCreation extends Component {
 			communicationSelected,
 			communicationFormValues,
 		} = this.state;
+		console.log('formValues', formValues);
 		let attributeData =
 			this.props.allAttributes &&
 			this.props.allAttributes.ruleAttributes &&
@@ -266,8 +254,6 @@ class CampaignCreation extends Component {
 						OnCommunicationFormNext={this.OnCommunicationFormNext}
 						communicationWrappedComponentRef={this.communicationWrappedComponentRef}
 						communicationFormValues={communicationFormValues}
-						smsFormData={smsFormData}
-						pushFormData={pushFormData}
 					/>
 				)}
 				<div style={{ margin: '32px' }}>
@@ -275,7 +261,7 @@ class CampaignCreation extends Component {
 						nextButtonText="Next"
 						saveDraftText="Save Draft"
 						onPage1SaveDraft={this.onPage1SaveDraft}
-						goToPage2={this.goToNextPage.bind(this, 1)}
+						goToPage2={this.goToNextPage.bind(this, current + 1)}
 					/>
 				</div>
 			</div>

@@ -4,7 +4,6 @@ export const allSegments = gql`
 		segments(status: $status, organization_id: $organization_id) {
 			id
 			name
-			description
 			segmentType
 			rule {
 				id
@@ -53,7 +52,6 @@ export const createRule = gql`
 export const createSegment = gql`
 	mutation createSegment(
 		$name: String!
-		$description: String!
 		$segmentType: SEGMENT_TYPE!
 		$organization_id: ID!
 		$application_id: ID!
@@ -63,7 +61,6 @@ export const createSegment = gql`
 		createSegment(
 			input: {
 				name: $name
-				description: $description
 				segmentType: $segmentType
 				status: $status
 				organization_id: $organization_id

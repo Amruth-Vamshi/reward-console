@@ -34,7 +34,7 @@ const data = [
 	{
 		name: '30% offer',
 		startTime: '2019-07-06T09:10:22.574Z',
-		endTime: '2019-0-096T09:10:22.574Z',
+		endTime: '2019-08-096T09:10:22.574Z',
 		status: 'ACTIVE',
 	},
 	{

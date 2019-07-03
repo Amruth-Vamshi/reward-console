@@ -69,9 +69,6 @@ class NewSegment extends Component {
 						mutation: createSegment,
 						variables: {
 							name: this.state.value,
-							description: Math.random()
-								.toString(36)
-								.substr(2, 5),
 							segmentType: 'CUSTOM',
 							organization_id: org_id,
 							application_id: '1',
@@ -98,6 +95,16 @@ class NewSegment extends Component {
 
 	componentWillMount = () => {
 		const { location } = this.props;
+		// const todo = client.readFragment({
+		// 	id: , // `id` is any id that could be returned by `dataIdFromObject`.
+		// 	fragment: gql`
+		// 	  fragment myTodo on Todo {
+		// 		id
+		// 		text
+		// 		completed
+		// 	  }
+		// 	`,
+		//   });
 		if (location && location.state) {
 			if (location.state.segmentSelected) {
 				let str = location.state.segmentSelected.rule.ruleConfiguration;

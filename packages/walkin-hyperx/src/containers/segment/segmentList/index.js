@@ -134,8 +134,8 @@ class SegmentList extends Component {
 
 	render() {
 		let { sortedInfo, filteredInfo, filtered } = this.state;
-		const { segments, extensions } = this.props;
-		console.log('segments', segments, extensions);
+		const { segments } = this.props;
+		console.log('segments', segments);
 		sortedInfo = sortedInfo || {};
 		filteredInfo = filteredInfo || {};
 		let segmentData = [];
