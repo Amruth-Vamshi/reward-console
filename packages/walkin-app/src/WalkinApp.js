@@ -6,84 +6,39 @@ import "./styles/wieldy.less";
 import App from "./containers/App";
 import { configureClient } from "./appApollo/client";
 import { ApolloProvider, Query, Mutation } from "react-apollo";
-import { ErrorBoundary } from "@walkinsole/walkin-components";
+import { ErrorBoundary, CircularProgress } from "@walkinsole/walkin-components";
 import gql from "graphql-tag";
 
 class WalkinApp extends Component {
   constructor() {
     super();
     this.state = {
-      client: null,
-      loaded: false
+      client: null
     };
   }
 
   async componentDidMount() {
+    console.log(localStorage.getItem("jwt"));
     const client = await configureClient();
     this.setState({
-      client,
-      loaded: true
+      client
     });
   }
 
-  async fetchUserData(data) {
-    console.log(data);
-    if (data.auth.userId && data.auth.firstName) {
-      return null;
-    }
-    const FETCH_USER_DETAILS = gql`
-      query setLocalUserData {
-        setLocalUserData
-      }
-    `;
-    return (
-      <Mutation mutation={FETCH_USER_DETAILS}>
-        {({ data, mutation }) => {
-          mutation();
-        }}
-      </Mutation>
-    );
-  }
-
   render() {
-    const { client, loaded } = this.state;
-    if (!loaded) {
-      return <div>Loading...</div>;
-    }
-    const SET_USER_DATA = gql`
-      mutation setUserData {
-        setLocalUserData @client
-      }
-    `;
-    return (
+    const { client } = this.state;
+    return client ? (
       <ErrorBoundary>
         <ApolloProvider client={client}>
-          <Query
-            query={gql`
-              query auth {
-                auth @client {
-                  jwt
-                  userId
-                  firstName
-                }
-              }
-            `}
-          >
-            {({ data }) => {
-              {
-                this.fetchUserData(data);
-              }
-              return (
-                <BrowserRouter>
-                  <Switch>
-                    <Route path="/" component={App} />
-                  </Switch>
-                </BrowserRouter>
-              );
-            }}
-          </Query>
+          <BrowserRouter>
+            <Switch>
+              <Route path="/" component={App} />
+            </Switch>
+          </BrowserRouter>
         </ApolloProvider>
       </ErrorBoundary>
+    ) : (
+      <CircularProgress />
     );
   }
 }
