@@ -55,7 +55,7 @@ export default class GooglePlaces extends Component {
       loading: false,
       visible: false,
       loading1: false,
-      defaultRadius: []
+      defaultRadius: [RADIUS_1_MIN]
     };
   }
 
