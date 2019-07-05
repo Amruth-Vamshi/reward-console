@@ -46,29 +46,29 @@ class AppCreation extends Component {
   };
 
   componentWillMount() {
-    const jwtData = jwt.decode(localStorage.getItem("jwt"));
+    const jwtData = jwt.decode(sessionStorage.getItem("jwt"));
     jwtData
       ? this.props.client
-        .query({
-          query: GET_ALL_APPS_OF_ORGANIZATION,
-          variables: { id: jwtData.org_id },
-          fetchPolicy: "network-only" // skip the cache
-        })
-        .then(res => {
-          console.log(res.data);
-          var orgs = [];
-          let org = res.data.organization;
+          .query({
+            query: GET_ALL_APPS_OF_ORGANIZATION,
+            variables: { id: jwtData.org_id },
+            fetchPolicy: "network-only" // skip the cache
+          })
+          .then(res => {
+            console.log(res.data);
+            var orgs = [];
+            let org = res.data.organization;
 
-          function recOrg(org, orgs) {
-            orgs.push({ name: org.name, id: org.id });
-            if (org && org.children) org.children.map(ch => recOrg(ch, orgs));
-          }
-          recOrg(org, orgs);
-          this.setState({ organizations: orgs });
-        })
-        .catch(err => {
-          console.log("Failed to get User Details" + err);
-        })
+            function recOrg(org, orgs) {
+              orgs.push({ name: org.name, id: org.id });
+              if (org && org.children) org.children.map(ch => recOrg(ch, orgs));
+            }
+            recOrg(org, orgs);
+            this.setState({ organizations: orgs });
+          })
+          .catch(err => {
+            console.log("Failed to get User Details" + err);
+          })
       : console.log("Error getting JwtData");
   }
 
@@ -121,7 +121,7 @@ class AppCreation extends Component {
       </Option>
     ));
     console.log(this.props.localdata.auth.firstName);
-    let { auth } = this.props.localdata
+    let { auth } = this.props.localdata;
     return (
       // <div>Auth consumer here</div>
       //   <AuthConsumer>
@@ -138,9 +138,7 @@ class AppCreation extends Component {
           <div className="appHeader">
             <div className="name">
               Hi,{" "}
-              {auth.firstName +
-                      " " +
-                      `${auth.lastName ? auth.lastName : ""}`}
+              {auth.firstName + " " + `${auth.lastName ? auth.lastName : ""}`}
             </div>
             <div className="title"> Welcome to NearX Application</div>
           </div>
@@ -181,9 +179,7 @@ class AppCreation extends Component {
                     <Button
                       name="Android"
                       onClick={c => this.choosePlatform(c)}
-                      type={
-                        this.state.platform === "Android" ? "primary" : ""
-                      }
+                      type={this.state.platform === "Android" ? "primary" : ""}
                     >
                       <Icon type="android" theme="filled" /> Android{" "}
                     </Button>
@@ -224,10 +220,7 @@ class AppCreation extends Component {
                     </span>
                   </Form.Item>
 
-                  <Form.Item
-                    {...formItemLayout}
-                    label="Description (Optional)"
-                  >
+                  <Form.Item {...formItemLayout} label="Description (Optional)">
                     <Input
                       required
                       placeholder="Description (Optional)"
@@ -255,7 +248,7 @@ class AppCreation extends Component {
                       }}
                     >
                       CREATE APP
-                          </Button>
+                    </Button>
                   </div>
                 </Form>
               </Col>

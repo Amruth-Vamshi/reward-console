@@ -3,7 +3,7 @@ import ApolloClient from "apollo-boost";
 import { NEARX_GRAPHQL_URL } from "@walkinsole/walkin-components/src/constants/config";
 
 const cache = new InMemoryCache();
-const token = localStorage.getItem("jwt");
+const token = sessionStorage.getItem("jwt");
 
 export const nearXClient = new ApolloClient({
   cache,

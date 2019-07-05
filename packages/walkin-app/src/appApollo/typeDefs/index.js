@@ -14,7 +14,6 @@ const typeDefs = gql`
     initURL: String
     userId: String
     organizationId: String
-    jwt: String
     firstName: String
     lastName: String
   }
@@ -62,7 +61,6 @@ const typeDefs = gql`
     hideMessage: String
     showAuthLoader: String
     setRedirectRoute(route: String): String
-    setLocalUserData: Boolean
   }
 `;
 
