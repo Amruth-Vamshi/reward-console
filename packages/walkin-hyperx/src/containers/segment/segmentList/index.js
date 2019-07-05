@@ -1,39 +1,11 @@
 import React, { Component, Fragment } from 'react';
-import CampaignHeader from '../../../components/molecules/campaignHeader';
 import { withRouter } from 'react-router-dom';
 import { allSegments, disableSegment } from '../../../query/audience';
 import { withApollo, graphql } from 'react-apollo';
 import { NEW_SEGMENT } from '../../../utils/RouterConstants';
-import SortableDataTable from '../../../components/atoms/sortableDataTable';
 import { Card, Menu, Dropdown, Input } from 'antd';
 import moment from 'moment';
-
-// const data = [
-// 	{
-// 		key: 1,
-// 		segmentName: '5000+ visitors',
-// 		audienceSize: 32000,
-// 		createdOn: '2019-06-21T17:27:18.794Z',
-// 	},
-// 	{
-// 		key: 2,
-// 		segmentName: 'welcome push',
-// 		audienceSize: 35000,
-// 		createdOn: '2019-03-21T17:27:18.794Z',
-// 	},
-// 	{
-// 		key: 3,
-// 		segmentName: 'Anniversary sale',
-// 		audienceSize: 32000,
-// 		createdOn: '2019-05-21T17:27:18.794Z',
-// 	},
-// 	{
-// 		key: 4,
-// 		segmentName: '2013 sms',
-// 		audienceSize: 32000,
-// 		createdOn: '2019-07-21T17:27:18.794Z',
-// 	},
-// ];
+import { SortableDataTable, InstantSearch, CampaignHeader } from '@walkinsole/walkin-components';
 
 class SegmentList extends Component {
 	constructor(props) {
@@ -45,7 +17,6 @@ class SegmentList extends Component {
 	}
 
 	handleChange = (pagination, filters, sorter) => {
-		console.log('Various parameters', pagination, filters, sorter);
 		this.setState({
 			sortedInfo: sorter,
 		});
@@ -58,7 +29,6 @@ class SegmentList extends Component {
 		});
 	};
 	onDeleteContact = contact => {
-		console.log('delete', contact);
 		let { client } = this.props;
 		client
 			.mutate({
@@ -68,7 +38,6 @@ class SegmentList extends Component {
 				},
 			})
 			.then(({ data }) => {
-				console.log('delete segment', data);
 				const { refetchSegments } = this.props;
 				refetchSegments();
 			})
@@ -77,7 +46,6 @@ class SegmentList extends Component {
 			});
 	};
 	onDuplicateContact = record => {
-		console.log('clickedsegment', record);
 		const { history } = this.props;
 		history.push({
 			pathname: `/hyperx/segment/newSegment/${record.id}`,
@@ -89,7 +57,6 @@ class SegmentList extends Component {
 	menus = record => (
 		<Menu
 			onClick={e => {
-				console.log('ee', e.key);
 				if (e.key === 'duplicate') {
 					this.onDuplicateContact(record);
 				} else {
@@ -102,31 +69,7 @@ class SegmentList extends Component {
 		</Menu>
 	);
 
-	onSegmentSearch = e => {
-		let currentList = [];
-		let newList = [];
-		const { segments } = this.props;
-
-		if (e.target.value !== '') {
-			currentList = segments;
-			// Use .filter() to determine which items should be displayed
-			// based on the search terms
-			newList = currentList.filter(item => {
-				// change current item to lowercase
-				const lc = item.name.toLowerCase();
-				// change search term to lowercase
-				const filter = e.target.value.toLowerCase();
-				// check to see if the current list item includes the search term
-				// If it does, it will be added to newList. Using lowercase eliminates
-				// issues with capitalization in search terms and search content
-				return lc.includes(filter);
-			});
-		} else {
-			// If the search bar is empty, set newList to original task list
-			newList = segments;
-		}
-
-		// Set the filtered state based on what our rules added to newList
+	onSegmentFilteredList = newList => {
 		this.setState({
 			filtered: newList,
 		});
@@ -135,7 +78,6 @@ class SegmentList extends Component {
 	render() {
 		let { sortedInfo, filteredInfo, filtered } = this.state;
 		const { segments } = this.props;
-		console.log('segments', segments);
 		sortedInfo = sortedInfo || {};
 		filteredInfo = filteredInfo || {};
 		let segmentData = [];
@@ -144,6 +86,7 @@ class SegmentList extends Component {
 		} else {
 			segmentData = segments;
 		}
+		//Have a utility function for sorting
 		// const columnData = reduce(
 		// 	data,
 		// 	(result, entry) => {
@@ -188,8 +131,6 @@ class SegmentList extends Component {
 		// 	},
 		// 	[]
 		// );
-
-		// console.log('columnData', columnData);
 
 		const columns = [
 			{
@@ -237,11 +178,10 @@ class SegmentList extends Component {
 				</div>
 				<Card style={{ margin: '32px' }}>
 					<div style={{ marginBottom: '24px' }}>
-						<Input
-							style={{ width: 200 }}
-							placeholder="Search segment"
-							allowClear
-							onChange={this.onSegmentSearch}
+						<InstantSearch
+							placeHolder="Search segment"
+							data={segments}
+							onFilteredList={this.onSegmentFilteredList}
 						/>
 					</div>
 					<SortableDataTable data={segmentData} onChange={this.handleChange} columns={columns} />
@@ -267,7 +207,6 @@ export default withRouter(
 				segments,
 				error,
 				refetchSegments: ownProps => {
-					console.log('ownProps', ownProps);
 					refetch({
 						variables: {
 							organization_id: '6ec84af7-d323-4ef7-aa42-a3007055f5b7',

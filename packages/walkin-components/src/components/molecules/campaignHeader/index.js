@@ -14,7 +14,6 @@ const CampaignHeader = ({
 	onCampaignHeaderButtonClick,
 	isTitleOnly,
 }) => {
-	console.log('isHeaderStepper', isHeaderStepper);
 	return (
 		<Row className="campaignHeaderStyle">
 			<Col className="campaignHeaderTitleStyle" span={12}>

@@ -7,7 +7,6 @@ import SegmentList from './containers/segment/segmentList';
 import NewSegment from './containers/segment/newSegment';
 
 const App = ({ match }) => {
-	console.log('this.props.match.url', match.url);
 	return (
 		<div className="gx-main-content-wrapper">
 			<Switch>

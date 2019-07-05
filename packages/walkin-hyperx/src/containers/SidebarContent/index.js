@@ -40,8 +40,9 @@ class SidebarContent extends Component {
 		return (
 			<Auxiliary>
 				<SidebarLogo />
-				<div className="gx-sidebar-content">
+				<div style={{ height: '100%' }} className="gx-sidebar-content">
 					<Menu
+						style={{ height: '100%' }}
 						defaultOpenKeys={[defaultOpenKeys]}
 						selectedKeys={[selectedKeys]}
 						theme={themeType === THEME_TYPE_LITE ? 'lite' : 'dark'}

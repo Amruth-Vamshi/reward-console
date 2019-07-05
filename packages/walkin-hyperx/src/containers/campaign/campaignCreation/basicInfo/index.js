@@ -1,10 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { Row, Col, Typography } from 'antd';
-import CampaignPriority from '../../../../components/organisms/campaignPriority';
-import BasicInfoForm from '../../../../components/molecules/basicInfoForm';
-import BasicSlider from '../../../../components/atoms/testAndControlSlider';
-import Popup from '../../../../components/atoms/popup';
-
+import { CampaignPriority, BasicInfoForm, Popup, BasicSlider } from '@walkinsole/walkin-components';
 const { Text } = Typography;
 
 const BasicInfo = ({

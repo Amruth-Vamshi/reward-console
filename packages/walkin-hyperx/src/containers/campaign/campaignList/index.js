@@ -1,12 +1,11 @@
 import React, { Component, Fragment } from 'react';
-import CampaignHeader from '../../../components/molecules/campaignHeader';
 import { withRouter } from 'react-router-dom';
 import { NEW_CAMPAIGN } from '../../../utils/RouterConstants';
 import { campaigns } from '../../../query/campaign';
-import SortableDataTable from '../../../components/atoms/sortableDataTable';
 import { Card, Menu, Dropdown, Input, Progress, Tabs } from 'antd';
 import moment from 'moment';
 import { withApollo, graphql } from 'react-apollo';
+import { SortableDataTable, InstantSearch, CampaignHeader } from '@walkinsole/walkin-components';
 import './style.css';
 
 const DEFAULT_STATUS = 'ACTIVE';
@@ -76,7 +75,6 @@ class CampaignList extends Component {
 		});
 	};
 	handleChange = (pagination, filters, sorter) => {
-		console.log('Various parameters', pagination, filters, sorter);
 		this.setState({
 			sortedInfo: sorter,
 		});
@@ -91,7 +89,6 @@ class CampaignList extends Component {
 	menus = record => (
 		<Menu
 			onClick={e => {
-				console.log('ee', e.key);
 				if (e.key === 'duplicate') {
 					this.onDuplicateContact(record);
 				} else {
@@ -104,37 +101,13 @@ class CampaignList extends Component {
 		</Menu>
 	);
 
-	onCampaignSearch = e => {
-		let currentList = [];
-		let newList = [];
-
-		if (e.target.value !== '') {
-			currentList = this.state.data;
-			// Use .filter() to determine which items should be displayed
-			// based on the search terms
-			newList = currentList.filter(item => {
-				// change current item to lowercase
-				const lc = item.name.toLowerCase();
-				// change search term to lowercase
-				const filter = e.target.value.toLowerCase();
-				// check to see if the current list item includes the search term
-				// If it does, it will be added to newList. Using lowercase eliminates
-				// issues with capitalization in search terms and search content
-				return lc.includes(filter);
-			});
-		} else {
-			// If the search bar is empty, set newList to original task list
-			newList = this.state.data;
-		}
-
-		// Set the filtered state based on what our rules added to newList
+	onCampaignFilteredList = newList => {
 		this.setState({
 			filtered: newList,
 		});
 	};
 
 	onTabChange = key => {
-		console.log('jhdj', key);
 		if (key == 2) {
 			let upcomingCampaigns = data.filter(val => {
 				if (val.status == 'ACTIVE') {
@@ -223,7 +196,6 @@ class CampaignList extends Component {
 				),
 			},
 		];
-		console.log('campaigns', data);
 		return (
 			<div style={{ margin: '-32px' }}>
 				<CampaignHeader
@@ -235,11 +207,10 @@ class CampaignList extends Component {
 				<Card>
 					<div style={{ marginBottom: '24px' }}>
 						<div className="searchInputStyle">
-							<Input
-								style={{ width: 200 }}
-								placeholder="Search campaign"
-								allowClear
-								onChange={this.onCampaignSearch}
+							<InstantSearch
+								placeHolder="Search campaign"
+								data={data}
+								onFilteredList={this.onCampaignFilteredList}
 							/>
 						</div>
 						<Tabs defaultActiveKey="1" onChange={this.onTabChange}>

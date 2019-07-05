@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import CampaignHeader from '../../components/molecules/campaignHeader';
-import CampaignFooter from '../../components/molecules/campaignFooter';
 import { withRouter } from 'react-router-dom';
 import BasicInfo from './campaignCreation/basicInfo';
 import Audience from './campaignCreation/audience';
@@ -9,6 +7,7 @@ import Communication from './campaignCreation/communication';
 import { allSegments, attributes } from '../../query/audience';
 import { withApollo, graphql, compose } from 'react-apollo';
 import isEmpty from 'lodash/isEmpty';
+import { CampaignFooter, CampaignHeader } from '@walkinsole/walkin-components';
 
 const stepData = [
 	{
@@ -93,7 +92,6 @@ class CampaignCreation extends Component {
 	};
 
 	goToNextPage(current) {
-		console.log('current', current);
 		const { formValues } = this.state;
 		if (isEmpty(formValues)) {
 			const form = this.formRef && this.formRef.props && this.formRef.props.form;
@@ -144,7 +142,6 @@ class CampaignCreation extends Component {
 	};
 
 	handleButtonGroupChange = e => {
-		console.log('vvv', e.target.value);
 		this.setState({ value: e.target.value });
 	};
 
@@ -153,7 +150,6 @@ class CampaignCreation extends Component {
 	};
 
 	onCommunicationChange = e => {
-		console.log('onCommunicationChange', e.target.value);
 		this.setState({ communicationSelected: e.target.value });
 	};
 
@@ -170,7 +166,6 @@ class CampaignCreation extends Component {
 			communicationSelected,
 			communicationFormValues,
 		} = this.state;
-		console.log('formValues', formValues);
 		let attributeData =
 			this.props.allAttributes &&
 			this.props.allAttributes.ruleAttributes &&
@@ -179,7 +174,6 @@ class CampaignCreation extends Component {
 				id: el.id,
 				label: el.attributeName,
 			}));
-		console.log('attributeData', this.props.allAttributes.ruleAttributes);
 		const props = {
 			name: 'file',
 			action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',

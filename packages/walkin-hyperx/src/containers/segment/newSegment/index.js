@@ -1,13 +1,12 @@
 import React, { Component, Fragment } from 'react';
 import { Input, Button, Alert } from 'antd';
-import WalkinQueryBuilder from '../../../components/atoms/queryBuilder';
 import { withRouter } from 'react-router-dom';
-import CampaignHeader from '../../../components/molecules/campaignHeader';
 import { withApollo, graphql, compose, mutate } from 'react-apollo';
 import { attributes, createRule, createSegment } from '../../../query/audience';
 import './style.css';
 import { SEGMENT_LIST } from '../../../utils/RouterConstants';
 import get from 'lodash/get';
+import { WalkinQueryBuilder, CampaignHeader } from '@walkinsole/walkin-components';
 
 class NewSegment extends Component {
 	constructor(props) {
@@ -20,19 +19,16 @@ class NewSegment extends Component {
 		};
 	}
 	logQuery = query => {
-		console.log('quu', query);
 		this.setState({
 			query: query,
 			newSegmentError: false,
 		});
 	};
 	onChange = e => {
-		console.log(e);
 		this.setState({ value: e.target.value });
 	};
 
 	displayError = state => {
-		console.log('state, error', state);
 		this.setState({ [state]: true }, () => {
 			setTimeout(() => {
 				this.setState({ [state]: false });
@@ -42,7 +38,6 @@ class NewSegment extends Component {
 
 	onNewSegment = () => {
 		const { value, query } = this.state;
-		console.log('this.state.value', this.state.value);
 		if (value === '') {
 			this.displayError('newSegmentError');
 		}
@@ -63,7 +58,6 @@ class NewSegment extends Component {
 				},
 			})
 			.then(({ data }) => {
-				console.log('data', data, data.createRule.id);
 				client
 					.mutate({
 						mutation: createSegment,
@@ -94,17 +88,7 @@ class NewSegment extends Component {
 	};
 
 	componentWillMount = () => {
-		const { location } = this.props;
-		// const todo = client.readFragment({
-		// 	id: , // `id` is any id that could be returned by `dataIdFromObject`.
-		// 	fragment: gql`
-		// 	  fragment myTodo on Todo {
-		// 		id
-		// 		text
-		// 		completed
-		// 	  }
-		// 	`,
-		//   });
+		const { location, match } = this.props;
 		if (location && location.state) {
 			if (location.state.segmentSelected) {
 				let str = location.state.segmentSelected.rule.ruleConfiguration;
@@ -121,7 +105,6 @@ class NewSegment extends Component {
 					if (location.state.segmentSelected.name.includes('copy')) {
 						this.setState({ value: segmentNameCopy, isDuplicateSegment: true });
 					} else {
-						console.log('nocopy');
 						this.setState({
 							value: location.state.segmentSelected.name + ' ' + 'copy 1',
 							isDuplicateSegment: true,
@@ -148,7 +131,6 @@ class NewSegment extends Component {
 				key: el.id,
 				label: el.attributeName,
 			}));
-		console.log('checkckeck', this.state.value, this.state.segmentName);
 		return (
 			<Fragment>
 				<div style={{ margin: '-32px -32px 0px' }}>
