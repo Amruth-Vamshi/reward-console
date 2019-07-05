@@ -18,7 +18,6 @@ class WalkinApp extends Component {
   }
 
   async componentDidMount() {
-    console.log(localStorage.getItem("jwt"));
     const client = await configureClient();
     this.setState({
       client

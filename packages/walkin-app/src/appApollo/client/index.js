@@ -8,22 +8,34 @@ import {
   GRAPHQL_URL,
   NEARX_GRAPHQL_URL
 } from "@walkinsole/walkin-components/src/constants/config";
+import { async } from "q";
 
 export const configureClient = async () => {
   const cache = new InMemoryCache();
 
-  const token = localStorage.getItem("jwt");
-
   const client = new ApolloClient({
     cache,
     uri: GRAPHQL_URL,
+    request: async operation => {
+      const token = await sessionStorage.getItem("jwt");
+      operation.setContext({
+        headers: {
+          authorization: token ? `Bearer ${token}` : ""
+        }
+      });
+    },
     clientState: {
       defaults,
       resolvers,
       typeDefs
     },
-    headers: {
-      authorization: token ? `Bearer ${token}` : ""
+    onError: ({ graphQLErrors, networkError }) => {
+      if (graphQLErrors) {
+        console.log(graphQLErrors);
+      }
+      if (networkError) {
+        console.log(networkError);
+      }
     }
   });
 
