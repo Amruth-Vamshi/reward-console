@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Menu } from "antd";
 import { Link } from "react-router-dom";
+
 import {
   CustomScrollbars,
   Auxiliary,
@@ -51,52 +52,32 @@ class SidebarContent extends Component {
             theme={themeType === THEME_TYPE_LITE ? "lite" : "dark"}
             mode="inline"
           >
-            <Menu.Item key="core/apps">
-              <Link to="/core/apps">
-                <i className="icon icon-apps" />
-                <span>Core Apps</span>
+            <Menu.Item key="core">
+              <Link to="/core">
+                <i className="icon icon-setting" />
+                <IntlMessages id="sidebar.core" />
+                {/* Core */}
               </Link>
             </Menu.Item>
-            <Menu.Item key="core/user">
-              <Link to="/core/user">
+            <Menu.Item key="hyperx">
+              <Link to="/hyperx">
+                <i className="icon icon-alert" />
+                <IntlMessages id="sidebar.hyperx" />
+                {/* HyperX */}
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="refinex">
+              <Link to="/refinex">
+                <i className="icon icon-select" />
+                <IntlMessages id="sidebar.refinex" />
+                {/* RefineX */}
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="nearx">
+              <Link to="/nearx">
                 <i className="icon icon-geo-location" />
-                {/* <IntlMessages id="sidebar.samplePage" /> */}
-                <span>User Info</span>
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="core/organisation">
-              <Link to="/core/organisation">
-                <i className="icon icon-setting" />
-                {/* <IntlMessages id="sidebar.samplePage" /> */}
-                <span>Organisation Info</span>
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="core/customer">
-              <Link to="/core/customer">
-                <i className="icon icon-setting" />
-                {/* <IntlMessages id="sidebar.samplePage" /> */}
-                <span>Customer Info</span>
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="core/analytics">
-              <Link to="/core/analytics">
-                <i className="icon icon-chart" />
-                {/* <IntlMessages id="sidebar.samplePage" /> */}
-                <span>Analytics</span>
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="core/settings">
-              <Link to="/core/settings">
-                <i className="icon icon-setting" />
-                {/* <IntlMessages id="sidebar.samplePage" /> */}
-                <span>Global Settings</span>
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="core/help">
-              <Link to="/core/help">
-                <i className="icon icon-setting" />
-                {/* <IntlMessages id="sidebar.samplePage" /> */}
-                <span>Help</span>
+                <IntlMessages id="sidebar.nearx" />
+                {/* NearX */}
               </Link>
             </Menu.Item>
           </Menu>

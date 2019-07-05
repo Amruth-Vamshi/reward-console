@@ -5,6 +5,7 @@ import CoreSidebarContent from "@walkinsole/walkin-core/src/containers/SidebarCo
 import HyperXSidebarContent from "@walkinsole/walkin-hyperx/src/containers/SidebarContent";
 import NearXSidebarContent from "@walkinsole/walkin-nearx/src/containers/SidebarContent";
 import RefineXSidebarContent from "@walkinsole/walkin-refinex/src/containers/SidebarContent";
+import HomeSidebarContent from "../SidebarContent"
 
 import { withRouter } from "react-router-dom";
 
@@ -42,6 +43,8 @@ export class Sidebar extends Component {
     const { location } = this.props;
     const appName = location.pathname.split("/")[1];
     switch (appName) {
+      case "home":
+        return <HomeSidebarContent />;
       case "core":
         return <CoreSidebarContent />;
       case "refinex":
@@ -51,7 +54,7 @@ export class Sidebar extends Component {
       case "nearx":
         return <NearXSidebarContent />;
       default:
-        return <CoreSidebarContent />;
+        return <HomeSidebarContent />;
     }
   }
 

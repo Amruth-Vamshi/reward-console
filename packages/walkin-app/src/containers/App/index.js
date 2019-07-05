@@ -30,32 +30,32 @@ const RestrictedRoute = ({
   userId,
   ...rest
 }) => (
-  <Route
-    {...rest}
-    render={props => {
-      if (userId) {
-        console.log("Authenticated!");
+    <Route
+      {...rest}
+      render={props => {
+        if (userId) {
+          console.log("Authenticated!");
 
-        return <Component {...props} />;
-      } else {
-        console.log("Redirecting!");
-        setRedirectRoute({
-          variables: {
-            route: props.location.pathname
-          }
-        });
-        return (
-          <Redirect
-            to={{
-              pathname: "/signin",
-              state: { from: props.location }
-            }}
-          />
-        );
-      }
-    }}
-  />
-);
+          return <Component {...props} />;
+        } else {
+          console.log("Redirecting!");
+          setRedirectRoute({
+            variables: {
+              route: props.location.pathname
+            }
+          });
+          return (
+            <Redirect
+              to={{
+                pathname: "/signin",
+                state: { from: props.location }
+              }}
+            />
+          );
+        }
+      }}
+    />
+  );
 
 class App extends Component {
   constructor() {
@@ -132,7 +132,7 @@ class App extends Component {
     }
 
     if (location.pathname === "/") {
-      return <Redirect to={"/core"} />;
+      return <Redirect to={"/home"} />;
     }
 
     this.setLayoutType(layoutType);
