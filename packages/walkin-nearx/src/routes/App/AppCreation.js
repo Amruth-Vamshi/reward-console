@@ -3,8 +3,10 @@ import { Col, Card, Row, Select, Form, Input, Button, Icon } from "antd";
 import "../../styles/app.css";
 import {
   GET_ALL_APPS_OF_ORGANIZATION,
-  CREATE_APP
-} from "../../queries/platformQuries";
+  CREATE_APP,
+  USER_DATA,
+  UPDATE_APP
+} from "@walkinsole/walkin-components/src/PlatformQueries";
 import jwt from "jsonwebtoken";
 import { withApollo, compose, graphql } from "react-apollo";
 import gql from "graphql-tag";
@@ -31,8 +33,12 @@ class AppCreation extends Component {
     super(props);
     this.state = {
       organizations: [],
+      update: false,
+      id: "",
       errors: {},
       loading: false,
+      firstName: "",
+      lastName: "",
       appName: "",
       description: "",
       platform: "",
@@ -45,13 +51,51 @@ class AppCreation extends Component {
     this.setState({ platform: e.target.name });
   };
 
+  getAppDetails = appData => {
+    console.log("APPDATA>>>", appData);
+    this.setState({
+      id: appData.id,
+      appName: appData.appName,
+      description: appData.discription,
+      platform: appData.platform,
+      organizationId: appData.org_id,
+      update: true
+    });
+  };
+
+  componentDidMount() {}
+
   componentWillMount() {
-    const jwtData = jwt.decode(sessionStorage.getItem("jwt"));
-    jwtData
+    const { id, org_id } = jwt.decode(localStorage.getItem("jwt"));
+    this.setState({ userId: id, org_id });
+
+    sessionStorage.getItem("AppData")
+      ? this.getAppDetails(JSON.parse(sessionStorage.getItem("AppData")))
+      : "";
+    sessionStorage.removeItem("AppData");
+
+    id
+      ? this.props.client
+          .query({
+            query: USER_DATA,
+            variables: { userId: id },
+            fetchPolicy: "cache-first"
+          })
+          .then(res => {
+            console.log(res.data.user);
+            this.setState({
+              firstName: res.data.user.firstName,
+              lastName: res.data.user.lastName
+            });
+          })
+          .catch(err => console.log("Failed to get User Details" + err))
+      : console.log("Error getting JwtData");
+
+    org_id
       ? this.props.client
           .query({
             query: GET_ALL_APPS_OF_ORGANIZATION,
-            variables: { id: jwtData.org_id },
+            variables: { id: org_id },
             fetchPolicy: "network-only" // skip the cache
           })
           .then(res => {
@@ -93,35 +137,66 @@ class AppCreation extends Component {
       this.setState({ errors });
       console.log("Errors in submition" + Object.keys(errors).length);
     } else {
-      this.props.client
-        .mutate({
-          mutation: CREATE_APP,
-          variables: {
-            organizationId: this.state.organizationId,
-            input: {
-              name: this.state.appName,
-              description: this.state.description,
-              platform: this.state.platform
+      if (this.state.update) {
+        this.setState({ loading: true });
+        this.props.client
+          .mutate({
+            mutation: UPDATE_APP,
+            variables: {
+              input: {
+                id: this.state.id,
+                name: this.state.appName,
+                description: this.state.description,
+                platform: this.state.platform
+              }
             }
-          }
-        })
-        .then(res => {
-          console.log("Results", res);
-          this.props.history.push("/nearx/apps");
-          // this.setState({ organizations:res.data.organizationHierarchies })
-        })
-        .catch(err => console.log("Failed to get Places Details" + err));
+          })
+          .then(res => {
+            console.log("Results", res);
+            this.setState({ loading: false });
+            this.props.history.push("/nearx/apps");
+          })
+          .catch(err => {
+            console.log("Failed to get Places Details" + err);
+            this.setState({ loading: false });
+          });
+      } else {
+        this.setState({ loading: true });
+        this.props.client
+          .mutate({
+            mutation: CREATE_APP,
+            variables: {
+              organizationId: this.state.organizationId,
+              input: {
+                name: this.state.appName,
+                description: this.state.description,
+                platform: this.state.platform
+              }
+            }
+          })
+          .then(res => {
+            console.log("Results", res);
+            this.setState({ loading: false });
+            this.props.history.push("/nearx/apps");
+            // this.setState({ organizations:res.data.organizationHierarchies })
+          })
+          .catch(err => {
+            console.log("Failed to get Places Details" + err);
+            this.setState({ loading: false });
+          });
+      }
     }
   };
 
   render() {
+    let { firstName, lastName } = this.state;
     var options = this.state.organizations.map((item, index) => (
       <Option key={index} value={item.id}>
         {item.name}
       </Option>
     ));
-    console.log(this.props.localdata.auth.firstName);
-    let { auth } = this.props.localdata;
+    // console.log(this.props.localdata.auth.firstName);
+    // let auth = this.props
     return (
       // <div>Auth consumer here</div>
       //   <AuthConsumer>
@@ -131,14 +206,17 @@ class AppCreation extends Component {
           className="gx-card-body"
           style={{
             backgroundColor: "#ffffff",
-            height: "85vh",
+            height: "90vh",
             minHeight: "700px"
           }}
         >
           <div className="appHeader">
             <div className="name">
+              {/* {console.log(auth)} */}
               Hi,{" "}
-              {auth.firstName + " " + `${auth.lastName ? auth.lastName : ""}`}
+              {firstName
+                ? `${firstName + "  " + `${lastName ? lastName : ""}`}`
+                : ""}
             </div>
             <div className="title"> Welcome to NearX Application</div>
           </div>
@@ -196,29 +274,33 @@ class AppCreation extends Component {
                     </span>
                   </Form.Item>
 
-                  <Form.Item {...formItemLayout} label="Industry">
-                    <Select
-                      showSearch
-                      size="large"
-                      style={{ width: "100%" }}
-                      placeholder="Select Industy"
-                      // value = { auth.user.organization.name }
-                      optionFilterProp="children"
-                      onChange={this.onChange}
-                      // onSearch={onSearch}
-                      filterOption={(input, option) =>
-                        option.props.children
-                          .toLowerCase()
-                          .indexOf(input.toLowerCase()) >= 0
-                      }
-                    >
-                      {/* <Option value={auth.user.organization.name}>{auth.user.organization?auth.user.organization.name:''}</Option> */}
-                      {options}
-                    </Select>
-                    <span style={{ color: "Red" }}>
-                      {this.state.errors.organizationId}
-                    </span>
-                  </Form.Item>
+                  {this.state.update ? (
+                    ""
+                  ) : (
+                    <Form.Item {...formItemLayout} label="Industry">
+                      <Select
+                        showSearch
+                        size="large"
+                        style={{ width: "100%" }}
+                        placeholder="Select Industy"
+                        // value = { auth.user.organization.name }
+                        optionFilterProp="children"
+                        onChange={this.onChange}
+                        // onSearch={onSearch}
+                        filterOption={(input, option) =>
+                          option.props.children
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        }
+                      >
+                        {/* <Option value={auth.user.organization.name}>{auth.user.organization?auth.user.organization.name:''}</Option> */}
+                        {options}
+                      </Select>
+                      <span style={{ color: "Red" }}>
+                        {this.state.errors.organizationId}
+                      </span>
+                    </Form.Item>
+                  )}
 
                   <Form.Item {...formItemLayout} label="Description (Optional)">
                     <Input
@@ -247,7 +329,7 @@ class AppCreation extends Component {
                         margin: "25px 30px 20px 0"
                       }}
                     >
-                      CREATE APP
+                      {!this.state.update ? "CREATE APP" : "UPDATE APP"}
                     </Button>
                   </div>
                 </Form>
@@ -262,17 +344,4 @@ class AppCreation extends Component {
   }
 }
 
-const LOCAL_DATA = gql`
-  query localData {
-    auth {
-      firstName
-      lastName
-    }
-  }
-`;
-export default compose(
-  withApollo,
-  graphql(LOCAL_DATA, {
-    name: "localdata"
-  })
-)(AppCreation);
+export default compose(withApollo)(AppCreation);

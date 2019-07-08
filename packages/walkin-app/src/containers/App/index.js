@@ -27,18 +27,18 @@ import { graphql, compose } from "react-apollo";
 const RestrictedRoute = ({
   setRedirectRoute,
   component: Component,
-  userId,
+  // userId,
   ...rest
 }) => (
   <Route
     {...rest}
     render={props => {
-      if (userId) {
-        console.log("Authenticated!");
+      if (localStorage.getItem("jwt")) {
+        // console.log("Authenticated!");
 
         return <Component {...props} />;
       } else {
-        console.log("Redirecting!");
+        // console.log("Redirecting!");
         setRedirectRoute({
           variables: {
             route: props.location.pathname
@@ -128,7 +128,7 @@ class App extends Component {
     }
 
     if (location.pathname === "/") {
-      return <Redirect to={"/core"} />;
+      return <Redirect to={"/home"} />;
     }
 
     this.setLayoutType(layoutType);
@@ -165,7 +165,7 @@ class App extends Component {
             />
             <RestrictedRoute
               path={`${match.url}`}
-              userId={userId}
+              // userId={userId}
               component={MainApp}
               setRedirectRoute={this.props.setRedirectRoute}
             />

@@ -194,16 +194,17 @@ const signIn = async (_, { input }, { client }) => {
       data: writeData
     });
 
-    sessionStorage.setItem("jwt", jwt);
+    localStorage.setItem("jwt", jwt);
     return true;
   } catch (error) {
     console.log(error);
     return false;
   }
 };
-const hideMessage = (_, input, { client }) => {};
 
-const showAuthLoader = (_, input, { client }) => {};
+const hideMessage = (_, input, { client }) => { };
+
+const showAuthLoader = (_, input, { client }) => { };
 
 const setRedirectRoute = async (_, { route }, { client }) => {
   await client.writeQuery({

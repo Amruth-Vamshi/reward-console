@@ -8,11 +8,13 @@ const RefineX = lazy(() => import('@walkinsole/walkin-refinex'));
 const HyperX = lazy(() => import('@walkinsole/walkin-hyperx'));
 const Core = lazy(() => import('@walkinsole/walkin-core'));
 const NearX = lazy(() => import('@walkinsole/walkin-nearx'));
+const Home = lazy(() => import('./Home'));
 
 const App = () => (
 	// <div className="gx-main-content-wrapper">
 	<Suspense fallback={<div>Loading...</div>}>
 		<Switch>
+			<Route path="/home" component={Home} />
 			<Route path="/core" component={Core} />
 			<Route path="/hyperx" component={HyperX} />
 			<Route path="/nearx" component={NearX} />

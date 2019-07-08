@@ -19,7 +19,15 @@ import axios from "axios";
 import canUseDOM from "can-use-dom";
 import "../../../styles/styles.css";
 import { GET_CONFIGURATION, SET_CONFIGURATION } from "../../../queries";
-import { GOOGLE_API_KEY, FACEBOOK_API_KEY, RADIUS_1, RADIUS_2, RADIUS_3, RADIUS_1_MIN, TYPE } from "../../../Constants";
+import {
+  GOOGLE_API_KEY,
+  FACEBOOK_API_KEY,
+  RADIUS_1,
+  RADIUS_2,
+  RADIUS_3,
+  RADIUS_1_MIN,
+  TYPE
+} from "../../../Constants";
 
 // AIzaSyCwRQqzyQuopL0CQ212q97uFVyXn5EMLbs
 
@@ -27,10 +35,10 @@ const geolocation =
   canUseDOM && navigator.geolocation
     ? navigator.geolocation
     : {
-      getCurrentPosition(success, failure) {
-        failure(`Your browser doesn't support geolocation.`);
-      }
-    };
+        getCurrentPosition(success, failure) {
+          failure(`Your browser doesn't support geolocation.`);
+        }
+      };
 export default class GooglePlaces extends Component {
   constructor(props) {
     super(props);
@@ -55,7 +63,7 @@ export default class GooglePlaces extends Component {
       loading: false,
       visible: false,
       loading1: false,
-      defaultRadius: []
+      defaultRadius: [RADIUS_1_MIN]
     };
   }
 
@@ -98,15 +106,17 @@ export default class GooglePlaces extends Component {
   };
 
   selAll = sel => {
-    let { places, places1, selectAll } = this.state
-    console.log(selectAll)
-    places1.map(i => { i.selected = !selectAll })
+    let { places, places1, selectAll } = this.state;
+    console.log(selectAll);
+    places1.map(i => {
+      i.selected = !selectAll;
+    });
 
-    if (!selectAll) places = places1
-    else places = []
+    if (!selectAll) places = places1;
+    else places = [];
 
     this.setState({ places, places1, selectAll: !this.state.selectAll });
-  }
+  };
 
   handleSubmit = e => {
     let { googleAPIkey } = this.state;
@@ -139,7 +149,7 @@ export default class GooglePlaces extends Component {
           this.state.mark.lng +
           "&key=" +
           googleAPIkey;
-        if (this.state.searchRadius !== null && this.state.searchRadius > 100)
+        if (this.state.searchRadius !== null && this.state.searchRadius >= 100)
           url += "&radius=" + this.state.searchRadius;
         else url += "&rankby=distance";
         url += "&keyword=" + this.state.search;
@@ -158,8 +168,6 @@ export default class GooglePlaces extends Component {
           Accept: "application/json",
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "*"
-          // 'Access-Control-Allow-Origin' : 'http://0.0.0.0:5000',
-          // 'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE'
         }
       });
       let proxy = "https://cors-anywhere.herokuapp.com/";
@@ -174,7 +182,12 @@ export default class GooglePlaces extends Component {
             message.success(
               "success: " + response.data.results.length + " Places Found"
             );
-          } else message.warning(response.data.error_message ? response.data.error_message : 'No Places Found');
+          } else
+            message.warning(
+              response.data.error_message
+                ? response.data.error_message
+                : "No Places Found"
+            );
         })
         .catch(err => {
           setTimeout(hide, 0);
@@ -214,7 +227,12 @@ export default class GooglePlaces extends Component {
       });
     });
     // console.log(places)
-    this.setState({ places1: places, center: places[0].center });
+    this.setState({
+      places: [],
+      selectAll: false,
+      places1: places,
+      center: places[0].center
+    });
   };
 
   onPlaceSelect = id => {
@@ -223,8 +241,8 @@ export default class GooglePlaces extends Component {
       if (place.sroreId === id) place.selected = !place.selected;
     });
     let places = places1.filter(place => place.selected);
-    if (places.length == places1.length) selectAll = true
-    else selectAll = false
+    if (places.length == places1.length) selectAll = true;
+    else selectAll = false;
     this.setState({ places, places1, selectAll });
   };
 
@@ -423,9 +441,11 @@ export default class GooglePlaces extends Component {
             {this.state.places1.length ? (
               <Affix
                 style={{ position: "absolute", width: "100%", bottom: 0 }}
-                offsetBottom={10} >
-                <Card className="createPlaceCard"
-                // style={{marginBottom:0, position:"absolute",backgroundColor:'#fffffff',padding:24, width:'100%', bottom:0}}
+                offsetBottom={10}
+              >
+                <Card
+                  className="createPlaceCard"
+                  // style={{marginBottom:0, position:"absolute",backgroundColor:'#fffffff',padding:24, width:'100%', bottom:0}}
                 >
                   {this.state.places.length ? (
                     <Row>
@@ -441,56 +461,63 @@ export default class GooglePlaces extends Component {
                           onClick={() => this.createPlaces()}
                           style={{ float: "right", marginBottom: 0 }}
                           loading={this.state.loading}
-                          className="buttonPrimary" >
+                          className="buttonPrimary"
+                        >
                           CREATE
                         </Button>
                       </Col>
                     </Row>
                   ) : (
-                      <Row>
-                        <Col span={16}>
-                          <div className="divCenterVertical">
-                            {" "}
-                            <span>Select some places to create</span>{" "}
-                          </div>
-                        </Col>
-                        <Col span={8}>
+                    <Row>
+                      <Col span={16}>
+                        <div className="divCenterVertical">
                           {" "}
-                          <Link to="/nearx/places/createplace/manually">
-                            <Button
-                              disabled
-                              className="buttonPrimary"
-                              style={{ float: "right", marginBottom: 0 }}
-                            >
-                              CREATE
+                          <span>Select some places to create</span>{" "}
+                        </div>
+                      </Col>
+                      <Col span={8}>
+                        {" "}
+                        <Link to="/nearx/places/createplace/manually">
+                          <Button
+                            disabled
+                            className="buttonPrimary"
+                            style={{ float: "right", marginBottom: 0 }}
+                          >
+                            CREATE
                           </Button>
-                          </Link>
-                        </Col>
-                      </Row>
-                    )}
+                        </Link>
+                      </Col>
+                    </Row>
+                  )}
                 </Card>{" "}
               </Affix>
             ) : (
-                <div className=""> {" "}  <br /> <br /> <br /> <br /> <br />
-                  <div style={{ textAlign: "center" }}>
-                    <Icon
-                      type="environment"
-                      style={{
-                        color: "#CACACA",
-                        fontSize: 150,
-                        marginBottom: 20
-                      }}
-                      theme="filled"
-                    />
-                    <p> Search for restaurants, malls... etc to create place </p>
-                    {/* <Link to='/nearx/places/createplace/manually'> <Button className='buttonPrimary'>CREATE</Button></Link> */}
-                  </div>
+              <div className="">
+                {" "}
+                <br /> <br /> <br /> <br /> <br />
+                <div style={{ textAlign: "center" }}>
+                  <Icon
+                    type="environment"
+                    style={{
+                      color: "#CACACA",
+                      fontSize: 150,
+                      marginBottom: 20
+                    }}
+                    theme="filled"
+                  />
+                  <p> Search for restaurants, malls... etc to create place </p>
+                  {/* <Link to='/nearx/places/createplace/manually'> <Button className='buttonPrimary'>CREATE</Button></Link> */}
                 </div>
-              )}
+              </div>
+            )}
             <div />
           </Col>
 
-          <Col xs={24} sm={10} style={{ height: "100hv", backgroundColor: "rgb(234, 234, 234)" }} >
+          <Col
+            xs={24}
+            sm={10}
+            style={{ height: "100hv", backgroundColor: "rgb(234, 234, 234)" }}
+          >
             <GooglePlacesMap
               getloc={this.getloc}
               data={this.state}
@@ -502,7 +529,14 @@ export default class GooglePlaces extends Component {
               setlocationDetails={this.setlocationDetails}
               handleOnTypeChange={this.handleOnTypeChange}
             />
-            {this.state.moreOptions ? "" : <div> <br /> <br />  <br /> <br />  <br /> <br /> </div>}
+            {this.state.moreOptions ? (
+              ""
+            ) : (
+              <div>
+                {" "}
+                <br /> <br /> <br /> <br /> <br /> <br />{" "}
+              </div>
+            )}
           </Col>
         </Row>
 

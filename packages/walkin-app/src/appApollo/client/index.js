@@ -4,6 +4,7 @@ import typeDefs from "../typeDefs";
 import resolvers from "../resolvers";
 import ApolloClient from "apollo-boost";
 import defaults from "../defaults";
+import { message } from "antd";
 import {
   GRAPHQL_URL,
   NEARX_GRAPHQL_URL
@@ -17,7 +18,7 @@ export const configureClient = async () => {
     cache,
     uri: GRAPHQL_URL,
     request: async operation => {
-      const token = await sessionStorage.getItem("jwt");
+      const token = await localStorage.getItem("jwt");
       operation.setContext({
         headers: {
           authorization: token ? `Bearer ${token}` : ""
@@ -32,8 +33,16 @@ export const configureClient = async () => {
     onError: ({ graphQLErrors, networkError }) => {
       if (graphQLErrors) {
         console.log(graphQLErrors);
+        console.log(">>>>>>>", graphQLErrors[0]);
+        if (graphQLErrors[0].extensions.code == "INVALID_CREDENTIALS")
+          message.warning("INVALID CREDENTIALS");
+        if (graphQLErrors[0].message == "jwt expired") {
+          localStorage.clear();
+          sessionStorage.clear();
+        }
       }
       if (networkError) {
+        message.error("Network Error");
         console.log(networkError);
       }
     }
