@@ -43,7 +43,7 @@ export const configureClient = async () => {
         if (
           graphQLErrors[0].extensions &&
           graphQLErrors[0].extensions.code &&
-          graphQLErrors[0].extensions.code == "INVALID_CREDENTIALS"
+          graphQLErrors[0].extensions.code == " INVALID_CREDENTIALS "
         )
           message.warning("INVALID CREDENTIALS");
         if (
