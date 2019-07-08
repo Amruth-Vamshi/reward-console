@@ -11,6 +11,7 @@ import {
 } from "@walkinsole/walkin-components/src/constants/ThemeSetting";
 import gql from "graphql-tag";
 import { decode } from "jsonwebtoken";
+import { configureClient } from "../client";
 const toggleCollapsedSideNav = async (_, { navCollapsed }, { client }) => {
   const data = await client.writeQuery({
     query: gql`
@@ -164,32 +165,36 @@ const signIn = async (_, { input }, { client }) => {
   try {
     const data = await client.mutate({
       mutation: LOGIN,
-      variables: { input }
+      variables: { input },
+      fetchPolicy: "no-cache"
     });
     if (!data || !data.data || !data.data.login || !data.data.login.jwt) {
       return false;
     }
     const jwt = data.data.login.jwt;
-    localStorage.setItem("jwt", jwt);
-    const { id } = decode(jwt);
-
-    await client.writeQuery({
-      query: gql`
-        query auth {
-          auth {
-            jwt
-            userId
-          }
-        }
-      `,
-      data: {
-        auth: {
-          __typename: "auth",
-          jwt,
-          userId: id
+    const { id, org_id } = decode(jwt);
+    const query = gql`
+      query auth {
+        auth {
+          organizationId
+          userId
         }
       }
+    `;
+    const writeData = {
+      auth: {
+        __typename: "auth",
+        organizationId: org_id,
+        userId: id
+      }
+    };
+
+    client.writeQuery({
+      query,
+      data: writeData
     });
+
+    localStorage.setItem("jwt", jwt);
     return true;
   } catch (error) {
     console.log(error);
@@ -215,52 +220,6 @@ const setRedirectRoute = async (_, { route }, { client }) => {
   return route;
 };
 
-const setLocalUserData = async (_, __, { client }) => {
-  const jwt = localStorage.getItem("jwt");
-  const { id, org_id } = decode(jwt);
-  const USER_DATA = gql`
-    query queryUser($id: ID!) {
-      user(id: $id) {
-        firstName
-        email
-        lastName
-        organization {
-          name
-        }
-      }
-    }
-  `;
-  const userData = await client.query({
-    query: USER_DATA,
-    variables: { id }
-  });
-
-  await client.writeQuery({
-    query: gql`
-      query auth {
-        auth {
-          jwt
-          organizationId
-          userId
-          firstName
-          lastName
-        }
-      }
-    `,
-    data: {
-      auth: {
-        __typename: "auth",
-        jwt,
-        organizationId: org_id,
-        userId: id,
-        firstName: userData.data.user.firstName,
-        lastName: userData.data.user.lastName
-      }
-    }
-  });
-  return true;
-};
-
 const resolvers = {
   Mutation: {
     toggleCollapsedSideNav,
@@ -273,8 +232,7 @@ const resolvers = {
     signIn,
     hideMessage,
     showAuthLoader,
-    setRedirectRoute,
-    setLocalUserData
+    setRedirectRoute
   }
 };
 

@@ -4,26 +4,47 @@ import typeDefs from "../typeDefs";
 import resolvers from "../resolvers";
 import ApolloClient from "apollo-boost";
 import defaults from "../defaults";
+import { message } from "antd";
 import {
   GRAPHQL_URL,
   NEARX_GRAPHQL_URL
 } from "@walkinsole/walkin-components/src/constants/config";
+import { async } from "q";
 
 export const configureClient = async () => {
   const cache = new InMemoryCache();
 
-  const token = localStorage.getItem("jwt");
-
   const client = new ApolloClient({
     cache,
     uri: GRAPHQL_URL,
+    request: async operation => {
+      const token = await localStorage.getItem("jwt");
+      operation.setContext({
+        headers: {
+          authorization: token ? `Bearer ${token}` : ""
+        }
+      });
+    },
     clientState: {
       defaults,
       resolvers,
       typeDefs
     },
-    headers: {
-      authorization: token ? `Bearer ${token}` : ""
+    onError: ({ graphQLErrors, networkError }) => {
+      if (graphQLErrors) {
+        console.log(graphQLErrors);
+        console.log(">>>>>>>", graphQLErrors[0]);
+        if (graphQLErrors[0].extensions.code == "INVALID_CREDENTIALS")
+          message.warning("INVALID CREDENTIALS");
+        if (graphQLErrors[0].message == "jwt expired") {
+          localStorage.clear();
+          sessionStorage.clear();
+        }
+      }
+      if (networkError) {
+        message.error("Network Error");
+        console.log(networkError);
+      }
     }
   });
 

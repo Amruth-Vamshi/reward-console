@@ -7,8 +7,7 @@ import IntlMessages from "@walkinsole/walkin-components/src/util/IntlMessages";
 
 class NormalLoginForm extends React.Component {
   componentWillMount() {
-    if (localStorage.getItem('jwt'))
-      this.props.history.push('/');
+    if (localStorage.getItem("jwt")) this.props.history.push("/");
   }
   render() {
     const { history, routeQuery } = this.props;
@@ -51,7 +50,7 @@ class NormalLoginForm extends React.Component {
             </div>
             <div className="gx-app-login-content">
               <Mutation mutation={SIGN_IN} fetchPolicy="no-cache">
-                {(signIn, { data }) => (
+                {(signIn, { loading, error, data }) => (
                   <Form
                     onSubmit={async e => {
                       e.preventDefault();
@@ -139,6 +138,7 @@ class NormalLoginForm extends React.Component {
                       <Button
                         type="primary"
                         htmlType="submit"
+                        loading={loading}
                         className="login-form-button"
                         style={{ marginTop: 10 }}
                       >

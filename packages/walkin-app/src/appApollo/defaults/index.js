@@ -41,7 +41,6 @@ export default {
     initURL: "",
     userId: null,
     organizationId: null,
-    jwt: null,
     firstName: null,
     lastName: null
   }

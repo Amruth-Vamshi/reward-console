@@ -5,7 +5,7 @@ import CoreSidebarContent from "@walkinsole/walkin-core/src/containers/SidebarCo
 import HyperXSidebarContent from "@walkinsole/walkin-hyperx/src/containers/SidebarContent";
 import NearXSidebarContent from "@walkinsole/walkin-nearx/src/containers/SidebarContent";
 import RefineXSidebarContent from "@walkinsole/walkin-refinex/src/containers/SidebarContent";
-import HomeSidebarContent from "../SidebarContent"
+import HomeSidebarContent from "../SidebarContent";
 
 import { withRouter } from "react-router-dom";
 
@@ -25,7 +25,9 @@ const { Sider } = Layout;
 
 export class Sidebar extends Component {
   onToggleCollapsedNav = () => {
-    this.props.toggleCollapsedSideNav({ variables: { navCollapsed: !this.props.navCollapsed } });
+    this.props.toggleCollapsedSideNav({
+      variables: { navCollapsed: !this.props.navCollapsed }
+    });
   };
 
   // componentDidMount() {
@@ -86,13 +88,13 @@ export class Sidebar extends Component {
       <Sider
         className={`gx-app-sidebar ${drawerStyle} ${
           themeType !== THEME_TYPE_LITE ? "gx-layout-sider-dark" : null
-          }`}
+        }`}
         trigger={null}
         collapsed={
           width < TAB_SIZE
             ? false
             : navStyle === NAV_STYLE_MINI_SIDEBAR ||
-            navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR
+              navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR
         }
         // theme={themeType === THEME_TYPE_LITE ? "lite" : "dark"}
         collapsible
@@ -101,7 +103,7 @@ export class Sidebar extends Component {
           <Drawer
             className={`gx-drawer-sidebar ${
               themeType !== THEME_TYPE_LITE ? "gx-drawer-sidebar-dark" : null
-              }`}
+            }`}
             placement="left"
             closable={false}
             onClose={this.onToggleCollapsedNav.bind(this)}
@@ -110,8 +112,8 @@ export class Sidebar extends Component {
             {this.getSideBar1()}
           </Drawer>
         ) : (
-            this.getSideBar1()
-          )}
+          this.getSideBar1()
+        )}
       </Sider>
     );
   }

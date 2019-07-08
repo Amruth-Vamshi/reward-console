@@ -37,8 +37,8 @@ class AppCreation extends Component {
       id: "",
       errors: {},
       loading: false,
-      firstName: '',
-      lastName: '',
+      firstName: "",
+      lastName: "",
       appName: "",
       description: "",
       platform: "",
@@ -52,7 +52,7 @@ class AppCreation extends Component {
   };
 
   getAppDetails = appData => {
-    console.log("APPDATA>>>", appData)
+    console.log("APPDATA>>>", appData);
     this.setState({
       id: appData.id,
       appName: appData.appName,
@@ -60,16 +60,14 @@ class AppCreation extends Component {
       platform: appData.platform,
       organizationId: appData.org_id,
       update: true
-    })
-  }
+    });
+  };
 
-  componentDidMount() {
-  }
+  componentDidMount() {}
 
   componentWillMount() {
-
     const { id, org_id } = jwt.decode(localStorage.getItem("jwt"));
-    this.setState({ userId: id, org_id })
+    this.setState({ userId: id, org_id });
 
     sessionStorage.getItem("AppData")
       ? this.getAppDetails(JSON.parse(sessionStorage.getItem("AppData")))
@@ -78,39 +76,43 @@ class AppCreation extends Component {
 
     id
       ? this.props.client
-        .query({
-          query: USER_DATA,
-          variables: { userId: id },
-          fetchPolicy: "cache-first"
-        }).then(res => {
-          console.log(res.data.user);
-          this.setState({ firstName: res.data.user.firstName, lastName: res.data.user.lastName });
-        }).catch(err => console.log("Failed to get User Details" + err))
+          .query({
+            query: USER_DATA,
+            variables: { userId: id },
+            fetchPolicy: "cache-first"
+          })
+          .then(res => {
+            console.log(res.data.user);
+            this.setState({
+              firstName: res.data.user.firstName,
+              lastName: res.data.user.lastName
+            });
+          })
+          .catch(err => console.log("Failed to get User Details" + err))
       : console.log("Error getting JwtData");
-
 
     org_id
       ? this.props.client
-        .query({
-          query: GET_ALL_APPS_OF_ORGANIZATION,
-          variables: { id: org_id },
-          fetchPolicy: "network-only" // skip the cache
-        })
-        .then(res => {
-          console.log(res.data);
-          var orgs = [];
-          let org = res.data.organization;
+          .query({
+            query: GET_ALL_APPS_OF_ORGANIZATION,
+            variables: { id: org_id },
+            fetchPolicy: "network-only" // skip the cache
+          })
+          .then(res => {
+            console.log(res.data);
+            var orgs = [];
+            let org = res.data.organization;
 
-          function recOrg(org, orgs) {
-            orgs.push({ name: org.name, id: org.id });
-            if (org && org.children) org.children.map(ch => recOrg(ch, orgs));
-          }
-          recOrg(org, orgs);
-          this.setState({ organizations: orgs });
-        })
-        .catch(err => {
-          console.log("Failed to get User Details" + err);
-        })
+            function recOrg(org, orgs) {
+              orgs.push({ name: org.name, id: org.id });
+              if (org && org.children) org.children.map(ch => recOrg(ch, orgs));
+            }
+            recOrg(org, orgs);
+            this.setState({ organizations: orgs });
+          })
+          .catch(err => {
+            console.log("Failed to get User Details" + err);
+          })
       : console.log("Error getting JwtData");
   }
 
@@ -135,63 +137,62 @@ class AppCreation extends Component {
       this.setState({ errors });
       console.log("Errors in submition" + Object.keys(errors).length);
     } else {
-      if(this.state.update){
-      this.setState({ loading: true })
-      this.props.client
-        .mutate({
-          mutation: UPDATE_APP ,
-          variables: {
-            input: {
-              id:this.state.id,
-              name: this.state.appName,
-              description: this.state.description,
-              platform: this.state.platform
+      if (this.state.update) {
+        this.setState({ loading: true });
+        this.props.client
+          .mutate({
+            mutation: UPDATE_APP,
+            variables: {
+              input: {
+                id: this.state.id,
+                name: this.state.appName,
+                description: this.state.description,
+                platform: this.state.platform
+              }
             }
-          }
-        })
-        .then(res => {
-          console.log("Results", res);
-          this.setState({ loading: false })
-          this.props.history.push("/nearx/apps");
-        })
-        .catch(err => {
-          console.log("Failed to get Places Details" + err)
-          this.setState({ loading: false })
-        })
-      }else{
-      this.setState({ loading: true })
-      this.props.client
-        .mutate({
-          mutation: CREATE_APP,
-          variables: {
-            organizationId: this.state.organizationId,
-            input: {
-              name: this.state.appName,
-              description: this.state.description,
-              platform: this.state.platform
+          })
+          .then(res => {
+            console.log("Results", res);
+            this.setState({ loading: false });
+            this.props.history.push("/nearx/apps");
+          })
+          .catch(err => {
+            console.log("Failed to get Places Details" + err);
+            this.setState({ loading: false });
+          });
+      } else {
+        this.setState({ loading: true });
+        this.props.client
+          .mutate({
+            mutation: CREATE_APP,
+            variables: {
+              organizationId: this.state.organizationId,
+              input: {
+                name: this.state.appName,
+                description: this.state.description,
+                platform: this.state.platform
+              }
             }
-          }
-        })
-        .then(res => {
-          console.log("Results", res);
-          this.setState({ loading: false })
-          this.props.history.push("/nearx/apps");
-          // this.setState({ organizations:res.data.organizationHierarchies })
-        })
-        .catch(err => {
-          console.log("Failed to get Places Details" + err)
-          this.setState({ loading: false })
-        });
+          })
+          .then(res => {
+            console.log("Results", res);
+            this.setState({ loading: false });
+            this.props.history.push("/nearx/apps");
+            // this.setState({ organizations:res.data.organizationHierarchies })
+          })
+          .catch(err => {
+            console.log("Failed to get Places Details" + err);
+            this.setState({ loading: false });
+          });
       }
     }
   };
 
   render() {
-    let { firstName, lastName } = this.state
+    let { firstName, lastName } = this.state;
     var options = this.state.organizations.map((item, index) => (
       <Option key={index} value={item.id}>
         {item.name}
-
       </Option>
     ));
     // console.log(this.props.localdata.auth.firstName);
@@ -213,9 +214,9 @@ class AppCreation extends Component {
             <div className="name">
               {/* {console.log(auth)} */}
               Hi,{" "}
-              {firstName ? `${firstName +
-                "  " +
-                `${lastName ? lastName : ""}`}` : ''}
+              {firstName
+                ? `${firstName + "  " + `${lastName ? lastName : ""}`}`
+                : ""}
             </div>
             <div className="title"> Welcome to NearX Application</div>
           </div>
@@ -256,9 +257,7 @@ class AppCreation extends Component {
                     <Button
                       name="Android"
                       onClick={c => this.choosePlatform(c)}
-                      type={
-                        this.state.platform === "Android" ? "primary" : ""
-                      }
+                      type={this.state.platform === "Android" ? "primary" : ""}
                     >
                       <Icon type="android" theme="filled" /> Android{" "}
                     </Button>
@@ -275,34 +274,35 @@ class AppCreation extends Component {
                     </span>
                   </Form.Item>
 
-                  {this.state.update ? '' : <Form.Item {...formItemLayout} label="Industry">
-                    <Select
-                      showSearch
-                      size="large"
-                      style={{ width: "100%" }}
-                      placeholder="Select Industy"
-                      // value = { auth.user.organization.name }
-                      optionFilterProp="children"
-                      onChange={this.onChange}
-                      // onSearch={onSearch}
-                      filterOption={(input, option) =>
-                        option.props.children
-                          .toLowerCase()
-                          .indexOf(input.toLowerCase()) >= 0
-                      }
-                    >
-                      {/* <Option value={auth.user.organization.name}>{auth.user.organization?auth.user.organization.name:''}</Option> */}
-                      {options}
-                    </Select>
-                    <span style={{ color: "Red" }}>
-                      {this.state.errors.organizationId}
-                    </span>
-                  </Form.Item>}
+                  {this.state.update ? (
+                    ""
+                  ) : (
+                    <Form.Item {...formItemLayout} label="Industry">
+                      <Select
+                        showSearch
+                        size="large"
+                        style={{ width: "100%" }}
+                        placeholder="Select Industy"
+                        // value = { auth.user.organization.name }
+                        optionFilterProp="children"
+                        onChange={this.onChange}
+                        // onSearch={onSearch}
+                        filterOption={(input, option) =>
+                          option.props.children
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        }
+                      >
+                        {/* <Option value={auth.user.organization.name}>{auth.user.organization?auth.user.organization.name:''}</Option> */}
+                        {options}
+                      </Select>
+                      <span style={{ color: "Red" }}>
+                        {this.state.errors.organizationId}
+                      </span>
+                    </Form.Item>
+                  )}
 
-                  <Form.Item
-                    {...formItemLayout}
-                    label="Description (Optional)"
-                  >
+                  <Form.Item {...formItemLayout} label="Description (Optional)">
                     <Input
                       required
                       placeholder="Description (Optional)"
@@ -343,6 +343,5 @@ class AppCreation extends Component {
     );
   }
 }
-
 
 export default compose(withApollo)(AppCreation);
