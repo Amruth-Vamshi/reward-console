@@ -16,7 +16,7 @@ import AppListCard from "./AppListCard";
 import {
   GET_ALL_APPS_OF_ORGANIZATION,
   GENERATE_API_KEY
-} from "../../queries/platformQuries";
+} from "@walkinsole/walkin-components/src/PlatformQueries";
 import jwt from "jsonwebtoken";
 import { withApollo } from "react-apollo";
 // import { nearXClient as client } from "../../nearXApollo";
@@ -62,45 +62,48 @@ class AppsList extends Component {
 
   componentWillMount() {
     this.setState({ spin: true });
+    const jwtData = jwt.decode(localStorage.getItem("jwt"));
 
-    const jwtData = jwt.decode(sessionStorage.getItem("jwt"));
+    if (jwtData) {
+      this.props.client
+        .query({
+          query: GET_ALL_APPS_OF_ORGANIZATION,
+          variables: { id: jwtData.org_id },
+          fetchPolicy: "network-only"
+        })
+        .then(res => {
+          console.log(res.data);
+          var apps = [];
+          let org = res.data.organization;
 
-    jwtData
-      ? this.props.client
-          .query({
-            query: GET_ALL_APPS_OF_ORGANIZATION,
-            variables: { id: jwtData.org_id },
-            fetchPolicy: "network-only"
-          })
-          .then(res => {
-            console.log(res.data);
-            var apps = [];
-            let org = res.data.organization;
+          function recOrg(org, apps) {
+            if (org && org.applications)
+              org.applications.map(app =>
+                apps.push({
+                  id: app.id,
+                  org_id: org.id,
+                  appName: app.name,
+                  industry: org.name,
+                  platform: app.platform,
+                  discription: app.description
+                })
+              );
+            if (org && org.children) org.children.map(ch => recOrg(ch, apps));
+          }
 
-            function recOrg(org, apps) {
-              if (org && org.applications)
-                org.applications.map(app =>
-                  apps.push({
-                    id: app.id,
-                    appName: app.name,
-                    industry: org.name,
-                    platform: app.platform,
-                    discription: app.description
-                  })
-                );
-              if (org && org.children) org.children.map(ch => recOrg(ch, apps));
-            }
+          recOrg(org, apps);
+          console.log(apps);
 
-            recOrg(org, apps);
-
-            console.log(apps);
-
-            this.setState({ appsList: apps, spin: false });
-          })
-          .catch(err => {
-            console.log("Failed to get User Details" + err);
-          })
-      : console.log("Error getting JwtData");
+          this.setState({ appsList: apps, spin: false });
+        })
+        .catch(err => {
+          this.setState({ spin: false });
+          console.log("Failed to get User Details" + err);
+        });
+    } else {
+      this.setState({ spin: false });
+      console.log("Error getting JwtData");
+    }
   }
 
   genereteToken = (i, appId) => {
@@ -169,6 +172,7 @@ class AppsList extends Component {
             {this.state.appsList.map((item, i) => (
               <AppListCard
                 genereteToken={this.genereteToken}
+                history={this.props.history}
                 test={this.test}
                 key={i}
                 index={i}
@@ -177,19 +181,7 @@ class AppsList extends Component {
             ))}
           </div>
         ) : (
-          <div style={{ margin: 100, fontSize: 25 }}>
-            <div className="divCenter">No Apps Present</div>
-            <div className="divCenter">
-              <Button
-                style={{ margin: 30, fontSize: 18 }}
-                onClick={() => this.addApp()}
-                className="buttonPrimary"
-              >
-                Create New App
-              </Button>
-              {/* <div style={{margin:10, fontSize:20}}>Create A new Place</div> */}
-            </div>
-          </div>
+          ""
         )}
         <Modal
           width="750px"
@@ -304,8 +296,6 @@ class AppsList extends Component {
           {/* <AddHotspot submitHotspots={this.submitHotspots}/> */}
         </Modal>
       </div>
-
-      // <div>Auth consumer was here!!!!!</div>
     );
   }
 }

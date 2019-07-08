@@ -1,5 +1,7 @@
 .appHeader .name{
-    font-size: 35px
+    font-size: 35px;
+    word-spacing: 8px;
+    color:#705d94
 }
 
 .appHeader{
