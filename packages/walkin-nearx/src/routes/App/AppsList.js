@@ -4,6 +4,7 @@ import {
   Row,
   Pagination,
   Card,
+  message,
   Timeline,
   Modal,
   Spin,
@@ -93,11 +94,12 @@ class AppsList extends Component {
 
           recOrg(org, apps);
           console.log(apps);
-
           this.setState({ appsList: apps, spin: false });
         })
         .catch(err => {
           this.setState({ spin: false });
+          message.error("ERROR");
+
           console.log("Failed to get User Details" + err);
         });
     } else {
@@ -119,6 +121,7 @@ class AppsList extends Component {
         this.setState({ appsList });
       })
       .catch(err => {
+        message.error("ERROR");
         console.log("Failed" + err);
       });
   };

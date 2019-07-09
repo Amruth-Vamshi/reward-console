@@ -32,14 +32,15 @@ export const configureClient = async () => {
       typeDefs
     },
     onError: ({ graphQLErrors, networkError }) => {
+      if (networkError) {
+        message.error(
+          "Hey! Regret to inform that we are experiencing some issues. Please check your internet connection or try again after sometime"
+        );
+        console.log(networkError);
+      }
       if (graphQLErrors) {
         console.log(graphQLErrors);
         console.log(">>>>>>>", graphQLErrors[0]);
-
-        if (networkError) {
-          message.error("Network Error");
-          console.log(networkError);
-        }
         if (
           graphQLErrors[0].extensions &&
           graphQLErrors[0].extensions.code &&
