@@ -1,5 +1,6 @@
 import { InMemoryCache } from "apollo-boost";
 import { persistCache } from "apollo-cache-persist";
+import { Redirect, Route, Switch } from "react-router-dom";
 import typeDefs from "../typeDefs";
 import resolvers from "../resolvers";
 import ApolloClient from "apollo-boost";
@@ -34,16 +35,24 @@ export const configureClient = async () => {
       if (graphQLErrors) {
         console.log(graphQLErrors);
         console.log(">>>>>>>", graphQLErrors[0]);
-        if (graphQLErrors[0].extensions.code == "INVALID_CREDENTIALS")
+
+        if (networkError) {
+          message.error("Network Error");
+          console.log(networkError);
+        }
+        if (
+          graphQLErrors[0].extensions &&
+          graphQLErrors[0].extensions.code &&
+          graphQLErrors[0].extensions.code == " INVALID_CREDENTIALS "
+        )
           message.warning("INVALID CREDENTIALS");
-        if (graphQLErrors[0].message == "jwt expired") {
+        if (
+          graphQLErrors[0].message &&
+          graphQLErrors[0].message == "jwt expired"
+        ) {
           localStorage.clear();
           sessionStorage.clear();
         }
-      }
-      if (networkError) {
-        message.error("Network Error");
-        console.log(networkError);
       }
     }
   });

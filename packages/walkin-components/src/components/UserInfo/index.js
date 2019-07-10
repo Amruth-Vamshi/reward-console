@@ -56,7 +56,7 @@ class UserInfo extends Component {
         <li>My Account</li>
         <li>Connections</li>
         <li onClick={() => this.logout()}>
-          <Link to="/signIn">Logout</Link>
+          <Link to="/signin"> Logout </Link>
         </li>
       </ul>
     );
