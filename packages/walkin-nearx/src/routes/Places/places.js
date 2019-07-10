@@ -54,7 +54,10 @@ export default class Places extends Component {
           totalPlaces: res.data.Places.pageInfo.total
         });
       })
-      .catch(err => console.log("Failed to get Places Details" + err));
+      .catch(err => {
+        this.setState({ spin: false });
+        console.log("Failed to get Places Details" + err)
+      });
   };
 
   componentWillMount() {
@@ -83,17 +86,19 @@ export default class Places extends Component {
         console.log("Results", res);
         // console.log(JSON.stringify(places))
         this.setState({
-          places,
-          spin: false,
+          places, spin: false,
           totalPlaces: res.data.Places.pageInfo.total
         });
       })
-      .catch(err => console.log("Failed to get Places Details" + err));
+      .catch(err => {
+        this.setState({ spin: false });
+        console.log("Failed to get Places Details" + err)
+      });
   }
 
   pagination = (e, n) => {
     console.log(e - 1, n);
-    this.getPlacesData((e - 1)*n, n, this.state.search);
+    this.getPlacesData((e - 1) * n, n, this.state.search);
     // this.setState({offset:e})
   };
 
@@ -156,18 +161,10 @@ export default class Places extends Component {
 
           {/* <CustomScrollbars className="gx-layout-sider-scrollbar"> */}
           {this.state.spin ? (
-            <div>
-              <br />
-              <br />
-              <br />
-              <br />{" "}
+            <div> <br /> <br /> <br /> <br />{" "}
               <div className="divCenter">
                 <Spin size="large" />
-              </div>
-              <br />
-              <br />
-              <br />
-            </div>
+              </div> <br /> <br /> <br /> </div>
           ) : demoData.length ? (
             <div>
               <Row className="placeTableHeaders">
@@ -188,23 +185,23 @@ export default class Places extends Component {
               ))}
             </div>
           ) : (
-            <div style={{ margin: 60, fontSize: 25 }}>
-              <div className="divCenter">
-                <div>No Places Found</div>
-              </div>
-              <div className="divCenter">
-                <Link to="/nearx/places/createplace">
-                  <Button
-                    style={{ margin: 22, fontSize: 18 }}
-                    className="buttonPrimary"
-                  >
-                    Create New Place
+                <div style={{ margin: 60, fontSize: 25 }}>
+                  <div className="divCenter">
+                    <div>No Places Found</div>
+                  </div>
+                  <div className="divCenter">
+                    <Link to="/nearx/places/createplace">
+                      <Button
+                        style={{ margin: 22, fontSize: 18 }}
+                        className="buttonPrimary"
+                      >
+                        Create New Place
                   </Button>
-                </Link>
-                {/* <div style={{margin:10, fontSize:20}}>Create A new Place</div> */}
-              </div>
-            </div>
-          )}
+                    </Link>
+                    {/* <div style={{margin:10, fontSize:20}}>Create A new Place</div> */}
+                  </div>
+                </div>
+              )}
 
           <div style={{ margin: 20 }} className="divCenter">
             <Pagination
@@ -214,6 +211,7 @@ export default class Places extends Component {
               total={this.state.totalPlaces}
             />
           </div>
+
 
           {/* </CustomScrollbars> */}
         </Auxiliary>

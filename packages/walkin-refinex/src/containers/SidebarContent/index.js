@@ -46,38 +46,44 @@ class SidebarContent extends Component {
       <Auxiliary>
         <SidebarLogo />
         <div className="gx-sidebar-content">
-          <Menu
-            defaultOpenKeys={[defaultOpenKeys]}
-            selectedKeys={[selectedKeys]}
-            theme={themeType === THEME_TYPE_LITE ? "lite" : "dark"}
-            mode="inline"
-          >
+          <Menu theme={themeType === THEME_TYPE_LITE ? "lite" : "dark"}>
             <Menu.Item key="dashboard">
               <Link to="/refinex/dashboard">
                 <i className="icon icon-setting" />
-                {/* <IntlMessages id="sidebar.samplePage" /> */}
-                Dashboard
+                <IntlMessages id="sidebar.refinex.dashboard" />
               </Link>
             </Menu.Item>
-            <Menu.Item key="hyperx">
+            <Menu.Item key="campaigns">
               <Link to="/refinex/campaign">
                 <i className="icon icon-alert" />
-                {/* <IntlMessages id="sidebar.samplePage" /> */}
-                Manage Campaigns
+                <IntlMessages id="sidebar.refinex.campaigns" />
               </Link>
             </Menu.Item>
-            <Menu.Item key="refinex">
+            <Menu.Item key="settings">
               {/* <Link to="/refinex"> */}
               <i className="icon icon-select" />
-              {/* <IntlMessages id="sidebar.samplePage" /> */}
-              Settings
+              <IntlMessages id="sidebar.refinex.settings" />
               {/* </Link> */}
             </Menu.Item>
-            <Menu.Item key="nearx">
+            <Menu.Item key="feedbacks">
               {/* <Link to="/nearx"> */}
               <i className="icon icon-geo-location" />
-              {/* <IntlMessages id="sidebar.samplePage" /> */}
-              create
+              <IntlMessages id="sidebar.refinex.feedbacks" />
+
+              {/* </Link> */}
+            </Menu.Item>{" "}
+            <Menu.Item key="analytics">
+              {/* <Link to="/nearx"> */}
+              <i className="icon icon-geo-location" />
+              <IntlMessages id="sidebar.refinex.analytics" />
+
+              {/* </Link> */}
+            </Menu.Item>
+            <Menu.Item key="help">
+              {/* <Link to="/nearx"> */}
+              <i className="icon icon-geo-location" />
+              <IntlMessages id="sidebar.refinex.help" />
+
               {/* </Link> */}
             </Menu.Item>
           </Menu>

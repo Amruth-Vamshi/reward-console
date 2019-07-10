@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Menu } from "antd";
 import { Link } from "react-router-dom";
+
 import {
   CustomScrollbars,
   Auxiliary,
@@ -44,9 +45,8 @@ class SidebarContent extends Component {
     return (
       <Auxiliary>
         <SidebarLogo />
-        <div style={{ height: "100%" }} className="gx-sidebar-content">
+        <div className="gx-sidebar-content">
           <Menu
-            style={{ height: "100%" }}
             defaultOpenKeys={[defaultOpenKeys]}
             selectedKeys={[selectedKeys]}
             theme={themeType === THEME_TYPE_LITE ? "lite" : "dark"}
@@ -54,39 +54,31 @@ class SidebarContent extends Component {
           >
             <Menu.Item key="core">
               <Link to="/core">
-                <i className="icon icon-apps" />
-                {/* <IntlMessages id="sidebar.core" /> */}
-                Core suite
+                <i className="icon icon-setting" />
+                <IntlMessages id="sidebar.core" />
+                {/* Core */}
               </Link>
             </Menu.Item>
-
-            <Menu.Item key="UserInfo">
+            <Menu.Item key="hyperx">
+              <Link to="/hyperx">
+                <i className="icon icon-alert" />
+                <IntlMessages id="sidebar.hyperx" />
+                {/* HyperX */}
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="refinex">
               <Link to="/refinex">
-                <i className="icon icon-contacts" />
-                {/* <IntlMessages id="sidebar.refinex" /> */}
-                User Info
+                <i className="icon icon-select" />
+                <IntlMessages id="sidebar.refinex" />
+                {/* RefineX */}
               </Link>
             </Menu.Item>
-            <Menu.Item key="organizarionInfo">
+            <Menu.Item key="nearx">
               <Link to="/nearx">
-                <i className="icon icon-inbox" />
-                {/* <IntlMessages id="sidebar.nearx" /> */}
-                Organization Info
+                <i className="icon icon-geo-location" />
+                <IntlMessages id="sidebar.nearx" />
+                {/* NearX */}
               </Link>
-            </Menu.Item>
-            <Menu.Item key="customerInfo">
-              <Link to="/nearx">
-                <i className="icon icon-auth-screen" />
-                {/* <IntlMessages id="sidebar.nearx" /> */}
-                Customer Info
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="help">
-              {/* <Link to="/nearx"> */}
-              <i className="icon icon-queries" />
-              {/* <IntlMessages id="sidebar.nearx" /> */}
-              Help
-              {/* </Link> */}
             </Menu.Item>
           </Menu>
         </div>

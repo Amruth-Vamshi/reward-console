@@ -1,0 +1,8 @@
+.stepperContainer {
+  height: calc(100vh - 230px);
+}
+
+.BottomBar {
+  border-top: solid 0.2px;
+  padding-top: 10px;
+}

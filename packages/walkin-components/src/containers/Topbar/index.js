@@ -18,6 +18,7 @@ import {
 } from "../../constants/ThemeSetting";
 import { compose, graphql } from "react-apollo";
 import gql from "graphql-tag";
+import { withRouter } from "react-router-dom";
 
 const { Header } = Layout;
 
@@ -55,38 +56,50 @@ class Topbar extends Component {
     });
   };
 
+  getLocalHeaderStyle() {
+    // console.log("TOPBAR>>> ", this.props)
+    const { location } = this.props;
+    const appName = location.pathname.split("/")[1];
+    switch (appName) {
+      case "nearx":
+        return 'NearX-Topbar';
+      default:
+        return '';
+    }
+  }
+
   render() {
     const { locale, width, navCollapsed, navStyle } = this.props;
     return (
       <Auxiliary>
-        <Header>
+        <Header className={`${this.getLocalHeaderStyle()} `} >
           {navStyle === NAV_STYLE_DRAWER ||
-          ((navStyle === NAV_STYLE_FIXED ||
-            navStyle === NAV_STYLE_MINI_SIDEBAR) &&
-            width < TAB_SIZE) ? (
-            <div className="gx-linebar gx-mr-3">
-              <i
-                className="gx-icon-btn icon icon-menu"
-                onClick={() => {
-                  this.props.toggleCollapsedSideNav({
-                    variables: { navCollapsed: !navCollapsed }
-                  });
-                }}
-              />
-            </div>
-          ) : null}
+            ((navStyle === NAV_STYLE_FIXED ||
+              navStyle === NAV_STYLE_MINI_SIDEBAR) &&
+              width < TAB_SIZE) ? (
+              <div className="gx-linebar gx-mr-3" style={{ color: "#ffffff" }}>
+                <i
+                  className="gx-icon-btn icon icon-menu"
+                  onClick={() => {
+                    this.props.toggleCollapsedSideNav({
+                      variables: { navCollapsed: !navCollapsed }
+                    });
+                  }}
+                />
+              </div>
+            ) : null}
           <Link to="/" className="gx-d-block gx-d-lg-none gx-pointer">
-            <img alt="" src={require("../../assets/images/w-logo.png")} />
+            <img alt="" src={require("../../assets/images/walkin_logo_white.png")} style={{ width: 80 }} />
           </Link>
 
-          <SearchBox
+          {/* <SearchBox
             styleName="gx-d-none gx-d-lg-block gx-lt-icon-search-bar-lg"
             placeholder="Search in app..."
             onChange={this.updateSearchChatUser.bind(this)}
             value={this.state.searchText}
-          />
+          /> */}
           <ul className="gx-header-notifications gx-ml-auto">
-            <li className="gx-notify gx-notify-search gx-d-inline-block gx-d-lg-none">
+            {/* <li className="gx-notify gx-notify-search gx-d-inline-block gx-d-lg-none">
               <Popover
                 overlayClassName="gx-popover-horizantal"
                 placement="bottomRight"
@@ -104,8 +117,8 @@ class Topbar extends Component {
                   <i className="icon icon-search-new" />
                 </span>
               </Popover>
-            </li>
-            {width >= TAB_SIZE ? null : (
+            </li> */}
+            {/* {width >= TAB_SIZE ? null : (
               <Auxiliary>
                 <li className="gx-notify">
                   <Popover
@@ -134,7 +147,7 @@ class Topbar extends Component {
                   </Popover>
                 </li>
               </Auxiliary>
-            )}
+            )} */}
             {/* <li className="gx-language">
               <Popover
                 overlayClassName="gx-popover-horizantal"
@@ -202,6 +215,7 @@ const SWITCH_LANGUAGE = gql`
 `;
 
 export default compose(
+  withRouter,
   graphql(TOGGLE_COLLAPSED_SIDE_NAV, { name: "toggleCollapsedSideNav" }),
   graphql(SWITCH_LANGUAGE, { name: "switchLanguage" }),
   graphql(GET_SETTINGS, {
