@@ -12,7 +12,7 @@ export default class placeCard extends Component {
   menus = () => (<Menu onClick={(e) => {
     if (e.key === 'Edit') {
       sessionStorage.setItem("placeId", JSON.stringify(this.props.data.id));
-          this.props.history.push('/nearx/places/createplace/manually')
+      this.props.history.push('/nearx/places/createplace/manually')
     } else {
       // this.onDeleteContact(this.props.contact)
     }
@@ -31,29 +31,29 @@ export default class placeCard extends Component {
 
       <Card className='placesListCard'>
         <Row>
-          <Col className='rightBorder' span={5}>
+          <Col span={5}>
             <div className="divCenterVertical"><div>
               <Row><span style={{ color: 'black', marginBottom: 5 }}>{data.name}</span></Row>
               <Row><span style={{ color: '#999999' }} >{data.code}</span></Row>
             </div></div>
           </Col>
-          <Col className='rightBorder' span={6}> <div className="divCenterVertical"><span>{data.address}</span></div></Col>
+          <Col span={6}> <div className="divCenterVertical"><span>{data.address}</span></div></Col>
           <Col span={5}>
-              <div style={{}} className="divCenterVertical">  <span>Radius: &nbsp;
-                {data.radius?<span style={{wordBreak:'break-word'}}>
-                {data.radius[0]? <span>{data.radius[0]}m</span>:''}
-                {data.radius[1]? <span>&nbsp;|&nbsp;{data.radius[1]}m</span>:''}
-                {data.radius[2]? <span>&nbsp;|&nbsp;{data.radius[2]}m</span>:''} </span>:''}
-                </span></div>
+            <div style={{}} className="divCenterVertical">  <span>Radius: &nbsp;
+                {data.radius ? <span style={{ wordBreak: 'break-word' }}>
+                {data.radius[0] ? <span>{data.radius[0]}m</span> : ''}
+                {data.radius[1] ? <span>&nbsp;|&nbsp;{data.radius[1]}m</span> : ''}
+                {data.radius[2] ? <span>&nbsp;|&nbsp;{data.radius[2]}m</span> : ''} </span> : ''}
+            </span></div>
           </Col>
-          <Col className='rightBorder' span={2}>
+          <Col span={2}>
             <div className='divCenterVertical'><span className="hotspot">{data.hotspots < 10 ? `0${data.hotspots}` : data.hotspots}</span></div>
           </Col>
           <Col className='placeCardLocation' span={4}>
             <Row>Latitude:- <span style={{ marginBottom: 5 }}>{data.center.lat}</span></Row>
             <Row>Longitude:- <span>{data.center.lng}</span></Row>
           </Col>
-          <Col className='rightBorder' span={2}>
+          <Col span={2}>
             <div className="gx-module-contact-right divCenter">
               <Dropdown overlay={this.menus()} placement="bottomRight" trigger={['click']}>
                 <i className="gx-icon-btn icon icon-ellipse-v" />

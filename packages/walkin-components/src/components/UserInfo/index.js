@@ -28,22 +28,22 @@ class UserInfo extends Component {
     this.setState({ userId: id, org_id });
     id
       ? this.props.client
-          .query({
-            query: USER_DATA,
-            variables: { userId: id },
-            fetchPolicy: "cache-first"
-          })
-          .then(res => {
-            console.log(res.data.user);
-            this.setState({
-              user: res.data.user,
-              firstName: res.data.user.firstName,
-              lastName: res.data.user.lastName
-            });
-          })
-          .catch(err => {
-            console.log("Failed to get User Details" + err);
-          })
+        .query({
+          query: USER_DATA,
+          variables: { userId: id },
+          fetchPolicy: "cache-first"
+        })
+        .then(res => {
+          console.log(res.data.user);
+          this.setState({
+            user: res.data.user,
+            firstName: res.data.user.firstName,
+            lastName: res.data.user.lastName
+          });
+        })
+        .catch(err => {
+          console.log("Failed to get User Details" + err);
+        })
       : console.log("Error getting JwtData");
   }
 
@@ -78,25 +78,24 @@ class UserInfo extends Component {
             {/*&nbsp; <Avatar src='https://via.placeholder.com/100x100'
                 className="gx-avatar gx-pointer" alt="" /> */}
             <div className="gx-ml-2 gx-d-none gx-d-sm-flex">
-              {user.image === null || user.image === undefined ? (
+              {user.image === null || user.image === undefined ?
                 <Avatar style={{ backgroundColor: "#424e88" }} size="large">
                   <span style={{ fontSize: 22, fontWeight: "" }}>
-                    {" "}
-                    {firstName ? firstName.charAt(0).toUpperCase() : ""}{" "}
-                  </span>{" "}
+                    {firstName ? firstName.charAt(0).toUpperCase() : ""}
+                  </span>
                 </Avatar>
-              ) : (
+                :
                 <Avatar size="large" alt={firstName} src={user.image} />
-              )}
+              }
             </div>
           </div>
         ) : (
-          <Avatar
-            src="https://via.placeholder.com/100x100"
-            className="gx-avatar gx-pointer"
-            alt=""
-          />
-        )}
+            <Avatar
+              src="https://via.placeholder.com/100x100"
+              className="gx-avatar gx-pointer"
+              alt=""
+            />
+          )}
       </Popover>
     );
   }

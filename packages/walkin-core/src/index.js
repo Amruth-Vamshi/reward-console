@@ -3,6 +3,7 @@ import AppList from "./components/appList";
 // import Apps from './routes/App'
 import Landing from "./routes/Landing";
 import { Redirect, Route, Switch } from "react-router-dom";
+import Users from "./routes/users";
 
 const apps = [
   {
@@ -90,6 +91,7 @@ export default class extends Component {
         <Switch>
           <Route exact path={this.props.match.url} component={Landing} />
           {/* <Route exact path={`${this.props.match.url}/apps`} component={Apps} /> */}
+          <Route path={`${this.props.match.url}/users`} component={Users} />
         </Switch>
       </div>
     );

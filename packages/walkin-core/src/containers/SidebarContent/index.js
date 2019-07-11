@@ -60,8 +60,8 @@ class SidebarContent extends Component {
               </Link>
             </Menu.Item>
 
-            <Menu.Item key="UserInfo">
-              <Link to="/refinex">
+            <Menu.Item key="core/users">
+              <Link to="/core/users">
                 <i className="icon icon-contacts" />
                 {/* <IntlMessages id="sidebar.refinex" /> */}
                 User Info

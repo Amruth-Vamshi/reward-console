@@ -226,7 +226,7 @@ export default class CreatePlaceForm extends Component {
                           </i>
                         </p>
 
-                        <Form.Item {...formItemLocation} label="Longitude">
+                        <Form.Item {...formItemLocation} label="Location">
                           <Row gutter={1}>
                             <Col md={24} xl={12}>
                               <Input
