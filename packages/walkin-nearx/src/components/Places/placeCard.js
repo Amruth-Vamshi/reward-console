@@ -1,15 +1,15 @@
-import React, { Component } from 'react'
+import React, { Component } from "react";
 import { Col, Row, Dropdown, Menu, Card, Button, Divider } from "antd";
 // import CreatePlaces from '../../routes/Places/CreatePlaces/CreatePlaces';
 
 const options = [
-  'Edit',
+  "Edit"
   // 'Delete',
 ];
 export default class placeCard extends Component {
 
 
-  menus = () => (<Menu onClick={(e) => {
+  menus = () => (<Menu onClick={e => {
     if (e.key === 'Edit') {
       sessionStorage.setItem("placeId", JSON.stringify(this.props.data.id));
       this.props.history.push('/nearx/places/createplace/manually')
@@ -22,14 +22,10 @@ export default class placeCard extends Component {
 
 
 
-
-
   render() {
-
-    const { data } = this.props
+    const { data } = this.props;
     return (
-
-      <Card className='placesListCard'>
+      <Card className="placesListCard">
         <Row>
           <Col span={5}>
             <div className="divCenterVertical"><div>
@@ -49,13 +45,31 @@ export default class placeCard extends Component {
           <Col span={2}>
             <div className='divCenterVertical'><span className="hotspot">{data.hotspots < 10 ? `0${data.hotspots}` : data.hotspots}</span></div>
           </Col>
-          <Col className='placeCardLocation' span={4}>
-            <Row>Latitude:- <span style={{ marginBottom: 5 }}>{data.center.lat}</span></Row>
-            <Row>Longitude:- <span>{data.center.lng}</span></Row>
+          <Col className="placeCardLocation" span={4}>
+            <Row>
+              Latitude:-{" "}
+              <span style={{ marginBottom: 5 }}>
+                {data.center.lat
+                  .toString()
+                  .slice(0, data.center.lat.toString().indexOf(".") + 8)}
+              </span>
+            </Row>
+            <Row>
+              Longitude:-{" "}
+              <span>
+                {data.center.lng
+                  .toString()
+                  .slice(0, data.center.lng.toString().indexOf(".") + 8)}
+              </span>
+            </Row>
           </Col>
           <Col span={2}>
             <div className="gx-module-contact-right divCenter">
-              <Dropdown overlay={this.menus()} placement="bottomRight" trigger={['click']}>
+              <Dropdown
+                overlay={this.menus()}
+                placement="bottomRight"
+                trigger={["click"]}
+              >
                 <i className="gx-icon-btn icon icon-ellipse-v" />
               </Dropdown>
             </div>
@@ -110,8 +124,7 @@ export default class placeCard extends Component {
               </div>
             </Col>
           </Row> */}
-
       </Card>
-    )
+    );
   }
 }
