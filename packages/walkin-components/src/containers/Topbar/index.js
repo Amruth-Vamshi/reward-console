@@ -89,7 +89,7 @@ class Topbar extends Component {
               </div>
             ) : null}
           <Link to="/" className="gx-d-block gx-d-lg-none gx-pointer">
-            <img alt="" src={require("../../assets/images/walkin_logo_white.png")} style={{ width: 80 }} />
+            <img alt="" src={require("../../assets/images/walkin_logo_mini.png")} style={{ maxWidth: 40 }} />
           </Link>
 
           {/* <SearchBox

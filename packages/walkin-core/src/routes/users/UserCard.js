@@ -77,9 +77,9 @@ export default class UserCard extends Component {
 
           <Col span={2}>
             <div className="gx-module-contact-right divCenter">
-              <Dropdown overlay={this.menus()} placement="bottomRight" trigger={['click']}>
+              {/* <Dropdown overlay={this.menus()} placement="bottomRight" trigger={['click']}>
                 <i className="gx-icon-btn icon icon-ellipse-v" />
-              </Dropdown>
+              </Dropdown> */}
             </div>
           </Col>
         </Row>

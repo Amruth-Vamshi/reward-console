@@ -1,11 +1,10 @@
 import React, { Component } from "react";
 import { Avatar, Popover } from "antd";
 import { withApollo, compose, graphql } from "react-apollo";
-import gql from "graphql-tag";
 import { Redirect, Link } from "react-router-dom";
 import { USER_DATA } from "@walkinsole/walkin-components/src/PlatformQueries";
-import { from } from "zen-observable";
 import jwt from "jsonwebtoken";
+import { withRouter } from "react-router-dom";
 
 class UserInfo extends Component {
   constructor(props) {
@@ -20,7 +19,7 @@ class UserInfo extends Component {
     console.log("Logout");
     sessionStorage.clear();
     localStorage.clear();
-    // this.props.history.push("/signIn");
+    this.props.history.push('/');
   };
 
   componentWillMount() {
@@ -70,14 +69,14 @@ class UserInfo extends Component {
       >
         {firstName ? (
           <div className="gx-flex-row gx-align-items-center gx-pointer">
-            <p style={{ color: "white" }} className="gx-mb-0">
+            <p style={{ color: "white" }} className="gx-mb-0 gx-d-none gx-d-sm-flex">
               {firstName + "  " + `${lastName ? lastName : " "}`}
             </p>{" "}
             &nbsp;
             {/* <img className="gx-rounded-circle gx-size-30 gx-mr-2 gx-ml-2" src='https://via.placeholder.com/150x150' alt="" /> */}
             {/*&nbsp; <Avatar src='https://via.placeholder.com/100x100'
                 className="gx-avatar gx-pointer" alt="" /> */}
-            <div className="gx-ml-2 gx-d-none gx-d-sm-flex">
+            <div className="gx-ml-2">
               {user.image === null || user.image === undefined ?
                 <Avatar style={{ backgroundColor: "#424e88" }} size="large">
                   <span style={{ fontSize: 22, fontWeight: "" }}>
@@ -101,4 +100,4 @@ class UserInfo extends Component {
   }
 }
 
-export default compose(withApollo)(UserInfo);
+export default compose(withRouter, withApollo)(UserInfo);

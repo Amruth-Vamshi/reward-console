@@ -111,6 +111,12 @@ export default class Places extends Component {
     this.setState({ [e.target.name]: e.target.value, errors });
   };
 
+  handleSearchChange = e => {
+    if (e.target.value.trim() == "") this.getPlacesData(0, 7, '');
+    this.setState({ [e.target.name]: e.target.value });
+  };
+
+
   render() {
     const demoData = this.state.places;
     // console.log(demoData)
@@ -153,7 +159,7 @@ export default class Places extends Component {
                 onSearch={this.handleSearchSubmit}
                 onPressEnter={this.handleSearchSubmit}
                 name="search"
-                onChange={c => this.handleChange(c)}
+                onChange={c => this.handleSearchChange(c)}
               />
               <span style={{ color: "Red" }}>{this.state.errors.search}</span>
             </Col>

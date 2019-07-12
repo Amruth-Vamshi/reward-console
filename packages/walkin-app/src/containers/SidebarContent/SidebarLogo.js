@@ -7,6 +7,7 @@ import {
   NAV_STYLE_MINI_SIDEBAR,
   NAV_STYLE_NO_HEADER_MINI_SIDEBAR,
   TAB_SIZE,
+  TAB_SIZE_MAX,
   THEME_TYPE_LITE
 } from "@walkinsole/walkin-components/src/constants/ThemeSetting";
 import { compose, graphql } from "react-apollo";
@@ -21,44 +22,48 @@ class SidebarLogo extends Component {
     }
     return (
       <div className="gx-layout-sider-header">
-        {navStyle === NAV_STYLE_FIXED || navStyle === NAV_STYLE_MINI_SIDEBAR ? (
-          <div className="gx-linebar">
-            <i
-              className={`gx-icon-btn icon icon-${
-                navStyle === NAV_STYLE_MINI_SIDEBAR
-                  ? "menu-unfold"
-                  : "menu-fold"
-                } ${themeType !== THEME_TYPE_LITE ? "gx-text-white" : ""}`}
-              onClick={() => {
-                if (navStyle === NAV_STYLE_DRAWER) {
-                  this.props.toggleCollapsedSideNav({
-                    variables: {
-                      navCollapsed: !navCollapsed
-                    }
-                  });
-                } else if (navStyle === NAV_STYLE_FIXED) {
-                  this.props.onNavStyleChange({
-                    variables: {
-                      navStyle: NAV_STYLE_MINI_SIDEBAR
-                    }
-                  });
-                } else if (navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR) {
-                  this.props.toggleCollapsedSideNav({
-                    variables: {
-                      navCollapsed: !navCollapsed
-                    }
-                  });
-                } else {
-                  this.props.onNavStyleChange({
-                    variables: {
-                      navStyle: NAV_STYLE_FIXED
-                    }
-                  });
-                }
-              }}
-            />
-          </div>
-        ) : null}
+        {width < TAB_SIZE_MAX && width > TAB_SIZE ?
+          <Link to="/" className="gx-pointer">
+            <img alt="fgd" src={require("@walkinsole/walkin-components/src/assets/images/walkin_logo_mini.png")} style={{ maxWidth: 35 }} />
+          </Link> :
+          navStyle === NAV_STYLE_FIXED || navStyle === NAV_STYLE_MINI_SIDEBAR ? (
+            <div className="gx-linebar">
+              <i
+                className={`gx-icon-btn icon icon-${
+                  navStyle === NAV_STYLE_MINI_SIDEBAR
+                    ? "menu-unfold"
+                    : "menu-fold"
+                  } ${themeType !== THEME_TYPE_LITE ? "gx-text-white" : ""}`}
+                onClick={() => {
+                  if (navStyle === NAV_STYLE_DRAWER) {
+                    this.props.toggleCollapsedSideNav({
+                      variables: {
+                        navCollapsed: !navCollapsed
+                      }
+                    });
+                  } else if (navStyle === NAV_STYLE_FIXED) {
+                    this.props.onNavStyleChange({
+                      variables: {
+                        navStyle: NAV_STYLE_MINI_SIDEBAR
+                      }
+                    });
+                  } else if (navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR) {
+                    this.props.toggleCollapsedSideNav({
+                      variables: {
+                        navCollapsed: !navCollapsed
+                      }
+                    });
+                  } else {
+                    this.props.onNavStyleChange({
+                      variables: {
+                        navStyle: NAV_STYLE_FIXED
+                      }
+                    });
+                  }
+                }}
+              />
+            </div>
+          ) : null}
 
         <Link to="/" className="gx-site-logo">
           {navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR &&

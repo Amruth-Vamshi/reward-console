@@ -1,14 +1,26 @@
 import React, { Component } from "react";
 import { Widget } from "@walkinsole/walkin-components";
-import { Tabs, Button } from "antd";
+import { Tabs, Modal, Form, Input, Button, Select } from "antd";
 import { data, data1 } from "./data";
 import UserInfo from "./UserInfo";
 import "./users.css";
+import CreateUser from "./CreateUser";
 
 const TabPane = Tabs.TabPane;
 
 export default class Users extends Component {
-  showModal = () => { };
+  constructor(props) {
+    super(props);
+    this.state = {
+      visible: false,
+      spin: false,
+      loading: false,
+      errors: {}
+    };
+  }
+
+  showModal = () => this.setState({ visible: true });
+  handleCancel = () => this.setState({ visible: false })
 
   render() {
 
@@ -17,11 +29,7 @@ export default class Users extends Component {
         <Widget
           title={<p style={{ fontSize: 23 }}>User Info</p>}
           styleName="gx-card-tabs UsersTabs"
-          extra={
-            <Button onClick={this.showModal} type="primary">
-              Create User
-            </Button>
-          }
+          extra={<Button onClick={() => this.showModal()} type="primary"> Create User </Button>}
         >
           <Tabs
             defaultActiveKey="1"
@@ -36,6 +44,18 @@ export default class Users extends Component {
             </TabPane>
           </Tabs>
         </Widget>
+
+
+        <Modal
+          width="450px"
+          key="model"
+          visible={this.state.visible}
+          onCancel={this.handleCancel}
+          title={null} footer={null}
+        >
+
+          <CreateUser handleCancel={this.handleCancel} />
+        </Modal>
       </div>
     );
   }

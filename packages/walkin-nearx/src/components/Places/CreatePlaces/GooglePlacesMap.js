@@ -54,9 +54,10 @@ export default class GooglePlacesMap extends Component {
             </Col>
 
 
-            <Col style={{ overflow: "hidden" }} span={10}>
+            <Col id='Sarea' style={{ height: "50px" }} span={10}>
               Type:
               <Select
+                getPopupContainer={() => document.getElementById('Sarea')}
                 showSearch value={formData.type} name="type" style={{ width: '250px' }}
                 placeholder="Select Type" optionFilterProp="children"
                 onChange={e => this.props.handleOnTypeChange(e)}
