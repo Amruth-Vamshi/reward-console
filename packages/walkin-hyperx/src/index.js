@@ -1,16 +1,22 @@
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
-import { NEW_CAMPAIGN_BASIC_INFO, NEW_CAMPAIGN_AUDIENCE } from '../src/utils/RouterConstants';
-import BasicInfo from './containers/campaignCreation/basicInfo';
-import Audience from './containers/campaignCreation/audience';
+import { NEW_CAMPAIGN, CAMPAIGN_MANAGEMENT, NEW_SEGMENT, SEGMENT_LIST } from '../src/utils/RouterConstants';
+import CampaignList from './containers/campaign/campaignList';
+import CampaignCreation from './containers/campaign';
+import SegmentList from './containers/segment/segmentList';
+import NewSegment from './containers/segment/newSegment';
 
 const App = ({ match }) => {
 	return (
 		<div className="gx-main-content-wrapper">
 			<Switch>
-				<Route exact path={'/hyperx'} render={() => <Redirect from="/hyperx" to={NEW_CAMPAIGN_BASIC_INFO} />} />
-				<Route path={NEW_CAMPAIGN_BASIC_INFO} component={BasicInfo} />
-				<Route path="/hyperx/*" component={BasicInfo} />
+				<Route exact path={'/hyperx'} render={() => <Redirect from="/hyperx" to={CAMPAIGN_MANAGEMENT} />} />
+				<Route path={CAMPAIGN_MANAGEMENT} component={CampaignList} />
+				<Route path={NEW_CAMPAIGN} component={CampaignCreation} />
+				<Route path={SEGMENT_LIST} component={SegmentList} />
+				<Route path={NEW_SEGMENT} component={NewSegment} />
+				<Route path={`${NEW_SEGMENT}/:id`} component={NewSegment} />>
+				<Route path="/hyperx/*" component={CampaignList} />
 			</Switch>
 		</div>
 	);
