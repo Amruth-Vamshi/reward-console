@@ -240,8 +240,8 @@ export default class CreatePlaceManually extends Component {
         })
         .catch(err => {
           this.setState({ loading1: false });
-          console.log("Failed to stote Places Details" + err);
-          message.warning("Failed to stote Places Details");
+          console.log("Failed to store Places Details" + err);
+          message.warning("Failed to store Places Details");
         });
       console.log("Submit");
     }

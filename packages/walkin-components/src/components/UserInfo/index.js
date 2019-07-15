@@ -52,8 +52,8 @@ class UserInfo extends Component {
     console.log("USER>>>", this.state.user);
     const userMenuOptions = (
       <ul className="gx-user-popover">
-        <li>My Account</li>
-        <li>Connections</li>
+        {/* <li>My Account</li>
+        <li>Connections</li> */}
         <li onClick={() => this.logout()}>
           <Link to="/signin"> Logout </Link>
         </li>
