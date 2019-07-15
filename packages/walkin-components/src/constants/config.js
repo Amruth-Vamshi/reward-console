@@ -1,4 +1,4 @@
-export const GRAPHQL_URL = 'https://dev-api.getwalkin.in/core_dev/graphql';
+export const GRAPHQL_URL = 'http://localhost:4000/graphql';
 export const NEARX_GRAPHQL_URL = 'https://dev-api.getwalkin.in/nearx/graphql';
 
 // let proxy = "https://cors-anywhere.herokuapp.com/"

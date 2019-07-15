@@ -27,9 +27,6 @@ class InstantSearch extends React.Component {
 
 		// Set the filtered state based on what our rules added to newList
 		this.props.onFilteredList(newList);
-		// this.setState({
-		// 	filtered: newList,
-		// });
 	}
 	render() {
 		const { placeHolder, data } = this.props;

@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
 import { NEW_CAMPAIGN } from '../../../utils/RouterConstants';
 import { campaigns } from '../../../query/campaign';
-import { Card, Menu, Dropdown, Input, Progress, Tabs } from 'antd';
+import { Card, Menu, Dropdown, Col, Button, Progress, Tabs } from 'antd';
 import moment from 'moment';
 import { withApollo, graphql } from 'react-apollo';
 import { SortableDataTable, InstantSearch, CampaignHeader } from '@walkinsole/walkin-components';
@@ -199,10 +199,18 @@ class CampaignList extends Component {
 		return (
 			<div style={{ margin: '-32px' }}>
 				<CampaignHeader
-					text="Campaigns"
-					isHeaderStepper={false}
-					onCampaignHeaderButtonClick={this.onNewCampaign}
-					campaignHeaderButtonText="CREATE CAMPAIGN"
+					children={
+						<Fragment>
+							<Col span={12}>
+								<h3 className="gx-text-grey paddingLeftStyle campaignHeaderTitleStyle">Campaigns</h3>
+							</Col>
+							<Col className="searchInputStyle" span={12}>
+								<Button type="primary" onClick={this.onNewCampaign}>
+									CREATE CAMPAIGN
+								</Button>
+							</Col>
+						</Fragment>
+					}
 				/>
 				<Card>
 					<div style={{ marginBottom: '24px' }}>

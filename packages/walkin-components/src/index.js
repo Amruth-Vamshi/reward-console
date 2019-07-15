@@ -38,6 +38,7 @@ import SortableDataTable from './components/atoms/sortableDataTable';
 import InstantSearch from './components/atoms/instantSearch';
 import CampaignHeader from './components/molecules/campaignHeader';
 import CampaignFooter from './components/molecules/campaignFooter';
+import Stepper from './components/atoms/stepper';
 
 export {
 	CircularProgress,
@@ -78,4 +79,5 @@ export {
 	InstantSearch,
 	CampaignHeader,
 	CampaignFooter,
+	Stepper,
 };

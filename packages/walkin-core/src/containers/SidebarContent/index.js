@@ -8,14 +8,16 @@ import SidebarLogo from './SidebarLogo';
 import UserProfile from './UserProfile';
 import AppsNavigation from './AppsNavigation';
 import { withRouter } from 'react-router-dom';
+import camelCase from 'lodash/camelCase';
 
 import {
 	NAV_STYLE_NO_HEADER_EXPANDED_SIDEBAR,
 	NAV_STYLE_NO_HEADER_MINI_SIDEBAR,
 	THEME_TYPE_LITE,
 } from '@walkinsole/walkin-components/src/constants/ThemeSetting';
-import { compose, graphql } from 'react-apollo';
+import { compose, graphql, withApollo } from 'react-apollo';
 import gql from 'graphql-tag';
+import { orgId } from '../../query/organization';
 
 class SidebarContent extends Component {
 	getNoHeaderClass = navStyle => {
@@ -32,7 +34,7 @@ class SidebarContent extends Component {
 	};
 
 	render() {
-		const { themeType, navStyle, pathname } = this.props;
+		const { themeType, navStyle, pathname, orgId } = this.props;
 		const selectedKeys = pathname.substr(1);
 		const defaultOpenKeys = selectedKeys.split('/')[1];
 		return (
@@ -61,8 +63,11 @@ class SidebarContent extends Component {
 								User Info
 							</Link>
 						</Menu.Item>
-						<Menu.Item key="organizarionInfo">
-							<Link to="/nearx">
+						<Menu.Item key="organizationInfo">
+							<Link
+								to={`core/organization/${orgId && orgId.organization ? orgId.organization.id : ''}`}
+								// to="core/organization"
+							>
 								<i className="icon icon-inbox" />
 								{/* <IntlMessages id="sidebar.nearx" /> */}
 								Organization Info
@@ -113,10 +118,22 @@ const GET_SETTINGS = gql`
 	}
 `;
 
-export default compose(
-	withRouter,
-	graphql(GET_SETTINGS, {
-		props: mapStateToProps,
-		name: 'settings',
-	})
-)(SidebarContent);
+export default withRouter(
+	withApollo(
+		compose(
+			graphql(GET_SETTINGS, {
+				props: mapStateToProps,
+				name: 'settings',
+			}),
+			graphql(orgId, {
+				name: 'orgId',
+				options: ownProps => ({
+					variables: {
+						id: ownProps.client.cache.data.data['$ROOT_QUERY.auth'].organizationId,
+					},
+					fetchPolicy: 'network-only',
+				}),
+			})
+		)(SidebarContent)
+	)
+);
