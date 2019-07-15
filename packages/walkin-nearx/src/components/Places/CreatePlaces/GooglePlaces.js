@@ -35,10 +35,10 @@ const geolocation =
   canUseDOM && navigator.geolocation
     ? navigator.geolocation
     : {
-        getCurrentPosition(success, failure) {
-          failure(`Your browser doesn't support geolocation.`);
-        }
-      };
+      getCurrentPosition(success, failure) {
+        failure(`Your browser doesn't support geolocation.`);
+      }
+    };
 export default class GooglePlaces extends Component {
   constructor(props) {
     super(props);
@@ -101,13 +101,11 @@ export default class GooglePlaces extends Component {
         lng: position.coords.longitude
       }),
         this.setState({ center, mark: center, markLoc: true });
-      console.log("My Location  " + center);
     });
   };
 
   selAll = sel => {
     let { places, places1, selectAll } = this.state;
-    console.log(selectAll);
     places1.map(i => {
       i.selected = !selectAll;
     });
@@ -120,7 +118,6 @@ export default class GooglePlaces extends Component {
 
   handleSubmit = e => {
     let { googleAPIkey } = this.state;
-    console.log(googleAPIkey, this.state.defaultRadius);
     // e.preventDefault();
     let errors = {};
     if (this.state.search.trim() == "")
@@ -134,14 +131,12 @@ export default class GooglePlaces extends Component {
 
     if (Object.keys(errors).length !== 0) {
       this.setState({ errors });
-      console.log("Errors in submition" + Object.keys(errors).length);
     } else {
       let url = "https://maps.googleapis.com/maps/api/place/";
       if (this.state.mark.lat === null || this.state.mark.lng === null)
         url +=
           "textsearch/json?key=" + googleAPIkey + "&query=" + this.state.search;
       else {
-        console.log(this.state.mark);
         url +=
           "nearbysearch/json?location=" +
           this.state.mark.lat +
@@ -157,9 +152,7 @@ export default class GooglePlaces extends Component {
 
       this.state.type ? (url += "&type=" + this.state.type) : "";
 
-      console.log(url);
-
-      // this.formatePlaces(placesData)
+      // console.log(url);
 
       const hide = message.loading("Action in progress..", 0);
 
@@ -175,8 +168,6 @@ export default class GooglePlaces extends Component {
         .get(proxy + url)
         .then(response => {
           setTimeout(hide, 0);
-          console.log(response);
-          console.log(response.data.results);
           if (response.data.results.length) {
             this.formatePlaces(response.data.results);
             message.success(
@@ -258,7 +249,6 @@ export default class GooglePlaces extends Component {
         radii: p.radius
       });
     });
-    console.log(places);
     client
       .mutate({
         mutation: CREATE_GROUP_OF_PLACES,
@@ -266,7 +256,6 @@ export default class GooglePlaces extends Component {
       })
       .then(res => {
         message.success("success");
-        console.log("Results", res);
         this.props.history.push("/nearx/places");
         this.setState({ loading: false });
       })
@@ -285,7 +274,6 @@ export default class GooglePlaces extends Component {
   changeSearchRadius = e => {
     let val = e.target.value;
     let errors = {};
-    console.log(val);
     if (val < 100) errors.searchRadius = "Radius should be greater than 100";
     else if (this.state.mark.lat == null || this.state.mark.lng == null)
       errors.searchRadius = "Please fill Latitude and Longitude values first";
@@ -333,7 +321,6 @@ export default class GooglePlaces extends Component {
   };
 
   handleOnTypeChange = e => {
-    console.log(e);
     this.setState({ type: e });
   };
 
@@ -371,7 +358,6 @@ export default class GooglePlaces extends Component {
     req
       .get(url)
       .then(response => {
-        console.log(response);
         if (
           response.data.error_message === "The provided API key is invalid."
         ) {
@@ -385,7 +371,6 @@ export default class GooglePlaces extends Component {
             { name: GOOGLE_API_KEY, key: this.state.googleAPIkey, type: TYPE }
           ];
 
-          console.log(keys);
           client
             .mutate({
               mutation: SET_CONFIGURATION,
@@ -393,12 +378,10 @@ export default class GooglePlaces extends Component {
             })
             .then(res => {
               message.success("success");
-              console.log("Results", res);
               this.setState({ loading1: false, visible: false });
             })
             .catch(err => {
               this.setState({ loading1: false });
-              console.log("Fail " + err);
               message.warning("ERROR in storing");
             });
         }
@@ -445,7 +428,7 @@ export default class GooglePlaces extends Component {
               >
                 <Card
                   className="createPlaceCard"
-                  // style={{marginBottom:0, position:"absolute",backgroundColor:'#fffffff',padding:24, width:'100%', bottom:0}}
+                // style={{marginBottom:0, position:"absolute",backgroundColor:'#fffffff',padding:24, width:'100%', bottom:0}}
                 >
                   {this.state.places.length ? (
                     <Row>
@@ -468,48 +451,48 @@ export default class GooglePlaces extends Component {
                       </Col>
                     </Row>
                   ) : (
-                    <Row>
-                      <Col span={16}>
-                        <div className="divCenterVertical">
+                      <Row>
+                        <Col span={16}>
+                          <div className="divCenterVertical">
+                            {" "}
+                            <span>Select some places to create</span>{" "}
+                          </div>
+                        </Col>
+                        <Col span={8}>
                           {" "}
-                          <span>Select some places to create</span>{" "}
-                        </div>
-                      </Col>
-                      <Col span={8}>
-                        {" "}
-                        <Link to="/nearx/places/createplace/manually">
-                          <Button
-                            disabled
-                            className="buttonPrimary"
-                            style={{ float: "right", marginBottom: 0 }}
-                          >
-                            CREATE
+                          <Link to="/nearx/places/createplace/manually">
+                            <Button
+                              disabled
+                              className="buttonPrimary"
+                              style={{ float: "right", marginBottom: 0 }}
+                            >
+                              CREATE
                           </Button>
-                        </Link>
-                      </Col>
-                    </Row>
-                  )}
+                          </Link>
+                        </Col>
+                      </Row>
+                    )}
                 </Card>{" "}
               </Affix>
             ) : (
-              <div className="">
-                {" "}
-                <br /> <br /> <br /> <br /> <br />
-                <div style={{ textAlign: "center" }}>
-                  <Icon
-                    type="environment"
-                    style={{
-                      color: "#CACACA",
-                      fontSize: 150,
-                      marginBottom: 20
-                    }}
-                    theme="filled"
-                  />
-                  <p> Search for restaurants, malls... etc to create place </p>
-                  {/* <Link to='/nearx/places/createplace/manually'> <Button className='buttonPrimary'>CREATE</Button></Link> */}
+                <div className="">
+                  {" "}
+                  <br /> <br /> <br /> <br /> <br />
+                  <div style={{ textAlign: "center" }}>
+                    <Icon
+                      type="environment"
+                      style={{
+                        color: "#CACACA",
+                        fontSize: 150,
+                        marginBottom: 20
+                      }}
+                      theme="filled"
+                    />
+                    <p> Search for restaurants, malls... etc to create place </p>
+                    {/* <Link to='/nearx/places/createplace/manually'> <Button className='buttonPrimary'>CREATE</Button></Link> */}
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
             <div />
           </Col>
 
@@ -532,11 +515,11 @@ export default class GooglePlaces extends Component {
             {this.state.moreOptions ? (
               ""
             ) : (
-              <div>
-                {" "}
-                <br /> <br /> <br /> <br /> <br /> <br />{" "}
-              </div>
-            )}
+                <div>
+                  {" "}
+                  <br /> <br /> <br /> <br /> <br /> <br />{" "}
+                </div>
+              )}
           </Col>
         </Row>
 

@@ -35,10 +35,8 @@ export default class Places extends Component {
 
   getPlacesData = (offset, limit, search) => {
     this.setState({ spin: true });
-    console.log("GetPlacesCAlled");
     let input = { limit: limit, offset: offset };
     if (search && search.trim() !== "") input.search = search.trim();
-    console.log(input);
     client
       .query({
         query: GET_ALL_AND_SEARCH_PLACES,
@@ -56,7 +54,6 @@ export default class Places extends Component {
             hotspots: p.totalHotspot
           });
         });
-        console.log("Results", res);
         // console.log(JSON.stringify(places))
         this.setState({
           places,
@@ -75,7 +72,6 @@ export default class Places extends Component {
     this.setState({ spin: true });
     let input = { limit: 7, offset: 0 };
     // if(search && search.trim() !== '') input.search = search.trim()
-    console.log(input);
     client
       .query({
         fetchPolicy: "network-only", // skip the cache
@@ -94,8 +90,6 @@ export default class Places extends Component {
             hotspots: p.totalHotspot
           });
         });
-        console.log("Results", res);
-        // console.log(JSON.stringify(places))
         this.setState({
           places,
           spin: false,
@@ -110,7 +104,6 @@ export default class Places extends Component {
   }
 
   pagination = (e, n) => {
-    console.log(e - 1, n);
     this.getPlacesData((e - 1) * n, n, this.state.search);
     // this.setState({offset:e})
   };
@@ -208,23 +201,23 @@ export default class Places extends Component {
               ))}
             </div>
           ) : (
-            <div style={{ margin: 60, fontSize: 25 }}>
-              <div className="divCenter">
-                <div>No Places Found</div>
-              </div>
-              <div className="divCenter">
-                <Link to="/nearx/places/createplace">
-                  <Button
-                    style={{ margin: 22, fontSize: 18 }}
-                    className="buttonPrimary"
-                  >
-                    Create New Place
+                <div style={{ margin: 60, fontSize: 25 }}>
+                  <div className="divCenter">
+                    <div>No Places Found</div>
+                  </div>
+                  <div className="divCenter">
+                    <Link to="/nearx/places/createplace">
+                      <Button
+                        style={{ margin: 22, fontSize: 18 }}
+                        className="buttonPrimary"
+                      >
+                        Create New Place
                   </Button>
-                </Link>
-                {/* <div style={{margin:10, fontSize:20}}>Create A new Place</div> */}
-              </div>
-            </div>
-          )}
+                    </Link>
+                    {/* <div style={{margin:10, fontSize:20}}>Create A new Place</div> */}
+                  </div>
+                </div>
+              )}
 
           <div style={{ margin: 20 }} className="divCenter">
             <Pagination

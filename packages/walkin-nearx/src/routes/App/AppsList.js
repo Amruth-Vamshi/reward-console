@@ -73,7 +73,6 @@ class AppsList extends Component {
           fetchPolicy: "network-only"
         })
         .then(res => {
-          console.log(res.data);
           var apps = [];
           let org = res.data.organization;
 
@@ -93,7 +92,6 @@ class AppsList extends Component {
           }
 
           recOrg(org, apps);
-          console.log(apps);
           this.setState({ appsList: apps, spin: false });
         })
         .catch(err => {
@@ -115,7 +113,6 @@ class AppsList extends Component {
         variables: { id: appId }
       })
       .then(res => {
-        console.log(res.data);
         let { appsList } = this.state;
         appsList[i].appKey = res.data.generateAPIKey.api_key;
         this.setState({ appsList });
@@ -184,8 +181,8 @@ class AppsList extends Component {
             ))}
           </div>
         ) : (
-          ""
-        )}
+              ""
+            )}
         <Modal
           width="750px"
           key="model"

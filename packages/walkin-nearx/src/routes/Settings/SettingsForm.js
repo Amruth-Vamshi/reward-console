@@ -173,7 +173,6 @@ export default class SettingsForm extends Component {
     req
       .get(url)
       .then(response => {
-        console.log(response);
         if (
           response.data.error_message === "The provided API key is invalid."
         ) {
@@ -186,7 +185,6 @@ export default class SettingsForm extends Component {
           if (this.state.facebookAPIkey.trim() != '')
             keys.push({ name: FACEBOOK_API_KEY, key: this.state.facebookAPIkey, type: TYPE })
 
-          console.log(keys);
           client
             .mutate({
               mutation: SET_CONFIGURATION,
@@ -194,7 +192,6 @@ export default class SettingsForm extends Component {
             })
             .then(res => {
               message.success("success");
-              console.log("Results", res);
               this.setState({ loading: false });
             })
             .catch(err => {
@@ -234,7 +231,6 @@ export default class SettingsForm extends Component {
       })
       .then(res => {
         message.success("success");
-        console.log("Results", res);
         this.setState({ loading1: false });
       })
       .catch(err => {

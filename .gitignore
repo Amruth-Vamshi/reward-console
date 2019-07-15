@@ -92,3 +92,4 @@ packages/.DS_Store
 # Redis file
 dump.rdb
 **/dump.rdb
+package-lock.json

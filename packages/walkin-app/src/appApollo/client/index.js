@@ -6,10 +6,7 @@ import resolvers from "../resolvers";
 import ApolloClient from "apollo-boost";
 import defaults from "../defaults";
 import { message } from "antd";
-import {
-  GRAPHQL_URL,
-  NEARX_GRAPHQL_URL
-} from "@walkinsole/walkin-components/src/constants/config";
+import env from "@walkinsole/walkin-components/src/constants/config";
 import { async } from "q";
 
 export const configureClient = async () => {
@@ -17,7 +14,7 @@ export const configureClient = async () => {
 
   const client = new ApolloClient({
     cache,
-    uri: GRAPHQL_URL,
+    uri: env.GRAPHQL_URL,
     request: async operation => {
       const token = await localStorage.getItem("jwt");
       operation.setContext({
@@ -40,13 +37,17 @@ export const configureClient = async () => {
       }
       if (graphQLErrors) {
         console.log(graphQLErrors);
-        console.log(">>>>>>>", graphQLErrors[0]);
+        // if (
+        //   graphQLErrors[0].extensions &&
+        //   graphQLErrors[0].extensions.code &&
+        //   graphQLErrors[0].extensions.code == "INVALID_CREDENTIALS"
+        // )
+        //   message.warning("INVALID CREDENTIALS");
         if (
           graphQLErrors[0].extensions &&
-          graphQLErrors[0].extensions.code &&
-          graphQLErrors[0].extensions.code == " INVALID_CREDENTIALS "
+          graphQLErrors[0].extensions.code
         )
-          message.warning("INVALID CREDENTIALS");
+          message.warning(graphQLErrors[0].extensions.code);
         if (
           graphQLErrors[0].message &&
           graphQLErrors[0].message == "jwt expired"

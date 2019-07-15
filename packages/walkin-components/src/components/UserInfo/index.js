@@ -49,7 +49,7 @@ class UserInfo extends Component {
   render() {
     let { firstName, lastName, user } = this.state;
 
-    console.log("USER>>>", this.state.user);
+    // console.log("USER>>>", this.state.user);
     const userMenuOptions = (
       <ul className="gx-user-popover">
         {/* <li>My Account</li>

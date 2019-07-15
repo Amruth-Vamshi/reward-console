@@ -34,7 +34,7 @@ class WalkinQueryBuilder extends React.Component {
       value: "attributeValue",
       operator: "expressionType"
     };
-    str = str.replace(/field|value|operator/gi, function(matched) {
+    str = str.replace(/field|value|operator/gi, function (matched) {
       return mapObj[matched];
     });
     query = JSON.parse(str);
@@ -43,7 +43,7 @@ class WalkinQueryBuilder extends React.Component {
   };
 
   handleMultiSelect = value => {
-    console.log("val,", value);
+    // console.log("val,", value);
   };
 
   render() {
@@ -105,8 +105,8 @@ WalkinQueryBuilder.propTypes = {
 
 WalkinQueryBuilder.defaultProps = {
   fields: [{ name: "", label: "" }],
-  onQueryChange: () => {},
-  valueEditor: () => {},
+  onQueryChange: () => { },
+  valueEditor: () => { },
   operators: [
     { name: "EQUALS", label: "Equal to" },
     { name: "NOT_EQUALS", label: "Not equal to" },
