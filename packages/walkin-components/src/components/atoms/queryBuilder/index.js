@@ -1,4 +1,4 @@
-import QueryBuilder from 'react-querybuilder';
+import QueryBuilder from '@walkin-frontend/walkin-react-querybuilder';
 import React from 'react';
 import PropTypes from 'prop-types';
 import './style.css';
