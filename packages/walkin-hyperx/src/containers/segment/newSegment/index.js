@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { Input, Button, Alert } from 'antd';
+import { Input, Button, Alert, Col } from 'antd';
 import { withRouter } from 'react-router-dom';
 import { withApollo, graphql, compose, mutate } from 'react-apollo';
 import { attributes, createRule, createSegment } from '../../../query/audience';
@@ -71,7 +71,6 @@ class NewSegment extends Component {
 						},
 					})
 					.then(({ data }) => {
-						console.log('data', data);
 						const { history } = this.props;
 						history.push({
 							pathname: SEGMENT_LIST,
@@ -135,9 +134,13 @@ class NewSegment extends Component {
 			<Fragment>
 				<div style={{ margin: '-32px -32px 0px' }}>
 					<CampaignHeader
-						text={isDuplicateSegment ? 'Duplicate segment' : 'New Segment'}
-						onCampaignHeaderButtonClick={this.onNewSegment}
-						isTitleOnly={true}
+						children={
+							<Col span={12}>
+								<h3 className="gx-text-grey paddingLeftStyle campaignHeaderTitleStyle">
+									{isDuplicateSegment ? 'Duplicate segment' : 'New Segment'}
+								</h3>
+							</Col>
+						}
 					/>
 				</div>
 				<div style={{ margin: '32px' }}>

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
 import BasicInfo from './campaignCreation/basicInfo';
 import Audience from './campaignCreation/audience';
@@ -7,7 +7,8 @@ import Communication from './campaignCreation/communication';
 import { allSegments, attributes } from '../../query/audience';
 import { withApollo, graphql, compose } from 'react-apollo';
 import isEmpty from 'lodash/isEmpty';
-import { CampaignFooter, CampaignHeader } from '@walkinsole/walkin-components';
+import { Col } from 'antd';
+import { CampaignFooter, CampaignHeader, Stepper } from '@walkinsole/walkin-components';
 
 const stepData = [
 	{
@@ -184,11 +185,22 @@ class CampaignCreation extends Component {
 		return (
 			<div style={{ margin: '-32px' }}>
 				<CampaignHeader
-					text="Create Campaign"
-					current={current}
-					stepData={stepData}
-					onChange={this.goToNextPage.bind(this)}
-					isHeaderStepper={true}
+					children={
+						<Fragment>
+							<Col span={12}>
+								<h3 className="gx-text-grey paddingLeftStyle campaignHeaderTitleStyle">
+									Create Campaign
+								</h3>
+							</Col>
+							<Col style={{ display: 'flex', justifyContent: 'flexEnd' }} span={12}>
+								<Stepper
+									stepData={stepData}
+									current={current}
+									onChange={this.goToNextPage.bind(this)}
+								/>
+							</Col>
+						</Fragment>
+					}
 				/>
 				{current === 0 && (
 					<BasicInfo

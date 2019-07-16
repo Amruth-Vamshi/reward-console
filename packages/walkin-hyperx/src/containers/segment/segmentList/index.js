@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { allSegments, disableSegment } from '../../../query/audience';
 import { withApollo, graphql } from 'react-apollo';
 import { NEW_SEGMENT } from '../../../utils/RouterConstants';
-import { Card, Menu, Dropdown, Input } from 'antd';
+import { Card, Menu, Dropdown, Button, Col } from 'antd';
 import moment from 'moment';
 import { SortableDataTable, InstantSearch, CampaignHeader } from '@walkinsole/walkin-components';
 
@@ -170,10 +170,18 @@ class SegmentList extends Component {
 			<Fragment>
 				<div style={{ margin: '-32px -32px 0px' }}>
 					<CampaignHeader
-						text="Segments"
-						campaignHeaderButtonText="New Segment"
-						isHeaderStepper={false}
-						onCampaignHeaderButtonClick={this.onNewSegment}
+						children={
+							<Fragment>
+								<Col span={12}>
+									<h3 className="gx-text-grey paddingLeftStyle campaignHeaderTitleStyle">Segments</h3>
+								</Col>
+								<Col span={12}>
+									<Button type="primary" onClick={this.onNewSegment}>
+										New Segment
+									</Button>
+								</Col>
+							</Fragment>
+						}
 					/>
 				</div>
 				<Card style={{ margin: '32px' }}>
@@ -209,7 +217,7 @@ export default withRouter(
 				refetchSegments: ownProps => {
 					refetch({
 						variables: {
-							organization_id: '6ec84af7-d323-4ef7-aa42-a3007055f5b7',
+							organization_id: '6ec84af7-d323-4ef7-aa42-a3007055f5b7', //get it from props
 							status: 'ACTIVE',
 						},
 					});
