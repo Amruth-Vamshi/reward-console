@@ -89,3 +89,5 @@ export const LIGHT_PURPLE_2_DARK_TEXT_COLOR = '#5782BB';
 
 
 export const TAB_SIZE = 992;
+export const TAB_SIZE_MAX = 1220;
+

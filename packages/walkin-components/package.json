@@ -25,7 +25,6 @@
 		"test:watch": "nwb test-react --server"
 	},
 	"dependencies": {
-		"@walkin-frontend/walkin-react-querybuilder": "^1.0.2",
 		"antd": "3.19.0",
 		"apollo-boost": "^0.3.1",
 		"graphql": "^14.3.0",

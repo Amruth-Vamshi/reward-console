@@ -5,7 +5,7 @@ import OrgCardDetails from '../../components/orgCardDetails';
 import { Query, withApollo, graphql } from 'react-apollo';
 import { userDetails, orgDetails, addSubOrganization } from '../../query/organization';
 import SubOrgList from '../../components/subOrgList';
-import SubOrgForm from '../../containers/Organization/subOrgForm';
+import SubOrgForm from './subOrgForm';
 import OrgStoreForm from './orgStoreForm';
 import OrgStoreList from './orgStoreList';
 
@@ -196,7 +196,7 @@ class OrganizationInfo extends Component {
 											</Button>
 										</div>
 										<OrgStoreList
-											data={storeDetails.slice(0, 4)}
+											data={storeDetails ? storeDetails.slice(0, 4) : []}
 											pagination={false}
 											showStoreFilter={false}
 										/>

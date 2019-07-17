@@ -30,9 +30,14 @@
     background-color: #eeeeee;
 } */
 
+.NearX-Topbar{
+	/* background-color: #ececec; */
+	background-image: linear-gradient(to right, #052c53 , rgb(36, 157, 179));
+	/* background-image: linear-gradient(to right, #052c53 , #4cc3c7); */
+}
 
 .NearX-Main{
-    min-height: 92vh;
+    min-height: 100%;
     background-color: #e6e6e6
 }
 

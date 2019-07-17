@@ -4,6 +4,7 @@ const typeDefs = gql`
   extend type Query {
     settings: settings
     auth: auth
+    redirectRoute: String
   }
 
   type auth {
@@ -13,7 +14,6 @@ const typeDefs = gql`
     initURL: String
     userId: String
     organizationId: String
-    jwt: String
     firstName: String
     lastName: String
   }
@@ -60,6 +60,7 @@ const typeDefs = gql`
     signIn(input: SignInInput!): Boolean
     hideMessage: String
     showAuthLoader: String
+    setRedirectRoute(route: String): String
   }
 `;
 

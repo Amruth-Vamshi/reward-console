@@ -5,6 +5,7 @@ import CoreSidebarContent from "@walkinsole/walkin-core/src/containers/SidebarCo
 import HyperXSidebarContent from "@walkinsole/walkin-hyperx/src/containers/SidebarContent";
 import NearXSidebarContent from "@walkinsole/walkin-nearx/src/containers/SidebarContent";
 import RefineXSidebarContent from "@walkinsole/walkin-refinex/src/containers/SidebarContent";
+import HomeSidebarContent from "../SidebarContent";
 
 import { withRouter } from "react-router-dom";
 
@@ -15,6 +16,7 @@ import {
   NAV_STYLE_NO_HEADER_EXPANDED_SIDEBAR,
   NAV_STYLE_NO_HEADER_MINI_SIDEBAR,
   TAB_SIZE,
+  TAB_SIZE_MAX,
   THEME_TYPE_LITE
 } from "@walkinsole/walkin-components/src/constants/ThemeSetting";
 import { Query, compose, graphql } from "react-apollo";
@@ -24,20 +26,28 @@ const { Sider } = Layout;
 
 export class Sidebar extends Component {
   onToggleCollapsedNav = () => {
-    this.props.toggleCollapsedSideNav(!this.props.navCollapsed);
+    this.props.toggleCollapsedSideNav({
+      variables: { navCollapsed: !this.props.navCollapsed }
+    });
   };
 
   // componentDidMount() {
   //   window.addEventListener("resize", () => {
-  //     this.props.updateWindowWidth(window.innerWidth);
-  //     console.log(window.innerWidth)
+  //     this.props.updateWindowWidth({
+  //       variables: {
+  //         width: window.innerWidth
+  //       }
+  //     });
   //   });
   // }
 
-  getSideBar() {
+  getSideBar1() {
+    // console.log("SIDEBAR>>>", this.props)
     const { location } = this.props;
     const appName = location.pathname.split("/")[1];
     switch (appName) {
+      case "home":
+        return <HomeSidebarContent />;
       case "core":
         return <CoreSidebarContent />;
       case "refinex":
@@ -47,7 +57,7 @@ export class Sidebar extends Component {
       case "nearx":
         return <NearXSidebarContent />;
       default:
-        return <CoreSidebarContent />;
+        return <HomeSidebarContent />;
     }
   }
 
@@ -82,12 +92,12 @@ export class Sidebar extends Component {
           }`}
         trigger={null}
         collapsed={
-          width < TAB_SIZE
-            ? false
-            : navStyle === NAV_STYLE_MINI_SIDEBAR ||
+          width > TAB_SIZE_MAX
+            ? navStyle === NAV_STYLE_MINI_SIDEBAR ||
             navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR
+            : width < TAB_SIZE ? false : true
         }
-        theme={themeType === THEME_TYPE_LITE ? "lite" : "dark"}
+        // theme={themeType === THEME_TYPE_LITE ? "lite" : "dark"}
         collapsible
       >
         {navStyle === NAV_STYLE_DRAWER || width < TAB_SIZE ? (
@@ -100,10 +110,10 @@ export class Sidebar extends Component {
             onClose={this.onToggleCollapsedNav.bind(this)}
             visible={navCollapsed}
           >
-            {this.getSideBar()}
+            {this.getSideBar1()}
           </Drawer>
         ) : (
-            this.getSideBar()
+            this.getSideBar1()
           )}
       </Sider>
     );

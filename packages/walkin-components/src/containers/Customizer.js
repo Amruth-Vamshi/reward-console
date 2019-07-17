@@ -74,16 +74,6 @@ class Customizer extends Component {
     const { vars } = this.state;
     if (varname) vars[varname] = color;
     console.log("vars: ", vars);
-    // window.less
-    //   .modifyVars(vars)
-    //   .then(() => {
-    //     message.success(`Theme updated successfully`);
-    //     this.setState({ vars });
-    //     localStorage.setItem("app-theme", JSON.stringify(vars));
-    //   })
-    //   .catch(error => {
-    //     message.error(`Failed to update theme`);
-    //   });
   };
   getColorPicker = varName => (
     <div key={varName} className="gx-media gx-mb-1">
@@ -118,7 +108,7 @@ class Customizer extends Component {
     </div>
   );
   resetTheme = () => {
-    localStorage.setItem("app-theme", "{}");
+    sessionStorage.setItem("app-theme", "{}");
     this.setState({ vars: this.state.initialValue });
     // window.less.modifyVars(this.state.initialValue).catch(error => {
     //   message.error(`Failed to reset theme`);
@@ -586,7 +576,7 @@ class Customizer extends Component {
       vars = Object.assign(
         {},
         initialValue,
-        JSON.parse(localStorage.getItem("app-theme"))
+        JSON.parse(sessionStorage.getItem("app-theme"))
       );
     } finally {
       this.state = { vars, initialValue, isCustomizerOpened: false };

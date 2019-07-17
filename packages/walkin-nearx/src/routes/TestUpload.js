@@ -14,12 +14,12 @@ export default class TestUpload extends Component {
             fileList: []
         }
     }
-   
+
     render() {
-    
+
         var _this = this
 
-     var  props = {
+        var props = {
             name: 'file',
             // className: 'upload-list-inline',
             // listType: 'picture',
@@ -43,24 +43,21 @@ export default class TestUpload extends Component {
 
             action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
             onChange(info) {
-                console.log(info)
                 let fileList = [...info.fileList];
-        
+
                 fileList = fileList.slice(-1);
-        
+
                 fileList = fileList.map(file => {
                     if (file.response) {
-                      // Component will show file.url as link
-                      file.url = file.response.url;
+                        // Component will show file.url as link
+                        file.url = file.response.url;
                     }
-                    console.log( file)
                     return file;
-                  });
-              
-                  _this.setState({ fileList });
-                console.log( fileList)
-        
-        
+                });
+
+                _this.setState({ fileList });
+
+
                 // const status = info.file.status;
                 // if (status !== 'uploading') {
                 //     console.log(info.file, info.fileList);

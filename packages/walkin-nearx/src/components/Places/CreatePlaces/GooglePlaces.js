@@ -19,7 +19,15 @@ import axios from "axios";
 import canUseDOM from "can-use-dom";
 import "../../../styles/styles.css";
 import { GET_CONFIGURATION, SET_CONFIGURATION } from "../../../queries";
-import { GOOGLE_API_KEY, FACEBOOK_API_KEY, RADIUS_1, RADIUS_2, RADIUS_3, RADIUS_1_MIN, TYPE } from "../../../Constants";
+import {
+  GOOGLE_API_KEY,
+  FACEBOOK_API_KEY,
+  RADIUS_1,
+  RADIUS_2,
+  RADIUS_3,
+  RADIUS_1_MIN,
+  TYPE
+} from "../../../Constants";
 
 // AIzaSyCwRQqzyQuopL0CQ212q97uFVyXn5EMLbs
 
@@ -55,7 +63,7 @@ export default class GooglePlaces extends Component {
       loading: false,
       visible: false,
       loading1: false,
-      defaultRadius: []
+      defaultRadius: [RADIUS_1_MIN]
     };
   }
 
@@ -93,24 +101,23 @@ export default class GooglePlaces extends Component {
         lng: position.coords.longitude
       }),
         this.setState({ center, mark: center, markLoc: true });
-      console.log("My Location  " + center);
     });
   };
 
   selAll = sel => {
-    let { places, places1, selectAll } = this.state
-    console.log(selectAll)
-    places1.map(i => { i.selected = !selectAll })
+    let { places, places1, selectAll } = this.state;
+    places1.map(i => {
+      i.selected = !selectAll;
+    });
 
-    if (!selectAll) places = places1
-    else places = []
+    if (!selectAll) places = places1;
+    else places = [];
 
     this.setState({ places, places1, selectAll: !this.state.selectAll });
-  }
+  };
 
   handleSubmit = e => {
     let { googleAPIkey } = this.state;
-    console.log(googleAPIkey, this.state.defaultRadius);
     // e.preventDefault();
     let errors = {};
     if (this.state.search.trim() == "")
@@ -124,14 +131,12 @@ export default class GooglePlaces extends Component {
 
     if (Object.keys(errors).length !== 0) {
       this.setState({ errors });
-      console.log("Errors in submition" + Object.keys(errors).length);
     } else {
       let url = "https://maps.googleapis.com/maps/api/place/";
       if (this.state.mark.lat === null || this.state.mark.lng === null)
         url +=
           "textsearch/json?key=" + googleAPIkey + "&query=" + this.state.search;
       else {
-        console.log(this.state.mark);
         url +=
           "nearbysearch/json?location=" +
           this.state.mark.lat +
@@ -139,7 +144,7 @@ export default class GooglePlaces extends Component {
           this.state.mark.lng +
           "&key=" +
           googleAPIkey;
-        if (this.state.searchRadius !== null && this.state.searchRadius > 100)
+        if (this.state.searchRadius !== null && this.state.searchRadius >= 100)
           url += "&radius=" + this.state.searchRadius;
         else url += "&rankby=distance";
         url += "&keyword=" + this.state.search;
@@ -147,9 +152,7 @@ export default class GooglePlaces extends Component {
 
       this.state.type ? (url += "&type=" + this.state.type) : "";
 
-      console.log(url);
-
-      // this.formatePlaces(placesData)
+      // console.log(url);
 
       const hide = message.loading("Action in progress..", 0);
 
@@ -158,8 +161,6 @@ export default class GooglePlaces extends Component {
           Accept: "application/json",
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "*"
-          // 'Access-Control-Allow-Origin' : 'http://0.0.0.0:5000',
-          // 'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE'
         }
       });
       let proxy = "https://cors-anywhere.herokuapp.com/";
@@ -167,14 +168,17 @@ export default class GooglePlaces extends Component {
         .get(proxy + url)
         .then(response => {
           setTimeout(hide, 0);
-          console.log(response);
-          console.log(response.data.results);
           if (response.data.results.length) {
             this.formatePlaces(response.data.results);
             message.success(
               "success: " + response.data.results.length + " Places Found"
             );
-          } else message.warning(response.data.error_message ? response.data.error_message : 'No Places Found');
+          } else
+            message.warning(
+              response.data.error_message
+                ? response.data.error_message
+                : "No Places Found"
+            );
         })
         .catch(err => {
           setTimeout(hide, 0);
@@ -214,7 +218,12 @@ export default class GooglePlaces extends Component {
       });
     });
     // console.log(places)
-    this.setState({ places1: places, center: places[0].center });
+    this.setState({
+      places: [],
+      selectAll: false,
+      places1: places,
+      center: places[0].center
+    });
   };
 
   onPlaceSelect = id => {
@@ -223,8 +232,8 @@ export default class GooglePlaces extends Component {
       if (place.sroreId === id) place.selected = !place.selected;
     });
     let places = places1.filter(place => place.selected);
-    if (places.length == places1.length) selectAll = true
-    else selectAll = false
+    if (places.length == places1.length) selectAll = true;
+    else selectAll = false;
     this.setState({ places, places1, selectAll });
   };
 
@@ -240,7 +249,6 @@ export default class GooglePlaces extends Component {
         radii: p.radius
       });
     });
-    console.log(places);
     client
       .mutate({
         mutation: CREATE_GROUP_OF_PLACES,
@@ -248,7 +256,6 @@ export default class GooglePlaces extends Component {
       })
       .then(res => {
         message.success("success");
-        console.log("Results", res);
         this.props.history.push("/nearx/places");
         this.setState({ loading: false });
       })
@@ -267,7 +274,6 @@ export default class GooglePlaces extends Component {
   changeSearchRadius = e => {
     let val = e.target.value;
     let errors = {};
-    console.log(val);
     if (val < 100) errors.searchRadius = "Radius should be greater than 100";
     else if (this.state.mark.lat == null || this.state.mark.lng == null)
       errors.searchRadius = "Please fill Latitude and Longitude values first";
@@ -315,7 +321,6 @@ export default class GooglePlaces extends Component {
   };
 
   handleOnTypeChange = e => {
-    console.log(e);
     this.setState({ type: e });
   };
 
@@ -353,7 +358,6 @@ export default class GooglePlaces extends Component {
     req
       .get(url)
       .then(response => {
-        console.log(response);
         if (
           response.data.error_message === "The provided API key is invalid."
         ) {
@@ -367,7 +371,6 @@ export default class GooglePlaces extends Component {
             { name: GOOGLE_API_KEY, key: this.state.googleAPIkey, type: TYPE }
           ];
 
-          console.log(keys);
           client
             .mutate({
               mutation: SET_CONFIGURATION,
@@ -375,12 +378,10 @@ export default class GooglePlaces extends Component {
             })
             .then(res => {
               message.success("success");
-              console.log("Results", res);
               this.setState({ loading1: false, visible: false });
             })
             .catch(err => {
               this.setState({ loading1: false });
-              console.log("Fail " + err);
               message.warning("ERROR in storing");
             });
         }
@@ -423,8 +424,10 @@ export default class GooglePlaces extends Component {
             {this.state.places1.length ? (
               <Affix
                 style={{ position: "absolute", width: "100%", bottom: 0 }}
-                offsetBottom={10} >
-                <Card className="createPlaceCard"
+                offsetBottom={10}
+              >
+                <Card
+                  className="createPlaceCard"
                 // style={{marginBottom:0, position:"absolute",backgroundColor:'#fffffff',padding:24, width:'100%', bottom:0}}
                 >
                   {this.state.places.length ? (
@@ -441,7 +444,8 @@ export default class GooglePlaces extends Component {
                           onClick={() => this.createPlaces()}
                           style={{ float: "right", marginBottom: 0 }}
                           loading={this.state.loading}
-                          className="buttonPrimary" >
+                          className="buttonPrimary"
+                        >
                           CREATE
                         </Button>
                       </Col>
@@ -471,7 +475,9 @@ export default class GooglePlaces extends Component {
                 </Card>{" "}
               </Affix>
             ) : (
-                <div className=""> {" "}  <br /> <br /> <br /> <br /> <br />
+                <div className="">
+                  {" "}
+                  <br /> <br /> <br /> <br /> <br />
                   <div style={{ textAlign: "center" }}>
                     <Icon
                       type="environment"
@@ -490,7 +496,11 @@ export default class GooglePlaces extends Component {
             <div />
           </Col>
 
-          <Col xs={24} sm={10} style={{ height: "100hv", backgroundColor: "rgb(234, 234, 234)" }} >
+          <Col
+            xs={24}
+            sm={10}
+            style={{ height: "100hv", backgroundColor: "rgb(234, 234, 234)" }}
+          >
             <GooglePlacesMap
               getloc={this.getloc}
               data={this.state}
@@ -502,7 +512,14 @@ export default class GooglePlaces extends Component {
               setlocationDetails={this.setlocationDetails}
               handleOnTypeChange={this.handleOnTypeChange}
             />
-            {this.state.moreOptions ? "" : <div> <br /> <br />  <br /> <br />  <br /> <br /> </div>}
+            {this.state.moreOptions ? (
+              ""
+            ) : (
+                <div>
+                  {" "}
+                  <br /> <br /> <br /> <br /> <br /> <br />{" "}
+                </div>
+              )}
           </Col>
         </Row>
 

@@ -11,7 +11,7 @@ const SubOrgDetails = ({ subOrgDetails, onNewSubOrg, onSubOrgCardClick }) => {
 					New Sub organization
 				</Button>
 			</div>
-			<List
+			{subOrgDetails && subOrgDetails.length ? <List
 				grid={{ gutter: 16, column: 2 }}
 				dataSource={subOrgDetails}
 				renderItem={val => (
@@ -35,7 +35,7 @@ const SubOrgDetails = ({ subOrgDetails, onNewSubOrg, onSubOrgCardClick }) => {
 						</Card>
 					</List.Item>
 				)}
-			/>
+			/> : ''}
 		</Fragment>
 	);
 };

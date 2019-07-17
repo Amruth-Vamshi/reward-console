@@ -24,21 +24,36 @@ import {
 import gql from "graphql-tag";
 import { graphql, compose } from "react-apollo";
 
-const RestrictedRoute = ({ component: Component, userId, ...rest }) => (
+const RestrictedRoute = ({
+  setRedirectRoute,
+  component: Component,
+  // userId,
+  ...rest
+}) => (
   <Route
     {...rest}
-    render={props =>
-      userId ? (
-        <Component {...props} />
-      ) : (
-        <Redirect
-          to={{
-            pathname: "/signin",
-            state: { from: props.location }
-          }}
-        />
-      )
-    }
+    render={props => {
+      if (localStorage.getItem("jwt")) {
+        // console.log("Authenticated!");
+
+        return <Component {...props} />;
+      } else {
+        // console.log("Redirecting!");
+        setRedirectRoute({
+          variables: {
+            route: props.location.pathname
+          }
+        });
+        return (
+          <Redirect
+            to={{
+              pathname: "/signin",
+              state: { from: props.location }
+            }}
+          />
+        );
+      }
+    }}
   />
 );
 
@@ -113,7 +128,7 @@ class App extends Component {
     }
 
     if (location.pathname === "/") {
-      return <Redirect to={"/core"} />;
+      return <Redirect to={"/home"} />;
     }
 
     this.setLayoutType(layoutType);
@@ -128,12 +143,31 @@ class App extends Component {
           messages={currentAppLocale.messages}
         >
           <Switch>
-            <Route exact path="/signin" component={SignIn} />
-            <Route exact path="/signup" component={SignUp} />
+            <Route
+              exact
+              path="/signin"
+              render={props => (
+                <SignIn
+                  {...props}
+                  resetApolloClient={this.props.resetApolloClient}
+                />
+              )}
+            />
+            <Route
+              exact
+              path="/signup"
+              render={props => (
+                <SignUp
+                  {...props}
+                  resetApolloClient={this.props.resetApolloClient}
+                />
+              )}
+            />
             <RestrictedRoute
               path={`${match.url}`}
-              userId={userId}
+              // userId={userId}
               component={MainApp}
+              setRedirectRoute={this.props.setRedirectRoute}
             />
           </Switch>
         </IntlProvider>
@@ -195,7 +229,14 @@ const mapStateToProps = ({ localData }) => {
   return { locale, navStyle, themeType, layoutType, userId };
 };
 
+const SET_REDIRECT_ROUTE = gql`
+  mutation setRedirectRoute($route: String) {
+    setRedirectRoute(route: $route) @client
+  }
+`;
+
 export default compose(
+  graphql(SET_REDIRECT_ROUTE, { name: "setRedirectRoute" }),
   graphql(SET_THEME_TYPE, { name: "setThemeType" }),
   graphql(ON_NAV_STYLE_CHANGE, { name: "onNavStyleChange" }),
   graphql(ON_LAYOUT_TYPE_CHANGE, { name: "onLayoutTypeChange" }),

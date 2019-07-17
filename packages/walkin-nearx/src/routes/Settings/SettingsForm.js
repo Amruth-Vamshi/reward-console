@@ -19,6 +19,20 @@ const formItemLayout = {
     sm: { span: 12 }
   }
 };
+
+const radiusLayout = {
+  labelCol: {
+    xs: { span: 24 },
+    sm: { span: 24 },
+    md: { span: 5 }, xl: { span: 6 }
+  },
+  wrapperCol: {
+    xs: { span: 24 },
+    sm: { span: 24 },
+    md: { span: 19 }, xl: { span: 16 }
+  }
+};
+
 const tailFormItemLayout = {
   wrapperCol: {
     xs: { span: 24 },
@@ -91,10 +105,16 @@ export default class SettingsForm extends Component {
     return marks;
   };
 
-  createRadius = n => (
-    <Form.Item key={n} {...formItemLayout} label={`Radius ${n + 1}`}>
+  deleteRedi = n => {
+    let { radius } = this.state
+    radius.pop()
+    this.setState({ radius })
+  }
+
+  createRadius = (n, x) => (
+    <Form.Item key={n} {...radiusLayout} label={`Radius ${n + 1}`}>
       <Row>
-        <Col span={18}>
+        <Col span={15}>
           <Slider
             min={n ? this.state.radius[n - 1] : RADIUS_1_MIN}
             // max={n ? (n != 1 ? RADIUS_1_MAX : RADIUS_2_MAX) : RADIUS_1_MAX}
@@ -113,21 +133,23 @@ export default class SettingsForm extends Component {
             }
           />
         </Col>
-        <Col span={4}>
-          <InputNumber
-            min={n ? this.state.radius[n - 1] : 0}
-            // max={n ? (n != 1 ? RADIUS_3_MAX : RADIUS_2_MAX) : RADIUS_1_MAX}
-            max={RADIUS_3_MAX}
-            style={{ marginLeft: 0 }}
-            value={
-              typeof this.state.radius[n] === "number"
-                ? this.state.radius[n]
-                : n ? this.state.radius[n - 1] : RADIUS_1_MIN
-            }
-            onChange={e => this.onChangeRadius(e, n)}
-          />
+        <Col span={9}>
+          <div style={{ display: "inline-block" }}>
+            <InputNumber
+              min={n ? this.state.radius[n - 1] : 0}
+              // max={n ? (n != 1 ? RADIUS_3_MAX : RADIUS_2_MAX) : RADIUS_1_MAX}
+              max={RADIUS_3_MAX}
+              style={{ marginLeft: 0, marginRight: -30 }}
+              value={
+                typeof this.state.radius[n] === "number"
+                  ? this.state.radius[n]
+                  : n ? this.state.radius[n - 1] : RADIUS_1_MIN
+              }
+              onChange={e => this.onChangeRadius(e, n)}
+            /></div> {n && (n == x - 1) ? <div style={{ display: "inline-block" }}> &nbsp; &nbsp; &nbsp; &nbsp; <Icon onClick={() => this.deleteRedi(n)} type='close' /> </div> : ''}
         </Col>
       </Row>
+
     </Form.Item>
   );
 
@@ -151,7 +173,6 @@ export default class SettingsForm extends Component {
     req
       .get(url)
       .then(response => {
-        console.log(response);
         if (
           response.data.error_message === "The provided API key is invalid."
         ) {
@@ -164,7 +185,6 @@ export default class SettingsForm extends Component {
           if (this.state.facebookAPIkey.trim() != '')
             keys.push({ name: FACEBOOK_API_KEY, key: this.state.facebookAPIkey, type: TYPE })
 
-          console.log(keys);
           client
             .mutate({
               mutation: SET_CONFIGURATION,
@@ -172,7 +192,6 @@ export default class SettingsForm extends Component {
             })
             .then(res => {
               message.success("success");
-              console.log("Results", res);
               this.setState({ loading: false });
             })
             .catch(err => {
@@ -212,7 +231,6 @@ export default class SettingsForm extends Component {
       })
       .then(res => {
         message.success("success");
-        console.log("Results", res);
         this.setState({ loading1: false });
       })
       .catch(err => {
@@ -224,7 +242,7 @@ export default class SettingsForm extends Component {
 
   addRadius = () => {
     let radius = this.state.radius;
-    radius.push(radius[radius.length - 1]);
+    radius.push(radius[radius.length - 1] + 1);
     this.setState({ radius });
   };
 
@@ -236,7 +254,7 @@ export default class SettingsForm extends Component {
       //   else break
       // } else 
 
-      radi.push(this.createRadius(j))
+      radi.push(this.createRadius(j, n))
     return radi;
   };
 

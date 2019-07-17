@@ -1,5 +1,15 @@
 import React, { Component } from "react";
-import { Col, Row, Spin, Pagination, Card, Input, Icon, Button } from "antd";
+import {
+  Col,
+  Row,
+  Spin,
+  Pagination,
+  Card,
+  message,
+  Input,
+  Icon,
+  Button
+} from "antd";
 import { Link } from "react-router-dom";
 import { Auxiliary, CustomScrollbars } from "@walkinsole/walkin-components";
 import "../../styles/places.css";
@@ -25,10 +35,8 @@ export default class Places extends Component {
 
   getPlacesData = (offset, limit, search) => {
     this.setState({ spin: true });
-    console.log("GetPlacesCAlled");
     let input = { limit: limit, offset: offset };
     if (search && search.trim() !== "") input.search = search.trim();
-    console.log(input);
     client
       .query({
         query: GET_ALL_AND_SEARCH_PLACES,
@@ -46,7 +54,6 @@ export default class Places extends Component {
             hotspots: p.totalHotspot
           });
         });
-        console.log("Results", res);
         // console.log(JSON.stringify(places))
         this.setState({
           places,
@@ -54,14 +61,17 @@ export default class Places extends Component {
           totalPlaces: res.data.Places.pageInfo.total
         });
       })
-      .catch(err => console.log("Failed to get Places Details" + err));
+      .catch(err => {
+        this.setState({ spin: false });
+        message.error("ERROR");
+        console.log("Failed to get Places Details" + err);
+      });
   };
 
   componentWillMount() {
     this.setState({ spin: true });
     let input = { limit: 7, offset: 0 };
     // if(search && search.trim() !== '') input.search = search.trim()
-    console.log(input);
     client
       .query({
         fetchPolicy: "network-only", // skip the cache
@@ -80,20 +90,21 @@ export default class Places extends Component {
             hotspots: p.totalHotspot
           });
         });
-        console.log("Results", res);
-        // console.log(JSON.stringify(places))
         this.setState({
           places,
           spin: false,
           totalPlaces: res.data.Places.pageInfo.total
         });
       })
-      .catch(err => console.log("Failed to get Places Details" + err));
+      .catch(err => {
+        this.setState({ spin: false });
+        message.error("ERROR");
+        console.log("Failed to get Places Details" + err);
+      });
   }
 
   pagination = (e, n) => {
-    console.log(e - 1, n);
-    this.getPlacesData((e - 1)*n, n, this.state.search);
+    this.getPlacesData((e - 1) * n, n, this.state.search);
     // this.setState({offset:e})
   };
 
@@ -105,6 +116,12 @@ export default class Places extends Component {
     if (e.target.value.trim() != "") errors[e.target.name] = "";
     this.setState({ [e.target.name]: e.target.value, errors });
   };
+
+  handleSearchChange = e => {
+    if (e.target.value.trim() == "") this.getPlacesData(0, 7, '');
+    this.setState({ [e.target.name]: e.target.value });
+  };
+
 
   render() {
     const demoData = this.state.places;
@@ -148,7 +165,7 @@ export default class Places extends Component {
                 onSearch={this.handleSearchSubmit}
                 onPressEnter={this.handleSearchSubmit}
                 name="search"
-                onChange={c => this.handleChange(c)}
+                onChange={c => this.handleSearchChange(c)}
               />
               <span style={{ color: "Red" }}>{this.state.errors.search}</span>
             </Col>
@@ -157,16 +174,12 @@ export default class Places extends Component {
           {/* <CustomScrollbars className="gx-layout-sider-scrollbar"> */}
           {this.state.spin ? (
             <div>
-              <br />
-              <br />
-              <br />
-              <br />{" "}
+              {" "}
+              <br /> <br /> <br /> <br />{" "}
               <div className="divCenter">
                 <Spin size="large" />
-              </div>
-              <br />
-              <br />
-              <br />
+              </div>{" "}
+              <br /> <br /> <br />{" "}
             </div>
           ) : demoData.length ? (
             <div>
@@ -188,23 +201,23 @@ export default class Places extends Component {
               ))}
             </div>
           ) : (
-            <div style={{ margin: 60, fontSize: 25 }}>
-              <div className="divCenter">
-                <div>No Places Found</div>
-              </div>
-              <div className="divCenter">
-                <Link to="/nearx/places/createplace">
-                  <Button
-                    style={{ margin: 22, fontSize: 18 }}
-                    className="buttonPrimary"
-                  >
-                    Create New Place
+                <div style={{ margin: 60, fontSize: 25 }}>
+                  <div className="divCenter">
+                    <div>No Places Found</div>
+                  </div>
+                  <div className="divCenter">
+                    <Link to="/nearx/places/createplace">
+                      <Button
+                        style={{ margin: 22, fontSize: 18 }}
+                        className="buttonPrimary"
+                      >
+                        Create New Place
                   </Button>
-                </Link>
-                {/* <div style={{margin:10, fontSize:20}}>Create A new Place</div> */}
-              </div>
-            </div>
-          )}
+                    </Link>
+                    {/* <div style={{margin:10, fontSize:20}}>Create A new Place</div> */}
+                  </div>
+                </div>
+              )}
 
           <div style={{ margin: 20 }} className="divCenter">
             <Pagination
