@@ -13,6 +13,13 @@ export const USER_DATA = gql`
   }
 `;
 
+export const CREATE_USER = gql`
+	mutation createUser($input:UserCreateInput!){
+	createUser( input : $input ){
+		id email firstName lastName status
+	}
+}`
+
 export const UPDATE_APP = gql`
   mutation updateApplication($input: ApplicationUpdateInput!) {
     updateApplication(input:$input){

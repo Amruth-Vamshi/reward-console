@@ -1,0 +1,14 @@
+.appIconStyle {
+	display: flex;
+	flex-direction: row-reverse;
+	padding: 10px;
+}
+.gradedCardStyle {
+	background-color: '#ececec';
+}
+.gradedAppIcon {
+	color: '#dedede';
+}
+.gradedAppTitle {
+	color: '#8c8c8c';
+}

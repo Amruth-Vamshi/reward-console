@@ -101,7 +101,6 @@ export default class CreatePlaces extends Component {
       onChange: this.handleChange,
       multiple: false
     };
-    console.log(this.props);
     return (
       <div className="createPlace">
         <Widget

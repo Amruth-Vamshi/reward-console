@@ -1,5 +1,15 @@
 import React, { Component } from "react";
-import { Col, Row, Spin, Pagination, Card, Input, Icon, Button } from "antd";
+import {
+  Col,
+  Row,
+  Spin,
+  Pagination,
+  Card,
+  message,
+  Input,
+  Icon,
+  Button
+} from "antd";
 import { Link } from "react-router-dom";
 import { Auxiliary, CustomScrollbars } from "@walkinsole/walkin-components";
 import "../../styles/places.css";
@@ -25,10 +35,8 @@ export default class Places extends Component {
 
   getPlacesData = (offset, limit, search) => {
     this.setState({ spin: true });
-    console.log("GetPlacesCAlled");
     let input = { limit: limit, offset: offset };
     if (search && search.trim() !== "") input.search = search.trim();
-    console.log(input);
     client
       .query({
         query: GET_ALL_AND_SEARCH_PLACES,
@@ -46,7 +54,6 @@ export default class Places extends Component {
             hotspots: p.totalHotspot
           });
         });
-        console.log("Results", res);
         // console.log(JSON.stringify(places))
         this.setState({
           places,
@@ -56,7 +63,8 @@ export default class Places extends Component {
       })
       .catch(err => {
         this.setState({ spin: false });
-        console.log("Failed to get Places Details" + err)
+        message.error("ERROR");
+        console.log("Failed to get Places Details" + err);
       });
   };
 
@@ -64,7 +72,6 @@ export default class Places extends Component {
     this.setState({ spin: true });
     let input = { limit: 7, offset: 0 };
     // if(search && search.trim() !== '') input.search = search.trim()
-    console.log(input);
     client
       .query({
         fetchPolicy: "network-only", // skip the cache
@@ -83,21 +90,20 @@ export default class Places extends Component {
             hotspots: p.totalHotspot
           });
         });
-        console.log("Results", res);
-        // console.log(JSON.stringify(places))
         this.setState({
-          places, spin: false,
+          places,
+          spin: false,
           totalPlaces: res.data.Places.pageInfo.total
         });
       })
       .catch(err => {
         this.setState({ spin: false });
-        console.log("Failed to get Places Details" + err)
+        message.error("ERROR");
+        console.log("Failed to get Places Details" + err);
       });
   }
 
   pagination = (e, n) => {
-    console.log(e - 1, n);
     this.getPlacesData((e - 1) * n, n, this.state.search);
     // this.setState({offset:e})
   };
@@ -110,6 +116,12 @@ export default class Places extends Component {
     if (e.target.value.trim() != "") errors[e.target.name] = "";
     this.setState({ [e.target.name]: e.target.value, errors });
   };
+
+  handleSearchChange = e => {
+    if (e.target.value.trim() == "") this.getPlacesData(0, 7, '');
+    this.setState({ [e.target.name]: e.target.value });
+  };
+
 
   render() {
     const demoData = this.state.places;
@@ -153,7 +165,7 @@ export default class Places extends Component {
                 onSearch={this.handleSearchSubmit}
                 onPressEnter={this.handleSearchSubmit}
                 name="search"
-                onChange={c => this.handleChange(c)}
+                onChange={c => this.handleSearchChange(c)}
               />
               <span style={{ color: "Red" }}>{this.state.errors.search}</span>
             </Col>
@@ -161,10 +173,14 @@ export default class Places extends Component {
 
           {/* <CustomScrollbars className="gx-layout-sider-scrollbar"> */}
           {this.state.spin ? (
-            <div> <br /> <br /> <br /> <br />{" "}
+            <div>
+              {" "}
+              <br /> <br /> <br /> <br />{" "}
               <div className="divCenter">
                 <Spin size="large" />
-              </div> <br /> <br /> <br /> </div>
+              </div>{" "}
+              <br /> <br /> <br />{" "}
+            </div>
           ) : demoData.length ? (
             <div>
               <Row className="placeTableHeaders">
@@ -211,7 +227,6 @@ export default class Places extends Component {
               total={this.state.totalPlaces}
             />
           </div>
-
 
           {/* </CustomScrollbars> */}
         </Auxiliary>

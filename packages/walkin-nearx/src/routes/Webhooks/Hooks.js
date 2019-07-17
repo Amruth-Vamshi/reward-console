@@ -261,8 +261,8 @@ class Hooks extends Component {
               <Col span={4}>Event</Col>
               <Col span={2}>Method</Col>
               <Col span={2}>Status</Col>
-              <Col span={7}>headers</Col>
-              <Col span={7}>url</Col>
+              <Col span={7}>Headers</Col>
+              <Col span={7}>Url</Col>
             </Row>
             {this.state.hooksList.map((item, i) => (
               <HooksListCard

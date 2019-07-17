@@ -1,0 +1,8 @@
+.emptySubOrgButtonContainer {
+	display: flex;
+	justify-content: center;
+}
+.subOrgButtonContainer {
+	display: flex;
+	justify-content: flex-end;
+}

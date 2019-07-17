@@ -15,10 +15,10 @@ const geolocation =
   canUseDOM && navigator.geolocation
     ? navigator.geolocation
     : {
-        getCurrentPosition(success, failure) {
-          failure(`Your browser doesn't support geolocation.`);
-        }
-      };
+      getCurrentPosition(success, failure) {
+        failure(`Your browser doesn't support geolocation.`);
+      }
+    };
 
 const Geofences = mapData => {
   let geoFen = [];
@@ -97,8 +97,8 @@ const GeolocationExampleGoogleMap = withGoogleMap(props => (
         }
       />
     ) : (
-      ""
-    )}
+        ""
+      )}
 
     {Geofences(props.mapData)}
 
@@ -115,8 +115,8 @@ const GeolocationExampleGoogleMap = withGoogleMap(props => (
         }}
       />
     ) : (
-      ""
-    )}
+        ""
+      )}
 
     {props.mapData.getLoc ? (
       <DrawingManager
@@ -125,8 +125,8 @@ const GeolocationExampleGoogleMap = withGoogleMap(props => (
           drawingControl: true
         }}
         onMarkerComplete={marker => {
-          console.log(marker.getPosition());
-          console.log(marker);
+          // console.log(marker.getPosition());
+          // console.log(marker);
           props.setlocationDetails(
             marker.getPosition().lat(),
             marker.getPosition().lng()
@@ -135,8 +135,8 @@ const GeolocationExampleGoogleMap = withGoogleMap(props => (
         }}
       />
     ) : (
-      ""
-    )}
+        ""
+      )}
   </GoogleMap>
 ));
 

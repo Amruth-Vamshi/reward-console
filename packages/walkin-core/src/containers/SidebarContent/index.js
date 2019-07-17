@@ -8,17 +8,19 @@ import {
 } from "@walkinsole/walkin-components";
 import SidebarLogo from "./SidebarLogo";
 
-import UserProfile from "./UserProfile";
-import AppsNavigation from "./AppsNavigation";
-import { withRouter } from "react-router-dom";
+import UserProfile from './UserProfile';
+import AppsNavigation from './AppsNavigation';
+import { withRouter } from 'react-router-dom';
+import camelCase from 'lodash/camelCase';
 
 import {
   NAV_STYLE_NO_HEADER_EXPANDED_SIDEBAR,
   NAV_STYLE_NO_HEADER_MINI_SIDEBAR,
-  THEME_TYPE_LITE
-} from "@walkinsole/walkin-components/src/constants/ThemeSetting";
-import { compose, graphql } from "react-apollo";
-import gql from "graphql-tag";
+  THEME_TYPE_LITE,
+} from '@walkinsole/walkin-components/src/constants/ThemeSetting';
+import { compose, graphql, withApollo } from 'react-apollo';
+import gql from 'graphql-tag';
+import { orgId } from '../../query/organization';
 
 class SidebarContent extends Component {
   getNoHeaderClass = navStyle => {
@@ -38,66 +40,55 @@ class SidebarContent extends Component {
   };
 
   render() {
-    const { themeType, navStyle, pathname } = this.props;
+    const { themeType, navStyle, pathname, orgId } = this.props;
     const selectedKeys = pathname.substr(1);
-    const defaultOpenKeys = selectedKeys.split("/")[1];
+    const defaultOpenKeys = selectedKeys.split('/')[1];
     return (
       <Auxiliary>
         <SidebarLogo />
-        <div className="gx-sidebar-content">
+        <div style={{ height: '100%' }} className="gx-sidebar-content">
           <Menu
+            style={{ height: '100%' }}
             defaultOpenKeys={[defaultOpenKeys]}
             selectedKeys={[selectedKeys]}
-            theme={themeType === THEME_TYPE_LITE ? "lite" : "dark"}
+            theme={themeType === THEME_TYPE_LITE ? 'lite' : 'dark'}
             mode="inline"
           >
-            <Menu.Item key="core/apps">
-              <Link to="/core/apps">
+            <Menu.Item key="core">
+              <Link to="/core">
                 <i className="icon icon-apps" />
-                <span>Core Apps</span>
+                <span>Core suite</span>
               </Link>
             </Menu.Item>
-            <Menu.Item key="core/user">
-              <Link to="/core/user">
-                <i className="icon icon-geo-location" />
-                {/* <IntlMessages id="sidebar.samplePage" /> */}
+
+            <Menu.Item key="core/users">
+              <Link to="/core/users">
+                <i className="icon icon-contacts" />
+                {/* <IntlMessages id="sidebar.refinex" /> */}
                 <span>User Info</span>
               </Link>
             </Menu.Item>
-            <Menu.Item key="core/organisation">
-              <Link to="/core/organisation">
-                <i className="icon icon-setting" />
-                {/* <IntlMessages id="sidebar.samplePage" /> */}
-                <span>Organisation Info</span>
+            <Menu.Item key="organizationInfo">
+              <Link
+                to={`core/organization/${orgId && orgId.organization ? orgId.organization.id : ''}`}
+              // to="core/organization"
+              >
+                <i className="icon icon-inbox" />
+                {/* <IntlMessages id="sidebar.nearx" /> */}
+                <span>Organization Info</span>
               </Link>
             </Menu.Item>
-            <Menu.Item key="core/customer">
-              <Link to="/core/customer">
-                <i className="icon icon-setting" />
-                {/* <IntlMessages id="sidebar.samplePage" /> */}
-                <span>Customer Info</span>
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="core/analytics">
-              <Link to="/core/analytics">
-                <i className="icon icon-chart" />
-                {/* <IntlMessages id="sidebar.samplePage" /> */}
-                <span>Analytics</span>
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="core/settings">
-              <Link to="/core/settings">
-                <i className="icon icon-setting" />
-                {/* <IntlMessages id="sidebar.samplePage" /> */}
-                <span>Global Settings</span>
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="core/help">
-              <Link to="/core/help">
-                <i className="icon icon-setting" />
-                {/* <IntlMessages id="sidebar.samplePage" /> */}
-                <span>Help</span>
-              </Link>
+            {/* <Menu.Item key="customerInfo">
+              <Link to="/cust">
+                <i className="icon icon-auth-screen" />
+                Customer Info
+							</Link>
+            </Menu.Item> */}
+            <Menu.Item key="help">
+              {/* <Link to="/nearx"> */}
+              <i className="icon icon-queries" />
+              <span>Help</span>
+              {/* </Link> */}
             </Menu.Item>
           </Menu>
         </div>
@@ -130,10 +121,22 @@ const GET_SETTINGS = gql`
   }
 `;
 
-export default compose(
-  withRouter,
-  graphql(GET_SETTINGS, {
-    props: mapStateToProps,
-    name: "settings"
-  })
-)(SidebarContent);
+export default withRouter(
+  withApollo(
+    compose(
+      graphql(GET_SETTINGS, {
+        props: mapStateToProps,
+        name: 'settings',
+      }),
+      graphql(orgId, {
+        name: 'orgId',
+        options: ownProps => ({
+          variables: {
+            id: ownProps.client.cache.data.data['$ROOT_QUERY.auth'].organizationId,
+          },
+          fetchPolicy: 'network-only',
+        }),
+      })
+    )(SidebarContent)
+  )
+);

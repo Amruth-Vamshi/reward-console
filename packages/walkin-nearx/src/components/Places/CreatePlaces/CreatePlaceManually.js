@@ -62,7 +62,6 @@ export default class CreatePlaceManually extends Component {
   }
 
   getPlaceDetails = placeId => {
-    console.log("ID", placeId);
     client
       .query({
         query: PLACES_BY_ID,
@@ -93,9 +92,7 @@ export default class CreatePlaceManually extends Component {
             errors: {}
           });
         });
-        console.log("Results", places);
         this.setState({ places, places1: places, center: places[0].center });
-        // console.log("Results", places)
       })
       .catch(err => console.log("Failed to get Places Details" + err));
   };
@@ -196,9 +193,9 @@ export default class CreatePlaceManually extends Component {
     places.map(place => {
       place.errors = {};
       if (place.placeName.trim() == "")
-        place.errors.placeName = "* place Name is mandatory";
+        place.errors.placeName = "* Place Name is mandatory";
       if (place.address.trim() == "")
-        place.errors.address = "* place Name is mandatory";
+        place.errors.address = "* Address is mandatory";
       // if(place.storeId.trim()=='') place.errors.storeId = "* storeId is mandatory"
       if (place.center.lat == null || place.center.lat == NaN)
         place.errors.latitude = "* latitude is mandatory";
@@ -212,7 +209,6 @@ export default class CreatePlaceManually extends Component {
       console.log("Errors in submition");
     } else {
       this.setState({ loading1: true });
-      console.log("Create Places");
       let places = [];
       this.state.places.map(p => {
         places.push({
@@ -225,8 +221,6 @@ export default class CreatePlaceManually extends Component {
       });
       places[0].mainPlace = true;
 
-      console.log(JSON.stringify(places));
-
       client
         .mutate({
           mutation: CREATE_PLACE,
@@ -234,16 +228,14 @@ export default class CreatePlaceManually extends Component {
         })
         .then(res => {
           message.success("success");
-          console.log("Results", res);
           this.props.history.push("/nearx/places");
           this.setState({ loading1: false });
         })
         .catch(err => {
           this.setState({ loading1: false });
-          console.log("Failed to stote Places Details" + err);
-          message.warning("Failed to stote Places Details");
+          console.log("Failed to store Places Details" + err);
+          message.warning("Failed to store Places Details");
         });
-      console.log("Submit");
     }
   };
 

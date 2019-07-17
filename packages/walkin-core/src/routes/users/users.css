@@ -1,0 +1,32 @@
+.aright {
+  display: inline-block;
+}
+
+.divCenterVertical {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  float: left;
+}
+
+.userCt {
+  font-size: 17px;
+  color: #7c7c7c;
+}
+
+.UsersTabs div.ant-row {
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+.userHeaderRow {
+  color: #3a3a3a;
+  height: 40px;
+  background-color: #f3f3f3;
+  align-items: center;
+  margin-bottom: 15px
+}
+.wordBk{
+  word-break: break-word;
+}

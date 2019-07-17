@@ -81,7 +81,7 @@ class AddHotspot extends Component {
   }
 
   getPlacesData = (offset, limit, search) => {
-    console.log("GetPlacesCAlled");
+    // console.log("GetPlacesCAlled");
     client
       .query({
         query: SEARCH_PLACES,
@@ -101,7 +101,6 @@ class AddHotspot extends Component {
               selected: false
             });
         });
-        console.log("Results", res);
         this.setState({
           places1: places,
           totalPlaces: res.data.Places.pageInfo.total
@@ -113,7 +112,6 @@ class AddHotspot extends Component {
   pagination = (e, n) => this.getPlacesData((e - 1) * n, n, this.state.search);
 
   onPlaceSelect = (id, e) => {
-    console.log(e.target.checked, id);
 
     let { places, places1 } = this.state;
     if (e.target.checked) {
@@ -208,7 +206,6 @@ class AddHotspot extends Component {
     };
 
     let places = [...this.state.places2, place];
-    console.log(places);
     this.setState({ places2: places });
     //  this.getGeoLocation()
   };
