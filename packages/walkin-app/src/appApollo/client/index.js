@@ -49,6 +49,7 @@ export const configureClient = async () => {
           "Hey! Regret to inform that we are experiencing some issues. Please check your internet connection or try again after sometime"
         );
         console.log(networkError);
+
       }
     }
   });
