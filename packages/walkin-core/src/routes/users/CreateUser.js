@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-
+import { CREATE_USER } from "@walkinsole/walkin-components/src/PlatformQueries";
 import { Form, Input, Button, Select } from "antd";
 
 const Option = Select.Option;

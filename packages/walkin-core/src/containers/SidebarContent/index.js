@@ -57,17 +57,16 @@ class SidebarContent extends Component {
             <Menu.Item key="core">
               <Link to="/core">
                 <i className="icon icon-apps" />
-                {/* <IntlMessages id="sidebar.core" /> */}
-                Core suite
-							</Link>
+                <span>Core suite</span>
+              </Link>
             </Menu.Item>
 
             <Menu.Item key="core/users">
               <Link to="/core/users">
                 <i className="icon icon-contacts" />
                 {/* <IntlMessages id="sidebar.refinex" /> */}
-                User Info
-							</Link>
+                <span>User Info</span>
+              </Link>
             </Menu.Item>
             <Menu.Item key="organizationInfo">
               <Link
@@ -76,22 +75,20 @@ class SidebarContent extends Component {
               >
                 <i className="icon icon-inbox" />
                 {/* <IntlMessages id="sidebar.nearx" /> */}
-                Organization Info
-							</Link>
+                <span>Organization Info</span>
+              </Link>
             </Menu.Item>
-            <Menu.Item key="customerInfo">
-              <Link to="/nearx">
+            {/* <Menu.Item key="customerInfo">
+              <Link to="/cust">
                 <i className="icon icon-auth-screen" />
-                {/* <IntlMessages id="sidebar.nearx" /> */}
                 Customer Info
 							</Link>
-            </Menu.Item>
+            </Menu.Item> */}
             <Menu.Item key="help">
               {/* <Link to="/nearx"> */}
               <i className="icon icon-queries" />
-              {/* <IntlMessages id="sidebar.nearx" /> */}
-              Help
-							{/* </Link> */}
+              <span>Help</span>
+              {/* </Link> */}
             </Menu.Item>
           </Menu>
         </div>

@@ -4,14 +4,12 @@
   "private": true,
   "scripts": {
     "start": "cd packages/walkin-app && yarn start",
-    "start-dev": "export NODE_ENV=development && cd packages/walkin-app && yarn start",
-    "start-prod": "export NODE_ENV=production && cd packages/walkin-app && yarn start",
+    "start-prod": "export NODE_ENV=prod && cd packages/walkin-app && yarn start",
     "test": "jest --config jest.config.js",
     "test:watch": "jest --config jest.config.js --watch",
     "coverage": "jest --config jest.config.js --coverage",
     "coverage:watch": "jest --config jest.config.js --coverage --watch",
-    "build-dev": "export NODE_ENV=development && cd packages/walkin-app && yarn build",
-    "build-prod": "export NODE_ENV=production && cd packages/walkin-app && yarn build",
+    "build-dev": "export NODE_ENV=dev && cd packages/walkin-app && yarn build",
     "build": "cd packages/walkin-app && yarn build"
   },
   "devDependencies": {

@@ -31,7 +31,8 @@ export default class Users extends Component {
           styleName="gx-card-tabs UsersTabs"
           extra={<Button onClick={() => this.showModal()} type="primary"> Create User </Button>}
         >
-          <Tabs
+          <hr style={{ marginTop: 0 }} />
+          {/* <Tabs
             defaultActiveKey="1"
             // activeKey={this.state.tab}
             onChange={c => this.onTabChange(c)}
@@ -42,7 +43,10 @@ export default class Users extends Component {
             <TabPane tab="HyperX" key="2">
               <UserInfo data={data1} />
             </TabPane>
-          </Tabs>
+          </Tabs> */}
+
+          <UserInfo data={data} />
+
         </Widget>
 
 
