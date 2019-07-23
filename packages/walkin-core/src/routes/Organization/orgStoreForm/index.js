@@ -23,7 +23,7 @@ const OrgStoreForm = Form.create({ name: 'form_in_modal' })(
 					<Form.Item label="Name" {...formItemLayout}>
 						{getFieldDecorator('name', {
 							initialValue: `${Object.keys(storeFormValues).length != 0 ? storeFormValues.name : ''}`,
-							rules: [{ required: true, message: 'Code is required' }],
+							rules: [{ required: true, message: 'Name is required' }],
 						})(<Input />)}
 					</Form.Item>
 					<Form.Item label="Address" {...formItemLayout}>

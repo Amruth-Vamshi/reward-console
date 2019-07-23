@@ -105,7 +105,7 @@ class OrgStoreList extends Component {
 					<div className="searchInputStyle">
 						<InstantSearch
 							placeHolder="Search"
-							data={orgStoreData}
+							data={location && location.state && location.state.storeDetails}
 							onFilteredList={this.onOrgFilteredList}
 						/>
 					</div>
