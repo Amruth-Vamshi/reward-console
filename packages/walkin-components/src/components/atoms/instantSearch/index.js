@@ -24,7 +24,6 @@ class InstantSearch extends React.Component {
 			// If the search bar is empty, set newList to original task list
 			newList = data;
 		}
-
 		// Set the filtered state based on what our rules added to newList
 		this.props.onFilteredList(newList);
 	}

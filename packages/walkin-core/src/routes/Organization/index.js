@@ -17,7 +17,7 @@ class OrganizationInfo extends Component {
 			formValues: {},
 			showOrgStoreForm: false,
 			storeFormValues: {},
-			errorMessage: false,
+			errorMessage: '',
 			orgId: this.props.client && this.props.client.cache.data.data['$ROOT_QUERY.auth'].organizationId,
 		};
 	}
@@ -32,10 +32,17 @@ class OrganizationInfo extends Component {
 		});
 	};
 	handleCancel = () => {
-		this.setState({ showSubOrgForm: false });
+		this.setState({ showSubOrgForm: false, formValues: {}, storeFormValues: {} });
 	};
 	handleStoreCancel = () => {
 		this.setState({ showOrgStoreForm: false });
+	};
+	displayError = (state, message) => {
+		this.setState({ [state]: message }, () => {
+			setTimeout(() => {
+				this.setState({ [state]: '' });
+			}, 4000);
+		});
 	};
 	onCreateNewOrg = (formState, popupState, type, refetch) => {
 		const form = this.formRef && this.formRef.props && this.formRef.props.form;
@@ -49,13 +56,15 @@ class OrganizationInfo extends Component {
 							[formState]: values,
 						},
 						() => {
-							let { client } = this.props;
+							let { client, match } = this.props;
 							let { orgId } = this.state;
 							client
 								.mutate({
 									mutation: addSubOrganization,
 									variables: {
-										parentId: orgId || client.cache.data.data['$ROOT_QUERY.auth'].organizationId,
+										parentId:
+											match.params.id ||
+											client.cache.data.data['$ROOT_QUERY.auth'].organizationId,
 										name: values.name,
 										code: values.code,
 										addressLine1: values.address,
@@ -65,11 +74,16 @@ class OrganizationInfo extends Component {
 									},
 								})
 								.then(({ data }) => {
-									this.setState({ [popupState]: false });
+									this.setState({ [popupState]: false, [formState]: {} });
 									refetch();
 								})
 								.catch(error => {
-									this.setState({ errorMessage: true });
+									this.displayError(
+										'errorMessage',
+										error && error.graphQLErrors[0]
+											? error.graphQLErrors[0].message
+											: 'Error in submitting the form'
+									);
 								});
 						}
 					);
@@ -160,7 +174,7 @@ class OrganizationInfo extends Component {
 									/>
 									<Popup
 										visible={showSubOrgForm}
-										title="Create Sub organization"
+										title="Create Sub Organization"
 										handleCancel={this.handleCancel}
 										handleOnClick={this.onCreateNewOrg.bind(
 											this,
@@ -181,9 +195,7 @@ class OrganizationInfo extends Component {
 													wrappedComponentRef={this.saveFormRef}
 													formValues={formValues}
 												/>
-												{errorMessage && (
-													<Alert message="Error in submitting the form" type="error" />
-												)}
+												{errorMessage !== '' && <Alert message={errorMessage} type="error" />}
 											</Fragment>
 										}
 										buttonText="Done"
@@ -192,7 +204,7 @@ class OrganizationInfo extends Component {
 									<Fragment>
 										<div className="subOrgButtonContainer">
 											<Button type="primary" onClick={this.onNewStore}>
-												New store
+												New Store
 											</Button>
 										</div>
 										<OrgStoreList
@@ -231,9 +243,7 @@ class OrganizationInfo extends Component {
 													wrappedComponentRef={this.saveFormRef}
 													storeFormValues={storeFormValues}
 												/>
-												{errorMessage && (
-													<Alert message="Error in submitting the form" type="error" />
-												)}
+												{errorMessage && <Alert message={errorMessage} type="error" />}
 											</Fragment>
 										}
 										buttonText="Done"
