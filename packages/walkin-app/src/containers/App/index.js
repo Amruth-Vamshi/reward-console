@@ -128,7 +128,7 @@ class App extends Component {
     }
 
     if (location.pathname === "/") {
-      return <Redirect to={"/home"} />;
+      return <Redirect to={"/core"} />;
     }
 
     this.setLayoutType(layoutType);

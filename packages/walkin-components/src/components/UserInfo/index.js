@@ -50,8 +50,8 @@ class UserInfo extends Component {
     let { firstName, lastName, user } = this.state;
     const userMenuOptions = (
       <ul className="gx-user-popover">
-        {/* <li>My Account</li>
-        <li>Connections</li> */}
+        {/* <li>My Account</li>*/}
+        <li><Link to="/core"> Organization </Link></li>
         <li onClick={() => this.logout()}>
           <Link to="/signin"> Logout </Link>
         </li>
@@ -69,7 +69,7 @@ class UserInfo extends Component {
           <div className="gx-flex-row gx-align-items-center gx-pointer">
             <p style={{ color: "white" }} className="gx-mb-0 gx-d-none gx-d-sm-flex">
               {firstName + "  " + `${lastName ? lastName : " "}`}
-            </p>{" "}
+            </p>
             &nbsp;
             {/* <img className="gx-rounded-circle gx-size-30 gx-mr-2 gx-ml-2" src='https://via.placeholder.com/150x150' alt="" /> */}
             {/*&nbsp; <Avatar src='https://via.placeholder.com/100x100'

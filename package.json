@@ -10,7 +10,7 @@
     "coverage": "jest --config jest.config.js --coverage",
     "coverage:watch": "jest --config jest.config.js --coverage --watch",
     "build-dev": "export NODE_ENV=dev && cd packages/walkin-app && yarn build",
-    "build": "export NODE_ENV=prod && cd packages/walkin-app && yarn build"
+    "build": "cd packages/walkin-app && yarn build"
   },
   "devDependencies": {
     "babel-jest": "^24.8.0",

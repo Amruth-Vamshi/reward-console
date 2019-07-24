@@ -174,12 +174,11 @@ export default class Places extends Component {
           {/* <CustomScrollbars className="gx-layout-sider-scrollbar"> */}
           {this.state.spin ? (
             <div>
-              {" "}
-              <br /> <br /> <br /> <br />{" "}
+              <br /> <br /> <br /> <br />
               <div className="divCenter">
                 <Spin size="large" />
-              </div>{" "}
-              <br /> <br /> <br />{" "}
+              </div>
+              <br /> <br /> <br />
             </div>
           ) : demoData.length ? (
             <div>
@@ -199,9 +198,18 @@ export default class Places extends Component {
                   data={data}
                 />
               ))}
+
+              <div style={{ margin: 20 }} className="divCenter">
+                <Pagination
+                  defaultCurrent={1}
+                  onChange={this.pagination}
+                  pageSize={7}
+                  total={this.state.totalPlaces}
+                />
+              </div>
             </div>
           ) : (
-                <div style={{ margin: 60, fontSize: 25 }}>
+                <div style={{ margin: 80, fontSize: 25 }}>
                   <div className="divCenter">
                     <div>No Places Found</div>
                   </div>
@@ -212,21 +220,12 @@ export default class Places extends Component {
                         className="buttonPrimary"
                       >
                         Create New Place
-                  </Button>
+                      </Button>
                     </Link>
                     {/* <div style={{margin:10, fontSize:20}}>Create A new Place</div> */}
                   </div>
                 </div>
               )}
-
-          <div style={{ margin: 20 }} className="divCenter">
-            <Pagination
-              defaultCurrent={1}
-              onChange={this.pagination}
-              pageSize={7}
-              total={this.state.totalPlaces}
-            />
-          </div>
 
           {/* </CustomScrollbars> */}
         </Auxiliary>

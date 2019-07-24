@@ -5,6 +5,7 @@ module.exports = {
       name: "walkin-app",
       url: "https://dev-api.getwalkin.in/core_dev/graphql"
     },
-    includes: ["packages/**/*.js"]
+    includes: ["packages/**/*.js"],
+    excludes: ["packages/walkin-nearx/**/*.js"]
   }
 };

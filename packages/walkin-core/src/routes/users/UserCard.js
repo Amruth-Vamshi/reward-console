@@ -43,19 +43,20 @@ export default class UserCard extends Component {
       <div>
         <Row>
           <Col span={7}>
-            <div style={{ float: 'left', marginRight: 15 }}>
-              {data.image === null || data.image === "" ?
-                <Avatar style={{ backgroundColor: `${this.random_bg_color()}` }} size="large">  <span style={{ fontSize: 25 }}>
-                  {data.firstName.charAt(0).toUpperCase()}
-                </span> </Avatar> :
-                <Avatar size="large" alt={data.firstName} src={data.image} />
-              }
-            </div>
+            <div className="divCenterVertical">
+              <div style={{ float: 'left', marginRight: 15 }}>
+                {data.image === null || data.image === "" || data.image === undefined ?
+                  <Avatar style={{ backgroundColor: `${this.random_bg_color()}` }} size="large">  <span style={{ fontSize: 25 }}>
+                    {data.firstName.charAt(0).toUpperCase()}
+                  </span> </Avatar> :
+                  <Avatar size="large" alt={data.firstName} src={data.image} />
+                }
+              </div>
 
-            <div className="divCenterVertical"><div>
-              <Row><span style={{ color: 'black', marginBottom: 5 }}>{data.firstName}&nbsp; {data.lastName ? data.lastName : ''} </span></Row>
-              <Row><span style={{ color: '#999999' }} >{data.role}</span></Row>
-            </div></div>
+              <div>
+                <Row><span style={{ color: 'black', marginBottom: 5 }}>{data.firstName}&nbsp; {data.lastName ? data.lastName : ''} </span></Row>
+                <Row><span style={{ color: '#999999' }} >{data.role}</span></Row>
+              </div></div>
           </Col>
           <Col span={4}> <div className="divCenterVertical wordBk"><span>{data.email}</span></div></Col>
 

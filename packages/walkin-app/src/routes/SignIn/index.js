@@ -70,7 +70,7 @@ class NormalLoginForm extends React.Component {
                           if (data && data.data && data.data.signIn) {
                             const redirectRoute = routeQuery.redirectRoute
                               ? routeQuery.redirectRoute
-                              : "/home";
+                              : "/core";
                             console.log(
                               "Login Successfull. Redirecting...",
                               redirectRoute

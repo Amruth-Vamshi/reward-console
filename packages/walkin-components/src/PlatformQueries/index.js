@@ -98,16 +98,11 @@ mutation generateAPIKey($id: ID!){
 export const GET_ALL_APPS_OF_ORGANIZATION = gql`
 query organization($id: ID!) {
   organization(id: $id) {
-    id name
-    applications { id name description platform auth_key_hooks organization{ id name } }
-    children{ id name
-      applications { id name description platform auth_key_hooks organization{ id name } }
-      children{ id name
-        applications { id name description platform auth_key_hooks organization{ id name } }
-          children{ id name
-          applications { id name description platform auth_key_hooks organization{ id name } }
-            children{ id name
-            applications { id name description platform auth_key_hooks organization{ id name } }
+    id name applications { id name description platform auth_key_hooks organization{ id name } }
+    children{ id name applications { id name description platform auth_key_hooks organization{ id name } }
+      children{ id name applications { id name description platform auth_key_hooks organization{ id name } }
+          children{ id name applications { id name description platform auth_key_hooks organization{ id name } }
+            children{ id name applications { id name description platform auth_key_hooks organization{ id name } }
           }
         }
       }
@@ -115,3 +110,18 @@ query organization($id: ID!) {
   }
 }`
 
+export const GET_ALL_USERS_OF_ORGANIZATION = gql`
+query organization($id: ID!) {
+  organization(id: $id) {
+    id name status code users{ id firstName lastName status email roles{ name id } }
+    children{id name status code users{ id firstName lastName status email roles{ name id } }
+    	children{id name status code users{ id firstName lastName status email roles{ name id } }
+        children{id name status code users{ id firstName lastName status email roles{ name id } }
+          children{id name status code users{ id firstName lastName status email roles{ name id } }
+            children{id name status code users{ id firstName lastName status email roles{ name id } } }
+          }
+        }
+      }
+    }
+  }
+}`
