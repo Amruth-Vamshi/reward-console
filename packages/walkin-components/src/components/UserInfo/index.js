@@ -63,7 +63,7 @@ class UserInfo extends Component {
         overlayClassName="gx-popover-horizantal"
         placement="bottomRight"
         content={userMenuOptions}
-        trigger="click"
+      // trigger="click"
       >
         {firstName ? (
           <div className="gx-flex-row gx-align-items-center gx-pointer">
