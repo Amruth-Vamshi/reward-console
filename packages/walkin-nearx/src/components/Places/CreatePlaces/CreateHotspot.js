@@ -63,21 +63,19 @@ export default class CreateHotspot extends Component {
       form.push(
         <div key={i}>
           <p>
-            {" "}
             <span>
-              {" "}
               <Icon
                 type="environment"
                 style={{ color: "#e20464" }}
                 theme="filled"
-              />{" "}
+              />
               Hotspot {" " + (i + 1)}
             </span>
             <Icon
               type="close"
               onClick={() => this.props.deleteHotspot(i)}
               style={{ float: "right", marginRight: 1 }}
-            />{" "}
+            />
           </p>
 
           <Form.Item {...formItemLayout} label="Place Name">
@@ -114,7 +112,7 @@ export default class CreateHotspot extends Component {
                 </i>
               </p>
 
-              <Form.Item {...formItemLocation} label="Longitude">
+              <Form.Item {...formItemLocation} label="Location">
                 <Row gutter={1}>
                   <Col md={24} xl={12}>
                     <Input

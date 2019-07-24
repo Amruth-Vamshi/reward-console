@@ -58,7 +58,7 @@ export default class GooglePlacesMap extends Component {
               Type:
               <Select
                 getPopupContainer={() => document.getElementById('Sarea')}
-                showSearch value={formData.type} name="type" style={{ width: '250px' }}
+                showSearch value={formData.type} name="type" style={{ width: '100%' }}
                 placeholder="Select Type" optionFilterProp="children"
                 onChange={e => this.props.handleOnTypeChange(e)}
                 filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}  >

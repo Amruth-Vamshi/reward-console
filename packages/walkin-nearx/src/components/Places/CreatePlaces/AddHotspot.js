@@ -150,7 +150,7 @@ class AddHotspot extends Component {
       if (place.placeName.trim() == "")
         place.errors.placeName = "* place Name is mandatory";
       if (place.address.trim() == "")
-        place.errors.address = "* place Name is mandatory";
+        place.errors.address = "* address is mandatory";
       // if(place.storeId.trim()=='') place.errors.storeId = "* storeId is mandatory"
       if (place.center.lat == null || place.center.lat == NaN)
         place.errors.latitude = "* latitude is mandatory";

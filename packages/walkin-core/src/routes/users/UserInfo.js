@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Row, Col, Input, Icon, Button } from "antd";
+import { Row, Col, Input, Empty, Spin, Icon, Button } from "antd";
 import UserCard from "./UserCard";
 
 const Search = Input.Search;
@@ -12,14 +12,15 @@ export default class UserInfo extends Component {
           <div className="gx-d-inline-flex divCenterVertical userCt">
             {this.props.data.length} Users
           </div>
-          <div
+          {/* <div
             className="gx-d-inline-flex gx-pointer divCenterVertical"
             style={{ float: "right", flexFlow: "right" }}
           >
             <Search placeholder="Search" style={{ marginBottom: 0 }} />
-            {/* 
-             */}
-          </div>
+            <span style={{ width: 100, marginLeft: 35, fontSize: 17 }}>
+              Filter <Icon type="filter" />
+            </span>
+          </div> */}
         </div>
 
         <Row className="userHeaderRow">
@@ -29,9 +30,13 @@ export default class UserInfo extends Component {
           <Col span={3}>Status</Col>
           <Col span={3}>Creator</Col>
         </Row>
-        {(this.props.data && this.props.data.length) ?
-          this.props.data.map(user => <UserCard data={user} />)
-          : ''}
+
+        {this.props.spin ?
+          <div> <br /> <br /> <div className="divCenter">  <Spin size="large" /> </div> <br /> <br /> <br />  </div>
+          : (this.props.data && this.props.data.length) ?
+            this.props.data.map(user => <UserCard data={user} />)
+            : <Empty />}
+
 
       </div>
     );
