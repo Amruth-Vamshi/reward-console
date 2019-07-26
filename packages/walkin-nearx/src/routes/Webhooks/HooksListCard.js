@@ -48,7 +48,7 @@ export default class HooksListCard extends Component {
 
           <Col span={2}> <div className="divCenterVertical"><span>{data.status}</span></div></Col>
 
-          <Col span={7}> <div className="divCenterVertical"><span>{data.headers}</span></div></Col>
+          <Col span={7}> <div className="divCenterVertical"><span>{JSON.stringify(data.headers)}</span></div></Col>
 
           <Col span={8}> <div className="divCenterVertical"><span>{data.url}</span></div></Col>
 

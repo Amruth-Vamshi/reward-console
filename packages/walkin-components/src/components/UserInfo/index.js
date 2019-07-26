@@ -51,7 +51,7 @@ class UserInfo extends Component {
     const userMenuOptions = (
       <ul className="gx-user-popover">
         {/* <li>My Account</li>*/}
-        <li><Link to="/core"> Organization </Link></li>
+        <li><Link to={`/core/organization/${this.state.org_id}`}> Organization </Link></li>
         <li onClick={() => this.logout()}>
           <Link to="/signin"> Logout </Link>
         </li>

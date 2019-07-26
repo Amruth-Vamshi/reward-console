@@ -76,17 +76,17 @@ class Hooks extends Component {
   handleCancel = () => {
     this.state.update
       ? this.setState({
-          visible: false,
-          errors: {},
-          hookName: "",
-          event: "",
-          update: false,
-          id: "",
-          headers: "",
-          url: "",
-          method: "",
-          loading: false
-        })
+        visible: false,
+        errors: {},
+        hookName: "",
+        event: "",
+        update: false,
+        id: "",
+        headers: "",
+        url: "",
+        method: "",
+        loading: false
+      })
       : this.setState({ visible: false, update: false });
   };
 
@@ -108,18 +108,19 @@ class Hooks extends Component {
 
     jwtData
       ? this.props.client
-          .query({
-            query: GET_WEBHOOKS,
-            variables: { org_id: jwtData.org_id, status: "ACTIVE" },
-            fetchPolicy: "network-only"
-          })
-          .then(res => {
-            console.log(res.data.webhooks);
-            this.setState({ hooksList: res.data.webhooks, spin: false });
-          })
-          .catch(err => {
-            console.log("Failed to get User Details" + err);
-          })
+        .query({
+          query: GET_WEBHOOKS,
+          variables: { org_id: jwtData.org_id, status: "ACTIVE" },
+          fetchPolicy: "network-only"
+        })
+        .then(res => {
+          console.log(res.data.webhooks);
+          this.setState({ hooksList: res.data.webhooks, spin: false });
+        })
+        .catch(err => {
+          this.setState({ spin: false });
+          console.log("Failed to get User Details" + err);
+        })
       : console.log("Error getting JwtData");
   };
 
@@ -274,20 +275,20 @@ class Hooks extends Component {
             ))}
           </div>
         ) : (
-          <div style={{ margin: 100, fontSize: 25 }}>
-            <div className="divCenter">No Hooks Present</div>
-            <div className="divCenter">
-              <Button
-                style={{ margin: 30, fontSize: 18 }}
-                onClick={() => this.addHook()}
-                className="buttonPrimary"
-              >
-                Create New Hook
+              <div style={{ margin: 100, fontSize: 25 }}>
+                <div className="divCenter">No Hooks Present</div>
+                <div className="divCenter">
+                  <Button
+                    style={{ margin: 30, fontSize: 18 }}
+                    onClick={() => this.addHook()}
+                    className="buttonPrimary"
+                  >
+                    Create New Hook
               </Button>
-              {/* <div style={{margin:10, fontSize:20}}>Create A new Place</div> */}
-            </div>
-          </div>
-        )}
+                  {/* <div style={{margin:10, fontSize:20}}>Create A new Place</div> */}
+                </div>
+              </div>
+            )}
 
         <Modal
           width="600px"
@@ -311,22 +312,22 @@ class Hooks extends Component {
             {this.state.update ? (
               ""
             ) : (
-              <Form.Item {...formItemLayout} label="Event Type">
-                <Select
-                  showSearch
-                  size="large"
-                  style={{ width: "100%" }}
-                  placeholder="Select Event Type"
-                  // value = { auth.user.organization.name }
-                  optionFilterProp="children"
-                  onChange={this.onChange}
+                <Form.Item {...formItemLayout} label="Event Type">
+                  <Select
+                    showSearch
+                    size="large"
+                    style={{ width: "100%" }}
+                    placeholder="Select Event Type"
+                    // value = { auth.user.organization.name }
+                    optionFilterProp="children"
+                    onChange={this.onChange}
                   // onSearch={onSearch}
-                >
-                  {options}
-                </Select>
-                <span style={{ color: "Red" }}>{this.state.errors.event}</span>
-              </Form.Item>
-            )}
+                  >
+                    {options}
+                  </Select>
+                  <span style={{ color: "Red" }}>{this.state.errors.event}</span>
+                </Form.Item>
+              )}
 
             <Form.Item {...formItemLayout} label="Method">
               <Select
@@ -336,7 +337,7 @@ class Hooks extends Component {
                 optionFilterProp="children"
                 value={this.state.method}
                 onChange={this.onChangeMethod}
-                // onSearch={onSearch}
+              // onSearch={onSearch}
               >
                 <Option value="POST">POST</Option>
                 <Option value="GET">GET</Option>
