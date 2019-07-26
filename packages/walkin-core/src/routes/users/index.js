@@ -88,7 +88,7 @@ class Users extends Component {
           <hr style={{ marginTop: 0 }} />
           {/* <Tabs
             defaultActiveKey="1"
-            // activeKey={this.state.tab}
+            // activeKey={this.state.tab}            
             onChange={c => this.onTabChange(c)}
           >
             <TabPane tab="NearX" key="1">

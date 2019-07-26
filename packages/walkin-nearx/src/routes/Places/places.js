@@ -153,7 +153,7 @@ export default class Places extends Component {
             </Row> */}
 
           <Row style={{ margin: "5px 0px" }}>
-            <Col span={5}>
+            <Col lg={5} md={6} sm={8} xs={15}>
               {/* <Input style={{ width: "10%", marginRight: 15 }} placeholder="Sort By" /> */}
               {/* <Input style={{ width: "10%" }} placeholder="Filter" /> */}
               {/* <Input prefix={<Icon type="search" />} placeholder="Search" /> */}
@@ -199,14 +199,6 @@ export default class Places extends Component {
                 />
               ))}
 
-              <div style={{ margin: 20 }} className="divCenter">
-                <Pagination
-                  defaultCurrent={1}
-                  onChange={this.pagination}
-                  pageSize={7}
-                  total={this.state.totalPlaces}
-                />
-              </div>
             </div>
           ) : (
                 <div style={{ margin: 80, fontSize: 25 }}>
@@ -226,6 +218,15 @@ export default class Places extends Component {
                   </div>
                 </div>
               )}
+
+          <div style={{ margin: 20 }} className="divCenter">
+            <Pagination
+              defaultCurrent={1}
+              onChange={this.pagination}
+              pageSize={7}
+              total={this.state.totalPlaces}
+            />
+          </div>
 
           {/* </CustomScrollbars> */}
         </Auxiliary>

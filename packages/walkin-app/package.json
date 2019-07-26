@@ -38,8 +38,18 @@
 		"less-loader": "^5.0.0",
 		"nwb": "0.23.x",
 		"style-loader": "^0.23.1",
-		"html-loader": "^0.5.5",
-		"markdown-loader": "^5.0.0",
-		"highlight.js": "^9.15.6"
+		"html-loader": "^0.5.5"
+	},
+	"browserslist": {
+		"production": [
+			">0.2%",
+			"not dead",
+			"not op_mini all"
+		],
+		"development": [
+			"last 1 chrome version",
+			"last 1 firefox version",
+			"last 1 safari version"
+		]
 	}
 }

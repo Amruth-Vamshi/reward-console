@@ -305,18 +305,18 @@ export default class CreatePlaceManually extends Component {
           </Col>
 
           <Col xs={24} sm={12} span={12}>
-            <Affix offsetTop={185}>
-              <div className="gx-card">
-                <div className="gx-card-head">GEO LOCATION</div>
-                <div className="gx-card-body">
-                  <GeofenceMap
-                    mapHeight="600px"
-                    mapData={this.state}
-                    setlocationDetails={this.setlocationDetails}
-                  />
-                </div>
+            {/* <Affix offsetTop={185}> */}
+            <div className="gx-card">
+              <div className="gx-card-head">GEO LOCATION</div>
+              <div className="gx-card-body">
+                <GeofenceMap
+                  mapHeight="600px"
+                  mapData={this.state}
+                  setlocationDetails={this.setlocationDetails}
+                />
               </div>
-            </Affix>
+            </div>
+            {/* </Affix> */}
           </Col>
         </Row>
 

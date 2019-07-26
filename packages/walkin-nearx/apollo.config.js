@@ -4,7 +4,7 @@ module.exports = {
     service: {
       name: "nearx-app",
       // url: "https://dev-api.getwalkin.in/core/graphql",
-      url: "http://167.99.31.169:3001/graphql"
+      url: "https://dev-api.getwalkin.in/nearx_dev/graphql"
     },
     includes: ["src/**/*.js"]
   }
