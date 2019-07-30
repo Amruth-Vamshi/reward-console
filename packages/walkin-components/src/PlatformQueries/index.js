@@ -77,22 +77,27 @@ mutation createWebhook($input:WebhookAddInput){
   }
 }`
 
-export const GET_ALL_ORGANIZATION_HIERARCHIES = gql`
-     query{ organizationHierarchies{ id name address code status phoneNumber website 
-  children{name id children{name id children{ name id children{name id children{name id}}}}} }
-}`
+// export const GET_ALL_ORGANIZATION_HIERARCHIES = gql`
+//      query{ organizationHierarchies{ id name address code status phoneNumber website 
+//   children{name id children{name id children{ name id children{name id children{name id}}}}} }
+// }`
 
-export const GET_ALL_ORGANIZATION = gql`
-     query { organizationHierarchies {
-       id name address code status phoneNumber website
-     }
-}`
+// export const GET_ALL_ORGANIZATION = gql`
+//      query { organizationHierarchies {
+//        id name address code status phoneNumber website
+//      }
+// }`
 
 export const GENERATE_API_KEY = gql`
 mutation generateAPIKey($id: ID!){
   generateAPIKey(id:$id){
     api_key
   }
+}`
+
+export const ROLES_LIST = gql`
+query roles{
+  roles{ id name }
 }`
 
 export const GET_ALL_APPS_OF_ORGANIZATION = gql`

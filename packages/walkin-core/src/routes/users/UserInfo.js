@@ -34,7 +34,7 @@ export default class UserInfo extends Component {
         {this.props.spin ?
           <div> <br /> <br /> <div className="divCenter">  <Spin size="large" /> </div> <br /> <br /> <br />  </div>
           : (this.props.data && this.props.data.length) ?
-            this.props.data.map(user => <UserCard data={user} />)
+            this.props.data.map((user, key) => <UserCard key={key} data={user} />)
             : <Empty />}
 
 

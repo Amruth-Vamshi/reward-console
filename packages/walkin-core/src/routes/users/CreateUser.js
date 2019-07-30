@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import { CREATE_USER } from "@walkinsole/walkin-components/src/PlatformQueries";
+import { CREATE_USER, GET_ALL_APPS_OF_ORGANIZATION, ROLES_LIST } from "@walkinsole/walkin-components/src/PlatformQueries";
 import { Form, Input, Button, Select } from "antd";
+import { withApollo, compose, graphql } from "react-apollo";
 
 const Option = Select.Option;
 
@@ -13,15 +14,65 @@ const formItemLayout = {
     }
 };
 
-export default class CreateUser extends Component {
+class CreateUser extends Component {
     constructor(props) {
         super(props);
         this.state = {
             visible: false,
-            errors: {}
+            errors: {},
+            organizations: [],
+            rolesList: []
         };
     }
+
+
+    componentWillMount() {
+        let { org_id } = this.props
+        org_id
+            ? this.props.client
+                .query({
+                    query: GET_ALL_APPS_OF_ORGANIZATION,
+                    variables: { id: org_id }
+                })
+                .then(res => {
+                    console.log(res.data);
+                    var orgs = [];
+                    let org = res.data.organization;
+
+                    function recOrg(org, orgs) {
+                        orgs.push({ name: org.name, id: org.id });
+                        if (org && org.children) org.children.map(ch => recOrg(ch, orgs));
+                    }
+                    recOrg(org, orgs);
+                    this.setState({ organizations: orgs });
+                })
+                .catch(err => {
+                    console.log("Failed to get Organization Details" + err);
+                }) : console.log("Error getting JwtData");
+
+        this.props.client
+            .query({ query: ROLES_LIST })
+            .then(res => {
+                console.log(res.data);
+
+                this.setState({ rolesList: res.data.roles });
+            })
+            .catch(err => {
+                console.log("Failed to get Organization Details" + err);
+            })
+    }
+
     render() {
+        var options = this.state.organizations.map((item, index) => (
+            <Option key={index} value={item.id}>
+                {item.name}
+            </Option>
+        ));
+        var roleOptions = this.state.rolesList.map((item, index) => (
+            <Option key={index} value={item.id}>
+                {item.name}
+            </Option>
+        ));
         return (
             <div>
                 <Form className="appForm">
@@ -78,7 +129,7 @@ export default class CreateUser extends Component {
                             onChange={this.onChangeRole}
                         // onSearch={onSearch}
                         >
-                            <Option value="POST">Admin</Option>
+                            {roleOptions}
                         </Select>
                         <span style={{ color: "Red" }}>{this.state.errors.role}</span>
                     </Form.Item>
@@ -93,12 +144,12 @@ export default class CreateUser extends Component {
                             // value={this.state.method}
                             onChange={this.onChangeOrg}
                         >
-                            <Option value="POST">Admin</Option>
+                            {options}
                         </Select>
                         <span style={{ color: "Red" }}>{this.state.errors.org}</span>
                     </Form.Item>
 
-                    <Form.Item {...formItemLayout}>
+                    {/* <Form.Item {...formItemLayout}>
                         <Select
                             size="large"
                             showSearch
@@ -111,7 +162,7 @@ export default class CreateUser extends Component {
                             <Option value="POST">Admin</Option>
                         </Select>
                         <span style={{ color: "Red" }}>{this.state.errors.product}</span>
-                    </Form.Item>
+                    </Form.Item> */}
 
 
 
@@ -137,3 +188,5 @@ export default class CreateUser extends Component {
         )
     }
 }
+export default compose(withApollo)(CreateUser);
+

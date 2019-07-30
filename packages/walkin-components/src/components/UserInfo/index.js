@@ -21,7 +21,7 @@ class UserInfo extends Component {
     localStorage.clear();
     this.props.history.push('/');
   };
-
+  org = () => this.props.history.push(`/core/organization/${this.state.org_id}`);
   componentWillMount() {
     const { id, org_id } = jwt.decode(localStorage.getItem("jwt"));
     this.setState({ userId: id, org_id });
@@ -51,7 +51,8 @@ class UserInfo extends Component {
     const userMenuOptions = (
       <ul className="gx-user-popover">
         {/* <li>My Account</li>*/}
-        <li><Link to={`/core/organization/${this.state.org_id}`}> Organization </Link></li>
+        <li onClick={() => this.org()}>
+          <Link to={`/core/organization/${this.state.org_id}`}> Organization </Link></li>
         <li onClick={() => this.logout()}>
           <Link to="/signin"> Logout </Link>
         </li>
