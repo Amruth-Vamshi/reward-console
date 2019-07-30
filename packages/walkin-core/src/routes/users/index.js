@@ -24,8 +24,8 @@ class Users extends Component {
   }
 
   componentWillMount() {
-    this.setState({ spin: true });
     const { id, org_id } = jwt.decode(localStorage.getItem("jwt"));
+    this.setState({ spin: true, userId: id, org_id });
 
     if (org_id) {
       this.props.client
@@ -76,8 +76,6 @@ class Users extends Component {
   handleCancel = () => this.setState({ visible: false })
 
   render() {
-    console.log(this.state.userList);
-    let data1 = this.state.userList
     return (
       <div>
         <Widget
@@ -113,7 +111,7 @@ class Users extends Component {
           title={null} footer={null}
         >
 
-          <CreateUser handleCancel={this.handleCancel} />
+          <CreateUser org_id={this.state.org_id} handleCancel={this.handleCancel} />
         </Modal>
       </div>
     );

@@ -23,6 +23,8 @@ import {
 
 import gql from "graphql-tag";
 import { graphql, compose } from "react-apollo";
+import ForgotPassword from "../../routes/ForgotPassword";
+import ChangePassword from "../../routes/ForgotPassword/ChangePassword";
 
 const RestrictedRoute = ({
   setRedirectRoute,
@@ -30,32 +32,32 @@ const RestrictedRoute = ({
   // userId,
   ...rest
 }) => (
-  <Route
-    {...rest}
-    render={props => {
-      if (localStorage.getItem("jwt")) {
-        // console.log("Authenticated!");
+    <Route
+      {...rest}
+      render={props => {
+        if (localStorage.getItem("jwt")) {
+          // console.log("Authenticated!");
 
-        return <Component {...props} />;
-      } else {
-        // console.log("Redirecting!");
-        setRedirectRoute({
-          variables: {
-            route: props.location.pathname
-          }
-        });
-        return (
-          <Redirect
-            to={{
-              pathname: "/signin",
-              state: { from: props.location }
-            }}
-          />
-        );
-      }
-    }}
-  />
-);
+          return <Component {...props} />;
+        } else {
+          // console.log("Redirecting!");
+          setRedirectRoute({
+            variables: {
+              route: props.location.pathname
+            }
+          });
+          return (
+            <Redirect
+              to={{
+                pathname: "/signin",
+                state: { from: props.location }
+              }}
+            />
+          );
+        }
+      }}
+    />
+  );
 
 class App extends Component {
   constructor() {
@@ -163,6 +165,10 @@ class App extends Component {
                 />
               )}
             />
+            <Route exact path="/changepassword"
+              render={props => <ChangePassword  {...props} resetApolloClient={this.props.resetApolloClient} />}
+            />
+            <Route exact path="/forgotpassword" component={ForgotPassword} />
             <RestrictedRoute
               path={`${match.url}`}
               // userId={userId}
