@@ -4,17 +4,17 @@ import { Col, Row, Dropdown, Menu, Card, Icon, Tooltip, Button, Input } from "an
 const options = [
   // 'Activate',
   'Edit',
-  //'Delete',
+  'Delete',
 ];
 
 export default class HooksListCard extends Component {
 
   menus = () => (<Menu onClick={(e) => {
-    if (e.key === 'Activate') {
-      this.props.activateApp(this.props.data.id)
-    } else if (e.key === 'Edit') {
+    if (e.key === 'Edit') {
       this.props.updateHook(this.props.data)
       // this.onEditContact()
+    } else if (e.key === 'Activate') {
+      // this.props.activateApp(this.props.data.id)
     } else {
       // this.onDeleteContact(this.props.contact)
     }
@@ -50,7 +50,7 @@ export default class HooksListCard extends Component {
 
           <Col span={7}> <div className="divCenterVertical"><span>{JSON.stringify(data.headers)}</span></div></Col>
 
-          <Col span={8}> <div className="divCenterVertical"><span>{data.url}</span></div></Col>
+          <Col span={8}> <div className="divCenterVertical"><span style={{ wordBreak: 'break-all' }}>{data.url}</span></div></Col>
 
           <Col style={{ paddingLeft: 0 }} span={1}>
             <div className="gx-module-contact-right divCenter">

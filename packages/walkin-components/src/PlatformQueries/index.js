@@ -40,15 +40,8 @@ export const UPDATE_WEBHOOK = gql`
 export const CREATE_APP = gql`
 mutation createApplication($organizationId:ID!,$input: ApplicationInput!){
     createApplication(organizationId:$organizationId input: $input){
-      id  name 
+      id  name platform
       organization{ id name  }
-      actions{  id
-        actionDefinition{ id
-          actionType{
-            id  type
-          }
-        }
-      }
     }
   }`
 

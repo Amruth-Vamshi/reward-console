@@ -99,6 +99,20 @@ mutation createOrUpdatePlace($places:[PlaceInput]!) {
   }
 }`
 
+export const DISABLE_PLACES = gql`
+mutation disableGeofence($id:ID!) {
+  disableGeofence(id:$id){
+      id enabled
+  }
+}`
+
+export const CREATE_APP = gql`
+mutation CreateNearXApplication($organizationId:ID!,$input:ApplicationInput!) {
+  CreateNearXApplication(organizationId:$organizationId  ApplicationInput: $input){
+    id  name platform organization{ id name }
+  }
+}`
+
 export const GET_CONFIGURATION = gql`
 query getConfiguration{
   getConfiguration{

@@ -1,19 +1,5 @@
 import React, { Component } from "react";
-import {
-  Col,
-  Row,
-  Pagination,
-  Card,
-  Select,
-  Timeline,
-  Form,
-  Modal,
-  Spin,
-  Tooltip,
-  Input,
-  Icon,
-  Button
-} from "antd";
+import { Col, Row, Pagination, Card, Select, Timeline, Form, Modal, Spin, Tooltip, Input, Icon, Button } from "antd";
 // import AppListCard from "./AppListCard";
 import {
   GET_WEBHOOKS,
@@ -213,7 +199,7 @@ class Hooks extends Component {
       visible: true,
       event: hook.event,
       id: hook.id,
-      headers: hook.headers,
+      headers: JSON.stringify(hook.headers).toString(),
       url: hook.url,
       method: hook.method
     });
@@ -222,8 +208,7 @@ class Hooks extends Component {
   render() {
     var options = this.state.eventTypes.map((item, index) => (
       <Option key={index} value={item.event}>
-        {" "}
-        {item.event}{" "}
+        {item.event}
       </Option>
     ));
     // const data = this.state.appsList?this.state.appsList:[]
