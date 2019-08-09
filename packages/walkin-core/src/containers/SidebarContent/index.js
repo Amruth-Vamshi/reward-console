@@ -89,12 +89,12 @@ class SidebarContent extends Component {
                 Customer Info
 							</Link>
             </Menu.Item> */}
-						<Menu.Item key="help">
-							{/* <Link to="/nearx"> */}
+						{/* <Menu.Item key="help">
+							 <Link to="/nearx"> 
 							<i className="icon icon-queries" />
 							<span>Help</span>
-							{/* </Link> */}
-						</Menu.Item>
+							 </Link> 
+						</Menu.Item> */}
 					</Menu>
 				</div>
 			</Auxiliary>
