@@ -38,8 +38,8 @@ export const configureClient = async () => {
         )
           message.warning(graphQLErrors[0].extensions.code);
         if (
-          graphQLErrors[0].message &&
-          graphQLErrors[0].message == "jwt expired"
+          graphQLErrors[0].extensions &&
+          graphQLErrors[0].extensions.code == "UNAUTHORIZED"
         ) {
           localStorage.clear();
           sessionStorage.clear();

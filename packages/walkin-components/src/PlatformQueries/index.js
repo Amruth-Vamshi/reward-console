@@ -3,10 +3,8 @@ import gql from "graphql-tag";
 export const USER_DATA = gql`
   query userData($userId:ID!) {
     user(id: $userId) {
-      firstName lastName
-      email  id roles {
-          id name policies {
-            id effect permission resource type
+      firstName lastName email  id roles {
+          id name policies { id effect permission resource type
         }
       }
     }
