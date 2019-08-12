@@ -40,6 +40,10 @@ export const configureClient = async () => {
           sessionStorage.clear();
           location.reload();
         }
+
+        if (graphQLErrors[0].message) {
+          message.warn(graphQLErrors[0].message)
+        }
       } else if (networkError) {
         message.error(
           "Hey! Regret to inform that we are experiencing some issues. Please check your internet connection or try again after sometime"

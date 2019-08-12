@@ -3,6 +3,7 @@ import AppList from '../../components/appList';
 import findIndex from 'lodash/findIndex';
 import forEach from 'lodash/forEach';
 import map from 'lodash/map';
+import { Spin } from "antd";
 import { withApollo } from "react-apollo";
 import jwt from "jsonwebtoken";
 
@@ -76,21 +77,6 @@ const apps = [
 		isProductAccessible: false
 	},
 ];
-//until API is ready
-const serviceAvailable = [
-	{
-		id: 1,
-		product: 'HyperX',
-	},
-	{
-		id: 2,
-		product: 'NearX',
-	},
-	{
-		id: 3,
-		product: 'RefineX',
-	},
-];
 
 class CoreLandingPage extends Component {
 	constructor(props) {
@@ -152,8 +138,17 @@ class CoreLandingPage extends Component {
 		const { apps } = this.state;
 		return (
 			<div>
-				<AppList apps={apps} />
-			</div>
+				{this.state.spin ?
+					<div>
+						<br /> <br /> <br /> <br />
+						<div className="divCenter">
+							<Spin size="large" />
+						</div>
+						<br /> <br /> <br />
+					</div>
+					:
+					<AppList apps={apps} />
+				}</div>
 		);
 	}
 }

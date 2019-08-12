@@ -180,7 +180,7 @@ export default class SettingsForm extends Component {
           this.setState({ loading: false, errors });
           message.warning("Invalid API key");
         } else {
-          keys = [{ name: GOOGLE_API_KEY, key: this.state.googleAPIkey, type: TYPE }];
+          keys = [{ name: GOOGLE_API_KEY, key: this.state.googleAPIkey.trim(), type: TYPE }];
 
           if (this.state.facebookAPIkey.trim() != '')
             keys.push({ name: FACEBOOK_API_KEY, key: this.state.facebookAPIkey, type: TYPE })

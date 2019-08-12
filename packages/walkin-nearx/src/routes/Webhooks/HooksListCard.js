@@ -13,10 +13,8 @@ export default class HooksListCard extends Component {
     if (e.key === 'Edit') {
       this.props.updateHook(this.props.data)
       // this.onEditContact()
-    } else if (e.key === 'Activate') {
-      // this.props.activateApp(this.props.data.id)
-    } else {
-      // this.onDeleteContact(this.props.contact)
+    } else if (e.key === 'Delete') {
+      this.props.deleteHook(this.props.data.id)
     }
   }}> {options.map(option =>
     <Menu.Item key={option}>  {option}  </Menu.Item>)}

@@ -17,7 +17,8 @@ import {
 import AppListCard from "./AppListCard";
 import {
   GET_ALL_APPS_OF_ORGANIZATION,
-  GENERATE_API_KEY
+  GENERATE_API_KEY,
+  DELETE_APP
 } from "@walkinsole/walkin-components/src/PlatformQueries";
 import jwt from "jsonwebtoken";
 import { withApollo } from "react-apollo";
@@ -67,44 +68,62 @@ class AppsList extends Component {
     const jwtData = jwt.decode(localStorage.getItem("jwt"));
 
     if (jwtData) {
-      this.props.client
-        .query({
-          query: GET_ALL_APPS_OF_ORGANIZATION,
-          variables: { id: jwtData.org_id },
-          fetchPolicy: "network-only"
-        })
-        .then(res => {
-          var apps = [];
-          let org = res.data.organization;
-
-          function recOrg(org, apps) {
-            if (org && org.applications)
-              org.applications.map(app =>
-                apps.push({
-                  id: app.id,
-                  org_id: org.id,
-                  appName: app.name,
-                  industry: org.name,
-                  platform: app.platform,
-                  discription: app.description
-                })
-              );
-            if (org && org.children) org.children.map(ch => recOrg(ch, apps));
-          }
-
-          recOrg(org, apps);
-          this.setState({ appsList: apps, spin: false });
-        })
-        .catch(err => {
-          this.setState({ spin: false });
-          message.error("ERROR");
-
-          console.log("Failed to get User Details" + err);
-        });
+      this.getAppsList(jwtData)
     } else {
       this.setState({ spin: false });
       console.log("Error getting JwtData");
     }
+  }
+
+  getAppsList = (jwtData) => {
+    this.props.client
+      .query({
+        query: GET_ALL_APPS_OF_ORGANIZATION,
+        variables: { id: jwtData.org_id },
+        fetchPolicy: "network-only"
+      })
+      .then(res => {
+        var apps = [];
+        let org = res.data.organization;
+
+        function recOrg(org, apps) {
+          if (org && org.applications)
+            org.applications.map(app =>
+              apps.push({
+                id: app.id,
+                org_id: org.id,
+                appName: app.name,
+                industry: org.name,
+                platform: app.platform,
+                discription: app.description
+              })
+            );
+          if (org && org.children) org.children.map(ch => recOrg(ch, apps));
+        }
+
+        recOrg(org, apps);
+        this.setState({ appsList: apps, spin: false });
+      })
+      .catch(err => {
+        this.setState({ spin: false });
+        message.error("ERROR");
+        console.log("Failed to get User Details" + err);
+      });
+  }
+
+  deleteApp = id => {
+    this.props.client
+      .mutate({
+        mutation: DELETE_APP,
+        variables: { id: id }
+      })
+      .then(res => {
+        // this.getAppsList(jwt.decode(localStorage.getItem("jwt")))
+      })
+      .catch(err => {
+        this.setState({ spin: false });
+        console.log("Failed to Delete App" + err);
+      });
   }
 
   genereteToken = (i, appId) => {
@@ -125,8 +144,8 @@ class AppsList extends Component {
   };
 
   render() {
-    // const data = this.state.appsList?this.state.appsList:[]
-    // console.log(data)
+    const data = this.state.appsList ? this.state.appsList : []
+    console.log(data)
     return (
       <div>
         <Row className="headerRow1">
@@ -172,6 +191,7 @@ class AppsList extends Component {
               <AppListCard
                 genereteToken={this.genereteToken}
                 history={this.props.history}
+                deleteApp={this.deleteApp}
                 test={this.test}
                 key={i}
                 index={i}
@@ -230,7 +250,7 @@ class AppsList extends Component {
                   <div style={{ textAlign: "center" }}>
                     <a
                       target="_blank"
-                      href="https://drive.google.com/open?id=1Xa2jX0GUqjpKGw-nAUHw2_fKpsReeAPx"
+                      href="https://drive.google.com/open?id=15Tb8DOEC3PwNQELuTy9NfnJvn-KEgzQy"
                     >
                       <Button
                         onClick={this.handleSubmit}
@@ -241,7 +261,7 @@ class AppsList extends Component {
                         Download SDK
                       </Button>
                     </a>
-                    <div style={{}}>NearX sdk file (213kb)</div>
+                    <div style={{}}>NearX sdk file (40kb)</div>
                   </div>
                 </div>
               </Col>
