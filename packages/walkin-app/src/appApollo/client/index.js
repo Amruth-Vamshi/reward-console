@@ -34,15 +34,11 @@ export const configureClient = async () => {
         console.log(graphQLErrors);
         if (
           graphQLErrors[0].extensions &&
-          graphQLErrors[0].extensions.code
-        )
-          message.warning(graphQLErrors[0].extensions.code);
-        if (
-          graphQLErrors[0].extensions &&
           graphQLErrors[0].extensions.code == "UNAUTHORIZED"
         ) {
           localStorage.clear();
           sessionStorage.clear();
+          location.reload();
         }
       } else if (networkError) {
         message.error(

@@ -6,6 +6,7 @@ import {
   Card,
   message,
   Timeline,
+  Empty,
   Modal,
   Spin,
   Tooltip,
@@ -146,13 +147,11 @@ class AppsList extends Component {
 
         {this.state.spin ? (
           <div>
-            {" "}
-            <br /> <br /> <br /> <br />{" "}
+            <br /> <br /> <br /> <br />
             <div className="divCenter">
-              {" "}
-              <Spin size="large" />{" "}
-            </div>{" "}
-            <br /> <br /> <br />{" "}
+              <Spin size="large" />
+            </div>
+            <br /> <br /> <br />
           </div>
         ) : this.state.appsList.length ? (
           <div>
@@ -180,8 +179,26 @@ class AppsList extends Component {
               />
             ))}
           </div>
-        ) : (
-              ""
+        ) : (<div>
+          {/* <Empty style={{ margin: 50 }} /> */}
+
+          <div style={{ margin: 80, fontSize: 25 }}>
+            <div className="divCenter">
+              <div>No Apps Found</div>
+            </div>
+            <div className="divCenter">
+              <Button
+                onClick={() => this.addApp()}
+                style={{ margin: 22, fontSize: 18 }}
+                className="buttonPrimary"
+              >
+                Create New App
+                      </Button>
+              {/* <div style={{margin:10, fontSize:20}}>Create A new Place</div> */}
+            </div>
+          </div>
+
+        </div>
             )}
         <Modal
           width="750px"
@@ -222,7 +239,7 @@ class AppsList extends Component {
                         style={{ margin: "0px 30px 10px 20px" }}
                       >
                         Download SDK
-                      </Button>{" "}
+                      </Button>
                     </a>
                     <div style={{}}>NearX sdk file (213kb)</div>
                   </div>
@@ -268,7 +285,6 @@ class AppsList extends Component {
                         dot={<Icon type="check-circle" theme="filled" />}
                         color="green"
                       >
-                        {" "}
                         Detected Geofence for hardcoded location
                       </Timeline.Item>
                       <Timeline.Item
@@ -280,14 +296,13 @@ class AppsList extends Component {
                     </Timeline>
                   </div>
                 </Col>
-              </Row>{" "}
+              </Row>
               <br />
               <Row>
                 <Col>
-                  <i
-                    style={{ margin: "20px 10px 20px 40px", fontSize: 20 }} //className='gx-text-primary gx-pointer'
+                  <i style={{ margin: "20px 10px 20px 40px", fontSize: 20 }} //className='gx-text-primary gx-pointer'
                   >
-                    Check Now{" "}
+                    Check Now
                   </i>
                 </Col>
               </Row>

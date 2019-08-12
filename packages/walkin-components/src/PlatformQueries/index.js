@@ -3,9 +3,11 @@ import gql from "graphql-tag";
 export const USER_DATA = gql`
   query userData($userId:ID!) {
     user(id: $userId) {
-      firstName lastName email  id roles {
-          id name policies { id effect permission resource type
-        }
+      firstName lastName email  id 
+      # permissionMap(types:[UI])
+      roles {
+          id name 
+          # policies { id effect permission resource type }
       }
     }
   }
@@ -68,16 +70,16 @@ mutation createWebhook($input:WebhookAddInput){
   }
 }`
 
-// export const GET_ALL_ORGANIZATION_HIERARCHIES = gql`
-//      query{ organizationHierarchies{ id name address code status phoneNumber website 
-//   children{name id children{name id children{ name id children{name id children{name id}}}}} }
-// }`
 
-// export const GET_ALL_ORGANIZATION = gql`
-//      query { organizationHierarchies {
-//        id name address code status phoneNumber website
-//      }
-// }`
+export const GET_PRODUCTS = gql` 
+query organization($id:ID!){
+  organization(id: $id) {
+    id name walkinProducts {
+      id name status description latest_version 
+    }
+  }
+}
+`
 
 export const GENERATE_API_KEY = gql`
 mutation generateAPIKey($id: ID!){

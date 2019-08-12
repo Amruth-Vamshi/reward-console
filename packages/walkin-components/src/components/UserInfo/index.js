@@ -19,7 +19,8 @@ class UserInfo extends Component {
     console.log("Logout");
     sessionStorage.clear();
     localStorage.clear();
-    this.props.history.push('/');
+    // this.props.history.push('/');
+    location.reload();
   };
   org = () => this.props.history.push(`/core/organization/${this.state.org_id}`);
   componentWillMount() {
