@@ -24,10 +24,10 @@ query organization($id:ID!){
 
 
 export const CREATE_USER = gql`
-	mutation createUser($input:UserCreateInput!){
-	createUser( input : $input ){
-		id email firstName lastName status
-	}
+  mutation addUserToOrganization($Orgid:ID!, $rollId:ID!, $user:UserCreateInput! ){
+    addUserToOrganization(organization_id:$Orgid  role_id:$rollId userData:$user){
+      id email firstName lastName status roles{ id name }
+    }
 }`
 
 export const CREATE_APP = gql`

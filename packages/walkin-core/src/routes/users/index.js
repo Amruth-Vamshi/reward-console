@@ -24,6 +24,10 @@ class Users extends Component {
   }
 
   componentWillMount() {
+    this.getUsers()
+  }
+
+  getUsers = () => {
     const { id, org_id } = jwt.decode(localStorage.getItem("jwt"));
     this.setState({ spin: true, userId: id, org_id });
 
@@ -75,6 +79,11 @@ class Users extends Component {
   showModal = () => this.setState({ visible: true });
   handleCancel = () => this.setState({ visible: false })
 
+  userCreated = () => {
+    this.setState({ visible: false })
+    this.getUsers()
+  }
+
   render() {
     return (
       <div>
@@ -111,7 +120,7 @@ class Users extends Component {
           title={null} footer={null}
         >
 
-          <CreateUser org_id={this.state.org_id} handleCancel={this.handleCancel} />
+          <CreateUser userCreated={this.userCreated} org_id={this.state.org_id} handleCancel={this.handleCancel} />
         </Modal>
       </div>
     );

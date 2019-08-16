@@ -80,7 +80,7 @@ class AppsList extends Component {
       .query({
         query: GET_ALL_APPS_OF_ORGANIZATION,
         variables: { id: jwtData.org_id },
-        fetchPolicy: "network-only"
+        fetchPolicy: "no-cache"
       })
       .then(res => {
         var apps = [];
