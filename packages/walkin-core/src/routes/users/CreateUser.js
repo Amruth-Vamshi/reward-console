@@ -18,10 +18,14 @@ class CreateUser extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            loading: false,
             visible: false,
             errors: {},
             organizations: [],
-            rolesList: []
+            rolesList: [],
+            user: {},
+            roleId: '',
+            orgId: ''
         };
     }
 
@@ -60,6 +64,58 @@ class CreateUser extends Component {
             .catch(err => {
                 console.log("Failed to get Organization Details" + err);
             })
+
+    }
+
+    createUser = () => {
+
+        this.setState({ loading: true });
+        let errors = {};
+        if (!this.state.user.firstName || this.state.user.firstName.trim() == "") errors.firstName = "* this field is mandatory";
+        if (!this.state.user.lastName || this.state.user.lastName.trim() == "") errors.lastName = "* this field is mandatory";
+        if (!this.state.user.password || this.state.user.password.trim() == "") errors.password = "* this field is mandatory";
+        if (!this.state.user.email || this.state.user.email.trim() == "") errors.email = "* this field is mandatory";
+        if (this.state.roleId == "") errors.roleId = "* this field is mandatory";
+        if (this.state.orgId == "") errors.orgId = "* this field is mandatory";
+
+        if (Object.keys(errors).length !== 0) {
+            this.setState({ errors, loading: false });
+            console.log("Errors in submition" + Object.keys(errors).length);
+        } else {
+
+
+            this.props.client
+                .mutate({
+                    mutation: CREATE_USER,
+                    variables: { Orgid: this.state.orgId, rollId: this.state.roleId, user: this.state.user }
+                }).then(res => {
+                    console.log(res.data);
+                    this.setState({ loading: false })
+                    this.props.userCreated()
+                }).catch(err => {
+                    this.setState({ loading: false })
+                    console.log("Failed to create User" + err);
+                })
+        }
+    }
+
+    onChangeRole = e => {
+        let { errors } = this.state;
+        errors.roleId = "";
+        this.setState({ roleId: e, errors });
+    }
+
+    onChangeOrg = e => {
+        let { errors } = this.state;
+        errors.orgId = "";
+        this.setState({ orgId: e, errors });
+    }
+
+    handleOnChange = e => {
+        let { user, errors } = this.state
+        user[e.target.name] = e.target.value
+        if (e.target.value != "") errors[e.target.name] = ''
+        this.setState({ user, errors })
     }
 
     render() {
@@ -85,7 +141,7 @@ class CreateUser extends Component {
                         <Input
                             required
                             placeholder="First Name"
-                            value={this.state.firstName}
+                            value={this.state.user.firstName}
                             size="large"
                             name="firstName"
                             onChange={c => this.handleOnChange(c)}
@@ -97,7 +153,7 @@ class CreateUser extends Component {
                         <Input
                             required
                             placeholder="Last Name"
-                            value={this.state.lastName}
+                            value={this.state.user.lastName}
                             size="large"
                             name="lastName"
                             onChange={c => this.handleOnChange(c)}
@@ -109,7 +165,7 @@ class CreateUser extends Component {
                         <Input
                             required
                             placeholder="Email"
-                            value={this.state.email}
+                            value={this.state.user.email}
                             size="large"
                             name="email"
                             onChange={c => this.handleOnChange(c)}
@@ -117,6 +173,17 @@ class CreateUser extends Component {
                         <span style={{ color: "Red" }}>{this.state.errors.email}</span>
                     </Form.Item>
 
+                    <Form.Item {...formItemLayout}>
+                        <Input
+                            required type='password'
+                            placeholder="Password"
+                            value={this.state.user.password}
+                            size="large"
+                            name="password"
+                            onChange={c => this.handleOnChange(c)}
+                        />
+                        <span style={{ color: "Red" }}>{this.state.errors.password}</span>
+                    </Form.Item>
 
                     <Form.Item {...formItemLayout}>
                         <Select
@@ -131,7 +198,7 @@ class CreateUser extends Component {
                         >
                             {roleOptions}
                         </Select>
-                        <span style={{ color: "Red" }}>{this.state.errors.role}</span>
+                        <span style={{ color: "Red" }}>{this.state.errors.roleId}</span>
                     </Form.Item>
 
                     <Form.Item {...formItemLayout}>
@@ -146,7 +213,7 @@ class CreateUser extends Component {
                         >
                             {options}
                         </Select>
-                        <span style={{ color: "Red" }}>{this.state.errors.org}</span>
+                        <span style={{ color: "Red" }}>{this.state.errors.orgId}</span>
                     </Form.Item>
 
                     {/* <Form.Item {...formItemLayout}>
@@ -171,7 +238,7 @@ class CreateUser extends Component {
                         <Button
                             loading={this.state.loading}
                             type='primary'
-                            onClick={() => this.createHook()}
+                            onClick={() => this.createUser()}
                             className="buttonPrimary"
                             style={{
                                 textAlign: "center",

@@ -4,14 +4,14 @@ import { Col, Row, Dropdown, Menu, Card, Icon, Tooltip, Button, Input } from "an
 const options = [
   // 'Activate',
   'Edit',
-  //'Delete',
+  // 'Delete',
 ];
 
 export default class AppListCard extends Component {
 
   menus = () => (<Menu onClick={(e) => {
-    if (e.key === 'Activate') {
-      this.props.activateApp(this.props.data.id)
+    if (e.key === 'Delete') {
+      this.props.deleteApp(this.props.data.id)
     } else if (e.key === 'Edit') {
       sessionStorage.setItem("AppData", JSON.stringify(this.props.data));
       this.props.history.push("/nearx/apps/create");

@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 import { Card, Avatar, Row, Col } from 'antd';
+import org from "@walkinsole/walkin-components/src/assets/images/org.png";
 import './style.css';
 
 const OrgCardDetails = ({ orgDetails }) => {
@@ -7,7 +8,7 @@ const OrgCardDetails = ({ orgDetails }) => {
 		<Card className="gx-product-item " style={{ marginTop: '10px' }}>
 			<Row>
 				<Col span={2}>
-					<Avatar size={64} shape="square" icon="user" />
+					<Avatar size={64} shape="square" src={org} icon="user" />
 				</Col>
 				<Col span={22}>
 					<div>
@@ -25,16 +26,16 @@ const OrgCardDetails = ({ orgDetails }) => {
 								{orgDetails.org.addressLine1
 									? orgDetails.org.addressLine1
 									: '' + ', ' + orgDetails.org.addressLine2
-									? orgDetails.org.addressLine2
-									: '' + ', ' + orgDetails.org.city
-									? orgDetails.org.city
-									: '' + ', ' + orgDetails.org.state
-									? orgDetails.org.state
-									: '' + ', ' + orgDetails.org.country
-									? orgDetails.org.country
-									: '' + ', ' + orgDetails.org.pinCode
-									? orgDetails.org.pinCode
-									: ''}
+										? orgDetails.org.addressLine2
+										: '' + ', ' + orgDetails.org.city
+											? orgDetails.org.city
+											: '' + ', ' + orgDetails.org.state
+												? orgDetails.org.state
+												: '' + ', ' + orgDetails.org.country
+													? orgDetails.org.country
+													: '' + ', ' + orgDetails.org.pinCode
+														? orgDetails.org.pinCode
+														: ''}
 							</Col>
 						</Row>
 						<Row className="orgCardTitleStyle">

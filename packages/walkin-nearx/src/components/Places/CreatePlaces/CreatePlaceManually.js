@@ -53,11 +53,11 @@ export default class CreatePlaceManually extends Component {
   }
 
   componentWillMount() {
-    this.getGeoLocation(0);
 
     sessionStorage.getItem("placeId")
       ? this.getPlaceDetails(JSON.parse(sessionStorage.getItem("placeId")))
-      : "";
+      : this.getGeoLocation(0);
+
     sessionStorage.removeItem("placeId");
   }
 

@@ -25,14 +25,8 @@ const AppList = ({ apps }) => {
 										</Card>
 									</Link>
 								) : (
-										<Card
-											style={{ backgroundColor: '#dedede' }}
-											cover={
-												<i
-													style={{ color: '#b9b5b5' }}
-													className={`${app.icon} gx-fs-icon-lg appIconStyle `}
-												/>
-											}
+										<Card style={{ backgroundColor: '#dedede' }}
+											cover={<i style={{ color: '#b9b5b5' }} className={`${app.icon} gx-fs-icon-lg appIconStyle `} />}
 											className="gx-product-item gx-product-vertical"
 										>
 											<div style={{ color: '#b9b5b5' }} className="h4 gx-text-capitalize gx-mb-0">
