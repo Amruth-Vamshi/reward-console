@@ -1,25 +1,12 @@
 import React, { Component } from "react";
-import {
-  Col,
-  Row,
-  Pagination,
-  Card,
-  Select,
-  Timeline,
-  Form,
-  Modal,
-  Spin,
-  Tooltip,
-  Input,
-  Icon,
-  Button
-} from "antd";
+import { Col, Row, Pagination, Card, Select, Timeline, Form, Modal, Spin, Tooltip, Input, Icon, Button } from "antd";
 // import AppListCard from "./AppListCard";
 import {
   GET_WEBHOOKS,
   LIST_WEBHOOK_EVENTS,
   CREATE_WEBHOOK,
-  UPDATE_WEBHOOK
+  UPDATE_WEBHOOK,
+  DELETE_WEBHOOK
 } from "@walkinsole/walkin-components/src/PlatformQueries";
 import jwt from "jsonwebtoken";
 import { withApollo } from "react-apollo";
@@ -76,17 +63,17 @@ class Hooks extends Component {
   handleCancel = () => {
     this.state.update
       ? this.setState({
-          visible: false,
-          errors: {},
-          hookName: "",
-          event: "",
-          update: false,
-          id: "",
-          headers: "",
-          url: "",
-          method: "",
-          loading: false
-        })
+        visible: false,
+        errors: {},
+        hookName: "",
+        event: "",
+        update: false,
+        id: "",
+        headers: "",
+        url: "",
+        method: "",
+        loading: false
+      })
       : this.setState({ visible: false, update: false });
   };
 
@@ -108,18 +95,19 @@ class Hooks extends Component {
 
     jwtData
       ? this.props.client
-          .query({
-            query: GET_WEBHOOKS,
-            variables: { org_id: jwtData.org_id, status: "ACTIVE" },
-            fetchPolicy: "network-only"
-          })
-          .then(res => {
-            console.log(res.data.webhooks);
-            this.setState({ hooksList: res.data.webhooks, spin: false });
-          })
-          .catch(err => {
-            console.log("Failed to get User Details" + err);
-          })
+        .query({
+          query: GET_WEBHOOKS,
+          variables: { org_id: jwtData.org_id, status: "ACTIVE" },
+          fetchPolicy: "network-only"
+        })
+        .then(res => {
+          console.log(res.data.webhooks);
+          this.setState({ hooksList: res.data.webhooks, spin: false });
+        })
+        .catch(err => {
+          this.setState({ spin: false });
+          console.log("Failed to get User Details" + err);
+        })
       : console.log("Error getting JwtData");
   };
 
@@ -139,6 +127,22 @@ class Hooks extends Component {
     errors[e.target.name] = "";
     this.setState({ [e.target.name]: e.target.value, errors });
   };
+
+  deleteHook = id => {
+    this.props.client
+      .mutate({
+        mutation: DELETE_WEBHOOK,
+        variables: { input: { id: id } }
+      })
+      .then(res => {
+        console.log("Results", res);
+        this.getWebhooks();
+      })
+      .catch(err => {
+        this.setState({ loading: false });
+        console.log("Failed to Delete Hooks" + err);
+      });
+  }
 
   createHook = () => {
     this.setState({ loading: true });
@@ -175,7 +179,7 @@ class Hooks extends Component {
           })
           .catch(err => {
             this.setState({ loading: false });
-            console.log("Failed to get Places Details" + err);
+            console.log("Failed to get Hooks Details" + err);
           });
       } else {
         this.props.client
@@ -212,7 +216,7 @@ class Hooks extends Component {
       visible: true,
       event: hook.event,
       id: hook.id,
-      headers: hook.headers,
+      headers: JSON.stringify(hook.headers).toString(),
       url: hook.url,
       method: hook.method
     });
@@ -221,8 +225,7 @@ class Hooks extends Component {
   render() {
     var options = this.state.eventTypes.map((item, index) => (
       <Option key={index} value={item.event}>
-        {" "}
-        {item.event}{" "}
+        {item.event}
       </Option>
     ));
     // const data = this.state.appsList?this.state.appsList:[]
@@ -247,13 +250,12 @@ class Hooks extends Component {
 
         {this.state.spin ? (
           <div>
-            {" "}
-            <br /> <br /> <br /> <br />{" "}
+
+            <br /> <br /> <br /> <br />
             <div className="divCenter">
-              {" "}
-              <Spin size="large" />{" "}
-            </div>{" "}
-            <br /> <br /> <br />{" "}
+              <Spin size="large" />
+            </div>
+            <br /> <br /> <br />
           </div>
         ) : this.state.hooksList.length ? (
           <div>
@@ -269,25 +271,26 @@ class Hooks extends Component {
                 key={i}
                 index={i}
                 updateHook={this.updateHook}
+                deleteHook={this.deleteHook}
                 data={item}
               />
             ))}
           </div>
         ) : (
-          <div style={{ margin: 100, fontSize: 25 }}>
-            <div className="divCenter">No Hooks Present</div>
-            <div className="divCenter">
-              <Button
-                style={{ margin: 30, fontSize: 18 }}
-                onClick={() => this.addHook()}
-                className="buttonPrimary"
-              >
-                Create New Hook
+              <div style={{ margin: 100, fontSize: 25 }}>
+                <div className="divCenter">No Hooks Present</div>
+                <div className="divCenter">
+                  <Button
+                    style={{ margin: 30, fontSize: 18 }}
+                    onClick={() => this.addHook()}
+                    className="buttonPrimary"
+                  >
+                    Create New Hook
               </Button>
-              {/* <div style={{margin:10, fontSize:20}}>Create A new Place</div> */}
-            </div>
-          </div>
-        )}
+                  {/* <div style={{margin:10, fontSize:20}}>Create A new Place</div> */}
+                </div>
+              </div>
+            )}
 
         <Modal
           width="600px"
@@ -311,22 +314,22 @@ class Hooks extends Component {
             {this.state.update ? (
               ""
             ) : (
-              <Form.Item {...formItemLayout} label="Event Type">
-                <Select
-                  showSearch
-                  size="large"
-                  style={{ width: "100%" }}
-                  placeholder="Select Event Type"
-                  // value = { auth.user.organization.name }
-                  optionFilterProp="children"
-                  onChange={this.onChange}
+                <Form.Item {...formItemLayout} label="Event Type">
+                  <Select
+                    showSearch
+                    size="large"
+                    style={{ width: "100%" }}
+                    placeholder="Select Event Type"
+                    // value = { auth.user.organization.name }
+                    optionFilterProp="children"
+                    onChange={this.onChange}
                   // onSearch={onSearch}
-                >
-                  {options}
-                </Select>
-                <span style={{ color: "Red" }}>{this.state.errors.event}</span>
-              </Form.Item>
-            )}
+                  >
+                    {options}
+                  </Select>
+                  <span style={{ color: "Red" }}>{this.state.errors.event}</span>
+                </Form.Item>
+              )}
 
             <Form.Item {...formItemLayout} label="Method">
               <Select
@@ -336,7 +339,7 @@ class Hooks extends Component {
                 optionFilterProp="children"
                 value={this.state.method}
                 onChange={this.onChangeMethod}
-                // onSearch={onSearch}
+              // onSearch={onSearch}
               >
                 <Option value="POST">POST</Option>
                 <Option value="GET">GET</Option>

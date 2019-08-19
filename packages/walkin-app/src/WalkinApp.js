@@ -28,7 +28,6 @@ class WalkinApp extends Component {
     const { client } = this.state;
     return client ? (
       <ErrorBoundary>
-        {console.log('env>>', process.env.NODE_ENV)}
         <ApolloProvider client={client}>
           <BrowserRouter>
             <Switch>

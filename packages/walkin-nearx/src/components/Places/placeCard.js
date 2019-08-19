@@ -3,8 +3,8 @@ import { Col, Row, Dropdown, Menu, Card, Button, Divider } from "antd";
 // import CreatePlaces from '../../routes/Places/CreatePlaces/CreatePlaces';
 
 const options = [
-  "Edit"
-  // 'Delete',
+  "Edit",
+  'Delete'
 ];
 export default class placeCard extends Component {
 
@@ -13,8 +13,8 @@ export default class placeCard extends Component {
     if (e.key === 'Edit') {
       sessionStorage.setItem("placeId", JSON.stringify(this.props.data.id));
       this.props.history.push('/nearx/places/createplace/manually')
-    } else {
-      // this.onDeleteContact(this.props.contact)
+    } else if (e.key === 'Delete') {
+      this.props.disablePlace(this.props.data.id)
     }
   }}> {options.map(option =>
     <Menu.Item key={option}>  {option}  </Menu.Item>)}

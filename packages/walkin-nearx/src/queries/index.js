@@ -37,7 +37,7 @@ query Places($limit: Int!, $offset: Int!, $search:String){
 
 export const GET_NAERBY_PLACES = gql`
 query getNearByPlaces($location:LocationGeometry!, $limit: Int!, $offset: Int!, $distance:Int){
-  getNearByPlaces(limit:$limit,offset:$offset,distance:$distance, LocationGeometry:$location){
+  getNearByPlaces(limit:$limit,offset:$offset,distance:$distance, locationGeometry:$location){
     places{
       id
       geofenceName
@@ -71,7 +71,7 @@ query place($id:ID!){
 
 export const CREATE_GROUP_OF_PLACES = gql`
 mutation createPlaces($groupName:String!,$places:[PlaceInput]!) {
-  createPlaces(GroupName:$groupName,PlaceInput:$places){
+  createPlaces(groupName:$groupName,placeInput:$places){
     places{id}
     group{
       id
@@ -82,7 +82,7 @@ mutation createPlaces($groupName:String!,$places:[PlaceInput]!) {
 
 export const CREATE_PLACE = gql`
 mutation createOrUpdatePlace($places:[PlaceInput]!) {
-  createOrUpdatePlace(PlaceInput:$places){
+  createOrUpdatePlace(placeInput:$places){
     id
     hotspots{
       id
@@ -99,8 +99,22 @@ mutation createOrUpdatePlace($places:[PlaceInput]!) {
   }
 }`
 
+export const DISABLE_PLACES = gql`
+mutation disableGeofence($id:ID!) {
+  disableGeofence(id:$id){
+      id enabled
+  }
+}`
+
+export const CREATE_APP = gql`
+mutation CreateNearXApplication($organizationId:ID!,$input:ApplicationInput!) {
+  CreateNearXApplication(organizationId:$organizationId  ApplicationInput: $input){
+    id  name platform organization{ id name }
+  }
+}`
+
 export const GET_CONFIGURATION = gql`
-query{
+query getConfiguration{
   getConfiguration{
     id name key type orgId
     createdBy
@@ -112,7 +126,7 @@ query{
 
 export const SET_CONFIGURATION = gql`
 mutation setConfiguration($input: [ConfigInput]!){
-  setConfiguration(ConfigInput:$input){
+   setConfiguration(configInput:$input){
     id
     key
     type
@@ -123,3 +137,5 @@ mutation setConfiguration($input: [ConfigInput]!){
     lastModifiedTime
   }
 }`
+
+

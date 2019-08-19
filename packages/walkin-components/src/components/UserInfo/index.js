@@ -19,9 +19,10 @@ class UserInfo extends Component {
     console.log("Logout");
     sessionStorage.clear();
     localStorage.clear();
-    this.props.history.push('/');
+    // this.props.history.push('/');
+    location.reload();
   };
-
+  org = () => this.props.history.push(`/core/organization/${this.state.org_id}`);
   componentWillMount() {
     const { id, org_id } = jwt.decode(localStorage.getItem("jwt"));
     this.setState({ userId: id, org_id });
@@ -50,8 +51,9 @@ class UserInfo extends Component {
     let { firstName, lastName, user } = this.state;
     const userMenuOptions = (
       <ul className="gx-user-popover">
-        {/* <li>My Account</li>
-        <li>Connections</li> */}
+        {/* <li>My Account</li>*/}
+        <li onClick={() => this.org()}>
+          <Link to={`/core/organization/${this.state.org_id}`}> Organization </Link></li>
         <li onClick={() => this.logout()}>
           <Link to="/signin"> Logout </Link>
         </li>
@@ -63,13 +65,13 @@ class UserInfo extends Component {
         overlayClassName="gx-popover-horizantal"
         placement="bottomRight"
         content={userMenuOptions}
-        trigger="click"
+      // trigger="click"
       >
         {firstName ? (
           <div className="gx-flex-row gx-align-items-center gx-pointer">
             <p style={{ color: "white" }} className="gx-mb-0 gx-d-none gx-d-sm-flex">
               {firstName + "  " + `${lastName ? lastName : " "}`}
-            </p>{" "}
+            </p>
             &nbsp;
             {/* <img className="gx-rounded-circle gx-size-30 gx-mr-2 gx-ml-2" src='https://via.placeholder.com/150x150' alt="" /> */}
             {/*&nbsp; <Avatar src='https://via.placeholder.com/100x100'

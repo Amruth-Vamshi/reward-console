@@ -3,10 +3,11 @@ import { Col, Card, Row, Select, Form, Input, Button, Icon } from "antd";
 import "../../styles/app.css";
 import {
   GET_ALL_APPS_OF_ORGANIZATION,
-  CREATE_APP,
   USER_DATA,
   UPDATE_APP
 } from "@walkinsole/walkin-components/src/PlatformQueries";
+import { nearXClient } from "../../nearXApollo";
+import { CREATE_APP } from "../../queries";
 import jwt from "jsonwebtoken";
 import { withApollo, compose, graphql } from "react-apollo";
 import gql from "graphql-tag";
@@ -63,7 +64,7 @@ class AppCreation extends Component {
     });
   };
 
-  componentDidMount() {}
+  componentDidMount() { }
 
   componentWillMount() {
     const { id, org_id } = jwt.decode(localStorage.getItem("jwt"));
@@ -76,43 +77,43 @@ class AppCreation extends Component {
 
     id
       ? this.props.client
-          .query({
-            query: USER_DATA,
-            variables: { userId: id },
-            fetchPolicy: "cache-first"
-          })
-          .then(res => {
-            console.log(res.data.user);
-            this.setState({
-              firstName: res.data.user.firstName,
-              lastName: res.data.user.lastName
-            });
-          })
-          .catch(err => console.log("Failed to get User Details" + err))
+        .query({
+          query: USER_DATA,
+          variables: { userId: id },
+          fetchPolicy: "cache-first"
+        })
+        .then(res => {
+          console.log(res.data.user);
+          this.setState({
+            firstName: res.data.user.firstName,
+            lastName: res.data.user.lastName
+          });
+        })
+        .catch(err => console.log("Failed to get User Details" + err))
       : console.log("Error getting JwtData");
 
     org_id
       ? this.props.client
-          .query({
-            query: GET_ALL_APPS_OF_ORGANIZATION,
-            variables: { id: org_id },
-            fetchPolicy: "network-only" // skip the cache
-          })
-          .then(res => {
-            console.log(res.data);
-            var orgs = [];
-            let org = res.data.organization;
+        .query({
+          query: GET_ALL_APPS_OF_ORGANIZATION,
+          variables: { id: org_id },
+          fetchPolicy: "network-only" // skip the cache
+        })
+        .then(res => {
+          console.log(res.data);
+          var orgs = [];
+          let org = res.data.organization;
 
-            function recOrg(org, orgs) {
-              orgs.push({ name: org.name, id: org.id });
-              if (org && org.children) org.children.map(ch => recOrg(ch, orgs));
-            }
-            recOrg(org, orgs);
-            this.setState({ organizations: orgs });
-          })
-          .catch(err => {
-            console.log("Failed to get User Details" + err);
-          })
+          function recOrg(org, orgs) {
+            orgs.push({ name: org.name, id: org.id });
+            if (org && org.children) org.children.map(ch => recOrg(ch, orgs));
+          }
+          recOrg(org, orgs);
+          this.setState({ organizations: orgs });
+        })
+        .catch(err => {
+          console.log("Failed to get User Details" + err);
+        })
       : console.log("Error getting JwtData");
   }
 
@@ -162,7 +163,7 @@ class AppCreation extends Component {
           });
       } else {
         this.setState({ loading: true });
-        this.props.client
+        nearXClient
           .mutate({
             mutation: CREATE_APP,
             variables: {
@@ -277,30 +278,30 @@ class AppCreation extends Component {
                   {this.state.update ? (
                     ""
                   ) : (
-                    <Form.Item {...formItemLayout} label="Industry">
-                      <Select
-                        showSearch
-                        size="large"
-                        style={{ width: "100%" }}
-                        placeholder="Select Industy"
-                        // value = { auth.user.organization.name }
-                        optionFilterProp="children"
-                        onChange={this.onChange}
-                        // onSearch={onSearch}
-                        filterOption={(input, option) =>
-                          option.props.children
-                            .toLowerCase()
-                            .indexOf(input.toLowerCase()) >= 0
-                        }
-                      >
-                        {/* <Option value={auth.user.organization.name}>{auth.user.organization?auth.user.organization.name:''}</Option> */}
-                        {options}
-                      </Select>
-                      <span style={{ color: "Red" }}>
-                        {this.state.errors.organizationId}
-                      </span>
-                    </Form.Item>
-                  )}
+                      <Form.Item {...formItemLayout} label="Industry">
+                        <Select
+                          showSearch
+                          size="large"
+                          style={{ width: "100%" }}
+                          placeholder="Select Industy"
+                          // value = { auth.user.organization.name }
+                          optionFilterProp="children"
+                          onChange={this.onChange}
+                          // onSearch={onSearch}
+                          filterOption={(input, option) =>
+                            option.props.children
+                              .toLowerCase()
+                              .indexOf(input.toLowerCase()) >= 0
+                          }
+                        >
+                          {/* <Option value={auth.user.organization.name}>{auth.user.organization?auth.user.organization.name:''}</Option> */}
+                          {options}
+                        </Select>
+                        <span style={{ color: "Red" }}>
+                          {this.state.errors.organizationId}
+                        </span>
+                      </Form.Item>
+                    )}
 
                   <Form.Item {...formItemLayout} label="Description (Optional)">
                     <Input

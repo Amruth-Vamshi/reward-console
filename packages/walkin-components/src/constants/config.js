@@ -8,7 +8,7 @@ if (process.env.NODE_ENV == 'production' || process.env.NODE_ENV == 'prod') env 
 const client = {
     development: {
         GRAPHQL_URL: "https://dev-api.getwalkin.in/core_dev/graphql",
-        NEARX_GRAPHQL_URL: "hhttp://167.99.31.169:3001/nearx/graphql",
+        NEARX_GRAPHQL_URL: "https://dev-api.getwalkin.in/nearx_dev/graphql",
     },
     production: {
         GRAPHQL_URL: "https://dev-api.getwalkin.in/core/graphql",
@@ -16,7 +16,7 @@ const client = {
     },
     default: {
         GRAPHQL_URL: "https://dev-api.getwalkin.in/core_dev/graphql",
-        NEARX_GRAPHQL_URL: "hhttp://167.99.31.169:3001/nearx/graphql",
+        NEARX_GRAPHQL_URL: "https://dev-api.getwalkin.in/nearx_dev/graphql",
     }
 }
 
