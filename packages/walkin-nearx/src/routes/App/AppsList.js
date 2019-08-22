@@ -1,19 +1,5 @@
 import React, { Component } from "react";
-import {
-  Col,
-  Row,
-  Pagination,
-  Card,
-  message,
-  Timeline,
-  Empty,
-  Modal,
-  Spin,
-  Tooltip,
-  Input,
-  Icon,
-  Button
-} from "antd";
+import { Col, Row, message, Timeline, Empty, Modal, Spin, Tooltip, Input, Icon, Button } from "antd";
 import AppListCard from "./AppListCard";
 import {
   GET_ALL_APPS_OF_ORGANIZATION,
@@ -22,6 +8,7 @@ import {
 } from "@walkinsole/walkin-components/src/PlatformQueries";
 import jwt from "jsonwebtoken";
 import { withApollo } from "react-apollo";
+import conf from '@walkinsole/walkin-components/src/constants/config'
 // import { nearXClient as client } from "../../nearXApollo";
 const { TextArea } = Input;
 
@@ -130,7 +117,7 @@ class AppsList extends Component {
     this.props.client
       .mutate({
         mutation: GENERATE_API_KEY,
-        variables: { id: appId }
+        variables: { id: appId, env: conf.env }
       })
       .then(res => {
         let { appsList } = this.state;

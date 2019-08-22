@@ -15,10 +15,10 @@ const Cylinder3DChart = () => {
       "country": "China",
       "visits": 1882,
       "color": "#FF6600"
-    // }, {
-    //   "country": "Japan",
-    //   "visits": 1809,
-    //   "color": "#FF9E01"
+      // }, {
+      //   "country": "Japan",
+      //   "visits": 1809,
+      //   "color": "#FF9E01"
     }, {
       "country": "Germany",
       "visits": 1322,
@@ -33,34 +33,34 @@ const Cylinder3DChart = () => {
       "color": "#B0DE09"
 
 
-    // }, {
-    //   "country": "India",
-    //   "visits": 984,
-    //   "color": "#04D215"
-    // }, {
-    //   "country": "Spain",
-    //   "visits": 711,
-    //   "color": "#0D8ECF"
-    // }, {
-    //   "country": "Netherlands",
-    //   "visits": 665,
-    //   "color": "#0D52D1"
-    // }, {
-    //   "country": "Russia",
-    //   "visits": 580,
-    //   "color": "#2A0CD0"
-    // }, {
-    //   "country": "South Korea",
-    //   "visits": 443,
-    //   "color": "#8A0CCF"
-    // }, {
-    //   "country": "Canada",
-    //   "visits": 441,
-    //   "color": "#CD0D74"
-    // }, {
-    //   "country": "Brazil",
-    //   "visits": 395,
-    //   "color": "#754DEB"
+      // }, {
+      //   "country": "India",
+      //   "visits": 984,
+      //   "color": "#04D215"
+      // }, {
+      //   "country": "Spain",
+      //   "visits": 711,
+      //   "color": "#0D8ECF"
+      // }, {
+      //   "country": "Netherlands",
+      //   "visits": 665,
+      //   "color": "#0D52D1"
+      // }, {
+      //   "country": "Russia",
+      //   "visits": 580,
+      //   "color": "#2A0CD0"
+      // }, {
+      //   "country": "South Korea",
+      //   "visits": 443,
+      //   "color": "#8A0CCF"
+      // }, {
+      //   "country": "Canada",
+      //   "visits": 441,
+      //   "color": "#CD0D74"
+      // }, {
+      //   "country": "Brazil",
+      //   "visits": 395,
+      //   "color": "#754DEB"
 
 
     }, {
@@ -107,7 +107,7 @@ const Cylinder3DChart = () => {
   };
   return (
     <div className="App">
-      <AmCharts.React style={{width: "100%", height: "300px"}} options={config}/>
+      <AmCharts.React style={{ width: "100%", height: "300px" }} options={config} />
     </div>
   )
 }
