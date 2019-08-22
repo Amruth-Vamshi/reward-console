@@ -87,8 +87,8 @@ mutation deleteWebhook( $input: WebhookDeleteInput ) {
 
 
 export const GENERATE_API_KEY = gql`
-mutation generateAPIKey($id: ID!){
-  generateAPIKey(id:$id){
+mutation generateAPIKey($id: ID!,$env: String){
+  generateAPIKey(id:$id,environment: $env){
     api_key
   }
 }`
