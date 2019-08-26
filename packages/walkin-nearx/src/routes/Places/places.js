@@ -1,15 +1,5 @@
 import React, { Component } from "react";
-import {
-  Col,
-  Row,
-  Spin,
-  Pagination,
-  Card,
-  message,
-  Input,
-  Icon,
-  Button
-} from "antd";
+import { Col, Row, Spin, Pagination, Card, message, Input, Icon, Button } from "antd";
 import { Link } from "react-router-dom";
 import { Auxiliary, CustomScrollbars } from "@walkinsole/walkin-components";
 import "../../styles/places.css";
@@ -77,7 +67,7 @@ export default class Places extends Component {
       })
       .then(res => {
         console.log(res);
-        this.getPlacesData(this.state.offset*7, 7, '', 'network-only')
+        this.getPlacesData(this.state.offset * 7, 7, '', 'network-only')
       })
       .catch(err => {
         this.setState({ spin: false });
@@ -95,7 +85,7 @@ export default class Places extends Component {
 
   pagination = (e, n) => {
     this.getPlacesData((e - 1) * n, n, this.state.search, 'cache-first');
-    this.setState({ offset: e-1 })
+    this.setState({ offset: e - 1 })
   };
 
   handleSearchSubmit = () => {
@@ -173,7 +163,7 @@ export default class Places extends Component {
           ) : demoData.length ? (
             <div>
               <Row className="placeTableHeaders">
-                <Col span={5}>Name & ID</Col>
+                <Col span={5}>Name</Col>
                 <Col span={6}>Address</Col>
                 <Col span={5}>Radius</Col>
                 <Col span={2}>Hotspots</Col>

@@ -14,5 +14,30 @@ export const nearXClient = new ApolloClient({
     Host: "dev-api.getwalkin.in",
     "Access-Control-Allow-Origin": "*",
     token
+  },
+
+  // request: async operation => {
+  //   const token = await localStorage.getItem("jwt");
+  //   operation.setContext({
+  //     headers: {
+  //       authorization: token ? `Bearer ${token}` : ""
+  //     }
+  //   });
+  // },
+
+  onError: ({ graphQLErrors, networkError }) => {
+
+    if (graphQLErrors) {
+      console.log(graphQLErrors);
+      if (graphQLErrors[0].message) {
+        message.warn(graphQLErrors[0].message)
+      }
+    } else if (networkError) {
+      message.error(
+        "Hey! Regret to inform that we are experiencing some issues. Please check your internet connection or try again after sometime"
+      );
+      console.log(networkError);
+
+    }
   }
 });
