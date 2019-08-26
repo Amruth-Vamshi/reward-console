@@ -78,7 +78,7 @@ export default class CreateHotspot extends Component {
             />
           </p>
 
-          <Form.Item {...formItemLayout} label="Place Name">
+          <Form.Item {...formItemLayout} label="Name">
             <Input
               required
               placeholder="Place Name"

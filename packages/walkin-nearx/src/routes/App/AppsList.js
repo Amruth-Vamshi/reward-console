@@ -93,7 +93,6 @@ class AppsList extends Component {
       })
       .catch(err => {
         this.setState({ spin: false });
-        message.error("ERROR");
         console.log("Failed to get User Details" + err);
       });
   }
@@ -125,7 +124,6 @@ class AppsList extends Component {
         this.setState({ appsList });
       })
       .catch(err => {
-        message.error("ERROR");
         console.log("Failed" + err);
       });
   };
@@ -162,13 +160,13 @@ class AppsList extends Component {
         ) : this.state.appsList.length ? (
           <div>
             <Row className="placeTableHeaders">
-              <Col span={4}>App Name</Col>
+              <Col span={4}>Name</Col>
               <Col sm={4} md={4} lg={4} xl={4} xxl={5}>
                 Industry
               </Col>
               <Col span={2}>Platform</Col>
               <Col span={5}>Description</Col>
-              <Col span={5}>Authentication Token</Col>
+              <Col span={5}>Key</Col>
               <Col sm={3} md={3} lg={3} xl={3} xxl={2}>
                 Test
               </Col>
@@ -248,7 +246,7 @@ class AppsList extends Component {
                         Download SDK
                       </Button>
                     </a>
-                    <div style={{}}>NearX sdk file (40kb)</div>
+                    <div >NearX sdk file (40kb)</div>
                   </div>
                 </div>
               </Col>

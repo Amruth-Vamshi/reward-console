@@ -4,7 +4,7 @@ import { Col, Row, Dropdown, Menu, Card, Icon, Tooltip, Button, Input } from "an
 const options = [
   // 'Activate',
   'Edit',
-  // 'Delete',
+  'Delete',
 ];
 
 export default class AppListCard extends Component {

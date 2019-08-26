@@ -128,3 +128,11 @@ query organization($id: ID!) {
     }
   }
 }`
+
+export const GET_ANALYTICS = gql`
+query analytics($dates:JSON, $org_id: ID!, $product: WALKIN_PRODUCTS!)
+{ analytics(filterValues:$dates
+    organization_id:$org_id
+    walkinProducts:$product
+  ){ name type rows response total }
+}`
