@@ -13,43 +13,49 @@ const DEFAULT_STATUS = 'ACTIVE';
 const { TabPane } = Tabs;
 const data = [
 	{
-		name: 'welcome push',
+		name: 'This will be in future',
+		startTime: '2019-09-06T09:10:22.574Z',
+		endTime: '2020-06-06T09:10:22.574Z',
+		status: 'ACTIVE',
+	},
+	{
+		name: 'New Feedback',
 		startTime: '2019-05-06T09:10:22.574Z',
 		endTime: '2019-06-06T09:10:22.574Z',
 		status: 'ACTIVE',
 	},
 	{
-		name: 'birthday offer',
+		name: 'CCD FEEDBACK',
 		startTime: '2019-08-06T09:10:22.574Z',
 		endTime: '2019-09-06T09:10:22.574Z',
 		status: 'ACTIVE',
 	},
 	{
-		name: 'bean redemption',
+		name: 'CCD POS FEEDBACK',
 		startTime: '2019-06-21T09:10:22.574Z',
 		endTime: '2019-07-06T09:10:22.574Z',
 		status: 'ACTIVE',
 	},
 	{
-		name: '30% offer',
+		name: 'CCD IN_APP FEEDBACK',
 		startTime: '2019-07-06T09:10:22.574Z',
 		endTime: '2019-08-096T09:10:22.574Z',
 		status: 'ACTIVE',
 	},
 	{
-		name: 'store opening offer',
+		name: 'CCD_APP_FEEDBACK',
 		startTime: '2019-04-06T09:10:22.574Z',
 		endTime: '2019-06-06T09:10:22.574Z',
 		status: 'ACTIVE',
 	},
 	{
-		name: '50% on beverages',
+		name: 'REFINEX_FEEDBACK',
 		startTime: '2019-08-06T09:10:22.574Z',
 		endTime: '2019-10-06T09:10:22.574Z',
 		status: 'DRAFT',
 	},
 	{
-		name: 'draft test',
+		name: 'TEST_FEEDBACK',
 		startTime: '2019-06-06T09:10:22.574Z',
 		endTime: '2019-07-06T09:10:22.574Z',
 		status: 'DRAFT',
@@ -111,23 +117,21 @@ class CampaignList extends Component {
 		if (key == 2) {
 			let upcomingCampaigns = data.filter(val => {
 				if (val.status == 'ACTIVE') {
-					return moment(val.startTime).isAfter(moment(), 'day');
+					return moment(val.startTime).isAfter(moment());
 				}
 			});
 			this.setState({ data: upcomingCampaigns });
 		}
+
 		if (key == 3) {
-			this.setState({ data: data });
-		}
-		if (key == 4) {
 			let completedCampaigns = data.filter(val => {
 				if (val.status == 'ACTIVE') {
-					return moment(val.endTime).isBefore(moment(), 'day');
+					return moment(val.endTime).isBefore(moment());
 				}
 			});
 			this.setState({ data: completedCampaigns });
 		}
-		if (key == 5) {
+		if (key == 4) {
 			const { changeStatus } = this.props;
 			//If api works
 			// changeStatus('DRAFT')
