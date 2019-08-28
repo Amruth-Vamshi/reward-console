@@ -182,7 +182,15 @@ class AppCreation extends Component {
             // this.setState({ organizations:res.data.organizationHierarchies })
           })
           .catch(err => {
-            console.log("Failed to get Places Details" + err);
+            console.log("Failed to get Places Details" + err.graphQLErrors);
+
+            console.log(err && err.graphQLErrors
+              ? error.graphQLErrors[0].errorCode
+              : 'Error in submitting the form');
+
+            if (err.graphQLErrors[0].message) {
+              message.warn(graphQLErrors[0].message)
+            }
             this.setState({ loading: false });
           });
       }
@@ -211,9 +219,8 @@ class AppCreation extends Component {
             minHeight: "700px"
           }}
         >
-          <div className="appHeader">
+          {/* <div className="appHeader">
             <div className="name">
-              {/* {console.log(auth)} */}
               Hi,{" "}
               {firstName
                 ? `${firstName + "  " + `${lastName ? lastName : ""}`}`
@@ -221,9 +228,9 @@ class AppCreation extends Component {
             </div>
             <div className="title"> Welcome to NearX Application</div>
           </div>
-          <hr />
+          <hr /> */}
 
-          <div style={{ height: "75%" }}>
+          <div style={{ height: "100%" }}>
             <div className="divCenter">
               <Col sm={18} md={13} lg={13} xl={12}>
                 <div style={{ textAlign: "center" }}>
@@ -330,7 +337,7 @@ class AppCreation extends Component {
                         margin: "25px 30px 20px 0"
                       }}
                     >
-                      {!this.state.update ? "CREATE APP" : "UPDATE APP"}
+                      {!this.state.update ? "Create App" : "Update App"}
                     </Button>
                   </div>
                 </Form>

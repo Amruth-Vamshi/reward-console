@@ -67,7 +67,7 @@ class UserInfo extends Component {
         content={userMenuOptions}
       // trigger="click"
       >
-        {firstName ? (
+        {firstName ?
           <div className="gx-flex-row gx-align-items-center gx-pointer">
             <p style={{ color: "white" }} className="gx-mb-0 gx-d-none gx-d-sm-flex">
               {firstName + "  " + `${lastName ? lastName : " "}`}
@@ -87,14 +87,13 @@ class UserInfo extends Component {
                 <Avatar size="large" alt={firstName} src={user.image} />
               }
             </div>
-          </div>
-        ) : (
-            <Avatar
-              src="https://via.placeholder.com/100x100"
-              className="gx-avatar gx-pointer"
-              alt=""
-            />
-          )}
+          </div> :
+          <Avatar
+            src="https://via.placeholder.com/100x100"
+            className="gx-avatar gx-pointer"
+            alt=""
+          />
+        }
       </Popover>
     );
   }
