@@ -1,9 +1,9 @@
 import React, { Fragment } from 'react';
-import { Button, List, Row, Avatar, Col, Card } from 'antd';
+import { Button, List, Row, Avatar, Col, Card, Empty, Icon } from 'antd';
 import { Link } from 'react-router-dom';
 import './style.css';
 
-const SubOrgDetails = ({ subOrgDetails, onNewSubOrg, onSubOrgCardClick }) => {
+const SubOrgDetails = ({ subOrgDetails, onNewSubOrg, onSubOrgCardClick, onSubOrgDelete }) => {
 	return (
 		<Fragment>
 			<div className="subOrgButtonContainer">
@@ -28,9 +28,18 @@ const SubOrgDetails = ({ subOrgDetails, onNewSubOrg, onSubOrgCardClick }) => {
 									<Col span={4}>
 										<Avatar size={64} shape="square" icon="user" />
 									</Col>
-									<Col span={20}>
+									<Col span={19}>
 										<p className="gx-mb-0 gx-text-grey">{val.name}</p>
 										<p className="gx-text-grey gx-fs-sm gx-mb-0">{val.addressLine1}</p>
+									</Col>
+									<Col span={1}>
+										<Icon
+											onClick={e => {
+												e.stopPropagation();
+												onSubOrgDelete(val.id);
+											}}
+											type="close"
+										/>
 									</Col>
 								</Row>
 							</Card>
@@ -38,7 +47,7 @@ const SubOrgDetails = ({ subOrgDetails, onNewSubOrg, onSubOrgCardClick }) => {
 					)}
 				/>
 			) : (
-				''
+				<Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
 			)}
 		</Fragment>
 	);

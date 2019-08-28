@@ -127,3 +127,11 @@ export const addSubOrganization = gql`
 		}
 	}
 `;
+
+export const deleteSubOrganization = gql`
+	mutation deleteOrganization($id: ID!) {
+		deleteOrganization(id: $id) {
+			name
+		}
+	}
+`;

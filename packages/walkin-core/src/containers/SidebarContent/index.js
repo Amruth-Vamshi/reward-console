@@ -63,7 +63,7 @@ class SidebarContent extends Component {
 						</Menu.Item>
 						<Menu.Item key="organizationInfo">
 							<Link
-								to={`/core/organization/${orgId && orgId.organization ? orgId.organization.id : ''}`}
+								to={`/core/organization/${orgId && orgId.variables ? orgId.variables.id : ''}`}
 								// to="core/organization"
 							>
 								<i className="icon icon-inbox" />

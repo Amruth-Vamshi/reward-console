@@ -47,7 +47,7 @@ const OrgCardDetails = ({ orgDetails }) => {
 						</Row>
 						<Row className="orgCardTitleStyle">
 							<Col span={4}>User Name: </Col>
-							<Col span={12}>{orgDetails.userName}</Col>
+							<Col span={12}>{orgDetails.org.users.length > 0 && orgDetails.org.users[0].firstName}</Col>
 						</Row>
 					</div>
 				</Col>

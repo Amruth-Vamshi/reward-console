@@ -63,11 +63,11 @@ class SidebarContent extends Component {
 							</Link>
 						</Menu.Item>
 						<Menu.Item key="offers">
-							{/* <Link to="/refinex"> */}
-							<i className="icon icon-select" />
-							{/* <IntlMessages id="sidebar.samplePage" /> */}
-							Offers
-							{/* </Link> */}
+							<Link to="/hyperx/offer/offerList">
+								<i className="icon icon-select" />
+								{/* <IntlMessages id="sidebar.samplePage" /> */}
+								Offers
+							</Link>
 						</Menu.Item>
 						<Menu.Item key="analytics">
 							{/* <Link to="/nearx"> */}

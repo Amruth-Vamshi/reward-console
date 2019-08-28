@@ -1,13 +1,15 @@
 import React, { Component, Fragment } from 'react';
 import { CampaignHeader, Popup, SortableDataTable } from '@walkinsole/walkin-components';
-import { Row, Col, Avatar, Button, Dropdown, Alert } from 'antd';
+import { Row, Col, Avatar, Button, Dropdown, Alert, Breadcrumb, Modal } from 'antd';
 import OrgCardDetails from '../../components/orgCardDetails';
 import { Query, withApollo, graphql } from 'react-apollo';
-import { userDetails, orgDetails, addSubOrganization } from '../../query/organization';
+import { userDetails, orgDetails, addSubOrganization, deleteSubOrganization } from '../../query/organization';
 import SubOrgList from '../../components/subOrgList';
 import SubOrgForm from './subOrgForm';
 import OrgStoreForm from './orgStoreForm';
 import OrgStoreList from './orgStoreList';
+
+const { confirm } = Modal;
 
 class OrganizationInfo extends Component {
 	constructor(props) {
@@ -18,6 +20,7 @@ class OrganizationInfo extends Component {
 			showOrgStoreForm: false,
 			storeFormValues: {},
 			errorMessage: '',
+			deleteOrgErrorMessage: {},
 			orgId: this.props.client && this.props.client.cache.data.data['$ROOT_QUERY.auth'].organizationId,
 		};
 	}
@@ -117,6 +120,40 @@ class OrganizationInfo extends Component {
 			},
 		});
 	}
+	onSubOrgDelete(refetch, id) {
+		const { deleteOrgErrorMessage } = this.state;
+		confirm({
+			title: 'Are you sure you want to delete?',
+			// content: (
+			// 	<Fragment>
+			// 		{deleteOrgErrorMessage !== '' && <Alert message={deleteOrgErrorMessage} type="error" />}
+			// 	</Fragment>
+			// ),
+			onOk() {
+				return new Promise((resolve, reject) => {}).catch(() => console.log('Oops errors!'));
+
+				// this.props.client
+				// 	.mutate({
+				// 		mutation: deleteSubOrganization,
+				// 		variables: {
+				// 			id: id,
+				// 		},
+				// 	})
+				// 	.then(({ data }) => {
+				// 		refetch();
+				// 	})
+				// 	.catch(error => {
+				// 		this.displayError(
+				// 			'deleteOrgErrorMessage',
+				// 			error && error.graphQLErrors[0]
+				// 				? error.graphQLErrors[0].message
+				// 				: 'Error in deleting the org'
+				// 		);
+				// 	});
+			},
+			onCancel() {},
+		});
+	}
 	render() {
 		const { client, organization, loading, error, match } = this.props;
 		const {
@@ -155,13 +192,28 @@ class OrganizationInfo extends Component {
 								organization.children.filter(val => {
 									return val.organizationType == 'STORE';
 								});
+
+							let orgHeirarchy = ['SAMPLE']; //Remove this
+							if (!orgHeirarchy.includes(organization.name)) {
+								orgHeirarchy.push(organization.name);
+							}
 							return (
 								<Fragment>
 									<CampaignHeader
 										children={
 											<Col span={12}>
 												<h3 className="gx-text-grey paddingLeftStyle">Organization Info</h3>
-												<p className="gx-text-grey gx-mb-1">{`${organization.name} /`}</p>
+												<Breadcrumb>
+													{orgHeirarchy &&
+														orgHeirarchy.map((orgName, index) => (
+															<Breadcrumb.Item
+																className="gx-text-grey gx-mb-1"
+																key={index}
+															>
+																{orgName}
+															</Breadcrumb.Item>
+														))}
+												</Breadcrumb>
 											</Col>
 										}
 									/>
@@ -171,6 +223,7 @@ class OrganizationInfo extends Component {
 										subOrgDetails={subOrgDetails}
 										onNewSubOrg={this.onNewSubOrg}
 										onSubOrgCardClick={this.onSubOrgCardClick}
+										onSubOrgDelete={this.onSubOrgDelete.bind(this, refetch)}
 									/>
 									<Popup
 										visible={showSubOrgForm}

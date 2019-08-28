@@ -21,3 +21,24 @@ export const removeProp = (obj, propToDelete) => {
 	}
 	return obj;
 };
+export const returnMatchingKeyvalues = (array, key, obj) => {
+	if (!obj.children) return;
+	return obj.children.forEach(c => {
+		if (c[key]) array.push(c[key]); // is not present, skip!
+		returnMatchingKeyvalues(array, key, c);
+	});
+};
+
+export const transposeObject = (obj, extraPropValue) => {
+	return Object.entries(obj).map(([field, value]) => ({
+		field,
+		value,
+		operator: extraPropValue,
+	}));
+};
+
+export const isValidObject = objToTest => {
+	if (null == objToTest) return false;
+	if ('undefined' == typeof objToTest) return false;
+	return true;
+};
