@@ -1,8 +1,21 @@
 .stepperContainer {
   height: calc(100vh - 230px);
+  margin-left: 2rem;
+  overflow: hidden;
 }
 
 .BottomBar {
   border-top: solid 0.2px;
   padding-top: 10px;
+}
+
+.campaignHeaderStyle {
+  padding: 9px;
+  margin-left: 0.1rem;
+  background-color: #f7f4f4;
+  border-bottom: #f1f1f1 solid 0.2px;
+}
+.campaignHeaderContentStyle {
+  display: flex;
+  align-items: center;
 }

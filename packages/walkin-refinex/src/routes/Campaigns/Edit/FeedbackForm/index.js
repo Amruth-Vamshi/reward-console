@@ -5,61 +5,17 @@ import Design from "./DesignQuesitonnaire";
 import gql from "graphql-tag";
 import { withRouter } from "react-router-dom";
 import { Query, compose } from "react-apollo";
+import { CircularProgress } from "@walkinsole/walkin-components";
+import {
+  GET_QUESTIONNAIRE,
+  GET_FEEDBACK_FORM
+} from "../../../../containers/Query";
 const { TabPane } = Tabs;
 
 class FeedbackFormConfig extends Component {
   render() {
     const { match } = this.props;
     const campaignId = match.params.id;
-    const GET_FEEDBACK_FORM = gql`
-      query getFeedbackForm($campaignId: ID!) {
-        campaign(id: $campaignId) {
-          feedbackForm {
-            id
-            title
-            questionnaireRoot {
-              id
-              questionText
-              type
-            }
-          }
-        }
-      }
-    `;
-
-    const GET_QUESTIONNAIRE = gql`
-      query getQuestionnaireHierarchy($questionId: ID!) {
-        questionHierarchy(questionId: $questionId) {
-          id
-          questionText
-          type
-          rangeMax
-          rangeMin
-          feedbackCategory {
-            id
-            title
-          }
-          choices {
-            id
-            choiceText
-            rangeStart
-            rangeEnd
-            toQuestion {
-              id
-              questionText
-              type
-              rangeMax
-              rangeMin
-              feedbackCategory {
-                id
-                title
-              }
-            }
-          }
-        }
-      }
-    `;
-
     return (
       <Query
         displayName="feedbackForm"
@@ -75,7 +31,7 @@ class FeedbackFormConfig extends Component {
           refetch: refetchFeedbackForm
         }) => {
           if (loading) {
-            return <div>Loading...</div>;
+            return <CircularProgress />;
           } else if (campaignData && campaignData.campaign) {
             console.log("campaignData", campaignData);
 
@@ -94,7 +50,7 @@ class FeedbackFormConfig extends Component {
                     : {}
                 }
                 displayName="questionnaire"
-                fetchPolicy="cache-and-network"
+                fetchPolicy="network-only"
               >
                 {({
                   data: questionnaireData,
@@ -141,7 +97,7 @@ class FeedbackFormConfig extends Component {
               </Query>
             );
           } else {
-            return <div>Loading...</div>;
+            return <CircularProgress />;
           }
         }}
       </Query>

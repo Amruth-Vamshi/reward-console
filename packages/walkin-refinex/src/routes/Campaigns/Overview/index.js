@@ -20,7 +20,8 @@ import {
   CryptoNews,
   DownloadMobileApps,
   OrderHistory,
-  CardBox
+  CardBox,
+  ErrorBoundary
 } from "@walkinsole/walkin-components";
 import { increamentData, lineData } from "../../Dashboard/data";
 import gql from "graphql-tag";
@@ -32,14 +33,14 @@ class CampaignOverview extends Component {
     const { history, match, auth } = this.props;
 
     return (
-      <Auxiliary>
+      <ErrorBoundary>
         <CreateCampaignRow
           createFeedbackCampaign={this.createFeedbackCampaign}
           auth={auth}
           history={history}
         />
         <CampaignOverviewGrid auth={auth} history={history} />
-      </Auxiliary>
+      </ErrorBoundary>
     );
   }
 }

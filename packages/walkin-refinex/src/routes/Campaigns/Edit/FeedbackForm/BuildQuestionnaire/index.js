@@ -5,21 +5,68 @@ import { Query, graphql, compose } from "react-apollo";
 import gql from "graphql-tag";
 import { Row, Col } from "antd";
 import QuestionsList from "./QuestionsList";
-
+import QuestionTypeSelector from "./QuestionTypeSelection";
+import {
+  CREAT_BLANK_QUESITON,
+  EDIT_QUESTION,
+  ADD_CHOICE,
+  REMOVE_CHOICE
+} from "../../../../../containers/Query";
+import { Card } from "antd";
 class Questionnaire extends Component {
   constructor() {
     super();
     this.state = {
       questionToEdit: null,
       loading: true,
-      questionIndex: null
+      questionIndex: null,
+      addQuestion: false,
+      choiceToAddQuestion: null,
+      questionTypeSelector: null
     };
   }
 
   onQuestionSelected = questionIndex => {
-    this.setState({
+    this.setState(prevState => ({
       questionToEdit: this.props.questionnaire[questionIndex],
-      questionIndex
+      questionIndex,
+      addQuestion: false,
+      choiceData: null,
+      choiceToAddQuestion: null,
+      questionTypeSelector: null
+    }));
+  };
+
+  onQuestionTypeSelector = questionType => {
+    this.setState({
+      questionTypeSelector: questionType,
+      addQuestion: false,
+      questionToEdit: {
+        questionText: "",
+        type: questionType,
+        rangeMax: "",
+        rangeMin: "",
+        choices: []
+      }
+    });
+  };
+
+  onNewQuestionAdded = questionData => {
+    questionData.type = this.state.questionTypeSelector;
+    this.setState({
+      questionData: questionData
+    });
+  };
+
+  onNewChoiceAdd = choiceData => {
+    this.setState({
+      choiceData: choiceData
+    });
+  };
+
+  onNewQuestionAdd = questionData => {
+    this.setState({
+      questionData: questionData
     });
   };
 
@@ -47,32 +94,33 @@ class Questionnaire extends Component {
       });
   };
 
-  addNewQuestion = async () => {
+  addNewQuestion = async (choiceId = null) => {
     const { feedbackForm } = this.props;
-    console.log("fetching");
-    try {
-      const data = await this.props.createQuestionnaire({
-        variables: {
-          feedbackFormId: feedbackForm.id,
-          questionnaireInput: {
-            questionText: "Enter question details",
-            type: "SINGLE_ANSWER"
-          }
-        }
-      });
-      console.log(data);
-      this.props.refetchFeedbackForm();
-    } catch (e) {
-      console.log("Error in creating questionnaire");
-      console.log(e);
-    }
+    this.setState({ addQuestion: true, choiceToAddQuestion: choiceId });
+    // try {
+    //   const data = await this.props.createQuestionnaire({
+    //     variables: {
+    //       feedbackFormId: feedbackForm.id,
+    //       questionnaireInput: {
+    //         questionText: "Enter question details",
+    //         type: "SINGLE_ANSWER"
+    //       }
+    //     }
+    //   });
+    //   console.log(data);
+    //   this.props.refetchFeedbackForm();
+    // } catch (e) {
+    //   console.log("Error in creating questionnaire");
+    //   console.log(e);
+    // }
   };
 
   addChoice = () => {
     this.props
       .addChoice({
         variables: {
-          questionId: this.state.questionToEdit.id
+          questionId: this.state.questionToEdit.id,
+          input: this.state.choiceData
         }
       })
       .then(data => {
@@ -99,11 +147,14 @@ class Questionnaire extends Component {
   };
 
   render() {
-    console.log(this.props);
-
-    const { questionIndex } = this.state;
-    console.log(questionIndex);
-
+    const {
+      questionIndex,
+      addQuestion,
+      choiceData,
+      questionTypeSelector,
+      choiceToAddQuestion,
+      questionToEdit
+    } = this.state;
     return (
       <Row className="QuestionnaireArea">
         <Col span={8}>
@@ -114,65 +165,27 @@ class Questionnaire extends Component {
           />
         </Col>
         <Col span={16}>
-          {questionIndex !== null ? (
+          {questionIndex !== null && !addQuestion ? (
             <FormPane
-              questionToEdit={this.props.questionnaire[questionIndex]}
+              questionToEdit={questionToEdit}
               onQuestionSubmitted={this.onQuestionSubmitted}
               addChoice={this.addChoice}
               removeChoice={this.removeChoice}
+              addNewQuestion={this.addNewQuestion}
+              choiceData={choiceData}
+              questionType={questionTypeSelector}
+              choiceToAddQuestion={choiceToAddQuestion}
             />
-          ) : null}
+          ) : (
+            <QuestionTypeSelector
+              onQuestionTypeSelector={this.onQuestionTypeSelector}
+            />
+          )}
         </Col>
       </Row>
     );
   }
 }
-
-const CREAT_BLANK_QUESITON = gql`
-  mutation createQuestionnaire(
-    $feedbackFormId: ID!
-    $questionnaireInput: QuestionInput
-  ) {
-    createQuestionnaire(
-      feedbackFormId: $feedbackFormId
-      input: $questionnaireInput
-    ) {
-      id
-      questionText
-      type
-      rangeMin
-      rangeMax
-    }
-  }
-`;
-
-const EDIT_QUESTION = gql`
-  mutation editQuestion($editQuestionInput: EditQuestionInput) {
-    editQuestion(input: $editQuestionInput) {
-      id
-      questionText
-      rangeMin
-      rangeMax
-      type
-    }
-  }
-`;
-
-const ADD_CHOICE = gql`
-  mutation addChoice($questionId: ID!) {
-    addChoice(questionId: $questionId) {
-      id
-    }
-  }
-`;
-
-const REMOVE_CHOICE = gql`
-  mutation removeChoice($id: ID!) {
-    removeChoice(id: $id) {
-      choiceText
-    }
-  }
-`;
 
 export default compose(
   graphql(EDIT_QUESTION, { name: "editQuestion" }),

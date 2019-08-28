@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Col, Row, Typography } from "antd";
+import { Row, Col, Typography } from "antd";
 const { Title } = Typography;
-export default class Campaigns extends Component {
+
+export default class Overview extends Component {
   static propTypes = {
     prop: PropTypes
   };
@@ -16,7 +17,7 @@ export default class Campaigns extends Component {
       >
         <Col span={24}>
           <Title level={3} className="gx-text-grey">
-            Campaigns
+            Overview
           </Title>
         </Col>
       </Row>

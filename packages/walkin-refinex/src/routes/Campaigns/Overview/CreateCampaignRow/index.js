@@ -3,6 +3,7 @@ import { Row, Col, Button } from "antd";
 import { CardBox, ErrorBoundary } from "@walkinsole/walkin-components";
 import SelectApplicationModal from "../SelectApplicationModal";
 import { compose, graphql } from "react-apollo";
+import { CREATE_FEEDBACK_FORM } from "../../../../containers/Query";
 import gql from "graphql-tag";
 class CreateCampaignRow extends Component {
   state = {
@@ -164,30 +165,7 @@ class CreateCampaignRow extends Component {
   }
 }
 
-const CREATE_DRAFT_CAMPAIGN = gql`
-  mutation createDraftCampaign($applicationId: ID!) {
-    createDraftCampaign(applicationId: $applicationId) {
-      id
-    }
-  }
-`;
-
-const CREATE_FEEDBACK_FORM = gql`
-  mutation createFeedbackForm($campaignId: ID!) {
-    createFeedbackForm(campaignId: $campaignId, input: { title: "default" }) {
-      campaign {
-        id
-        name
-      }
-      title
-    }
-  }
-`;
-
 export default compose(
-  graphql(CREATE_DRAFT_CAMPAIGN, {
-    name: "createDraftCampaign"
-  }),
   graphql(CREATE_FEEDBACK_FORM, {
     name: "createFeedbackForm"
   })

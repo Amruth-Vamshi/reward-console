@@ -1,15 +1,39 @@
 import "./Edit.css";
 import React, { Component } from "react";
-import { Steps, Icon, Card, Row, Col, Button } from "antd";
+import { Row, Col, Button } from "antd";
 import CampaignConfig from "./Campaign";
+import Audience from "./Audience";
+import Communication from "./Communication";
+import Triggers from "./Triggers";
+import Overview from "./Overview";
 import FeedbackFormConfig from "./FeedbackForm";
+import ContainerHeader from "../CampaignHeader";
 import GoLive from "./GoLive";
-
 export default class EditCampaign extends Component {
   constructor() {
     super();
     this.state = {
-      current: 0
+      current: 0,
+      stepperData: [
+        {
+          title: "Basic Info"
+        },
+        {
+          title: "Form"
+        },
+        {
+          title: "Audience"
+        },
+        {
+          title: "Trigger"
+        },
+        {
+          title: "Communication"
+        },
+        {
+          title: "Overview"
+        }
+      ]
     };
   }
 
@@ -18,47 +42,33 @@ export default class EditCampaign extends Component {
   };
 
   getContainer = () => {
+    console.log(this.state.current);
     switch (this.state.current) {
       case 0:
         return <CampaignConfig />;
       case 1:
-        return <GoLive />;
-      case 2:
         return <FeedbackFormConfig />;
+      case 2:
+        return <Audience />;
       case 3:
-        return <GoLive />;
+        return <Triggers />;
       case 4:
-        return <GoLive />;
+        return <Communication />;
       default:
-        return <CampaignConfig />;
+        return <Overview />;
     }
   };
 
   render() {
-    const { Step } = Steps;
-    const { current } = this.state;
+    const { current, stepperData } = this.state;
     return (
-      <div className="PageContainer">
-        <Row>
-          <Col span={12}>
-            <h2>Create RefineX Campaign</h2>
-          </Col>
-          <Col span={12}>
-            <Steps
-              className="StepperContainer"
-              current={current}
-              onChange={this.onChange}
-              size="small"
-              labelPlacement="vertical"
-            >
-              <Step title="Basic Info" />
-              <Step title="Audience" />
-              <Step title="Feedback" />
-              <Step title="Communication" />
-              <Step title="Overview" />
-            </Steps>
-          </Col>
-        </Row>
+      <div className="PageContainer" style={{ margin: "-32px" }}>
+        <ContainerHeader
+          current={current}
+          onChange={this.onChange}
+          title="Create RefineX Campaign"
+          StepperData={stepperData}
+        />
         <Row>
           <Col span={24}>
             <div className="stepperContainer">{this.getContainer()}</div>

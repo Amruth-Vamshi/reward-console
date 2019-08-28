@@ -3,7 +3,10 @@ import React, { Component } from "react";
 import { Modal, Select, Table, Button, Row, Col, TreeSelect } from "antd";
 import { compose, graphql, withApollo } from "react-apollo";
 import { Link } from "react-router-dom";
-import gql from "graphql-tag";
+import {
+  GET_CHILD_ORGANIZATIONS,
+  GET_APPLICATIONS
+} from "../../../../containers/Query";
 
 const TreeNode = TreeSelect.TreeNode;
 
@@ -66,18 +69,6 @@ class SelectApplicationModal extends Component {
     });
 
     const { client } = this.props;
-    const GET_APPLICATIONS = gql`
-      query getApplications($organizationId: ID!) {
-        organization(id: $organizationId) {
-          applications {
-            id
-            name
-            description
-            platform
-          }
-        }
-      }
-    `;
     const applications = await client.query({
       query: GET_APPLICATIONS,
       variables: {
@@ -116,11 +107,9 @@ class SelectApplicationModal extends Component {
 
     console.log(this.props);
 
-    console.log(organizationHierarchy.organizationHierarchyJSON);
-    const treeData = organizationHierarchy.organizationHierarchyJSON
-      ? this.createOrganizationTree(
-          organizationHierarchy.organizationHierarchyJSON
-        )
+    console.log(organizationHierarchy.organizationHierarchy);
+    const treeData = organizationHierarchy.organizationHierarchy
+      ? this.createOrganizationTree(organizationHierarchy.organizationHierarchy)
       : [];
     return (
       <Modal
@@ -180,12 +169,6 @@ class SelectApplicationModal extends Component {
     );
   }
 }
-
-const GET_CHILD_ORGANIZATIONS = gql`
-  query organizationHierarchy($organizationId: ID!) {
-    organizationHierarchyJSON(id: $organizationId)
-  }
-`;
 
 export default compose(
   graphql(GET_CHILD_ORGANIZATIONS, { name: "organizationHierarchy" }),
