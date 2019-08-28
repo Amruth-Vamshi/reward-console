@@ -14,6 +14,15 @@ export default class EditCampaign extends Component {
     super();
     this.state = {
       current: 0,
+      priorityChosen: "",
+      priorityNumberError: false,
+      showTestAndControl: false,
+      testValue: 95,
+      controlValue: 5,
+      testControlSelected: "",
+      communicationSelected: "1",
+      communicationFormValues: {},
+      formValues: {},
       stepperData: [
         {
           title: "Basic Info"
@@ -41,11 +50,65 @@ export default class EditCampaign extends Component {
     this.setState({ current });
   };
 
+  onFormNext = e => {
+    e.preventDefault();
+  };
+
+  saveFormRef = formRef => {
+    this.formRef = formRef;
+  };
+
   getContainer = () => {
     console.log(this.state.current);
+    const {
+      formValues,
+      current,
+      showTestAndControl,
+      testValue,
+      controlValue,
+      testControlSelected,
+      rows,
+      values,
+      communicationSelected,
+      communicationFormValues
+    } = this.state;
     switch (this.state.current) {
       case 0:
-        return <CampaignConfig />;
+        return (
+          <CampaignConfig
+            subTitle="Basic information"
+            onFormNext={this.onFormNext}
+            saveFormRef={this.saveFormRef}
+            formValues={formValues}
+            testAndControlText="Test & Control"
+            promptText="prompt text"
+            toolTipText="what is test and control?"
+            prioritySelectionTitle="Campaign Priority"
+            priorityButtonText="Custom no"
+            testControlTitle="Test & Control"
+            testControlPercentage={
+              testControlSelected ? testControlSelected : "95% - 5%"
+            }
+            handleButtonGroupChange={this.handleButtonGroupChange}
+            testControlPercentageEditText="Edit"
+            onPriorityButtonClick="onPriorityButtonClick"
+            priorityNumberInvalidErrorMessage="Enter a value between 6 and 99"
+            onTestAndControlEdit={this.onTestAndControlEdit}
+            showTestAndControl={showTestAndControl}
+            popupTitle="Test & Control"
+            handleOk={this.handleOk}
+            handleCancel={this.handleCancel}
+            applyTestControlChange={this.applyTestControlChange}
+            popupbodyText="Divide customers selected for a specific audience into local test and local control
+            groups"
+            controlValue={controlValue}
+            testValue={testValue}
+            maxValueAllowed={75}
+            onTestValueChange={this.onTestValueChange}
+            onControlValueChange={this.onControlValueChange}
+            popupButtonText="apply"
+          />
+        );
       case 1:
         return <FeedbackFormConfig />;
       case 2:

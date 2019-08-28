@@ -42,9 +42,9 @@ class CampaignOverviewGrid extends Component {
             if (loading) {
               return <span>Loading</span>;
             } else if (error) {
-              return <span>Error</span>;
+              console.log(error);
+              return <span>No Campaign Found</span>;
             } else if (data.user) {
-              console.log(data);
               return (
                 <Row gutter={6}>
                   {this.campaignList(data.user.createdCampaigns)}
