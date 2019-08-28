@@ -1,15 +1,5 @@
 import React, { Component } from "react";
-import {
-  Col,
-  Row,
-  Spin,
-  Pagination,
-  Card,
-  message,
-  Input,
-  Icon,
-  Button
-} from "antd";
+import { Col, Row, Spin, Pagination, Card, message, Input, Icon, Button } from "antd";
 import { Link } from "react-router-dom";
 import { Auxiliary, CustomScrollbars } from "@walkinsole/walkin-components";
 import "../../styles/places.css";
@@ -17,7 +7,7 @@ import { nearXClient as client } from "../../nearXApollo";
 import PlaceCard from "../../components/Places/placeCard";
 // import { getAllPlaces } from './data'
 // import { Query } from "react-apollo";
-import { GET_ALL_AND_SEARCH_PLACES } from "../../queries";
+import { GET_ALL_AND_SEARCH_PLACES, DISABLE_PLACES } from "../../queries";
 
 const Search = Input.Search;
 
@@ -26,6 +16,7 @@ export default class Places extends Component {
     super(props);
     this.state = {
       places: [],
+      offset: 0,
       totalPlaces: 0,
       search: "",
       errors: {},
@@ -33,14 +24,15 @@ export default class Places extends Component {
     };
   }
 
-  getPlacesData = (offset, limit, search) => {
+  getPlacesData = (offset, limit, search, fetchPolicy) => {
     this.setState({ spin: true });
     let input = { limit: limit, offset: offset };
     if (search && search.trim() !== "") input.search = search.trim();
     client
       .query({
         query: GET_ALL_AND_SEARCH_PLACES,
-        variables: input
+        variables: input,
+        fetchPolicy: `${fetchPolicy ? fetchPolicy : 'cache-first'}`
       })
       .then(res => {
         var places = [];
@@ -56,8 +48,7 @@ export default class Places extends Component {
         });
         // console.log(JSON.stringify(places))
         this.setState({
-          places,
-          spin: false,
+          places, spin: false,
           totalPlaces: res.data.Places.pageInfo.total
         });
       })
@@ -68,33 +59,15 @@ export default class Places extends Component {
       });
   };
 
-  componentWillMount() {
-    this.setState({ spin: true });
-    let input = { limit: 7, offset: 0 };
-    // if(search && search.trim() !== '') input.search = search.trim()
+  disablePlace = (id) => {
     client
-      .query({
-        fetchPolicy: "network-only", // skip the cache
-        query: GET_ALL_AND_SEARCH_PLACES,
-        variables: input
+      .mutate({
+        mutation: DISABLE_PLACES,
+        variables: { id: id }
       })
       .then(res => {
-        var places = [];
-        res.data.Places.places.map(p => {
-          places.push({
-            id: p.id,
-            name: p.geofenceName,
-            address: p.address,
-            center: p.location,
-            radius: p.radii,
-            hotspots: p.totalHotspot
-          });
-        });
-        this.setState({
-          places,
-          spin: false,
-          totalPlaces: res.data.Places.pageInfo.total
-        });
+        console.log(res);
+        this.getPlacesData(this.state.offset * 7, 7, '', 'network-only')
       })
       .catch(err => {
         this.setState({ spin: false });
@@ -103,9 +76,16 @@ export default class Places extends Component {
       });
   }
 
+  componentWillMount() {
+    this.setState({ spin: true });
+    let input = { limit: 7, offset: 0 };
+    // if(search && search.trim() !== '') input.search = search.trim()
+    this.getPlacesData(0, 7, '', 'network-only')
+  }
+
   pagination = (e, n) => {
-    this.getPlacesData((e - 1) * n, n, this.state.search);
-    // this.setState({offset:e})
+    this.getPlacesData((e - 1) * n, n, this.state.search, 'cache-first');
+    this.setState({ offset: e - 1 })
   };
 
   handleSearchSubmit = () => {
@@ -125,7 +105,7 @@ export default class Places extends Component {
 
   render() {
     const demoData = this.state.places;
-    // console.log(demoData)
+    console.log(demoData)
     return (
       <div style={{ margin: 0 }}>
         <Auxiliary>
@@ -183,7 +163,7 @@ export default class Places extends Component {
           ) : demoData.length ? (
             <div>
               <Row className="placeTableHeaders">
-                <Col span={5}>Name & ID</Col>
+                <Col span={5}>Name</Col>
                 <Col span={6}>Address</Col>
                 <Col span={5}>Radius</Col>
                 <Col span={2}>Hotspots</Col>
@@ -194,7 +174,7 @@ export default class Places extends Component {
               {demoData.map((data, index) => (
                 <PlaceCard
                   history={this.props.history}
-                  key={index}
+                  key={index} disablePlace={this.disablePlace}
                   data={data}
                 />
               ))}

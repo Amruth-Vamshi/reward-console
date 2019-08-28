@@ -36,7 +36,7 @@ const SubOrgForm = Form.create({ name: 'form_in_modal' })(
 						{getFieldDecorator('phoneNumber', {
 							initialValue: `${Object.keys(formValues).length != 0 ? formValues.phoneNumber : ''}`,
 							rules: [{ required: true, message: 'Phone number is required' }],
-						})(<Input />)}
+						})(<Input type="number" />)}
 					</Form.Item>
 				</Form>
 			);

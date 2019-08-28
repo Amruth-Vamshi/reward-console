@@ -52,12 +52,18 @@ class SidebarContent extends Component {
             theme={themeType === THEME_TYPE_LITE ? "lite" : "dark"}
             mode="inline"
           >
-            {/* <Menu.Item key="nearx/dashboard/landing">
-              <Link to="/nearx/dashboard/landing">
+            {/* <Menu.Item key="nearx/home/landing">
+              <Link to="/nearx/home/landing">
                 <i className="icon icon-home" />
                 <span>Home</span>
               </Link>
             </Menu.Item> */}
+            <Menu.Item key="nearx/dashboard/landing">
+              <Link to="/nearx/dashboard">
+                <i className="icon icon-dasbhoard" />
+                <span>Dashboard</span>
+              </Link>
+            </Menu.Item>
             <Menu.Item key="nearx/places">
               <Link to="/nearx/places">
                 <i className="icon icon-geo-location" />

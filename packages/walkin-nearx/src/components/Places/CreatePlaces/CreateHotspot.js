@@ -78,7 +78,7 @@ export default class CreateHotspot extends Component {
             />
           </p>
 
-          <Form.Item {...formItemLayout} label="Place Name">
+          <Form.Item {...formItemLayout} label="Name">
             <Input
               required
               placeholder="Place Name"
@@ -163,6 +163,7 @@ export default class CreateHotspot extends Component {
                 <div style={{ overflow: "hidden" }}>
                   {/* <Button htmlType='submit' type="primary" style={{float:"right",marginRight:20}}>CREATE</Button> */}
                   <Button
+                    disabled={!this.props.formData.places2.length}
                     onClick={this.props.handleSubmit}
                     className="buttonPrimary"
                     style={{ float: "right", marginRight: 20 }}

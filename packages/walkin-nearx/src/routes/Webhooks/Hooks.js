@@ -1,25 +1,12 @@
 import React, { Component } from "react";
-import {
-  Col,
-  Row,
-  Pagination,
-  Card,
-  Select,
-  Timeline,
-  Form,
-  Modal,
-  Spin,
-  Tooltip,
-  Input,
-  Icon,
-  Button
-} from "antd";
+import { Col, Row, Pagination, Card, Select, Timeline, Form, Modal, Spin, Tooltip, Input, Icon, Button } from "antd";
 // import AppListCard from "./AppListCard";
 import {
   GET_WEBHOOKS,
   LIST_WEBHOOK_EVENTS,
   CREATE_WEBHOOK,
-  UPDATE_WEBHOOK
+  UPDATE_WEBHOOK,
+  DELETE_WEBHOOK
 } from "@walkinsole/walkin-components/src/PlatformQueries";
 import jwt from "jsonwebtoken";
 import { withApollo } from "react-apollo";
@@ -141,6 +128,22 @@ class Hooks extends Component {
     this.setState({ [e.target.name]: e.target.value, errors });
   };
 
+  deleteHook = id => {
+    this.props.client
+      .mutate({
+        mutation: DELETE_WEBHOOK,
+        variables: { input: { id: id } }
+      })
+      .then(res => {
+        console.log("Results", res);
+        this.getWebhooks();
+      })
+      .catch(err => {
+        this.setState({ loading: false });
+        console.log("Failed to Delete Hooks" + err);
+      });
+  }
+
   createHook = () => {
     this.setState({ loading: true });
     let errors = {};
@@ -176,7 +179,7 @@ class Hooks extends Component {
           })
           .catch(err => {
             this.setState({ loading: false });
-            console.log("Failed to get Places Details" + err);
+            console.log("Failed to get Hooks Details" + err);
           });
       } else {
         this.props.client
@@ -213,7 +216,7 @@ class Hooks extends Component {
       visible: true,
       event: hook.event,
       id: hook.id,
-      headers: hook.headers,
+      headers: JSON.stringify(hook.headers).toString(),
       url: hook.url,
       method: hook.method
     });
@@ -222,8 +225,7 @@ class Hooks extends Component {
   render() {
     var options = this.state.eventTypes.map((item, index) => (
       <Option key={index} value={item.event}>
-        {" "}
-        {item.event}{" "}
+        {item.event}
       </Option>
     ));
     // const data = this.state.appsList?this.state.appsList:[]
@@ -248,13 +250,12 @@ class Hooks extends Component {
 
         {this.state.spin ? (
           <div>
-            {" "}
-            <br /> <br /> <br /> <br />{" "}
+
+            <br /> <br /> <br /> <br />
             <div className="divCenter">
-              {" "}
-              <Spin size="large" />{" "}
-            </div>{" "}
-            <br /> <br /> <br />{" "}
+              <Spin size="large" />
+            </div>
+            <br /> <br /> <br />
           </div>
         ) : this.state.hooksList.length ? (
           <div>
@@ -270,6 +271,7 @@ class Hooks extends Component {
                 key={i}
                 index={i}
                 updateHook={this.updateHook}
+                deleteHook={this.deleteHook}
                 data={item}
               />
             ))}

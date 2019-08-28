@@ -9,11 +9,11 @@ const ChartCard = ({ prize, title, children, styleName, desc, icon }) => {
         <div className="ant-row-flex">
           <h2 className="gx-mb-0 gx-fs-xxl gx-font-weight-medium">
             {prize}
-            <span
+            {title ? <span
               className={`gx-mb-0 gx-ml-2 gx-pt-xl-2 gx-fs-lg gx-chart-${styleName}`}
             >
               {title}% <i className="icon icon-menu-up gx-fs-sm" />
-            </span>
+            </span> : ''}
           </h2>
           <i
             className={`icon icon-${icon} gx-fs-xl gx-ml-auto gx-text-primary gx-fs-xxxl`}

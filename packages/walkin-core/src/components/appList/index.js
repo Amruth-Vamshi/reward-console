@@ -5,6 +5,18 @@ import { Link } from 'react-router-dom';
 import './style.css';
 
 const AppList = ({ apps }) => {
+	function random_bg_color() {
+		return (
+			'rgb(' +
+			Math.floor(Math.random() * 256) +
+			', ' +
+			Math.floor(Math.random() * 256) +
+			', ' +
+			Math.floor(Math.random() * 256) +
+			')'
+		);
+	}
+
 	return (
 		<div className="gutter-example">
 			<Row gutter={16}>
@@ -15,7 +27,12 @@ const AppList = ({ apps }) => {
 								{app.isProductAccessible == true ? (
 									<Link to={app.route}>
 										<Card
-											cover={<i className={`${app.icon} gx-fs-icon-lg appIconStyle `} />}
+											cover={
+												<i
+													style={{ color: `${random_bg_color()}` }}
+													className={`${app.icon} gx-fs-icon-lg appIconStyle `}
+												/>
+											}
 											className="gx-product-item gx-product-vertical"
 										>
 											<div className="h4 gx-text-capitalize gx-mb-0">{app.title}</div>

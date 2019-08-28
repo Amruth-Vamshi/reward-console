@@ -41,6 +41,7 @@ class OrganizationInfo extends Component {
 		this.setState({ showOrgStoreForm: false });
 	};
 	displayError = (state, message) => {
+		console.log('>>', state, message);
 		this.setState({ [state]: message }, () => {
 			setTimeout(() => {
 				this.setState({ [state]: '' });
@@ -81,6 +82,7 @@ class OrganizationInfo extends Component {
 									refetch();
 								})
 								.catch(error => {
+									// console.log(error);
 									this.displayError(
 										'errorMessage',
 										error && error.graphQLErrors[0]
@@ -168,8 +170,7 @@ class OrganizationInfo extends Component {
 		return (
 			<div style={{ margin: '-32px -16px 0px -16px' }}>
 				<Fragment>
-					<Query
-						query={orgDetails}
+					<Query query={orgDetails}
 						variables={{ id: match.params.id || client.cache.data.data['$ROOT_QUERY.auth'].organizationId }}
 					>
 						{({ data, loading, error, refetch }) => {

@@ -24,8 +24,12 @@ class Users extends Component {
 	}
 
 	componentWillMount() {
-		this.setState({ spin: true });
+		this.getUsers();
+	}
+
+	getUsers = () => {
 		const { id, org_id } = jwt.decode(localStorage.getItem('jwt'));
+		this.setState({ spin: true, userId: id, org_id });
 
 		if (org_id) {
 			this.props.client
@@ -70,13 +74,17 @@ class Users extends Component {
 			this.setState({ spin: false });
 			console.log('Error getting JwtData');
 		}
-	}
+	};
 
 	showModal = () => this.setState({ visible: true });
 	handleCancel = () => this.setState({ visible: false });
 
+	userCreated = () => {
+		this.setState({ visible: false });
+		this.getUsers();
+	};
+
 	render() {
-		let data1 = this.state.userList;
 		return (
 			<div>
 				<Widget
@@ -114,7 +122,11 @@ class Users extends Component {
 					title={null}
 					footer={null}
 				>
-					<CreateUser handleCancel={this.handleCancel} />
+					<CreateUser
+						userCreated={this.userCreated}
+						org_id={this.state.org_id}
+						handleCancel={this.handleCancel}
+					/>
 				</Modal>
 			</div>
 		);

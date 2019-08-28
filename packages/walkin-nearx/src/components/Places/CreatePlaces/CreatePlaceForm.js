@@ -192,7 +192,7 @@ export default class CreatePlaceForm extends Component {
                   </Row>
 
                   <div>
-                    <Form.Item {...formItemLayout} label="Place Name">
+                    <Form.Item {...formItemLayout} label="Name">
                       <Input
                         required
                         placeholder="Place Name"
@@ -271,41 +271,33 @@ export default class CreatePlaceForm extends Component {
 
 
                     {formData.places[0].radius.length >= 3 ||
-                      formData.places[0].radius[formData.places[0].radius.length - 1] == 500 ? (
-                        ""
-                      ) : (
-                        <Form.Item {...tailFormItemLayout}>
-                          <div style={{ float: "right" }}>
-                            <p
-                              onClick={() => this.props.addRadius(0)}
-                              style={{ float: "right", color: "#34bfe2" }}
-                            >
-                              {" "}
-                              <a to="#"> + Add Fence </a>
-                            </p>
-                          </div>
-                        </Form.Item>
-                      )}
+                      formData.places[0].radius[formData.places[0].radius.length - 1] == 500 ?
+                      <Form.Item {...tailFormItemLayout}>
+                        <div style={{ float: "right" }}>
+                          <p
+                            onClick={() => this.props.addRadius(0)}
+                            style={{ float: "right", color: "#34bfe2" }}
+                          >
+                            <a to="#"> + Add Fence </a>
+                          </p>
+                        </div>
+                      </Form.Item> : ''
+                    }
                     <br />
                     <br />
                   </div>
 
-                  {formData.places1.length > 1 ? (
+                  {formData.places1.length > 1 ?
                     <p>
-                      {" "}
                       <span>
-                        {" "}
                         <Icon
                           type="environment"
                           style={{ color: "#e20464" }}
                           theme="filled"
-                        />{" "}
+                        />
                         Hotspot
-                      </span>{" "}
-                    </p>
-                  ) : (
-                      ""
-                    )}
+                      </span>
+                    </p> : ''}
 
                   {form}
 
@@ -323,7 +315,7 @@ export default class CreatePlaceForm extends Component {
                       className="buttonPrimary"
                       style={{ float: "right", marginRight: 20 }}
                     >
-                      {formData.places[0].id ? "UPDATE" : "CREATE"}
+                      {formData.places[0].id ? "Update" : "Create"}
                     </Button>
                   </div>
                 </Form>

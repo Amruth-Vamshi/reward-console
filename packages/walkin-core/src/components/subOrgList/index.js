@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import { Button, List, Row, Avatar, Col, Card, Empty, Icon } from 'antd';
 import { Link } from 'react-router-dom';
 import './style.css';
+import org from '@walkinsole/walkin-components/src/assets/images/org.png';
 
 const SubOrgDetails = ({ subOrgDetails, onNewSubOrg, onSubOrgCardClick, onSubOrgDelete }) => {
 	return (
@@ -26,7 +27,7 @@ const SubOrgDetails = ({ subOrgDetails, onNewSubOrg, onSubOrgCardClick, onSubOrg
 							<Card className="gx-product-item subOrgCardDetails">
 								<Row gutter={8}>
 									<Col span={4}>
-										<Avatar size={64} shape="square" icon="user" />
+										<Avatar size={64} shape="square" src={org} icon="user" />
 									</Col>
 									<Col span={19}>
 										<p className="gx-mb-0 gx-text-grey">{val.name}</p>

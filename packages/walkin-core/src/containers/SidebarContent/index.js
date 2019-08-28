@@ -16,9 +16,21 @@ import {
 } from '@walkinsole/walkin-components/src/constants/ThemeSetting';
 import { compose, graphql, withApollo } from 'react-apollo';
 import gql from 'graphql-tag';
-import { orgId } from '../../query/organization';
+import jwt from 'jsonwebtoken';
 
 class SidebarContent extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			orgId: '',
+		};
+	}
+
+	componentWillMount() {
+		const { id, org_id } = jwt.decode(localStorage.getItem('jwt'));
+		this.setState({ userId: id, orgId: org_id });
+	}
+
 	getNoHeaderClass = navStyle => {
 		if (navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR || navStyle === NAV_STYLE_NO_HEADER_EXPANDED_SIDEBAR) {
 			return 'gx-no-header-notifications';
@@ -33,7 +45,7 @@ class SidebarContent extends Component {
 	};
 
 	render() {
-		const { themeType, navStyle, pathname, orgId } = this.props;
+		const { themeType, navStyle, pathname } = this.props;
 		const selectedKeys = pathname.substr(1);
 		const defaultOpenKeys = selectedKeys.split('/')[1];
 		return (
@@ -77,12 +89,12 @@ class SidebarContent extends Component {
                 Customer Info
 							</Link>
             </Menu.Item> */}
-						<Menu.Item key="help">
-							{/* <Link to="/nearx"> */}
+						{/* <Menu.Item key="help">
+							 <Link to="/nearx"> 
 							<i className="icon icon-queries" />
 							<span>Help</span>
-							{/* </Link> */}
-						</Menu.Item>
+							 </Link> 
+						</Menu.Item> */}
 					</Menu>
 				</div>
 			</Auxiliary>
@@ -104,7 +116,6 @@ const GET_SETTINGS = gql`
 			navStyle
 			themeType
 			locale {
-				icon
 				languageId
 				locale
 				name
@@ -120,15 +131,6 @@ export default withRouter(
 			graphql(GET_SETTINGS, {
 				props: mapStateToProps,
 				name: 'settings',
-			}),
-			graphql(orgId, {
-				name: 'orgId',
-				options: ownProps => ({
-					variables: {
-						id: ownProps.client.cache.data.data['$ROOT_QUERY.auth'].organizationId,
-					},
-					fetchPolicy: 'network-only',
-				}),
 			})
 		)(SidebarContent)
 	)

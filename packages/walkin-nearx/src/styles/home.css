@@ -58,5 +58,18 @@
 .homeNewPlaces .ant-row{
     margin: 10px 0px;
     background-color: #f1f1f1;
-    padding: 13px
+    padding: 13px 13px 5px 13px
+}
+
+.tooltipPopup{
+    margin: 0px; 
+    padding: 10px;
+    background-color: rgb(255, 255, 255);
+    border: 1px solid rgb(204, 204, 204);
+    white-space: nowrap
+}
+
+.tooltipData{
+    margin-top: 5px;
+    color: rgb(3, 0, 173);
 }
