@@ -150,3 +150,191 @@ export const lineData2 = [
   { name: 'Page D', traffic: 1800 },
   { name: 'Page D', traffic: 600 },
 ]
+
+
+export const AnyNear = {
+  "data": {
+    "analytics": [
+      {
+        "name": "GEOFENCE_COUNTS",
+        "type": "SCALAR",
+        "rows": 1,
+        "response": [
+          {
+            "count": 102
+          }
+        ],
+        "total": 102
+      },
+      {
+        "name": "EVENT_ENTRY_COUNTS",
+        "type": "SCALAR",
+        "rows": 1,
+        "response": [
+          {
+            "count": 780
+          }
+        ],
+        "total": 780
+      },
+      {
+        "name": "EVENT_EXIT_COUNTS",
+        "type": "SCALAR",
+        "rows": 1,
+        "response": [
+          {
+            "count": 208
+          }
+        ],
+        "total": 208
+      },
+      {
+        "name": "EVENT_DWELL_COUNTS",
+        "type": "SCALAR",
+        "rows": 1,
+        "response": [
+          {
+            "count": 2
+          }
+        ],
+        "total": 2
+      },
+      {
+        "name": "CUSTOMER_COUNTS",
+        "type": "SCALAR",
+        "rows": 1,
+        "response": [
+          {
+            "count": "2",
+            "Month": "August"
+          }
+        ],
+        "total": 2
+      },
+      {
+        "name": "POPULAR_PLACES",
+        "type": "SCALAR",
+        "rows": 10,
+        "response": [
+          {
+            "geofence_name": "Walkin Office",
+            "count": 511
+          },
+          {
+            "geofence_name": "Karthikeya PG",
+            "count": 208
+          },
+          {
+            "geofence_name": "opp. Brand Factory, Cross Roads",
+            "count": 52
+          },
+          {
+            "geofence_name": "Outside restaurant, Cross Roads",
+            "count": 51
+          },
+          {
+            "geofence_name": "Sagar Fast Food",
+            "count": 46
+          },
+          {
+            "geofence_name": "First WalkIn Technologies Pvt Ltd",
+            "count": 37
+          },
+          {
+            "geofence_name": "Rahul's Home",
+            "count": 24
+          },
+          {
+            "geofence_name": "Anvesh Home",
+            "count": 20
+          },
+          {
+            "geofence_name": "AyyapaSwamy temple",
+            "count": 19
+          },
+          {
+            "geofence_name": "Harish's Home",
+            "count": 18
+          }
+        ],
+        "total": 986
+      },
+      {
+        "name": "MOST_VISITED_PLACES",
+        "type": "SEQUENCE",
+        "rows": 10,
+        "response": [
+          {
+            "geofence_name": "Walkin Office",
+            "entry_count": 384,
+            "exit_count": 45,
+            "dwell_count": 82
+          },
+          {
+            "geofence_name": "Karthikeya PG",
+            "entry_count": 185,
+            "exit_count": 3,
+            "dwell_count": 20
+          },
+          {
+            "geofence_name": "opp. Brand Factory, Cross Roads",
+            "entry_count": 27,
+            "exit_count": 25,
+            "dwell_count": 0
+          },
+          {
+            "geofence_name": "Outside restaurant, Cross Roads",
+            "entry_count": 24,
+            "exit_count": 27,
+            "dwell_count": 0
+          },
+          {
+            "geofence_name": "First WalkIn Technologies Pvt Ltd",
+            "entry_count": 20,
+            "exit_count": 4,
+            "dwell_count": 13
+          },
+          {
+            "geofence_name": "Sagar Fast Food",
+            "entry_count": 18,
+            "exit_count": 17,
+            "dwell_count": 11
+          },
+          {
+            "geofence_name": "Anvesh Home",
+            "entry_count": 13,
+            "exit_count": 0,
+            "dwell_count": 7
+          },
+          {
+            "geofence_name": "Rahul's Home",
+            "entry_count": 10,
+            "exit_count": 8,
+            "dwell_count": 6
+          },
+          {
+            "geofence_name": "AyyapaSwamy temple",
+            "entry_count": 10,
+            "exit_count": 8,
+            "dwell_count": 1
+          },
+          {
+            "geofence_name": "Harish's Home",
+            "entry_count": 9,
+            "exit_count": 9,
+            "dwell_count": 0
+          }
+        ],
+        "total": 10
+      }
+    ]
+  },
+  "extensions": {
+    "customExtenstion": {
+      "startTimestamp": "2019-08-26T09:36:14.952Z",
+      "executionStartTimestamp": "2019-08-26T09:36:14.956Z",
+      "responseTimestamp": "2019-08-26T09:36:15.838Z",
+      "durationInMillis": 886
+    }
+  }
+}
