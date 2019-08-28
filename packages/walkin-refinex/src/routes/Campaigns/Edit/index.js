@@ -45,7 +45,11 @@ export default class EditCampaign extends Component {
       ]
     };
   }
-
+  onTestAndControlEdit = () => {
+    this.setState({
+      showTestAndControl: true
+    });
+  };
   onChange = current => {
     this.setState({ current });
   };
@@ -56,6 +60,26 @@ export default class EditCampaign extends Component {
 
   saveFormRef = formRef => {
     this.formRef = formRef;
+  };
+
+  onControlValueChange = val => {
+    this.setState({ controlValue: val });
+  };
+
+  onTestValueChange = val => {
+    this.setState({ testValue: val });
+  };
+
+  applyTestControlChange = () => {
+    const { testValue, controlValue } = this.state;
+    this.setState({
+      testControlSelected: `${testValue} % - ${controlValue}%`,
+      showTestAndControl: false
+    });
+  };
+
+  handleButtonGroupChange = e => {
+    this.setState({ value: e.target.value });
   };
 
   getContainer = () => {
