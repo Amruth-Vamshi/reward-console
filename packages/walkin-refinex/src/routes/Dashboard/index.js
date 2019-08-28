@@ -1,6 +1,5 @@
 import React from "react";
 import { Col, Row } from "antd";
-
 import {
   Area,
   AreaChart,
@@ -21,13 +20,14 @@ import {
   DownloadMobileApps,
   OrderHistory
 } from "@walkinsole/walkin-components";
+import CampaignList from "../../containers/campaignList/index"
 import { increamentData, lineData } from "./data";
 
 const Dashboard = () => {
   return (
     <Auxiliary>
-      <Row>
-        {/* <Col xl={6} lg={12} md={12} sm={12} xs={24}>
+      <CampaignList />
+      {/* <Col xl={6} lg={12} md={12} sm={12} xs={24}>
           <ChartCard
             prize="$9,626"
             title="23"
@@ -187,7 +187,7 @@ const Dashboard = () => {
           <DownloadMobileApps />
           <OrderHistory />
         </Col> */}
-      </Row>
+
     </Auxiliary>
   );
 };

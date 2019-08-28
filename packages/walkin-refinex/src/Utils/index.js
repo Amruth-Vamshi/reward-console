@@ -1,0 +1,1 @@
+export const NEW_CAMPAIGN = "/refinex/campaign/overview"

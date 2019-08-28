@@ -50,6 +50,20 @@ export const allRuleAttributes = gql`
   }
 `;
 
+
+export const campaigns = gql`
+	query($status: STATUS!) {
+		campaigns(status: $status) {
+			id
+			name
+			description
+			startTime
+			endTime
+			status
+		}
+	}
+`;
+
 export const feedbackForm = gql`
   query getFeedbackForm {
     getFeedbackForm(feedbackFormId: "1") {
