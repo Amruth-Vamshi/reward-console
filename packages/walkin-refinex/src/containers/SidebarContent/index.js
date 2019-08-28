@@ -7,7 +7,6 @@ import {
   Auxiliary,
   IntlMessages
 } from "@walkinsole/walkin-components";
-import SidebarLogo from "./SidebarLogo";
 
 import UserProfile from "./UserProfile";
 import AppsNavigation from "./AppsNavigation";
@@ -18,6 +17,7 @@ import {
   NAV_STYLE_NO_HEADER_MINI_SIDEBAR,
   THEME_TYPE_LITE
 } from "@walkinsole/walkin-components/src/constants/ThemeSetting";
+import SidebarLogo from "@walkinsole/walkin-core/src/containers/SidebarContent/SidebarLogo";
 import { compose, graphql } from "react-apollo";
 import gql from "graphql-tag";
 
@@ -60,31 +60,28 @@ class SidebarContent extends Component {
               </Link>
             </Menu.Item>
             <Menu.Item key="settings">
-              {/* <Link to="/refinex"> */}
-              <i className="icon icon-select" />
-              <IntlMessages id="sidebar.refinex.settings" />
-              {/* </Link> */}
+              <Link to="/refinex/settings">
+                <i className="icon icon-select" />
+                <IntlMessages id="sidebar.refinex.settings" />
+              </Link>
             </Menu.Item>
             <Menu.Item key="feedbacks">
-              {/* <Link to="/nearx"> */}
-              <i className="icon icon-geo-location" />
-              <IntlMessages id="sidebar.refinex.feedbacks" />
-
-              {/* </Link> */}
+              <Link to="/refinex/feedbacks">
+                <i className="icon icon-geo-location" />
+                <IntlMessages id="sidebar.refinex.feedbacks" />
+              </Link>
             </Menu.Item>{" "}
             <Menu.Item key="analytics">
-              {/* <Link to="/nearx"> */}
-              <i className="icon icon-geo-location" />
-              <IntlMessages id="sidebar.refinex.analytics" />
-
-              {/* </Link> */}
+              <Link to="/refinex/analytics">
+                <i className="icon icon-geo-location" />
+                <IntlMessages id="sidebar.refinex.analytics" />
+              </Link>
             </Menu.Item>
             <Menu.Item key="help">
-              {/* <Link to="/nearx"> */}
-              <i className="icon icon-geo-location" />
-              <IntlMessages id="sidebar.refinex.help" />
-
-              {/* </Link> */}
+              <Link to="/refinex/help">
+                <i className="icon icon-geo-location" />
+                <IntlMessages id="sidebar.refinex.help" />
+              </Link>
             </Menu.Item>
           </Menu>
         </div>

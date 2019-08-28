@@ -86,15 +86,10 @@ export default class EditCampaign extends Component {
     console.log(this.state.current);
     const {
       formValues,
-      current,
       showTestAndControl,
       testValue,
       controlValue,
-      testControlSelected,
-      rows,
-      values,
-      communicationSelected,
-      communicationFormValues
+      testControlSelected
     } = this.state;
     switch (this.state.current) {
       case 0:
