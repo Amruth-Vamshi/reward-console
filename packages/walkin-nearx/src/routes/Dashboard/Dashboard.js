@@ -40,16 +40,16 @@ class Landing extends Component {
     const { id, org_id } = jwt.decode(localStorage.getItem("jwt"));
     if (org_id && id) {
       this.setState({ org_id })
-      this.getMetrics(org_id)
+      this.getMetrics(org_id, this.state.endDate)
     } else console.log("Error getting JwtData");
   }
 
-  getMetrics = org_id => {
+  getMetrics = (org_id, endDate) => {
     this.setState({ spin: true });
     this.props.client
       .query({
         query: GET_ANALYTICS,
-        variables: { org_id: org_id, product: "NEARX", dates: { from: this.state.startDate, to: this.state.endDate } },
+        variables: { org_id: org_id, product: "NEARX", dates: { from: this.state.startDate, to: endDate } },
         fetchPolicy: "no-cache"
       })
       .then(res => {
@@ -111,6 +111,7 @@ class Landing extends Component {
     var newdate2 = new Date(d).toISOString();
     //console.log("newd",newdate2)
     this.setState({ endDate: newdate2 });
+    this.getMetrics(this.state.org_id, newdate2)
     if (newdate2 !== '') this.state.errors.endDate = '';
   }
 
