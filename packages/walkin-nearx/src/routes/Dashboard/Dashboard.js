@@ -118,7 +118,7 @@ class Landing extends Component {
   customPopup = c => {
     if (c.payload[0])
       return <div className='recharts-default-tooltip tooltipPopup'>
-        <div>{c.payload[0].payload.Month ? c.payload[0].payload.Month : ''}</div>
+        <div>{c.payload[0].payload.Date ? c.payload[0].payload.Date : ''}</div>
         <div className="tooltipData">{c.payload[0].dataKey + " : " + c.payload[0].value}</div>
       </div>
   }
