@@ -1,15 +1,5 @@
 import React, { Component } from "react";
-import {
-  Row,
-  Col,
-  Card,
-  Affix,
-  message,
-  Modal,
-  Input,
-  Button,
-  Icon
-} from "antd";
+import { Row, Col, Card, Affix, message, Modal, Input, Button, Icon } from "antd";
 import GetGooglePlaces from "./GetGooglePlaces";
 import { Link } from "react-router-dom";
 import { CREATE_GROUP_OF_PLACES } from "../../../queries";

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 
 import Dashboard from "./Home/index";
-import AnalyticsManager from "./Dashboard/index";
+import AnalyticsManager from "./dashboard";
 import Places from "./Places";
 import settings from "./Settings";
 import NearxApps from "./App";
@@ -15,7 +15,7 @@ export default class NearXRoutes extends Component {
     return (
       <div className="NearX-Main">
         <Switch>
-          <Redirect exact from="/nearx" to="/nearx/places" />
+          <Redirect exact from="/nearx" to="/nearx/dashboard" />
           <Route path="/nearx/home" component={Dashboard} />
           <Route path="/nearx/dashboard" component={AnalyticsManager} />
           <Route path="/nearx/places" component={Places} />
