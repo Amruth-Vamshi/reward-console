@@ -16,6 +16,15 @@ import { GET_ANALYTICS } from "@walkinsole/walkin-components/src/PlatformQueries
 
 const dateFormat = 'YYYY/MM/DD';
 
+function now() {
+  var time = "23:59:59"
+  var value1 = moment().subtract(1, 'day').format('YYYY-MM-DD');
+  var d = value1 + " " + time;
+  var newdate1 = new Date(d)
+  console.log("newd", newdate1)
+  return newdate1
+}
+
 class Landing extends Component {
   constructor(props) {
     super(props)
@@ -30,13 +39,12 @@ class Landing extends Component {
       customerCount: 0,
       org_id: '',
       startDate: moment().subtract(30, 'day'),
-      endDate: moment(),
+      endDate: now(),
       errors: {}
     }
   }
 
   componentWillMount() {
-
     const { id, org_id } = jwt.decode(localStorage.getItem("jwt"));
     if (org_id && id) {
       this.setState({ org_id })
@@ -90,9 +98,9 @@ class Landing extends Component {
 
   disableEndDate = current => {
     if (!current) return false;
-    const date = moment(this.state.startDate).add(1, 'day');
+    const date = moment(this.state.startDate);
     date.hour(0); date.minute(0); date.second(0);
-    return (current.valueOf() <= date.valueOf() || moment() < current);
+    return (current.valueOf() <= date.valueOf() || moment().subtract(1, 'day') < current);
   }
 
   handleChange2 = (value) => {
@@ -105,8 +113,8 @@ class Landing extends Component {
     if (newdate1 !== '') this.state.errors.startDate = '';
   }
   handleChange3 = (value) => {
-    var time = "5:30:00"
-    var value1 = moment(value).format('YYYY-MM-DD');
+    var time = "5:29:59"
+    var value1 = moment(value).add(1, 'day').format('YYYY-MM-DD');
     var d = value1 + " " + time;
     var newdate2 = new Date(d).toISOString();
     //console.log("newd",newdate2)
