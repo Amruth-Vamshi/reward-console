@@ -58,6 +58,7 @@ class NewSegment extends Component {
 				},
 			})
 			.then(({ data }) => {
+				console.log('rule', data);
 				client
 					.mutate({
 						mutation: createSegment,
@@ -65,7 +66,7 @@ class NewSegment extends Component {
 							name: this.state.value,
 							segmentType: 'CUSTOM',
 							organization_id: org_id,
-							application_id: '1',
+							application_id: 'ec36088c-08e2-4a42-a75c-60490fe5c132', // remove Hardcoding get it from context
 							rule_id: data.createRule.id,
 							status: 'ACTIVE',
 						},

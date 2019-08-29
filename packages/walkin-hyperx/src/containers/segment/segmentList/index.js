@@ -175,7 +175,7 @@ class SegmentList extends Component {
 								<Col span={12}>
 									<h3 className="gx-text-grey paddingLeftStyle campaignHeaderTitleStyle">Segments</h3>
 								</Col>
-								<Col span={12}>
+								<Col style={{ display: 'flex', justifyContent: 'flex-end' }} span={12}>
 									<Button type="primary" onClick={this.onNewSegment}>
 										New Segment
 									</Button>
@@ -217,7 +217,7 @@ export default withRouter(
 				refetchSegments: ownProps => {
 					refetch({
 						variables: {
-							organization_id: '6ec84af7-d323-4ef7-aa42-a3007055f5b7', //get it from props
+							organization_id: ownProps.client.cache.data.data['$ROOT_QUERY.auth'].organizationId, //get it from props
 							status: 'ACTIVE',
 						},
 					});

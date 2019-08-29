@@ -16,7 +16,7 @@ import {
 } from '@walkinsole/walkin-components/src/constants/ThemeSetting';
 import { compose, graphql, withApollo } from 'react-apollo';
 import gql from 'graphql-tag';
-import jwt from "jsonwebtoken";
+import jwt from 'jsonwebtoken';
 
 class SidebarContent extends Component {
 	constructor(props) {
@@ -27,7 +27,7 @@ class SidebarContent extends Component {
 	}
 
 	componentWillMount() {
-		const { id, org_id } = jwt.decode(localStorage.getItem("jwt"));
+		const { id, org_id } = jwt.decode(localStorage.getItem('jwt'));
 		this.setState({ userId: id, orgId: org_id });
 	}
 
@@ -45,7 +45,7 @@ class SidebarContent extends Component {
 	};
 
 	render() {
-		const { themeType, navStyle, pathname } = this.props;
+		const { themeType, navStyle, pathname, orgId } = this.props;
 		const selectedKeys = pathname.substr(1);
 		const defaultOpenKeys = selectedKeys.split('/')[1];
 		return (
@@ -75,8 +75,8 @@ class SidebarContent extends Component {
 						</Menu.Item>
 						<Menu.Item key="organizationInfo">
 							<Link
-								to={`/core/organization/${this.state.orgId ? this.state.orgId : ''}`}
-							// to="core/organization"
+								to={`/core/organization/${orgId && orgId.variables ? orgId.variables.id : ''}`}
+								// to="core/organization"
 							>
 								<i className="icon icon-inbox" />
 								{/* <IntlMessages id="sidebar.nearx" /> */}
