@@ -214,7 +214,7 @@ class Landing extends Component {
                   <IconWithTextCard cardColor="teal" antIcon="logout" title={this.state.totalExits} subTitle="Total Exit" />
                 </Col>
                 <Col xl={6} lg={6} md={6} sm={12} xs={12} className="gx-col-full">
-                  <IconWithTextCard cardColor="red" icon="map-street-view" title={this.state.totalDwell} subTitle="Live Users" />
+                  <IconWithTextCard cardColor="red" icon="map-street-view" title={this.state.totalDwell} subTitle="Dwelling customers" />
                 </Col>
               </Row>
 
