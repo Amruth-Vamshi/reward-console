@@ -19,8 +19,20 @@ export default class HotspotCard extends Component {
                 </div></Col>
 
                 <Col style={{ float: "right", marginRight: -15 }}  className='placeCardLocation' span={10}>
-                    <Row>Latitude:- <span style={{ marginBottom: 5 }}>{data.center.lat}</span></Row>
-                    <Row>Longitude:- <span>{data.center.lng}</span></Row>
+                    <Row>Latitude:- <span style={{ marginBottom: 5 }}>
+                    
+                   {data.center.lat.toString().slice(0, data.center.lat.toString().indexOf(".") + 8)}
+
+                    
+
+                    </span></Row>
+                    <Row>Longitude:- <span>
+                    
+                    {data.center.lng
+                  .toString()
+                  .slice(0, data.center.lng.toString().indexOf(".") + 8)}
+                    
+                    </span></Row>
                 </Col>
                 {/* <Icon type="close" onClick={() => this.props.deleteHotspot(this.props.index)} style={{ float: "right", margin: '-8px 1px 0px 0px'}} />  */}
             </Row>
