@@ -271,7 +271,7 @@ export default class CreatePlaceForm extends Component {
 
 
                     {formData.places[0].radius.length >= 3 ||
-                      formData.places[0].radius[formData.places[0].radius.length - 1] == 500 ?
+                      formData.places[0].radius[formData.places[0].radius.length - 1] == 500 ? "" :
                       <Form.Item {...tailFormItemLayout}>
                         <div style={{ float: "right" }}>
                           <p
@@ -281,7 +281,7 @@ export default class CreatePlaceForm extends Component {
                             <a to="#"> + Add Fence </a>
                           </p>
                         </div>
-                      </Form.Item> : ''
+                      </Form.Item>
                     }
                     <br />
                     <br />
