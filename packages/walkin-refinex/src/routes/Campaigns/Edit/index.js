@@ -2,7 +2,10 @@ import "./Edit.css";
 import React, { Component } from "react";
 import { Row, Col, Button } from "antd";
 import CampaignConfig from "./Campaign";
-import Audience from "./Audience";
+// import Audience from "./Audience";
+import Audience from "@walkinsole/walkin-hyperx/src/containers/campaign/campaignCreation/audience";
+
+import "@walkinsole/walkin-hyperx/src/containers/campaign/campaignCreation/audience/style.css";
 import Communication from "./Communication";
 import Triggers from "./Triggers";
 import Overview from "./Overview";
@@ -131,7 +134,20 @@ export default class EditCampaign extends Component {
       case 1:
         return <FeedbackFormConfig />;
       case 2:
-        return <Audience />;
+        return (
+          <Audience
+            audienceTitle="Audience"
+            segmentSubTitle="Segment"
+            onValuesSelected={this.onValuesSelected}
+            // segmentSelectionData={this.props.segmentList.segments}
+            uploadCsvText="Upload CSV"
+            // uploadProps={props}
+            segmentFilterText="Filter"
+            segmentFilterSubText="Campaign applies to :"
+            // attributeData={attributeData}
+            // logQuery={this.logQuery}
+          />
+        );
       case 3:
         return <Triggers />;
       case 4:
