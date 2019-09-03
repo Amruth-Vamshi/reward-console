@@ -213,6 +213,7 @@ export const GET_FEEDBACK_FORM = gql`
 export const GET_CAMPAIGNS = gql`
   query getCampaign($userId: ID!) {
     user(id: $userId) {
+      id
       createdCampaigns {
         id
         name
@@ -225,6 +226,7 @@ export const GET_CAMPAIGNS = gql`
           name
         }
         application {
+          id
           name
           platform
         }

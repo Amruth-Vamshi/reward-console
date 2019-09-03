@@ -11,68 +11,74 @@ import './style.css';
 const DEFAULT_STATUS = 'ACTIVE';
 
 const { TabPane } = Tabs;
-const data = [
-	{
-		name: 'This will be in future',
-		startTime: '2019-09-06T09:10:22.574Z',
-		endTime: '2020-06-06T09:10:22.574Z',
-		status: 'ACTIVE',
-	},
-	{
-		name: 'New Feedback',
-		startTime: '2019-05-06T09:10:22.574Z',
-		endTime: '2019-06-06T09:10:22.574Z',
-		status: 'ACTIVE',
-	},
-	{
-		name: 'CCD FEEDBACK',
-		startTime: '2019-08-06T09:10:22.574Z',
-		endTime: '2019-09-06T09:10:22.574Z',
-		status: 'ACTIVE',
-	},
-	{
-		name: 'CCD POS FEEDBACK',
-		startTime: '2019-06-21T09:10:22.574Z',
-		endTime: '2019-07-06T09:10:22.574Z',
-		status: 'ACTIVE',
-	},
-	{
-		name: 'CCD IN_APP FEEDBACK',
-		startTime: '2019-07-06T09:10:22.574Z',
-		endTime: '2019-08-096T09:10:22.574Z',
-		status: 'ACTIVE',
-	},
-	{
-		name: 'CCD_APP_FEEDBACK',
-		startTime: '2019-04-06T09:10:22.574Z',
-		endTime: '2019-06-06T09:10:22.574Z',
-		status: 'ACTIVE',
-	},
-	{
-		name: 'REFINEX_FEEDBACK',
-		startTime: '2019-08-06T09:10:22.574Z',
-		endTime: '2019-10-06T09:10:22.574Z',
-		status: 'DRAFT',
-	},
-	{
-		name: 'TEST_FEEDBACK',
-		startTime: '2019-06-06T09:10:22.574Z',
-		endTime: '2019-07-06T09:10:22.574Z',
-		status: 'DRAFT',
-	},
-];
+// const data = [
+// 	{
+// 		name: 'This will be in future',
+// 		startTime: '2019-09-06T09:10:22.574Z',
+// 		endTime: '2020-06-06T09:10:22.574Z',
+// 		status: 'ACTIVE',
+// 	},
+// 	{
+// 		name: 'New Feedback',
+// 		startTime: '2019-05-06T09:10:22.574Z',
+// 		endTime: '2019-06-06T09:10:22.574Z',
+// 		status: 'ACTIVE',
+// 	},
+// 	{
+// 		name: 'CCD FEEDBACK',
+// 		startTime: '2019-08-06T09:10:22.574Z',
+// 		endTime: '2019-09-06T09:10:22.574Z',
+// 		status: 'ACTIVE',
+// 	},
+// 	{
+// 		name: 'CCD POS FEEDBACK',
+// 		startTime: '2019-06-21T09:10:22.574Z',
+// 		endTime: '2019-07-06T09:10:22.574Z',
+// 		status: 'ACTIVE',
+// 	},
+// 	{
+// 		name: 'CCD IN_APP FEEDBACK',
+// 		startTime: '2019-07-06T09:10:22.574Z',
+// 		endTime: '2019-08-096T09:10:22.574Z',
+// 		status: 'ACTIVE',
+// 	},
+// 	{
+// 		name: 'CCD_APP_FEEDBACK',
+// 		startTime: '2019-04-06T09:10:22.574Z',
+// 		endTime: '2019-06-06T09:10:22.574Z',
+// 		status: 'ACTIVE',
+// 	},
+// 	{
+// 		name: 'REFINEX_FEEDBACK',
+// 		startTime: '2019-08-06T09:10:22.574Z',
+// 		endTime: '2019-10-06T09:10:22.574Z',
+// 		status: 'DRAFT',
+// 	},
+// 	{
+// 		name: 'TEST_FEEDBACK',
+// 		startTime: '2019-06-06T09:10:22.574Z',
+// 		endTime: '2019-07-06T09:10:22.574Z',
+// 		status: 'DRAFT',
+// 	},
+// ];
 class CampaignList extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			sortedInfo: null,
 			filtered: null,
-			data: data.filter(val => {
-				if (val.status == 'ACTIVE') {
-					return moment().isBetween(val.startTime, val.endTime);
-				}
-			}),
+			allCampaigns: null,
+			data: null,
 		};
+	}
+	componentDidMount() {
+		const { campaigns } = this.props;
+		const data = campaigns.filter(val => {
+			if (val.status == 'ACTIVE') {
+				return moment().isBetween(val.startTime, val.endTime);
+			}
+		})
+		this.setState({ allCampaigns: campaigns, data: data })
 	}
 	onNewCampaign = () => {
 		const { history } = this.props;
@@ -108,14 +114,16 @@ class CampaignList extends Component {
 	);
 
 	onCampaignFilteredList = newList => {
+		console.log("new list", newList)
 		this.setState({
 			filtered: newList,
 		});
 	};
 
 	onTabChange = key => {
+		const { allCampaigns } = this.state
 		if (key == 2) {
-			let upcomingCampaigns = data.filter(val => {
+			let upcomingCampaigns = allCampaigns.filter(val => {
 				if (val.status == 'ACTIVE') {
 					return moment(val.startTime).isAfter(moment());
 				}
@@ -124,7 +132,7 @@ class CampaignList extends Component {
 		}
 
 		if (key == 3) {
-			let completedCampaigns = data.filter(val => {
+			let completedCampaigns = allCampaigns.filter(val => {
 				if (val.status == 'ACTIVE') {
 					return moment(val.endTime).isBefore(moment());
 				}
@@ -136,13 +144,13 @@ class CampaignList extends Component {
 			//If api works
 			// changeStatus('DRAFT')
 			// this.setState({data: this.props.campaigns})
-			let draftCampaigns = data.filter(val => {
+			let draftCampaigns = allCampaigns.filter(val => {
 				return val.status == 'DRAFT';
 			});
 			this.setState({ data: draftCampaigns });
 		}
 		if (key == 1) {
-			let liveCampaigns = data.filter(val => {
+			let liveCampaigns = allCampaigns.filter(val => {
 				if (val.status == 'ACTIVE') {
 					return moment().isBetween(val.startTime, val.endTime);
 				}

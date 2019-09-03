@@ -16,10 +16,10 @@ class CampaignOverviewGrid extends Component {
         </Col>
       ))
     ) : (
-      <Col span={24} offset={10}>
-        <h3>No Campaigns created</h3>
-      </Col>
-    );
+        <Col span={24} offset={10}>
+          <h3>No Campaigns created</h3>
+        </Col>
+      );
   };
 
   render() {
@@ -39,6 +39,7 @@ class CampaignOverviewGrid extends Component {
           fetchPolicy="cache-and-network"
         >
           {({ loading, error, data }) => {
+            console.log(data)
             if (loading) {
               return <span>Loading</span>;
             } else if (error) {
