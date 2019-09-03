@@ -10,16 +10,21 @@ class CampaignOverviewGrid extends Component {
     const { history } = this.props;
 
     return campaigns ? (
-      campaigns.map(campaign => (
-        <Col span={6} key={campaign.id}>
-          <ManageCampaignCard campaign={campaign} history={history} />
-        </Col>
-      ))
+      campaigns.map(campaign => {
+
+        return (
+          <Col span={6} key={campaign.id}>
+            <ManageCampaignCard campaign={campaign} history={history} />
+          </Col>
+        )
+
+
+      })
     ) : (
-      <Col span={24} offset={10}>
-        <h3>No Campaigns created</h3>
-      </Col>
-    );
+        <Col span={24} offset={10}>
+          <h3>No Campaigns created</h3>
+        </Col>
+      );
   };
 
   render() {
@@ -28,9 +33,10 @@ class CampaignOverviewGrid extends Component {
       <div>
         <Row>
           <Col>
-            <h1>Draft Campaigns</h1>
+            <h1>Campaigns</h1>
           </Col>
         </Row>
+
         <Query
           query={GET_CAMPAIGNS}
           variables={{
@@ -39,6 +45,7 @@ class CampaignOverviewGrid extends Component {
           fetchPolicy="cache-and-network"
         >
           {({ loading, error, data }) => {
+            console.log(data)
             if (loading) {
               return <span>Loading</span>;
             } else if (error) {
@@ -59,6 +66,8 @@ class CampaignOverviewGrid extends Component {
             }
           }}
         </Query>
+
+
       </div>
     );
   }
