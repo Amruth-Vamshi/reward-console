@@ -12,6 +12,10 @@ export default ({ match }) => {
         component={asyncComponent(() => import("./Edit"))}
       />
       <Route
+        path={`${match.url}/create`}
+        component={asyncComponent(() => import("./Edit"))}
+      />
+      <Route
         path={`${match.url}/overview`}
         exact
         component={asyncComponent(() => import("./Overview"))}
