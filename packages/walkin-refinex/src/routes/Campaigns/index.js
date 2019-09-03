@@ -18,7 +18,7 @@ export default ({ match }) => {
       <Route
         path={`${match.url}/overview`}
         exact
-        component={asyncComponent(() => import("./Overview"))}
+        component={asyncComponent(() => import("../../containers/campaignList"))}
       />
     </Switch>
   );

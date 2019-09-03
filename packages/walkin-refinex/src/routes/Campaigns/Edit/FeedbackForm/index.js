@@ -30,16 +30,17 @@ class FeedbackFormConfig extends Component {
           error,
           refetch: refetchFeedbackForm
         }) => {
+
           if (loading) {
             return <CircularProgress />;
           } else if (campaignData && campaignData.campaign) {
-            console.log("campaignData", campaignData);
+
 
             const feedbackForm =
               campaignData.campaign && campaignData.campaign.feedbackForm
                 ? campaignData.campaign.feedbackForm
                 : {};
-            console.log("feedbackForm", feedbackForm);
+
 
             return (
               <Query
@@ -71,7 +72,7 @@ class FeedbackFormConfig extends Component {
                           refetchFeedbackForm={refetchFeedbackForm}
                           questionnaire={
                             questionnaireData &&
-                            questionnaireData.questionHierarchy
+                              questionnaireData.questionHierarchy
                               ? questionnaireData.questionHierarchy
                               : []
                           }
@@ -84,7 +85,7 @@ class FeedbackFormConfig extends Component {
                           refetchFeedbackForm={refetchFeedbackForm}
                           questionnaire={
                             questionnaireData &&
-                            questionnaireData.questionHierarchy
+                              questionnaireData.questionHierarchy
                               ? questionnaireData.questionHierarchy
                               : []
                           }

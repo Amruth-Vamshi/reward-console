@@ -64,6 +64,25 @@ export const campaigns = gql`
 	}
 `;
 
+
+export const GET_CAMPAIGN = gql`
+query($id:ID!){
+  campaign(id:$id){
+    id
+    name
+    description
+    startTime
+    endTime
+    status
+    campaignType
+    status
+    feedbackForm{
+      id
+    }
+  }
+}
+`
+
 export const feedbackForm = gql`
   query getFeedbackForm {
     getFeedbackForm(feedbackFormId: "1") {
@@ -195,6 +214,7 @@ export const GET_QUESTIONNAIRE = gql`
 export const GET_FEEDBACK_FORM = gql`
   query getFeedbackForm($campaignId: ID!) {
     campaign(id: $campaignId) {
+      id
       feedbackForm {
         id
         title
@@ -239,8 +259,8 @@ export const GET_CAMPAIGNS = gql`
 `;
 
 export const CREATE_FEEDBACK_FORM = gql`
-  mutation createFeedbackForm($campaignId: ID!) {
-    createFeedbackForm(campaignId: $campaignId, input: { title: "default" }) {
+  mutation createFeedbackForm($campaignId: ID!,$formName:string) {
+    createFeedbackForm(campaignId: $campaignId, input: { title:$formName }) {
       campaign {
         id
         name

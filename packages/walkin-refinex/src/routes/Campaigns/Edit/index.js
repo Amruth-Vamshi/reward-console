@@ -11,8 +11,11 @@ import Triggers from "./Triggers";
 import Overview from "./Overview";
 import FeedbackFormConfig from "./FeedbackForm";
 import ContainerHeader from "../CampaignHeader";
+import gql from "graphql-tag";
+import { compose, graphql } from "react-apollo";
 import GoLive from "./GoLive";
-export default class EditCampaign extends Component {
+import {GET_CAMPAIGN} from "../../../containers/Query"
+ class EditCampaign extends Component {
   constructor() {
     super();
     this.state = {
@@ -86,7 +89,7 @@ export default class EditCampaign extends Component {
   };
 
   getContainer = () => {
-    console.log(this.state.current);
+    const {campaign}= this.props.campaign
     const {
       formValues,
       showTestAndControl,
@@ -101,7 +104,7 @@ export default class EditCampaign extends Component {
             subTitle="Basic information"
             onFormNext={this.onFormNext}
             saveFormRef={this.saveFormRef}
-            formValues={formValues}
+            formValues={this.props.campaign.campaign}
             testAndControlText="Test & Control"
             promptText="prompt text"
             toolTipText="what is test and control?"
@@ -129,6 +132,7 @@ export default class EditCampaign extends Component {
             onTestValueChange={this.onTestValueChange}
             onControlValueChange={this.onControlValueChange}
             popupButtonText="apply"
+            campaign={this.props.campaign.campaign}
           />
         );
       case 1:
@@ -185,3 +189,15 @@ export default class EditCampaign extends Component {
     );
   }
 }
+
+
+export default compose(
+  graphql(GET_CAMPAIGN, {
+    name: "campaign",
+    options: (props) => ({
+      variables: {
+        id:props.match.params.id,
+      },
+    })
+  })
+)(EditCampaign);

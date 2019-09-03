@@ -6,24 +6,30 @@ import { compose, graphql } from "react-apollo";
 import { CREATE_FEEDBACK_FORM } from "../../../../containers/Query";
 import gql from "graphql-tag";
 class CreateCampaignRow extends Component {
-  state = {
-    showModal: false
-  };
+  constructor(props) {
+    super(props)
+    this.state = {
+      showModal: false,
+      formName: null
+    }
+  }
+
   onCancel = async () => {
     this.setState({
       showModal: false
     });
   };
 
-  createFeedbackCampaign = () => {
+  createFeedbackCampaign = (formName, e) => {
     this.setState({
-      showModal: true
+      showModal: true,
+      formName: formName
     });
   };
 
   onConfirm = async selectedApplication => {
     console.log(selectedApplication);
-
+    const { formName } = this.state;
     const { history } = this.props;
     this.setState({
       showModal: false
@@ -31,7 +37,7 @@ class CreateCampaignRow extends Component {
     const { createDraftCampaign, createFeedbackForm } = this.props;
 
     const campaign = await createDraftCampaign({
-      variables: { applicationId: selectedApplication.id }
+      variables: { applicationId: selectedApplication.id, formName: formName }
     });
 
     console.log(campaign);
@@ -65,7 +71,7 @@ class CreateCampaignRow extends Component {
               <Row gutter={12} type="flex" justify="space-around">
                 <Col span={4} onClick={this.createFeedbackCampaign.bind(
                   this,
-                  "blank"
+                  "default"
                 )}>
                   <CardBox style={{
                     cursor: "pointer"
@@ -78,7 +84,7 @@ class CreateCampaignRow extends Component {
                 </Col>
                 <Col span={4} onClick={this.createFeedbackCampaign.bind(
                   this,
-                  "blank"
+                  "product_feedback"
                 )}>
                   <CardBox style={{
                     cursor: "pointer"
@@ -91,7 +97,7 @@ class CreateCampaignRow extends Component {
                 </Col>
                 <Col span={4} onClick={this.createFeedbackCampaign.bind(
                   this,
-                  "blank"
+                  "customer survey"
                 )}>
                   <CardBox style={{
                     cursor: "pointer"
@@ -104,7 +110,7 @@ class CreateCampaignRow extends Component {
                 </Col>
                 <Col span={4} onClick={this.createFeedbackCampaign.bind(
                   this,
-                  "blank"
+                  "employee feedback"
                 )}>
                   <CardBox style={{
                     cursor: "pointer"
@@ -117,7 +123,7 @@ class CreateCampaignRow extends Component {
                 </Col>
                 <Col span={4} onClick={this.createFeedbackCampaign.bind(
                   this,
-                  "blank"
+                  "user feedback"
                 )}>
                   <CardBox style={{
                     cursor: "pointer"

@@ -98,16 +98,27 @@ class CampaignList extends Component {
 	onDuplicateContact = contact => {
 		console.log('dupl', contact);
 	};
+
+	showMatrics = record => {
+		console.log("matrics", record)
+	}
 	menus = record => (
 		<Menu
 			onClick={e => {
 				if (e.key === 'duplicate') {
 					this.onDuplicateContact(record);
+				} else if (e.key === 'edit') {
+					this.props.history.push(`/refinex/campaign/${record.id}/edit`)
+
+				} else if (e.key === "view") {
+					this.showMatrics(record)
 				} else {
 					this.onDeleteContact(record);
 				}
 			}}
 		>
+			<Menu.Item key="view">View</Menu.Item>
+			<Menu.Item key="edit">Edit</Menu.Item>
 			<Menu.Item key="duplicate">Duplicate</Menu.Item>
 			<Menu.Item key="delete">Delete</Menu.Item>
 		</Menu>
