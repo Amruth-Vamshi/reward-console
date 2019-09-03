@@ -65,6 +65,28 @@ export const campaigns = gql`
 `;
 
 
+export const CREATE_CAMPAIGN = gql`
+mutation{
+  createCampaign(input:{
+    name:"",
+    description:"",
+    campaignType:FEEDBACK,
+    priority:1,
+    organization_id:"",
+    application_id:"",
+    startTime:"",
+    endTime:""
+  }){
+    id
+    name
+    description
+    startTime
+    endTime
+    status
+  }
+}
+`
+
 export const GET_CAMPAIGN = gql`
 query($id:ID!){
   campaign(id:$id){

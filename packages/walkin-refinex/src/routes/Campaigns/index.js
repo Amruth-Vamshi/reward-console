@@ -13,7 +13,7 @@ export default ({ match }) => {
       />
       <Route
         path={`${match.url}/create`}
-        component={asyncComponent(() => import("./Edit"))}
+        component={asyncComponent(() => import("./Create"))}
       />
       <Route
         path={`${match.url}/overview`}
