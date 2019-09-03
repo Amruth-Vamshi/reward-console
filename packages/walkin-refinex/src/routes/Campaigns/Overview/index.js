@@ -34,11 +34,11 @@ class CampaignOverview extends Component {
 
     return (
       <ErrorBoundary>
-        <CreateCampaignRow
+        {/* <CreateCampaignRow
           createFeedbackCampaign={this.createFeedbackCampaign}
           auth={auth}
           history={history}
-        />
+        /> */}
         <CampaignOverviewGrid auth={auth} history={history} />
       </ErrorBoundary>
     );
