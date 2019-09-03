@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Row, Col, Button } from "antd";
+import { Row, Col, Button, Card, Empty } from "antd";
 import { CardBox, ErrorBoundary } from "@walkinsole/walkin-components";
 import SelectApplicationModal from "../SelectApplicationModal";
 import { compose, graphql } from "react-apollo";
@@ -62,97 +62,69 @@ class CreateCampaignRow extends Component {
           />
           <Row>
             <Col span={24}>
-              <Row style={{ marginBottom: "1%" }}>
-                <Col span={24}>
-                  <h1>Create Feedback Campaign</h1>
-                </Col>
-              </Row>
               <Row gutter={12} type="flex" justify="space-around">
-                <Col span={4}>
-                  <CardBox styleName="gx-card-full">
-                    <Row type="flex" justify="center">
-                      <Col>
-                        <Button
-                          onClick={this.createFeedbackCampaign.bind(
-                            this,
-                            "blank"
-                          )}
-                          type="ghost"
-                          icon="plus"
-                          shape="round"
-                        />
-                      </Col>
-                    </Row>
-                    <Row type="flex" justify="center">
-                      <Col>
-                        <span>Blank Feedback</span>
-                      </Col>
+                <Col span={4} onClick={this.createFeedbackCampaign.bind(
+                  this,
+                  "blank"
+                )}>
+                  <CardBox style={{
+                    cursor: "pointer"
+                  }} styleName="gx-card-full">
+                    <Row type="flex" style={{ height: "8rem" }} justify="center">
+                      <Empty description="Blank Feedback" />
+
                     </Row>
                   </CardBox>
                 </Col>
-                <Col span={4}>
-                  <CardBox styleName="gx-card-full" heading={""}>
-                    <Row type="flex" justify="center">
-                      <Col>
-                        <Button
-                          onClick={this.createFeedbackCampaign.bind(
-                            this,
-                            "blank"
-                          )}
-                          type="ghost"
-                          icon="shopping-cart"
-                          shape="round"
-                        />
-                      </Col>
-                    </Row>
-                    <Row type="flex" justify="center">
-                      <Col>
-                        <span>Customer Survey</span>
-                      </Col>
+                <Col span={4} onClick={this.createFeedbackCampaign.bind(
+                  this,
+                  "blank"
+                )}>
+                  <CardBox style={{
+                    cursor: "pointer"
+                  }} styleName="gx-card-full" heading={""}>
+                    <Row type="flex" style={{ height: "8rem" }} justify="center">
+                      <Empty description="Product Feedback" />
+
                     </Row>
                   </CardBox>
                 </Col>
-                <Col span={4}>
-                  <CardBox styleName="gx-card-full" heading={""}>
-                    <Row type="flex" justify="center">
-                      <Col>
-                        <Button
-                          onClick={this.createFeedbackCampaign.bind(
-                            this,
-                            "blank"
-                          )}
-                          type="ghost"
-                          icon="team"
-                          shape="round"
-                        />
-                      </Col>
-                    </Row>
-                    <Row type="flex" justify="center">
-                      <Col>
-                        <span>Employee Feedback</span>
-                      </Col>
+                <Col span={4} onClick={this.createFeedbackCampaign.bind(
+                  this,
+                  "blank"
+                )}>
+                  <CardBox style={{
+                    cursor: "pointer"
+                  }} styleName="gx-card-full" heading={""}>
+                    <Row type="flex" style={{ height: "8rem" }} justify="center">
+                      <Empty description="Customer Survey" />
+
                     </Row>
                   </CardBox>
                 </Col>
-                <Col span={4}>
-                  <CardBox styleName="gx-card-full" heading={""}>
-                    <Row type="flex" justify="center">
-                      <Col>
-                        <Button
-                          onClick={this.createFeedbackCampaign.bind(
-                            this,
-                            "blank"
-                          )}
-                          type="ghost"
-                          icon="user"
-                          shape="round"
-                        />
-                      </Col>
+                <Col span={4} onClick={this.createFeedbackCampaign.bind(
+                  this,
+                  "blank"
+                )}>
+                  <CardBox style={{
+                    cursor: "pointer"
+                  }} styleName="gx-card-full" heading={""}>
+                    <Row type="flex" style={{ height: "8rem" }} justify="center">
+                      <Empty description="Employee Feedback" />
+
                     </Row>
-                    <Row type="flex" justify="center">
-                      <Col>
-                        <span>User Feedback</span>
-                      </Col>
+                  </CardBox>
+                </Col>
+                <Col span={4} onClick={this.createFeedbackCampaign.bind(
+                  this,
+                  "blank"
+                )}>
+                  <CardBox style={{
+                    cursor: "pointer"
+                  }} styleName="gx-card-full" heading={""}>
+                    <Row type="flex" style={{ height: "8rem" }} justify="center">
+                      <Empty description="User Feedback" />
+
                     </Row>
                   </CardBox>
                 </Col>
