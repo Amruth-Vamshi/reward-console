@@ -220,16 +220,16 @@ class CampaignList extends Component {
 							</div>
 							<Tabs defaultActiveKey="1" onChange={this.onTabChange}>
 								<TabPane tab="Live" key="1">
-									<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} />
+									<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} pagination={{ position: "bottom", total: campaignData ? campaignData.length : 0, defaultPageSize: 5 }} />
 								</TabPane>
 								<TabPane tab="Upcoming" key="2">
-									<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} />
+									<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} pagination={{ position: "bottom", total: campaignData ? campaignData.length : 0, defaultPageSize: 5 }} />
 								</TabPane>
 								<TabPane tab="Completed" key="3">
-									<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} />
+									<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} pagination={{ position: "bottom", total: campaignData ? campaignData.length : 0, defaultPageSize: 5 }} />
 								</TabPane>
 								<TabPane tab="Draft" key="4">
-									<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} />
+									<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} pagination={{ position: "bottom", total: campaignData ? campaignData.length : 0, defaultPageSize: 5 }} />
 								</TabPane>
 							</Tabs>
 						</div>

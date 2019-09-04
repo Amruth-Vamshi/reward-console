@@ -143,7 +143,7 @@ import {GET_CAMPAIGN,UPDATE_CAMPAIGN} from "../../../containers/Query"
             subTitle="Basic information"
             onFormNext={this.onFormNext}
             saveFormRef={this.saveFormRef}
-            formValues={this.props.campaign.campaign}
+            formValues={campaign ?campaign :formValues}
             testAndControlText="Test & Control"
             promptText="prompt text"
             toolTipText="what is test and control?"

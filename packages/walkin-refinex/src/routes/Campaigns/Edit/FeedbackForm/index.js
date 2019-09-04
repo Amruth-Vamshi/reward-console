@@ -14,8 +14,8 @@ const { TabPane } = Tabs;
 
 class FeedbackFormConfig extends Component {
   render() {
-    const { match } = this.props;
-    const campaignId = match.params.id;
+    const { match, campaign } = this.props;
+    const campaignId = match.params.id ? match.params.id : campaign.id;
     return (
       <Query
         displayName="feedbackForm"
@@ -48,7 +48,7 @@ class FeedbackFormConfig extends Component {
                 variables={
                   feedbackForm.questionnaireRoot
                     ? { questionId: feedbackForm.questionnaireRoot.id }
-                    : {}
+                    : { questionId: "" }
                 }
                 displayName="questionnaire"
                 fetchPolicy="network-only"
@@ -58,6 +58,7 @@ class FeedbackFormConfig extends Component {
                   refetch: refetchQuestionnaire,
                   error: questionnaireDataError
                 }) => {
+                  console.log(questionnaireData)
                   return (
                     <Tabs
                       size="large"

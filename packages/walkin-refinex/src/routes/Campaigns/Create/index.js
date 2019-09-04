@@ -32,6 +32,7 @@ import {CAMPAIGN_TYPE} from "../../../Utils"
       communicationSelected: "1",
       communicationFormValues: {},
       formValues: {},
+      campaign:{},
       formName:"default",
       stepperData: [
         {
@@ -67,6 +68,7 @@ import {CAMPAIGN_TYPE} from "../../../Utils"
   createFeedbackForm = async (campaignId)=>{
     const {formName}= this.state;
     const { client } = this.props;
+    try{
     const createFeedbackForm = await client.mutate({
       mutation: CREATE_FEEDBACK_FORM,
       variables: {
@@ -74,8 +76,13 @@ import {CAMPAIGN_TYPE} from "../../../Utils"
         formName:formName
       }
     });
+    return createFeedbackForm
 
     console.log(createFeedbackForm)
+    }catch(err){
+      console.log(err);
+    }
+    
 
 
   }
@@ -83,15 +90,17 @@ import {CAMPAIGN_TYPE} from "../../../Utils"
 
   createCampaign=async (values)=>{
     const { client } = this.props;
-    const {priorityChosen}= this.state;
+    const {priorityChosen,controlValue}= this.state;
     const input={
       ...values,
       priority: parseInt(priorityChosen) ,
+      campaignControlPercent:parseInt(controlValue),
       organization_id:"",
       application_id:"",
       campaignType:CAMPAIGN_TYPE
     }
     this.setState({loading:true})
+    try{
     const createCampaign = await client.mutate({
       mutation: CREATE_CAMPAIGN,
       variables: {
@@ -99,8 +108,12 @@ import {CAMPAIGN_TYPE} from "../../../Utils"
       }
     });
     console.log(createCampaign)
-    await this.createFeedbackForm(createCampaign.data.createCampaign.id)
-    this.setState({loading:false})
+    const feedbackForm= await this.createFeedbackForm(createCampaign.data.createCampaign.id)
+    this.setState({loading:false,campaign:createCampaign.data.createCampaign,feedbackForm:feedbackForm.data.createFeedbackForm})
+    }catch(err){
+      console.log(err)
+    }
+    
   }
 
    goToNextPage(current) {
@@ -173,7 +186,9 @@ import {CAMPAIGN_TYPE} from "../../../Utils"
       showTestAndControl,
       testValue,
       controlValue,
-      testControlSelected
+      testControlSelected,
+      campaign,
+      feedbackForm
     } = this.state;
     switch (this.state.current) {
       case 0:
@@ -215,7 +230,7 @@ import {CAMPAIGN_TYPE} from "../../../Utils"
           />
         );
       case 1:
-        return <FeedbackFormConfig />;
+        return <FeedbackFormConfig campaign={campaign} feedbackForm={feedbackForm}/>;
       case 2:
         return (
           <Audience
