@@ -17,6 +17,8 @@ import GoLive from "../Edit/GoLive";
 import isEmpty from 'lodash/isEmpty';
 import {CREATE_FEEDBACK_FORM,CREATE_CAMPAIGN} from "../../../containers/Query"
 import {CAMPAIGN_TYPE} from "../../../Utils"
+import jwt from "jsonwebtoken";
+import {GET_ALL_APPS_OF_ORGANIZATION} from "@walkinsole/walkin-components/src/PlatformQueries"
  class CreateCampaign extends Component {
   constructor() {
     super();
@@ -65,6 +67,7 @@ import {CAMPAIGN_TYPE} from "../../../Utils"
     this.setState({ current });
   };
 
+
   createFeedbackForm = async (campaignId)=>{
     const {formName}= this.state;
     const { client } = this.props;
@@ -91,12 +94,13 @@ import {CAMPAIGN_TYPE} from "../../../Utils"
   createCampaign=async (values)=>{
     const { client } = this.props;
     const {priorityChosen,controlValue}= this.state;
+    const {allApplications:{organization}}= this.props;
     const input={
       ...values,
       priority: parseInt(priorityChosen) ,
       campaignControlPercent:parseInt(controlValue),
-      organization_id:"",
-      application_id:"",
+      organization_id:organization.id,
+      application_id:organization.applications[0].id,
       campaignType:CAMPAIGN_TYPE
     }
     this.setState({loading:true})
@@ -288,12 +292,17 @@ const GET_USER_IDENTITY = gql`
     auth {
       userId
       organizationId
-      applicationId
     }
   }
 `;
 
 export default compose(
-  graphql(GET_USER_IDENTITY, {
-    name: "auth"
+  graphql(GET_ALL_APPS_OF_ORGANIZATION, {
+    name: "allApplications",
+    options: () => ({
+      variables: {
+        id:jwt.decode(localStorage.getItem("jwt")).org_id
+      },
+      fetchPolicy: "cache-and-network"
+    })
   }),withApollo)(CreateCampaign);

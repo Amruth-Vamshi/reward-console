@@ -270,6 +270,7 @@ export const GET_FEEDBACK_FORM = gql`
 
 
 
+
 export const GET_CAMPAIGNS = gql`
   query getCampaign($userId: ID!) {
     user(id: $userId) {

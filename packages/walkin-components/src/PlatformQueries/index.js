@@ -16,7 +16,9 @@ export const USER_DATA = gql`
 export const GET_PRODUCTS = gql` 
 query organization($id:ID!){
   organization(id: $id) {
-    id name walkinProducts {
+    id 
+    name 
+    walkinProducts {
       id name status description latest_version 
     }
   }
