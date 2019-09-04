@@ -119,7 +119,7 @@ const BasicInfo = ({
 
 const GET_USER_IDENTITY = gql`
   query auth {
-    auth {
+     auth {
       userId
       organizationId
     }

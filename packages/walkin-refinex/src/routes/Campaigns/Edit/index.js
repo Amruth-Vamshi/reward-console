@@ -4,7 +4,7 @@ import { Row, Col, Button } from "antd";
 import CampaignConfig from "./Campaign";
 // import Audience from "./Audience";
 import Audience from "@walkinsole/walkin-hyperx/src/containers/campaign/campaignCreation/audience";
-
+import { CampaignFooter, CampaignHeader } from '@walkinsole/walkin-components';
 import "@walkinsole/walkin-hyperx/src/containers/campaign/campaignCreation/audience/style.css";
 import Communication from "./Communication";
 import Triggers from "./Triggers";
@@ -14,6 +14,7 @@ import ContainerHeader from "../CampaignHeader";
 import gql from "graphql-tag";
 import { compose, graphql } from "react-apollo";
 import GoLive from "./GoLive";
+import isEmpty from 'lodash/isEmpty';
 import {GET_CAMPAIGN} from "../../../containers/Query"
  class EditCampaign extends Component {
   constructor() {
@@ -60,8 +61,51 @@ import {GET_CAMPAIGN} from "../../../containers/Query"
     this.setState({ current });
   };
 
-  onFormNext = e => {
-    e.preventDefault();
+  goToNextPage(current) {
+		const { formValues } = this.state;
+		if (isEmpty(formValues)) {
+			const form = this.formRef && this.formRef.props && this.formRef.props.form;
+			if (form) {
+				form.validateFields((err, values) => {
+					if (err) {
+						return;
+					} else {
+						this.setState({
+							formValues: values,
+							current: current,
+						});
+					}
+				});
+			}
+		} else {
+			this.setState({
+				current: current,
+			});
+		}
+	}
+
+  onFormNext = current => {
+    const { formValues } = this.state;
+    console.log(current)
+		if (isEmpty(formValues)) {
+			const form = this.formRef && this.formRef.props && this.formRef.props.form;
+			if (form) {
+				form.validateFields((err, values) => {
+					if (err) {
+						return;
+					} else {
+						this.setState({
+							formValues: values,
+							current: current,
+						});
+					}
+				});
+			}
+		} else {
+			this.setState({
+				current: current,
+			});
+		}
   };
 
   saveFormRef = formRef => {
@@ -167,7 +211,7 @@ import {GET_CAMPAIGN} from "../../../containers/Query"
       <div className="PageContainer" style={{ margin: "-32px" }}>
         <ContainerHeader
           current={current}
-          onChange={this.onChange}
+          onChange={this.goToNextPage.bind(this)}
           title="Create RefineX Campaign"
           StepperData={stepperData}
         />
@@ -176,15 +220,23 @@ import {GET_CAMPAIGN} from "../../../containers/Query"
             <div className="stepperContainer">{this.getContainer()}</div>
           </Col>
         </Row>
-        <Row className="BottomBar">
+        {/* <Row className="BottomBar">
           <Col offset={1}>
-            <Button type="primary">Next</Button>
+            <Button onClick={this.onFormNext} type="primary">Next</Button>
           </Col>
 
           <Col offset={1}>
             <Button>Save as Draft</Button>
           </Col>
-        </Row>
+        </Row> */}
+        <div style={{ margin: '32px' }}>
+					<CampaignFooter
+						nextButtonText="Next"
+						saveDraftText="Save Draft"
+						onPage1SaveDraft={this.onPage1SaveDraft}
+						goToPage2={this.onFormNext.bind(this, current + 1)}
+					/>
+				</div>
       </div>
     );
   }

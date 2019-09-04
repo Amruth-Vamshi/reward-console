@@ -73,12 +73,17 @@ class CampaignList extends Component {
 	}
 	componentDidMount() {
 		const { campaigns } = this.props;
-		const data = campaigns.filter(val => {
-			if (val.status == 'ACTIVE') {
-				return moment().isBetween(val.startTime, val.endTime);
-			}
-		})
-		this.setState({ allCampaigns: campaigns, data: data })
+		let data = []
+		let allCampaigns = []
+		if (campaigns) {
+			data = campaigns.filter(val => {
+				if (val.status == 'ACTIVE') {
+					return moment().isBetween(val.startTime, val.endTime);
+				}
+			})
+			allCampaigns = campaigns;
+		}
+		this.setState({ allCampaigns: allCampaigns, data: data })
 	}
 	onNewCampaign = () => {
 		const { history } = this.props;
@@ -132,6 +137,7 @@ class CampaignList extends Component {
 	};
 
 	onTabChange = key => {
+		console.log(key)
 		const { allCampaigns } = this.state
 		if (key == 2) {
 			let upcomingCampaigns = allCampaigns.filter(val => {
@@ -139,7 +145,7 @@ class CampaignList extends Component {
 					return moment(val.startTime).isAfter(moment());
 				}
 			});
-			this.setState({ data: upcomingCampaigns });
+			this.setState({ data: upcomingCampaigns, filtered: null });
 		}
 
 		if (key == 3) {
@@ -148,7 +154,7 @@ class CampaignList extends Component {
 					return moment(val.endTime).isBefore(moment());
 				}
 			});
-			this.setState({ data: completedCampaigns });
+			this.setState({ data: completedCampaigns, filtered: null });
 		}
 		if (key == 4) {
 			const { changeStatus } = this.props;
@@ -158,7 +164,7 @@ class CampaignList extends Component {
 			let draftCampaigns = allCampaigns.filter(val => {
 				return val.status == 'DRAFT';
 			});
-			this.setState({ data: draftCampaigns });
+			this.setState({ data: draftCampaigns, filtered: null });
 		}
 		if (key == 1) {
 			let liveCampaigns = allCampaigns.filter(val => {
@@ -166,7 +172,7 @@ class CampaignList extends Component {
 					return moment().isBetween(val.startTime, val.endTime);
 				}
 			});
-			this.setState({ data: liveCampaigns });
+			this.setState({ data: liveCampaigns, filtered: null });
 		}
 	};
 
@@ -281,7 +287,8 @@ export default withRouter(
 					const variables = { status };
 					refetch(variables);
 				},
-			}),
+			})
+			,
 		})(CampaignList)
 	)
 );

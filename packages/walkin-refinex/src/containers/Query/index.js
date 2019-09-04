@@ -52,7 +52,7 @@ export const allRuleAttributes = gql`
 
 
 export const campaigns = gql`
-	query($status: STATUS!) {
+	query campaigns($status: STATUS!) {
 		campaigns(status: $status) {
 			id
 			name
@@ -66,7 +66,7 @@ export const campaigns = gql`
 
 
 export const CREATE_CAMPAIGN = gql`
-mutation{
+mutation createCampaign{
   createCampaign(input:{
     name:"",
     description:"",
@@ -88,7 +88,7 @@ mutation{
 `
 
 export const GET_CAMPAIGN = gql`
-query($id:ID!){
+query campaign($id:ID!){
   campaign(id:$id){
     id
     name
@@ -142,6 +142,7 @@ export const allAudience = gql`
       campaign {
         id
         name
+        
       }
       status
     }

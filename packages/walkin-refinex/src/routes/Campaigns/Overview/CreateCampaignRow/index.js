@@ -60,12 +60,6 @@ class CreateCampaignRow extends Component {
     return (
       <ErrorBoundary>
         <div>
-          <SelectApplicationModal
-            visible={this.state.showModal}
-            onConfirm={this.onConfirm}
-            onCancel={this.onCancel}
-            organizationId={auth.auth.organizationId}
-          />
           <Row>
             <Col span={24}>
               <Row gutter={12} type="flex" justify="space-around">
