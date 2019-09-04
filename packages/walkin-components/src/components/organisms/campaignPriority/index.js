@@ -14,6 +14,7 @@ const CampaignPriority = ({
 	testControlPercentageEditText,
 	priorityNumberInvalidErrorMessage,
 	onTestAndControlEdit,
+	handleChange
 }) => {
 	return (
 		<Fragment>
@@ -23,9 +24,7 @@ const CampaignPriority = ({
 					prioritySelectionTitle={prioritySelectionTitle}
 					priorityButtonText={priorityButtonText}
 					priorityNumberInvalidErrorMessage={priorityNumberInvalidErrorMessage}
-					onClick={state => {
-						console.log('state', state);
-					}}
+					onClick={handleChange}
 				/>
 			</div>
 			<div className="campaignPriorityContainerStyle">

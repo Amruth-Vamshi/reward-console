@@ -7,7 +7,6 @@ const BasicInfoForm = Form.create({ name: 'form_in_modal' })(
 	class BasicInfoForm extends React.Component {
 		render() {
 			const { form, onFormNext, wrappedComponentRef, formValues, text } = this.props;
-			console.log("formValues", formValues)
 			let startTime = moment()
 			let endTime = moment()
 			if (Object.keys(formValues).length != 0) {
@@ -42,7 +41,7 @@ const BasicInfoForm = Form.create({ name: 'form_in_modal' })(
 						label="Start date"
 						{...dateItemLayout}
 					>
-						{getFieldDecorator('startDate', {
+						{getFieldDecorator('startTime', {
 							initialValue: startTime,
 							rules: [{ type: 'object', required: true, message: 'Please select start time!' }],
 						})(<DatePicker showTime format="DD-MM-YYYY HH:mm:ss" />)}
@@ -52,7 +51,7 @@ const BasicInfoForm = Form.create({ name: 'form_in_modal' })(
 						label="End date"
 						{...dateItemLayout}
 					>
-						{getFieldDecorator('endDate', {
+						{getFieldDecorator('endTime', {
 							initialValue: endTime,
 							rules: [{ type: 'object', required: true, message: 'Please select end time!' }],
 						})(<DatePicker showTime format="DD-MM-YYYY HH:mm:ss" />)}
@@ -62,4 +61,6 @@ const BasicInfoForm = Form.create({ name: 'form_in_modal' })(
 		}
 	}
 );
+
+
 export default BasicInfoForm;

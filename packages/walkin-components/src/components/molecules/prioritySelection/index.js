@@ -35,6 +35,7 @@ class PrioritySelection extends React.Component {
 
 	handleButtonGroup = e => {
 		const { value } = e.target;
+		this.props.onClick(e)
 		this.setState({ buttonGroupValue: value });
 	};
 

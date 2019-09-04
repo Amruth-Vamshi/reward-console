@@ -51,6 +51,28 @@ export const allRuleAttributes = gql`
 `;
 
 
+
+
+export const UPDATE_CAMPAIGN = gql`
+mutation updateCampaign($id: ID!,$input:CampaignUpdateInput){
+  updateCampaign(id:$id,input:$input){
+    id
+    name
+    description
+    startTime
+    endTime
+    status
+    campaignType
+    status
+    feedbackForm{
+      id
+      title
+    }
+  }
+}
+`
+
+
 export const campaigns = gql`
 	query campaigns($status: STATUS!) {
 		campaigns(status: $status) {
@@ -66,17 +88,8 @@ export const campaigns = gql`
 
 
 export const CREATE_CAMPAIGN = gql`
-mutation createCampaign{
-  createCampaign(input:{
-    name:"",
-    description:"",
-    campaignType:FEEDBACK,
-    priority:1,
-    organization_id:"",
-    application_id:"",
-    startTime:"",
-    endTime:""
-  }){
+mutation createCampaign($input:CampaingAddInput){
+  createCampaign(input:$input){
     id
     name
     description
@@ -100,6 +113,7 @@ query campaign($id:ID!){
     status
     feedbackForm{
       id
+      title
     }
   }
 }
@@ -282,7 +296,7 @@ export const GET_CAMPAIGNS = gql`
 `;
 
 export const CREATE_FEEDBACK_FORM = gql`
-  mutation createFeedbackForm($campaignId: ID!,$formName:string) {
+  mutation createFeedbackForm($campaignId: ID!,$formName:String) {
     createFeedbackForm(campaignId: $campaignId, input: { title:$formName }) {
       campaign {
         id

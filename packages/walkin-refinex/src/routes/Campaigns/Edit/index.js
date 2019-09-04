@@ -12,10 +12,10 @@ import Overview from "./Overview";
 import FeedbackFormConfig from "./FeedbackForm";
 import ContainerHeader from "../CampaignHeader";
 import gql from "graphql-tag";
-import { compose, graphql } from "react-apollo";
+import { compose, graphql ,withApollo} from "react-apollo";
 import GoLive from "./GoLive";
 import isEmpty from 'lodash/isEmpty';
-import {GET_CAMPAIGN} from "../../../containers/Query"
+import {GET_CAMPAIGN,UPDATE_CAMPAIGN} from "../../../containers/Query"
  class EditCampaign extends Component {
   constructor() {
     super();
@@ -61,8 +61,22 @@ import {GET_CAMPAIGN} from "../../../containers/Query"
     this.setState({ current });
   };
 
+
+  editCampaign=async (values)=>{
+    const { client } = this.props;
+    
+    const updatedCampaign = await client.mutate({
+      mutation: UPDATE_CAMPAIGN,
+      variables: {
+        id: this.props.campaign.campaign.id,
+        input:values
+      }
+    });
+    console.log(updatedCampaign)
+  }
+
   goToNextPage(current) {
-		const { formValues } = this.state;
+    const { formValues } = this.state;
 		if (isEmpty(formValues)) {
 			const form = this.formRef && this.formRef.props && this.formRef.props.form;
 			if (form) {
@@ -70,6 +84,7 @@ import {GET_CAMPAIGN} from "../../../containers/Query"
 					if (err) {
 						return;
 					} else {
+            this.editCampaign(values)
 						this.setState({
 							formValues: values,
 							current: current,
@@ -84,28 +99,8 @@ import {GET_CAMPAIGN} from "../../../containers/Query"
 		}
 	}
 
-  onFormNext = current => {
-    const { formValues } = this.state;
-    console.log(current)
-		if (isEmpty(formValues)) {
-			const form = this.formRef && this.formRef.props && this.formRef.props.form;
-			if (form) {
-				form.validateFields((err, values) => {
-					if (err) {
-						return;
-					} else {
-						this.setState({
-							formValues: values,
-							current: current,
-						});
-					}
-				});
-			}
-		} else {
-			this.setState({
-				current: current,
-			});
-		}
+  onFormNext = e => {
+    e.preventDefault();
   };
 
   saveFormRef = formRef => {
@@ -220,21 +215,12 @@ import {GET_CAMPAIGN} from "../../../containers/Query"
             <div className="stepperContainer">{this.getContainer()}</div>
           </Col>
         </Row>
-        {/* <Row className="BottomBar">
-          <Col offset={1}>
-            <Button onClick={this.onFormNext} type="primary">Next</Button>
-          </Col>
-
-          <Col offset={1}>
-            <Button>Save as Draft</Button>
-          </Col>
-        </Row> */}
         <div style={{ margin: '32px' }}>
 					<CampaignFooter
 						nextButtonText="Next"
 						saveDraftText="Save Draft"
 						onPage1SaveDraft={this.onPage1SaveDraft}
-						goToPage2={this.onFormNext.bind(this, current + 1)}
+						goToPage2={this.goToNextPage.bind(this, current + 1)}
 					/>
 				</div>
       </div>
@@ -251,5 +237,6 @@ export default compose(
         id:props.match.params.id,
       },
     })
-  })
+  }),
+  withApollo
 )(EditCampaign);

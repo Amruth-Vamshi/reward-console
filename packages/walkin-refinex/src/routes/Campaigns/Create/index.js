@@ -4,7 +4,7 @@ import { Row, Col, Button } from "antd";
 import CampaignConfig from "../Edit/Campaign";
 // import Audience from "./Audience";
 import Audience from "@walkinsole/walkin-hyperx/src/containers/campaign/campaignCreation/audience";
-
+import { CampaignFooter, CampaignHeader, CircularProgress } from '@walkinsole/walkin-components';
 import "@walkinsole/walkin-hyperx/src/containers/campaign/campaignCreation/audience/style.css";
 import Communication from "../Edit/Communication";
 import Triggers from "../Edit/Triggers";
@@ -12,15 +12,18 @@ import Overview from "../Edit/Overview";
 import FeedbackFormConfig from "../Edit/FeedbackForm";
 import ContainerHeader from "../CampaignHeader";
 import gql from "graphql-tag";
-import { compose, graphql } from "react-apollo";
+import { compose, graphql ,withApollo} from "react-apollo";
 import GoLive from "../Edit/GoLive";
-import {CREATE_CAMPAIGN} from "../../../containers/Query"
+import isEmpty from 'lodash/isEmpty';
+import {CREATE_FEEDBACK_FORM,CREATE_CAMPAIGN} from "../../../containers/Query"
+import {CAMPAIGN_TYPE} from "../../../Utils"
  class CreateCampaign extends Component {
   constructor() {
     super();
     this.state = {
       current: 0,
-      priorityChosen: "",
+      loading:false,
+      priorityChosen: 3,
       priorityNumberError: false,
       showTestAndControl: false,
       testValue: 95,
@@ -29,6 +32,7 @@ import {CREATE_CAMPAIGN} from "../../../containers/Query"
       communicationSelected: "1",
       communicationFormValues: {},
       formValues: {},
+      formName:"default",
       stepperData: [
         {
           title: "Basic Info"
@@ -60,6 +64,69 @@ import {CREATE_CAMPAIGN} from "../../../containers/Query"
     this.setState({ current });
   };
 
+  createFeedbackForm = async (campaignId)=>{
+    const {formName}= this.state;
+    const { client } = this.props;
+    const createFeedbackForm = await client.mutate({
+      mutation: CREATE_FEEDBACK_FORM,
+      variables: {
+        campaignId:campaignId,
+        formName:formName
+      }
+    });
+
+    console.log(createFeedbackForm)
+
+
+  }
+
+
+  createCampaign=async (values)=>{
+    const { client } = this.props;
+    const {priorityChosen}= this.state;
+    const input={
+      ...values,
+      priority: parseInt(priorityChosen) ,
+      organization_id:"",
+      application_id:"",
+      campaignType:CAMPAIGN_TYPE
+    }
+    this.setState({loading:true})
+    const createCampaign = await client.mutate({
+      mutation: CREATE_CAMPAIGN,
+      variables: {
+        input:input
+      }
+    });
+    console.log(createCampaign)
+    await this.createFeedbackForm(createCampaign.data.createCampaign.id)
+    this.setState({loading:false})
+  }
+
+   goToNextPage(current) {
+    const { formValues } = this.state;
+		if (isEmpty(formValues)) {
+			const form = this.formRef && this.formRef.props && this.formRef.props.form;
+			if (form) {
+				form.validateFields(async (err, values) => {
+					if (err) {
+						return;
+					} else {
+           await this.createCampaign(values)
+						this.setState({
+							formValues: values,
+							current: current,
+						});
+					}
+				});
+			}
+		} else {
+			this.setState({
+				current: current,
+			});
+		}
+	}
+
   onFormNext = e => {
     e.preventDefault();
   };
@@ -84,12 +151,23 @@ import {CREATE_CAMPAIGN} from "../../../containers/Query"
     });
   };
 
+  onPriorityButtonClick=(e)=>{
+    e.preventDefault()
+  }
+
   handleButtonGroupChange = e => {
-    this.setState({ value: e.target.value });
+    console.log(e)
+    this.setState({ priorityChosen: e.target.value });
   };
 
+  setFeedbackForm=(formName,e)=>{
+    console.log(formName)
+    this.setState({
+      formName:formName
+    })
+  }
+
   getContainer = () => {
-    const {campaign}= this.props.campaign
     const {
       formValues,
       showTestAndControl,
@@ -101,10 +179,11 @@ import {CREATE_CAMPAIGN} from "../../../containers/Query"
       case 0:
         return (
           <CampaignConfig
+          setFeedbackForm={this.setFeedbackForm}
             subTitle="Basic information"
             onFormNext={this.onFormNext}
             saveFormRef={this.saveFormRef}
-            formValues={this.props.campaign.campaign}
+            formValues={formValues}
             testAndControlText="Test & Control"
             promptText="prompt text"
             toolTipText="what is test and control?"
@@ -116,7 +195,7 @@ import {CREATE_CAMPAIGN} from "../../../containers/Query"
             }
             handleButtonGroupChange={this.handleButtonGroupChange}
             testControlPercentageEditText="Edit"
-            onPriorityButtonClick="onPriorityButtonClick"
+            onPriorityButtonClick={this.onPriorityButtonClick}
             priorityNumberInvalidErrorMessage="Enter a value between 6 and 99"
             onTestAndControlEdit={this.onTestAndControlEdit}
             showTestAndControl={showTestAndControl}
@@ -132,7 +211,7 @@ import {CREATE_CAMPAIGN} from "../../../containers/Query"
             onTestValueChange={this.onTestValueChange}
             onControlValueChange={this.onControlValueChange}
             popupButtonText="apply"
-            campaign={this.props.campaign.campaign}
+            // campaign={this.props.campaign.campaign}
           />
         );
       case 1:
@@ -162,37 +241,44 @@ import {CREATE_CAMPAIGN} from "../../../containers/Query"
   };
 
   render() {
-    const { current, stepperData } = this.state;
+    const { current, stepperData,loading } = this.state;
     return (
       <div className="PageContainer" style={{ margin: "-32px" }}>
         <ContainerHeader
           current={current}
-          onChange={this.onChange}
+          onChange={this.goToNextPage.bind(this)}
           title="Create RefineX Campaign"
           StepperData={stepperData}
         />
-        <Row>
+        {loading ? <CircularProgress/> : <Row>
           <Col span={24}>
             <div className="stepperContainer">{this.getContainer()}</div>
           </Col>
-        </Row>
-        <Row className="BottomBar">
-          <Col offset={1}>
-            <Button type="primary">Next</Button>
-          </Col>
-
-          <Col offset={1}>
-            <Button>Save as Draft</Button>
-          </Col>
-        </Row>
+        </Row>}
+        <div style={{ margin: '32px' }}>
+					<CampaignFooter
+						nextButtonText="Next"
+						saveDraftText="Save Draft"
+						onPage1SaveDraft={this.onPage1SaveDraft}
+						goToPage2={this.goToNextPage.bind(this, current + 1)}
+					/>
+				</div>
       </div>
     );
   }
 }
 
+const GET_USER_IDENTITY = gql`
+  query auth {
+    auth {
+      userId
+      organizationId
+      applicationId
+    }
+  }
+`;
 
 export default compose(
-  graphql(CREATE_CAMPAIGN, {
-    name: "campaign"
-  })
-)(CreateCampaign);
+  graphql(GET_USER_IDENTITY, {
+    name: "auth"
+  }),withApollo)(CreateCampaign);

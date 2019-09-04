@@ -5,62 +5,13 @@ import { campaigns } from '../Query/index';
 import { Card, Menu, Dropdown, Col, Button, Progress, Tabs } from 'antd';
 import moment from 'moment';
 import { withApollo, graphql } from 'react-apollo';
-import { SortableDataTable, InstantSearch, CampaignHeader } from '@walkinsole/walkin-components';
+import { SortableDataTable, InstantSearch, CampaignHeader, CircularProgress } from '@walkinsole/walkin-components';
 import './style.css';
 
 const DEFAULT_STATUS = 'ACTIVE';
 
 const { TabPane } = Tabs;
-// const data = [
-// 	{
-// 		name: 'This will be in future',
-// 		startTime: '2019-09-06T09:10:22.574Z',
-// 		endTime: '2020-06-06T09:10:22.574Z',
-// 		status: 'ACTIVE',
-// 	},
-// 	{
-// 		name: 'New Feedback',
-// 		startTime: '2019-05-06T09:10:22.574Z',
-// 		endTime: '2019-06-06T09:10:22.574Z',
-// 		status: 'ACTIVE',
-// 	},
-// 	{
-// 		name: 'CCD FEEDBACK',
-// 		startTime: '2019-08-06T09:10:22.574Z',
-// 		endTime: '2019-09-06T09:10:22.574Z',
-// 		status: 'ACTIVE',
-// 	},
-// 	{
-// 		name: 'CCD POS FEEDBACK',
-// 		startTime: '2019-06-21T09:10:22.574Z',
-// 		endTime: '2019-07-06T09:10:22.574Z',
-// 		status: 'ACTIVE',
-// 	},
-// 	{
-// 		name: 'CCD IN_APP FEEDBACK',
-// 		startTime: '2019-07-06T09:10:22.574Z',
-// 		endTime: '2019-08-096T09:10:22.574Z',
-// 		status: 'ACTIVE',
-// 	},
-// 	{
-// 		name: 'CCD_APP_FEEDBACK',
-// 		startTime: '2019-04-06T09:10:22.574Z',
-// 		endTime: '2019-06-06T09:10:22.574Z',
-// 		status: 'ACTIVE',
-// 	},
-// 	{
-// 		name: 'REFINEX_FEEDBACK',
-// 		startTime: '2019-08-06T09:10:22.574Z',
-// 		endTime: '2019-10-06T09:10:22.574Z',
-// 		status: 'DRAFT',
-// 	},
-// 	{
-// 		name: 'TEST_FEEDBACK',
-// 		startTime: '2019-06-06T09:10:22.574Z',
-// 		endTime: '2019-07-06T09:10:22.574Z',
-// 		status: 'DRAFT',
-// 	},
-// ];
+
 class CampaignList extends Component {
 	constructor(props) {
 		super(props);
@@ -69,10 +20,25 @@ class CampaignList extends Component {
 			filtered: null,
 			allCampaigns: null,
 			data: null,
+			loading: null
 		};
 	}
 	componentDidMount() {
-		const { campaigns } = this.props;
+		const { campaigns, loading } = this.props;
+		this.setState({ loading: loading })
+	}
+
+
+	componentDidUpdate(preValue) {
+		if (this.props.loading !== preValue.loading) {
+			this.setInitialValues()
+			console.log(this.props)
+		}
+	}
+
+	setInitialValues = () => {
+		const { campaigns, loading } = this.props;
+		console.log()
 		let data = []
 		let allCampaigns = []
 		if (campaigns) {
@@ -83,7 +49,7 @@ class CampaignList extends Component {
 			})
 			allCampaigns = campaigns;
 		}
-		this.setState({ allCampaigns: allCampaigns, data: data })
+		this.setState({ allCampaigns: allCampaigns, data: data, loading: false })
 	}
 	onNewCampaign = () => {
 		const { history } = this.props;
@@ -177,7 +143,7 @@ class CampaignList extends Component {
 	};
 
 	render() {
-		let { sortedInfo, filteredInfo, filtered, data } = this.state;
+		let { sortedInfo, filteredInfo, filtered, data, loading } = this.state;
 		sortedInfo = sortedInfo || {};
 		filteredInfo = filteredInfo || {};
 		let campaignData = [];
@@ -186,6 +152,7 @@ class CampaignList extends Component {
 		} else {
 			campaignData = data;
 		}
+
 
 		const columns = [
 			{
@@ -226,47 +193,48 @@ class CampaignList extends Component {
 			},
 		];
 		return (
-			<div style={{ margin: '-32px' }}>
-				<CampaignHeader
-					children={
-						<Fragment>
-							<Col span={12}>
-								<h3 className="gx-text-grey paddingLeftStyle campaignHeaderTitleStyle">Campaigns</h3>
-							</Col>
-							<Col className="searchInputStyle" span={12}>
-								<Button type="primary" onClick={this.onNewCampaign}>
-									CREATE CAMPAIGN
+			loading ? <CircularProgress /> :
+				<div style={{ margin: '-32px' }}>
+					<CampaignHeader
+						children={
+							<Fragment>
+								<Col span={12}>
+									<h3 className="gx-text-grey paddingLeftStyle campaignHeaderTitleStyle">Campaigns</h3>
+								</Col>
+								<Col className="searchInputStyle" span={12}>
+									<Button type="primary" onClick={this.onNewCampaign}>
+										CREATE CAMPAIGN
 								</Button>
-							</Col>
-						</Fragment>
-					}
-				/>
-				<Card>
-					<div style={{ marginBottom: '24px' }}>
-						<div className="searchInputStyle">
-							<InstantSearch
-								placeHolder="Search campaign"
-								data={data}
-								onFilteredList={this.onCampaignFilteredList}
-							/>
+								</Col>
+							</Fragment>
+						}
+					/>
+					<Card>
+						<div style={{ marginBottom: '24px' }}>
+							<div className="searchInputStyle">
+								<InstantSearch
+									placeHolder="Search campaign"
+									data={data}
+									onFilteredList={this.onCampaignFilteredList}
+								/>
+							</div>
+							<Tabs defaultActiveKey="1" onChange={this.onTabChange}>
+								<TabPane tab="Live" key="1">
+									<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} />
+								</TabPane>
+								<TabPane tab="Upcoming" key="2">
+									<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} />
+								</TabPane>
+								<TabPane tab="Completed" key="3">
+									<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} />
+								</TabPane>
+								<TabPane tab="Draft" key="4">
+									<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} />
+								</TabPane>
+							</Tabs>
 						</div>
-						<Tabs defaultActiveKey="1" onChange={this.onTabChange}>
-							<TabPane tab="Live" key="1">
-								<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} />
-							</TabPane>
-							<TabPane tab="Upcoming" key="2">
-								<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} />
-							</TabPane>
-							<TabPane tab="Completed" key="3">
-								<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} />
-							</TabPane>
-							<TabPane tab="Draft" key="4">
-								<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} />
-							</TabPane>
-						</Tabs>
-					</div>
-				</Card>
-			</div>
+					</Card>
+				</div>
 		);
 	}
 }
@@ -278,6 +246,7 @@ export default withRouter(
 				variables: {
 					status: DEFAULT_STATUS,
 				},
+				fetchPolicy: "network-only"
 			}),
 			props: ({ data: { loading, error, campaigns, refetch } }) => ({
 				loading,

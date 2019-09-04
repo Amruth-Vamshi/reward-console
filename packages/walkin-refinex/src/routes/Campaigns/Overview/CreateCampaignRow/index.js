@@ -14,45 +14,42 @@ class CreateCampaignRow extends Component {
     }
   }
 
-  onCancel = async () => {
-    this.setState({
-      showModal: false
-    });
-  };
+  // onCancel = async () => {
+  //   this.setState({
+  //     showModal: false
+  //   });
+  // };
 
   createFeedbackCampaign = (formName, e) => {
-    this.setState({
-      showModal: true,
-      formName: formName
-    });
+    this.props.setFeedbackForm(formName)
   };
 
-  onConfirm = async selectedApplication => {
-    console.log(selectedApplication);
-    const { formName } = this.state;
-    const { history } = this.props;
-    this.setState({
-      showModal: false
-    });
-    const { createDraftCampaign, createFeedbackForm } = this.props;
+  // onConfirm = async selectedApplication => {
+  //   console.log(selectedApplication);
+  //   const { formName } = this.state;
+  //   const { history } = this.props;
+  //   this.setState({
+  //     showModal: false
+  //   });
+  //   const { createDraftCampaign, createFeedbackForm } = this.props;
 
-    const campaign = await createDraftCampaign({
-      variables: { applicationId: selectedApplication.id, formName: formName }
-    });
+  //   const campaign = await createDraftCampaign({
+  //     variables: { applicationId: selectedApplication.id, formName: formName }
+  //   });
 
-    console.log(campaign);
+  //   console.log(campaign);
 
-    const feedbackForm = await createFeedbackForm({
-      variables: {
-        campaignId: campaign.data.createDraftCampaign.id
-      }
-    });
-    console.log(feedbackForm);
+  //   const feedbackForm = await createFeedbackForm({
+  //     variables: {
+  //       campaignId: campaign.data.createDraftCampaign.id
+  //     }
+  //   });
+  //   console.log(feedbackForm);
 
-    history.push(
-      "/refinex/campaign/" + campaign.data.createDraftCampaign.id + "/edit"
-    );
-  };
+  //   history.push(
+  //     "/refinex/campaign/" + campaign.data.createDraftCampaign.id + "/edit"
+  //   );
+  // };
 
   render() {
     const { auth } = this.props;
