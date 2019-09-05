@@ -4,7 +4,11 @@ import { Row, Col, Button } from "antd";
 import CampaignConfig from "../Edit/Campaign";
 // import Audience from "./Audience";
 import Audience from "@walkinsole/walkin-hyperx/src/containers/campaign/campaignCreation/audience";
-import { CampaignFooter, CampaignHeader, CircularProgress } from '@walkinsole/walkin-components';
+import {
+  CampaignFooter,
+  CampaignHeader,
+  CircularProgress
+} from "@walkinsole/walkin-components";
 import "@walkinsole/walkin-hyperx/src/containers/campaign/campaignCreation/audience/style.css";
 import Communication from "../Edit/Communication";
 import Triggers from "../Edit/Triggers";
@@ -12,19 +16,24 @@ import Overview from "../Edit/Overview";
 import FeedbackFormConfig from "../Edit/FeedbackForm";
 import ContainerHeader from "../CampaignHeader";
 import gql from "graphql-tag";
-import { compose, graphql ,withApollo} from "react-apollo";
+import { compose, graphql, withApollo } from "react-apollo";
 import GoLive from "../Edit/GoLive";
-import isEmpty from 'lodash/isEmpty';
-import {CREATE_FEEDBACK_FORM,CREATE_CAMPAIGN} from "../../../containers/Query"
-import {CAMPAIGN_TYPE} from "../../../Utils"
+import isEmpty from "lodash/isEmpty";
+import {
+  CREATE_FEEDBACK_FORM,
+  CREATE_CAMPAIGN,
+  allSegments,
+  attributes
+} from "../../../containers/Query";
+import { CAMPAIGN_TYPE } from "../../../Utils";
 import jwt from "jsonwebtoken";
-import {GET_ALL_APPS_OF_ORGANIZATION} from "@walkinsole/walkin-components/src/PlatformQueries"
- class CreateCampaign extends Component {
+import { GET_ALL_APPS_OF_ORGANIZATION } from "@walkinsole/walkin-components/src/PlatformQueries";
+class CreateCampaign extends Component {
   constructor() {
     super();
     this.state = {
       current: 0,
-      loading:false,
+      loading: false,
       priorityChosen: 3,
       priorityNumberError: false,
       showTestAndControl: false,
@@ -34,8 +43,10 @@ import {GET_ALL_APPS_OF_ORGANIZATION} from "@walkinsole/walkin-components/src/Pl
       communicationSelected: "1",
       communicationFormValues: {},
       formValues: {},
-      campaign:{},
-      formName:"default",
+      campaign: {},
+      segmentList: {},
+      attributeData: {},
+      formName: "default",
       stepperData: [
         {
           title: "Basic Info"
@@ -67,79 +78,85 @@ import {GET_ALL_APPS_OF_ORGANIZATION} from "@walkinsole/walkin-components/src/Pl
     this.setState({ current });
   };
 
-
-  createFeedbackForm = async (campaignId)=>{
-    const {formName}= this.state;
+  createFeedbackForm = async campaignId => {
+    const { formName } = this.state;
     const { client } = this.props;
-    try{
-    const createFeedbackForm = await client.mutate({
-      mutation: CREATE_FEEDBACK_FORM,
-      variables: {
-        campaignId:campaignId,
-        formName:formName
-      }
-    });
-    return createFeedbackForm
+    try {
+      const createFeedbackForm = await client.mutate({
+        mutation: CREATE_FEEDBACK_FORM,
+        variables: {
+          campaignId: campaignId,
+          formName: formName
+        }
+      });
+      return createFeedbackForm;
 
-    console.log(createFeedbackForm)
-    }catch(err){
+      console.log(createFeedbackForm);
+    } catch (err) {
       console.log(err);
     }
-  }
+  };
 
-
-  createCampaign=async (values)=>{
+  createCampaign = async values => {
     const { client } = this.props;
-    const {priorityChosen,controlValue}= this.state;
-    const {allApplications:{organization}}= this.props;
-    const input={
+    const { priorityChosen, controlValue } = this.state;
+    const {
+      allApplications: { organization }
+    } = this.props;
+    const input = {
       ...values,
-      priority: parseInt(priorityChosen) ,
-      campaignControlPercent:parseInt(controlValue),
-      organization_id:organization.id,
-      application_id:organization.applications[0].id,
-      campaignType:CAMPAIGN_TYPE
+      priority: parseInt(priorityChosen),
+      campaignControlPercent: parseInt(controlValue),
+      organization_id: organization.id,
+      application_id: organization.applications[0].id,
+      campaignType: CAMPAIGN_TYPE
+    };
+    this.setState({ loading: true });
+    try {
+      const createCampaign = await client.mutate({
+        mutation: CREATE_CAMPAIGN,
+        variables: {
+          input: input
+        }
+      });
+      console.log(createCampaign);
+      const feedbackForm = await this.createFeedbackForm(
+        createCampaign.data.createCampaign.id
+      );
+      this.setState({
+        loading: false,
+        campaign: createCampaign.data.createCampaign,
+        feedbackForm: feedbackForm.data.createFeedbackForm
+      });
+    } catch (err) {
+      console.log(err);
     }
-    this.setState({loading:true})
-    try{
-    const createCampaign = await client.mutate({
-      mutation: CREATE_CAMPAIGN,
-      variables: {
-        input:input
-      }
-    });
-    console.log(createCampaign)
-    const feedbackForm= await this.createFeedbackForm(createCampaign.data.createCampaign.id)
-    this.setState({loading:false,campaign:createCampaign.data.createCampaign,feedbackForm:feedbackForm.data.createFeedbackForm})
-    }catch(err){
-      console.log(err)
-    }
-    
-  }
+  };
 
-   goToNextPage(current) {
+  goToNextPage(current) {
     const { formValues } = this.state;
-		if (isEmpty(formValues)) {
-			const form = this.formRef && this.formRef.props && this.formRef.props.form;
-			if (form) {
-				form.validateFields(async (err, values) => {
-					if (err) {
-						return;
-					} else {
-           await this.createCampaign(values)
-						this.setState({
-							formValues: values,
-							current: current,
-						});
-					}
-				});
-			}
-		} else {
-			this.setState({
-				current: current,
-			});
-		}
-	}
+    if (isEmpty(formValues)) {
+      const form =
+        this.formRef && this.formRef.props && this.formRef.props.form;
+      if (form) {
+        form.validateFields(async (err, values) => {
+          if (err) {
+            return;
+          } else {
+            await this.createCampaign(values);
+            this.setState({
+              formValues: values,
+              current: current
+            });
+          }
+        });
+      }
+    } else {
+      this.setState({
+        current: current
+      });
+    }
+  }
 
   onFormNext = e => {
     e.preventDefault();
@@ -165,21 +182,21 @@ import {GET_ALL_APPS_OF_ORGANIZATION} from "@walkinsole/walkin-components/src/Pl
     });
   };
 
-  onPriorityButtonClick=(e)=>{
-    e.preventDefault()
-  }
+  onPriorityButtonClick = e => {
+    e.preventDefault();
+  };
 
   handleButtonGroupChange = e => {
-    console.log(e)
+    console.log(e);
     this.setState({ priorityChosen: e.target.value });
   };
 
-  setFeedbackForm=(formName,e)=>{
-    console.log(formName)
+  setFeedbackForm = (formName, e) => {
+    console.log(formName);
     this.setState({
-      formName:formName
-    })
-  }
+      formName: formName
+    });
+  };
 
   getContainer = () => {
     const {
@@ -191,11 +208,19 @@ import {GET_ALL_APPS_OF_ORGANIZATION} from "@walkinsole/walkin-components/src/Pl
       campaign,
       feedbackForm
     } = this.state;
+    let attributeData =
+      this.props.allAttributes &&
+      this.props.allAttributes.ruleAttributes &&
+      this.props.allAttributes.ruleAttributes.map(el => ({
+        name: el.attributeName,
+        id: el.id,
+        label: el.attributeName
+      }));
     switch (this.state.current) {
       case 0:
         return (
           <CampaignConfig
-          setFeedbackForm={this.setFeedbackForm}
+            setFeedbackForm={this.setFeedbackForm}
             subTitle="Basic information"
             onFormNext={this.onFormNext}
             saveFormRef={this.saveFormRef}
@@ -231,22 +256,22 @@ import {GET_ALL_APPS_OF_ORGANIZATION} from "@walkinsole/walkin-components/src/Pl
           />
         );
       case 1:
-        return (<FeedbackFormConfig 
-        campaign={campaign} 
-        feedbackForm={feedbackForm}/>);
+        return (
+          <FeedbackFormConfig campaign={campaign} feedbackForm={feedbackForm} />
+        );
       case 2:
         return (
           <Audience
             audienceTitle="Audience"
             segmentSubTitle="Segment"
             onValuesSelected={this.onValuesSelected}
-            // segmentSelectionData={this.props.segmentList.segments}
+            segmentSelectionData={this.props.segmentList.segments}
             uploadCsvText="Upload CSV"
             // uploadProps={props}
             segmentFilterText="Filter"
             segmentFilterSubText="Campaign applies to :"
-            // attributeData={attributeData}
-            // logQuery={this.logQuery}
+            attributeData={attributeData}
+            logQuery={this.logQuery}
           />
         );
       case 3:
@@ -254,12 +279,12 @@ import {GET_ALL_APPS_OF_ORGANIZATION} from "@walkinsole/walkin-components/src/Pl
       case 4:
         return <Communication />;
       default:
-        return <Overview />;
+        return <Overview campaign={this.state.campaign} />;
     }
   };
 
   render() {
-    const { current, stepperData,loading } = this.state;
+    const { current, stepperData, loading } = this.state;
     return (
       <div className="PageContainer" style={{ margin: "-32px" }}>
         <ContainerHeader
@@ -268,19 +293,23 @@ import {GET_ALL_APPS_OF_ORGANIZATION} from "@walkinsole/walkin-components/src/Pl
           title="Create RefineX Campaign"
           StepperData={stepperData}
         />
-        {loading ? <CircularProgress/> : <Row>
-          <Col span={24}>
-            <div className="stepperContainer">{this.getContainer()}</div>
-          </Col>
-        </Row>}
-        <div style={{ margin: '32px' }}>
-					<CampaignFooter
-						nextButtonText="Next"
-						saveDraftText="Save Draft"
-						onPage1SaveDraft={this.onPage1SaveDraft}
-						goToPage2={this.goToNextPage.bind(this, current + 1)}
-					/>
-				</div>
+        {loading ? (
+          <CircularProgress />
+        ) : (
+          <Row>
+            <Col span={24}>
+              <div className="stepperContainer">{this.getContainer()}</div>
+            </Col>
+          </Row>
+        )}
+        <div style={{ margin: "32px" }}>
+          <CampaignFooter
+            nextButtonText="Next"
+            saveDraftText="Save Draft"
+            onPage1SaveDraft={this.onPage1SaveDraft}
+            goToPage2={this.goToNextPage.bind(this, current + 1)}
+          />
+        </div>
       </div>
     );
   }
@@ -295,15 +324,33 @@ const GET_USER_IDENTITY = gql`
   }
 `;
 
-export default withApollo(compose(
-  graphql(GET_ALL_APPS_OF_ORGANIZATION, {
-    name: "allApplications",
-    options: (props) =>{ 
-      console.log(props)
-      return ({
-      variables: {
-        id:jwt.decode(localStorage.getItem("jwt")).org_id
-      },
-      fetchPolicy: "cache-and-network"
-    })}
-  }))(CreateCampaign));
+export default withApollo(
+  compose(
+    graphql(GET_ALL_APPS_OF_ORGANIZATION, {
+      name: "allApplications",
+      options: props => {
+        console.log(props);
+        return {
+          variables: {
+            id: jwt.decode(localStorage.getItem("jwt")).org_id
+          },
+          fetchPolicy: "cache-and-network"
+        };
+      }
+    }),
+    graphql(allSegments, {
+      name: "segmentList",
+      options: ownProps => ({
+        variables: {
+          org_id: jwt.decode(localStorage.getItem("jwt")).org_id,
+          status: "ACTIVE"
+        },
+        fetchPolicy: "cache-and-network"
+      })
+    }),
+    graphql(attributes, {
+      name: "allAttributes"
+    }),
+    withApollo
+  )
+)(CreateCampaign);
