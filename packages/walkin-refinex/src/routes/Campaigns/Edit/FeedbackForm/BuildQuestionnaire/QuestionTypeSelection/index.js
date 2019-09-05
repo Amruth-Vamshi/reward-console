@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
+
 import { Query, graphql, compose } from "react-apollo";
 import gql from "graphql-tag";
 import {
@@ -18,9 +18,7 @@ import {
 import { QUESTION_TYPES } from "../../../../../../containers/Query";
 
 class QuestionTypeSelection extends Component {
-  static propTypes = {
-    prop: PropTypes
-  };
+
 
   constructor(props) {
     super(props);
@@ -89,7 +87,7 @@ class QuestionTypeSelection extends Component {
   }
 }
 
-QuestionTypeSelection.PropTypes = {};
+
 
 export default graphql(QUESTION_TYPES, {
   name: "questionTypesQuery",

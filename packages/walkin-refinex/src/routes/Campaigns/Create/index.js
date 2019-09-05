@@ -85,9 +85,6 @@ import {GET_ALL_APPS_OF_ORGANIZATION} from "@walkinsole/walkin-components/src/Pl
     }catch(err){
       console.log(err);
     }
-    
-
-
   }
 
 
@@ -234,7 +231,9 @@ import {GET_ALL_APPS_OF_ORGANIZATION} from "@walkinsole/walkin-components/src/Pl
           />
         );
       case 1:
-        return <FeedbackFormConfig campaign={campaign} feedbackForm={feedbackForm}/>;
+        return (<FeedbackFormConfig 
+        campaign={campaign} 
+        feedbackForm={feedbackForm}/>);
       case 2:
         return (
           <Audience
@@ -296,13 +295,15 @@ const GET_USER_IDENTITY = gql`
   }
 `;
 
-export default compose(
+export default withApollo(compose(
   graphql(GET_ALL_APPS_OF_ORGANIZATION, {
     name: "allApplications",
-    options: () => ({
+    options: (props) =>{ 
+      console.log(props)
+      return ({
       variables: {
         id:jwt.decode(localStorage.getItem("jwt")).org_id
       },
       fetchPolicy: "cache-and-network"
-    })
-  }),withApollo)(CreateCampaign);
+    })}
+  }))(CreateCampaign));

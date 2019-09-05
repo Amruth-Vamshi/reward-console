@@ -229,7 +229,7 @@ import {GET_CAMPAIGN,UPDATE_CAMPAIGN} from "../../../containers/Query"
 }
 
 
-export default compose(
+export default withApollo(compose(
   graphql(GET_CAMPAIGN, {
     name: "campaign",
     options: (props) => ({
@@ -237,6 +237,5 @@ export default compose(
         id:props.match.params.id,
       },
     })
-  }),
-  withApollo
-)(EditCampaign);
+  })
+)(EditCampaign));

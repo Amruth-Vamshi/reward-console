@@ -193,6 +193,17 @@ export const EDIT_QUESTION = gql`
   }
 `;
 
+
+export const ADD_QUESTION = gql`
+mutation addQuestion($choiceId:ID!,$input:QuestionInput){
+      id
+      questionText
+      rangeMin
+      rangeMax
+      type
+}
+`
+
 export const ADD_CHOICE = gql`
   mutation addChoice($questionId: ID!, $input: ChoiceInput) {
     addChoice(questionId: $questionId, input: $input) {
