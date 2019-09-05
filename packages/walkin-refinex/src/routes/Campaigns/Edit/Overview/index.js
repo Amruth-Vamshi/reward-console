@@ -60,7 +60,7 @@ export default class Overview extends Component {
             </Row>
             <Row className="overviewRowmargin">
               <Col span={10} className="overViewBackground">
-                {/* {campaign.feedbackForm.title} */}
+                {campaign.feedbackForm.title}
               </Col>
             </Row>
             <Row className="overviewTitlemargin">
