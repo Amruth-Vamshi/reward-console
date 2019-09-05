@@ -7,11 +7,11 @@ import { CREATE_FEEDBACK_FORM } from "../../../../containers/Query";
 import gql from "graphql-tag";
 class CreateCampaignRow extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       showModal: false,
       formName: null
-    }
+    };
   }
 
   // onCancel = async () => {
@@ -21,7 +21,7 @@ class CreateCampaignRow extends Component {
   // };
 
   createFeedbackCampaign = (formName, e) => {
-    this.props.setFeedbackForm(formName)
+    this.props.setFeedbackForm(formName);
   };
 
   // onConfirm = async selectedApplication => {
@@ -60,68 +60,114 @@ class CreateCampaignRow extends Component {
           <Row>
             <Col span={24}>
               <Row gutter={12} type="flex" justify="space-around">
-                <Col span={4} onClick={this.createFeedbackCampaign.bind(
-                  this,
-                  "default"
-                )}>
-                  <CardBox style={{
-                    cursor: "pointer"
-                  }} styleName="gx-card-full">
-                    <Row type="flex" style={{ height: "8rem" }} justify="center">
+                <Col
+                  span={4}
+                  onClick={this.createFeedbackCampaign.bind(this, "default")}
+                >
+                  <CardBox
+                    style={{
+                      cursor: "pointer"
+                    }}
+                    styleName="gx-card-full"
+                  >
+                    <Row
+                      type="flex"
+                      style={{ height: "8rem" }}
+                      justify="center"
+                    >
                       <Empty description="Blank Feedback" />
-
                     </Row>
                   </CardBox>
                 </Col>
-                <Col span={4} onClick={this.createFeedbackCampaign.bind(
-                  this,
-                  "product_feedback"
-                )}>
-                  <CardBox style={{
-                    cursor: "pointer"
-                  }} styleName="gx-card-full" heading={""}>
-                    <Row type="flex" style={{ height: "8rem" }} justify="center">
+                <Col
+                  span={4}
+                  onClick={this.createFeedbackCampaign.bind(
+                    this,
+                    "product_feedback"
+                  )}
+                >
+                  <CardBox
+                    style={{
+                      cursor: "pointer"
+                    }}
+                    styleName="gx-card-full"
+                    heading={""}
+                  >
+                    <Row
+                      type="flex"
+                      style={{ height: "8rem" }}
+                      justify="center"
+                    >
                       <Empty description="Product Feedback" />
-
                     </Row>
                   </CardBox>
                 </Col>
-                <Col span={4} onClick={this.createFeedbackCampaign.bind(
-                  this,
-                  "customer survey"
-                )}>
-                  <CardBox style={{
-                    cursor: "pointer"
-                  }} styleName="gx-card-full" heading={""}>
-                    <Row type="flex" style={{ height: "8rem" }} justify="center">
+                <Col
+                  span={4}
+                  onClick={this.createFeedbackCampaign.bind(
+                    this,
+                    "customer survey"
+                  )}
+                >
+                  <CardBox
+                    style={{
+                      cursor: "pointer"
+                    }}
+                    styleName="gx-card-full"
+                    heading={""}
+                  >
+                    <Row
+                      type="flex"
+                      style={{ height: "8rem" }}
+                      justify="center"
+                    >
                       <Empty description="Customer Survey" />
-
                     </Row>
                   </CardBox>
                 </Col>
-                <Col span={4} onClick={this.createFeedbackCampaign.bind(
-                  this,
-                  "employee feedback"
-                )}>
-                  <CardBox style={{
-                    cursor: "pointer"
-                  }} styleName="gx-card-full" heading={""}>
-                    <Row type="flex" style={{ height: "8rem" }} justify="center">
+                <Col
+                  span={4}
+                  onClick={this.createFeedbackCampaign.bind(
+                    this,
+                    "employee feedback"
+                  )}
+                >
+                  <CardBox
+                    style={{
+                      cursor: "pointer"
+                    }}
+                    styleName="gx-card-full"
+                    heading={""}
+                  >
+                    <Row
+                      type="flex"
+                      style={{ height: "8rem" }}
+                      justify="center"
+                    >
                       <Empty description="Employee Feedback" />
-
                     </Row>
                   </CardBox>
                 </Col>
-                <Col span={4} onClick={this.createFeedbackCampaign.bind(
-                  this,
-                  "user feedback"
-                )}>
-                  <CardBox style={{
-                    cursor: "pointer"
-                  }} styleName="gx-card-full" heading={""}>
-                    <Row type="flex" style={{ height: "8rem" }} justify="center">
+                <Col
+                  span={4}
+                  onClick={this.createFeedbackCampaign.bind(
+                    this,
+                    "user feedback"
+                  )}
+                >
+                  <CardBox
+                    style={{
+                      cursor: "pointer"
+                    }}
+                    styleName="gx-card-full"
+                    heading={""}
+                  >
+                    <Row
+                      type="flex"
+                      style={{ height: "8rem" }}
+                      justify="center"
+                    >
                       <Empty description="User Feedback" />
-
                     </Row>
                   </CardBox>
                 </Col>

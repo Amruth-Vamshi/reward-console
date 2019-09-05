@@ -4,7 +4,7 @@ import { Row, Col, Button } from "antd";
 import CampaignConfig from "./Campaign";
 // import Audience from "./Audience";
 import Audience from "@walkinsole/walkin-hyperx/src/containers/campaign/campaignCreation/audience";
-import { CampaignFooter, CampaignHeader } from '@walkinsole/walkin-components';
+import { CampaignFooter, CampaignHeader } from "@walkinsole/walkin-components";
 import "@walkinsole/walkin-hyperx/src/containers/campaign/campaignCreation/audience/style.css";
 import Communication from "./Communication";
 import Triggers from "./Triggers";
@@ -12,11 +12,19 @@ import Overview from "./Overview";
 import FeedbackFormConfig from "./FeedbackForm";
 import ContainerHeader from "../CampaignHeader";
 import gql from "graphql-tag";
-import { compose, graphql ,withApollo} from "react-apollo";
+import { compose, graphql } from "react-apollo";
 import GoLive from "./GoLive";
-import isEmpty from 'lodash/isEmpty';
-import {GET_CAMPAIGN,UPDATE_CAMPAIGN} from "../../../containers/Query"
- class EditCampaign extends Component {
+import isEmpty from "lodash/isEmpty";
+import {
+  GET_CAMPAIGN,
+  allSegments,
+  attributes
+} from "../../../containers/Query";
+import { CustomScrollbars } from "@walkinsole/walkin-components";
+import jwt from "jsonwebtoken";
+
+// import { allSegments } from "@walkinsole/walkin-hyperx/src/query/audience";
+class EditCampaign extends Component {
   constructor() {
     super();
     this.state = {
@@ -30,6 +38,9 @@ import {GET_CAMPAIGN,UPDATE_CAMPAIGN} from "../../../containers/Query"
       communicationSelected: "1",
       communicationFormValues: {},
       formValues: {},
+      campaign: {},
+      segmentList: {},
+      attributeData: {},
       stepperData: [
         {
           title: "Basic Info"
@@ -61,46 +72,53 @@ import {GET_CAMPAIGN,UPDATE_CAMPAIGN} from "../../../containers/Query"
     this.setState({ current });
   };
 
-
-  editCampaign=async (values)=>{
-    const { client } = this.props;
-    
-    const updatedCampaign = await client.mutate({
-      mutation: UPDATE_CAMPAIGN,
-      variables: {
-        id: this.props.campaign.campaign.id,
-        input:values
-      }
-    });
-    console.log(updatedCampaign)
-  }
-
   goToNextPage(current) {
     const { formValues } = this.state;
-		if (isEmpty(formValues)) {
-			const form = this.formRef && this.formRef.props && this.formRef.props.form;
-			if (form) {
-				form.validateFields((err, values) => {
-					if (err) {
-						return;
-					} else {
-            this.editCampaign(values)
-						this.setState({
-							formValues: values,
-							current: current,
-						});
-					}
-				});
-			}
-		} else {
-			this.setState({
-				current: current,
-			});
-		}
-	}
+    if (isEmpty(formValues)) {
+      const form =
+        this.formRef && this.formRef.props && this.formRef.props.form;
+      if (form) {
+        form.validateFields((err, values) => {
+          if (err) {
+            return;
+          } else {
+            this.setState({
+              formValues: values,
+              current: current
+            });
+          }
+        });
+      }
+    } else {
+      this.setState({
+        current: current
+      });
+    }
+  }
 
-  onFormNext = e => {
-    e.preventDefault();
+  onFormNext = current => {
+    const { formValues } = this.state;
+    console.log(current);
+    if (isEmpty(formValues)) {
+      const form =
+        this.formRef && this.formRef.props && this.formRef.props.form;
+      if (form) {
+        form.validateFields((err, values) => {
+          if (err) {
+            return;
+          } else {
+            this.setState({
+              formValues: values,
+              current: current
+            });
+          }
+        });
+      }
+    } else {
+      this.setState({
+        current: current
+      });
+    }
   };
 
   saveFormRef = formRef => {
@@ -128,10 +146,20 @@ import {GET_CAMPAIGN,UPDATE_CAMPAIGN} from "../../../containers/Query"
   };
 
   getContainer = () => {
-    const {campaign}= this.props.campaign
+    const { campaign } = this.props.campaign;
+    let attributeData =
+      this.props.allAttributes &&
+      this.props.allAttributes.ruleAttributes &&
+      this.props.allAttributes.ruleAttributes.map(el => ({
+        name: el.attributeName,
+        id: el.id,
+        label: el.attributeName
+      }));
     const {
       formValues,
       showTestAndControl,
+      segmentSelectionData,
+      logQuery,
       testValue,
       controlValue,
       testControlSelected
@@ -143,7 +171,7 @@ import {GET_CAMPAIGN,UPDATE_CAMPAIGN} from "../../../containers/Query"
             subTitle="Basic information"
             onFormNext={this.onFormNext}
             saveFormRef={this.saveFormRef}
-            formValues={campaign ?campaign :formValues}
+            formValues={this.props.campaign.campaign}
             testAndControlText="Test & Control"
             promptText="prompt text"
             toolTipText="what is test and control?"
@@ -178,30 +206,34 @@ import {GET_CAMPAIGN,UPDATE_CAMPAIGN} from "../../../containers/Query"
         return <FeedbackFormConfig />;
       case 2:
         return (
-          <Audience
-            audienceTitle="Audience"
-            segmentSubTitle="Segment"
-            onValuesSelected={this.onValuesSelected}
-            // segmentSelectionData={this.props.segmentList.segments}
-            uploadCsvText="Upload CSV"
-            // uploadProps={props}
-            segmentFilterText="Filter"
-            segmentFilterSubText="Campaign applies to :"
-            // attributeData={attributeData}
-            // logQuery={this.logQuery}
-          />
+          <CustomScrollbars>
+            <Audience
+              audienceTitle="Audience"
+              segmentSubTitle="Segment"
+              onValuesSelected={this.onValuesSelected}
+              // segmentSelectionData={this.props.segmentList}
+              uploadCsvText="Upload CSV"
+              // uploadProps={props}
+              segmentFilterText="Filter"
+              segmentFilterSubText="Campaign applies to :"
+              attributeData={attributeData}
+              logQuery={this.logQuery}
+            />
+          </CustomScrollbars>
         );
+
       case 3:
         return <Triggers />;
       case 4:
         return <Communication />;
       default:
-        return <Overview />;
+        return <Overview campaign={this.props.campaign.campaign} />;
     }
   };
 
   render() {
     const { current, stepperData } = this.state;
+
     return (
       <div className="PageContainer" style={{ margin: "-32px" }}>
         <ContainerHeader
@@ -215,28 +247,48 @@ import {GET_CAMPAIGN,UPDATE_CAMPAIGN} from "../../../containers/Query"
             <div className="stepperContainer">{this.getContainer()}</div>
           </Col>
         </Row>
-        <div style={{ margin: '32px' }}>
-					<CampaignFooter
-						nextButtonText="Next"
-						saveDraftText="Save Draft"
-						onPage1SaveDraft={this.onPage1SaveDraft}
-						goToPage2={this.goToNextPage.bind(this, current + 1)}
-					/>
-				</div>
+        {/* <Row className="BottomBar">
+          <Col offset={1}>
+            <Button onClick={this.onFormNext} type="primary">Next</Button>
+          </Col>
+
+          <Col offset={1}>
+            <Button>Save as Draft</Button>
+          </Col>
+        </Row> */}
+        <div style={{ margin: "32px" }}>
+          <CampaignFooter
+            nextButtonText="Next"
+            saveDraftText="Save Draft"
+            onPage1SaveDraft={this.onPage1SaveDraft}
+            goToPage2={this.onFormNext.bind(this, current + 1)}
+          />
+        </div>
       </div>
     );
   }
 }
 
-
 export default compose(
   graphql(GET_CAMPAIGN, {
     name: "campaign",
-    options: (props) => ({
+    options: props => ({
       variables: {
-        id:props.match.params.id,
-      },
+        id: props.match.params.id
+      }
     })
   }),
-  withApollo
+  graphql(allSegments, {
+    name: "segmentList",
+    options: ownProps => ({
+      variables: {
+        org_id: jwt.decode(localStorage.getItem("jwt")).org_id,
+        status: "ACTIVE"
+      },
+      fetchPolicy: "cache-and-network"
+    })
+  }),
+  graphql(attributes, {
+    name: "allAttributes"
+  })
 )(EditCampaign);
