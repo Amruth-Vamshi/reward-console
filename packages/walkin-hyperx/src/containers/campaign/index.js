@@ -8,6 +8,7 @@ import { allSegments, attributes } from '../../query/audience';
 import { withApollo, graphql, compose } from 'react-apollo';
 import isEmpty from 'lodash/isEmpty';
 import { Col } from 'antd';
+import jwt from "jsonwebtoken";
 import { CampaignFooter, CampaignHeader, Stepper } from '@walkinsole/walkin-components';
 
 const stepData = [
@@ -36,17 +37,6 @@ const stepData = [
 		title: 'Overview',
 		route: 'overview',
 	},
-];
-
-const fields = [
-	{ name: 'firstName', label: 'First Name' },
-	{ name: 'lastName', label: 'Last Name' },
-	{ name: 'age', label: 'Age' },
-	{ name: 'address', label: 'Address' },
-	{ name: 'phone', label: 'Phone' },
-	{ name: 'email', label: 'Email' },
-	{ name: 'twitter', label: 'Twitter' },
-	{ name: 'isDev', label: 'Is a Developer?', value: false },
 ];
 
 const communicationData = [
@@ -225,8 +215,7 @@ class CampaignCreation extends Component {
 						handleOk={this.handleOk}
 						handleCancel={this.handleCancel}
 						applyTestControlChange={this.applyTestControlChange}
-						popupbodyText="Divide customers selected for a specific audience into local test and local control
-								groups"
+						popupbodyText="Divide customers selected for a specific audience into local test and local control groups"
 						controlValue={controlValue}
 						testValue={testValue}
 						maxValueAllowed={75}
@@ -282,7 +271,8 @@ export default withRouter(
 				name: 'segmentList',
 				options: ownProps => ({
 					variables: {
-						organization_id: ownProps.client.cache.data.data['$ROOT_QUERY.auth'].organizationId,
+						organization_id: ownProps.client.cache.data.data['$ROOT_QUERY.auth'].organizationId? 
+								ownProps.client.cache.data.data['$ROOT_QUERY.auth'].organizationId:jwt.decode(localStorage.getItem('jwt')),
 						status: 'ACTIVE',
 					},
 					fetchPolicy: 'network-only',

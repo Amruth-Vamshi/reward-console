@@ -132,7 +132,7 @@ class OrganizationInfo extends Component {
 			// 	</Fragment>
 			// ),
 			onOk() {
-				return new Promise((resolve, reject) => {}).catch(() => console.log('Oops errors!'));
+				return new Promise((resolve, reject) => { }).catch(() => console.log('Oops errors!'));
 
 				// this.props.client
 				// 	.mutate({
@@ -153,7 +153,7 @@ class OrganizationInfo extends Component {
 				// 		);
 				// 	});
 			},
-			onCancel() {},
+			onCancel() { },
 		});
 	}
 	render() {

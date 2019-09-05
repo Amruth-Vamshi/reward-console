@@ -67,6 +67,7 @@ class NewSegment extends Component {
 							segmentType: 'CUSTOM',
 							organization_id: org_id,
 							application_id: 'ec36088c-08e2-4a42-a75c-60490fe5c132', // remove Hardcoding get it from context
+							// application_id: 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBfaWQiOiI4MDk2MGJiNC1lMWMxLTQyMDUtOWE2OC02NWNkMjlhMDMxNDgiLCJvcmdfaWQiOiI1MDFhYmEyNi05ODZiLTQ1ZmQtODNjNS0zNDhhM2Y4ZjY5NTAiLCJpYXQiOjE1Njc1MDA5OTQsImV4cCI6MTU5OTAzNjk5NCwiaXNzIjoiV2Fsa2luIiwianRpIjoiNzNmOWVmODAtNjZlZS00ZjI5LWJhYjEtMjQ1NTMzZDc2M2NiIn0.PLNcfc4DWuZg2Q4FxAXo61GoyIVjFjt3NeyH84nNKP6bDdxMJQDH46o_YVzv1zUM1PJyAI0b6DeNf7fQQuWR2g',
 							rule_id: data.createRule.id,
 							status: 'ACTIVE',
 						},
@@ -97,7 +98,7 @@ class NewSegment extends Component {
 					attributeValue: 'value',
 					expressionType: 'operator',
 				};
-				str = str.replace(/attributeName|attributeValue|expressionType/gi, function(matched) {
+				str = str.replace(/attributeName|attributeValue|expressionType/gi, function (matched) {
 					return mapObj[matched];
 				});
 				this.setState({ query: JSON.parse(str) });
