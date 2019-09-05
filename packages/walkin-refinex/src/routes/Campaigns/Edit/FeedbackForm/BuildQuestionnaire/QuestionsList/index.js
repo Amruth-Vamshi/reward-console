@@ -49,7 +49,7 @@ export default class QuestionsList extends Component {
                   width
                 }}
               >
-                <Col span={24}>
+                {/* <Col span={24}>
                   <Row type="flex" justify="center">
                     <Col>
                       <Button
@@ -63,7 +63,7 @@ export default class QuestionsList extends Component {
                       </Button>
                     </Col>
                   </Row>
-                </Col>
+                </Col> */}
                 <Col span={24}>
                   <Row type="flex">
                     <List

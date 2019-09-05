@@ -40,7 +40,7 @@ class Questionnaire extends Component {
     }));
   };
 
-  onQuestionTypeSelector = questionType => {
+  onNewQuestionAdd = () => {
     // this.props.addQuestion({
     //   variables: {
     //     choiceId: "",
@@ -63,6 +63,10 @@ class Questionnaire extends Component {
     // }).catch(err => {
     //   console.log("Error creating the question", err)
     // })
+  }
+
+  onQuestionTypeSelector = questionType => {
+
     this.setState({
       questionTypeSelector: questionType,
       addQuestion: false,

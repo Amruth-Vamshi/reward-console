@@ -38,8 +38,8 @@ class QuestionnaireFormPane extends Component {
   onQuestionEdited = values => {
     console.log("values", values);
     if (questionWithSlider[values.type]) {
-      values.rangeMin = values.range[0];
-      values.rangeMax = values.range[1];
+      values.rangeMin = values.rangeMin;
+      values.rangeMax = values.rangeMax;
     }
     delete values.range;
     this.setState({
@@ -88,17 +88,17 @@ class QuestionnaireFormPane extends Component {
               choiceToAddQuestion={choiceToAddQuestion}
             />
           ) : (
-            <ShowQuestion
-              onQuestionEdited={this.onQuestionEdited}
-              onQuestionSubmitted={this.onQuestionSubmitted}
-              onChoiceEdited={this.onChoiceEdited}
-              questionToEdit={questionToEdit}
-              addChoice={addChoice}
-              removeChoice={removeChoice}
-              addNewQuestion={addNewQuestion}
-              choiceData={choiceData}
-            />
-          )}
+              <ShowQuestion
+                onQuestionEdited={this.onQuestionEdited}
+                onQuestionSubmitted={this.onQuestionSubmitted}
+                onChoiceEdited={this.onChoiceEdited}
+                questionToEdit={questionToEdit}
+                addChoice={addChoice}
+                removeChoice={removeChoice}
+                addNewQuestion={addNewQuestion}
+                choiceData={choiceData}
+              />
+            )}
         </Col>
 
         {/* <Col span={24}>
