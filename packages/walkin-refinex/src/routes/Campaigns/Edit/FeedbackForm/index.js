@@ -58,7 +58,7 @@ class FeedbackFormConfig extends Component {
                   refetch: refetchQuestionnaire,
                   error: questionnaireDataError
                 }) => {
-                  console.log(questionnaireData)
+                  console.log("campaignData", campaignData)
                   return (
                     <Tabs
                       size="large"

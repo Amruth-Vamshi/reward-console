@@ -324,41 +324,33 @@ const GET_USER_IDENTITY = gql`
   }
 `;
 
-// export default compose(
-//   graphql(GET_ALL_APPS_OF_ORGANIZATION, {
-//     name: "allApplications",
-//     options: () => ({
-//       variables: {
-//         id: jwt.decode(localStorage.getItem("jwt")).org_id
-//       },
-//       fetchPolicy: "cache-and-network"
-//     })
-//   }),
-//   withApollo
-// )(CreateCampaign);
-
-export default compose(
-  graphql(GET_ALL_APPS_OF_ORGANIZATION, {
-    name: "allApplications",
-    options: () => ({
-      variables: {
-        id: jwt.decode(localStorage.getItem("jwt")).org_id
-      },
-      fetchPolicy: "cache-and-network"
-    })
-  }),
-  graphql(allSegments, {
-    name: "segmentList",
-    options: ownProps => ({
-      variables: {
-        org_id: jwt.decode(localStorage.getItem("jwt")).org_id,
-        status: "ACTIVE"
-      },
-      fetchPolicy: "cache-and-network"
-    })
-  }),
-  graphql(attributes, {
-    name: "allAttributes"
-  }),
-  withApollo
+export default withApollo(
+  compose(
+    graphql(GET_ALL_APPS_OF_ORGANIZATION, {
+      name: "allApplications",
+      options: props => {
+        console.log(props);
+        return {
+          variables: {
+            id: jwt.decode(localStorage.getItem("jwt")).org_id
+          },
+          fetchPolicy: "cache-and-network"
+        };
+      }
+    }),
+    graphql(allSegments, {
+      name: "segmentList",
+      options: ownProps => ({
+        variables: {
+          org_id: jwt.decode(localStorage.getItem("jwt")).org_id,
+          status: "ACTIVE"
+        },
+        fetchPolicy: "cache-and-network"
+      })
+    }),
+    graphql(attributes, {
+      name: "allAttributes"
+    }),
+    withApollo
+  )
 )(CreateCampaign);

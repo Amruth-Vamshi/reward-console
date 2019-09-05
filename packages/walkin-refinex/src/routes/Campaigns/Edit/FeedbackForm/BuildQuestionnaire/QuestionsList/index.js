@@ -81,29 +81,29 @@ export default class QuestionsList extends Component {
                 </Col>
               </Row>
             ) : (
-              <Row
-                style={{
-                  height,
-                  width
-                }}
-              >
-                <Col span={24}>
-                  <Row type="flex" justify="center">
-                    <Col>
-                      <Button
-                        type="dashed"
-                        onClick={e => {
-                          e.preventDefault();
-                          this.props.addNewQuestion();
-                        }}
-                      >
-                        <Icon type="plus" /> CreateQuestionnaire
+                <Row
+                  style={{
+                    height,
+                    width
+                  }}
+                >
+                  <Col span={24}>
+                    <Row type="flex" justify="center">
+                      <Col>
+                        <Button
+                          type="dashed"
+                          onClick={e => {
+                            e.preventDefault();
+                            this.props.addNewQuestion();
+                          }}
+                        >
+                          <Icon type="plus" /> CreateQuestionnaire
                       </Button>
-                    </Col>
-                  </Row>
-                </Col>
-              </Row>
-            )
+                      </Col>
+                    </Row>
+                  </Col>
+                </Row>
+              )
           }
         </AutorSizer>
       </ErrorBoundary>
