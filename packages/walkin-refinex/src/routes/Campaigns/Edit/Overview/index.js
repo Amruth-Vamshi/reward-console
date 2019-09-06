@@ -52,7 +52,7 @@ export default class Overview extends Component {
                 Start date
               </Col>
               <Col span={5}>{start}</Col>
-              <Col span={2}>End date</Col>
+              <Col span={4}>End date</Col>
               <Col span={5}>{end}</Col>
             </Row>
             <Row className="overviewTitlemargin">

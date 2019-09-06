@@ -18,7 +18,9 @@ import isEmpty from "lodash/isEmpty";
 import {
   GET_CAMPAIGN,
   allSegments,
-  attributes
+  attributes,
+  createRule,
+  UPDATE_CAMPAIGN
 } from "../../../containers/Query";
 import { CustomScrollbars } from "@walkinsole/walkin-components";
 import jwt from "jsonwebtoken";
@@ -41,6 +43,7 @@ class EditCampaign extends Component {
       campaign: {},
       segmentList: {},
       attributeData: {},
+      query: { id: "1", combinator: "and", rules: [] },
       stepperData: [
         {
           title: "Basic Info"
@@ -72,6 +75,57 @@ class EditCampaign extends Component {
     this.setState({ current });
   };
 
+  logQuery = query => {
+    this.setState({ query: query });
+    console.log("quu", query);
+  };
+
+  ruleQuery = current => {
+    const input = {
+      name: Math.random()
+        .toString(36)
+        .substring(7),
+      description: "",
+      type: "SIMPLE",
+      organizationId: jwt.decode(localStorage.getItem("jwt")).org_id,
+      status: "ACTIVE",
+      ruleConfiguration: JSON.stringify(this.state.query)
+    };
+    console.log("save....", this.props);
+    console.log("Campaign Id..", this.props.campaign.campaign.id);
+    this.props
+      .rule({
+        variables: {
+          input: input
+        }
+      })
+      .then(data => {
+        console.log("Trigger Rule data...", data);
+        if (current == 2)
+          var input = {
+            audienceFilterRule: data.data.createRule.id
+          };
+        if (current == 3) {
+          var input = {
+            triggerRule: data.data.createRule.id
+          };
+        }
+        this.props
+          .updateCampaign({
+            variables: {
+              id: this.props.campaign.campaign.id,
+              input: input
+            }
+          })
+          .then(data => {
+            console.log("Update campaign data..", data);
+          });
+      })
+      .catch(err => {
+        console.log("Error creating the question", err);
+      });
+  };
+
   goToNextPage(current) {
     const { formValues } = this.state;
     if (isEmpty(formValues)) {
@@ -99,6 +153,12 @@ class EditCampaign extends Component {
   onFormNext = current => {
     const { formValues } = this.state;
     console.log(current);
+    if (this.state.current == 2) {
+      this.ruleQuery(this.state.current);
+    }
+    if (this.state.current == 3) {
+      this.ruleQuery(this.state.current);
+    }
     if (isEmpty(formValues)) {
       const form =
         this.formRef && this.formRef.props && this.formRef.props.form;
@@ -107,6 +167,7 @@ class EditCampaign extends Component {
           if (err) {
             return;
           } else {
+            // this.ruleQuery();
             this.setState({
               formValues: values,
               current: current
@@ -141,15 +202,15 @@ class EditCampaign extends Component {
     });
   };
   logQuery = query => {
-		console.log('quu', query);
-	};
+    console.log("quu", query);
+  };
   handleButtonGroupChange = e => {
     this.setState({ value: e.target.value });
   };
 
   getContainer = () => {
     const { campaign } = this.props.campaign;
-    console.log(this.props)
+    console.log(this.props);
     let attributeData =
       this.props.allAttributes &&
       this.props.allAttributes.ruleAttributes &&
@@ -160,9 +221,8 @@ class EditCampaign extends Component {
       }));
     const {
       formValues,
+      query,
       showTestAndControl,
-      segmentSelectionData,
-      logQuery,
       testValue,
       controlValue,
       testControlSelected
@@ -214,7 +274,7 @@ class EditCampaign extends Component {
               audienceTitle="Audience"
               segmentSubTitle="Segment"
               onValuesSelected={this.onValuesSelected}
-             segmentSelectionData={this.props.segmentList.segments}
+              segmentSelectionData={this.props.segmentList.segments}
               uploadCsvText="Upload CSV"
               // uploadProps={props}
               segmentFilterText="Filter"
@@ -226,7 +286,9 @@ class EditCampaign extends Component {
         );
 
       case 3:
-        return <Triggers />;
+        return (
+          <Triggers attributeData={attributeData} logQuery={this.logQuery} />
+        );
       case 4:
         return <Communication />;
       default:
@@ -290,6 +352,28 @@ export default compose(
       },
       fetchPolicy: "cache-and-network"
     })
+  }),
+  // graphql(createRule, {
+  //   name: "rule",
+  //   options: props => ({
+  //     variables: {
+  //       name: Math.random()
+  //         .toString(36)
+  //         .substring(7),
+  //       description: "",
+  //       type: "SIMPLE",
+  //       organizationId: jwt.decode(localStorage.getItem("jwt")).org_id,
+  //       status: "ACTIVE",
+  //       ruleConfiguration: JSON.stringify(query)
+  //     },
+  //     fetchPolicy: "cache-and-network"
+  //   })
+  // }),
+  graphql(createRule, {
+    name: "rule"
+  }),
+  graphql(UPDATE_CAMPAIGN, {
+    name: "updateCampaign"
   }),
   graphql(attributes, {
     name: "allAttributes"
