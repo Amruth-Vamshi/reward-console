@@ -47,13 +47,16 @@ class Triggers extends Component {
 
         <Divider />
         <Col span={24}>
-          <Filter />
+          <Filter
+            attributeData={this.props.attributeData}
+            logQuery={this.props.logQuery}
+          />
         </Col>
 
-        <Divider />
+        {/* <Divider />
         <Col span={24}>
           <Delay />
-        </Col>
+        </Col> */}
       </Row>
     );
   }

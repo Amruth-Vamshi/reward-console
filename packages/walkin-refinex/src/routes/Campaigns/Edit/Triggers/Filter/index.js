@@ -1,6 +1,11 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Col, Row, Form, Select, Input, Button, Icon } from "antd";
+import {
+  AddAndDeleteSelectDynamically,
+  WalkinQueryBuilder
+} from "@walkinsole/walkin-components";
+
 let id = 0;
 class Filter extends Component {
   static propTypes = {
@@ -93,16 +98,22 @@ class Filter extends Component {
         <Col span={6}>
           <h2>Filter</h2>
         </Col>
-        <Col span={12}>
+        <Col span={14}>
           <Form layout="inline" onSubmit={this.handleSubmit}>
             {formItems}
-            <Button
+            <WalkinQueryBuilder
+              fields={this.props.attributeData}
+              onQueryChange={this.props.logQuery}
+            />
+
+            {/* <Button
               type="dashed"
               onClick={this.addFields}
               style={{ width: "40%" }}
             >
               <Icon type="plus" /> Add More Rules
-            </Button>
+             
+            </Button> */}
           </Form>
         </Col>
       </Row>
