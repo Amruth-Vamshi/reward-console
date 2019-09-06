@@ -6,7 +6,7 @@ const BasicInfoForm = Form.create({ name: 'form_in_modal' })(
 	// eslint-disable-next-line
 	class BasicInfoForm extends React.Component {
 		render() {
-			const { form, onFormNext, wrappedComponentRef, formValues, text } = this.props;
+			const { form, onFormNext, wrappedComponentRef, formValues = {}, text } = this.props;
 			let startTime = moment()
 			let endTime = moment()
 			if (Object.keys(formValues).length != 0) {

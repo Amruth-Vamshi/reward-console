@@ -53,22 +53,16 @@ class SidebarContent extends Component {
                 <IntlMessages id="sidebar.refinex.dashboard" />
               </Link>
             </Menu.Item>
-            <Menu.Item key="campaigns">
-              <Link to="/refinex/campaign">
+            <Menu.Item key="feedbacks">
+              <Link to="/refinex/feedback">
                 <i className="icon icon-alert" />
-                <IntlMessages id="sidebar.refinex.campaigns" />
+                <IntlMessages id="sidebar.refinex.feedbacks" />
               </Link>
             </Menu.Item>
             <Menu.Item key="settings">
               <Link to="/refinex/settings">
                 <i className="icon icon-select" />
                 <IntlMessages id="sidebar.refinex.settings" />
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="feedbacks">
-              <Link to="/refinex/feedbacks">
-                <i className="icon icon-geo-location" />
-                <IntlMessages id="sidebar.refinex.feedbacks" />
               </Link>
             </Menu.Item>{" "}
             <Menu.Item key="analytics">

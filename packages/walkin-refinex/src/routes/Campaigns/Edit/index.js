@@ -140,7 +140,9 @@ class EditCampaign extends Component {
       showTestAndControl: false
     });
   };
-
+  logQuery = query => {
+		console.log('quu', query);
+	};
   handleButtonGroupChange = e => {
     this.setState({ value: e.target.value });
   };
