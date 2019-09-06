@@ -41,9 +41,9 @@ export default class Overview extends Component {
               Overview
             </Title>
             <div style={{ fontWeight: "bold" }} className="overviewRowmargin">
-              CCD Feedback
+              {campaign.name}
             </div>
-            <div className="overviewRowmargin">{campaign.name}</div>
+            <div className="overviewRowmargin">{campaign.description != null ? campaign.description : ""}</div>
             <div className="overviewRowmargin">
               <b>{diff}</b> days {value}
             </div>
@@ -60,7 +60,7 @@ export default class Overview extends Component {
             </Row>
             <Row className="overviewRowmargin">
               <Col span={10} className="overViewBackground">
-                {campaign.feedbackForm.title}
+                {campaign.feedbackForm ? campaign.feedbackForm.title : ""}
               </Col>
             </Row>
             <Row className="overviewTitlemargin">

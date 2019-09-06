@@ -6,6 +6,7 @@ import { NEW_SEGMENT } from '../../../utils/RouterConstants';
 import { Card, Menu, Dropdown, Button, Col } from 'antd';
 import moment from 'moment';
 import { SortableDataTable, InstantSearch, CampaignHeader } from '@walkinsole/walkin-components';
+import jwt from "jsonwebtoken";
 
 class SegmentList extends Component {
 	constructor(props) {
@@ -204,7 +205,7 @@ export default withRouter(
 		graphql(allSegments, {
 			options: ownProps => ({
 				variables: {
-					organization_id: ownProps.client.cache.data.data['$ROOT_QUERY.auth'].organizationId,
+					organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
 					status: 'ACTIVE',
 				},
 				forceFetch: true,
@@ -217,7 +218,7 @@ export default withRouter(
 				refetchSegments: ownProps => {
 					refetch({
 						variables: {
-							organization_id: ownProps.client.cache.data.data['$ROOT_QUERY.auth'].organizationId, //get it from props
+							organization_id: jwt.decode(localStorage.getItem("jwt")).org_id, //get it from props
 							status: 'ACTIVE',
 						},
 					});

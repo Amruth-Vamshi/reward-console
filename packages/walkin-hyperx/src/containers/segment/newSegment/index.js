@@ -7,6 +7,8 @@ import './style.css';
 import { SEGMENT_LIST } from '../../../utils/RouterConstants';
 import get from 'lodash/get';
 import { WalkinQueryBuilder, CampaignHeader } from '@walkinsole/walkin-components';
+import jwt from "jsonwebtoken";
+import { GET_ALL_APPS_OF_ORGANIZATION } from "@walkinsole/walkin-components/src/PlatformQueries";
 
 class NewSegment extends Component {
 	constructor(props) {
@@ -42,7 +44,9 @@ class NewSegment extends Component {
 			this.displayError('newSegmentError');
 		}
 		let { client } = this.props;
-		let org_id = get(client, 'cache.data.data["$ROOT_QUERY.auth"].organizationId');
+		console.log(this.props.allApplications.organization.applications[0])
+		console.log(jwt.decode(localStorage.getItem("jwt")))
+		let org_id = jwt.decode(localStorage.getItem("jwt")).org_id;
 		client
 			.mutate({
 				mutation: createRule,
@@ -66,7 +70,7 @@ class NewSegment extends Component {
 							name: this.state.value,
 							segmentType: 'CUSTOM',
 							organization_id: org_id,
-							application_id: 'ec36088c-08e2-4a42-a75c-60490fe5c132', // remove Hardcoding get it from context
+							application_id: this.props.allApplications.organization.applications[0].id, // remove Hardcoding get it from context
 							rule_id: data.createRule.id,
 							status: 'ACTIVE',
 						},
@@ -97,7 +101,7 @@ class NewSegment extends Component {
 					attributeValue: 'value',
 					expressionType: 'operator',
 				};
-				str = str.replace(/attributeName|attributeValue|expressionType/gi, function(matched) {
+				str = str.replace(/attributeName|attributeValue|expressionType/gi, function (matched) {
 					return mapObj[matched];
 				});
 				this.setState({ query: JSON.parse(str) });
@@ -167,12 +171,27 @@ class NewSegment extends Component {
 
 export default withRouter(
 	withApollo(
-		graphql(attributes, {
-			props: ({ data: { loading, error, ruleAttributes } }) => ({
-				loading,
-				ruleAttributes,
-				error,
+		compose(
+			graphql(attributes, {
+				props: ({ data: { loading, error, ruleAttributes } }) => ({
+					loading,
+					ruleAttributes,
+					error,
+				}),
+
 			}),
-		})(NewSegment)
+			graphql(GET_ALL_APPS_OF_ORGANIZATION, {
+				name: "allApplications",
+				options: props => {
+					return {
+						variables: {
+							id: jwt.decode(localStorage.getItem("jwt")).org_id
+						},
+						fetchPolicy: "cache-and-network"
+					};
+				}
+			})
+
+		)(NewSegment)
 	)
 );

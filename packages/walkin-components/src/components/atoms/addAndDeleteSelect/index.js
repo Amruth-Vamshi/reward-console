@@ -30,6 +30,7 @@ class AddAndDeleteSelectDynamically extends React.Component {
 	}
 	render() {
 		const { segmentSelectionData } = this.props;
+		console.log(segmentSelectionData)
 		return (
 			<Fragment>
 				{this.state.values.map((el, i) => {
@@ -45,7 +46,7 @@ class AddAndDeleteSelectDynamically extends React.Component {
 									segmentSelectionData.map((val, i) => {
 										return (
 											<Option key={i} value={val.name}>
-												{val.description}
+												{val.name}
 											</Option>
 										);
 									})}
@@ -67,7 +68,7 @@ AddAndDeleteSelectDynamically.propTypes = {
 };
 
 AddAndDeleteSelectDynamically.defaultProps = {
-	onValuesSelected: () => {},
+	onValuesSelected: () => { },
 	segmentSelectionData: [],
 };
 

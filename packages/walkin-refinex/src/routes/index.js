@@ -11,7 +11,7 @@ const RefineXRoutes = ({ match }) => {
         component={asyncComponent(() => import("./Dashboard"))}
       />
       <Route
-        path={`${match.url}/campaign`}
+        path={`${match.url}/feedback`}
         component={asyncComponent(() => import("./Campaigns"))}
       />
     </Switch>

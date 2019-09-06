@@ -201,14 +201,16 @@ class EditCampaign extends Component {
       showTestAndControl: false
     });
   };
-
+  logQuery = query => {
+    console.log("quu", query);
+  };
   handleButtonGroupChange = e => {
     this.setState({ value: e.target.value });
   };
 
   getContainer = () => {
     const { campaign } = this.props.campaign;
-    // const { query } = this.state;
+    console.log(this.props);
     let attributeData =
       this.props.allAttributes &&
       this.props.allAttributes.ruleAttributes &&
@@ -272,7 +274,7 @@ class EditCampaign extends Component {
               audienceTitle="Audience"
               segmentSubTitle="Segment"
               onValuesSelected={this.onValuesSelected}
-              // segmentSelectionData={this.props.segmentList}
+              segmentSelectionData={this.props.segmentList.segments}
               uploadCsvText="Upload CSV"
               // uploadProps={props}
               segmentFilterText="Filter"

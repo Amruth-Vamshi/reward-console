@@ -79,7 +79,7 @@ class CampaignList extends Component {
 				if (e.key === 'duplicate') {
 					this.onDuplicateContact(record);
 				} else if (e.key === 'edit') {
-					this.props.history.push(`/refinex/campaign/${record.id}/edit`)
+					this.props.history.push(`/refinex/feedback/${record.id}/edit`)
 
 				} else if (e.key === "view") {
 					this.showMatrics(record)

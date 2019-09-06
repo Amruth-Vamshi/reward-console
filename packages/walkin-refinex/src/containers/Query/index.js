@@ -5,7 +5,7 @@ export const allSegments = gql`
     segments(status: ACTIVE, organization_id: $org_id) {
       id
       name
-      description
+      
     }
   }
 `;

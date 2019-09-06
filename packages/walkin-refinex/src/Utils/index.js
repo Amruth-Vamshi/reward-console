@@ -1,2 +1,2 @@
-export const NEW_CAMPAIGN = "/refinex/campaign/create"
+export const NEW_CAMPAIGN = "/refinex/feedback/create"
 export const CAMPAIGN_TYPE = "FEEDBACK"
