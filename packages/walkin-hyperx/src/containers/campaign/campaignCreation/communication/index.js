@@ -18,7 +18,7 @@ const Communication = ({
 	form,
 }) => {
 	return (
-		<div style={{ margin: '32px' }}>
+		<div>
 			<h3 className="gx-text-grey gx-mb-1">{subTitle}</h3>
 			<Radio.Group
 				buttonStyle="solid"

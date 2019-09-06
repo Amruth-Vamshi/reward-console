@@ -16,13 +16,18 @@ const BasicInfoForm = Form.create({ name: 'form_in_modal' })(
 				wrapperCol: { span: 18 },
 				labelCol: { span: 10 },
 			};
+			console.log('..', formValues);
 			return (
 				<Form layout="vertical" ref={wrappedComponentRef} onSubmit={onFormNext}>
 					<Form.Item size={'large'} label="Campaign name" {...formItemLayout}>
 						{getFieldDecorator('name', {
 							initialValue: `${Object.keys(formValues).length != 0 ? formValues.name : ''}`,
 							rules: [{ required: true, message: 'Name is required' }],
-						})(<Input />)}
+						})(<Input value={formValues.name} />)}
+						{/* <Input required placeholder="Address" value={formValues.name}
+							name="name" onChange={c => this.props.handleOnChange(c)}/>
+						<span style={{ color: "Red" }}> {this.props.errors.name} </span> */}
+
 					</Form.Item>
 					<Form.Item label="Description" {...formItemLayout}>
 						{getFieldDecorator('description', {
@@ -44,6 +49,7 @@ const BasicInfoForm = Form.create({ name: 'form_in_modal' })(
 						{...dateItemLayout}
 					>
 						{getFieldDecorator('endDate', {
+							// initialValue: `${Object.keys(formValues).length != 0 ? formValues.endDate : ''}`,
 							rules: [{ type: 'object', required: true, message: 'Please select end time!' }],
 						})(<DatePicker showTime format="DD-MM-YYYY HH:mm:ss" />)}
 					</Form.Item>

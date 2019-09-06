@@ -11,14 +11,14 @@ import { GET_PRODUCTS } from "@walkinsole/walkin-components/src/PlatformQueries"
 
 const apps = [
 	{
-		id: 2,
+		id: 1,
 		title: 'NearX',
 		icon: 'icon icon-geo-location',
 		description: 'Proximity direction with beacons and geofencing',
 		route: '/nearx',
 		isProductAccessible: false
 	}, {
-		id: 1,
+		id: 2,
 		title: 'HyperX',
 		icon: 'icon icon-alert',
 		description: 'Personalization and 1:1 campaigns',

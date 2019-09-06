@@ -8,6 +8,7 @@ import SubOrgList from '../../components/subOrgList';
 import SubOrgForm from './subOrgForm';
 import OrgStoreForm from './orgStoreForm';
 import OrgStoreList from './orgStoreList';
+import jwt from "jsonwebtoken";
 
 const { confirm } = Modal;
 
@@ -158,15 +159,7 @@ class OrganizationInfo extends Component {
 	}
 	render() {
 		const { client, organization, loading, error, match } = this.props;
-		const {
-			showSubOrgForm,
-			formValues,
-			sortedInfo,
-			storeFormValues,
-			showOrgStoreForm,
-			errorMessage,
-			orgId,
-		} = this.state;
+		const { showSubOrgForm, formValues, sortedInfo, storeFormValues, showOrgStoreForm, errorMessage, orgId } = this.state;
 		return (
 			<div style={{ margin: '-32px -16px 0px -16px' }}>
 				<Fragment>
@@ -184,18 +177,20 @@ class OrganizationInfo extends Component {
 								org: organization,
 							};
 							let subOrgDetails =
+								organization &&
 								organization.children &&
 								organization.children.filter(val => {
 									return val.organizationType == 'ORGANIZATION';
 								});
 							let storeDetails =
+								organization &&
 								organization.children &&
 								organization.children.filter(val => {
 									return val.organizationType == 'STORE';
 								});
 
 							let orgHeirarchy = ['SAMPLE']; //Remove this
-							if (!orgHeirarchy.includes(organization.name)) {
+							if (organization && !orgHeirarchy.includes(organization.name)) {
 								orgHeirarchy.push(organization.name);
 							}
 							return (

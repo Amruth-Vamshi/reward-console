@@ -16,9 +16,8 @@ const Audience = ({
 	logQuery,
 }) => {
 	return (
-		<div className="marginStyle">
-			<div className="marginStyle">
-				{' '}
+		<div>
+			<div>
 				<h3 className="gx-text-grey">{audienceTitle}</h3>
 				<div>
 					<p style={{ paddingTop: '20px' }} className="gx-text-grey gx-mb-1">
