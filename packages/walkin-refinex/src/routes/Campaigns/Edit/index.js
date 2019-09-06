@@ -149,6 +149,7 @@ class EditCampaign extends Component {
 
   getContainer = () => {
     const { campaign } = this.props.campaign;
+    console.log(this.props)
     let attributeData =
       this.props.allAttributes &&
       this.props.allAttributes.ruleAttributes &&
@@ -213,7 +214,7 @@ class EditCampaign extends Component {
               audienceTitle="Audience"
               segmentSubTitle="Segment"
               onValuesSelected={this.onValuesSelected}
-              // segmentSelectionData={this.props.segmentList}
+             segmentSelectionData={this.props.segmentList.segments}
               uploadCsvText="Upload CSV"
               // uploadProps={props}
               segmentFilterText="Filter"
