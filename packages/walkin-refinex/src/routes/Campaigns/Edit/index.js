@@ -1,79 +1,296 @@
 import "./Edit.css";
 import React, { Component } from "react";
-import { Steps, Icon, Card, Row, Col, Button } from "antd";
+import { Row, Col, Button } from "antd";
 import CampaignConfig from "./Campaign";
+// import Audience from "./Audience";
+import Audience from "@walkinsole/walkin-hyperx/src/containers/campaign/campaignCreation/audience";
+import { CampaignFooter, CampaignHeader } from "@walkinsole/walkin-components";
+import "@walkinsole/walkin-hyperx/src/containers/campaign/campaignCreation/audience/style.css";
+import Communication from "./Communication";
+import Triggers from "./Triggers";
+import Overview from "./Overview";
 import FeedbackFormConfig from "./FeedbackForm";
+import ContainerHeader from "../CampaignHeader";
+import gql from "graphql-tag";
+import { compose, graphql } from "react-apollo";
 import GoLive from "./GoLive";
+import isEmpty from "lodash/isEmpty";
+import {
+  GET_CAMPAIGN,
+  allSegments,
+  attributes
+} from "../../../containers/Query";
+import { CustomScrollbars } from "@walkinsole/walkin-components";
+import jwt from "jsonwebtoken";
 
-export default class EditCampaign extends Component {
+// import { allSegments } from "@walkinsole/walkin-hyperx/src/query/audience";
+class EditCampaign extends Component {
   constructor() {
     super();
     this.state = {
-      current: 0
+      current: 0,
+      priorityChosen: "",
+      priorityNumberError: false,
+      showTestAndControl: false,
+      testValue: 95,
+      controlValue: 5,
+      testControlSelected: "",
+      communicationSelected: "1",
+      communicationFormValues: {},
+      formValues: {},
+      campaign: {},
+      segmentList: {},
+      attributeData: {},
+      stepperData: [
+        {
+          title: "Basic Info"
+        },
+        {
+          title: "Form"
+        },
+        {
+          title: "Audience"
+        },
+        {
+          title: "Trigger"
+        },
+        {
+          title: "Communication"
+        },
+        {
+          title: "Overview"
+        }
+      ]
     };
   }
-
+  onTestAndControlEdit = () => {
+    this.setState({
+      showTestAndControl: true
+    });
+  };
   onChange = current => {
     this.setState({ current });
   };
 
+  goToNextPage(current) {
+    const { formValues } = this.state;
+    if (isEmpty(formValues)) {
+      const form =
+        this.formRef && this.formRef.props && this.formRef.props.form;
+      if (form) {
+        form.validateFields((err, values) => {
+          if (err) {
+            return;
+          } else {
+            this.setState({
+              formValues: values,
+              current: current
+            });
+          }
+        });
+      }
+    } else {
+      this.setState({
+        current: current
+      });
+    }
+  }
+
+  onFormNext = current => {
+    const { formValues } = this.state;
+    console.log(current);
+    if (isEmpty(formValues)) {
+      const form =
+        this.formRef && this.formRef.props && this.formRef.props.form;
+      if (form) {
+        form.validateFields((err, values) => {
+          if (err) {
+            return;
+          } else {
+            this.setState({
+              formValues: values,
+              current: current
+            });
+          }
+        });
+      }
+    } else {
+      this.setState({
+        current: current
+      });
+    }
+  };
+
+  saveFormRef = formRef => {
+    this.formRef = formRef;
+  };
+
+  onControlValueChange = val => {
+    this.setState({ controlValue: val });
+  };
+
+  onTestValueChange = val => {
+    this.setState({ testValue: val });
+  };
+
+  applyTestControlChange = () => {
+    const { testValue, controlValue } = this.state;
+    this.setState({
+      testControlSelected: `${testValue} % - ${controlValue}%`,
+      showTestAndControl: false
+    });
+  };
+  logQuery = query => {
+		console.log('quu', query);
+	};
+  handleButtonGroupChange = e => {
+    this.setState({ value: e.target.value });
+  };
+
   getContainer = () => {
+    const { campaign } = this.props.campaign;
+    let attributeData =
+      this.props.allAttributes &&
+      this.props.allAttributes.ruleAttributes &&
+      this.props.allAttributes.ruleAttributes.map(el => ({
+        name: el.attributeName,
+        id: el.id,
+        label: el.attributeName
+      }));
+    const {
+      formValues,
+      showTestAndControl,
+      segmentSelectionData,
+      logQuery,
+      testValue,
+      controlValue,
+      testControlSelected
+    } = this.state;
     switch (this.state.current) {
       case 0:
-        return <CampaignConfig />;
+        return (
+          <CampaignConfig
+            subTitle="Basic information"
+            onFormNext={this.onFormNext}
+            saveFormRef={this.saveFormRef}
+            formValues={this.props.campaign.campaign}
+            testAndControlText="Test & Control"
+            promptText="prompt text"
+            toolTipText="what is test and control?"
+            prioritySelectionTitle="Campaign Priority"
+            priorityButtonText="Custom no"
+            testControlTitle="Test & Control"
+            testControlPercentage={
+              testControlSelected ? testControlSelected : "95% - 5%"
+            }
+            handleButtonGroupChange={this.handleButtonGroupChange}
+            testControlPercentageEditText="Edit"
+            onPriorityButtonClick="onPriorityButtonClick"
+            priorityNumberInvalidErrorMessage="Enter a value between 6 and 99"
+            onTestAndControlEdit={this.onTestAndControlEdit}
+            showTestAndControl={showTestAndControl}
+            popupTitle="Test & Control"
+            handleOk={this.handleOk}
+            handleCancel={this.handleCancel}
+            applyTestControlChange={this.applyTestControlChange}
+            popupbodyText="Divide customers selected for a specific audience into local test and local control
+            groups"
+            controlValue={controlValue}
+            testValue={testValue}
+            maxValueAllowed={75}
+            onTestValueChange={this.onTestValueChange}
+            onControlValueChange={this.onControlValueChange}
+            popupButtonText="apply"
+            campaign={this.props.campaign.campaign}
+          />
+        );
       case 1:
-        return <GoLive />;
-      case 2:
         return <FeedbackFormConfig />;
+      case 2:
+        return (
+          <CustomScrollbars>
+            <Audience
+              audienceTitle="Audience"
+              segmentSubTitle="Segment"
+              onValuesSelected={this.onValuesSelected}
+              // segmentSelectionData={this.props.segmentList}
+              uploadCsvText="Upload CSV"
+              // uploadProps={props}
+              segmentFilterText="Filter"
+              segmentFilterSubText="Campaign applies to :"
+              attributeData={attributeData}
+              logQuery={this.logQuery}
+            />
+          </CustomScrollbars>
+        );
+
       case 3:
-        return <GoLive />;
+        return <Triggers />;
       case 4:
-        return <GoLive />;
+        return <Communication />;
       default:
-        return <CampaignConfig />;
+        return <Overview campaign={this.props.campaign.campaign} />;
     }
   };
 
   render() {
-    const { Step } = Steps;
-    const { current } = this.state;
+    const { current, stepperData } = this.state;
+
     return (
-      <div className="PageContainer">
-        <Row>
-          <Col span={12}>
-            <h2>Create RefineX Campaign</h2>
-          </Col>
-          <Col span={12}>
-            <Steps
-              className="StepperContainer"
-              current={current}
-              onChange={this.onChange}
-              size="small"
-              labelPlacement="vertical"
-            >
-              <Step title="Basic Info" />
-              <Step title="Audience" />
-              <Step title="Feedback" />
-              <Step title="Communication" />
-              <Step title="Overview" />
-            </Steps>
-          </Col>
-        </Row>
+      <div className="PageContainer" style={{ margin: "-32px" }}>
+        <ContainerHeader
+          current={current}
+          onChange={this.goToNextPage.bind(this)}
+          title="Create RefineX Campaign"
+          StepperData={stepperData}
+        />
         <Row>
           <Col span={24}>
             <div className="stepperContainer">{this.getContainer()}</div>
           </Col>
         </Row>
-        <Row className="BottomBar">
+        {/* <Row className="BottomBar">
           <Col offset={1}>
-            <Button type="primary">Next</Button>
+            <Button onClick={this.onFormNext} type="primary">Next</Button>
           </Col>
 
           <Col offset={1}>
             <Button>Save as Draft</Button>
           </Col>
-        </Row>
+        </Row> */}
+        <div style={{ margin: "32px" }}>
+          <CampaignFooter
+            nextButtonText="Next"
+            saveDraftText="Save Draft"
+            onPage1SaveDraft={this.onPage1SaveDraft}
+            goToPage2={this.onFormNext.bind(this, current + 1)}
+          />
+        </div>
       </div>
     );
   }
 }
+
+export default compose(
+  graphql(GET_CAMPAIGN, {
+    name: "campaign",
+    options: props => ({
+      variables: {
+        id: props.match.params.id
+      }
+    })
+  }),
+  graphql(allSegments, {
+    name: "segmentList",
+    options: ownProps => ({
+      variables: {
+        org_id: jwt.decode(localStorage.getItem("jwt")).org_id,
+        status: "ACTIVE"
+      },
+      fetchPolicy: "cache-and-network"
+    })
+  }),
+  graphql(attributes, {
+    name: "allAttributes"
+  })
+)(EditCampaign);

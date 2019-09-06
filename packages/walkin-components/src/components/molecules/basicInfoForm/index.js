@@ -6,7 +6,14 @@ const BasicInfoForm = Form.create({ name: 'form_in_modal' })(
 	// eslint-disable-next-line
 	class BasicInfoForm extends React.Component {
 		render() {
-			const { form, onFormNext, wrappedComponentRef, formValues, text } = this.props;
+			const { form, onFormNext, wrappedComponentRef, formValues = {}, text } = this.props;
+			let startTime = moment()
+			let endTime = moment()
+			if (Object.keys(formValues).length != 0) {
+				startTime = moment(formValues.startTime);
+				endTime = moment(formValues.endTime);
+			}
+
 			const { getFieldDecorator } = form;
 			const formItemLayout = {
 				labelCol: { span: 6 },
@@ -21,7 +28,7 @@ const BasicInfoForm = Form.create({ name: 'form_in_modal' })(
 				<Form layout="vertical" ref={wrappedComponentRef} onSubmit={onFormNext}>
 					<Form.Item size={'large'} label="Campaign name" {...formItemLayout}>
 						{getFieldDecorator('name', {
-							initialValue: `${Object.keys(formValues).length != 0 ? formValues.name : ''}`,
+							initialValue: `${Object.keys(formValues).length != 0 ? formValues.name ? formValues.name : '' : ''}`,
 							rules: [{ required: true, message: 'Name is required' }],
 						})(<Input value={formValues.name} />)}
 						{/* <Input required placeholder="Address" value={formValues.name}
@@ -31,7 +38,7 @@ const BasicInfoForm = Form.create({ name: 'form_in_modal' })(
 					</Form.Item>
 					<Form.Item label="Description" {...formItemLayout}>
 						{getFieldDecorator('description', {
-							initialValue: `${Object.keys(formValues).length != 0 ? formValues.description : ''}`,
+							initialValue: `${Object.keys(formValues).length != 0 ? formValues.description ? formValues.description : '' : ''}`,
 						})(<Input type="textarea" />)}
 					</Form.Item>
 					<Form.Item
@@ -39,7 +46,8 @@ const BasicInfoForm = Form.create({ name: 'form_in_modal' })(
 						label="Start date"
 						{...dateItemLayout}
 					>
-						{getFieldDecorator('startDate', {
+						{getFieldDecorator('startTime', {
+							initialValue: startTime,
 							rules: [{ type: 'object', required: true, message: 'Please select start time!' }],
 						})(<DatePicker showTime format="DD-MM-YYYY HH:mm:ss" />)}
 					</Form.Item>
@@ -48,8 +56,8 @@ const BasicInfoForm = Form.create({ name: 'form_in_modal' })(
 						label="End date"
 						{...dateItemLayout}
 					>
-						{getFieldDecorator('endDate', {
-							// initialValue: `${Object.keys(formValues).length != 0 ? formValues.endDate : ''}`,
+						{getFieldDecorator('endTime', {
+							initialValue: endTime,
 							rules: [{ type: 'object', required: true, message: 'Please select end time!' }],
 						})(<DatePicker showTime format="DD-MM-YYYY HH:mm:ss" />)}
 					</Form.Item>
@@ -58,4 +66,6 @@ const BasicInfoForm = Form.create({ name: 'form_in_modal' })(
 		}
 	}
 );
+
+
 export default BasicInfoForm;
