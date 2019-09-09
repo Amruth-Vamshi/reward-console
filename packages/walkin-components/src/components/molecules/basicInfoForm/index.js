@@ -7,6 +7,10 @@ const BasicInfoForm = Form.create({ name: 'form_in_modal' })(
 	class BasicInfoForm extends React.Component {
 
 		checkStart = (rule, value, callback) => {
+			const { edit } = this.props;
+			if (edit) {
+				callback()
+			}
 			const { validateFields } = this.props.form;
 
 			const start = value;
@@ -19,6 +23,10 @@ const BasicInfoForm = Form.create({ name: 'form_in_modal' })(
 		};
 
 		checkEnd = (rule, value, callback) => {
+			const { edit } = this.props;
+			if (edit) {
+				callback()
+			}
 			const end = value;
 			const { getFieldValue } = this.props.form;
 			const start = getFieldValue('startTime');
@@ -30,7 +38,7 @@ const BasicInfoForm = Form.create({ name: 'form_in_modal' })(
 		};
 
 		render() {
-			const { form, onFormNext, wrappedComponentRef, formValues = {}, text } = this.props;
+			const { form, onFormNext, wrappedComponentRef, formValues = {}, text, edit } = this.props;
 			let startTime = moment()
 			let endTime = moment()
 			if (Object.keys(formValues).length != 0) {

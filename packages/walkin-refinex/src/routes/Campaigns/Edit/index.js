@@ -263,6 +263,7 @@ class EditCampaign extends Component {
             onControlValueChange={this.onControlValueChange}
             popupButtonText="apply"
             campaign={this.props.campaign.campaign}
+            edit={true}
           />
         );
       case 1:

@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { Input, Button, Alert, Col } from 'antd';
+import { Input, Button, Alert, Col, Icon, Spin } from 'antd';
 import { withRouter } from 'react-router-dom';
 import { withApollo, graphql, compose, mutate } from 'react-apollo';
 import { attributes, createRule, createSegment } from '../../Query';
@@ -122,8 +122,13 @@ class NewSegment extends Component {
 	render() {
 		const { value, newSegmentError, query, isDuplicateSegment } = this.state;
 		const { loading, error, ruleAttributes } = this.props;
+		const antIcon = <Icon type="loading" style={{ fontSize: 100 }} spin />;
 		if (loading) {
-			return <p>Please wait...</p>;
+			return (<div> <br /> <br /> <br /> <br />
+				<div className="divCenter">
+					<Spin size="large" indicator={antIcon} />
+				</div> <br /> <br /> <br />
+			</div>)
 		}
 		if (error) {
 			return <p>{error}</p>;

@@ -41,7 +41,8 @@ const BasicInfo = ({
   popupButtonText,
   testValue,
   auth,
-  setFeedbackForm
+  setFeedbackForm,
+  edit
 }) => {
   return (
     <CustomScrollbars>
@@ -62,6 +63,7 @@ const BasicInfo = ({
                 onFormNext={onFormNext}
                 wrappedComponentRef={saveFormRef}
                 formValues={formValues}
+                edit={edit}
               />
             </Col>
             <Col span={9}>
