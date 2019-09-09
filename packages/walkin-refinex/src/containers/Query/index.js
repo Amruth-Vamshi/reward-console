@@ -5,7 +5,60 @@ export const allSegments = gql`
     segments(status: ACTIVE, organization_id: $org_id) {
       id
       name
+      segmentType
+      status
+      rule {
+				id
+				ruleConfiguration
+			}
+    }
+  }
+`;
+
+export const disableSegment = gql`
+	mutation disableSegment($id: ID!) {
+		disableSegment(id: $id) {
+			id
+			name
+		}
+	}
+`;
+
+export const createSegment = gql`
+	mutation createSegment(
+		$name: String!
+		$segmentType: SEGMENT_TYPE!
+		$organization_id: ID!
+		$application_id: ID!
+		$rule_id: ID!
+		$status: STATUS!
+	) {
+		createSegment(
+			input: {
+				name: $name
+				segmentType: $segmentType
+				status: $status
+				organization_id: $organization_id
+				application_id: $application_id
+				rule_id: $rule_id
+			}
+		) {
+			id
+			name
+		}
+	}
+`;
+
+export const createRule = gql`
+  mutation createRule($input: CreateRuleInput!) {
+    createRule(input: $input) {
+      id
+      name
       description
+      status
+      type
+      ruleConfiguration
+      ruleExpression
     }
   }
 `;
@@ -50,74 +103,69 @@ export const allRuleAttributes = gql`
   }
 `;
 
-
-
-
 export const UPDATE_CAMPAIGN = gql`
-mutation updateCampaign($id: ID!,$input:CampaignUpdateInput){
-  updateCampaign(id:$id,input:$input){
-    id
-    name
-    description
-    startTime
-    endTime
-    status
-    campaignType
-    status
-    feedbackForm{
+  mutation updateCampaign($id: ID!, $input: CampaignUpdateInput) {
+    updateCampaign(id: $id, input: $input) {
       id
-      title
+      name
+      description
+      startTime
+      endTime
+      status
+      campaignType
+      status
+      feedbackForm {
+        id
+        title
+      }
     }
   }
-}
-`
-
-
-export const campaigns = gql`
-	query campaigns($status: STATUS!) {
-		campaigns(status: $status) {
-			id
-			name
-			description
-			startTime
-			endTime
-			status
-		}
-	}
 `;
 
-
-export const CREATE_CAMPAIGN = gql`
-mutation createCampaign($input:CampaingAddInput){
-  createCampaign(input:$input){
-    id
-    name
-    description
-    startTime
-    endTime
-    status
-  }
-}
-`
-
-export const GET_CAMPAIGN = gql`
-query campaign($id:ID!){
-  campaign(id:$id){
-    id
-    name
-    description
-    startTime
-    endTime
-    status
-    campaignType
-    status
-    feedbackForm{
+export const campaigns = gql`
+  query campaigns($status: STATUS!) {
+    campaigns(status: $status) {
       id
-      title
+      name
+      description
+      startTime
+      endTime
+      status
     }
   }
-}
-`
+`;
+
+export const CREATE_CAMPAIGN = gql`
+  mutation createCampaign($input: CampaingAddInput) {
+    createCampaign(input: $input) {
+      id
+      name
+      description
+      startTime
+      endTime
+      status
+    }
+  }
+`;
+
+export const GET_CAMPAIGN = gql`
+  query campaign($id: ID!) {
+    campaign(id: $id) {
+      id
+      name
+      description
+      startTime
+      endTime
+      status
+      campaignType
+      status
+      feedbackForm {
+        id
+        title
+      }
+    }
+  }
+`;
 
 export const feedbackForm = gql`
   query getFeedbackForm {
@@ -156,7 +204,6 @@ export const allAudience = gql`
       campaign {
         id
         name
-        
       }
       status
     }
@@ -193,16 +240,15 @@ export const EDIT_QUESTION = gql`
   }
 `;
 
-
 export const ADD_QUESTION = gql`
-mutation addQuestion($choiceId:ID!,$input:QuestionInput){
-      id
-      questionText
-      rangeMin
-      rangeMax
-      type
-}
-`
+  mutation addQuestion($choiceId: ID!, $input: QuestionInput) {
+    id
+    questionText
+    rangeMin
+    rangeMax
+    type
+  }
+`;
 
 export const ADD_CHOICE = gql`
   mutation addChoice($questionId: ID!, $input: ChoiceInput) {
@@ -278,10 +324,6 @@ export const GET_FEEDBACK_FORM = gql`
   }
 `;
 
-
-
-
-
 export const GET_CAMPAIGNS = gql`
   query getCampaign($userId: ID!) {
     user(id: $userId) {
@@ -308,8 +350,8 @@ export const GET_CAMPAIGNS = gql`
 `;
 
 export const CREATE_FEEDBACK_FORM = gql`
-  mutation createFeedbackForm($campaignId: ID!,$formName:String) {
-    createFeedbackForm(campaignId: $campaignId, input: { title:$formName }) {
+  mutation createFeedbackForm($campaignId: ID!, $formName: String) {
+    createFeedbackForm(campaignId: $campaignId, input: { title: $formName }) {
       campaign {
         id
         name

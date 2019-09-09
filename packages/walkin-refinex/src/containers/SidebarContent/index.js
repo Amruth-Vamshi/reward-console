@@ -53,6 +53,14 @@ class SidebarContent extends Component {
                 <IntlMessages id="sidebar.refinex.dashboard" />
               </Link>
             </Menu.Item>
+
+            <Menu.Item key="segment">
+              <Link to="/refinex/segment/segmentList">
+                <i className="icon icon-alert" />
+                {/* <IntlMessages id="sidebar.samplePage" /> */}
+                Segments
+							</Link>
+            </Menu.Item>
             <Menu.Item key="feedbacks">
               <Link to="/refinex/feedback">
                 <i className="icon icon-alert" />

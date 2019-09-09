@@ -6,11 +6,10 @@ import Email from '../../../../components/atoms/communicationForm/Email';
 import Schedule from '../../../../components/atoms/communicationForm/schedule';
 
 const Communication = ({
-	subTitle,
-	onChange,
+	subTitle, onChange,
 	communicationData,
-	defaultValue,
-	value,
+	defaultValue, value,
+	getScheduleData,
 	OnCommunicationFormNext,
 	communicationWrappedComponentRef,
 	communicationFormValues,
@@ -45,7 +44,7 @@ const Communication = ({
 				<Col sm={24} md={11} lg={11} xl={10} xxl={9} >
 
 					<div style={{ padding: 20 }}>
-						<Schedule />
+						<Schedule saved={true} getScheduleData={getScheduleData} />
 					</div>
 
 				</Col>

@@ -95,16 +95,14 @@ class Schedule extends React.Component {
                             </Select>
                         </Form.Item>
 
-                        {/* <Form.Item> */}
                         <Row type="flex" justify="space-around" className="saveRow">
                             <Col style={{ justifyContent: "center", flex: "auto" }} span={8}>
-                                <span className="saveMark divCenterVertical"> <Icon type="check-circle" theme="filled" /> &nbsp;  Saved</span>
+                                {this.props.saved ? <span className="saveMark divCenterVertical"> <Icon type="check-circle" theme="filled" /> &nbsp;  Saved</span> : ''}
                             </Col>
                             <Col span={8}>
                                 <Button style={{ marginBottom: 0, float: "right" }} type="primary" shape="round" > Save </Button>
                             </Col>
                         </Row>
-                        {/* </Form.Item> */}
 
 
                     </Form>

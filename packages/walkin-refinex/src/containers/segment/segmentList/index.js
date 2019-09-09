@@ -1,9 +1,9 @@
 import React, { Component, Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
-import { allSegments, disableSegment } from '../../../query/audience';
+import { allSegments, disableSegment } from '../../Query';
 import { withApollo, graphql } from 'react-apollo';
-import { NEW_SEGMENT } from '../../../utils/RouterConstants';
-import { Card, Menu, Dropdown, Button, Col } from 'antd';
+import { NEW_SEGMENT } from '../../../Utils';
+import { Card, Menu, Dropdown, Button, Col, Spin } from 'antd';
 import moment from 'moment';
 import { SortableDataTable, InstantSearch, CampaignHeader } from '@walkinsole/walkin-components';
 import jwt from "jsonwebtoken";
@@ -14,6 +14,7 @@ class SegmentList extends Component {
 		this.state = {
 			sortedInfo: null,
 			filtered: null,
+			spinner: false
 		};
 	}
 
@@ -24,7 +25,7 @@ class SegmentList extends Component {
 	};
 
 	onNewSegment = () => {
-		const { history } = this.props;
+		const { history, match } = this.props;
 		history.push({
 			pathname: NEW_SEGMENT,
 		});
@@ -47,9 +48,10 @@ class SegmentList extends Component {
 			});
 	};
 	onDuplicateContact = record => {
-		const { history } = this.props;
+		const { history, match } = this.props;
+		console.log(record)
 		history.push({
-			pathname: `/hyperx/segment/newSegment/${record.id}`,
+			pathname: `${NEW_SEGMENT}/${record.id}`,
 			state: {
 				segmentSelected: record,
 			},
@@ -148,13 +150,11 @@ class SegmentList extends Component {
 				sorter: (a, b) => a.segmentType - b.segmentType,
 				sortOrder: sortedInfo.columnKey === 'segmentType' && sortedInfo.order,
 			},
-			// {
-			// 	title: 'Created On',
-			// 	dataIndex: 'createdOn',
-			// 	key: 'createdOn',
-			// 	sorter: (a, b) => moment(a.createdOn).valueOf() - moment(b.createdOn).valueOf(),
-			// 	sortOrder: sortedInfo.columnKey === 'createdOn' && sortedInfo.order,
-			// },
+			{
+				title: 'Status',
+				dataIndex: 'status',
+				key: 'status'
+			},
 			{
 				title: '',
 				key: 'action',
@@ -193,9 +193,10 @@ class SegmentList extends Component {
 							onFilteredList={this.onSegmentFilteredList}
 						/>
 					</div>
-					<SortableDataTable data={segmentData} onChange={this.handleChange} columns={columns} />
+					<SortableDataTable loading={this.props.loading} data={segmentData} onChange={this.handleChange} columns={columns} />
 				</Card>
 			</Fragment>
+
 		);
 	}
 }
@@ -205,7 +206,7 @@ export default withRouter(
 		graphql(allSegments, {
 			options: ownProps => ({
 				variables: {
-					organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
+					org_id: jwt.decode(localStorage.getItem("jwt")).org_id,
 					status: 'ACTIVE',
 				},
 				forceFetch: true,
@@ -218,7 +219,7 @@ export default withRouter(
 				refetchSegments: ownProps => {
 					refetch({
 						variables: {
-							organization_id: jwt.decode(localStorage.getItem("jwt")).org_id, //get it from props
+							org_id: jwt.decode(localStorage.getItem("jwt")).org_id, //get it from props
 							status: 'ACTIVE',
 						},
 					});
