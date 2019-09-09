@@ -16,7 +16,7 @@ const apps = [
 		icon: 'icon icon-alert',
 		description: 'Personalization and 1:1 campaigns',
 		route: '/hyperx',
-		isProductAccessible: true
+		isProductAccessible: false
 	},
 	{
 		id: 2,
@@ -24,7 +24,7 @@ const apps = [
 		icon: 'icon icon-geo-location',
 		description: 'Proximity direction with beacons and geofencing',
 		route: '/nearx',
-		isProductAccessible: true
+		isProductAccessible: false
 	},
 	{
 		id: 3,
@@ -32,7 +32,7 @@ const apps = [
 		icon: 'icon icon-feedback',
 		description: 'Feedback engine for custoner experience management',
 		route: '/refinex',
-		isProductAccessible: true
+		isProductAccessible: false
 	},
 	{
 		id: 4,
