@@ -4,6 +4,7 @@ import { Row, Col, Typography } from "antd";
 const { Title } = Typography;
 import { CustomScrollbars } from "@walkinsole/walkin-components";
 import moment from "moment";
+import './style.css'
 import { identifier } from "@babel/types";
 // import Moment from "react-moment";
 

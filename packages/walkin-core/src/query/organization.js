@@ -63,40 +63,18 @@ export const orgId = gql`
 export const orgDetails = gql`
 	query($id: ID!) {
 		organization(id: $id) {
-			id
-			name
-			addressLine1
-			addressLine2
-			city
-			state
-			pinCode
-			country
-			code
-			status
-			phoneNumber
-			organizationType
+			id	name addressLine1 addressLine2
+			city state pinCode country code status 
+			phoneNumber	organizationType
 			children {
-				id
-				name
-				organizationType
-				addressLine1
-				addressLine2
-				city
-				state
-				pinCode
-				country
-				code
-				status
-				phoneNumber
-				organizationType
+				id name organizationType addressLine1
+				addressLine2 city state pinCode country
+				code status phoneNumber organizationType
 			}
 			users {
-				id
-				firstName
-				email
+				id firstName email
 				lastName
 				lastName
-				status
 			}
 		}
 	}

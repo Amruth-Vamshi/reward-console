@@ -222,15 +222,16 @@ class CampaignList extends Component {
 							/>
 						</div>
 						<Tabs defaultActiveKey="1" onChange={this.onTabChange}>
+							{console.log('>>', campaignData)}
 							<TabPane tab="Live" key="1">
 								<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} />
 							</TabPane>
 							<TabPane tab="Upcoming" key="2">
 								<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} />
 							</TabPane>
-							<TabPane tab="A/B Testing" key="3">
+							{/* <TabPane tab="A/B Testing" key="3">
 								<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} />
-							</TabPane>
+							</TabPane> */}
 							<TabPane tab="Completed" key="4">
 								<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} />
 							</TabPane>

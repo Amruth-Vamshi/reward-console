@@ -9,7 +9,7 @@ import "@walkinsole/walkin-hyperx/src/containers/campaign/campaignCreation/audie
 import Comm from "@walkinsole/walkin-hyperx/src/containers/campaign/campaignCreation/communication";
 import Communication from "./Communication";
 import Triggers from "./Triggers";
-import Overview from "./Overview";
+import { campaignOverview as Overview } from "@walkinsole/walkin-components";
 import FeedbackFormConfig from "./FeedbackForm";
 import ContainerHeader from "../CampaignHeader";
 import gql from "graphql-tag";
@@ -28,6 +28,12 @@ import {
 import { CustomScrollbars } from "@walkinsole/walkin-components";
 import jwt from "jsonwebtoken";
 
+const communicationData = [
+  { value: "sms", title: "SMS" },
+  // { value: 'push', title: 'Push Notification' },
+  { value: "email", title: "Email" }
+];
+
 // import { allSegments } from "@walkinsole/walkin-hyperx/src/query/audience";
 class EditCampaign extends Component {
   constructor() {
@@ -40,7 +46,7 @@ class EditCampaign extends Component {
       testValue: 95,
       controlValue: 5,
       testControlSelected: "",
-      communicationSelected: "1",
+      communicationSelected: "sms",
       communicationFormValues: {},
       formValues: {},
       campaign: {},
@@ -108,8 +114,8 @@ class EditCampaign extends Component {
   //       console.log("MessageTemplate data..", data);
   //     });
   // };
-  createCommunicationMutation = current => {
-    console.log("This.props ,.,.,.", this.props);
+  createCommunicationMutation = (current, values) => {
+    console.log("This.props ,.,.,.", values);
     // var input = {
     //   name: "Test",
     //   description: "Test",
@@ -231,10 +237,17 @@ class EditCampaign extends Component {
       this.ruleQuery(this.state.current);
     }
     if (this.state.current == 4) {
-      this.createCommunicationMutation(this.state.current);
-      console.log("Comm//////..", communicationFormValues);
+      const comForm = this.formRef1 && this.formRef1.props && this.formRef1.props.form;
+      comForm.validateFields((err, values) => {
+        if (err)  return
+        else {
+          console.log(values)
+          this.setState({communicationFormValues:values})
+          this.createCommunicationMutation(this.state.current, values);
+        }
+      })
+
     }
-    if (isEmpty(formValues)) {
       const form =
         this.formRef && this.formRef.props && this.formRef.props.form;
       if (form) {
@@ -249,7 +262,6 @@ class EditCampaign extends Component {
             });
           }
         });
-      }
     } else {
       this.setState({
         current: current
@@ -285,6 +297,14 @@ class EditCampaign extends Component {
   };
   handleButtonGroupChange = e => {
     this.setState({ value: e.target.value });
+  };
+
+  onCommunicationChange = e => {
+    this.setState({ communicationSelected: e.target.value });
+  };
+
+  commWrappedComponentRef = formRef => {
+    this.formRef1 = formRef;
   };
 
   getContainer = () => {
@@ -372,9 +392,15 @@ class EditCampaign extends Component {
       case 4:
         return (
           <Comm
-            saveFormRef={this.saveComFormRef}
+            subTitle="Communication"
+            onChange={this.onCommunicationChange}
+            communicationData={communicationData}
+            defaultValue="sms"
+            value={this.state.communicationSelected}
+            commWrappedComponentRef={this.commWrappedComponentRef}
+            communicationFormValues={this.state.communicationFormValues}
+            // saveFormRef={this.saveComFormRef}
             onFormNext={this.onFormNext}
-            formValues={this.state.communicationFormValues}
           />
           // <Communication
           //   // campaign={this.props.campaign.campaign}

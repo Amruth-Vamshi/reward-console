@@ -5,6 +5,29 @@ import moment from "moment";
 const BasicInfoForm = Form.create({ name: "form_in_modal" })(
   // eslint-disable-next-line
   class BasicInfoForm extends React.Component {
+    checkStart = (rule, value, callback) => {
+      const { validateFields } = this.props.form;
+
+      const start = value;
+      if (start.valueOf() < moment()) {
+        callback("start time should not be less than present time");
+      } else {
+        validateFields(["endTime"], { force: true });
+        callback();
+      }
+    };
+
+    checkEnd = (rule, value, callback) => {
+      const end = value;
+      const { getFieldValue } = this.props.form;
+      const start = getFieldValue("startTime");
+      if (end.valueOf() < start.valueOf()) {
+        callback("end time should not be less than start time");
+      } else {
+        callback();
+      }
+    };
+
     render() {
       const {
         form,
@@ -41,7 +64,7 @@ const BasicInfoForm = Form.create({ name: "form_in_modal" })(
                   : ""
               }`,
               rules: [{ required: true, message: "Name is required" }]
-            })(<Input />)}
+            })(<Input value={formValues.name} />)}
           </Form.Item>
           <Form.Item label="Description" {...formItemLayout}>
             {getFieldDecorator("description", {
@@ -67,6 +90,7 @@ const BasicInfoForm = Form.create({ name: "form_in_modal" })(
                   required: true,
                   message: "Please select start time!"
                 }
+                // this.checkStart
               ]
             })(<DatePicker showTime format="DD-MM-YYYY HH:mm:ss" />)}
           </Form.Item>
@@ -82,7 +106,8 @@ const BasicInfoForm = Form.create({ name: "form_in_modal" })(
                   type: "object",
                   required: true,
                   message: "Please select end time!"
-                }
+                },
+                this.checkEnd
               ]
             })(<DatePicker showTime format="DD-MM-YYYY HH:mm:ss" />)}
           </Form.Item>

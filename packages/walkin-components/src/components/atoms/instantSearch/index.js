@@ -3,7 +3,6 @@ import { Input } from 'antd';
 
 class InstantSearch extends React.Component {
 	onChange(data, e) {
-		console.log(data, e)
 		let currentList = [];
 		let newList = [];
 

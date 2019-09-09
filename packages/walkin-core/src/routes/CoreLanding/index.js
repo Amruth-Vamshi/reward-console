@@ -12,19 +12,18 @@ import { GET_PRODUCTS } from "@walkinsole/walkin-components/src/PlatformQueries"
 const apps = [
 	{
 		id: 1,
-		title: 'HyperX',
-		icon: 'icon icon-alert',
-		description: 'Personalization and 1:1 campaigns',
-		route: '/hyperx',
-		isProductAccessible: true
-	},
-	{
-		id: 2,
 		title: 'NearX',
 		icon: 'icon icon-geo-location',
 		description: 'Proximity direction with beacons and geofencing',
 		route: '/nearx',
-		isProductAccessible: true
+		isProductAccessible: false
+	}, {
+		id: 2,
+		title: 'HyperX',
+		icon: 'icon icon-alert',
+		description: 'Personalization and 1:1 campaigns',
+		route: '/hyperx',
+		isProductAccessible: false
 	},
 	{
 		id: 3,
@@ -32,7 +31,7 @@ const apps = [
 		icon: 'icon icon-feedback',
 		description: 'Feedback engine for custoner experience management',
 		route: '/refinex',
-		isProductAccessible: true
+		isProductAccessible: false
 	},
 	{
 		id: 4,
@@ -89,8 +88,6 @@ class CoreLandingPage extends Component {
 	}
 
 	componentWillMount() {
-
-
 		const { id, org_id } = jwt.decode(localStorage.getItem("jwt"));
 		let formattedApps = apps
 

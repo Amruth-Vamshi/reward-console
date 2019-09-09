@@ -166,9 +166,7 @@ export default withRouter(
 				fetchPolicy: 'network-only',
 			}),
 			props: ({ data: { loading, error, getOffers, refetch } }) => ({
-				loading,
-				getOffers,
-				error,
+				loading, getOffers, error,
 				refetchOffers: props => {
 					refetch({
 						variables: {

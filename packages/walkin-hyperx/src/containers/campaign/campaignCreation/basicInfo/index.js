@@ -4,6 +4,7 @@ import { CampaignPriority, BasicInfoForm, Popup, BasicSlider } from '@walkinsole
 const { Text } = Typography;
 
 const BasicInfo = ({
+	errors,
 	subTitle,
 	onFormNext,
 	saveFormRef,
@@ -35,13 +36,12 @@ const BasicInfo = ({
 }) => {
 	return (
 		<Fragment>
-			<div style={{ margin: '32px' }}>
-				{' '}
+			<div> {' '}
 				<h3 className="gx-text-grey">{subTitle}</h3>
 			</div>
-			<Row style={{ margin: '32px' }}>
+			<Row style={{ marginTop: 34 }}>
 				<Col span={14}>
-					<BasicInfoForm onFormNext={onFormNext} wrappedComponentRef={saveFormRef} formValues={formValues} />
+					<BasicInfoForm errors={errors} onFormNext={onFormNext} wrappedComponentRef={saveFormRef} formValues={formValues} />
 				</Col>
 				<Col span={10}>
 					<CampaignPriority

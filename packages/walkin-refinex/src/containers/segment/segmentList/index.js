@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { allSegments, disableSegment } from '../../Query';
 import { withApollo, graphql } from 'react-apollo';
 import { NEW_SEGMENT } from '../../../Utils';
-import { Card, Menu, Dropdown, Button, Col } from 'antd';
+import { Card, Menu, Dropdown, Button, Col, Spin } from 'antd';
 import moment from 'moment';
 import { SortableDataTable, InstantSearch, CampaignHeader } from '@walkinsole/walkin-components';
 import jwt from "jsonwebtoken";
@@ -14,6 +14,7 @@ class SegmentList extends Component {
 		this.state = {
 			sortedInfo: null,
 			filtered: null,
+			spinner: false
 		};
 	}
 
@@ -48,7 +49,7 @@ class SegmentList extends Component {
 	};
 	onDuplicateContact = record => {
 		const { history, match } = this.props;
-		console.log(this.props)
+		console.log(record)
 		history.push({
 			pathname: `${NEW_SEGMENT}/${record.id}`,
 			state: {
@@ -192,9 +193,10 @@ class SegmentList extends Component {
 							onFilteredList={this.onSegmentFilteredList}
 						/>
 					</div>
-					<SortableDataTable data={segmentData} onChange={this.handleChange} columns={columns} />
+					<SortableDataTable loading={this.props.loading} data={segmentData} onChange={this.handleChange} columns={columns} />
 				</Card>
 			</Fragment>
+
 		);
 	}
 }

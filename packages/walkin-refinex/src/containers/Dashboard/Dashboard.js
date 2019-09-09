@@ -1,50 +1,40 @@
 import React, { Component } from "react";
 import { Col, Row, DatePicker, Button, Icon, Empty, Spin } from "antd";
-import Auxiliary from "../../util/Auxiliary";
 import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis } from "recharts";
 import { increamentData, AnyNear } from "./data";
-import { IconWithTextCard, Widget, ChartCard } from "@walkinsole/walkin-components";
-import { getNewPlaces } from '../Places/data'
+import { IconWithTextCard, Widget, ChartCard, Auxiliary } from "@walkinsole/walkin-components";
 import moment from 'moment';
 import Cylinder3DChart from "./Cylinder3DChart";
-import NewPlaceCard from "./NewPlaceCard";
+import ComplainCard from "./ComplainCard";
 import jwt from "jsonwebtoken";
-import '../../styles/home.css'
+import "./style.css"
 import { withApollo } from "react-apollo";
 import { Link } from "react-router-dom";
 import { GET_ANALYTICS } from "@walkinsole/walkin-components/src/PlatformQueries";
 
 const dateFormat = 'YYYY/MM/DD';
 
-function now() {
-  var time = "23:59:59"
-  var value1 = moment().subtract(1, 'day').format('YYYY-MM-DD');
-  var d = value1 + " " + time;
-  var newdate1 = new Date(d)
-  console.log("newd", newdate1)
-  return newdate1
-}
-
 class Landing extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      totalPlaces: 0,
-      totalEntries: 0,
-      totalExits: 0,
-      totalDwell: 0,
+      totalFeedbacks: 0,
+      nps: 0,
+      partialComplete: 0,
+      totalFeedbackCompleted: 0,
       customers: [],
       popularPlaces: [],
-      recentPlaces: [],
+      complains: [],
       customerCount: 0,
       org_id: '',
       startDate: moment().subtract(30, 'day'),
-      endDate: now(),
+      endDate: moment(),
       errors: {}
     }
   }
 
   componentWillMount() {
+
     const { id, org_id } = jwt.decode(localStorage.getItem("jwt"));
     if (org_id && id) {
       this.setState({ org_id })
@@ -57,7 +47,7 @@ class Landing extends Component {
     this.props.client
       .query({
         query: GET_ANALYTICS,
-        variables: { org_id: org_id, product: "NEARX", dates: { from: this.state.startDate, to: endDate } },
+        variables: { org_id: org_id, product: "REFINEX", dates: { from: this.state.startDate, to: endDate } },
         fetchPolicy: "no-cache"
       })
       .then(res => {
@@ -73,19 +63,22 @@ class Landing extends Component {
   }
 
   formatData = data => {
-    let { totalDwell, totalEntries, totalPlaces, totalExits, customerCount, customers, popularPlaces, recentPlaces } = this.state
+    let { totalFeedbackCompleted, totalFeedbacks, nps, partialComplete, customerCount, customers, popularPlaces, complains } = this.state
     console.log(AnyNear.data.analytics);
+    if (!data) {
+      data = AnyNear
+    }
     data.data.analytics.map(i => {
-      if (i.name === "GEOFENCE_COUNTS") totalPlaces = i.total
-      else if (i.name === "EVENT_ENTRY_COUNTS") totalEntries = i.total
-      else if (i.name === "EVENT_EXIT_COUNTS") totalExits = i.total
-      else if (i.name === "EVENT_DWELL_COUNTS") totalDwell = i.total
+      if (i.name === "Total_feedback_completed") totalFeedbackCompleted = i.total
+      else if (i.name === "Partial_complete_feedback") partialComplete = i.total
+      else if (i.name === "NPS_RATING") nps = i.total
+      else if (i.name === "TOTAL_FEEDBACKS") totalFeedbacks = i.total
       else if (i.name === "CUSTOMER_COUNTS") {
         customerCount = i.total; customers = [{ "count": 0 }, ...i.response]
       } else if (i.name === "POPULAR_PLACES") popularPlaces = i.response
-      else if (i.name === "MOST_VISITED_PLACES") recentPlaces = i.response
+      else if (i.name === "COMPLAIN_BY_CATAGORY") complains = i.response
     })
-    this.setState({ totalDwell, totalEntries, totalPlaces, totalExits, customerCount, customers, popularPlaces, recentPlaces, spin: false })
+    this.setState({ totalFeedbacks, totalFeedbackCompleted, nps, totalFeedbacks, partialComplete, customerCount, customers, popularPlaces, complains, spin: false })
     console.log('Done');
   }
 
@@ -98,9 +91,9 @@ class Landing extends Component {
 
   disableEndDate = current => {
     if (!current) return false;
-    const date = moment(this.state.startDate);
+    const date = moment(this.state.startDate).add(1, 'day');
     date.hour(0); date.minute(0); date.second(0);
-    return (current.valueOf() <= date.valueOf() || moment().subtract(1, 'day') < current);
+    return (current.valueOf() <= date.valueOf() || moment() < current);
   }
 
   handleChange2 = (value) => {
@@ -113,8 +106,8 @@ class Landing extends Component {
     if (newdate1 !== '') this.state.errors.startDate = '';
   }
   handleChange3 = (value) => {
-    var time = "5:29:59"
-    var value1 = moment(value).add(1, 'day').format('YYYY-MM-DD');
+    var time = "5:30:00"
+    var value1 = moment(value).format('YYYY-MM-DD');
     var d = value1 + " " + time;
     var newdate2 = new Date(d).toISOString();
     //console.log("newd",newdate2)
@@ -134,11 +127,12 @@ class Landing extends Component {
   render() {
     let nRows = parseInt(window.innerWidth / 300)
     let demoData = []
+    const antIcon = <Icon type="loading" style={{ fontSize: 100 }} spin />;
     // if (window.innerWidth > 991)
-    //   for (let i = 0; i < nRows && i < this.state.recentPlaces.length && i < 5; i++)
-    //     demoData[i] = this.state.recentPlaces[i]
+    //   for (let i = 0; i < nRows && i < this.state.complains.length && i < 5; i++)
+    //     demoData[i] = this.state.complains[i]
     // else 
-    demoData = this.state.recentPlaces.slice(0, 5)
+    demoData = this.state.complains.slice(0, 5)
     // demoData.splice(nRows)
     return (
       <Auxiliary>
@@ -206,23 +200,23 @@ class Landing extends Component {
           {this.state.spin ?
             <div> <br /> <br /> <br /> <br />
               <div className="divCenter">
-                <Spin size="large" />
+                <Spin size="large" indicator={antIcon} />
               </div> <br /> <br /> <br />
             </div>
             : <div>
 
               <Row>
                 <Col xl={6} lg={6} md={6} sm={12} xs={12} className="gx-col-full">
-                  <IconWithTextCard cardColor="cyan" icon="wall" title={this.state.totalPlaces} subTitle="Total Places" />
+                  <IconWithTextCard cardColor="cyan" icon="wall" title={this.state.totalFeedbackCompleted} subTitle="Feedback Completed" />
                 </Col>
                 <Col xl={6} lg={6} md={6} sm={12} xs={12}>
-                  <IconWithTextCard cardColor="orange" antIcon="login" title={this.state.totalEntries} subTitle="Total Entries" />
+                  <IconWithTextCard cardColor="orange" antIcon="login" title={this.state.totalFeedbacks} subTitle="Total Feedback Sent" />
                 </Col>
                 <Col xl={6} lg={6} md={6} sm={12} xs={12}>
-                  <IconWithTextCard cardColor="teal" antIcon="logout" title={this.state.totalExits} subTitle="Total Exit" />
+                  <IconWithTextCard cardColor="teal" antIcon="logout" title={this.state.partialComplete} subTitle="Partial Complete" />
                 </Col>
                 <Col xl={6} lg={6} md={6} sm={12} xs={12} className="gx-col-full">
-                  <IconWithTextCard cardColor="red" icon="map-street-view" title={this.state.totalDwell} subTitle="Dwelling customers" />
+                  <IconWithTextCard cardColor="red" icon="map-street-view" title={this.state.nps} subTitle="NPS Rating" />
                 </Col>
               </Row>
 
@@ -256,12 +250,12 @@ class Landing extends Component {
 
               <Row>
 
-                <Col xl={15} lg={15} md={24}>
+                <Col xl={24} lg={24} md={24}>
                   <div className='homeNewPlaces'>
-                    <Widget title="Most Visited Places" styleName="gx-card">
+                    <Widget title="Comlplaints by category" styleName="gx-card">
 
                       {demoData.length ?
-                        demoData.map((i, n) => <NewPlaceCard key={n} place={i} />) :
+                        demoData.map((i, n) => <ComplainCard key={n} complain={i} />) :
                         <Empty />
                       }
 
@@ -274,7 +268,7 @@ class Landing extends Component {
 
 
 
-                <Col xl={9} lg={9} md={24} sm={24} xs={24}>
+                {/* <Col xl={9} lg={9} md={24} sm={24} xs={24}>
                   <div className="gx-card">
                     <div style={{ paddingBottom: 0 }} className="gx-card-head">
                       <h4 className="gx-card-title">Popular  Places</h4>
@@ -284,7 +278,7 @@ class Landing extends Component {
                         <Cylinder3DChart data={this.state.popularPlaces} /> : <Empty />}
                     </div>
                   </div>
-                </Col>
+                </Col> */}
 
               </Row>
             </div>}
