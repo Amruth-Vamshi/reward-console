@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { CampaignHeader, Popup, SortableDataTable } from '@walkinsole/walkin-components';
-import { Row, Col, Avatar, Button, Dropdown, Alert, Breadcrumb, Modal } from 'antd';
+import { Row, Col, Avatar, Button, Dropdown, Alert, Breadcrumb, Modal, Spin, Icon } from 'antd';
 import OrgCardDetails from '../../components/orgCardDetails';
 import { Query, withApollo, graphql } from 'react-apollo';
 import { userDetails, orgDetails, addSubOrganization, deleteSubOrganization } from '../../query/organization';
@@ -8,8 +8,7 @@ import SubOrgList from '../../components/subOrgList';
 import SubOrgForm from './subOrgForm';
 import OrgStoreForm from './orgStoreForm';
 import OrgStoreList from './orgStoreList';
-import jwt from "jsonwebtoken";
-
+import "./style.css"
 const { confirm } = Modal;
 
 class OrganizationInfo extends Component {
@@ -159,7 +158,12 @@ class OrganizationInfo extends Component {
 	}
 	render() {
 		const { client, organization, loading, error, match } = this.props;
-		const { showSubOrgForm, formValues, sortedInfo, storeFormValues, showOrgStoreForm, errorMessage, orgId } = this.state;
+		const { showSubOrgForm, formValues, sortedInfo, storeFormValues,
+			showOrgStoreForm,
+			errorMessage,
+			orgId,
+		} = this.state;
+		const antIcon = <Icon type="loading" style={{ fontSize: 100 }} spin />;
 		return (
 			<div style={{ margin: '-32px -16px 0px -16px' }}>
 				<Fragment>
@@ -167,7 +171,11 @@ class OrganizationInfo extends Component {
 						variables={{ id: match.params.id || client.cache.data.data['$ROOT_QUERY.auth'].organizationId }}
 					>
 						{({ data, loading, error, refetch }) => {
-							if (loading) return <p>Loading...</p>;
+							if (loading) return (<div> <br /> <br /> <br /> <br />
+								<div className="divCenter">
+									<Spin size="large" indicator={antIcon} />
+								</div> <br /> <br /> <br />
+							</div>)
 							if (error) {
 								return <p>Error :(</p>;
 							}

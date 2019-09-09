@@ -23,6 +23,7 @@ class SidebarContent extends Component {
 		super(props);
 		this.state = {
 			orgId: '',
+			userId: ''
 		};
 	}
 
@@ -46,6 +47,7 @@ class SidebarContent extends Component {
 
 	render() {
 		const { themeType, navStyle, pathname } = this.props;
+		const { orgId, userId } = this.state;
 		const selectedKeys = pathname.substr(1);
 		const defaultOpenKeys = selectedKeys.split('/')[1];
 		return (
@@ -75,7 +77,7 @@ class SidebarContent extends Component {
 						</Menu.Item>
 						<Menu.Item key="organizationInfo">
 							<Link
-								to={`/core/organization/${this.state.orgId ? this.state.orgId : ''}`}
+								to={`/core/organization/${orgId ? orgId : ''}`}
 							// to="core/organization"
 							>
 								<i className="icon icon-inbox" />
