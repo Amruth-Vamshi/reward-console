@@ -68,6 +68,14 @@ class CampaignList extends Component {
 	};
 	onDuplicateContact = contact => {
 		console.log('dupl', contact);
+		const { history, match } = this.props;
+		console.log(this.props)
+		history.push({
+			pathname: `${NEW_CAMPAIGN}/${contact.id}`,
+			state: {
+				campaignSelected: contact,
+			},
+		});
 	};
 
 	showMatrics = record => {

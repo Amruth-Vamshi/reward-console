@@ -49,7 +49,7 @@ class SegmentList extends Component {
 	};
 	onDuplicateContact = record => {
 		const { history, match } = this.props;
-		console.log(this.props)
+		console.log(record)
 		history.push({
 			pathname: `${NEW_SEGMENT}/${record.id}`,
 			state: {

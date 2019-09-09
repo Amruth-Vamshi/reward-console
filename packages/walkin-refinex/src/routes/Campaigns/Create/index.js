@@ -78,6 +78,21 @@ class CreateCampaign extends Component {
     this.setState({ current });
   };
 
+  componentDidMount(){
+    const { location, match } = this.props;
+		if (location && location.state) {
+			if (location.state.campaignSelected) {
+				if (location.state.campaignSelected.name !== '') {
+          const newCampaign={
+            ...location.state.campaignSelected,
+            name:location.state.campaignSelected.name + ' ' + 'copy 1',
+          }
+					this.setState({campaign:newCampaign,formValues:newCampaign})
+				}
+			}
+		}
+  }
+
   createFeedbackForm = async campaignId => {
     const { formName } = this.state;
     const { client } = this.props;
@@ -324,7 +339,7 @@ const GET_USER_IDENTITY = gql`
   }
 `;
 
-export default withApollo(
+export default
   compose(
     graphql(GET_ALL_APPS_OF_ORGANIZATION, {
       name: "allApplications",
@@ -352,5 +367,4 @@ export default withApollo(
       name: "allAttributes"
     }),
     withApollo
-  )
 )(CreateCampaign);
