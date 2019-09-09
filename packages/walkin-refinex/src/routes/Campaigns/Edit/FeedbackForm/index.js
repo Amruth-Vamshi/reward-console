@@ -5,61 +5,17 @@ import Design from "./DesignQuesitonnaire";
 import gql from "graphql-tag";
 import { withRouter } from "react-router-dom";
 import { Query, compose } from "react-apollo";
+import { CircularProgress } from "@walkinsole/walkin-components";
+import {
+  GET_QUESTIONNAIRE,
+  GET_FEEDBACK_FORM
+} from "../../../../containers/Query";
 const { TabPane } = Tabs;
 
 class FeedbackFormConfig extends Component {
   render() {
-    const { match } = this.props;
-    const campaignId = match.params.id;
-    const GET_FEEDBACK_FORM = gql`
-      query getFeedbackForm($campaignId: ID!) {
-        campaign(id: $campaignId) {
-          feedbackForm {
-            id
-            title
-            questionnaireRoot {
-              id
-              questionText
-              type
-            }
-          }
-        }
-      }
-    `;
-
-    const GET_QUESTIONNAIRE = gql`
-      query getQuestionnaireHierarchy($questionId: ID!) {
-        questionHierarchy(questionId: $questionId) {
-          id
-          questionText
-          type
-          rangeMax
-          rangeMin
-          feedbackCategory {
-            id
-            title
-          }
-          choices {
-            id
-            choiceText
-            rangeStart
-            rangeEnd
-            toQuestion {
-              id
-              questionText
-              type
-              rangeMax
-              rangeMin
-              feedbackCategory {
-                id
-                title
-              }
-            }
-          }
-        }
-      }
-    `;
-
+    const { match, campaign } = this.props;
+    const campaignId = match.params.id ? match.params.id : campaign.id;
     return (
       <Query
         displayName="feedbackForm"
@@ -74,16 +30,17 @@ class FeedbackFormConfig extends Component {
           error,
           refetch: refetchFeedbackForm
         }) => {
+
           if (loading) {
-            return <div>Loading...</div>;
+            return <CircularProgress />;
           } else if (campaignData && campaignData.campaign) {
-            console.log("campaignData", campaignData);
+
 
             const feedbackForm =
               campaignData.campaign && campaignData.campaign.feedbackForm
                 ? campaignData.campaign.feedbackForm
                 : {};
-            console.log("feedbackForm", feedbackForm);
+
 
             return (
               <Query
@@ -91,16 +48,17 @@ class FeedbackFormConfig extends Component {
                 variables={
                   feedbackForm.questionnaireRoot
                     ? { questionId: feedbackForm.questionnaireRoot.id }
-                    : {}
+                    : { questionId: "" }
                 }
                 displayName="questionnaire"
-                fetchPolicy="cache-and-network"
+                fetchPolicy="network-only"
               >
                 {({
                   data: questionnaireData,
                   refetch: refetchQuestionnaire,
                   error: questionnaireDataError
                 }) => {
+                  console.log("campaignData", campaignData)
                   return (
                     <Tabs
                       size="large"
@@ -115,7 +73,7 @@ class FeedbackFormConfig extends Component {
                           refetchFeedbackForm={refetchFeedbackForm}
                           questionnaire={
                             questionnaireData &&
-                            questionnaireData.questionHierarchy
+                              questionnaireData.questionHierarchy
                               ? questionnaireData.questionHierarchy
                               : []
                           }
@@ -128,7 +86,7 @@ class FeedbackFormConfig extends Component {
                           refetchFeedbackForm={refetchFeedbackForm}
                           questionnaire={
                             questionnaireData &&
-                            questionnaireData.questionHierarchy
+                              questionnaireData.questionHierarchy
                               ? questionnaireData.questionHierarchy
                               : []
                           }
@@ -141,7 +99,7 @@ class FeedbackFormConfig extends Component {
               </Query>
             );
           } else {
-            return <div>Loading...</div>;
+            return <CircularProgress />;
           }
         }}
       </Query>

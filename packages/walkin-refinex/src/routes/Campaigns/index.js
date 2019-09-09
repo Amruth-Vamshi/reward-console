@@ -12,9 +12,13 @@ export default ({ match }) => {
         component={asyncComponent(() => import("./Edit"))}
       />
       <Route
+        path={`${match.url}/create`}
+        component={asyncComponent(() => import("./Create"))}
+      />
+      <Route
         path={`${match.url}/overview`}
         exact
-        component={asyncComponent(() => import("./Overview"))}
+        component={asyncComponent(() => import("../../containers/campaignList"))}
       />
     </Switch>
   );

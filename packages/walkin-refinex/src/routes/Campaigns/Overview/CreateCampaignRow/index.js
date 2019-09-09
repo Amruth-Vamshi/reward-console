@@ -1,51 +1,55 @@
 import React, { Component } from "react";
-import { Row, Col, Button } from "antd";
+import { Row, Col, Button, Card, Empty } from "antd";
 import { CardBox, ErrorBoundary } from "@walkinsole/walkin-components";
 import SelectApplicationModal from "../SelectApplicationModal";
 import { compose, graphql } from "react-apollo";
+import { CREATE_FEEDBACK_FORM } from "../../../../containers/Query";
 import gql from "graphql-tag";
 class CreateCampaignRow extends Component {
-  state = {
-    showModal: false
+  constructor(props) {
+    super(props);
+    this.state = {
+      showModal: false,
+      formName: null
+    };
+  }
+
+  // onCancel = async () => {
+  //   this.setState({
+  //     showModal: false
+  //   });
+  // };
+
+  createFeedbackCampaign = (formName, e) => {
+    this.props.setFeedbackForm(formName);
   };
-  onCancel = async () => {
-    this.setState({
-      showModal: false
-    });
-  };
 
-  createFeedbackCampaign = () => {
-    this.setState({
-      showModal: true
-    });
-  };
+  // onConfirm = async selectedApplication => {
+  //   console.log(selectedApplication);
+  //   const { formName } = this.state;
+  //   const { history } = this.props;
+  //   this.setState({
+  //     showModal: false
+  //   });
+  //   const { createDraftCampaign, createFeedbackForm } = this.props;
 
-  onConfirm = async selectedApplication => {
-    console.log(selectedApplication);
+  //   const campaign = await createDraftCampaign({
+  //     variables: { applicationId: selectedApplication.id, formName: formName }
+  //   });
 
-    const { history } = this.props;
-    this.setState({
-      showModal: false
-    });
-    const { createDraftCampaign, createFeedbackForm } = this.props;
+  //   console.log(campaign);
 
-    const campaign = await createDraftCampaign({
-      variables: { applicationId: selectedApplication.id }
-    });
+  //   const feedbackForm = await createFeedbackForm({
+  //     variables: {
+  //       campaignId: campaign.data.createDraftCampaign.id
+  //     }
+  //   });
+  //   console.log(feedbackForm);
 
-    console.log(campaign);
-
-    const feedbackForm = await createFeedbackForm({
-      variables: {
-        campaignId: campaign.data.createDraftCampaign.id
-      }
-    });
-    console.log(feedbackForm);
-
-    history.push(
-      "/refinex/campaign/" + campaign.data.createDraftCampaign.id + "/edit"
-    );
-  };
+  //   history.push(
+  //     "/refinex/campaign/" + campaign.data.createDraftCampaign.id + "/edit"
+  //   );
+  // };
 
   render() {
     const { auth } = this.props;
@@ -53,105 +57,117 @@ class CreateCampaignRow extends Component {
     return (
       <ErrorBoundary>
         <div>
-          <SelectApplicationModal
-            visible={this.state.showModal}
-            onConfirm={this.onConfirm}
-            onCancel={this.onCancel}
-            organizationId={auth.auth.organizationId}
-          />
           <Row>
             <Col span={24}>
-              <Row style={{ marginBottom: "1%" }}>
-                <Col span={24}>
-                  <h1>Create Feedback Campaign</h1>
-                </Col>
-              </Row>
               <Row gutter={12} type="flex" justify="space-around">
-                <Col span={4}>
-                  <CardBox styleName="gx-card-full">
-                    <Row type="flex" justify="center">
-                      <Col>
-                        <Button
-                          onClick={this.createFeedbackCampaign.bind(
-                            this,
-                            "blank"
-                          )}
-                          type="ghost"
-                          icon="plus"
-                          shape="round"
-                        />
-                      </Col>
-                    </Row>
-                    <Row type="flex" justify="center">
-                      <Col>
-                        <span>Blank Feedback</span>
-                      </Col>
+                <Col
+                  span={4}
+                  onClick={this.createFeedbackCampaign.bind(this, "default")}
+                >
+                  <CardBox
+                    style={{
+                      cursor: "pointer"
+                    }}
+                    styleName="gx-card-full"
+                  >
+                    <Row
+                      type="flex"
+                      style={{ height: "8rem" }}
+                      justify="center"
+                    >
+                      <Empty description="Blank Feedback" />
                     </Row>
                   </CardBox>
                 </Col>
-                <Col span={4}>
-                  <CardBox styleName="gx-card-full" heading={""}>
-                    <Row type="flex" justify="center">
-                      <Col>
-                        <Button
-                          onClick={this.createFeedbackCampaign.bind(
-                            this,
-                            "blank"
-                          )}
-                          type="ghost"
-                          icon="shopping-cart"
-                          shape="round"
-                        />
-                      </Col>
-                    </Row>
-                    <Row type="flex" justify="center">
-                      <Col>
-                        <span>Customer Survey</span>
-                      </Col>
-                    </Row>
-                  </CardBox>
-                </Col>
-                <Col span={4}>
-                  <CardBox styleName="gx-card-full" heading={""}>
-                    <Row type="flex" justify="center">
-                      <Col>
-                        <Button
-                          onClick={this.createFeedbackCampaign.bind(
-                            this,
-                            "blank"
-                          )}
-                          type="ghost"
-                          icon="team"
-                          shape="round"
-                        />
-                      </Col>
-                    </Row>
-                    <Row type="flex" justify="center">
-                      <Col>
-                        <span>Employee Feedback</span>
-                      </Col>
+                <Col
+                  span={4}
+                  onClick={this.createFeedbackCampaign.bind(
+                    this,
+                    "product_feedback"
+                  )}
+                >
+                  <CardBox
+                    style={{
+                      cursor: "pointer"
+                    }}
+                    styleName="gx-card-full"
+                    heading={""}
+                  >
+                    <Row
+                      type="flex"
+                      style={{ height: "8rem" }}
+                      justify="center"
+                    >
+                      <Empty description="Product Feedback" />
                     </Row>
                   </CardBox>
                 </Col>
-                <Col span={4}>
-                  <CardBox styleName="gx-card-full" heading={""}>
-                    <Row type="flex" justify="center">
-                      <Col>
-                        <Button
-                          onClick={this.createFeedbackCampaign.bind(
-                            this,
-                            "blank"
-                          )}
-                          type="ghost"
-                          icon="user"
-                          shape="round"
-                        />
-                      </Col>
+                <Col
+                  span={4}
+                  onClick={this.createFeedbackCampaign.bind(
+                    this,
+                    "customer survey"
+                  )}
+                >
+                  <CardBox
+                    style={{
+                      cursor: "pointer"
+                    }}
+                    styleName="gx-card-full"
+                    heading={""}
+                  >
+                    <Row
+                      type="flex"
+                      style={{ height: "8rem" }}
+                      justify="center"
+                    >
+                      <Empty description="Customer Survey" />
                     </Row>
-                    <Row type="flex" justify="center">
-                      <Col>
-                        <span>User Feedback</span>
-                      </Col>
+                  </CardBox>
+                </Col>
+                <Col
+                  span={4}
+                  onClick={this.createFeedbackCampaign.bind(
+                    this,
+                    "employee feedback"
+                  )}
+                >
+                  <CardBox
+                    style={{
+                      cursor: "pointer"
+                    }}
+                    styleName="gx-card-full"
+                    heading={""}
+                  >
+                    <Row
+                      type="flex"
+                      style={{ height: "8rem" }}
+                      justify="center"
+                    >
+                      <Empty description="Employee Feedback" />
+                    </Row>
+                  </CardBox>
+                </Col>
+                <Col
+                  span={4}
+                  onClick={this.createFeedbackCampaign.bind(
+                    this,
+                    "user feedback"
+                  )}
+                >
+                  <CardBox
+                    style={{
+                      cursor: "pointer"
+                    }}
+                    styleName="gx-card-full"
+                    heading={""}
+                  >
+                    <Row
+                      type="flex"
+                      style={{ height: "8rem" }}
+                      justify="center"
+                    >
+                      <Empty description="User Feedback" />
                     </Row>
                   </CardBox>
                 </Col>
@@ -164,30 +180,7 @@ class CreateCampaignRow extends Component {
   }
 }
 
-const CREATE_DRAFT_CAMPAIGN = gql`
-  mutation createDraftCampaign($applicationId: ID!) {
-    createDraftCampaign(applicationId: $applicationId) {
-      id
-    }
-  }
-`;
-
-const CREATE_FEEDBACK_FORM = gql`
-  mutation createFeedbackForm($campaignId: ID!) {
-    createFeedbackForm(campaignId: $campaignId, input: { title: "default" }) {
-      campaign {
-        id
-        name
-      }
-      title
-    }
-  }
-`;
-
 export default compose(
-  graphql(CREATE_DRAFT_CAMPAIGN, {
-    name: "createDraftCampaign"
-  }),
   graphql(CREATE_FEEDBACK_FORM, {
     name: "createFeedbackForm"
   })

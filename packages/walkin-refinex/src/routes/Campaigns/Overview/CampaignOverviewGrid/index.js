@@ -4,56 +4,39 @@ import { Row, Col } from "antd";
 import { ManageCampaignCard } from "@walkinsole/walkin-components";
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
-
+import { GET_CAMPAIGNS } from "../../../../containers/Query";
 class CampaignOverviewGrid extends Component {
   campaignList = campaigns => {
     const { history } = this.props;
 
     return campaigns ? (
-      campaigns.map(campaign => (
-        <Col span={6} key={campaign.id}>
-          <ManageCampaignCard campaign={campaign} history={history} />
-        </Col>
-      ))
+      campaigns.map(campaign => {
+
+        return (
+          <Col span={6} key={campaign.id}>
+            <ManageCampaignCard campaign={campaign} history={history} />
+          </Col>
+        )
+
+
+      })
     ) : (
-      <Col span={24} offset={10}>
-        <h3>No Campaigns created</h3>
-      </Col>
-    );
+        <Col span={24} offset={10}>
+          <h3>No Campaigns created</h3>
+        </Col>
+      );
   };
 
   render() {
     const { campaigns, auth, history } = this.props;
-
-    const GET_CAMPAIGNS = gql`
-      query getCampaign($userId: ID!) {
-        user(id: $userId) {
-          createdCampaigns {
-            id
-            name
-            description
-            startTime
-            endTime
-            status
-            campaignType
-            organization {
-              name
-            }
-            application {
-              name
-              platform
-            }
-          }
-        }
-      }
-    `;
     return (
       <div>
         <Row>
           <Col>
-            <h1>Draft Campaigns</h1>
+            <h1>Campaigns</h1>
           </Col>
         </Row>
+
         <Query
           query={GET_CAMPAIGNS}
           variables={{
@@ -62,12 +45,13 @@ class CampaignOverviewGrid extends Component {
           fetchPolicy="cache-and-network"
         >
           {({ loading, error, data }) => {
+            console.log(data)
             if (loading) {
               return <span>Loading</span>;
             } else if (error) {
-              return <span>Error</span>;
+              console.log(error);
+              return <span>No Campaign Found</span>;
             } else if (data.user) {
-              console.log(data);
               return (
                 <Row gutter={6}>
                   {this.campaignList(data.user.createdCampaigns)}
@@ -82,6 +66,8 @@ class CampaignOverviewGrid extends Component {
             }
           }}
         </Query>
+
+
       </div>
     );
   }

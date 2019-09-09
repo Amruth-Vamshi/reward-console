@@ -1,9 +1,11 @@
 import "./FormPane.css";
-import { Form, Slider, Button, Icon, Row, Col, TreeSelect } from "antd";
+import { Form, Slider, Button, Icon, Row, Col, TreeSelect, Card } from "antd";
 import React, { Component } from "react";
-
+import FormHeader from "./FormHeader";
 import ChoiceForm from "./ChoiceForm";
 import QuestionForm from "./QuestionForm";
+import ShowQuestion from "./ShowQuestion";
+import CreateQuestion from "./CreateQuestion";
 import gql from "graphql-tag";
 import { graphql } from "react-apollo";
 
@@ -16,14 +18,28 @@ class QuestionnaireFormPane extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      questionToEdit: null
+      questionToEdit: {},
+      choiceToEdit: {}
     };
   }
 
-  onQuestionEdited = values => {
+  onChoiceEdited = values => {
+    console.log("values of choices", values);
     if (questionWithSlider[values.type]) {
-      values.rangeMin = values.range[0];
-      values.rangeMax = values.range[1];
+      values.rangeStart = values.range[0];
+      values.rangeEnd = values.range[1];
+    }
+    delete values.range;
+    this.setState({
+      choiceToEdit: Object.assign(this.state.choiceToEdit, values)
+    });
+  };
+
+  onQuestionEdited = values => {
+    console.log("values", values);
+    if (questionWithSlider[values.type]) {
+      values.rangeMin = values.rangeMin;
+      values.rangeMax = values.rangeMax;
     }
     delete values.range;
     this.setState({
@@ -31,12 +47,25 @@ class QuestionnaireFormPane extends Component {
     });
   };
 
+  onChoiceSubmitted = () => {
+    console.log(this.state.choiceToEdit);
+  };
+
   onQuestionSubmitted = () => {
+    console.log(this.state.questionToEdit);
     this.props.onQuestionSubmitted(this.state.questionToEdit);
   };
 
   render() {
-    const { questionToEdit, addChoice, removeChoice } = this.props;
+    const {
+      questionToEdit,
+      addChoice,
+      removeChoice,
+      choiceData,
+      addNewQuestion,
+      questionType,
+      choiceToAddQuestion
+    } = this.props;
     return (
       <Row
         style={{
@@ -44,6 +73,41 @@ class QuestionnaireFormPane extends Component {
           overflowX: "scroll"
         }}
       >
+        <Col span={24}>
+          {questionType != null && choiceToAddQuestion != null ? (
+            <CreateQuestion
+              onQuestionEdited={this.onQuestionEdited}
+              onQuestionSubmitted={this.onQuestionSubmitted}
+              onChoiceEdited={this.onChoiceEdited}
+              questionToEdit={questionToEdit}
+              addChoice={addChoice}
+              removeChoice={removeChoice}
+              addNewQuestion={addNewQuestion}
+              choiceData={choiceData}
+              questionType={questionType}
+              choiceToAddQuestion={choiceToAddQuestion}
+            />
+          ) : (
+              <ShowQuestion
+                onQuestionEdited={this.onQuestionEdited}
+                onQuestionSubmitted={this.onQuestionSubmitted}
+                onChoiceEdited={this.onChoiceEdited}
+                questionToEdit={questionToEdit}
+                addChoice={addChoice}
+                removeChoice={removeChoice}
+                addNewQuestion={addNewQuestion}
+                choiceData={choiceData}
+              />
+            )}
+        </Col>
+
+        {/* <Col span={24}>
+          <FormHeader
+            onQuestionEdited={() => this.onQuestionEdited}
+            questionToEdit={questionToEdit}
+            questionType={questionToEdit.type}
+          />
+        </Col>
         <Col span={22}>
           <Row>
             <Col span={24}>
@@ -60,10 +124,12 @@ class QuestionnaireFormPane extends Component {
                 questionToEdit={questionToEdit}
                 addChoice={addChoice}
                 removeChoice={removeChoice}
+                addNewQuestion={addNewQuestion}
+                choiceData={choiceData}
               />
             </Col>
           </Row>
-        </Col>
+        </Col> */}
       </Row>
     );
   }

@@ -18,7 +18,7 @@ export default class QuestionsList extends Component {
     const { questionnaire } = this.props;
     return (
       <div style={style}>
-        <div style={{ margin: "1%" }}>
+        <div style={{ margin: "2%" }}>
           <CardBox>
             <div
               onClick={() => {
@@ -43,40 +43,67 @@ export default class QuestionsList extends Component {
         <AutorSizer>
           {({ height, width }) =>
             questionnaire.length > 0 ? (
-              <List
-                height={height}
-                itemCount={questionnaire.length}
-                itemSize={100}
-                width={width}
-              >
-                {({ index, style }) => {
-                  return this.getRow(index, style);
-                }}
-              </List>
-            ) : (
               <Row
                 style={{
                   height,
                   width
                 }}
               >
-                <Col span={24}>
+                {/* <Col span={24}>
                   <Row type="flex" justify="center">
                     <Col>
                       <Button
                         type="dashed"
                         onClick={e => {
                           e.preventDefault();
-                          this.props.addNewQuestion();
+                          addNewQuestion();
                         }}
                       >
-                        <Icon type="plus" /> CreateQuestionnaire
+                        <Icon type="plus" /> Add New
                       </Button>
                     </Col>
                   </Row>
+                </Col> */}
+                <Col span={24}>
+                  <Row type="flex">
+                    <List
+                      height={height}
+                      itemCount={questionnaire.length}
+                      itemSize={100}
+                      width={width}
+                      style={{ paddingBottom: "6rem" }}
+                    >
+                      {({ index, style }) => {
+                        return this.getRow(index, style);
+                      }}
+                    </List>
+                  </Row>
                 </Col>
               </Row>
-            )
+            ) : (
+                <Row
+                  style={{
+                    height,
+                    width
+                  }}
+                >
+                  <Col span={24}>
+                    <Row type="flex" justify="center">
+                      <Col>
+                        <Button
+                          type="dashed"
+                          onClick={e => {
+                            e.preventDefault();
+                            this.props.addNewQuestion();
+                          }}
+                        >
+                          <Icon type="plus" /> CreateQuestionnaire
+                      </Button>
+                      </Col>
+                    </Row>
+                  </Col>
+                </Row>
+              )
           }
         </AutorSizer>
       </ErrorBoundary>

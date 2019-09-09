@@ -4,10 +4,13 @@ import BasicInfo from './campaignCreation/basicInfo';
 import Audience from './campaignCreation/audience';
 import Offer from './campaignCreation/offer';
 import Communication from './campaignCreation/communication';
+import { campaignOverview as Overview } from "@walkinsole/walkin-components";
 import { allSegments, attributes } from '../../query/audience';
+import { getOffers } from "../../query/offer";
 import { withApollo, graphql, compose } from 'react-apollo';
 import isEmpty from 'lodash/isEmpty';
 import { Col } from 'antd';
+import jwt from "jsonwebtoken";
 import { CampaignFooter, CampaignHeader, Stepper } from '@walkinsole/walkin-components';
 
 const stepData = [
@@ -38,17 +41,6 @@ const stepData = [
 	},
 ];
 
-const fields = [
-	{ name: 'firstName', label: 'First Name' },
-	{ name: 'lastName', label: 'Last Name' },
-	{ name: 'age', label: 'Age' },
-	{ name: 'address', label: 'Address' },
-	{ name: 'phone', label: 'Phone' },
-	{ name: 'email', label: 'Email' },
-	{ name: 'twitter', label: 'Twitter' },
-	{ name: 'isDev', label: 'Is a Developer?', value: false },
-];
-
 const communicationData = [
 	{ value: '1', title: 'SMS' },
 	{ value: '2', title: 'Push Notification' },
@@ -69,6 +61,9 @@ class CampaignCreation extends Component {
 			testControlSelected: '',
 			communicationSelected: '1',
 			communicationFormValues: {},
+			errors: {},
+			offer: ''
+
 		};
 	}
 	saveFormRef = formRef => {
@@ -93,27 +88,22 @@ class CampaignCreation extends Component {
 	};
 
 	goToNextPage(current) {
-		const { formValues } = this.state;
-		if (isEmpty(formValues)) {
-			const form = this.formRef && this.formRef.props && this.formRef.props.form;
-			if (form) {
-				form.validateFields((err, values) => {
-					if (err) {
-						return;
-					} else {
-						this.setState({
-							formValues: values,
-							current: current,
-						});
-					}
-				});
-			}
-		} else {
-			this.setState({
-				current: current,
+		const form = this.formRef && this.formRef.props && this.formRef.props.form;
+		console.log('Form >>', this.formRef);
+
+		if (form) {
+			form.validateFields((err, values) => {
+				if (err) return
+				else {
+					this.setState({
+						formValues: values,
+						current: current,
+					});
+				}
 			});
-		}
+		} else this.setState({ current });
 	}
+
 	OnCommunicationFormNext = () => {
 		const form = this.formRef && this.formRef.props && this.formRef.props.form;
 		if (form) {
@@ -153,6 +143,11 @@ class CampaignCreation extends Component {
 	onCommunicationChange = e => {
 		this.setState({ communicationSelected: e.target.value });
 	};
+
+	handleOnOfferChange = e => {
+		console.log('offer >> ', e);
+		this.setState({ offer: e })
+	}
 
 	render() {
 		const {
@@ -202,66 +197,74 @@ class CampaignCreation extends Component {
 						</Fragment>
 					}
 				/>
-				{current === 0 && (
-					<BasicInfo
-						subTitle="Basic information"
-						onFormNext={this.onFormNext}
-						saveFormRef={this.saveFormRef}
-						formValues={formValues}
-						testAndControlText="Test & Control"
-						promptText="prompt text"
-						toolTipText="what is test and control?"
-						prioritySelectionTitle="Campaign Priority"
-						priorityButtonText="Custom no"
-						testControlTitle="Test & Control"
-						testControlPercentage={testControlSelected ? testControlSelected : '95% - 5%'}
-						handleButtonGroupChange={this.handleButtonGroupChange}
-						testControlPercentageEditText="Edit"
-						onPriorityButtonClick="onPriorityButtonClick"
-						priorityNumberInvalidErrorMessage="Enter a value between 6 and 99"
-						onTestAndControlEdit={this.onTestAndControlEdit}
-						showTestAndControl={showTestAndControl}
-						popupTitle="Test & Control"
-						handleOk={this.handleOk}
-						handleCancel={this.handleCancel}
-						applyTestControlChange={this.applyTestControlChange}
-						popupbodyText="Divide customers selected for a specific audience into local test and local control
-								groups"
-						controlValue={controlValue}
-						testValue={testValue}
-						maxValueAllowed={75}
-						onTestValueChange={this.onTestValueChange}
-						onControlValueChange={this.onControlValueChange}
-						popupButtonText="apply"
-					/>
-				)}
-				{current === 1 && (
-					<Audience
-						audienceTitle="Audience"
-						segmentSubTitle="Segment"
-						onValuesSelected={this.onValuesSelected}
-						segmentSelectionData={this.props.segmentList.segments}
-						uploadCsvText="Upload CSV"
-						uploadProps={props}
-						segmentFilterText="Filter"
-						segmentFilterSubText="Campaign applies to :"
-						attributeData={attributeData}
-						logQuery={this.logQuery}
-					/>
-				)}
-				{current === 2 && <Offer subTitle="Offer" />}
-				{current === 3 && (
-					<Communication
-						subTitle="Communication"
-						onChange={this.onCommunicationChange}
-						communicationData={communicationData}
-						defaultValue="1"
-						value={communicationSelected}
-						OnCommunicationFormNext={this.OnCommunicationFormNext}
-						communicationWrappedComponentRef={this.communicationWrappedComponentRef}
-						communicationFormValues={communicationFormValues}
-					/>
-				)}
+				<div style={{ margin: '32px' }}>
+					{current === 0 && (
+						<BasicInfo
+							subTitle="Basic information"
+							onFormNext={this.onFormNext}
+							saveFormRef={this.saveFormRef}
+							formValues={formValues}
+							testAndControlText="Test & Control"
+							promptText="prompt text"
+							toolTipText="what is test and control?"
+							prioritySelectionTitle="Campaign Priority"
+							priorityButtonText="Custom no"
+							testControlTitle="Test & Control"
+							testControlPercentage={testControlSelected ? testControlSelected : '95% - 5%'}
+							handleButtonGroupChange={this.handleButtonGroupChange}
+							testControlPercentageEditText="Edit"
+							onPriorityButtonClick="onPriorityButtonClick"
+							priorityNumberInvalidErrorMessage="Enter a value between 6 and 99"
+							onTestAndControlEdit={this.onTestAndControlEdit}
+							showTestAndControl={showTestAndControl}
+							popupTitle="Test & Control"
+							handleOk={this.handleOk}
+							handleCancel={this.handleCancel}
+							applyTestControlChange={this.applyTestControlChange}
+							popupbodyText="Divide customers selected for a specific audience into local test and local control groups"
+							controlValue={controlValue}
+							testValue={testValue}
+							maxValueAllowed={75}
+							onTestValueChange={this.onTestValueChange}
+							onControlValueChange={this.onControlValueChange}
+							popupButtonText="apply"
+						/>
+					)}
+					{current === 1 && (
+						<Audience
+							audienceTitle="Audience"
+							segmentSubTitle="Segment"
+							onValuesSelected={this.onValuesSelected}
+							segmentSelectionData={this.props.segmentList.segments}
+							uploadCsvText="Upload CSV"
+							uploadProps={props}
+							segmentFilterText="Filter"
+							segmentFilterSubText="Campaign applies to :"
+							attributeData={attributeData}
+							logQuery={this.logQuery}
+						/>
+					)}
+					{current === 2 &&
+						<Offer onFormNext={this.onFormNext}
+							offersList={this.props.allOffers.getOffers}
+							errors={this.state.errors}
+							offer={this.state.offer}
+							handleOnOfferChange={this.handleOnOfferChange}
+							subTitle="Offer" />}
+					{current === 3 && (
+						<Communication
+							subTitle="Communication"
+							onChange={this.onCommunicationChange}
+							communicationData={communicationData}
+							defaultValue="1"
+							value={communicationSelected}
+							OnCommunicationFormNext={this.OnCommunicationFormNext}
+							communicationWrappedComponentRef={this.communicationWrappedComponentRef}
+							communicationFormValues={communicationFormValues}
+						/>
+					)}
+					{current === 4 ? <Overview campaign={this.state.formValues} /> : ""}
+				</div>
 				<div style={{ margin: '32px' }}>
 					<CampaignFooter
 						nextButtonText="Next"
@@ -282,7 +285,8 @@ export default withRouter(
 				name: 'segmentList',
 				options: ownProps => ({
 					variables: {
-						organization_id: ownProps.client.cache.data.data['$ROOT_QUERY.auth'].organizationId,
+						organization_id: ownProps.client.cache.data.data['$ROOT_QUERY.auth'].organizationId ?
+							ownProps.client.cache.data.data['$ROOT_QUERY.auth'].organizationId : jwt.decode(localStorage.getItem('jwt')),
 						status: 'ACTIVE',
 					},
 					fetchPolicy: 'network-only',
@@ -290,6 +294,14 @@ export default withRouter(
 			}),
 			graphql(attributes, {
 				name: 'allAttributes',
+			}),
+			graphql(getOffers, {
+				options: ownProps => ({
+					variables: {
+						organizationId: ownProps.client.cache.data.data['$ROOT_QUERY.auth'].organizationId,
+					}
+				}),
+				name: 'allOffers',
 			})
 		)(CampaignCreation)
 	)

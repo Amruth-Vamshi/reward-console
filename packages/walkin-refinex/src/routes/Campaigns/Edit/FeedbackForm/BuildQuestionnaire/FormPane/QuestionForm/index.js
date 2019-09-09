@@ -13,6 +13,7 @@ import {
   Popconfirm,
   message
 } from "antd";
+import { QUESTION_TYPES } from "../../../../../../../containers/Query";
 
 const QUESTION_WITH_SLIDER = {
   RATING_SCALE: "RATING_SCALE",
@@ -28,7 +29,8 @@ class QuestionForm extends Component {
       validationStatus: "success"
     };
   }
-  componentDidMount() {
+
+  setCurrentQuestion = () => {
     const {
       questionText,
       type,
@@ -41,6 +43,15 @@ class QuestionForm extends Component {
       type,
       range: [rangeMin, rangeMax]
     });
+  };
+  componentDidMount() {
+    this.setCurrentQuestion();
+  }
+
+  componentDidUpdate(preValue) {
+    if (this.props.questionToEdit.id !== preValue.questionToEdit.id) {
+      this.setCurrentQuestion();
+    }
   }
 
   getTreeNodes = questionTypes => {
@@ -84,6 +95,7 @@ class QuestionForm extends Component {
 
   submitQuestion = e => {
     e.preventDefault();
+    console.log(this.props.onQuestionSubmitted);
     this.props.onQuestionSubmitted();
   };
 
@@ -117,85 +129,72 @@ class QuestionForm extends Component {
   };
 
   render() {
-    const { questionToEdit, form } = this.props;
+    const { questionToEdit, form, style } = this.props;
     const { getFieldDecorator } = form;
     const { Item } = Form;
     return (
       <ErrorBoundary>
-        <Row>
-          <Col>
-            <h2>Configure Question</h2>
-          </Col>
-        </Row>
-        <Row
-          style={{
-            marginTop: "1%"
-          }}
-        >
+        <Row style={style}>
           <Col span={24}>
-            <CardBox>
-              <Form
-                labelCol={{ span: 6 }}
-                wrapperCol={{ span: 14 }}
-                onSubmit={this.submitQuestion}
+            <Form
+              labelCol={{ span: 6 }}
+              wrapperCol={{ span: 16 }}
+              onSubmit={this.submitQuestion}
+            >
+              <Item label="Question Text">
+                {getFieldDecorator("questionText", {
+                  rules: [
+                    {
+                      required: true
+                    }
+                  ]
+                })(<Input />)}
+              </Item>
+              {/* <Popconfirm
+                title="Changin question type will delete the existing choices, continue?"
+                visible={this.state.popUpVisible}
+                onConfirm={this.confirmTypeChange}
+                onCancel={this.closeTypeChange}
+                okText="Yes"
+                cancelText="No"
               >
-                <Item label="Question Text">
-                  {getFieldDecorator("questionText", {
+                <Item label="Type" validateStatus={this.state.validationStatus}>
+                  {getFieldDecorator("type", {
                     rules: [
                       {
                         required: true
                       }
-                    ]
-                  })(<Input />)}
+                    ],
+                    getValueFromEvent: this.triggerPopup
+                  })(
+                    <TreeSelect placeholder="Please select">
+                      {this.getQuestionTypes()}
+                    </TreeSelect>
+                  )}
                 </Item>
-                <Popconfirm
-                  title="Changin question type will delete the existing choices, continue?"
-                  visible={this.state.popUpVisible}
-                  onConfirm={this.confirmTypeChange}
-                  onCancel={this.closeTypeChange}
-                  okText="Yes"
-                  cancelText="No"
-                >
-                  <Item
-                    label="Type"
-                    validateStatus={this.state.validationStatus}
-                  >
-                    {getFieldDecorator("type", {
-                      rules: [
-                        {
-                          required: true
-                        }
-                      ],
-                      getValueFromEvent: this.triggerPopup
-                    })(
-                      <TreeSelect placeholder="Please select">
-                        {this.getQuestionTypes()}
-                      </TreeSelect>
-                    )}
-                  </Item>
-                </Popconfirm>
+              </Popconfirm> */}
 
-                <Item
-                  label="Range Min"
-                  style={
-                    QUESTION_WITH_SLIDER[this.props.questionToEdit.type]
-                      ? {}
-                      : {
-                          display: "none"
-                        }
-                  }
-                >
-                  {getFieldDecorator("range", {
-                    initialValue: [0, 10]
-                  })(<Slider range />)}
-                </Item>
-                <Item wrapperCol={{ offset: 18 }}>
-                  <Button type="primary" htmlType="submit">
-                    Save
-                  </Button>
-                </Item>
-              </Form>
-            </CardBox>
+              <Item
+                label="Range"
+                style={
+                  QUESTION_WITH_SLIDER[this.props.questionToEdit.type]
+                    ? {}
+                    : {
+                        display: "none"
+                      }
+                }
+              >
+                {getFieldDecorator("range", {
+                  initialValue: [0, 10]
+                })(<Slider range />)}
+              </Item>
+              <Item wrapperCol={{ offset: 18 }}>
+                <Button
+                  type="submit"
+                  style={{ position: "absolute", left: "-99999px" }}
+                />
+              </Item>
+            </Form>
           </Col>
         </Row>
       </ErrorBoundary>
@@ -203,19 +202,16 @@ class QuestionForm extends Component {
   }
 }
 
-const onValuesChange = ({ onQuestionEdited }, __, formValue) => {
-  onQuestionEdited(formValue);
-};
+// const onValuesChange = ({ onQuestionEdited }, __, formValue) => {
+//   onQuestionEdited(formValue);
+// };
 
-const FormPane = Form.create({ name: "QuestionForm", onValuesChange })(
-  QuestionForm
-);
-
-const QUESTION_TYPES = gql`
-  query questionTypes {
-    questionTypes
+const FormPane = Form.create({
+  name: "QuestionForm",
+  onValuesChange(props, values) {
+    props.onQuestionEdited(values);
   }
-`;
+})(QuestionForm);
 
 export default graphql(QUESTION_TYPES, {
   name: "questionTypesQuery",

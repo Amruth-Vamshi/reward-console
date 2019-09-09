@@ -34,15 +34,26 @@ const ManageCampaignCard = ({ campaign, history }) => {
         justify="center"
       >
         <Col>
-          <Button
-            type={"primary"}
-            onClick={() => {
-              console.log("clicked");
-              history.push("/refinex/campaign/" + campaign.id + "/edit");
-            }}
-          >
-            Continue Editing
+          {
+            campaign.status == "ACTIVE" ? (<Button
+              type={"primary"}
+              onClick={() => {
+                console.log("clicked");
+                history.push("/refinex/campaign/" + campaign.id + "/edit");
+              }}
+            >
+              Edit
+          </Button>) : <Button
+                type={"primary"}
+                onClick={() => {
+                  console.log("clicked");
+                  history.push("/refinex/campaign/" + campaign.id + "/edit");
+                }}
+              >
+                Continue Editing
           </Button>
+          }
+
         </Col>
       </Row>
     </Widget>

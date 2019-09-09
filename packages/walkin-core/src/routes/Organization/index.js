@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { CampaignHeader, Popup, SortableDataTable } from '@walkinsole/walkin-components';
-import { Row, Col, Avatar, Button, Dropdown, Alert, Breadcrumb, Modal } from 'antd';
+import { Row, Col, Avatar, Button, Dropdown, Alert, Breadcrumb, Modal, Spin, Icon } from 'antd';
 import OrgCardDetails from '../../components/orgCardDetails';
 import { Query, withApollo, graphql } from 'react-apollo';
 import { userDetails, orgDetails, addSubOrganization, deleteSubOrganization } from '../../query/organization';
@@ -8,7 +8,7 @@ import SubOrgList from '../../components/subOrgList';
 import SubOrgForm from './subOrgForm';
 import OrgStoreForm from './orgStoreForm';
 import OrgStoreList from './orgStoreList';
-
+import "./style.css"
 const { confirm } = Modal;
 
 class OrganizationInfo extends Component {
@@ -132,7 +132,7 @@ class OrganizationInfo extends Component {
 			// 	</Fragment>
 			// ),
 			onOk() {
-				return new Promise((resolve, reject) => {}).catch(() => console.log('Oops errors!'));
+				return new Promise((resolve, reject) => { }).catch(() => console.log('Oops errors!'));
 
 				// this.props.client
 				// 	.mutate({
@@ -153,20 +153,17 @@ class OrganizationInfo extends Component {
 				// 		);
 				// 	});
 			},
-			onCancel() {},
+			onCancel() { },
 		});
 	}
 	render() {
 		const { client, organization, loading, error, match } = this.props;
-		const {
-			showSubOrgForm,
-			formValues,
-			sortedInfo,
-			storeFormValues,
+		const { showSubOrgForm, formValues, sortedInfo, storeFormValues,
 			showOrgStoreForm,
 			errorMessage,
 			orgId,
 		} = this.state;
+		const antIcon = <Icon type="loading" style={{ fontSize: 100 }} spin />;
 		return (
 			<div style={{ margin: '-32px -16px 0px -16px' }}>
 				<Fragment>
@@ -174,7 +171,11 @@ class OrganizationInfo extends Component {
 						variables={{ id: match.params.id || client.cache.data.data['$ROOT_QUERY.auth'].organizationId }}
 					>
 						{({ data, loading, error, refetch }) => {
-							if (loading) return <p>Loading...</p>;
+							if (loading) return (<div> <br /> <br /> <br /> <br />
+								<div className="divCenter">
+									<Spin size="large" indicator={antIcon} />
+								</div> <br /> <br /> <br />
+							</div>)
 							if (error) {
 								return <p>Error :(</p>;
 							}
@@ -184,18 +185,20 @@ class OrganizationInfo extends Component {
 								org: organization,
 							};
 							let subOrgDetails =
+								organization &&
 								organization.children &&
 								organization.children.filter(val => {
 									return val.organizationType == 'ORGANIZATION';
 								});
 							let storeDetails =
+								organization &&
 								organization.children &&
 								organization.children.filter(val => {
 									return val.organizationType == 'STORE';
 								});
 
 							let orgHeirarchy = ['SAMPLE']; //Remove this
-							if (!orgHeirarchy.includes(organization.name)) {
+							if (organization && !orgHeirarchy.includes(organization.name)) {
 								orgHeirarchy.push(organization.name);
 							}
 							return (
