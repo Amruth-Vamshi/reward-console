@@ -1,0 +1,15 @@
+.overviewRowmargin {
+    margin-bottom: 7px;
+    margin-left: 4px;
+  }
+
+  .overviewTitlemargin {
+    margin-bottom: 9px;
+    margin-left: 4px;
+  }
+
+  .overViewBackground {
+    padding: 7px;
+    margin: 5;
+    background-color: #efefef;
+  }

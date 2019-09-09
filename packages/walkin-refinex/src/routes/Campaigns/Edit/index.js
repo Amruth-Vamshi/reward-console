@@ -8,7 +8,7 @@ import { CampaignFooter, CampaignHeader } from "@walkinsole/walkin-components";
 import "@walkinsole/walkin-hyperx/src/containers/campaign/campaignCreation/audience/style.css";
 import Communication from "./Communication";
 import Triggers from "./Triggers";
-import Overview from "./Overview";
+import { campaignOverview as Overview} from "@walkinsole/walkin-components";
 import FeedbackFormConfig from "./FeedbackForm";
 import ContainerHeader from "../CampaignHeader";
 import gql from "graphql-tag";

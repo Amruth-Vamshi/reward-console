@@ -4,6 +4,7 @@ import BasicInfo from './campaignCreation/basicInfo';
 import Audience from './campaignCreation/audience';
 import Offer from './campaignCreation/offer';
 import Communication from './campaignCreation/communication';
+import { campaignOverview as Overview } from "@walkinsole/walkin-components";
 import { allSegments, attributes } from '../../query/audience';
 import { getOffers } from "../../query/offer";
 import { withApollo, graphql, compose } from 'react-apollo';
@@ -262,6 +263,7 @@ class CampaignCreation extends Component {
 							communicationFormValues={communicationFormValues}
 						/>
 					)}
+					{current === 4 ? <Overview campaign={this.state.formValues} /> : ""}
 				</div>
 				<div style={{ margin: '32px' }}>
 					<CampaignFooter

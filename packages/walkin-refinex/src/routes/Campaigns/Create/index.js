@@ -12,7 +12,7 @@ import {
 import "@walkinsole/walkin-hyperx/src/containers/campaign/campaignCreation/audience/style.css";
 import Communication from "../Edit/Communication";
 import Triggers from "../Edit/Triggers";
-import Overview from "../Edit/Overview";
+import { campaignOverview as Overview} from "@walkinsole/walkin-components";
 import FeedbackFormConfig from "../Edit/FeedbackForm";
 import ContainerHeader from "../CampaignHeader";
 import gql from "graphql-tag";

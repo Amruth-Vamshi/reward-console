@@ -34,7 +34,7 @@ export const configureClient = async () => {
         console.log(graphQLErrors);
         if (
           graphQLErrors[0].extensions &&
-          graphQLErrors[0].extensions.code == "UNAUTHORIZED"
+          graphQLErrors[0].extensions.code == "UNTH"
         ) {
           localStorage.clear();
           sessionStorage.clear();
