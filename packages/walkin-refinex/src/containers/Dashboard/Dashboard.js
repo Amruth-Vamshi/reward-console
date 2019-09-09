@@ -127,6 +127,7 @@ class Landing extends Component {
   render() {
     let nRows = parseInt(window.innerWidth / 300)
     let demoData = []
+    const antIcon = <Icon type="loading" style={{ fontSize: 100 }} spin />;
     // if (window.innerWidth > 991)
     //   for (let i = 0; i < nRows && i < this.state.complains.length && i < 5; i++)
     //     demoData[i] = this.state.complains[i]
@@ -199,7 +200,7 @@ class Landing extends Component {
           {this.state.spin ?
             <div> <br /> <br /> <br /> <br />
               <div className="divCenter">
-                <Spin size="large" />
+                <Spin size="large" indicator={antIcon} />
               </div> <br /> <br /> <br />
             </div>
             : <div>
@@ -215,7 +216,7 @@ class Landing extends Component {
                   <IconWithTextCard cardColor="teal" antIcon="logout" title={this.state.partialComplete} subTitle="Partial Complete" />
                 </Col>
                 <Col xl={6} lg={6} md={6} sm={12} xs={12} className="gx-col-full">
-                  <IconWithTextCard cardColor="red" icon="map-street-view" title={this.state.nps} subTitle="Response Rate" />
+                  <IconWithTextCard cardColor="red" icon="map-street-view" title={this.state.nps} subTitle="NPS Rating" />
                 </Col>
               </Row>
 
