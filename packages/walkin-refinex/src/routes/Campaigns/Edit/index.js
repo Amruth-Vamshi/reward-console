@@ -6,6 +6,7 @@ import CampaignConfig from "./Campaign";
 import Audience from "@walkinsole/walkin-hyperx/src/containers/campaign/campaignCreation/audience";
 import { CampaignFooter, CampaignHeader } from "@walkinsole/walkin-components";
 import "@walkinsole/walkin-hyperx/src/containers/campaign/campaignCreation/audience/style.css";
+import Comm from "@walkinsole/walkin-hyperx/src/containers/campaign/campaignCreation/communication";
 import Communication from "./Communication";
 import Triggers from "./Triggers";
 import Overview from "./Overview";
@@ -20,7 +21,9 @@ import {
   allSegments,
   attributes,
   createRule,
-  UPDATE_CAMPAIGN
+  UPDATE_CAMPAIGN,
+  createCommunication,
+  createMessageTemplate
 } from "../../../containers/Query";
 import { CustomScrollbars } from "@walkinsole/walkin-components";
 import jwt from "jsonwebtoken";
@@ -78,6 +81,72 @@ class EditCampaign extends Component {
   logQuery = query => {
     this.setState({ query: query });
     console.log("quu", query);
+  };
+
+  logCommunication = text => {
+    console.log("Text....", text);
+    this.setState({ text: text });
+  };
+
+  // createCommunicationMutation = current => {
+  //   const input = {
+  //     name: "Test",
+  //     description: "Test",
+  //     messageFormat: "SMS",
+  //     templateBodyText: "First template",
+  //     templateSubjectText: "To test the first template",
+  //     templateStyle: "MUSTACHE",
+  //     organization_id: jwt.decode(localStorage.getItem("jwt")).org_id
+  //   };
+  //   this.props
+  //     .createMessageTemplate({
+  //       variables: {
+  //         input: input
+  //       }
+  //     })
+  //     .then(data => {
+  //       console.log("MessageTemplate data..", data);
+  //     });
+  // };
+  createCommunicationMutation = current => {
+    console.log("This.props ,.,.,.", this.props);
+    // var input = {
+    //   name: "Test",
+    //   description: "Test",
+    //   messageFormat: "SMS",
+    //   templateBodyText: "First template",
+    //   templateSubjectText: "To test the first template",
+    //   templateStyle: "MUSTACHE",
+    //   organization_id: jwt.decode(localStorage.getItem("jwt")).org_id
+    // };
+    // this.props
+    //   .createMessageTemplate({
+    //     variables: {
+    //       input: input
+    //     }
+    //   })
+    //   .then(data => {
+    //     console.log("MessageTemplate data..", data);
+    //     // var input = {
+    //     //   entityId: "2", // campainId
+    //     //   entityType: Campaign,
+    //     //   messageTemplateId: "4",
+    //     //   isScheduled: true,
+    //     //   isRepeatable: true,
+    //     //   organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
+    //     //   status: ACTIVE,
+    //     //   firstScheduleDateTime: "2019-09-15T15:53:00",
+    //     //   repeatRuleId: "1",
+    //     //   commsChannelName: "Test"
+    //     // };
+    //     // this.props(
+    //     //   createCommunication({
+    //     //     variables: {
+    //     //       input: input
+    //     //     }
+    //     //   })
+    //     // );
+    //   });
   };
 
   ruleQuery = current => {
@@ -151,13 +220,19 @@ class EditCampaign extends Component {
   }
 
   onFormNext = current => {
-    const { formValues } = this.state;
+    const { formValues, communicationFormValues } = this.state;
     console.log(current);
     if (this.state.current == 2) {
+      //Audience Rule
       this.ruleQuery(this.state.current);
     }
     if (this.state.current == 3) {
+      //Trigger Rule
       this.ruleQuery(this.state.current);
+    }
+    if (this.state.current == 4) {
+      this.createCommunicationMutation(this.state.current);
+      console.log("Comm//////..", communicationFormValues);
     }
     if (isEmpty(formValues)) {
       const form =
@@ -186,6 +261,10 @@ class EditCampaign extends Component {
     this.formRef = formRef;
   };
 
+  saveComFormRef = formRef => {
+    this.formRef1 = formRef;
+  };
+
   onControlValueChange = val => {
     this.setState({ controlValue: val });
   };
@@ -210,7 +289,7 @@ class EditCampaign extends Component {
 
   getContainer = () => {
     const { campaign } = this.props.campaign;
-    console.log(this.props);
+    console.log(".......", this.props);
     let attributeData =
       this.props.allAttributes &&
       this.props.allAttributes.ruleAttributes &&
@@ -219,6 +298,7 @@ class EditCampaign extends Component {
         id: el.id,
         label: el.attributeName
       }));
+    // let templateData = this.props.messageTemplate;
     const {
       formValues,
       query,
@@ -290,7 +370,19 @@ class EditCampaign extends Component {
           <Triggers attributeData={attributeData} logQuery={this.logQuery} />
         );
       case 4:
-        return <Communication />;
+        return (
+          <Comm
+            saveFormRef={this.saveComFormRef}
+            onFormNext={this.onFormNext}
+            formValues={this.state.communicationFormValues}
+          />
+          // <Communication
+          //   // campaign={this.props.campaign.campaign}
+          //   saveFormRef={this.saveComFormRef}
+          //   onFormNext={this.onFormNext}
+          //   communicationFormValues={this.communicationFormValues}
+          // />
+        );
       default:
         return <Overview campaign={this.props.campaign.campaign} />;
     }
@@ -377,5 +469,11 @@ export default compose(
   }),
   graphql(attributes, {
     name: "allAttributes"
+  }),
+  graphql(createCommunication, {
+    name: "communication"
+  }),
+  graphql(createMessageTemplate, {
+    name: "messageTemplate"
   })
 )(EditCampaign);

@@ -35,17 +35,16 @@ class Communication extends Component {
   };
 
   render() {
+    // const { onFormNext, saveFormRef communicationFormValues } = this.props;
     console.log("render", this.state.mode);
     return (
-      <Row
-        style={{
-          margin: "1rem"
-        }}
-      >
+      <Row style={{ margin: "1rem" }}>
         <Col span={24}>
+          {" "}
           <Title level={3} className="gx-text-grey">
-            Communication
-          </Title>
+            {" "}
+            Communication{" "}
+          </Title>{" "}
         </Col>
         <Col span={24}>
           <Row
@@ -68,7 +67,15 @@ class Communication extends Component {
               <Row style={{ marginTop: "1rem" }}>
                 <Col span={14}>
                   <div>
-                    {this.state.mode === "sms" ? <SMSForm /> : <EmailForm />}
+                    {this.state.mode === "sms" ? (
+                      <SMSForm
+                        saveFormRef={this.props.saveFormRef}
+                        onFormNext={this.props.onFormNext}
+                        formValues={this.props.communicationFormValues}
+                      />
+                    ) : (
+                      <EmailForm />
+                    )}
                   </div>
                 </Col>
               </Row>
