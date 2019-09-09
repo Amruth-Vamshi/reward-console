@@ -50,7 +50,7 @@ class SegmentList extends Component {
 		const { history, match } = this.props;
 		console.log(this.props)
 		history.push({
-			pathname: `/hyperx/segment/newSegment/${record.id}`,
+			pathname: `${NEW_SEGMENT}/${record.id}`,
 			state: {
 				segmentSelected: record,
 			},
