@@ -87,26 +87,20 @@ class CampaignCreation extends Component {
 	};
 
 	goToNextPage(current) {
-		const { formValues } = this.state;
-		if (isEmpty(formValues)) {
-			const form = this.formRef && this.formRef.props && this.formRef.props.form;
-			if (form) {
-				form.validateFields((err, values) => {
-					if (err) return
-					else {
-						console.log('Form Val>>', values);
-						this.setState({
-							formValues: values,
-							current: current,
-						});
-					}
-				});
-			}
-		} else {
-			this.setState({
-				current: current,
+		const form = this.formRef && this.formRef.props && this.formRef.props.form;
+		console.log('Form >>', this.formRef);
+
+		if (form) {
+			form.validateFields((err, values) => {
+				if (err) return
+				else {
+					this.setState({
+						formValues: values,
+						current: current,
+					});
+				}
 			});
-		}
+		} else this.setState({ current });
 	}
 
 	OnCommunicationFormNext = () => {
@@ -205,7 +199,6 @@ class CampaignCreation extends Component {
 				<div style={{ margin: '32px' }}>
 					{current === 0 && (
 						<BasicInfo
-							errors={this.state.errors}
 							subTitle="Basic information"
 							onFormNext={this.onFormNext}
 							saveFormRef={this.saveFormRef}

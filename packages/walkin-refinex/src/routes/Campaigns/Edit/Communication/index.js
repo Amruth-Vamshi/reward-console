@@ -1,17 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import {
-  Col,
-  Row,
-  Typography,
-  Tabs,
-  Radio,
-  Form,
-  Input,
-  Upload,
-  Button,
-  Icon
-} from "antd";
+import { Col, Row, Typography, Tabs, Radio, Form, Input, Upload, Button, Icon } from "antd";
 import SMSForm from "./SMS";
 import EmailForm from "./Email";
 const { TabPane } = Tabs;

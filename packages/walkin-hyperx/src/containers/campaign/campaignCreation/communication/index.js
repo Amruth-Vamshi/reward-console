@@ -1,7 +1,9 @@
 import React, { Component, Fragment } from 'react';
-import { Radio, Form } from 'antd';
+import { Radio, Form, Row, Col } from 'antd';
 import SMSForm from '../../../../components/atoms/communicationForm/sms';
 import PushNotificationForm from '../../../../components/atoms/communicationForm/pushNotification';
+import Email from '../../../../components/atoms/communicationForm/Email';
+import Schedule from '../../../../components/atoms/communicationForm/schedule';
 
 const Communication = ({
 	subTitle,
@@ -34,8 +36,22 @@ const Communication = ({
 						</Radio.Button>
 					))}
 			</Radio.Group>
-			{value == '1' && <SMSForm />} {value == '2' && <PushNotificationForm />}
-			{value == '3' && <div>form3</div>}
+			<Row>
+				<Col sm={24} md={13} lg={13} xl={14} xxl={14}>
+					{value == '1' && <SMSForm />} {value == '2' && <PushNotificationForm />}
+					{value == '3' && <div><Email /></div>}
+				</Col>
+
+				<Col sm={24} md={11} lg={11} xl={10} xxl={9} >
+
+					<div style={{ padding: 20 }}>
+						<Schedule />
+					</div>
+
+				</Col>
+
+			</Row>
+
 		</div>
 	);
 };

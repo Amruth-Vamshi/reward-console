@@ -15,14 +15,12 @@ const PushNotificationForm = Form.create({ name: 'form_in_modal' })(
 			const { getFieldDecorator } = form;
 			const formItemLayout = {
 				labelCol: { span: 6 },
-				wrapperCol: { span: 18 },
+				wrapperCol: { span: 24 },
 			};
 			return (
 				<Form
 					style={{ paddingTop: '20px', paddingBottom: '20px' }}
-					layout="vertical"
-					ref={wrappedComponentRef}
-					onSubmit={onFormNext}
+					layout="vertical" ref={wrappedComponentRef} onSubmit={onFormNext}
 				>
 					<Form.Item size={'large'} label="Notification tag" {...formItemLayout}>
 						{getFieldDecorator('notificationTag', {
