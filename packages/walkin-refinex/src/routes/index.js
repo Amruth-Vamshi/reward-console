@@ -4,27 +4,30 @@ import { asyncComponent } from "@walkinsole/walkin-components";
 import SegmentList from '../containers/segment/segmentList';
 import NewSegment from '../containers/segment/newSegment';
 import { NEW_SEGMENT, SEGMENT_LIST } from "../Utils"
+
 const RefineXRoutes = ({ match }) => {
   return (
-    <Switch>
-      <Redirect exact from={`${match.url}/`} to={`${match.url}/dashboard`} />
-      <Route
-        path={`${match.url}/dashboard`}
-        component={asyncComponent(() => import("./Dashboard"))}
-      />
-      <Route
-        path={`${match.url}/feedback`}
-        component={asyncComponent(() => import("./Campaigns"))}
-      />
-      <Route
-        path={`${match.url}/segment/segmentList`}
-        component={SegmentList}
-      />
-      <Route
-        path={`${match.url}/segment/newSegment`}
-        component={NewSegment}
-      />
-    </Switch>
+    <div >
+      <Switch>
+        <Redirect exact from={`${match.url}/`} to={`${match.url}/dashboard`} />
+        <Route
+          path={`${match.url}/dashboard`}
+          component={asyncComponent(() => import("../containers/Dashboard"))}
+        />
+        <Route
+          path={`${match.url}/feedback`}
+          component={asyncComponent(() => import("./Campaigns"))}
+        />
+        <Route
+          path={`${match.url}/segment/segmentList`}
+          component={SegmentList}
+        />
+        <Route
+          path={`${match.url}/segment/newSegment`}
+          component={NewSegment}
+        />
+      </Switch>
+    </div>
   );
 };
 
