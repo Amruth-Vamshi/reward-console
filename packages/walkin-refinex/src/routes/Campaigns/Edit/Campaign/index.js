@@ -121,7 +121,7 @@ const BasicInfo = ({
 };
 
 const GET_USER_IDENTITY = gql`
-  query auth {
+  query auth @client {
      auth {
       userId
       organizationId
