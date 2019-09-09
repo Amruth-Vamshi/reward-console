@@ -1,7 +1,9 @@
 import React from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { asyncComponent } from "@walkinsole/walkin-components";
-
+import SegmentList from '../containers/segment/segmentList';
+import NewSegment from '../containers/segment/newSegment';
+import { NEW_SEGMENT, SEGMENT_LIST } from "../Utils"
 const RefineXRoutes = ({ match }) => {
   return (
     <Switch>
@@ -13,6 +15,14 @@ const RefineXRoutes = ({ match }) => {
       <Route
         path={`${match.url}/feedback`}
         component={asyncComponent(() => import("./Campaigns"))}
+      />
+      <Route
+        path={`${match.url}/segment/segmentList`}
+        component={SegmentList}
+      />
+      <Route
+        path={`${match.url}/segment/newSegment`}
+        component={NewSegment}
       />
     </Switch>
   );

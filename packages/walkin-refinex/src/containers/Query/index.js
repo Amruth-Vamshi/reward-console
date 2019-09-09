@@ -5,10 +5,50 @@ export const allSegments = gql`
     segments(status: ACTIVE, organization_id: $org_id) {
       id
       name
-      
+      segmentType
+      status
+      rule {
+				id
+				ruleConfiguration
+			}
     }
   }
 `;
+
+export const disableSegment = gql`
+	mutation disableSegment($id: ID!) {
+		disableSegment(id: $id) {
+			id
+			name
+		}
+	}
+`;
+
+export const createSegment = gql`
+	mutation createSegment(
+		$name: String!
+		$segmentType: SEGMENT_TYPE!
+		$organization_id: ID!
+		$application_id: ID!
+		$rule_id: ID!
+		$status: STATUS!
+	) {
+		createSegment(
+			input: {
+				name: $name
+				segmentType: $segmentType
+				status: $status
+				organization_id: $organization_id
+				application_id: $application_id
+				rule_id: $rule_id
+			}
+		) {
+			id
+			name
+		}
+	}
+`;
+
 export const createRule = gql`
   mutation createRule($input: CreateRuleInput!) {
     createRule(input: $input) {
