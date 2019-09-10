@@ -374,6 +374,17 @@ export const GET_CAMPAIGNS = gql`
   }
 `;
 
+
+export const ADD_APPLICATION = gql`
+  mutation addApplication($organizationId:ID!,$input:ApplicationInput!){
+    createApplication(organizationId:$organizationId,input:$input){
+      id
+    name
+    description
+    }
+  }
+`
+
 export const CREATE_FEEDBACK_FORM = gql`
   mutation createFeedbackForm($campaignId: ID!, $formName: String) {
     createFeedbackForm(campaignId: $campaignId, input: { title: $formName }) {

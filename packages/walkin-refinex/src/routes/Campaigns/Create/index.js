@@ -23,7 +23,8 @@ import {
   CREATE_FEEDBACK_FORM,
   CREATE_CAMPAIGN,
   allSegments,
-  attributes
+  attributes,
+  ADD_APPLICATION
 } from "../../../containers/Query";
 import { CAMPAIGN_TYPE } from "../../../Utils";
 import jwt from "jsonwebtoken";
@@ -79,7 +80,27 @@ class CreateCampaign extends Component {
   };
 
   componentDidMount(){
+    //ADD_APPLICATION if no application exists
+    console.log(this.props)
+    const {
+      allApplications: { organization }
+    } = this.props;
     const { location, match } = this.props;
+    if(!organization.applications || (organization.applications && organization.applications.length===0)){
+      this.props.addApplication({
+        variables: {
+          organizationId: organization.id,
+          input: { name: "RefineX demo application", platform: "Prod" }
+        }
+      })
+      .then(async data=>{
+        console.log(data)
+       await this.props.allApplications.refetch()
+      })
+      .catch(err=>{
+        console.log(err)
+      })
+    }
 		if (location && location.state) {
 			if (location.state.campaignSelected) {
 				if (location.state.campaignSelected.name !== '') {
@@ -344,7 +365,6 @@ export default
     graphql(GET_ALL_APPS_OF_ORGANIZATION, {
       name: "allApplications",
       options: props => {
-        console.log(props);
         return {
           variables: {
             id: jwt.decode(localStorage.getItem("jwt")).org_id
@@ -369,5 +389,6 @@ export default
     graphql(GET_USER_IDENTITY, {
       name: "auth"
     }),
+    graphql(ADD_APPLICATION,{name:"addApplication"}),
     withApollo
 )(CreateCampaign);

@@ -118,7 +118,7 @@ class Questionnaire extends Component {
         }
       });
       console.log(data);
-      await this.props.refetchQuestionnaire();
+      await this.props.refetchFeedbackForm();
       this.setState({ isQuestionLoading: false })
     } catch (e) {
       this.setState({ isQuestionLoading: false })

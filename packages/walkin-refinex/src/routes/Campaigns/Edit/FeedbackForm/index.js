@@ -58,7 +58,6 @@ class FeedbackFormConfig extends Component {
                   refetch: refetchQuestionnaire,
                   error: questionnaireDataError
                 }) => {
-                  console.log("questionnaireData.questionHierarchy", questionnaireData.questionHierarchy)
                   return (
                     <Tabs
                       size="large"
