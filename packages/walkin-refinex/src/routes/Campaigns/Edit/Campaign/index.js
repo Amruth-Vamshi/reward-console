@@ -42,6 +42,7 @@ const BasicInfo = ({
   testValue,
   auth,
   setFeedbackForm,
+  formName,
   edit
 }) => {
   return (
@@ -109,7 +110,7 @@ const BasicInfo = ({
             <Row gutter={16}>
               <h3 className="gx-text-grey" style={{ marginBottom: "30px", margin: "32px" }}>Choose template</h3>
               <Col span={24}>
-                <CreateCampaignRow auth={auth} setFeedbackForm={setFeedbackForm} />
+                <CreateCampaignRow auth={auth} formName={formName} setFeedbackForm={setFeedbackForm} />
               </Col>
             </Row>
           </div>

@@ -44,6 +44,7 @@ class EditCampaign extends Component {
       campaign: {},
       segmentList: {},
       attributeData: {},
+      formName:"",
       query: { id: "1", combinator: "and", rules: [] },
       stepperData: [
         {
@@ -207,6 +208,13 @@ class EditCampaign extends Component {
     this.formRef = formRef;
   };
 
+  setFeedbackForm = (formName, e) => {
+    console.log(formName);
+    this.setState({
+      formName: formName
+    });
+  };
+
   onControlValueChange = val => {
     this.setState({ controlValue: val });
   };
@@ -252,7 +260,9 @@ class EditCampaign extends Component {
       case 0:
         return (
           <CampaignConfig
+          setFeedbackForm={this.setFeedbackForm}
             subTitle="Basic information"
+            formName={campaign.feedbackForm.title}
             onFormNext={this.onFormNext}
             saveFormRef={this.saveFormRef}
             formValues={this.props.campaign.campaign}

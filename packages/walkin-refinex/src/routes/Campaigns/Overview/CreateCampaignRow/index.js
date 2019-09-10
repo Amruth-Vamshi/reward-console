@@ -4,13 +4,14 @@ import { CardBox, ErrorBoundary } from "@walkinsole/walkin-components";
 import SelectApplicationModal from "../SelectApplicationModal";
 import { compose, graphql } from "react-apollo";
 import { CREATE_FEEDBACK_FORM } from "../../../../containers/Query";
+import "./index.css"
 import gql from "graphql-tag";
 class CreateCampaignRow extends Component {
   constructor(props) {
     super(props);
     this.state = {
       showModal: false,
-      formName: null
+      formName: "default"
     };
   }
 
@@ -21,8 +22,13 @@ class CreateCampaignRow extends Component {
   // };
 
   createFeedbackCampaign = (formName, e) => {
+    this.setState({ formName: formName })
     this.props.setFeedbackForm(formName);
   };
+
+  componentDidMount() {
+    this.setState({ formName: this.props.formName })
+  }
 
   // onConfirm = async selectedApplication => {
   //   console.log(selectedApplication);
@@ -68,7 +74,7 @@ class CreateCampaignRow extends Component {
                     style={{
                       cursor: "pointer"
                     }}
-                    styleName="gx-card-full"
+                    styleName={"gx-card-full" + ' ' + (this.state.formName == "default" ? "selected_form" : "not_selected")}
                   >
                     <Row
                       type="flex"
@@ -83,15 +89,16 @@ class CreateCampaignRow extends Component {
                   span={4}
                   onClick={this.createFeedbackCampaign.bind(
                     this,
-                    "product_feedback"
+                    "product feedback"
                   )}
                 >
                   <CardBox
                     style={{
                       cursor: "pointer"
                     }}
-                    styleName="gx-card-full"
+                    styleName={"gx-card-full" + ' ' + (this.state.formName == "product feedback" ? "selected_form" : "not_selected")}
                     heading={""}
+
                   >
                     <Row
                       type="flex"
@@ -113,7 +120,7 @@ class CreateCampaignRow extends Component {
                     style={{
                       cursor: "pointer"
                     }}
-                    styleName="gx-card-full"
+                    styleName={"gx-card-full" + ' ' + (this.state.formName == "customer survey" ? "selected_form" : "not_selected")}
                     heading={""}
                   >
                     <Row
@@ -136,7 +143,7 @@ class CreateCampaignRow extends Component {
                     style={{
                       cursor: "pointer"
                     }}
-                    styleName="gx-card-full"
+                    styleName={"gx-card-full" + ' ' + (this.state.formName == "employee feedback" ? "selected_form" : "not_selected")}
                     heading={""}
                   >
                     <Row
@@ -159,7 +166,7 @@ class CreateCampaignRow extends Component {
                     style={{
                       cursor: "pointer"
                     }}
-                    styleName="gx-card-full"
+                    styleName={"gx-card-full" + ' ' + (this.state.formName == "user feedback" ? "selected_form" : "not_selected")}
                     heading={""}
                   >
                     <Row

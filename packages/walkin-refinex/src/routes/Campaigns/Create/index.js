@@ -250,7 +250,8 @@ class CreateCampaign extends Component {
       controlValue,
       testControlSelected,
       campaign,
-      feedbackForm
+      feedbackForm,
+      formName
     } = this.state;
     let attributeData =
       this.props.allAttributes &&
@@ -266,6 +267,7 @@ class CreateCampaign extends Component {
           <CampaignConfig
             setFeedbackForm={this.setFeedbackForm}
             subTitle="Basic information"
+            formName={formName}
             onFormNext={this.onFormNext}
             saveFormRef={this.saveFormRef}
             formValues={formValues}
