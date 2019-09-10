@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 
 import { Card, Col, Row } from 'antd';
-
+import Home from "./feedback-form/index";
 class FormDesign extends Component {
   render() {
     return (
@@ -11,8 +11,8 @@ class FormDesign extends Component {
           <Col span={19}>
             <Card style={{ height: "100vh" }}>
               <Row>
-                <Col span={24}>
-
+                <Col align="right" span={24} style={{ height: "500px", width: "500px" }}>
+                  <Home />
                 </Col>
               </Row>
             </Card>
