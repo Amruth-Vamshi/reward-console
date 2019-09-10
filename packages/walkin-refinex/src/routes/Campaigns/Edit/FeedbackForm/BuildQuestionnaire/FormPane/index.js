@@ -23,19 +23,24 @@ class QuestionnaireFormPane extends Component {
     };
   }
 
-  onChoiceEdited = values => {
+  onChoiceEdited = (values, choice) => {
     console.log("values of choices", values);
     if (questionWithSlider[values.type]) {
       values.rangeStart = values.range[0];
       values.rangeEnd = values.range[1];
     }
     delete values.range;
+    const assignedValue = {
+      ...choice,
+      ...values
+    }
+    console.log(assignedValue)
     this.setState({
-      choiceToEdit: Object.assign(this.state.choiceToEdit, values)
+      choiceToEdit: Object.assign(this.state.choiceToEdit, assignedValue)
     });
   };
 
-  onQuestionEdited = values => {
+  onQuestionEdited = (values) => {
     console.log("values", values);
     if (questionWithSlider[values.type]) {
       values.rangeMin = values.rangeMin;
@@ -48,10 +53,13 @@ class QuestionnaireFormPane extends Component {
   };
 
   onChoiceSubmitted = () => {
-    console.log(this.state.choiceToEdit);
+    const { choiceToEdit } = this.state;
+    console.log("choiceToEdit", choiceToEdit)
+    this.props.onChoiceSubmitted(choiceToEdit)
   };
 
   onQuestionSubmitted = () => {
+    console.log("questionToEdit", this.state.questionToEdit)
     console.log(this.state.questionToEdit);
     this.props.onQuestionSubmitted(this.state.questionToEdit);
   };
@@ -64,8 +72,11 @@ class QuestionnaireFormPane extends Component {
       choiceData,
       addNewQuestion,
       questionType,
-      choiceToAddQuestion
+      choiceToAddQuestion,
+      isChoiceLoading,
+      isQuestionLoading
     } = this.props;
+    console.log("questionToEdit", questionToEdit)
     return (
       <Row
         style={{
@@ -86,6 +97,9 @@ class QuestionnaireFormPane extends Component {
               choiceData={choiceData}
               questionType={questionType}
               choiceToAddQuestion={choiceToAddQuestion}
+              submitChoice={this.onChoiceSubmitted}
+              isChoiceLoading={isChoiceLoading}
+              isQuestionLoading={isQuestionLoading}
             />
           ) : (
               <ShowQuestion
@@ -97,6 +111,10 @@ class QuestionnaireFormPane extends Component {
                 removeChoice={removeChoice}
                 addNewQuestion={addNewQuestion}
                 choiceData={choiceData}
+                submitChoice={this.onChoiceSubmitted}
+                isChoiceLoading={isChoiceLoading}
+                isQuestionLoading={isQuestionLoading}
+
               />
             )}
         </Col>

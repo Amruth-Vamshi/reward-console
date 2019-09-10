@@ -47,7 +47,7 @@ class CampaignOverview extends Component {
 
 const GET_USER_IDENTITY = gql`
   query auth {
-    auth {
+    auth @client{
       userId
       organizationId
     }

@@ -366,5 +366,8 @@ export default
     graphql(attributes, {
       name: "allAttributes"
     }),
+    graphql(GET_USER_IDENTITY, {
+      name: "auth"
+    }),
     withApollo
 )(CreateCampaign);
