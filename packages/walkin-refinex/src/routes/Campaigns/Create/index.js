@@ -179,7 +179,11 @@ class CreateCampaign extends Component {
           if (err) {
             return;
           } else {
-            await this.createCampaign(values);
+            switch(current){
+              case 1:
+                await this.createCampaign(values);
+            }
+            
             this.setState({
               formValues: values,
               current: current
