@@ -65,7 +65,7 @@ class Questionnaire extends Component {
         addQuestion: false,
         questionToEdit: data.data.addQuestion
       });
-      await this.props.refetchFeedbackForm();
+      await this.props.refetchQuestionnaire();
       this.onQuestionSelected(this.state.questionIndex)
     }).catch(err => {
       console.log("Error creating the question", err)
@@ -88,7 +88,7 @@ class Questionnaire extends Component {
         }
       }).then(async data => {
         console.log(data)
-        await this.props.refetchFeedbackForm();
+        await this.props.refetchQuestionnaire();
         this.setState({
           isQuestionLoading: false,
           addQuestion: false
@@ -118,7 +118,7 @@ class Questionnaire extends Component {
         }
       });
       console.log(data);
-      await this.props.refetchFeedbackForm();
+      await this.props.refetchQuestionnaire();
       this.setState({ isQuestionLoading: false })
     } catch (e) {
       this.setState({ isQuestionLoading: false })
@@ -142,7 +142,7 @@ class Questionnaire extends Component {
       }
     }).then(data => {
       console.log(data)
-      this.props.refetchFeedbackForm();
+      this.props.refetchQuestionnaire();
       this.setState({
         questionTypeSelector: questionType,
         addQuestion: false,
@@ -276,7 +276,6 @@ class Questionnaire extends Component {
       isChoiceLoading,
       isQuestionLoading
     } = this.state;
-    console.log("new props fpr questionnaire", this.props.questionnaire)
     return (
       <Row className="QuestionnaireArea">
         <Col span={8}>
