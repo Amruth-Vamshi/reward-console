@@ -1,12 +1,10 @@
-/**@jsx h */
+
 import React, { Component } from "react";
-import Preact, { h } from "preact"
+
 import { Card, Col, Row } from 'antd';
-import { CustomScrollbars } from "@walkinsole/walkin-components";
-import Home from "../../../../../../../feedback-form-web/src/Components/Fields/TextField"
+
 class FormDesign extends Component {
   render() {
-    let h = React.createElement
     return (
       <div style={{ background: '#ECECEC', height: "100vh" }}>
         <Row>
@@ -14,7 +12,7 @@ class FormDesign extends Component {
             <Card style={{ height: "100vh" }}>
               <Row>
                 <Col span={24}>
-                  <Home props={{ answerType: "SINGLE", answerContent: "hELLO", onAnswerSelected: () => console.log("hello") }} />
+
                 </Col>
               </Row>
             </Card>

@@ -79,7 +79,7 @@ class CreateCampaign extends Component {
     this.setState({ current });
   };
 
-  componentDidMount(){
+  createDefaultApplication=async ()=>{
     //ADD_APPLICATION if no application exists
     console.log(this.props)
     const {
@@ -101,6 +101,10 @@ class CreateCampaign extends Component {
         console.log(err)
       })
     }
+  }
+
+  componentDidMount(){
+    
 		if (location && location.state) {
 			if (location.state.campaignSelected) {
 				if (location.state.campaignSelected.name !== '') {
@@ -325,6 +329,9 @@ class CreateCampaign extends Component {
 
   render() {
     const { current, stepperData, loading } = this.state;
+    if(!loading){
+      this.createDefaultApplication()
+    }
     return (
       <div className="PageContainer" style={{ margin: "-32px" }}>
         <ContainerHeader
@@ -368,15 +375,14 @@ export default
   compose(
     graphql(GET_ALL_APPS_OF_ORGANIZATION, {
       name: "allApplications",
-      options: props => {
-        return {
+      options: props =>  ({
           variables: {
             id: jwt.decode(localStorage.getItem("jwt")).org_id
           },
           fetchPolicy: "cache-and-network"
-        };
+        })
       }
-    }),
+    ),
     graphql(allSegments, {
       name: "segmentList",
       options: ownProps => ({
