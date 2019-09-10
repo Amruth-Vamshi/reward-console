@@ -74,36 +74,37 @@ class Questionnaire extends Component {
 
   onQuestionTypeSelector = questionType => {
     this.setState({ isQuestionLoading: true })
-    const { choiceToAddQuestion } = this.state;
-    this.props.addQuestion({
-      variables: {
-        choiceId: choiceToAddQuestion.id,
-        input: {
-          questionText: "click here to edit",
-          type: questionType,
-          rangeMax: 0,
-          rangeMin: 10
+    if (this.props.questionnaire.length !== 0) {
+      const { choiceToAddQuestion } = this.state;
+      this.props.addQuestion({
+        variables: {
+          choiceId: choiceToAddQuestion.id,
+          input: {
+            questionText: "click here to edit",
+            type: questionType,
+            rangeMax: 0,
+            rangeMin: 10
+          }
         }
-      }
-    }).then(async data => {
-      console.log(data)
-      this.setState({
-        questionTypeSelector: questionType,
-        addQuestion: false,
-        questionData: data,
-        questionToEdit: data.data.addQuestion
-      });
-      await this.props.refetchFeedbackForm();
-      this.onQuestionSelected(this.state.questionIndex)
-      this.setState({ isQuestionLoading: false })
-    }).catch(err => {
-      this.setState({ isQuestionLoading: false })
-      console.log("Error creating the question", err)
-    })
+      }).then(async data => {
+        console.log(data)
+        await this.props.refetchFeedbackForm();
+        this.setState({
+          isQuestionLoading: false,
+          addQuestion: false
+        })
+      }).catch(err => {
+        this.setState({ isQuestionLoading: false })
+        console.log("Error creating the question", err)
+      })
+    } else {
+      this.createRootQuestionnaire(questionType)
+    }
+
   };
 
 
-  createRootQuestionnaire = async (questionData) => {
+  createRootQuestionnaire = async (questionType) => {
     this.setState({ isQuestionLoading: true })
     const { feedbackForm } = this.props;
     try {
@@ -111,14 +112,13 @@ class Questionnaire extends Component {
         variables: {
           feedbackFormId: feedbackForm.id,
           questionnaireInput: {
-            questionText: questionData.questionText,
-            type: questionData.type
+            questionText: "Click here to edit",
+            type: questionType
           }
         }
       });
       console.log(data);
       await this.props.refetchFeedbackForm();
-      this.onQuestionSelected(0)
       this.setState({ isQuestionLoading: false })
     } catch (e) {
       this.setState({ isQuestionLoading: false })
@@ -142,13 +142,13 @@ class Questionnaire extends Component {
       }
     }).then(data => {
       console.log(data)
+      this.props.refetchFeedbackForm();
       this.setState({
         questionTypeSelector: questionType,
         addQuestion: false,
         questionData: questionData,
         questionToEdit: data.data.addQuestion
       });
-      this.props.refetchFeedbackForm();
     }).catch(err => {
       console.log("Error creating the question", err)
     })
@@ -276,6 +276,7 @@ class Questionnaire extends Component {
       isChoiceLoading,
       isQuestionLoading
     } = this.state;
+    console.log("new props fpr questionnaire", this.props.questionnaire)
     return (
       <Row className="QuestionnaireArea">
         <Col span={8}>
