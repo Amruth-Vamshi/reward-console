@@ -24,6 +24,7 @@ import {
 } from "../../../containers/Query";
 import { CustomScrollbars } from "@walkinsole/walkin-components";
 import jwt from "jsonwebtoken";
+import { async } from "q";
 
 // import { allSegments } from "@walkinsole/walkin-hyperx/src/query/audience";
 class EditCampaign extends Component {
@@ -126,7 +127,22 @@ class EditCampaign extends Component {
       });
   };
 
-  goToNextPage(current) {
+   
+  onCampaignUpdate= (formValues)=>{
+    console.log(formValues)
+    this.props.updateCampaign({
+      variables:{
+        id:this.props.campaign.campaign.id,
+      input:formValues}
+    })
+    .then(data=>{
+      console.log(data)
+    })
+    .catch(err=>{
+      console.log(err)
+    })
+  }
+   goToNextPage(current) {
     const { formValues } = this.state;
     if (isEmpty(formValues)) {
       const form =
@@ -150,7 +166,7 @@ class EditCampaign extends Component {
     }
   }
 
-  onFormNext = current => {
+  onFormNext =async current => {
     const { formValues } = this.state;
     console.log(current);
     if (this.state.current == 2) {
@@ -164,14 +180,19 @@ class EditCampaign extends Component {
         this.formRef && this.formRef.props && this.formRef.props.form;
       if (form) {
         form.validateFields((err, values) => {
+          console.log(values)
           if (err) {
             return;
           } else {
             // this.ruleQuery();
-            this.setState({
+           this.setState({
               formValues: values,
               current: current
             });
+            switch(current){
+              case 1:
+                this.onCampaignUpdate(values)
+            }
           }
         });
       }
