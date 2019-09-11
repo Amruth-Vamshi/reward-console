@@ -11,8 +11,20 @@ class FormDesign extends Component {
     super(props)
     this.state = {
       counter: 0,
-      isLastQuestion: false
+      isLastQuestion: false,
+      isFirstQuestion: false
     }
+  }
+
+  goTopreviousQuestion = () => {
+    const { counter } = this.state;
+    const newCounter = counter - 1;
+    if (newCounter < 0) {
+      this.setState({ isFirstQuestion: true })
+    } else {
+      this.setState({ counter: newCounter, isFirstQuestion: false, isLastQuestion: false })
+    }
+
   }
 
   nextQuestion = () => {
@@ -23,20 +35,20 @@ class FormDesign extends Component {
     if (newCounter >= totalQuestion) {
       this.setState({ isLastQuestion: true })
     } else {
-      this.setState({ counter: newCounter })
+      this.setState({ counter: newCounter, isLastQuestion: false, isFirstQuestion: false })
     }
 
 
   }
   render() {
     const { questionnaire } = this.props;
-    const { counter, isLastQuestion } = this.state;
+    const { counter, isLastQuestion, isFirstQuestion } = this.state;
     return (
 
       questionnaire && questionnaire[counter] ? (
         <Row>
           <Col span={17}>
-            <Preview question={questionnaire[counter]} nextQuestion={this.nextQuestion} isLastQuestion={isLastQuestion} />
+            <Preview isFirstQuestion={isFirstQuestion} question={questionnaire[counter]} nextQuestion={this.nextQuestion} goTopreviousQuestion={this.goTopreviousQuestion} isLastQuestion={isLastQuestion} />
           </Col>
 
           <Col span={6}>

@@ -19,6 +19,10 @@ class Home extends Component {
     }
   }
 
+  goBack = () => {
+    this.props.goTopreviousQuestion()
+  }
+
   onHandleNext = e => {
     this.props.nextQuestion()
   }
@@ -35,6 +39,9 @@ class Home extends Component {
     return (
       <Layout className="layout" style={{ marginLeft: "30%" }}>
         <Header style={{ backgroundColor: backgroundColor }}>
+          <Button onClick={this.goBack} style={{ backgroundColor: backgroundColor, border: "0px" }}>
+            <Icon type="left" />
+          </Button>
           <div className="logo" />
         </Header>
         <Content style={{ minHeight: "43vh", padding: '0 40px', marginTop: "10px" }}>
