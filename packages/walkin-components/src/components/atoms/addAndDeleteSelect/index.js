@@ -36,7 +36,7 @@ class AddAndDeleteSelectDynamically extends React.Component {
 				{this.state.values.map((el, i) => {
 					return (
 						<div key={i} className="selectSegmentBoxContainer">
-							<Select
+							<Select showSearch
 								classname="segmentSelectBoxStyle"
 								value={el || ''}
 								style={{ width: '50%' }}
@@ -44,11 +44,8 @@ class AddAndDeleteSelectDynamically extends React.Component {
 							>
 								{segmentSelectionData &&
 									segmentSelectionData.map((val, i) => {
-										return (
-											<Option key={i} value={val.name}>
-												{val.name}
-											</Option>
-										);
+										return <Option key={i} value={val.name}> {val.name} </Option>
+
 									})}
 							</Select>
 							<Icon type="close" onClick={this.removeClick.bind(this, i)} />

@@ -33,6 +33,7 @@ const BasicInfo = ({
 	onControlValueChange,
 	popupButtonText,
 	testValue,
+	priorityChosen
 }) => {
 	return (
 		<Fragment>
@@ -47,6 +48,7 @@ const BasicInfo = ({
 					<CampaignPriority
 						text={textAndControlText}
 						promptText={promptText}
+						priorityChosen={priorityChosen}
 						tootTipText={toolTipText}
 						prioritySelectionTitle={prioritySelectionTitle}
 						priorityButtonText={priorityButtonText}
@@ -54,7 +56,6 @@ const BasicInfo = ({
 						testControlPercentage={testControlPercentage}
 						handleChange={handleButtonGroupChange}
 						testControlPercentageEditText={testControlPercentageEditText}
-						onClick={onPriorityButtonClick}
 						priorityNumberInvalidErrorMessage={priorityNumberInvalidErrorMessage}
 						onTestAndControlEdit={onTestAndControlEdit}
 					/>

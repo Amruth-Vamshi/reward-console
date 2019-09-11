@@ -1,4 +1,4 @@
-.overviewRowmargin {
+/* .overviewRowmargin {
     margin-bottom: 7px;
     margin-left: 4px;
   }
@@ -6,10 +6,64 @@
   .overviewTitlemargin {
     margin-bottom: 9px;
     margin-left: 4px;
+  }*/
+
+  .overViewBg {
+    padding: 10px 15px 10px 20px;
+    background-color: #efefef;
+  } 
+
+  .offerBg {
+    padding: 10px 15px 10px 20px;
+    background-color: #ead4f1;
   }
 
-  .overViewBackground {
-    padding: 7px;
-    margin: 5;
-    background-color: #efefef;
+  .audBg {
+    padding: 10px 15px 10px 20px;
+    background-color: #dbeff3;
+  }
+
+  .campaignOverview .ant-row{
+    margin: 0
+  }
+
+  .campaignOverview .cpName{
+    font-weight: bold;
+    font-size: 23px;
+    margin-bottom: 15px
+  }
+
+  .campaignOverview{
+    margin-bottom: 70px
+  }
+
+  .AudienceTitle{
+    padding-left: 0;
+    margin-bottom: 5px;
+
+
+  }
+
+  .mb-10{
+    margin-bottom: 10px 
+  }
+
+  .mb-15{
+    margin-bottom: 15px
+  }
+
+  .mb-25{
+    margin-bottom: 25px
+  }
+
+  .mb-5{
+    margin-bottom: 5px
+  }
+
+  .ml-10{
+    margin-left: 10px
+  }
+
+  .pl-10{
+    padding-left: 10px
   }

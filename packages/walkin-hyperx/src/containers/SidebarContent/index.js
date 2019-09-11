@@ -51,38 +51,33 @@ class SidebarContent extends Component {
 						<Menu.Item key="createCampaign">
 							<Link to="/hyperx/campaign/campaignManagement">
 								<i className="icon icon-setting" />
-								{/* <IntlMessages id="sidebar.samplePage" /> */}
-								Campaigns
+								<span>Campaigns</span>
 							</Link>
 						</Menu.Item>
 						<Menu.Item key="segment">
 							<Link to="/hyperx/segment/segmentList">
 								<i className="icon icon-alert" />
-								{/* <IntlMessages id="sidebar.samplePage" /> */}
-								Segments
+								<span>Segments</span>
 							</Link>
 						</Menu.Item>
 						<Menu.Item key="offers">
 							<Link to="/hyperx/offer/offerList">
 								<i className="icon icon-select" />
-								{/* <IntlMessages id="sidebar.samplePage" /> */}
-								Offers
+								<span>Offers</span>
 							</Link>
 						</Menu.Item>
-						<Menu.Item key="analytics">
-							{/* <Link to="/nearx"> */}
+						{/* <Menu.Item key="analytics">
+							<Link to="/nearx">
 							<i className="icon icon-geo-location" />
-							{/* <IntlMessages id="sidebar.samplePage" /> */}
 							Analytics
-							{/* </Link> */}
+							</Link>
 						</Menu.Item>
 						<Menu.Item key="settings">
-							{/* <Link to="/nearx"> */}
+							<Link to="/nearx">
 							<i className="icon icon-geo-location" />
-							{/* <IntlMessages id="sidebar.samplePage" /> */}
 							Settings
-							{/* </Link> */}
-						</Menu.Item>
+							</Link>
+						</Menu.Item> */}
 					</Menu>
 				</div>
 			</Auxiliary>

@@ -7,15 +7,13 @@ import Communication from "./campaignCreation/communication";
 import { campaignOverview as Overview } from "@walkinsole/walkin-components";
 import { allSegments, attributes } from "../../query/audience";
 import { getOffers } from "../../query/offer";
-import { withApollo, graphql, compose } from "react-apollo";
-import isEmpty from "lodash/isEmpty";
-import { Col } from "antd";
+import { withApollo, graphql, compose } from 'react-apollo';
+import isEmpty from 'lodash/isEmpty';
+import { GET_ALL_APPS_OF_ORGANIZATION } from "@walkinsole/walkin-components/src/PlatformQueries";
+import { Col } from 'antd';
 import jwt from "jsonwebtoken";
-import {
-  CampaignFooter,
-  CampaignHeader,
-  Stepper
-} from "@walkinsole/walkin-components";
+import { CampaignFooter, CampaignHeader, Stepper } from '@walkinsole/walkin-components';
+import { CREATE_CAMPAIGN, UPDATE_CAMPAIGN } from '../../query/campaign';
 
 const stepData = [
   {
@@ -57,16 +55,17 @@ class CampaignCreation extends Component {
     this.state = {
       formValues: {},
       current: 0,
-      priorityChosen: "",
+      priorityChosen: 3,
       priorityNumberError: false,
       showTestAndControl: false,
       testValue: 95,
       controlValue: 5,
-      testControlSelected: "",
-      communicationSelected: "1",
+      testControlSelected: '',
+      communicationSelected: '1',
       communicationFormValues: {},
       errors: {},
-      offer: ""
+      offer: '',
+      campaignCreated: false
     };
   }
   saveFormRef = formRef => {
@@ -74,12 +73,6 @@ class CampaignCreation extends Component {
   };
   communicationWrappedComponentRef = formRef => {
     this.formRef = formRef;
-  };
-
-  onTestAndControlEdit = () => {
-    this.setState({
-      showTestAndControl: true
-    });
   };
 
   handleCancel = () => {
@@ -91,39 +84,83 @@ class CampaignCreation extends Component {
   };
 
   goToNextPage(current) {
-    const form = this.formRef && this.formRef.props && this.formRef.props.form;
-    console.log("Form >>", this.formRef);
+    console.log(current);
+    let current1 = this.state.current
 
-    if (form) {
-      form.validateFields((err, values) => {
-        if (err) return;
-        else {
-          this.setState({
-            formValues: values,
-            current: current
-          });
-        }
-      });
-    } else this.setState({ current });
+    if (current1 == 0)
+      this.createOrUpdateBasicCampaign(current)
+    else this.setState({ current });
+
+
   }
 
-  OnCommunicationFormNext = () => {
+  createOrUpdateBasicCampaign = current => {
     const form = this.formRef && this.formRef.props && this.formRef.props.form;
     if (form) {
       form.validateFields((err, values) => {
-        if (err) {
-          return;
-        } else {
+        if (err) return
+        else {
+          console.log('values', values);
+          !this.state.campaignCreated ? this.createCampaign(values) : this.updateBasicCampaign(values);
           this.setState({
-            communicationFormValues: values
+            formValues: values,
+            current: current,
           });
         }
       });
     }
+  }
+
+  createCampaign = async values => {
+    const { client } = this.props;
+    const { priorityChosen, controlValue } = this.state;
+    const { allApplications: { organization } } = this.props;
+    const input = {
+      ...values,
+      priority: parseInt(priorityChosen),
+      campaignControlPercent: parseInt(controlValue),
+      organization_id: organization.id,
+      application_id: organization.applications[0].id,
+      campaignType: "OFFER"
+    };
+    this.setState({ loading: true });
+    try {
+      const createCampaign = await client.mutate({
+        mutation: CREATE_CAMPAIGN,
+        variables: { input: input }
+      });
+      this.setState({
+        loading: false, campaignCreated: true,
+        campaign: createCampaign.data.createCampaign
+      });
+    } catch (err) {
+      console.log(err);
+    }
   };
 
-  onControlValueChange = val => {
-    this.setState({ controlValue: val });
+  updateBasicCampaign = async values => {
+    const { client } = this.props;
+    const { priorityChosen, controlValue } = this.state;
+    const { allApplications: { organization } } = this.props;
+    const input = {
+      ...values,
+      priority: parseInt(priorityChosen),
+      campaignControlPercent: parseInt(controlValue),
+      campaignType: "OFFER"
+    }; this.setState({ loading: true });
+    try {
+      const createCampaign = await client.mutate({
+        mutation: UPDATE_CAMPAIGN,
+        variables: { input: input }
+      });
+      console.log("Updated");
+      // this.setState({
+      // 	loading: false,
+      // 	campaign: createCampaign.data.createCampaign
+      // });
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   onTestValueChange = val => {
@@ -142,8 +179,8 @@ class CampaignCreation extends Component {
     this.setState({ value: e.target.value });
   };
 
-  logQuery = query => {
-    console.log("quu", query);
+  handleButtonGroupChange = e => {
+    this.setState({ priorityChosen: e.target.value });
   };
 
   onCommunicationChange = e => {
@@ -155,48 +192,37 @@ class CampaignCreation extends Component {
     this.setState({ offer: e });
   };
 
+  handleOnOfferChange = e => {
+    console.log('offer >> ', e);
+    this.setState({ offer: e })
+  }
+
   render() {
-    const {
-      formValues,
-      current,
-      showTestAndControl,
-      testValue,
-      controlValue,
-      testControlSelected,
-      rows,
-      values,
-      communicationSelected,
-      communicationFormValues
-    } = this.state;
-    let attributeData =
-      this.props.allAttributes &&
-      this.props.allAttributes.ruleAttributes &&
+    const { formValues, current, showTestAndControl, testValue, controlValue, testControlSelected, rows, values, communicationSelected, communicationFormValues } = this.state;
+    let attributeData = this.props.allAttributes && this.props.allAttributes.ruleAttributes &&
       this.props.allAttributes.ruleAttributes.map(el => ({
         name: el.attributeName,
         id: el.id,
-        label: el.attributeName
+        label: el.attributeName,
       }));
     const props = {
-      name: "file",
-      action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
+      name: 'file',
+      action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
       headers: {
-        authorization: "authorization-text"
-      }
+        authorization: 'authorization-text',
+      },
     };
     return (
-      <div style={{ margin: "-32px" }}>
+      <div style={{ margin: '-32px' }}>
         <CampaignHeader
           children={
             <Fragment>
               <Col span={12}>
                 <h3 className="gx-text-grey paddingLeftStyle campaignHeaderTitleStyle">
                   Create Campaign
-                </h3>
+								</h3>
               </Col>
-              <Col
-                style={{ display: "flex", justifyContent: "flexEnd" }}
-                span={12}
-              >
+              <Col style={{ display: 'flex', justifyContent: 'flexEnd' }} span={12}>
                 <Stepper
                   stepData={stepData}
                   current={current}
@@ -206,26 +232,24 @@ class CampaignCreation extends Component {
             </Fragment>
           }
         />
-        <div style={{ margin: "32px" }}>
+        <div style={{ margin: '32px' }}>
           {current === 0 && (
             <BasicInfo
               subTitle="Basic information"
               onFormNext={this.onFormNext}
               saveFormRef={this.saveFormRef}
               formValues={formValues}
+              priorityChosen={this.state.priorityChosen}
               testAndControlText="Test & Control"
               promptText="prompt text"
               toolTipText="what is test and control?"
               prioritySelectionTitle="Campaign Priority"
               priorityButtonText="Custom no"
               testControlTitle="Test & Control"
-              testControlPercentage={
-                testControlSelected ? testControlSelected : "95% - 5%"
-              }
+              testControlPercentage={testControlSelected ? testControlSelected : '95% - 5%'}
               handleButtonGroupChange={this.handleButtonGroupChange}
               testControlPercentageEditText="Edit"
-              onPriorityButtonClick="onPriorityButtonClick"
-              priorityNumberInvalidErrorMessage="Enter a value between 6 and 99"
+              priorityNumberInvalidErrorMessage="Enter a value between 1 and 99"
               onTestAndControlEdit={this.onTestAndControlEdit}
               showTestAndControl={showTestAndControl}
               popupTitle="Test & Control"
@@ -255,16 +279,13 @@ class CampaignCreation extends Component {
               logQuery={this.logQuery}
             />
           )}
-          {current === 2 && (
-            <Offer
-              onFormNext={this.onFormNext}
+          {current === 2 &&
+            <Offer onFormNext={this.onFormNext}
               offersList={this.props.allOffers.getOffers}
               errors={this.state.errors}
               offer={this.state.offer}
               handleOnOfferChange={this.handleOnOfferChange}
-              subTitle="Offer"
-            />
-          )}
+              subTitle="Offer" />}
           {current === 3 && (
             <Communication
               subTitle="Communication"
@@ -272,16 +293,14 @@ class CampaignCreation extends Component {
               communicationData={communicationData}
               defaultValue="1"
               value={communicationSelected}
-              OnCommunicationFormNext={this.OnCommunicationFormNext}
-              communicationWrappedComponentRef={
-                this.communicationWrappedComponentRef
-              }
+              OnCommunicationFormNext={this.onFormNext}
+              communicationWrappedComponentRef={this.communicationWrappedComponentRef}
               communicationFormValues={communicationFormValues}
             />
           )}
           {current === 4 ? <Overview campaign={this.state.formValues} /> : ""}
         </div>
-        <div style={{ margin: "32px" }}>
+        <div style={{ margin: '32px' }}>
           <CampaignFooter
             nextButtonText="Next"
             saveDraftText="Save Draft"
@@ -298,30 +317,36 @@ export default withRouter(
   withApollo(
     compose(
       graphql(allSegments, {
-        name: "segmentList",
+        name: 'segmentList',
         options: ownProps => ({
           variables: {
-            organization_id: ownProps.client.cache.data.data["$ROOT_QUERY.auth"]
-              .organizationId
-              ? ownProps.client.cache.data.data["$ROOT_QUERY.auth"]
-                  .organizationId
-              : jwt.decode(localStorage.getItem("jwt")),
-            status: "ACTIVE"
+            organization_id: ownProps.client.cache.data.data['$ROOT_QUERY.auth'].organizationId ?
+              ownProps.client.cache.data.data['$ROOT_QUERY.auth'].organizationId : jwt.decode(localStorage.getItem('jwt')),
+            status: 'ACTIVE',
           },
-          fetchPolicy: "network-only"
-        })
+          fetchPolicy: 'network-only',
+        }),
       }),
       graphql(attributes, {
-        name: "allAttributes"
+        name: 'allAttributes',
       }),
       graphql(getOffers, {
         options: ownProps => ({
           variables: {
-            organizationId:
-              ownProps.client.cache.data.data["$ROOT_QUERY.auth"].organizationId
+            organizationId: ownProps.client.cache.data.data['$ROOT_QUERY.auth'].organizationId,
           }
         }),
-        name: "allOffers"
+        name: 'allOffers',
+      }),
+      graphql(GET_ALL_APPS_OF_ORGANIZATION, {
+        name: "allApplications",
+        options: props => {
+          return {
+            variables: {
+              id: jwt.decode(localStorage.getItem("jwt")).org_id
+            }
+          };
+        }
       })
     )(CampaignCreation)
   )
