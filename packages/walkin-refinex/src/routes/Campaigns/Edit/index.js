@@ -30,9 +30,9 @@ import jwt from "jsonwebtoken";
 import { async } from "q";
 
 const communicationData = [
-  { value: "sms", title: "SMS" },
+  { value: "SMS", title: "SMS" },
   // { value: 'push', title: 'Push Notification' },
-  { value: "email", title: "Email" }
+  { value: "EMAIL", title: "Email" }
 ];
 
 // import { allSegments } from "@walkinsole/walkin-hyperx/src/query/audience";
@@ -88,24 +88,15 @@ class EditCampaign extends Component {
 
   logQuery = query => {
     this.setState({ query: query });
-    console.log("quu", query);
-  };
-
-  logCommunication = text => {
-    console.log("Text....", text);
-    this.setState({ text: text });
   };
 
   createCommunicationMutation = (current, values) => {
-    console.log("This.props ,.,.,.", values);
-    console.log("Campaingn sms..", this.props.campaign.campaign)
-    console.log("message format..", this.state.communicationSelected)
     var input = {
       name: this.props.campaign.campaign.name,
       description: "",
-      messageFormat: "SMS",
-      templateBodyText: values.smsBody,
-      templateSubjectText: values.smsTag,
+      messageFormat: this.state.communicationSelected,
+      templateBodyText: this.state.communicationSelected == "SMS"?values.smsBody:values.email_body,
+      templateSubjectText: this.state.communicationSelected == "SMS"?values.smsTag:values.email_subject,
       templateStyle: "MUSTACHE",
       organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
       status:"ACTIVE"
@@ -123,11 +114,11 @@ class EditCampaign extends Component {
           entityType: "Campaign",
           messageTemplateId: data.data.createMessageTemplate.id,
           isScheduled: true,
-          isRepeatable: "true",
+          isRepeatable: false,
           organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
           status: "ACTIVE",
           firstScheduleDateTime: this.props.campaign.campaign.startTime,
-          repeatRuleId: "",
+          // repeatRuleId: "",
           commsChannelName: "Test"
         };
         this.props
@@ -136,9 +127,7 @@ class EditCampaign extends Component {
               input: input
             }
           }).then(data =>{
-            console.log("Data..", data)
-          }).catch(err =>{
-            console.log("Error creating for communication", err)
+            console.log("Communication data..", data)
           })
       }).catch(err => {
         console.log("Error creating for message template", err);
@@ -156,8 +145,6 @@ class EditCampaign extends Component {
       status: "ACTIVE",
       ruleConfiguration: JSON.stringify(this.state.query)
     };
-    console.log("save....", this.props);
-    console.log("Campaign Id..", this.props.campaign.campaign.id);
     this.props
       .rule({
         variables: {
@@ -243,13 +230,9 @@ class EditCampaign extends Component {
     }
     if (this.state.current == 4) {
       const comForm = this.formRef1 && this.formRef1.props && this.formRef1.props.form;
-      console.log("Email..", this.formRef1)
-      console.log("Email..", this.formRef1.props)
-      console.log("Email..", this.formRef1.props.form)
       comForm.validateFields((err, values) => {
         if (err)  return
         else {
-          console.log(values)
           this.setState({communicationFormValues:values})
           this.createCommunicationMutation(this.state.current, values);
         }
@@ -260,7 +243,6 @@ class EditCampaign extends Component {
         this.formRef && this.formRef.props && this.formRef.props.form;
       if (form) {
         form.validateFields((err, values) => {
-          console.log(values)
           if (err) {
             return;
           } else {
@@ -287,7 +269,6 @@ class EditCampaign extends Component {
   };
 
   setFeedbackForm = (formName, e) => {
-    console.log(formName);
     this.setState({
       formName: formName
     });
@@ -308,9 +289,7 @@ class EditCampaign extends Component {
       showTestAndControl: false
     });
   };
-  logQuery = query => {
-    console.log("quu", query);
-  };
+
   handleButtonGroupChange = e => {
     this.setState({ value: e.target.value });
   };
@@ -325,7 +304,6 @@ class EditCampaign extends Component {
 
   getContainer = () => {
     const { campaign } = this.props.campaign;
-    console.log(".......", this.props);
     let attributeData =
       this.props.allAttributes &&
       this.props.allAttributes.ruleAttributes &&
@@ -414,7 +392,7 @@ class EditCampaign extends Component {
             subTitle="Communication"
             onChange={this.onCommunicationChange}
             communicationData={communicationData}
-            defaultValue="sms"
+            defaultValue={this.state.communicationSelected}
             value={this.state.communicationSelected}
             commWrappedComponentRef={this.commWrappedComponentRef}
             communicationFormValues={this.state.communicationFormValues}

@@ -67,7 +67,9 @@ export const createCommunication = gql`
   mutation createCommunication($input: CreateCommunicationInput!) {
     createCommunication(input: $input) {
       id
-      entityId
+      entityId{
+        id
+      }
       entityType
       messageTemplate {
         id

@@ -41,15 +41,18 @@ const Communication = ({
       <Row>
         <Col sm={24} md={13} lg={13} xl={14} xxl={14}>
           {console.log(value)}
-          {value == "sms" && (
+          {value == "SMS" && (
             <SMSForm
               wrappedComponentRef={commWrappedComponentRef}
               formValues={communicationFormValues}
               onFormNext={onFormNext}
             />
           )}{" "}
-          {value == "push" && <PushNotificationForm />}
-          {value == "email" && <Email />}
+          {value == "PUSH" && <PushNotificationForm />}
+          {value == "EMAIL" && (<Email
+            wrappedComponentRef={commWrappedComponentRef}
+            formValues={communicationFormValues}
+            onFormNext={onFormNext} />)}
         </Col>
 
         {schedule && (
