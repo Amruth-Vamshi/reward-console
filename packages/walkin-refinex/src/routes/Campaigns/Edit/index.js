@@ -1,10 +1,10 @@
 import "./Edit.css";
 import React, { Component } from "react";
-import { Row, Col, Button } from "antd";
+import { Row, Col, Button, Spin } from "antd";
 import CampaignConfig from "./Campaign";
 // import Audience from "./Audience";
 import Audience from "@walkinsole/walkin-hyperx/src/containers/campaign/campaignCreation/audience";
-import { CampaignFooter, CampaignHeader } from "@walkinsole/walkin-components";
+import { CampaignFooter, CampaignHeader ,CircularProgress} from "@walkinsole/walkin-components";
 import "@walkinsole/walkin-hyperx/src/containers/campaign/campaignCreation/audience/style.css";
 import Communication from "./Communication";
 import Triggers from "./Triggers";
@@ -256,13 +256,14 @@ class EditCampaign extends Component {
       controlValue,
       testControlSelected
     } = this.state;
+    
     switch (this.state.current) {
       case 0:
         return (
           <CampaignConfig
           setFeedbackForm={this.setFeedbackForm}
             subTitle="Basic information"
-            formName={campaign.feedbackForm.title}
+            formName={campaign.feedbackForm?campaign.feedbackForm.title:"default"}
             onFormNext={this.onFormNext}
             saveFormRef={this.saveFormRef}
             formValues={this.props.campaign.campaign}
@@ -330,7 +331,7 @@ class EditCampaign extends Component {
 
   render() {
     const { current, stepperData } = this.state;
-
+    const {campaign}=this.props
     return (
       <div className="PageContainer" style={{ margin: "-32px" }}>
         <ContainerHeader
@@ -341,7 +342,7 @@ class EditCampaign extends Component {
         />
         <Row>
           <Col span={24}>
-            <div className="stepperContainer">{this.getContainer()}</div>
+            <div className="stepperContainer">{campaign.loading ? <CircularProgress /> :this.getContainer()}</div>
           </Col>
         </Row>
         {/* <Row className="BottomBar">
