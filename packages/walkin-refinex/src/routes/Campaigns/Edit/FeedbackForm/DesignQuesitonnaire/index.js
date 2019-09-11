@@ -5,7 +5,6 @@ import { Col, Row, Spin } from 'antd';
 import Preview from "./Preview"
 import Controls from "./Controls"
 
-import Feedback from "../../../../../../../feedback-form-web/src/App"
 class FormDesign extends Component {
   constructor(props) {
     super(props)

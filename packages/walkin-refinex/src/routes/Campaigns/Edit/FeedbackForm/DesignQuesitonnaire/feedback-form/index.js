@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { Layout, PageHeader, Button, Icon, Radio, Input, Row } from "antd"
 const { Header, Content, Footer } = Layout;
 import "./index.css"
-import Question from '../../../../../../../../feedback-form-web/src/Components/FeedbackForm/Question/Question';
 class Home extends Component {
 
   constructor(props) {
