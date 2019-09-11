@@ -102,11 +102,10 @@ class CoreLandingPage extends Component {
 				.then(res => {
 
 					console.log('>>>', res.data.organization.walkinProducts);
-
 					forEach(res.data.organization.walkinProducts, service => {
 
 						const appIndex = findIndex(formattedApps, app => {
-							return app.title === service.name;
+							return app.title.toLowerCase() === service.name.toLowerCase();
 						});
 
 						formattedApps = [

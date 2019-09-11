@@ -1,0 +1,7 @@
+.selected_form{
+  border: 1px solid blue;
+}
+
+.not_selected{
+  border: 1px solid white;
+}

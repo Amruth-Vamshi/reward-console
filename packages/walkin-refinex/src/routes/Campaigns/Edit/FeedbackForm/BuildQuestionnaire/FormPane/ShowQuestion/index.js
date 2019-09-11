@@ -12,7 +12,9 @@ export default function ShowQuestion({
   removeChoice,
   addNewQuestion,
   choiceData,
-  onChoiceEdited
+  onChoiceEdited,
+  submitChoice,
+  isChoiceLoading
 }) {
   return (
     <React.Fragment>
@@ -43,6 +45,8 @@ export default function ShowQuestion({
               removeChoice={removeChoice}
               addNewQuestion={addNewQuestion}
               choiceData={choiceData}
+              submitChoice={submitChoice}
+              isChoiceLoading={isChoiceLoading}
             />
           </Col>
         </Row>
