@@ -27,6 +27,7 @@ import {
 } from "../../../containers/Query";
 import { CustomScrollbars } from "@walkinsole/walkin-components";
 import jwt from "jsonwebtoken";
+import { async } from "q";
 
 const communicationData = [
   { value: "sms", title: "SMS" },
@@ -52,6 +53,7 @@ class EditCampaign extends Component {
       campaign: {},
       segmentList: {},
       attributeData: {},
+      formName:"",
       query: { id: "1", combinator: "and", rules: [] },
       stepperData: [
         {
@@ -189,7 +191,22 @@ class EditCampaign extends Component {
       });
   };
 
-  goToNextPage(current) {
+   
+  onCampaignUpdate= (formValues)=>{
+    console.log(formValues)
+    this.props.updateCampaign({
+      variables:{
+        id:this.props.campaign.campaign.id,
+      input:formValues}
+    })
+    .then(data=>{
+      console.log(data)
+    })
+    .catch(err=>{
+      console.log(err)
+    })
+  }
+   goToNextPage(current) {
     const { formValues } = this.state;
     if (isEmpty(formValues)) {
       const form =
@@ -243,14 +260,19 @@ class EditCampaign extends Component {
         this.formRef && this.formRef.props && this.formRef.props.form;
       if (form) {
         form.validateFields((err, values) => {
+          console.log(values)
           if (err) {
             return;
           } else {
             // this.ruleQuery();
-            this.setState({
+           this.setState({
               formValues: values,
               current: current
             });
+            switch(current){
+              case 1:
+                this.onCampaignUpdate(values)
+            }
           }
         });
     } else {
@@ -264,8 +286,11 @@ class EditCampaign extends Component {
     this.formRef = formRef;
   };
 
-  saveComFormRef = formRef => {
-    this.formRef1 = formRef;
+  setFeedbackForm = (formName, e) => {
+    console.log(formName);
+    this.setState({
+      formName: formName
+    });
   };
 
   onControlValueChange = val => {
@@ -322,7 +347,9 @@ class EditCampaign extends Component {
       case 0:
         return (
           <CampaignConfig
+          setFeedbackForm={this.setFeedbackForm}
             subTitle="Basic information"
+            formName={campaign.feedbackForm.title}
             onFormNext={this.onFormNext}
             saveFormRef={this.saveFormRef}
             formValues={this.props.campaign.campaign}
@@ -354,6 +381,7 @@ class EditCampaign extends Component {
             onControlValueChange={this.onControlValueChange}
             popupButtonText="apply"
             campaign={this.props.campaign.campaign}
+            edit={true}
           />
         );
       case 1:

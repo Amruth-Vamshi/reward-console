@@ -285,10 +285,7 @@ class FormHeader extends Component {
   }
 }
 
-FormHeader.propTypes = {
-  onQuestionEdited: PropTypes.isRequired,
-  questionToEdit: PropTypes.isRequired
-};
+
 
 const onValuesChange = ({ onQuestionEdited }, __, formValue) => {
   onQuestionEdited(formValue);

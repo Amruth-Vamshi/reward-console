@@ -28,7 +28,8 @@ import {
   createRule,
   UPDATE_CAMPAIGN,
   createCommunication,
-  createMessageTemplate
+  createMessageTemplate,
+  ADD_APPLICATION
 } from "../../../containers/Query";
 import { CAMPAIGN_TYPE } from "../../../Utils";
 import jwt from "jsonwebtoken";
@@ -93,8 +94,32 @@ class CreateCampaign extends Component {
     this.setState({ current });
   };
 
-  componentDidMount(){
+  createDefaultApplication=async ()=>{
+    //ADD_APPLICATION if no application exists
+    console.log(this.props)
+    const {
+      allApplications: { organization }
+    } = this.props;
     const { location, match } = this.props;
+    if(!organization.applications || (organization.applications && organization.applications.length===0)){
+      this.props.addApplication({
+        variables: {
+          organizationId: organization.id,
+          input: { name: "RefineX demo application", platform: "Prod" }
+        }
+      })
+      .then(async data=>{
+        console.log(data)
+       await this.props.allApplications.refetch()
+      })
+      .catch(err=>{
+        console.log(err)
+      })
+    }
+  }
+
+  componentDidMount(){
+    
 		if (location && location.state) {
 			if (location.state.campaignSelected) {
 				if (location.state.campaignSelected.name !== '') {
@@ -181,7 +206,11 @@ class CreateCampaign extends Component {
           if (err) {
             return;
           } else {
-            await this.createCampaign(values);
+            switch(current){
+              case 1:
+                await this.createCampaign(values);
+            }
+            
             this.setState({
               formValues: values,
               current: current
@@ -339,7 +368,8 @@ class CreateCampaign extends Component {
       controlValue,
       testControlSelected,
       campaign,
-      feedbackForm
+      feedbackForm,
+      formName
     } = this.state;
     console.log("This.state...", this.state)
     let attributeData =
@@ -356,6 +386,7 @@ class CreateCampaign extends Component {
           <CampaignConfig
             setFeedbackForm={this.setFeedbackForm}
             subTitle="Basic information"
+            formName={formName}
             onFormNext={this.onFormNext}
             saveFormRef={this.saveFormRef}
             formValues={formValues}
@@ -431,6 +462,9 @@ class CreateCampaign extends Component {
 
   render() {
     const { current, stepperData, loading } = this.state;
+    if(!loading){
+      this.createDefaultApplication()
+    }
     return (
       <div className="PageContainer" style={{ margin: "-32px" }}>
         <ContainerHeader
@@ -463,7 +497,7 @@ class CreateCampaign extends Component {
 
 const GET_USER_IDENTITY = gql`
   query auth {
-    auth {
+    auth @client{
       userId
       organizationId
     }
@@ -474,16 +508,14 @@ export default
   compose(
     graphql(GET_ALL_APPS_OF_ORGANIZATION, {
       name: "allApplications",
-      options: props => {
-        console.log(props);
-        return {
+      options: props =>  ({
           variables: {
             id: jwt.decode(localStorage.getItem("jwt")).org_id
           },
           fetchPolicy: "cache-and-network"
-        };
+        })
       }
-    }),
+    ),
     graphql(allSegments, {
       name: "segmentList",
       options: ownProps => ({
@@ -509,5 +541,9 @@ export default
     graphql(attributes, {
       name: "allAttributes"
     }),
+    graphql(GET_USER_IDENTITY, {
+      name: "auth"
+    }),
+    graphql(ADD_APPLICATION,{name:"addApplication"}),
     withApollo
 )(CreateCampaign);

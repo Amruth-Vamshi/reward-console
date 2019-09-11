@@ -1,6 +1,8 @@
+
 import React, { Component } from "react";
+
 import { Card, Col, Row } from 'antd';
-import { CustomScrollbars } from "@walkinsole/walkin-components";
+import Home from "./feedback-form/index";
 class FormDesign extends Component {
   render() {
     return (
@@ -9,9 +11,9 @@ class FormDesign extends Component {
           <Col span={19}>
             <Card style={{ height: "100vh" }}>
               <Row>
-                <Col span={24}>
-                  this will contain the dsign of form
-                  </Col>
+                <Col align="right" span={24} style={{ height: "500px", width: "500px" }}>
+                  <Home />
+                </Col>
               </Row>
             </Card>
           </Col>

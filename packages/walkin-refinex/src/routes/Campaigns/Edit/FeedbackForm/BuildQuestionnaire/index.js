@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import FormPane from "./FormPane";
 import { Query, graphql, compose } from "react-apollo";
 import gql from "graphql-tag";
-import { Row, Col } from "antd";
+import { Row, Col, Spin, Icon } from "antd";
 import QuestionsList from "./QuestionsList";
 import QuestionTypeSelector from "./QuestionTypeSelection";
 import {
@@ -11,7 +11,8 @@ import {
   EDIT_QUESTION,
   ADD_CHOICE,
   REMOVE_CHOICE,
-  ADD_QUESTION
+  ADD_QUESTION,
+  EDIT_CHOICE
 } from "../../../../../containers/Query";
 import { Card } from "antd";
 import { isEmptyStatement } from "@babel/types";
@@ -25,11 +26,16 @@ class Questionnaire extends Component {
       questionIndex: null,
       addQuestion: false,
       choiceToAddQuestion: null,
-      questionTypeSelector: null
+      questionTypeSelector: null,
+      choiceData: null,
+      questionnaire: null,
+      isChoiceLoading: false,
+      isQuestionLoading: false
     };
   }
 
   onQuestionSelected = questionIndex => {
+    console.log("this.props.questionnaire", this.props.questionnaire)
     this.setState(prevState => ({
       questionToEdit: this.props.questionnaire[questionIndex],
       questionIndex,
@@ -41,61 +47,81 @@ class Questionnaire extends Component {
   };
 
   onNewQuestionAdd = () => {
-    // this.props.addQuestion({
-    //   variables: {
-    //     choiceId: "",
-    //     input: {
-    //       questionText: "",
-    //       type: questionType,
-    //       rangeMax: "",
-    //       rangeMin: "",
-    //       choices: []
-    //     }
-    //   }
-    // }).then(data => {
-    //   console.log(data)
-    //   this.setState({
-    //     questionTypeSelector: questionType,
-    //     addQuestion: false,
-    //     questionToEdit: data.data.addQuestion
-    //   });
-    //   this.props.refetchFeedbackForm();
-    // }).catch(err => {
-    //   console.log("Error creating the question", err)
-    // })
+    const { choiceToAddQuestion } = this.state;
+    this.props.addQuestion({
+      variables: {
+        choiceId: choiceToAddQuestion.id,
+        input: {
+          questionText: "click here to edit",
+          type: questionType,
+          rangeMax: 0,
+          rangeMin: 10
+        }
+      }
+    }).then(async data => {
+      console.log(data)
+      this.setState({
+        questionTypeSelector: questionType,
+        addQuestion: false,
+        questionToEdit: data.data.addQuestion
+      });
+      await this.props.refetchQuestionnaire();
+      this.onQuestionSelected(this.state.questionIndex)
+    }).catch(err => {
+      console.log("Error creating the question", err)
+    })
   }
 
   onQuestionTypeSelector = questionType => {
+    this.setState({ isQuestionLoading: true })
+    if (this.props.questionnaire.length !== 0) {
+      const { choiceToAddQuestion } = this.state;
+      this.props.addQuestion({
+        variables: {
+          choiceId: choiceToAddQuestion.id,
+          input: {
+            questionText: "click here to edit",
+            type: questionType,
+            rangeMax: 0,
+            rangeMin: 10
+          }
+        }
+      }).then(async data => {
+        console.log(data)
+        await this.props.refetchQuestionnaire();
+        this.setState({
+          isQuestionLoading: false,
+          addQuestion: false
+        })
+      }).catch(err => {
+        this.setState({ isQuestionLoading: false })
+        console.log("Error creating the question", err)
+      })
+    } else {
+      this.createRootQuestionnaire(questionType)
+    }
 
-    this.setState({
-      questionTypeSelector: questionType,
-      addQuestion: false,
-      questionToEdit: {
-        questionText: "",
-        type: questionType,
-        rangeMax: "",
-        rangeMin: "",
-        choices: []
-      }
-    });
   };
 
 
-  createRootQuestionnaire = async (questionData) => {
+  createRootQuestionnaire = async (questionType) => {
+    this.setState({ isQuestionLoading: true })
     const { feedbackForm } = this.props;
     try {
       const data = await this.props.createQuestionnaire({
         variables: {
           feedbackFormId: feedbackForm.id,
           questionnaireInput: {
-            questionText: questionData.questionText,
-            type: questionData.type
+            questionText: "Click here to edit",
+            type: questionType
           }
         }
       });
       console.log(data);
-      this.props.refetchFeedbackForm();
+      await this.props.refetchFeedbackForm();
+      this.setState({ isQuestionLoading: false })
     } catch (e) {
+      this.setState({ isQuestionLoading: false })
       console.log("Error in creating questionnaire", e);
       console.log(e);
     }
@@ -103,9 +129,29 @@ class Questionnaire extends Component {
 
   onNewQuestionAdded = questionData => {
     questionData.type = this.state.questionTypeSelector;
-    this.setState({
-      questionData: questionData
-    });
+    this.props.addQuestion({
+      variables: {
+        choiceId: "",
+        input: {
+          questionText: "  ",
+          type: questionType,
+          rangeMax: "",
+          rangeMin: "",
+          choices: []
+        }
+      }
+    }).then(data => {
+      console.log(data)
+      this.props.refetchQuestionnaire();
+      this.setState({
+        questionTypeSelector: questionType,
+        addQuestion: false,
+        questionData: questionData,
+        questionToEdit: data.data.addQuestion
+      });
+    }).catch(err => {
+      console.log("Error creating the question", err)
+    })
   };
 
   onNewChoiceAdd = choiceData => {
@@ -114,14 +160,39 @@ class Questionnaire extends Component {
     });
   };
 
-  onNewQuestionAdd = questionData => {
-    this.setState({
-      questionData: questionData
-    });
-  };
+  // onNewQuestionAdd = questionData => {
+  //   this.setState({
+  //     questionData: questionData
+  //   });
+  // };
+
+  onChoiceSubmitted = editedChoice => {
+    console.log("editedChoice", editedChoice)
+    this.setState({ isChoiceLoading: true })
+    this.props.editChoice({
+      variables: {
+        input: {
+          id: editedChoice.id,
+          choiceText: editedChoice.choiceText,
+          rangeStart: editedChoice.rangeStart,
+          rangeEnd: editedChoice.rangeEnd
+        }
+      }
+    })
+      .then(async data => {
+        console.log(data)
+        await this.props.refetchQuestionnaire();
+        this.onQuestionSelected(this.state.questionIndex)
+        this.setState({ isChoiceLoading: false })
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  }
 
   onQuestionSubmitted = async editedQuestion => {
     // GQL to edit the question and update questionnaire in state
+    this.setState({ isQuestionLoading: true })
     const { type, questionText, rangeMax, rangeMin } = editedQuestion;
     const questionToSave = {
       id: this.state.questionToEdit.id,
@@ -136,10 +207,12 @@ class Questionnaire extends Component {
           editQuestionInput: questionToSave
         }
       })
-      .then(data => {
-        this.props.refetchQuestionnaire();
+      .then(async data => {
+        await this.props.refetchQuestionnaire();
+        this.setState({ isQuestionLoading: false })
       })
       .catch(err => {
+        this.setState({ isQuestionLoading: false })
         console.log(err);
       });
   };
@@ -150,16 +223,24 @@ class Questionnaire extends Component {
   };
 
   addChoice = () => {
+    this.setState({ isChoiceLoading: true })
     this.props
       .addChoice({
         variables: {
           questionId: this.state.questionToEdit.id,
-          input: this.state.choiceData
+          input: {
+            choiceText: "  ",
+            rangeStart: 0,
+            rangeEnd: 10
+          }
         }
       })
-      .then(data => {
+      .then(async data => {
         console.log(data);
-        this.props.refetchQuestionnaire();
+        this.setState({ choiceData: data.data.addChoice })
+        await this.props.refetchQuestionnaire();
+        this.onQuestionSelected(this.state.questionIndex)
+        this.setState({ isChoiceLoading: false })
       })
       .catch(err => {
         console.log(err);
@@ -168,37 +249,43 @@ class Questionnaire extends Component {
 
   removeChoice = choice => {
     console.log("removing choice", choice);
+    this.setState({ isChoiceLoading: true })
     this.props
       .removeChoice({
         variables: {
           id: choice.id
         }
       })
-      .then(mutationData => {
+      .then(async mutationData => {
         console.log(mutationData);
-        this.props.refetchQuestionnaire();
+        await this.props.refetchQuestionnaire();
+        this.onQuestionSelected(this.state.questionIndex)
+        this.setState({ isChoiceLoading: false })
       });
   };
 
   render() {
+    const antIcon = <Icon type="loading" style={{ fontSize: 50 }} spin />;
     const {
       questionIndex,
       addQuestion,
       choiceData,
       questionTypeSelector,
       choiceToAddQuestion,
-      questionToEdit
+      questionToEdit,
+      isChoiceLoading,
+      isQuestionLoading
     } = this.state;
-    console.log(questionIndex !== null && !addQuestion)
     return (
       <Row className="QuestionnaireArea">
         <Col span={8}>
-          <QuestionsList
+          {isQuestionLoading ? (<div className="divCenter"><Spin size="large" indicator={antIcon} /> </div>) : <QuestionsList
             createRootQuestionnaire={this.createRootQuestionnaire}
             questionnaire={this.props.questionnaire}
             onQuestionSelected={this.onQuestionSelected}
             addNewQuestion={this.addNewQuestion}
-          />
+            isQuestionLoading={isQuestionLoading}
+          />}
         </Col>
         <Col span={16}>
           {
@@ -212,6 +299,9 @@ class Questionnaire extends Component {
                 choiceData={choiceData}
                 questionType={questionTypeSelector}
                 choiceToAddQuestion={choiceToAddQuestion}
+                onChoiceSubmitted={this.onChoiceSubmitted}
+                isChoiceLoading={isChoiceLoading}
+                isQuestionLoading={isQuestionLoading}
               />
             ) : (
                 <QuestionTypeSelector
@@ -228,6 +318,9 @@ class Questionnaire extends Component {
                   choiceData={choiceData}
                   questionType={questionTypeSelector}
                   choiceToAddQuestion={choiceToAddQuestion}
+                  onChoiceSubmitted={this.onChoiceSubmitted}
+                  isChoiceLoading={isChoiceLoading}
+                  isQuestionLoading={isQuestionLoading}
                 />
               ) : (
                   <QuestionTypeSelector
@@ -249,5 +342,6 @@ export default compose(
     name: "addQuestion"
   }),
   graphql(ADD_CHOICE, { name: "addChoice" }),
-  graphql(REMOVE_CHOICE, { name: "removeChoice" })
+  graphql(REMOVE_CHOICE, { name: "removeChoice" }),
+  graphql(EDIT_CHOICE, { name: "editChoice" })
 )(Questionnaire);
