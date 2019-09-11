@@ -6,6 +6,7 @@ import gql from "graphql-tag";
 import { withRouter } from "react-router-dom";
 import { Query, compose } from "react-apollo";
 import { CircularProgress } from "@walkinsole/walkin-components";
+import { CustomScrollbars } from "@walkinsole/walkin-components"
 import {
   GET_QUESTIONNAIRE,
   GET_FEEDBACK_FORM
@@ -62,7 +63,7 @@ class FeedbackFormConfig extends Component {
                     <Tabs
                       size="large"
                       animated={{
-                        tabPane: false
+                        tabPane: true
                       }}
                       defaultActiveKey="1"
                     >
@@ -80,6 +81,7 @@ class FeedbackFormConfig extends Component {
                         />
                       </TabPane>
                       <TabPane tab="Design" key="2">
+
                         <Design
                           feedbackForm={campaignData.campaign.feedbackForm}
                           refetchFeedbackForm={refetchFeedbackForm}
@@ -91,6 +93,7 @@ class FeedbackFormConfig extends Component {
                           }
                           refetchQuestionnaire={refetchQuestionnaire}
                         />
+
                       </TabPane>
                     </Tabs>
                   );

@@ -1,0 +1,27 @@
+.error-text{
+    width: 40%;
+    color: #f00;
+    margin-top: 0.5rem;
+    background-color: #fff;
+   }
+
+   /* css for bottom sticking footer */
+footer > div {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+  }
+  footer {
+    z-index: 2;
+    display: flex;
+    position: absolute;
+    background-color: #fff;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  footer > button{
+      height: 100%;
+  }
