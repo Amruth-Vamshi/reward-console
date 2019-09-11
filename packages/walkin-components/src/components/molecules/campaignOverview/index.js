@@ -5,7 +5,6 @@ const { Title } = Typography;
 import { CustomScrollbars } from "@walkinsole/walkin-components";
 import moment from "moment";
 import './style.css'
-import { identifier } from "@babel/types";
 // import Moment from "react-moment";
 
 export default class Overview extends Component {
@@ -18,11 +17,15 @@ export default class Overview extends Component {
     var endDate = moment(campaign.endTime);
     var value = "";
     if (now < startDate) {
-      var diff = startDate.diff(now, "days");
-      value = "To start";
+      // var diff = startDate.diff(now, "days");
+      var diff = moment.duration(now.diff(startDate)).humanize()
+      value = "To Start";
+    } else if (now < endDate) {
+      // var diff = endDate.diff(now, "days");
+      var diff = moment.duration(now.diff(endDate)).humanize()
+      value = "To End";
     } else {
-      var diff = endDate.diff(now, "days");
-      value = "To end";
+      value = "Completed";
     }
     var start = moment(campaign.startTime).format("DD-MM-YYYY HH:mm:ss");
     var end = moment(campaign.endTime).format("DD-MM-YYYY HH:mm:ss");
@@ -30,74 +33,78 @@ export default class Overview extends Component {
     //   var diff = start.diff(end);
     //   console.log("Diff..", diff);
     // }
+
     return (
-      <CustomScrollbars>
-        <Row
-          style={{
-            margin: "1rem"
-          }}
-        >
-          <Col span={24}>
-            <Title level={2} className="gx-text-grey">
-              Overview
-            </Title>
-            <div style={{ fontWeight: "bold" }} className="overviewRowmargin">
-              {campaign.name}
-            </div>
-            <div className="overviewRowmargin">{campaign.description != null ? campaign.description : ""}</div>
-            <div className="overviewRowmargin">
-              <b>{diff}</b> days {value}
-            </div>
-            <Row className="overviewRowmargin">
-              <Col style={{ marginRight: 0 }} span={4}>
-                Start date
-              </Col>
-              <Col span={5}>{start}</Col>
-              <Col span={4}>End date</Col>
-              <Col span={5}>{end}</Col>
+      // <CustomScrollbars> 
+      <div className="campaignOverview">
+        <Title level={2} className="gx-text-grey"> Overview </Title>
+        <div style={{ margin: 15 }}>
+
+          <div className="cpName"> {campaign.name} </div>
+
+          <div className="cpDec mb-15">{campaign.description != null ? campaign.description : ""}</div>
+          <div className="cpDaysLeft mb-15"> <b>{diff ? diff : ''}</b> {value} </div>
+          <div className="mb-25">
+            <Row >
+              <Col md={24} lg={8}>  Start date &nbsp; &nbsp;:&nbsp;&nbsp;&nbsp;{start} </Col>
+              <Col md={24} lg={8}>  End date &nbsp; &nbsp;:&nbsp;&nbsp;&nbsp;{end} </Col>
             </Row>
-            <Row className="overviewTitlemargin">
-              <h4>Form </h4>
+          </div>
+
+          {campaign.feedbackForm ?
+            <div className="mb-25">
+              <h3>Form </h3>
+              <Row>
+                <Col xs={24} sm={24} md={17} xl={14} xxl={12} className="overViewBg">
+                  {campaign.feedbackForm ? campaign.feedbackForm.title : ""}
+                </Col>
+              </Row>
+            </div> : ''}
+
+          <div className="mb-25">
+            <Row>
+              <Col className='AudienceTitle' sm={16} md={12} xl={10} xxl={9}> <h3>Audience</h3></Col>
+              <Col >Total Reach : 6412 </Col>
             </Row>
-            <Row className="overviewRowmargin">
-              <Col span={10} className="overViewBackground">
-                {campaign.feedbackForm ? campaign.feedbackForm.title : ""}
-              </Col>
-            </Row>
-            <Row className="overviewTitlemargin">
-              <Col>
-                <h4 style={{ marginRight: 200 }}>Audience</h4>
-              </Col>
-              <Col span={4}>Total Reach 6412 </Col>
-            </Row>
-            <Row className="overviewRowmargin">
-              <Col span={6} className="overViewBackground">
+
+            <Row style={{ marginBottom: 10 }}>
+              <Col xs={24} sm={16} md={12} xl={10} xxl={9} className="audBg">
                 HLVR(Modified)
-              </Col>
-              <Col span={4} className="overViewBackground">
+                </Col>
+              <Col xs={24} sm={8} md={5} xl={4} xxl={3} className="audBg">
                 users 3422
-              </Col>
+                </Col>
             </Row>
-            <Row className="overviewRowmargin">
-              <Col span={6} className="overViewBackground">
+            <Row>
+              <Col xs={24} sm={16} md={12} xl={10} xxl={9} className="audBg">
                 Gold Members
               </Col>
-              <Col span={4} className="overViewBackground">
+              <Col xs={24} sm={8} md={5} xl={4} xxl={3} className="audBg">
                 users 2990
               </Col>
             </Row>
-            <Row className="overviewTitlemargin">
-              <h4>Communication</h4>
+          </div>
+
+          <div className="mb-25">
+            <h3>Offer</h3>
+            <Row>
+              <Col xs={24} sm={24} md={17} xl={14} xxl={12} className="offerBg">
+                50% discount on cars
+              </Col>
             </Row>
-            <Row className="overviewRowmargin">
-              <Col span={10} className="overViewBackground">
+          </div>
+
+          <div className="mb-25">
+            <h3>Communication</h3>
+            <Row>
+              <Col xs={24} sm={24} md={17} xl={14} xxl={12} className="overViewBg">
                 SMS - Store Experience
               </Col>
             </Row>
-            {/* <div>Start date 01 jan 2020-12:00 AM to 31 jan 2020-11:59 PM </div> */}
-          </Col>
-        </Row>
-      </CustomScrollbars>
+          </div>
+        </div>
+      </div>
+      // </CustomScrollbars>
     );
   }
 }

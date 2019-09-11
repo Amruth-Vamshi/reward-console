@@ -76,9 +76,7 @@ const BasicInfo = ({
                 handleChange={handleButtonGroupChange}
                 testControlPercentageEditText={testControlPercentageEditText}
                 onClick={onPriorityButtonClick}
-                priorityNumberInvalidErrorMessage={
-                  priorityNumberInvalidErrorMessage
-                }
+                priorityNumberInvalidErrorMessage={priorityNumberInvalidErrorMessage}
                 onTestAndControlEdit={onTestAndControlEdit}
               />
             </Col>

@@ -8,9 +8,9 @@ class PrioritySelection extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			priorityChosen: '',
+			priorityChosen: this.props.priorityChosen ? parseInt(this.props.priorityChosen) : 3,
 			priorityNumberError: false,
-			buttonGroupValue: 3,
+			maxPriority: this.props.maxPriority ? parseInt(this.props.maxPriority) : 99
 		};
 	}
 
@@ -24,10 +24,9 @@ class PrioritySelection extends React.Component {
 
 	validateCampaignPriority = e => {
 		const { value } = e.target;
-		let priorityChosen;
-		const reg = /^(([6-9][0-9])|([6-9]))$/;
-		if ((!Number.isNaN(value) && reg.test(value)) || value === '' || value === '-') {
+		if ((!Number.isNaN(value) && value > 0 && value <= this.state.maxPriority) || value === '') {
 			this.setState({ priorityChosen: value });
+			this.props.onClick()
 		} else {
 			this.displayError('priorityNumberError');
 		}
@@ -36,7 +35,7 @@ class PrioritySelection extends React.Component {
 	handleButtonGroup = e => {
 		const { value } = e.target;
 		this.props.onClick(e)
-		this.setState({ buttonGroupValue: value });
+		this.setState({ priorityChosen: value });
 	};
 
 	render() {
@@ -46,7 +45,7 @@ class PrioritySelection extends React.Component {
 			priorityNumberInvalidErrorMessage,
 			selectedPriorityButton,
 		} = this.props;
-		const { priorityChosen, priorityNumberError, buttonGroupValue } = this.state;
+		const { priorityChosen, priorityNumberError } = this.state;
 		return (
 			<Fragment>
 				<Text>{prioritySelectionTitle}</Text>
@@ -54,9 +53,9 @@ class PrioritySelection extends React.Component {
 					<ButtonGroups
 						selectedPriorityButton={priorityChosen}
 						handleChange={this.handleButtonGroup}
-						value={buttonGroupValue}
+						maxPriority={this.state.maxPriority}
 					/>
-					<Input
+					<Input style={{ marginLeft: 20 }}
 						className="prioritySelectionInputStyle"
 						placeholder={priorityButtonText}
 						onChange={this.validateCampaignPriority}
