@@ -131,6 +131,14 @@ export const campaigns = gql`
       startTime
       endTime
       status
+      application{
+        id
+        name
+        organization{
+          id
+          name
+        }
+      }
     }
   }
 `;
