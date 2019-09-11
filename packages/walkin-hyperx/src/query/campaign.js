@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 export const campaigns = gql`
-	query($status: STATUS!) {
+	query campaigns($status: STATUS!) {
 		campaigns(status: $status) {
 			id
 			name
@@ -10,4 +10,28 @@ export const campaigns = gql`
 			status
 		}
 	}
+`;
+
+export const CREATE_CAMPAIGN = gql`
+  mutation createCampaign($input: CampaingAddInput) {
+    createCampaign(input: $input) {
+      id
+      name
+      description
+      startTime
+      endTime
+      status
+    }
+  }
+`;
+
+export const UPDATE_CAMPAIGN = gql`
+  mutation createCampaign($input: CampaingAddInput) {
+    createCampaign(input: $input) {
+      id name description
+      startTime endTime
+      status triggerRule { id }
+      campaignType priority
+    }
+  }
 `;

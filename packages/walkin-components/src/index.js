@@ -41,7 +41,7 @@ import CampaignFooter from './components/molecules/campaignFooter';
 import Stepper from './components/atoms/stepper';
 import ErrorBoundary from "./util/ErrorBoundary";
 import IconWithTextCard from "./components/dashboard/CRM/IconWithTextCard"
-import campaignOverview from "./components/molecules/campaignOverview"
+import campaignOverview from "./components/molecules/campaignOverview/index"
 
 export {
   CircularProgress,

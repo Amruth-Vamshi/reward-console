@@ -5,68 +5,51 @@ import { campaigns } from '../../../query/campaign';
 import { Card, Menu, Dropdown, Col, Button, Progress, Tabs } from 'antd';
 import moment from 'moment';
 import { withApollo, graphql } from 'react-apollo';
-import { SortableDataTable, InstantSearch, CampaignHeader } from '@walkinsole/walkin-components';
+import { SortableDataTable, InstantSearch, CampaignHeader, CircularProgress } from '@walkinsole/walkin-components';
 import './style.css';
 
 const DEFAULT_STATUS = 'ACTIVE';
 
 const { TabPane } = Tabs;
-const data = [
-	{
-		name: 'welcome push',
-		startTime: '2019-05-06T09:10:22.574Z',
-		endTime: '2019-06-06T09:10:22.574Z',
-		status: 'ACTIVE',
-	},
-	{
-		name: 'birthday offer',
-		startTime: '2019-08-06T09:10:22.574Z',
-		endTime: '2019-09-06T09:10:22.574Z',
-		status: 'ACTIVE',
-	},
-	{
-		name: 'bean redemption',
-		startTime: '2019-06-21T09:10:22.574Z',
-		endTime: '2019-07-06T09:10:22.574Z',
-		status: 'ACTIVE',
-	},
-	{
-		name: '30% offer',
-		startTime: '2019-07-06T09:10:22.574Z',
-		endTime: '2019-08-096T09:10:22.574Z',
-		status: 'ACTIVE',
-	},
-	{
-		name: 'store opening offer',
-		startTime: '2019-04-06T09:10:22.574Z',
-		endTime: '2019-06-06T09:10:22.574Z',
-		status: 'ACTIVE',
-	},
-	{
-		name: '50% on beverages',
-		startTime: '2019-08-06T09:10:22.574Z',
-		endTime: '2019-10-06T09:10:22.574Z',
-		status: 'DRAFT',
-	},
-	{
-		name: 'draft test',
-		startTime: '2019-06-06T09:10:22.574Z',
-		endTime: '2019-07-06T09:10:22.574Z',
-		status: 'DRAFT',
-	},
-];
+
 class CampaignList extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			sortedInfo: null,
 			filtered: null,
-			data: data.filter(val => {
+			allCampaigns: null,
+			data: null,
+			loading: null
+		};
+	}
+	componentDidMount() {
+		const { campaigns, loading } = this.props;
+		this.setState({ loading: loading })
+	}
+
+
+	componentDidUpdate(preValue) {
+		if (this.props.loading !== preValue.loading) {
+			this.setInitialValues()
+			console.log(this.props)
+		}
+	}
+
+	setInitialValues = () => {
+		const { campaigns, loading } = this.props;
+		console.log()
+		let data = []
+		let allCampaigns = []
+		if (campaigns) {
+			data = campaigns.filter(val => {
 				if (val.status == 'ACTIVE') {
 					return moment().isBetween(val.startTime, val.endTime);
 				}
-			}),
-		};
+			})
+			allCampaigns = campaigns;
+		}
+		this.setState({ allCampaigns: allCampaigns, data: data, loading: false })
 	}
 	onNewCampaign = () => {
 		const { history } = this.props;
@@ -85,70 +68,90 @@ class CampaignList extends Component {
 	};
 	onDuplicateContact = contact => {
 		console.log('dupl', contact);
+		const { history, match } = this.props;
+		console.log(this.props)
+		history.push({
+			pathname: `${NEW_CAMPAIGN}/${contact.id}`,
+			state: {
+				campaignSelected: contact,
+			},
+		});
 	};
+
+	showMatrics = record => {
+		console.log("matrics", record)
+	}
 	menus = record => (
 		<Menu
 			onClick={e => {
 				if (e.key === 'duplicate') {
 					this.onDuplicateContact(record);
+				} else if (e.key === 'edit') {
+					// this.props.history.push(`/refinex/feedback/${record.id}/edit`)
+
+				} else if (e.key === "view") {
+					this.showMatrics(record)
 				} else {
 					this.onDeleteContact(record);
 				}
 			}}
 		>
-			<Menu.Item key="duplicate">Duplicate</Menu.Item>
+			<Menu.Item key="view">View</Menu.Item>
+			{/* <Menu.Item key="edit">Edit</Menu.Item>
+			<Menu.Item key="duplicate">Duplicate</Menu.Item> */}
 			<Menu.Item key="delete">Delete</Menu.Item>
 		</Menu>
 	);
 
 	onCampaignFilteredList = newList => {
+		console.log("new list", newList)
 		this.setState({
 			filtered: newList,
 		});
 	};
 
 	onTabChange = key => {
+		console.log(key)
+		const { allCampaigns } = this.state
 		if (key == 2) {
-			let upcomingCampaigns = data.filter(val => {
+			let upcomingCampaigns = allCampaigns.filter(val => {
 				if (val.status == 'ACTIVE') {
-					return moment(val.startTime).isAfter(moment(), 'day');
+					return moment(val.startTime).isAfter(moment());
 				}
 			});
-			this.setState({ data: upcomingCampaigns });
+			this.setState({ data: upcomingCampaigns, filtered: null });
 		}
+
 		if (key == 3) {
-			this.setState({ data: data });
+			let completedCampaigns = allCampaigns.filter(val => {
+				if (val.status == 'ACTIVE') {
+					return moment(val.endTime).isBefore(moment());
+				}
+			});
+			this.setState({ data: completedCampaigns, filtered: null });
 		}
 		if (key == 4) {
-			let completedCampaigns = data.filter(val => {
-				if (val.status == 'ACTIVE') {
-					return moment(val.endTime).isBefore(moment(), 'day');
-				}
-			});
-			this.setState({ data: completedCampaigns });
-		}
-		if (key == 5) {
 			const { changeStatus } = this.props;
 			//If api works
 			// changeStatus('DRAFT')
 			// this.setState({data: this.props.campaigns})
-			let draftCampaigns = data.filter(val => {
+			let draftCampaigns = allCampaigns.filter(val => {
 				return val.status == 'DRAFT';
 			});
-			this.setState({ data: draftCampaigns });
+			this.setState({ data: draftCampaigns, filtered: null });
 		}
 		if (key == 1) {
-			let liveCampaigns = data.filter(val => {
+			let liveCampaigns = allCampaigns.filter(val => {
 				if (val.status == 'ACTIVE') {
 					return moment().isBetween(val.startTime, val.endTime);
 				}
 			});
-			this.setState({ data: liveCampaigns });
+			this.setState({ data: liveCampaigns, filtered: null });
 		}
 	};
 
 	render() {
-		let { sortedInfo, filteredInfo, filtered, data } = this.state;
+		let { sortedInfo, filteredInfo, filtered, data, loading } = this.state;
 		sortedInfo = sortedInfo || {};
 		filteredInfo = filteredInfo || {};
 		let campaignData = [];
@@ -157,6 +160,13 @@ class CampaignList extends Component {
 		} else {
 			campaignData = data;
 		}
+		const paginationData = {
+			position: "bottom",
+			total: campaignData ? campaignData.length : 0,
+			defaultPageSize: 5,
+			showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`
+		}
+
 
 		const columns = [
 			{
@@ -197,51 +207,48 @@ class CampaignList extends Component {
 			},
 		];
 		return (
-			<div style={{ margin: '-32px' }}>
-				<CampaignHeader
-					children={
-						<Fragment>
-							<Col span={12}>
-								<h3 className="gx-text-grey paddingLeftStyle campaignHeaderTitleStyle">Campaigns</h3>
-							</Col>
-							<Col className="searchInputStyle" span={12}>
-								<Button type="primary" onClick={this.onNewCampaign}>
-									CREATE CAMPAIGN
+			loading ? <CircularProgress /> :
+				<div style={{ margin: '-32px' }}>
+					<CampaignHeader
+						children={
+							<Fragment>
+								<Col span={12}>
+									<h3 className="gx-text-grey paddingLeftStyle campaignHeaderTitleStyle">Campaigns</h3>
+								</Col>
+								<Col className="searchInputStyle" span={12}>
+									<Button type="primary" onClick={this.onNewCampaign}>
+										CREATE CAMPAIGN
 								</Button>
-							</Col>
-						</Fragment>
-					}
-				/>
-				<Card>
-					<div style={{ marginBottom: '24px' }}>
-						<div className="searchInputStyle">
-							<InstantSearch
-								placeHolder="Search campaign"
-								data={data}
-								onFilteredList={this.onCampaignFilteredList}
-							/>
+								</Col>
+							</Fragment>
+						}
+					/>
+					<Card>
+						<div style={{ marginBottom: '24px' }}>
+							<div className="searchInputStyle">
+								<InstantSearch
+									placeHolder="Search campaign"
+									data={data}
+									onFilteredList={this.onCampaignFilteredList}
+								/>
+							</div>
+							<Tabs defaultActiveKey="1" onChange={this.onTabChange}>
+								<TabPane tab="Live" key="1">
+									<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} pagination={paginationData} />
+								</TabPane>
+								<TabPane tab="Upcoming" key="2">
+									<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} pagination={paginationData} />
+								</TabPane>
+								<TabPane tab="Completed" key="3">
+									<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} pagination={paginationData} />
+								</TabPane>
+								<TabPane tab="Draft" key="4">
+									<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} pagination={paginationData} />
+								</TabPane>
+							</Tabs>
 						</div>
-						<Tabs defaultActiveKey="1" onChange={this.onTabChange}>
-							{console.log('>>', campaignData)}
-							<TabPane tab="Live" key="1">
-								<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} />
-							</TabPane>
-							<TabPane tab="Upcoming" key="2">
-								<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} />
-							</TabPane>
-							{/* <TabPane tab="A/B Testing" key="3">
-								<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} />
-							</TabPane> */}
-							<TabPane tab="Completed" key="4">
-								<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} />
-							</TabPane>
-							<TabPane tab="Draft" key="5">
-								<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} />
-							</TabPane>
-						</Tabs>
-					</div>
-				</Card>
-			</div>
+					</Card>
+				</div>
 		);
 	}
 }
@@ -252,7 +259,7 @@ export default withRouter(
 			options: () => ({
 				variables: {
 					status: DEFAULT_STATUS,
-				},
+				}, fetchPolicy: "network-only"
 			}),
 			props: ({ data: { loading, error, campaigns, refetch } }) => ({
 				loading,
