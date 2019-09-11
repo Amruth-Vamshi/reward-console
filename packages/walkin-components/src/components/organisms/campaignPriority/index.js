@@ -14,13 +14,15 @@ const CampaignPriority = ({
 	testControlPercentageEditText,
 	priorityNumberInvalidErrorMessage,
 	onTestAndControlEdit,
-	handleChange
+	handleChange,
+	priorityChosen
 }) => {
 	return (
 		<Fragment>
 			<div className="campaignPriorityContainerStyle prioritySection">
 				<PrioritySelection
 					buttons={buttons}
+					priorityChosen={priorityChosen}
 					prioritySelectionTitle={prioritySelectionTitle}
 					priorityButtonText={priorityButtonText}
 					priorityNumberInvalidErrorMessage={priorityNumberInvalidErrorMessage}
