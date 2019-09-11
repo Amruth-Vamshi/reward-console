@@ -1,43 +1,49 @@
 
 import React, { Component } from "react";
 
-import { Card, Col, Row } from 'antd';
-import Home from "./feedback-form/index";
+import { Col, Row, Spin } from 'antd';
+import Preview from "./Preview"
+import Controls from "./Controls"
+
+import Feedback from "../../../../../../../feedback-form-web/src/App"
 class FormDesign extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      counter: 0,
+      isLastQuestion: false
+    }
+  }
+
+  nextQuestion = () => {
+    const { counter } = this.state;
+    const { questionnaire } = this.props;
+    const totalQuestion = questionnaire.length;
+    const newCounter = counter + 1;
+    if (newCounter >= totalQuestion) {
+      this.setState({ isLastQuestion: true })
+    } else {
+      this.setState({ counter: newCounter })
+    }
+
+
+  }
   render() {
+    const { questionnaire } = this.props;
+    const { counter, isLastQuestion } = this.state;
     return (
-      <div style={{ background: '#ECECEC', height: "100vh" }}>
+
+      questionnaire && questionnaire[counter] ? (
         <Row>
-          <Col span={19}>
-            <Card style={{ height: "100vh" }}>
-              <Row>
-                <Col align="right" span={24} style={{ height: "500px", width: "500px" }}>
-                  <Home />
-                </Col>
-              </Row>
-            </Card>
+          <Col span={17}>
+            <Preview question={questionnaire[counter]} nextQuestion={this.nextQuestion} isLastQuestion={isLastQuestion} />
           </Col>
+
           <Col span={6}>
-            <Card style={{ backgroundColor: "#a39c9b", height: "100vh" }}>
-              <Row>
-                <Col span={24}>
-                  this is first row
-                </Col>
-              </Row>
-              <Row>
-                <Col span={24}>
-                  this is first row
-                </Col>
-              </Row>
-              <Row>
-                <Col span={24}>
-                  this is first row
-                </Col>
-              </Row>
-            </Card>
+            <Controls />
           </Col>
-        </Row>
-      </div>
+        </Row>) : <Spin />
+
 
     )
   }
