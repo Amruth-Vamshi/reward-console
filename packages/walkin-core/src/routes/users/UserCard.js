@@ -47,7 +47,7 @@ export default class UserCard extends Component {
               <div style={{ float: 'left', marginRight: 15 }}>
                 {data.image === null || data.image === "" || data.image === undefined ?
                   <Avatar style={{ backgroundColor: `${this.random_bg_color()}` }} size="large">  <span style={{ fontSize: 25 }}>
-                    {data.firstName.charAt(0).toUpperCase()}
+                    {data.firstName ? data.firstName.charAt(0).toUpperCase() : data.email.charAt(0).toUpperCase()}
                   </span> </Avatar> :
                   <Avatar size="large" alt={data.firstName} src={data.image} />
                 }

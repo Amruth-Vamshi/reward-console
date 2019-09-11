@@ -137,8 +137,6 @@ class Landing extends Component {
     return (
       <Auxiliary>
         <div className="gx-main-content-wrapper">
-
-
           <Row>
             <Col sm={0} md={6} xl={8}>
               <span className='gx-d-none gx-d-sm-flex'

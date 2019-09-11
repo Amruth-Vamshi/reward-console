@@ -20,7 +20,7 @@ class CampaignList extends Component {
 			filtered: null,
 			allCampaigns: null,
 			data: null,
-			loading: null
+			loading: false
 		};
 	}
 	componentDidMount() {
@@ -207,48 +207,48 @@ class CampaignList extends Component {
 			},
 		];
 		return (
-			loading ? <CircularProgress /> :
-				<div style={{ margin: '-32px' }}>
-					<CampaignHeader
-						children={
-							<Fragment>
-								<Col span={12}>
-									<h3 className="gx-text-grey paddingLeftStyle campaignHeaderTitleStyle">Campaigns</h3>
-								</Col>
-								<Col className="searchInputStyle" span={12}>
-									<Button type="primary" onClick={this.onNewCampaign}>
-										CREATE CAMPAIGN
+
+			<div style={{ margin: '-32px' }}>
+				<CampaignHeader
+					children={
+						<Fragment>
+							<Col span={12}>
+								<h3 className="gx-text-grey paddingLeftStyle campaignHeaderTitleStyle">Campaigns</h3>
+							</Col>
+							<Col className="searchInputStyle" span={12}>
+								<Button type="primary" onClick={this.onNewCampaign}>
+									CREATE CAMPAIGN
 								</Button>
-								</Col>
-							</Fragment>
-						}
-					/>
-					<Card>
-						<div style={{ marginBottom: '24px' }}>
-							<div className="searchInputStyle">
-								<InstantSearch
-									placeHolder="Search campaign"
-									data={data}
-									onFilteredList={this.onCampaignFilteredList}
-								/>
-							</div>
-							<Tabs defaultActiveKey="1" onChange={this.onTabChange}>
-								<TabPane tab="Live" key="1">
-									<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} pagination={paginationData} />
-								</TabPane>
-								<TabPane tab="Upcoming" key="2">
-									<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} pagination={paginationData} />
-								</TabPane>
-								<TabPane tab="Completed" key="3">
-									<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} pagination={paginationData} />
-								</TabPane>
-								<TabPane tab="Draft" key="4">
-									<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} pagination={paginationData} />
-								</TabPane>
-							</Tabs>
+							</Col>
+						</Fragment>
+					}
+				/>
+				<Card>
+					<div style={{ marginBottom: '24px' }}>
+						<div className="searchInputStyle">
+							<InstantSearch
+								placeHolder="Search campaign"
+								data={data}
+								onFilteredList={this.onCampaignFilteredList}
+							/>
 						</div>
-					</Card>
-				</div>
+						<Tabs defaultActiveKey="1" onChange={this.onTabChange}>
+							<TabPane tab="Live" key="1">
+								<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} pagination={paginationData} loading={loading} />
+							</TabPane>
+							<TabPane tab="Upcoming" key="2">
+								<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} pagination={paginationData} loading={loading} />
+							</TabPane>
+							<TabPane tab="Completed" key="3">
+								<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} pagination={paginationData} loading={loading} />
+							</TabPane>
+							<TabPane tab="Draft" key="4">
+								<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} pagination={paginationData} loading={loading} />
+							</TabPane>
+						</Tabs>
+					</div>
+				</Card>
+			</div>
 		);
 	}
 }

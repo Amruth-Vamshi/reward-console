@@ -13,13 +13,13 @@ export default function ShowQuestion({
   addNewQuestion,
   choiceData,
   questionType,
-  choiceToAddQuestion
+  choiceToAddQuestion,
+  submitChoice,
+  isChoiceLoading
 }) {
   console.log(
     "new question addition",
-    questionType,
-    choiceToAddQuestion,
-    questionToEdit
+    submitChoice
   );
   return (
     <React.Fragment>
@@ -34,8 +34,8 @@ export default function ShowQuestion({
       <Col span={22}>
         <Col span={24}>
           <QuestionForm
-            onQuestionEdited={() => onQuestionEdited}
-            onQuestionSubmitted={() => onQuestionSubmitted}
+            onQuestionEdited={onQuestionEdited}
+            onQuestionSubmitted={onQuestionSubmitted}
             questionToEdit={questionToEdit}
             style={{ marginTop: "4%" }}
           />
@@ -48,6 +48,8 @@ export default function ShowQuestion({
             removeChoice={removeChoice}
             addNewQuestion={addNewQuestion}
             choiceData={choiceData}
+            submitChoice={submitChoice}
+            isChoiceLoading={isChoiceLoading}
           />
         </Col>
       </Col>

@@ -18,6 +18,12 @@ class ChoiceInput extends Component {
     });
   };
 
+  onSubmit = e => {
+    e.preventDefault()
+    console.log("here", this.props.choice)
+    this.props.submitChoice()
+  }
+
   componentDidMount() {
     this.setFieldValues();
   }
@@ -46,7 +52,7 @@ class ChoiceInput extends Component {
       <ErrorBoundary>
         <Row>
           <Col span={20}>
-            <Form labelCol={{ span: 6 }} wrapperCol={{ span: 12 }}>
+            <Form labelCol={{ span: 6 }} wrapperCol={{ span: 12 }} onSubmit={this.onSubmit}>
               <Item>
                 {getFieldDecorator("choiceText", {
                   rules: [
@@ -86,8 +92,8 @@ class ChoiceInput extends Component {
 
 const choiceForm = Form.create({
   name: "ChoiceInput",
-  onFieldsChange(props, value) {
-    props.onChoiceEdited(value);
+  onValuesChange(props, value) {
+    props.onChoiceEdited(value, props.choice);
   }
 })(ChoiceInput);
 

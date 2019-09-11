@@ -7,7 +7,7 @@ import { NEW_SEGMENT, SEGMENT_LIST } from "../Utils"
 
 const RefineXRoutes = ({ match }) => {
   return (
-    <div >
+    <div>
       <Switch>
         <Redirect exact from={`${match.url}/`} to={`${match.url}/dashboard`} />
         <Route

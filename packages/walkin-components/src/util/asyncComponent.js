@@ -35,7 +35,7 @@ export default function asyncComponent(importComponent) {
     }
 
     render() {
-      const Component = this.state.component || <CircularProgress />;
+      const Component = this.state.component || <CircularProgress className="gx-loader-400" />;
       return (
         <ReactPlaceholder type="text" rows={7} ready={Component !== null}>
           {Component}

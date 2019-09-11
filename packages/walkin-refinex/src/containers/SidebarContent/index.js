@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Menu } from "antd";
+import { Menu, Icon } from "antd";
 import { Link } from "react-router-dom";
 
 import {
@@ -49,17 +49,9 @@ class SidebarContent extends Component {
           <Menu theme={themeType === THEME_TYPE_LITE ? "lite" : "dark"}>
             <Menu.Item key="dashboard">
               <Link to="/refinex/dashboard">
-                <i className="icon icon-setting" />
+                <Icon type="dashboard" style={{ fontSize: '18px' }} />
                 <IntlMessages id="sidebar.refinex.dashboard" />
               </Link>
-            </Menu.Item>
-
-            <Menu.Item key="segment">
-              <Link to="/refinex/segment/segmentList">
-                <i className="icon icon-alert" />
-                {/* <IntlMessages id="sidebar.samplePage" /> */}
-                Segments
-							</Link>
             </Menu.Item>
             <Menu.Item key="feedbacks">
               <Link to="/refinex/feedback">
@@ -67,15 +59,22 @@ class SidebarContent extends Component {
                 <IntlMessages id="sidebar.refinex.feedbacks" />
               </Link>
             </Menu.Item>
+            <Menu.Item key="segment">
+              <Link to="/refinex/segment/segmentList">
+                <i className="icon icon-select" />
+                {/* <IntlMessages id="sidebar.samplePage" /> */}
+                Segments
+							</Link>
+            </Menu.Item>
             <Menu.Item key="settings">
               <Link to="/refinex/settings">
-                <i className="icon icon-select" />
+                <i className="icon icon-setting" />
                 <IntlMessages id="sidebar.refinex.settings" />
               </Link>
             </Menu.Item>{" "}
             <Menu.Item key="analytics">
               <Link to="/refinex/analytics">
-                <i className="icon icon-geo-location" />
+                <i className="icon icon-chart" />
                 <IntlMessages id="sidebar.refinex.analytics" />
               </Link>
             </Menu.Item>
