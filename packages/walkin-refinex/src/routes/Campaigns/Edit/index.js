@@ -46,7 +46,7 @@ class EditCampaign extends Component {
       testValue: 95,
       controlValue: 5,
       testControlSelected: "",
-      communicationSelected: "sms",
+      communicationSelected: "SMS",
       communicationFormValues: {},
       formValues: {},
       campaign: {},
@@ -94,65 +94,53 @@ class EditCampaign extends Component {
     this.setState({ text: text });
   };
 
-  // createCommunicationMutation = current => {
-  //   const input = {
-  //     name: "Test",
-  //     description: "Test",
-  //     messageFormat: "SMS",
-  //     templateBodyText: "First template",
-  //     templateSubjectText: "To test the first template",
-  //     templateStyle: "MUSTACHE",
-  //     organization_id: jwt.decode(localStorage.getItem("jwt")).org_id
-  //   };
-  //   this.props
-  //     .createMessageTemplate({
-  //       variables: {
-  //         input: input
-  //       }
-  //     })
-  //     .then(data => {
-  //       console.log("MessageTemplate data..", data);
-  //     });
-  // };
   createCommunicationMutation = (current, values) => {
     console.log("This.props ,.,.,.", values);
-    // var input = {
-    //   name: "Test",
-    //   description: "Test",
-    //   messageFormat: "SMS",
-    //   templateBodyText: "First template",
-    //   templateSubjectText: "To test the first template",
-    //   templateStyle: "MUSTACHE",
-    //   organization_id: jwt.decode(localStorage.getItem("jwt")).org_id
-    // };
-    // this.props
-    //   .createMessageTemplate({
-    //     variables: {
-    //       input: input
-    //     }
-    //   })
-    //   .then(data => {
-    //     console.log("MessageTemplate data..", data);
-    //     // var input = {
-    //     //   entityId: "2", // campainId
-    //     //   entityType: Campaign,
-    //     //   messageTemplateId: "4",
-    //     //   isScheduled: true,
-    //     //   isRepeatable: true,
-    //     //   organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
-    //     //   status: ACTIVE,
-    //     //   firstScheduleDateTime: "2019-09-15T15:53:00",
-    //     //   repeatRuleId: "1",
-    //     //   commsChannelName: "Test"
-    //     // };
-    //     // this.props(
-    //     //   createCommunication({
-    //     //     variables: {
-    //     //       input: input
-    //     //     }
-    //     //   })
-    //     // );
-    //   });
+    console.log("Campaingn sms..", this.props.campaign.campaign)
+    console.log("message format..", this.state.communicationSelected)
+    var input = {
+      name: this.props.campaign.campaign.name,
+      description: "",
+      messageFormat: "SMS",
+      templateBodyText: values.smsBody,
+      templateSubjectText: values.smsTag,
+      templateStyle: "MUSTACHE",
+      organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
+      status:"ACTIVE"
+    };
+    this.props
+      .messageTemplate({
+        variables: {
+          input: input
+        }
+      })
+      .then(data => {
+        console.log("MessageTemplate data..", data);
+        var input = {
+          entityId: this.props.campaign.campaign.id, // campainId
+          entityType: "Campaign",
+          messageTemplateId: data.data.createMessageTemplate.id,
+          isScheduled: true,
+          isRepeatable: "true",
+          organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
+          status: "ACTIVE",
+          firstScheduleDateTime: this.props.campaign.campaign.startTime,
+          repeatRuleId: "",
+          commsChannelName: "Test"
+        };
+        this.props
+          .communication({
+            variables: {
+              input: input
+            }
+          }).then(data =>{
+            console.log("Data..", data)
+          }).catch(err =>{
+            console.log("Error creating for communication", err)
+          })
+      }).catch(err => {
+        console.log("Error creating for message template", err);
+      });
   };
 
   ruleQuery = current => {
@@ -238,6 +226,9 @@ class EditCampaign extends Component {
     }
     if (this.state.current == 4) {
       const comForm = this.formRef1 && this.formRef1.props && this.formRef1.props.form;
+      console.log("Email..", this.formRef1)
+      console.log("Email..", this.formRef1.props)
+      console.log("Email..", this.formRef1.props.form)
       comForm.validateFields((err, values) => {
         if (err)  return
         else {

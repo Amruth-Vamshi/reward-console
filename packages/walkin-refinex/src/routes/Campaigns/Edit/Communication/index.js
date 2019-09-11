@@ -63,8 +63,11 @@ class Communication extends Component {
                         formValues={this.props.communicationFormValues}
                       />
                     ) : (
-                      <EmailForm />
-                    )}
+                        <EmailForm
+                          saveFormRef={this.props.saveFormRef}
+                          onFormNext={this.props.onFormNext}
+                          formValues={this.props.communicationFormValues} />
+                      )}
                   </div>
                 </Col>
               </Row>

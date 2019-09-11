@@ -24,8 +24,11 @@ class EmailForm extends Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
+    const { formValues, saveFormRef, onFormNext } = this.props;
+    console.log("This.Email..", this.props.form)
     return (
-      <Form layout="vertical">
+      <Form layout="vertical" ref={saveFormRef}
+        onSubmit={onFormNext}>
         <Form.Item label="Subject">
           {getFieldDecorator("email_subject", {
             rules: [{ required: true, message: "Please enter Email Subject!" }]

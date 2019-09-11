@@ -77,6 +77,23 @@ export const createCommunication = gql`
   }
 `;
 
+export const updateCommunication = gql`
+  mutation updateCommunication($input: UpdateCommunicationInput!) {
+    updateCommunication(input: $input) {
+    id
+    entityId
+    entityType
+    isScheduled
+    firstScheduleDateTime
+    isRepeatable
+    lastProcessedDateTime
+    commsChannelName
+    status
+    }
+  }
+`;
+
+
 export const createMessageTemplate = gql`
   mutation createMessageTemplate($input: CreateMessageTemplateInput!) {
     createMessageTemplate(input: $input) {
@@ -89,6 +106,21 @@ export const createMessageTemplate = gql`
       templateStyle
     }
   }
+`;
+
+export const updateMessageTemplate = gql`
+mutation updateMessageTemplate($input:UpdateMessageTemplateInput!){
+  updateMessageTemplate(input:$input){
+    id
+    name
+    description
+    messageFormat
+    templateBodyText
+  	templateSubjectText
+    templateStyle
+    status
+  }
+}
 `;
 
 export const attributes = gql`

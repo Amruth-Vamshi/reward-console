@@ -20,9 +20,6 @@ class SMS extends Component {
   render() {
     const {
       getFieldDecorator,
-      // onFormNext,
-      // saveFormRef,
-      // formValues,
       getFieldsError,
       getFieldError,
       isFieldTouched
