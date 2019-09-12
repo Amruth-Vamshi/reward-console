@@ -8,45 +8,45 @@ export const allSegments = gql`
       segmentType
       status
       rule {
-				id
-				ruleConfiguration
-			}
+        id
+        ruleConfiguration
+      }
     }
   }
 `;
 
 export const disableSegment = gql`
-	mutation disableSegment($id: ID!) {
-		disableSegment(id: $id) {
-			id
-			name
-		}
-	}
+  mutation disableSegment($id: ID!) {
+    disableSegment(id: $id) {
+      id
+      name
+    }
+  }
 `;
 
 export const createSegment = gql`
-	mutation createSegment(
-		$name: String!
-		$segmentType: SEGMENT_TYPE!
-		$organization_id: ID!
-		$application_id: ID!
-		$rule_id: ID!
-		$status: STATUS!
-	) {
-		createSegment(
-			input: {
-				name: $name
-				segmentType: $segmentType
-				status: $status
-				organization_id: $organization_id
-				application_id: $application_id
-				rule_id: $rule_id
-			}
-		) {
-			id
-			name
-		}
-	}
+  mutation createSegment(
+    $name: String!
+    $segmentType: SEGMENT_TYPE!
+    $organization_id: ID!
+    $application_id: ID!
+    $rule_id: ID!
+    $status: STATUS!
+  ) {
+    createSegment(
+      input: {
+        name: $name
+        segmentType: $segmentType
+        status: $status
+        organization_id: $organization_id
+        application_id: $application_id
+        rule_id: $rule_id
+      }
+    ) {
+      id
+      name
+    }
+  }
 `;
 
 export const createRule = gql`
@@ -61,6 +61,68 @@ export const createRule = gql`
       ruleExpression
     }
   }
+`;
+
+export const createCommunication = gql`
+  mutation createCommunication($input: CreateCommunicationInput!) {
+    createCommunication(input: $input) {
+      id
+      entityId{
+        id
+      }
+      entityType
+      messageTemplate {
+        id
+        name
+      }
+    }
+  }
+`;
+
+export const updateCommunication = gql`
+  mutation updateCommunication($input: UpdateCommunicationInput!) {
+    updateCommunication(input: $input) {
+    id
+    entityId
+    entityType
+    isScheduled
+    firstScheduleDateTime
+    isRepeatable
+    lastProcessedDateTime
+    commsChannelName
+    status
+    }
+  }
+`;
+
+
+export const createMessageTemplate = gql`
+  mutation createMessageTemplate($input: CreateMessageTemplateInput!) {
+    createMessageTemplate(input: $input) {
+      id
+      name
+      description
+      messageFormat
+      templateBodyText
+      templateSubjectText
+      templateStyle
+    }
+  }
+`;
+
+export const updateMessageTemplate = gql`
+mutation updateMessageTemplate($input:UpdateMessageTemplateInput!){
+  updateMessageTemplate(input:$input){
+    id
+    name
+    description
+    messageFormat
+    templateBodyText
+  	templateSubjectText
+    templateStyle
+    status
+  }
+}
 `;
 
 export const attributes = gql`

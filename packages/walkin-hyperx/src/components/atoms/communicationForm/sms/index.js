@@ -35,13 +35,13 @@ const SMSForm = Form.create({ name: 'form_in_modal' })(
 				<Form style={{ paddingTop: '20px' }} layout="vertical" ref={wrappedComponentRef} onSubmit={onFormNext}>
 					<Form.Item size={'large'} label="SMS tag" {...formItemLayout}>
 						{getFieldDecorator('smsTag', {
-							initialValue: '',
+							initialValue: `${Object.keys(formValues).length != 0 ? formValues.smsTag ? formValues.smsTag : "" : ""}`,
 							rules: [{ required: true, message: 'SMS tag is required' }],
 						})(<Input />)}
 					</Form.Item>
 					<Form.Item label="SMS body" {...formItemLayout}>
 						{getFieldDecorator('smsBody', {
-							initialValue: '',
+							initialValue: `${Object.keys(formValues).length != 0 ? formValues.smsBody ? formValues.smsBody : "" : ""}`,
 							rules: [{ required: true, message: 'SMS body is required' }],
 						})(<TextArea rows={3} />)}
 					</Form.Item>

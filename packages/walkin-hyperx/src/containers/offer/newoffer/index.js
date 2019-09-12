@@ -409,7 +409,7 @@ class NewOffer extends Component {
 					current: current,
 				});
 			}
-		} else if (e && e.target.innerText === 'Launch') {
+		} else if (e && e.target.innerText === 'Save') {
 			const { formValues } = this.state;
 			if (!isEmpty(formValues.basicForm)) {
 				if (isEmpty(formValues.redemptionForm) || isValidObject(formValues.redemptionForm)) {

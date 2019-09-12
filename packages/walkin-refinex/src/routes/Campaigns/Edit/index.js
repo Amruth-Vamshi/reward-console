@@ -6,9 +6,10 @@ import CampaignConfig from "./Campaign";
 import Audience from "@walkinsole/walkin-hyperx/src/containers/campaign/campaignCreation/audience";
 import { CampaignFooter, CampaignHeader ,CircularProgress} from "@walkinsole/walkin-components";
 import "@walkinsole/walkin-hyperx/src/containers/campaign/campaignCreation/audience/style.css";
+import Comm from "@walkinsole/walkin-hyperx/src/containers/campaign/campaignCreation/communication";
 import Communication from "./Communication";
 import Triggers from "./Triggers";
-import { campaignOverview as Overview} from "@walkinsole/walkin-components";
+import { campaignOverview as Overview } from "@walkinsole/walkin-components";
 import FeedbackFormConfig from "./FeedbackForm";
 import ContainerHeader from "../CampaignHeader";
 import gql from "graphql-tag";
@@ -20,11 +21,19 @@ import {
   allSegments,
   attributes,
   createRule,
-  UPDATE_CAMPAIGN
+  UPDATE_CAMPAIGN,
+  createCommunication,
+  createMessageTemplate
 } from "../../../containers/Query";
 import { CustomScrollbars } from "@walkinsole/walkin-components";
 import jwt from "jsonwebtoken";
 import { async } from "q";
+
+const communicationData = [
+  { value: "SMS", title: "SMS" },
+  // { value: 'push', title: 'Push Notification' },
+  { value: "EMAIL", title: "Email" }
+];
 
 // import { allSegments } from "@walkinsole/walkin-hyperx/src/query/audience";
 class EditCampaign extends Component {
@@ -38,7 +47,7 @@ class EditCampaign extends Component {
       testValue: 95,
       controlValue: 5,
       testControlSelected: "",
-      communicationSelected: "1",
+      communicationSelected: "SMS",
       communicationFormValues: {},
       formValues: {},
       campaign: {},
@@ -79,7 +88,50 @@ class EditCampaign extends Component {
 
   logQuery = query => {
     this.setState({ query: query });
-    console.log("quu", query);
+  };
+
+  createCommunicationMutation = (current, values) => {
+    var input = {
+      name: this.props.campaign.campaign.name,
+      description: "",
+      messageFormat: this.state.communicationSelected,
+      templateBodyText: this.state.communicationSelected == "SMS"?values.smsBody:values.email_body,
+      templateSubjectText: this.state.communicationSelected == "SMS"?values.smsTag:values.email_subject,
+      templateStyle: "MUSTACHE",
+      organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
+      status:"ACTIVE"
+    };
+    this.props
+      .messageTemplate({
+        variables: {
+          input: input
+        }
+      })
+      .then(data => {
+        console.log("MessageTemplate data..", data);
+        var input = {
+          entityId: this.props.campaign.campaign.id, // campainId
+          entityType: "Campaign",
+          messageTemplateId: data.data.createMessageTemplate.id,
+          isScheduled: true,
+          isRepeatable: false,
+          organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
+          status: "ACTIVE",
+          firstScheduleDateTime: this.props.campaign.campaign.startTime,
+          // repeatRuleId: "",
+          commsChannelName: "Test"
+        };
+        this.props
+          .communication({
+            variables: {
+              input: input
+            }
+          }).then(data =>{
+            console.log("Communication data..", data)
+          })
+      }).catch(err => {
+        console.log("Error creating for message template", err);
+      });
   };
 
   ruleQuery = current => {
@@ -93,8 +145,6 @@ class EditCampaign extends Component {
       status: "ACTIVE",
       ruleConfiguration: JSON.stringify(this.state.query)
     };
-    console.log("save....", this.props);
-    console.log("Campaign Id..", this.props.campaign.campaign.id);
     this.props
       .rule({
         variables: {
@@ -167,21 +217,32 @@ class EditCampaign extends Component {
     }
   }
 
-  onFormNext =async current => {
-    const { formValues } = this.state;
+  onFormNext = current => {
+    const { formValues, communicationFormValues } = this.state;
     console.log(current);
     if (this.state.current == 2) {
+      //Audience Rule
       this.ruleQuery(this.state.current);
     }
     if (this.state.current == 3) {
+      //Trigger Rule
       this.ruleQuery(this.state.current);
     }
-    if (isEmpty(formValues)) {
+    if (this.state.current == 4) {
+      const comForm = this.formRef1 && this.formRef1.props && this.formRef1.props.form;
+      comForm.validateFields((err, values) => {
+        if (err)  return
+        else {
+          this.setState({communicationFormValues:values})
+          this.createCommunicationMutation(this.state.current, values);
+        }
+      })
+
+    }
       const form =
         this.formRef && this.formRef.props && this.formRef.props.form;
       if (form) {
         form.validateFields((err, values) => {
-          console.log(values)
           if (err) {
             return;
           } else {
@@ -196,7 +257,6 @@ class EditCampaign extends Component {
             }
           }
         });
-      }
     } else {
       this.setState({
         current: current
@@ -209,7 +269,6 @@ class EditCampaign extends Component {
   };
 
   setFeedbackForm = (formName, e) => {
-    console.log(formName);
     this.setState({
       formName: formName
     });
@@ -230,16 +289,21 @@ class EditCampaign extends Component {
       showTestAndControl: false
     });
   };
-  logQuery = query => {
-    console.log("quu", query);
-  };
+
   handleButtonGroupChange = e => {
     this.setState({ value: e.target.value });
   };
 
+  onCommunicationChange = e => {
+    this.setState({ communicationSelected: e.target.value });
+  };
+
+  commWrappedComponentRef = formRef => {
+    this.formRef1 = formRef;
+  };
+
   getContainer = () => {
     const { campaign } = this.props.campaign;
-    console.log(this.props);
     let attributeData =
       this.props.allAttributes &&
       this.props.allAttributes.ruleAttributes &&
@@ -248,6 +312,7 @@ class EditCampaign extends Component {
         id: el.id,
         label: el.attributeName
       }));
+    // let templateData = this.props.messageTemplate;
     const {
       formValues,
       query,
@@ -323,7 +388,25 @@ class EditCampaign extends Component {
           <Triggers attributeData={attributeData} logQuery={this.logQuery} />
         );
       case 4:
-        return <Communication />;
+        return (
+          <Comm
+            subTitle="Communication"
+            onChange={this.onCommunicationChange}
+            communicationData={communicationData}
+            defaultValue={this.state.communicationSelected}
+            value={this.state.communicationSelected}
+            commWrappedComponentRef={this.commWrappedComponentRef}
+            communicationFormValues={this.state.communicationFormValues}
+            // saveFormRef={this.saveComFormRef}
+            onFormNext={this.onFormNext}
+          />
+          // <Communication
+          //   // campaign={this.props.campaign.campaign}
+          //   saveFormRef={this.saveComFormRef}
+          //   onFormNext={this.onFormNext}
+          //   communicationFormValues={this.communicationFormValues}
+          // />
+        );
       default:
         return <Overview campaign={this.props.campaign.campaign} />;
     }
@@ -410,5 +493,11 @@ export default compose(
   }),
   graphql(attributes, {
     name: "allAttributes"
+  }),
+  graphql(createCommunication, {
+    name: "communication"
+  }),
+  graphql(createMessageTemplate, {
+    name: "messageTemplate"
   })
 )(EditCampaign);

@@ -1,11 +1,11 @@
-import React, { Component, Fragment } from 'react';
-import { withRouter } from 'react-router-dom';
-import BasicInfo from './campaignCreation/basicInfo';
-import Audience from './campaignCreation/audience';
-import Offer from './campaignCreation/offer';
-import Communication from './campaignCreation/communication';
+import React, { Component, Fragment } from "react";
+import { withRouter } from "react-router-dom";
+import BasicInfo from "./campaignCreation/basicInfo";
+import Audience from "./campaignCreation/audience";
+import Offer from "./campaignCreation/offer";
+import Communication from "./campaignCreation/communication";
 import { campaignOverview as Overview } from "@walkinsole/walkin-components";
-import { allSegments, attributes } from '../../query/audience';
+import { allSegments, attributes } from "../../query/audience";
 import { getOffers } from "../../query/offer";
 import { withApollo, graphql, compose } from 'react-apollo';
 import isEmpty from 'lodash/isEmpty';
@@ -18,35 +18,35 @@ import { CREATE_CAMPAIGN, UPDATE_CAMPAIGN } from '../../query/campaign';
 const stepData = [
 	{
 		id: 1,
-		route: 'basicInfo',
-		title: 'Basic Info',
+		route: "basicInfo",
+		title: "Basic Info"
 	},
 	{
 		id: 2,
-		title: 'Audience',
-		route: 'audience',
+		title: "Audience",
+		route: "audience"
 	},
 	{
 		id: 3,
-		title: 'Offer',
-		route: 'offer',
+		title: "Offer",
+		route: "offer"
 	},
 	{
 		id: 4,
-		title: 'Communication',
-		route: 'ommunication',
+		title: "Communication",
+		route: "ommunication"
 	},
 	{
 		id: 5,
-		title: 'Overview',
-		route: 'overview',
-	},
+		title: "Overview",
+		route: "overview"
+	}
 ];
 
 const communicationData = [
-	{ value: '1', title: 'SMS' },
-	{ value: '2', title: 'Push Notification' },
-	{ value: '3', title: 'Email' },
+	{ value: "SMS", title: "SMS" },
+	{ value: "PUSH", title: "Push Notification" },
+	{ value: "EMAIL", title: "Email" }
 ];
 
 class CampaignCreation extends Component {
@@ -61,7 +61,7 @@ class CampaignCreation extends Component {
 			testValue: 95,
 			controlValue: 5,
 			testControlSelected: '',
-			communicationSelected: '1',
+			communicationSelected: 'SMS',
 			communicationFormValues: {},
 			errors: {},
 			offer: '',
@@ -73,12 +73,6 @@ class CampaignCreation extends Component {
 	};
 	communicationWrappedComponentRef = formRef => {
 		this.formRef = formRef;
-	};
-
-	onTestAndControlEdit = () => {
-		this.setState({
-			showTestAndControl: true,
-		});
 	};
 
 	handleCancel = () => {
@@ -155,6 +149,31 @@ class CampaignCreation extends Component {
 			campaignType: "OFFER"
 		}; this.setState({ loading: true });
 		try {
+			const createCampaign = await client.mutate({
+				mutation: UPDATE_CAMPAIGN,
+				variables: { input: input }
+			});
+			console.log("Updated");
+			// this.setState({
+			// 	loading: false,
+			// 	campaign: createCampaign.data.createCampaign
+			// });
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
+	updateBasicCampaign = async values => {
+		const { client } = this.props;
+		const { priorityChosen, controlValue } = this.state;
+		const { allApplications: { organization } } = this.props;
+		const input = {
+			...values,
+			priority: parseInt(priorityChosen),
+			campaignControlPercent: parseInt(controlValue),
+			campaignType: "OFFER"
+		}; this.setState({ loading: true });
+		try {
 			const updateCampaign = await client.mutate({
 				mutation: UPDATE_CAMPAIGN,
 				variables: { input: input }
@@ -169,29 +188,29 @@ class CampaignCreation extends Component {
 		}
 	};
 
-	onControlValueChange = val => {
-		this.setState({ controlValue: val });
-	};
-
-	onTestValueChange = val => {
-		this.setState({ testValue: val });
-	};
-
 	applyTestControlChange = () => {
 		const { testValue, controlValue } = this.state;
-		this.setState({ testControlSelected: `${testValue} % - ${controlValue}%`, showTestAndControl: false });
+		this.setState({
+			testControlSelected: `${testValue} % - ${controlValue}%`,
+			showTestAndControl: false
+		});
+	};
+
+	handleButtonGroupChange = e => {
+		this.setState({ value: e.target.value });
 	};
 
 	handleButtonGroupChange = e => {
 		this.setState({ priorityChosen: e.target.value });
 	};
 
-	logQuery = query => {
-		console.log('quu', query);
-	};
-
 	onCommunicationChange = e => {
 		this.setState({ communicationSelected: e.target.value });
+	};
+
+	handleOnOfferChange = e => {
+		console.log("offer >> ", e);
+		this.setState({ offer: e });
 	};
 
 	handleOnOfferChange = e => {
@@ -291,9 +310,10 @@ class CampaignCreation extends Component {
 					{current === 3 && (
 						<Communication
 							subTitle="Communication"
+							schedule={[]}
 							onChange={this.onCommunicationChange}
 							communicationData={communicationData}
-							defaultValue="1"
+							defaultValue={communicationSelected}
 							value={communicationSelected}
 							OnCommunicationFormNext={this.onFormNext}
 							communicationWrappedComponentRef={this.communicationWrappedComponentRef}
