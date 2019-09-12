@@ -107,3 +107,11 @@ export const closeOffer = gql`
 		}
 	}
 `;
+
+export const LAUNCH_OFFER = gql`
+	mutation launchOffer($id: ID!) {
+			launchOffer(id:$id){
+			id name state
+		}
+	}
+`;

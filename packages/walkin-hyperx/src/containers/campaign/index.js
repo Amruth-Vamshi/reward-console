@@ -155,7 +155,7 @@ class CampaignCreation extends Component {
 			campaignType: "OFFER"
 		}; this.setState({ loading: true });
 		try {
-			const createCampaign = await client.mutate({
+			const updateCampaign = await client.mutate({
 				mutation: UPDATE_CAMPAIGN,
 				variables: { input: input }
 			});

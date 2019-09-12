@@ -2,8 +2,7 @@ import gql from 'graphql-tag';
 export const allSegments = gql`
 	query($organization_id: ID!, $status: STATUS!) {
 		segments(status: $status, organization_id: $organization_id) {
-			id
-			name
+			id name	status
 			segmentType
 			rule {
 				id
@@ -79,6 +78,16 @@ export const disableSegment = gql`
 		disableSegment(id: $id) {
 			id
 			name
+		}
+	}
+`;
+
+export const UPDATE_SEGMENT = gql`
+	mutation updateSegment($input: SegmentUpdateInput) {
+		updateSegment(input: $input) {
+			id name segmentType status rule{
+				id name status type ruleConfiguration ruleAttributes
+			}
 		}
 	}
 `;
