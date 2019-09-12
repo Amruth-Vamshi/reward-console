@@ -45,12 +45,15 @@ class FormDesign extends Component {
     return (
 
       questionnaire && questionnaire[counter] ? (
-        <Row>
+        <Row style={{
+          height: "-webkit-fill-available",
+          overflowY: "scroll"
+        }}>
           <Col span={17}>
             <Preview isFirstQuestion={isFirstQuestion} question={questionnaire[counter]} nextQuestion={this.nextQuestion} goTopreviousQuestion={this.goTopreviousQuestion} isLastQuestion={isLastQuestion} />
           </Col>
 
-          <Col span={6}>
+          <Col span={7}>
             <Controls />
           </Col>
         </Row>) : <Spin />

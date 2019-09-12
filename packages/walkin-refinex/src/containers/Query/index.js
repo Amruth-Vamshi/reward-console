@@ -375,6 +375,13 @@ export const GET_QUESTIONNAIRE = gql`
       type
       rangeMax
       rangeMin
+      fromChoice{
+        id
+        choiceText
+        
+        rangeStart
+        rangeEnd
+      }
       feedbackCategory {
         id
         title
