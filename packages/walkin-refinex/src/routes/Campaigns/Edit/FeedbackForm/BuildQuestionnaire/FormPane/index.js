@@ -34,7 +34,6 @@ class QuestionnaireFormPane extends Component {
       ...choice,
       ...values
     }
-    console.log(assignedValue)
     this.setState({
       choiceToEdit: Object.assign(this.state.choiceToEdit, assignedValue)
     });
