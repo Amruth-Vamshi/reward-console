@@ -54,7 +54,7 @@ class EditCampaign extends Component {
       segmentList: {},
       attributeData: {},
       formName:"",
-      query: { id: "1", combinator: "and", rules: [] },
+      query: {combinator: "and", rules: [] },
       stepperData: [
         {
           title: "Basic Info"
@@ -111,6 +111,7 @@ class EditCampaign extends Component {
   };
 
   logQuery = query => {
+    console.log("query in main component",query)
     this.setState({ query: query });
   };
   
@@ -297,7 +298,7 @@ class EditCampaign extends Component {
       type: "SIMPLE",
       organizationId: jwt.decode(localStorage.getItem("jwt")).org_id,
       status: "ACTIVE",
-      ruleConfiguration: JSON.stringify(this.state.query)
+      ruleConfiguration: this.state.query
     };
     this.props
       .rule({
@@ -417,7 +418,7 @@ class EditCampaign extends Component {
       this.props.allAttributes &&
       this.props.allAttributes.ruleAttributes &&
       this.props.allAttributes.ruleAttributes.map(el => ({
-        name: el.attributeName,
+        name: el.id,
         id: el.id,
         label: el.attributeName
       }));
