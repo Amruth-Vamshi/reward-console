@@ -39,7 +39,7 @@ import { CustomScrollbars } from "@walkinsole/walkin-components";
 const communicationData = [
   { value: "SMS", title: "SMS" },
   // { value: 'push', title: 'Push Notification' },
-  { value: "EMAIL", title: "Email" }
+  { value: "EMAIL", title: "EMAIL" }
 ];
 
 

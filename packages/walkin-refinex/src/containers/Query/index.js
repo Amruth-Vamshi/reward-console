@@ -63,13 +63,45 @@ export const createRule = gql`
   }
 `;
 
+export const communications = gql`
+  query communications($entityId: ID!,$entityType:ENTITY_TYPE,$organization_id: ID!) {
+      communications(entityId: $entityId, entityType:$entityType, organization_id:$organization_id, status: ACTIVE) {
+        id
+        entityId
+        entityType
+        messageTemplate{
+          id
+          name
+          messageFormat
+          templateBodyText
+          templateSubjectText
+        }
+      }
+    }
+`;
+export const audiences = gql`
+query audiences($campaign_id:ID, $organization_id:ID,$segment_id:ID){
+  audiences(campaign_id:$campaign_id, organization_id:$organization_id,segment_id:$segment_id,status:ACTIVE){
+    id
+    segment{
+      id
+      name
+      rule{
+        id
+        name
+        type
+      }
+    }
+  }
+}
+`;
+
+
 export const createCommunication = gql`
   mutation createCommunication($input: CreateCommunicationInput!) {
     createCommunication(input: $input) {
       id
-      entityId{
-        id
-      }
+      entityId
       entityType
       messageTemplate {
         id
@@ -121,6 +153,23 @@ mutation updateMessageTemplate($input:UpdateMessageTemplateInput!){
   	templateSubjectText
     templateStyle
     status
+  }
+}
+`;
+export const createAudience = gql`
+mutation createAudience($input:createAudienceInput!){
+  createAudience(input:$input){
+    id
+    campaign{
+      id
+      name
+      audienceFilterRule
+    }
+    segment{
+      id
+      name
+      segmentType
+    }status
   }
 }
 `;
