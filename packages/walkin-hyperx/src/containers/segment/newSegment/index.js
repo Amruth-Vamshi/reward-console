@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { Input, Button, Alert, Col } from 'antd';
 import { withRouter } from 'react-router-dom';
 import { withApollo, graphql, compose, mutate } from 'react-apollo';
-import { attributes, createRule, createSegment } from '../../../query/audience';
+import { attributes, CREATE_RULE, createSegment } from '../../../query/audience';
 import './style.css';
 import { SEGMENT_LIST } from '../../../utils/RouterConstants';
 import get from 'lodash/get';
@@ -45,11 +45,10 @@ class NewSegment extends Component {
 		}
 		let { client } = this.props;
 		console.log(this.props.allApplications.organization.applications[0])
-		console.log(jwt.decode(localStorage.getItem("jwt")))
 		let org_id = jwt.decode(localStorage.getItem("jwt")).org_id;
 		client
 			.mutate({
-				mutation: createRule,
+				mutation: CREATE_RULE,
 				variables: {
 					name: Math.random()
 						.toString(36)

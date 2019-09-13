@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { Col, Alert, message, Radio, Checkbox, Input } from 'antd';
 import { withRouter } from 'react-router-dom';
 import { withApollo, graphql, compose, mutate } from 'react-apollo';
-import { createRule } from '../../../query/audience';
+import { CREATE_RULE } from '../../../query/audience';
 import { OFFER_LIST } from '../../../utils/RouterConstants';
 import get from 'lodash/get';
 import { Stepper, CampaignHeader, CampaignFooter } from '@walkinsole/walkin-components';
@@ -423,7 +423,7 @@ class NewOffer extends Component {
 						let org_id = get(client, 'cache.data.data["$ROOT_QUERY.auth"].organizationId');
 						client
 							.mutate({
-								mutation: createRule,
+								mutation: CREATE_RULE,
 								variables: {
 									name: Math.random()
 										.toString(36)
@@ -441,7 +441,7 @@ class NewOffer extends Component {
 								});
 								client
 									.mutate({
-										mutation: createRule,
+										mutation: CREATE_RULE,
 										variables: {
 											name: Math.random()
 												.toString(36)

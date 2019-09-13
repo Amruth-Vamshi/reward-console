@@ -14,7 +14,8 @@ const Audience = ({
 	segmentFilterSubText,
 	attributeData,
 	logQuery,
-	selectedSegments
+	selectedSegments,
+	ruleQuery
 }) => {
 	return (
 		<div>
@@ -43,7 +44,7 @@ const Audience = ({
 						<p className="gx-text-grey gx-mb-1">{segmentFilterText}</p>
 					</Divider>
 					<p className="gx-text-grey gx-mb-1">{segmentFilterSubText}</p>
-					<WalkinQueryBuilder fields={attributeData} onQueryChange={logQuery} />
+					<WalkinQueryBuilder fields={attributeData} onQueryChange={logQuery} query={ruleQuery} />
 				</div>
 			</div>
 		</div>

@@ -5,7 +5,7 @@ import Audience from "./campaignCreation/audience";
 import Offer from "./campaignCreation/offer";
 import Communication from "./campaignCreation/communication";
 import { campaignOverview as Overview } from "@walkinsole/walkin-components";
-import { allSegments, attributes, GET_AUDIENCE, CREATE_AUDIENCE } from "../../query/audience";
+import { allSegments, attributes, GET_AUDIENCE, CREATE_AUDIENCE, CREATE_RULE } from "../../query/audience";
 import { getOffers } from "../../query/offer";
 import { withApollo, graphql, compose } from 'react-apollo';
 import isEmpty from 'lodash/isEmpty';
@@ -65,8 +65,12 @@ class CampaignCreation extends Component {
 			communicationFormValues: {},
 			errors: {},
 			offer: '',
+			ruleQuery: { id: '1', combinator: 'and', rules: [] },
 			selectedSegments: [''],
-			campaignCreated: false
+			campaignCreated: false,
+			audienceCreated: false,
+			offerCreated: false,
+			audienceChange: { audience: false, rule: false }
 		};
 	}
 	saveFormRef = formRef => {
@@ -88,22 +92,52 @@ class CampaignCreation extends Component {
 		console.log(current);
 		let current1 = this.state.current
 
-		if (current1 == 0) {
-			this.createOrUpdateBasicCampaign(current)
-		} else if (current1 == 1)
-			this.createAudience(current)
+		// if (current1 == 0) {
+		// 	this.createOrUpdateBasicCampaign(current)
+		// } else if (current1 == 1) {
+		// 	this.createAudience(current)
+		// 	this.ruleQuery(current)
+		// } else
 		this.setState({ current });
 
 
 	}
 
+	ruleQuery = current => {
+		if (this.state.audienceFilterRule) {
+			let { allApplications: { organization } } = this.props;
+			const input = {
+				name: Math.random().toString(36).substring(7),
+				description: "",
+				type: "SIMPLE",
+				organizationId: organization.id,
+				status: "ACTIVE",
+				ruleConfiguration: JSON.stringify(this.state.audienceFilterRule)
+			};
+			this.props.createRule({ variables: { input: input } })
+				.then(data => {
+					console.log("Trigger Rule data...", data);
+					var campaignInput = { audienceFilterRule: data.data.createRule.id };
+					this.props.updateCampaign({
+						variables: {
+							id: this.state.campaign.id,
+							input: campaignInput
+						}
+					}).then(data => {
+						console.log("Update campaign data..", data);
+						this.audienceChange(current, "rule")
+					}).catch(err => console.log("Error Update campaign", err));
+				}).catch(err => console.log("Error creating the question", err));
+		} else this.audienceChange(current, "rule")
+	};
+
 	createAudience = current => {
 		let segments = this.state.selectedSegments
-		if (segments[0] && segments[0] != "") {
+		if (segments[0] && segments[0] != "" && !this.state.audienceCreated) {
 			let { allApplications: { organization } } = this.props;
 			var input = {
 				campaign_id: this.state.campaign.id,
-				segment_id: segments[0],
+				segment_id: segments,
 				organization_id: organization.id,
 				application_id: organization.applications[0].id,
 				status: "ACTIVE"
@@ -112,11 +146,12 @@ class CampaignCreation extends Component {
 				variables: { input: input }
 			}).then(data => {
 				console.log("Create Audience..", data)
-				this.setState({ current });
+				this.audienceChange(current, "audience")
+				// this.setState({ current, audienceCreated: true });
 			}).catch(err => {
 				console.log("Error while creating audience..", err)
 			});
-		}
+		} else this.audienceChange(current, "audience")
 	}
 
 	createOrUpdateBasicCampaign = current => {
@@ -166,7 +201,6 @@ class CampaignCreation extends Component {
 	updateBasicCampaign = async values => {
 		const { client } = this.props;
 		const { priorityChosen, controlValue } = this.state;
-		const { allApplications: { organization } } = this.props;
 		const input = {
 			...values,
 			priority: parseInt(priorityChosen),
@@ -187,6 +221,15 @@ class CampaignCreation extends Component {
 			console.log(err);
 		}
 	};
+
+	audienceChange = (current, type) => {
+		let { audienceChange } = this.state
+		audienceChange[type] = true
+		if (audienceChange.audience && audienceChange.rule) {
+			audienceChange = { audience: false, rule: false }
+			this.setState({ current, audienceChange })
+		} else this.setState({ audienceChange })
+	}
 
 	applyTestControlChange = () => {
 		const { testValue, controlValue } = this.state;
@@ -222,6 +265,12 @@ class CampaignCreation extends Component {
 		console.log('>>', e);
 		this.setState({ selectedSegments: e })
 	}
+
+
+	logQuery = (audienceFilterRule, ruleQuery) => {
+		console.log('rule', audienceFilterRule);
+		this.setState({ audienceFilterRule, ruleQuery });
+	};
 
 	render() {
 		const { formValues, current, showTestAndControl, testValue, controlValue, testControlSelected, rows, values, communicationSelected, communicationFormValues } = this.state;
@@ -300,6 +349,7 @@ class CampaignCreation extends Component {
 							segmentSelectionData={this.props.segmentList.segments}
 							// uploadCsvText="Upload CSV"
 							uploadProps={props}
+							ruleQuery={this.state.ruleQuery}
 							segmentFilterText="Filter"
 							segmentFilterSubText="Campaign applies to :"
 							attributeData={attributeData}
@@ -363,16 +413,19 @@ export default withRouter(
 					},
 					fetchPolicy: 'network-only',
 				}),
-			}),
-			graphql(getOffers, {
+			}), graphql(getOffers, {
+				name: 'allOffers',
 				options: ownProps => ({
 					variables: {
 						organizationId: ownProps.client.cache.data.data['$ROOT_QUERY.auth'].organizationId,
 						state: "LIVE"
 					},
 					fetchPolicy: 'network-only',
-				}),
-				name: 'allOffers',
+				})
+			}), graphql(CREATE_RULE, {
+				name: "createRule"
+			}), graphql(UPDATE_CAMPAIGN, {
+				name: "updateCampaign"
 			}),
 			// graphql(createCommunication, {
 			// 	name: "communication"
@@ -389,17 +442,7 @@ export default withRouter(
 						}
 					};
 				}
-			}),
-			// graphql(GET_AUDIENCE, {
-			// 	name: "audience",
-			// 	options: props => {
-			// 		return {
-			// 			variables: {
-			// 				campaign_id:
-			// 			}
-			// 		}
-			// 	}
-			// }),
+			})
 		)(CampaignCreation)
 	)
 );

@@ -47,12 +47,12 @@ const BasicInfoForm = Form.create({ name: "form_in_modal" })(
 
       const { getFieldDecorator } = form;
       const formItemLayout = {
-        labelCol: { span: 6 },
+        labelCol: { span: 15 },
         wrapperCol: { span: 18 },
       };
       const dateItemLayout = {
         wrapperCol: { span: 18 },
-        labelCol: { span: 10 },
+        labelCol: { span: 18 },
       };
       return (
         <Form layout="vertical" ref={wrappedComponentRef} onSubmit={onFormNext}>

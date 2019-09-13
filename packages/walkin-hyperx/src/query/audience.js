@@ -23,29 +23,15 @@ export const attributes = gql`
 	}
 `;
 
-export const createRule = gql`
-	mutation createRule(
-		$name: String!
-		$description: String
-		$type: RULE_TYPE!
-		$organizationId: ID!
-		$status: STATUS
-		$ruleConfiguration: JSON
-	) {
-		createRule(
-			input: {
-				name: $name
-				description: $description
-				type: $type
-				status: $status
-				ruleConfiguration: $ruleConfiguration
-				organizationId: $organizationId
-			}
-		) {
-			id
-			name
-		}
-	}
+export const CREATE_RULE = gql`
+  mutation createRule($input: CreateRuleInput!) {
+    createRule(input: $input) {
+      id name description
+      status type
+      ruleConfiguration
+      ruleExpression
+    }
+  }
 `;
 
 export const createSegment = gql`
