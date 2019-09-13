@@ -457,7 +457,7 @@ class CreateCampaign extends Component {
 
   render() {
     const { current, stepperData, loading } = this.state;
-    if(!loading){
+    if(!this.props.allApplications.loading){
       this.createDefaultApplication()
     }
     return (
