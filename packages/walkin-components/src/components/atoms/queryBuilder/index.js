@@ -30,7 +30,7 @@ class WalkinQueryBuilder extends React.Component {
 	renameQueryProperties = query => {
 		let str = JSON.stringify(query);
 		var mapObj = {
-			field: 'attributeName',
+			field: 'ruleAttributeId',
 			value: 'attributeValue',
 			operator: 'expressionType',
 		};
@@ -38,8 +38,8 @@ class WalkinQueryBuilder extends React.Component {
 			return mapObj[matched];
 		});
 		let renamedQuery = JSON.parse(str);
-		// let refinedQuery = this.removeProp(query, 'id');
-		this.props.onQueryChange(renamedQuery, query);
+		let refinedQuery = this.removeProp(renamedQuery, 'id');
+		this.props.onQueryChange(refinedQuery, query);
 	};
 
 	handleMultiSelect = value => {

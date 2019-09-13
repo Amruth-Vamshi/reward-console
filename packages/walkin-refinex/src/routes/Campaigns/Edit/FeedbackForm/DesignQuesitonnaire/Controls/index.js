@@ -1,6 +1,6 @@
 import React from "react";
-import { Card, Col, Row, Radio, Upload, Button, Icon } from 'antd';
-
+import { Card, Col, Row, Radio, Upload, Button, Icon, Divider } from 'antd';
+import ColorControl from "./ColorControl/index"
 export default class Controls extends React.Component {
     state = {
         template: "",
@@ -9,7 +9,10 @@ export default class Controls extends React.Component {
         color: ""
 
     };
-
+    onColorChange = (hex) => {
+        this.setState({ color: hex })
+        this.props.onCOlorUpdate(hex)
+    }
     onChange = e => {
         this.setState({
             [e.target.name]: e.target.value,
@@ -17,9 +20,11 @@ export default class Controls extends React.Component {
     };
     render() {
         return (
-            <Row style={{ minHeight: "100vh", backgroundColor: "#EAECEB", borderLeft: "2px solid grey" }}>
+            <Row style={{ backgroundColor: "#EAECEB", borderLeft: "2px solid grey" }}>
                 <Col span={24}>
-                    <Card style={{ backgroundColor: "#EAECEB" }}>
+                    <Card style={{
+                        backgroundColor: "#EAECEB"
+                    }}>
                         <Row>
                             <Col span={24}>
                                 <h5>Template Structure</h5>
@@ -30,8 +35,7 @@ export default class Controls extends React.Component {
                                 </Radio.Group>
                             </Col>
                         </Row>
-                        <br></br>
-                        <hr></hr>
+                        <Divider />
                         <Row>
                             <Col span={24}>
                                 <h5>Transition</h5>
@@ -42,8 +46,7 @@ export default class Controls extends React.Component {
                                 </Radio.Group>
                             </Col>
                         </Row>
-                        <br></br>
-                        <hr></hr>
+                        <Divider />
                         <Row>
                             <Col span={24}>
                                 <h5>Header</h5>
@@ -56,8 +59,7 @@ export default class Controls extends React.Component {
                                 </div>
                             </Col>
                         </Row>
-                        <br></br>
-                        <hr></hr>
+                        <Divider />
                         <Row>
                             <Col span={24}>
                                 <h5>Layout</h5>
@@ -68,15 +70,13 @@ export default class Controls extends React.Component {
                                 </Radio.Group>
                             </Col>
                         </Row>
-                        <br></br>
-                        <hr></hr>
+                        <Divider />
                         <Row>
                             <Col span={24}>
                                 <h5>Color</h5>
                                 <Radio.Group name="color" onChange={this.onChange} value={this.state.color}>
-                                    <Radio value="Background">Background</Radio>
-                                    <Radio value="Accent">Accent</Radio>
-
+                                    <span>Backgroundcolor  <ColorControl colorChange={this.onColorChange} /></span>
+                                    <span>Accent <ColorControl /></span>
                                 </Radio.Group>
                             </Col>
                         </Row>

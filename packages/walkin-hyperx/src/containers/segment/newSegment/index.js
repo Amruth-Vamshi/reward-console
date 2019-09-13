@@ -96,7 +96,7 @@ class NewSegment extends Component {
 			if (location.state.segmentSelected) {
 				let str = location.state.segmentSelected.rule.ruleConfiguration;
 				var mapObj = {
-					attributeName: 'field',
+					ruleAttributeId: 'field',
 					attributeValue: 'value',
 					expressionType: 'operator',
 				};

@@ -55,7 +55,7 @@ class EditCampaign extends Component {
       segmentList: {},
       attributeData: {},
       formName:"",
-      query: { id: "1", combinator: "and", rules: [] },
+      query: {combinator: "and", rules: [] },
       stepperData: [
         {
           title: "Basic Info"
@@ -109,6 +109,7 @@ class EditCampaign extends Component {
   };
 
   logQuery = query => {
+    console.log("query in main component",query)
     this.setState({ query: query });
   };
   
@@ -119,7 +120,7 @@ class EditCampaign extends Component {
   onFormNext = current => {
     const { formValues, communicationFormValues, segmentId} = this.state;
     if (this.state.current == 2) {
-      this.audiences(this.state.current)
+      //this.audiences(this.state.current)
       //Audience Rule
       if(!(segmentId == "Undefined")){
        this.createAudience(this.state.current, segmentId);
@@ -133,7 +134,7 @@ class EditCampaign extends Component {
       this.ruleQuery(this.state.current);
     }
     if (this.state.current == 4) {
-      this.communications(this.state.current);
+      //this.communications(this.state.current);
       const comForm = this.formRef1 && this.formRef1.props && this.formRef1.props.form;
       comForm.validateFields((err, values) => {
         if (err)  return
@@ -242,7 +243,7 @@ class EditCampaign extends Component {
       type: "SIMPLE",
       organizationId: jwt.decode(localStorage.getItem("jwt")).org_id,
       status: "ACTIVE",
-      ruleConfiguration: JSON.stringify(this.state.query)
+      ruleConfiguration: this.state.query
     };
     this.props
       .rule({
@@ -360,7 +361,7 @@ class EditCampaign extends Component {
       this.props.allAttributes &&
       this.props.allAttributes.ruleAttributes &&
       this.props.allAttributes.ruleAttributes.map(el => ({
-        name: el.attributeName,
+        name: el.id,
         id: el.id,
         label: el.attributeName
       }));
