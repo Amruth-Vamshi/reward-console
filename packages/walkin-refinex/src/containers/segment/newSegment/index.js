@@ -51,14 +51,16 @@ class NewSegment extends Component {
 			.mutate({
 				mutation: createRule,
 				variables: {
-					name: Math.random()
-						.toString(36)
-						.substring(7),
-					description: '',
-					type: 'SIMPLE',
-					organizationId: org_id,
-					status: 'ACTIVE',
-					ruleConfiguration: JSON.stringify(query),
+					input: {
+						name: Math.random()
+							.toString(36)
+							.substring(7),
+						description: '',
+						type: 'SIMPLE',
+						organizationId: org_id,
+						status: 'ACTIVE',
+						ruleConfiguration: JSON.stringify(query),
+					}
 				},
 			})
 			.then(({ data }) => {

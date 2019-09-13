@@ -56,6 +56,7 @@ class EditCampaign extends Component {
       segmentList: {},
       attributeData: {},
       formName:"",
+      selectedSegments:[],
       query: {combinator: "and", rules: [] },
       stepperData: [
         {
@@ -80,10 +81,9 @@ class EditCampaign extends Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     let {communicationFormValues} = this.state
     let communicationId = {}
-    let selectedSegments = []
     if(this.props.allCommunications.communications) {
       this.props.allCommunications.communications.map(item => {
         if(item.messageTemplate.messageFormat == "SMS"){
@@ -97,10 +97,19 @@ class EditCampaign extends Component {
         }
       })
     }
-    if(this.props.allAudiences.audiences){
-      this.props.allAudiences.audiences.map(item=>selectedSegments.push(item.segment.id))
+    
+    this.setState({communicationFormValues,communicationId})
+  }
+
+
+  componentDidUpdate(preValue) {
+    if (this.props.allAudiences.loading !== preValue.allAudiences.loading) {
+      if(this.props.allAudiences.audiences){
+        let selectedSegments=[]
+        this.props.allAudiences.audiences.map(item=>selectedSegments.push(item.segment.id))
+        this.setState({selectedSegments:selectedSegments})
+      }
     }
-    this.setState({communicationFormValues,selectedSegments,communicationId})
   }
 
   onTestAndControlEdit = () => {
@@ -674,7 +683,7 @@ export default compose(
       organization_id:jwt.decode(localStorage.getItem("jwt")).org_id,
       status:"Active"
       },
-      fetchPolicy:"cache-and-network"
+      fetchPolicy:"network-only"
     })
   }),graphql(audiences,{
     name:"allAudiences",
@@ -684,7 +693,7 @@ export default compose(
         campaign_id:props.match.params.id,
         organization_id:jwt.decode(localStorage.getItem("jwt")).org_id,
       },
-      fetchPolicy:"cache-and-network"
+      fetchPolicy:"network-only"
     })
   })
 )(EditCampaign);
