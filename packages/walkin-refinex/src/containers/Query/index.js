@@ -63,6 +63,18 @@ export const createRule = gql`
   }
 `;
 
+export const updateRule = gql`
+  mutation updateRule($id:ID! ,$input: UpdateRuleInput!) {
+    updateRule(id:$id, input:$input) {
+      id
+    name
+    description
+    status
+    type
+    }
+  }
+`;
+
 export const communications = gql`
   query communications($entityId: ID!,$entityType:ENTITY_TYPE,$organization_id: ID!) {
       communications(entityId: $entityId, entityType:$entityType, organization_id:$organization_id, status: ACTIVE) {
@@ -91,6 +103,7 @@ query audiences($campaign_id:ID, $organization_id:ID,$segment_id:ID){
         name
         type
       }
+      status
     }
   }
 }

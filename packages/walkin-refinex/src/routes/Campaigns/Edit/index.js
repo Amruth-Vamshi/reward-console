@@ -22,7 +22,7 @@ import {
   attributes,
   createRule,
   UPDATE_CAMPAIGN,
-  createCommunication,updateAudiencesWithCampaignId,
+  createCommunication,updateAudiencesWithCampaignId,updateRule,
   createMessageTemplate,createAudience,communications,audiences,updateCommunication,updateMessageTemplate
 } from "../../../containers/Query";
 import { CustomScrollbars } from "@walkinsole/walkin-components";
@@ -138,18 +138,30 @@ class EditCampaign extends Component {
     //Audience module
     if (this.state.current == 2) {
       //Audience Rule
+      if(this.props.campaign.campaign.audienceFilterRule == ""){
+      this.ruleQuery(this.state.current);
+      }else{
+        this.updateRule(this.state.current)
+      }
       if(!(selectedSegments == "Undefined")){
       //  this.createAudience(this.state.current, segmentId);
-      this.updateAudiencesWithCampaignId(this.state.current, selectedSegments)
-      }
-      if(!(this.state.query.rules.length == 0)){
-      this.ruleQuery(this.state.current);
+       this.updateAudiencesWithCampaignId(this.state.current, selectedSegments)
       }
     }
     //Trigger module
     if (this.state.current == 3) {
       //Trigger Rule
+      if(this.props.campaign.campaign.audienceFilterRule == ""){
       this.ruleQuery(this.state.current);
+      }else{
+        this.updateRule(this.state.current)
+      }
+      if(this.props.campaign.campaign.triggerRule == ""){
+        this.ruleQuery(this.state.current);
+      }
+        else{
+          this.updateRule(this.state.current)
+      }
     }
     //Communication module
     if (this.state.current == 4) {
@@ -303,6 +315,28 @@ class EditCampaign extends Component {
    
   };
 
+  updateRule = current => {
+    let id;
+    let input = {
+      ruleConfiguration: this.state.query
+    };
+    if (current == 2)
+         id = this.props.campaign.campaign.audienceFilterRule.id
+        if (current == 3) {
+         id = this.props.campaign.campaign.triggerRule.id
+          
+        }
+    this.props.updateRule({
+      variables:{
+        id,
+        input:input
+      }
+    }).then(data => {
+      console.log("Updating rule..", data)
+    }).catch(err=>{
+      console.log("Error whilw updating..", err)
+    })
+  }
   ruleQuery = current => {
     const input = {
       name: Math.random()
@@ -650,6 +684,9 @@ export default compose(
   graphql(createRule, {
     name: "rule"
   }),
+  graphql(updateRule,{
+    name:"updateRule"
+  }),
   graphql(UPDATE_CAMPAIGN, {
     name: "updateCampaign"
   }),
@@ -692,6 +729,7 @@ export default compose(
         status:"ACTIVE",
         campaign_id:props.match.params.id,
         organization_id:jwt.decode(localStorage.getItem("jwt")).org_id,
+        status:"Active"
       },
       fetchPolicy:"network-only"
     })
