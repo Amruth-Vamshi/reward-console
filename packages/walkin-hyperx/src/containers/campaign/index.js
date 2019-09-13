@@ -5,7 +5,7 @@ import Audience from "./campaignCreation/audience";
 import Offer from "./campaignCreation/offer";
 import Communication from "./campaignCreation/communication";
 import { campaignOverview as Overview } from "@walkinsole/walkin-components";
-import { allSegments, attributes } from "../../query/audience";
+import { allSegments, attributes, GET_AUDIENCE } from "../../query/audience";
 import { getOffers } from "../../query/offer";
 import { withApollo, graphql, compose } from 'react-apollo';
 import isEmpty from 'lodash/isEmpty';
@@ -65,6 +65,7 @@ class CampaignCreation extends Component {
 			communicationFormValues: {},
 			errors: {},
 			offer: '',
+			selectedSegments: [''],
 			campaignCreated: false
 		};
 	}
@@ -87,11 +88,21 @@ class CampaignCreation extends Component {
 		console.log(current);
 		let current1 = this.state.current
 
-		if (current1 == 0)
-			this.createOrUpdateBasicCampaign(current)
-		else this.setState({ current });
+		// if (current1 == 0) {
+		// 	// this.createOrUpdateBasicCampaign(current)
+		// } else 
+		if (current1 == 1)
+			this.createAudience(current)
+		this.setState({ current });
 
 
+	}
+
+	createAudience = current => {
+		let segments = this.state.selectedSegments
+		if (segments[0] && segments[0] != "") {
+
+		}
 	}
 
 	createOrUpdateBasicCampaign = current => {
@@ -133,31 +144,6 @@ class CampaignCreation extends Component {
 				loading: false, campaignCreated: true,
 				campaign: createCampaign.data.createCampaign
 			});
-		} catch (err) {
-			console.log(err);
-		}
-	};
-
-	updateBasicCampaign = async values => {
-		const { client } = this.props;
-		const { priorityChosen, controlValue } = this.state;
-		const { allApplications: { organization } } = this.props;
-		const input = {
-			...values,
-			priority: parseInt(priorityChosen),
-			campaignControlPercent: parseInt(controlValue),
-			campaignType: "OFFER"
-		}; this.setState({ loading: true });
-		try {
-			const createCampaign = await client.mutate({
-				mutation: UPDATE_CAMPAIGN,
-				variables: { input: input }
-			});
-			console.log("Updated");
-			// this.setState({
-			// 	loading: false,
-			// 	campaign: createCampaign.data.createCampaign
-			// });
 		} catch (err) {
 			console.log(err);
 		}
@@ -218,6 +204,11 @@ class CampaignCreation extends Component {
 		this.setState({ offer: e })
 	}
 
+	onValuesSelected = e => {
+		console.log('>>', e);
+		this.setState({ selectedSegments: e })
+	}
+
 	render() {
 		const { formValues, current, showTestAndControl, testValue, controlValue, testControlSelected, rows, values, communicationSelected, communicationFormValues } = this.state;
 		let attributeData = this.props.allAttributes && this.props.allAttributes.ruleAttributes &&
@@ -253,7 +244,7 @@ class CampaignCreation extends Component {
 						</Fragment>
 					}
 				/>
-				<div style={{ margin: '32px' }}>
+				<div style={{ margin: '40px' }}>
 					{current === 0 && (
 						<BasicInfo
 							subTitle="Basic information"
@@ -291,8 +282,9 @@ class CampaignCreation extends Component {
 							audienceTitle="Audience"
 							segmentSubTitle="Segment"
 							onValuesSelected={this.onValuesSelected}
+							selectedSegments={this.state.selectedSegments}
 							segmentSelectionData={this.props.segmentList.segments}
-							uploadCsvText="Upload CSV"
+							// uploadCsvText="Upload CSV"
 							uploadProps={props}
 							segmentFilterText="Filter"
 							segmentFilterSubText="Campaign applies to :"
@@ -351,15 +343,26 @@ export default withRouter(
 			}),
 			graphql(attributes, {
 				name: 'allAttributes',
+				options: ownProps => ({
+					variables: {
+						organizationId: ownProps.client.cache.data.data['$ROOT_QUERY.auth'].organizationId,
+					},
+					fetchPolicy: 'network-only',
+				}),
 			}),
 			graphql(getOffers, {
 				options: ownProps => ({
 					variables: {
 						organizationId: ownProps.client.cache.data.data['$ROOT_QUERY.auth'].organizationId,
-					}
+						state: "LIVE"
+					},
+					fetchPolicy: 'network-only',
 				}),
 				name: 'allOffers',
 			}),
+			// graphql(createCommunication, {
+			// 	name: "communication"
+			// }),
 			graphql(GET_ALL_APPS_OF_ORGANIZATION, {
 				name: "allApplications",
 				options: props => {
@@ -369,7 +372,17 @@ export default withRouter(
 						}
 					};
 				}
-			})
+			}),
+			// graphql(GET_AUDIENCE, {
+			// 	name: "audience",
+			// 	options: props => {
+			// 		return {
+			// 			variables: {
+			// 				campaign_id:
+			// 			}
+			// 		};
+			// 	}
+			// }),
 		)(CampaignCreation)
 	)
 );

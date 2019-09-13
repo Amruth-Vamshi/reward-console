@@ -47,24 +47,25 @@ class SegmentList extends Component {
 			});
 	};
 
-	onUpdateStatusContact = (contact, status) => {
-		let { client } = this.props;
-		client
-			.mutate({
-				mutation: UPDATE_SEGMENT,
-				variables: {
-					id: contact.id,
-					status: status
-				},
-			})
-			.then(({ data }) => {
-				const { refetchSegments } = this.props;
-				refetchSegments();
-			})
-			.catch(error => {
-				console.log('err', error);
-			});
-	};
+	// onUpdateStatusContact = (contact, status) => {
+	// 	let { client } = this.props;
+	// 	console.log(contact.id + " " + status);
+	// 	client
+	// 		.mutate({
+	// 			mutation: UPDATE_SEGMENT,
+	// 			variables: {
+	// 				id: contact.id,
+	// 				status: status
+	// 			},
+	// 		})
+	// 		.then(({ data }) => {
+	// 			const { refetchSegments } = this.props;
+	// 			refetchSegments();
+	// 		})
+	// 		.catch(error => {
+	// 			console.log('err', error);
+	// 		});
+	// };
 
 	onDuplicateContact = record => {
 		const { history } = this.props;
@@ -85,7 +86,7 @@ class SegmentList extends Component {
 				} else this.onUpdateStatusContact(record, e.key)
 			}}
 		>
-			{record.status != "ACTIVE" ? <Menu.Item key="ACTIVE">Make Active</Menu.Item> : <Menu.Item key="INACTIVE">Make Inactive</Menu.Item>}
+			{/* {record.status != "ACTIVE" ? <Menu.Item key="ACTIVE">Make Active</Menu.Item> : <Menu.Item key="INACTIVE">Make Inactive</Menu.Item>} */}
 			<Menu.Item key="duplicate">Duplicate</Menu.Item>
 			<Menu.Item key="delete">Delete</Menu.Item>
 		</Menu>
@@ -169,13 +170,13 @@ class SegmentList extends Component {
 				sorter: (a, b) => a.segmentType - b.segmentType,
 				sortOrder: sortedInfo.columnKey === 'segmentType' && sortedInfo.order,
 			},
-			{
-				title: 'Status',
-				dataIndex: 'status',
-				key: 'status',
-				sorter: (a, b) => a.status - b.status,
-				sortOrder: sortedInfo.columnKey === 'status' && sortedInfo.order,
-			},
+			// {
+			// 	title: 'Status',
+			// 	dataIndex: 'status',
+			// 	key: 'status',
+			// 	sorter: (a, b) => a.status - b.status,
+			// 	sortOrder: sortedInfo.columnKey === 'status' && sortedInfo.order,
+			// },
 			// {
 			// 	title: 'Created On',
 			// 	dataIndex: 'createdOn',

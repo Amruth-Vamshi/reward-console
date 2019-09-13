@@ -20,8 +20,8 @@ export const categories = gql`
 	}
 `;
 export const getOffers = gql`
-	query($organizationId: ID!) {
-		getOffers(organizationId: $organizationId) {
+	query($organizationId: ID!,$state:String) {
+		getOffers(organizationId: $organizationId,state:$state) {
 			id
 			name
 			offerType
