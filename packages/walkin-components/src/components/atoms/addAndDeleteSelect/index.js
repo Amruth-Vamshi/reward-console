@@ -44,7 +44,7 @@ class AddAndDeleteSelectDynamically extends React.Component {
 							>
 								{segmentSelectionData &&
 									segmentSelectionData.map((val, i) => {
-										return <Option key={i} value={val.name}> {val.name} </Option>
+										return <Option key={i} value={val.id}> {val.name} </Option>
 
 									})}
 							</Select>

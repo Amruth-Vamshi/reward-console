@@ -23,7 +23,7 @@ import {
   createRule,
   UPDATE_CAMPAIGN,
   createCommunication,
-  createMessageTemplate
+  createMessageTemplate,createAudience,communications,audiences
 } from "../../../containers/Query";
 import { CustomScrollbars } from "@walkinsole/walkin-components";
 import jwt from "jsonwebtoken";
@@ -34,7 +34,7 @@ const communicationData = [
   // { value: 'push', title: 'Push Notification' },
   { value: "EMAIL", title: "Email" }
 ];
-
+//Math.random().toString(36).substring(7);
 // import { allSegments } from "@walkinsole/walkin-hyperx/src/query/audience";
 class EditCampaign extends Component {
   constructor() {
@@ -49,6 +49,7 @@ class EditCampaign extends Component {
       testControlSelected: "",
       communicationSelected: "SMS",
       communicationFormValues: {},
+      segmentId:"",
       formValues: {},
       campaign: {},
       segmentList: {},
@@ -77,6 +78,27 @@ class EditCampaign extends Component {
       ]
     };
   }
+
+  componentWillMount() {
+    let communicationFormValues = {}
+    let audienceSegment = {}
+    if(this.props.allCommunications.communications) {
+      this.props.allCommunications.communications.map(item => {
+        if(item.messageTemplate.messageFormat == "SMS"){
+        communicationFormValues.smsTag = item.messageTemplate.templateSubjectText 
+        communicationFormValues.smsBody = item.messageTemplate.templateBodyText
+        }else if(item.messageTemplate.messageFormat == "EMAIL"){
+        communicationFormValues.email_subject = item.messageTemplate.templateSubjectText 
+        communicationFormValues.email_body = item.messageTemplate.templateBodyText
+        }
+      })
+    }
+    if(this.props.allAudiences.audiences){
+      console.log("Audiencess..", this.props.allAudiences.audiences)
+    }
+    this.setState({communicationFormValues,audienceSegment})
+  }
+
   onTestAndControlEdit = () => {
     this.setState({
       showTestAndControl: true
@@ -89,10 +111,87 @@ class EditCampaign extends Component {
   logQuery = query => {
     this.setState({ query: query });
   };
+  
+  onValuesSelected = selectedSegment =>{
+    this.setState({segmentId:selectedSegment[0]})
+  }
+
+  onFormNext = current => {
+    const { formValues, communicationFormValues, segmentId} = this.state;
+    if (this.state.current == 2) {
+      this.audiences(this.state.current)
+      //Audience Rule
+      if(!(segmentId == "Undefined")){
+       this.createAudience(this.state.current, segmentId);
+      }
+      if(!(this.state.query.rules.length == 0)){
+      this.ruleQuery(this.state.current);
+      }
+    }
+    if (this.state.current == 3) {
+      //Trigger Rule
+      this.ruleQuery(this.state.current);
+    }
+    if (this.state.current == 4) {
+      this.communications(this.state.current);
+      const comForm = this.formRef1 && this.formRef1.props && this.formRef1.props.form;
+      comForm.validateFields((err, values) => {
+        if (err)  return
+        else {
+          console.log('>>',values)
+          this.setState({communicationFormValues:values})
+          this.createCommunicationMutation(this.state.current, values);
+        }
+      })
+
+    }
+      const form =
+        this.formRef && this.formRef.props && this.formRef.props.form;
+      if (form) {
+        form.validateFields((err, values) => {
+          if (err) {
+            return;
+          } else {
+            // this.ruleQuery();
+           this.setState({
+              formValues: values,
+              current: current
+            });
+            switch(current){
+              case 1:
+                this.onCampaignUpdate(values)
+            }
+          }
+        });
+    } else {
+      this.setState({
+        current: current
+      });
+    }
+  };
+
+  createAudience = (current, segmentId) =>{
+    var input = {
+      campaign_id:this.props.campaign.campaign.id,
+     segment_id:segmentId,
+     organization_id:jwt.decode(localStorage.getItem("jwt")).org_id,
+     application_id:"42c8506c-4185-4fc3-aa99-55f68080f71c",
+     status:"ACTIVE"
+    };
+    this.props.audience({
+      variables:{
+        input:input
+      }
+    }).then(data =>{
+      console.log("Audience..", data)
+    }).catch(err=>{
+      console.log("Error while creating audience..", err)
+    });
+  }
 
   createCommunicationMutation = (current, values) => {
     var input = {
-      name: this.props.campaign.campaign.name,
+      name: this.props.campaign.campaign.name +"_"+ Math.random().toString(36).substring(2),
       description: "",
       messageFormat: this.state.communicationSelected,
       templateBodyText: this.state.communicationSelected == "SMS"?values.smsBody:values.email_body,
@@ -216,53 +315,6 @@ class EditCampaign extends Component {
       });
     }
   }
-
-  onFormNext = current => {
-    const { formValues, communicationFormValues } = this.state;
-    console.log(current);
-    if (this.state.current == 2) {
-      //Audience Rule
-      this.ruleQuery(this.state.current);
-    }
-    if (this.state.current == 3) {
-      //Trigger Rule
-      this.ruleQuery(this.state.current);
-    }
-    if (this.state.current == 4) {
-      const comForm = this.formRef1 && this.formRef1.props && this.formRef1.props.form;
-      comForm.validateFields((err, values) => {
-        if (err)  return
-        else {
-          this.setState({communicationFormValues:values})
-          this.createCommunicationMutation(this.state.current, values);
-        }
-      })
-
-    }
-      const form =
-        this.formRef && this.formRef.props && this.formRef.props.form;
-      if (form) {
-        form.validateFields((err, values) => {
-          if (err) {
-            return;
-          } else {
-            // this.ruleQuery();
-           this.setState({
-              formValues: values,
-              current: current
-            });
-            switch(current){
-              case 1:
-                this.onCampaignUpdate(values)
-            }
-          }
-        });
-    } else {
-      this.setState({
-        current: current
-      });
-    }
-  };
 
   saveFormRef = formRef => {
     this.formRef = formRef;
@@ -398,7 +450,8 @@ class EditCampaign extends Component {
             commWrappedComponentRef={this.commWrappedComponentRef}
             communicationFormValues={this.state.communicationFormValues}
             // saveFormRef={this.saveComFormRef}
-            onFormNext={this.onFormNext}
+            onFormNext={this.onFormNext
+            }
           />
           // <Communication
           //   // campaign={this.props.campaign.campaign}
@@ -413,6 +466,8 @@ class EditCampaign extends Component {
   };
 
   render() {
+    console.log("This.props..",this.props);
+    console.log("This.state..",this.state);
     const { current, stepperData } = this.state;
     const {campaign}=this.props
     return (
@@ -499,5 +554,30 @@ export default compose(
   }),
   graphql(createMessageTemplate, {
     name: "messageTemplate"
+  }),
+  graphql(createAudience,{
+    name:"audience"
+  }),
+  graphql(communications,{
+    name:"allCommunications",
+    options:props =>({
+      variables:{
+      entityId:props.match.params.id,
+      entityType:"Campaign",
+      organization_id:jwt.decode(localStorage.getItem("jwt")).org_id,
+      status:"Active"
+      },
+      fetchPolicy:"cache-and-network"
+    })
+  }),graphql(audiences,{
+    name:"allAudiences",
+    options:props =>({
+      variables:{
+        campaign_id:props.match.params.id,
+        organization_id:jwt.decode(localStorage.getItem("jwt")).org_id,
+      },
+      fetchPolicy:"cache-and-network"
+    })
   })
 )(EditCampaign);
+
