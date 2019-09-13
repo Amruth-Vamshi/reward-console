@@ -55,7 +55,7 @@ class EditCampaign extends Component {
       segmentList: {},
       attributeData: {},
       formName:"",
-      query: { id: "1", combinator: "and", rules: [] },
+      query: {combinator: "and", rules: [] },
       stepperData: [
         {
           title: "Basic Info"
@@ -243,7 +243,7 @@ class EditCampaign extends Component {
       type: "SIMPLE",
       organizationId: jwt.decode(localStorage.getItem("jwt")).org_id,
       status: "ACTIVE",
-      ruleConfiguration: JSON.stringify(this.state.query)
+      ruleConfiguration: this.state.query
     };
     this.props
       .rule({
