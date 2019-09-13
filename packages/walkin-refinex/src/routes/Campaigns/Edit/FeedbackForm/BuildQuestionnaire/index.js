@@ -82,8 +82,8 @@ class Questionnaire extends Component {
           input: {
             questionText: "click here to edit",
             type: questionType,
-            rangeMax: 0,
-            rangeMin: 10
+            rangeMax: 10,
+            rangeMin: 0
           }
         }
       }).then(async data => {
