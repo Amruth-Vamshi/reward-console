@@ -173,6 +173,21 @@ mutation createAudience($input:createAudienceInput!){
   }
 }`;
 
+export const updateAudiencesWithCampaignId = gql`
+mutation updateAudiencesWithCampaignId($campaignId:ID, $segments:[ID]!){
+  updateAudiencesWithCampaignId(campaignId:$campaignId, segments:$segments){
+    id
+    campaign{
+      id
+    }
+    segment{
+      id
+      name
+      segmentType
+    }
+  }
+}`;
+
 export const attributes = gql`
   query ruleAttributes {
     ruleAttributes {
@@ -227,6 +242,22 @@ export const UPDATE_CAMPAIGN = gql`
       feedbackForm {
         id
         title
+      }
+      audienceFilterRule{
+        id
+        name
+        description
+        type
+        ruleConfiguration
+        ruleExpression
+      }
+      triggerRule{
+        id
+        name
+        description
+        type
+        ruleConfiguration
+        ruleExpression
       }
     }
   }
