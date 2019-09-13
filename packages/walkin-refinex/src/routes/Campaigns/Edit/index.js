@@ -109,6 +109,7 @@ class EditCampaign extends Component {
   };
 
   logQuery = query => {
+    console.log("query in main component",query)
     this.setState({ query: query });
   };
   
@@ -119,7 +120,7 @@ class EditCampaign extends Component {
   onFormNext = current => {
     const { formValues, communicationFormValues, segmentId} = this.state;
     if (this.state.current == 2) {
-      this.audiences(this.state.current)
+      //this.audiences(this.state.current)
       //Audience Rule
       if(!(segmentId == "Undefined")){
        this.createAudience(this.state.current, segmentId);
@@ -133,7 +134,7 @@ class EditCampaign extends Component {
       this.ruleQuery(this.state.current);
     }
     if (this.state.current == 4) {
-      this.communications(this.state.current);
+      //this.communications(this.state.current);
       const comForm = this.formRef1 && this.formRef1.props && this.formRef1.props.form;
       comForm.validateFields((err, values) => {
         if (err)  return

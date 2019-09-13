@@ -11,7 +11,8 @@ class FormDesign extends Component {
     this.state = {
       counter: 0,
       isLastQuestion: false,
-      isFirstQuestion: false
+      isFirstQuestion: false,
+      color: "#891732"
     }
   }
 
@@ -24,6 +25,10 @@ class FormDesign extends Component {
       this.setState({ counter: newCounter, isFirstQuestion: false, isLastQuestion: false })
     }
 
+  }
+
+  onColorUpdate = (hex) => {
+    this.setState({ color: hex })
   }
 
   nextQuestion = () => {
@@ -41,21 +46,25 @@ class FormDesign extends Component {
   }
   render() {
     const { questionnaire } = this.props;
-    const { counter, isLastQuestion, isFirstQuestion } = this.state;
+    const { counter, isLastQuestion, isFirstQuestion, color } = this.state;
     return (
 
       questionnaire && questionnaire[counter] ? (
-        <Row style={{
-          height: "-webkit-fill-available",
-          overflowY: "scroll"
-        }}>
-          <Col span={17}>
-            <Preview isFirstQuestion={isFirstQuestion} question={questionnaire[counter]} nextQuestion={this.nextQuestion} goTopreviousQuestion={this.goTopreviousQuestion} isLastQuestion={isLastQuestion} />
+        <Row >
+          <Col span={17} >
+            <Preview
+              color={color}
+              isFirstQuestion={isFirstQuestion}
+              question={questionnaire[counter]}
+              nextQuestion={this.nextQuestion}
+              goTopreviousQuestion={this.goTopreviousQuestion}
+              isLastQuestion={isLastQuestion} />
+          </Col>
+          <Col span={7} style={{ height: "inherit", overflow: "scroll" }} >
+            <Controls
+              onCOlorUpdate={this.onColorUpdate} />
           </Col>
 
-          <Col span={7}>
-            <Controls />
-          </Col>
         </Row>) : <Spin />
 
 

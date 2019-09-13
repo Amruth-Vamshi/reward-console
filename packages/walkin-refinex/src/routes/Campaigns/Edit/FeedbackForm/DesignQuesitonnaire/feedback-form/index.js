@@ -35,29 +35,29 @@ class Home extends Component {
   render() {
 
     const { backgroundColor, templateStructure, transitions, logo, subtitle, title, buttonColor } = this.state;
-    const { question } = this.props;
+    const { question, color } = this.props;
     const radioStyle = {
       display: 'block',
       height: '40px',
       lineHeight: '40px',
-      width: "30px"
+      width: "50px"
     };
     return (
       <Layout className="layout" style={{ marginLeft: "30%", backgroundColor: "white" }}>
-        <Header style={{ backgroundColor: backgroundColor }}>
-          <Button onClick={this.goBack} style={{ backgroundColor: backgroundColor, border: "0px" }}>
+        <Header style={{ backgroundColor: color }}>
+          <Button style={{ backgroundColor: color, border: "0px" }} onClick={this.goBack}>
             <Icon type="left" />
           </Button>
           <div className="logo" />
         </Header>
         <div style={{ minHeight: "43vh", padding: '0 40px', marginTop: "10px" }}>
           <Row>
-            <Col>
+            <Col style={{ marginTop: "10px" }}>
               <h3 style={{ textAlign: "center" }}>{question ? question.questionText : ""}</h3>
             </Col>
-
-
-            <Col>
+          </Row>
+          <Row>
+            <Col style={{ marginTop: "10px" }}>
               <Radio.Group onChange={this.onChange} value={this.state.value}>
                 {
                   question.choices.map(choice => {
@@ -70,9 +70,6 @@ class Home extends Component {
                 }
               </Radio.Group>
             </Col>
-
-
-
           </Row>
 
         </div>
@@ -82,13 +79,13 @@ class Home extends Component {
             </div>
           <div style={{ width: "60%", float: "right" }}>
             <Button
-              style={{ width: "100%", backgroundColor: backgroundColor }}
+              style={{ width: "100%", backgroundColor: color }}
               onClick={this.onHandleNext}>Next</Button>
 
 
           </div>
         </footer>
-      </Layout>
+      </Layout >
     )
   }
 }
