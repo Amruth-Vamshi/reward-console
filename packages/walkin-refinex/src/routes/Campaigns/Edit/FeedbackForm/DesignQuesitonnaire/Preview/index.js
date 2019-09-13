@@ -14,11 +14,11 @@ export default class Controls extends React.Component {
         const { question, nextQuestion, isLastQuestion, goTopreviousQuestion, isFirstQuestion } = this.props;
         console.log(isLastQuestion)
         return (
-            <Row>
+            <Row style={{ minHeight: "100vh", backgroundColor: "#89ECD6" }}>
                 <Col span={24}>
-                    <Card >
+                    <Card style={{ minHeight: "100vh", backgroundColor: "#89ECD6" }}>
                         <Row>
-                            <Col align="right" span={24} style={{ height: "500px", width: "500px" }}>
+                            <Col align="right" span={24} style={{ marginLeft: "10rem", height: "500px", width: "500px" }}>
                                 {isLastQuestion ? this.warning() : null}
                                 {isFirstQuestion ? this.newWarning() : null}
                                 <Home question={question} nextQuestion={nextQuestion} goTopreviousQuestion={goTopreviousQuestion} />

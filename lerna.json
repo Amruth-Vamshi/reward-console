@@ -5,7 +5,8 @@
     "packages/walkin-hyperx",
     "packages/walkin-nearx",
     "packages/walkin-refinex",
-    "packages/walkin-app"
+    "packages/walkin-app",
+    "packages/walkin-feedback-form"
   ],
   "version": "independent",
   "npmClient": "yarn",
