@@ -366,7 +366,7 @@ class NewOffer extends Component {
 		}
 	};
 
-	onBasicInfoSubmit = val => {};
+	onBasicInfoSubmit = val => { };
 	saveFormValues = (current, state, ref) => {
 		const form = ref && ref.props.form;
 		if (form) {
@@ -409,7 +409,7 @@ class NewOffer extends Component {
 					current: current,
 				});
 			}
-		} else if (e && e.target.innerText === 'Launch') {
+		} else if (e && e.target.innerText === 'Save') {
 			const { formValues } = this.state;
 			if (!isEmpty(formValues.basicForm)) {
 				if (isEmpty(formValues.redemptionForm) || isValidObject(formValues.redemptionForm)) {
@@ -760,8 +760,8 @@ class NewOffer extends Component {
 					)}
 					<div className="offerFooterStyle">
 						<CampaignFooter
-							nextButtonText={current === 1 ? 'Launch' : 'Next'}
-							saveDraftText="Save Draft"
+							nextButtonText={current === 1 ? 'Save' : 'Next'}
+							// saveDraftText="Save Draft"
 							onPage1SaveDraft={this.onPage1SaveDraft}
 							goToPage2={e => {
 								this.goToNextPage(current + 1, e);

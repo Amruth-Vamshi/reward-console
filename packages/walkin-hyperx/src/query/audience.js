@@ -2,8 +2,7 @@ import gql from 'graphql-tag';
 export const allSegments = gql`
 	query($organization_id: ID!, $status: STATUS!) {
 		segments(status: $status, organization_id: $organization_id) {
-			id
-			name
+			id name	status
 			segmentType
 			rule {
 				id
@@ -82,3 +81,33 @@ export const disableSegment = gql`
 		}
 	}
 `;
+
+export const UPDATE_SEGMENT = gql`
+	mutation updateSegment($input: SegmentUpdateInput) {
+		updateSegment(input: $input) {
+			id name segmentType status rule{
+				id name status type ruleConfiguration
+			}
+		}
+	}
+`;
+
+export const GET_AUDIENCE = gql`
+	query audiences($organization_id: ID,$application_id:ID,$campaign_id: ID,$segment_id: ID,$status: STATUS ) {
+		audiences(organization_id: $organization_id,application_id: $application_id,
+			campaign_id: $campaign_id,segment_id: $segment_id,status: $status) 
+			{
+				id status campaign{ id name status }
+    			segment{ id name segmentType status }
+		}
+	}
+`;
+
+export const CREATE_AUDIENCE = gql`
+	mutation createAudience($input:createAudienceInput!){
+		createAudience(input:$input){
+			id status campaign{ id name  }
+			segment{ id name segmentType }
+		}
+	}
+`

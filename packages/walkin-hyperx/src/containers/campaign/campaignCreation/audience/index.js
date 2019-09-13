@@ -14,6 +14,7 @@ const Audience = ({
 	segmentFilterSubText,
 	attributeData,
 	logQuery,
+	selectedSegments
 }) => {
 	return (
 		<div>
@@ -26,15 +27,16 @@ const Audience = ({
 					<AddAndDeleteSelectDynamically
 						onValuesSelected={onValuesSelected}
 						segmentSelectionData={segmentSelectionData}
+						values={selectedSegments}
 					/>
-					<span>
+					{uploadCsvText && <span>
 						or
 						<Upload uploadProps={uploadProps}>
 							<Button style={{ marginBottom: '0px' }} type="link">
 								{uploadCsvText}
 							</Button>
 						</Upload>
-					</span>
+					</span>}
 				</div>
 				<div style={{ marginTop: '50px' }}>
 					<Divider orientation="left">

@@ -171,8 +171,7 @@ mutation createAudience($input:createAudienceInput!){
       segmentType
     }status
   }
-}
-`;
+}`;
 
 export const attributes = gql`
   query ruleAttributes {

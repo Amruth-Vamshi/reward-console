@@ -8,17 +8,25 @@ const { Option } = Select;
 class AddAndDeleteSelectDynamically extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = { values: ['Choose from the list'] };
+		this.state = {
+			values: this.props.values ? this.props.values : [""]
+		};
 	}
 	addClick() {
-		this.setState(prevState => ({ values: [...prevState.values, ''] }));
+		let { values } = this.state
+		console.log(values[values.length - 1]);
+		values[values.length - 1] != '' &&
+			this.setState({ values: [...this.state.values, ''] });
 	}
 
 	handleChange(i, value) {
 		let values = [...this.state.values];
-		values[i] = value;
-		this.setState({ values });
-		this.props.onValuesSelected(values);
+		console.log(values.find(i => i == value));
+		if (!values.find(i => i == value)) {
+			values[i] = value;
+			this.setState({ values });
+			this.props.onValuesSelected(values);
+		}
 	}
 
 	removeClick(i, e) {
@@ -26,22 +34,23 @@ class AddAndDeleteSelectDynamically extends React.Component {
 		if (i !== -1) {
 			array.splice(i, 1);
 			this.setState({ values: array });
+			this.props.onValuesSelected(array);
 		}
 	}
 	render() {
 		const { segmentSelectionData } = this.props;
-		console.log(segmentSelectionData)
 		return (
 			<Fragment>
 				{this.state.values.map((el, i) => {
 					return (
 						<div key={i} className="selectSegmentBoxContainer">
 							<Select showSearch
+								placeholder="Choose from the list"
 								classname="segmentSelectBoxStyle"
-								value={el || ''}
+								value={el ? el : undefined}
 								style={{ width: '50%' }}
-								onChange={this.handleChange.bind(this, i)}
-							>
+								onChange={this.handleChange.bind(this, i)} >
+
 								{segmentSelectionData &&
 									segmentSelectionData.map((val, i) => {
 										return <Option key={i} value={val.id}> {val.name} </Option>
@@ -52,9 +61,7 @@ class AddAndDeleteSelectDynamically extends React.Component {
 						</div>
 					);
 				})}
-				<Button className="newSegmentAddButton" type="primary" onClick={this.addClick.bind(this)}>
-					Add
-				</Button>
+				<Button className="newSegmentAddButton" type="primary" onClick={this.addClick.bind(this)}> Add </Button>
 			</Fragment>
 		);
 	}
