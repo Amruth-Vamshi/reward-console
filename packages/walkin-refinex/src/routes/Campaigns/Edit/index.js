@@ -46,6 +46,8 @@ class EditCampaign extends Component {
       showTestAndControl: false,
       testValue: 95,
       controlValue: 5,
+      oldQueryTriggers: null,
+      oldQueryAudience: null,
       testControlSelected: "",
       communicationSelected: "SMS",
       communicationFormValues: {},
@@ -108,9 +110,12 @@ class EditCampaign extends Component {
     this.setState({ current });
   };
 
-  logQuery = query => {
-    console.log("query in main component",query)
-    this.setState({ query: query });
+  logQuery = (query,oldQuery) => {
+
+    this.setState({ query: query,oldQueryTriggers:oldQuery });
+  };
+  logQueryAudience =(query,oldQuery) => {
+    this.setState({ query: query,oldQueryAudience:oldQuery });
   };
   
   onValuesSelected = selectedSegment =>{
@@ -355,8 +360,38 @@ class EditCampaign extends Component {
     this.formRef1 = formRef;
   };
 
+
+
   getContainer = () => {
     const { campaign } = this.props.campaign;
+    let triggerRule={id:1,combinator: "and", rules: [] }
+    let audienceRule={id:1,combinator: "and", rules: [] };
+    if(campaign.triggerRule){
+      triggerRule= campaign.triggerRule.ruleConfiguration;
+      var mapObj = {
+        ruleAttributeId: 'field',
+        attributeValue: 'value',
+        expressionType: 'operator',
+      };
+      triggerRule= JSON.stringify(triggerRule)
+      triggerRule = triggerRule.replace(/ruleAttributeId|attributeValue|expressionType/gi, function (matched) {
+        return mapObj[matched];
+      });
+      triggerRule= JSON.parse(triggerRule)
+    };
+    if(campaign.audienceFilterRule){
+      audienceRule= campaign.audienceFilterRule.ruleConfiguration;
+      audienceRule= JSON.stringify(audienceRule)
+      var mapObj = {
+        ruleAttributeId: 'field',
+        attributeValue: 'value',
+        expressionType: 'operator',
+      };
+      audienceRule = audienceRule.replace(/ruleAttributeId|attributeValue|expressionType/gi, function (matched) {
+        return mapObj[matched];
+      });
+      audienceRule= JSON.parse(audienceRule)
+    }
     let attributeData =
       this.props.allAttributes &&
       this.props.allAttributes.ruleAttributes &&
@@ -431,14 +466,18 @@ class EditCampaign extends Component {
               segmentFilterText="Filter"
               segmentFilterSubText="Campaign applies to :"
               attributeData={attributeData}
-              logQuery={this.logQuery}
+              logQuery={this.logQueryAudience}
+              ruleQuery={this.state.oldQueryAudience ? this.state.oldQueryAudience :audienceRule}
             />
           </CustomScrollbars>
         );
 
       case 3:
         return (
-          <Triggers attributeData={attributeData} logQuery={this.logQuery} />
+          <Triggers 
+          query={this.state.oldQueryTriggers?this.state.oldQueryTriggers:triggerRule} 
+          attributeData={attributeData} 
+          logQuery={this.logQuery} />
         );
       case 4:
         return (

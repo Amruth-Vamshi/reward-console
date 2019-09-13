@@ -275,6 +275,18 @@ export const GET_CAMPAIGN = gql`
       startTime
       endTime
       status
+      triggerRule{
+        id
+        name
+        status
+        ruleConfiguration
+      }
+      audienceFilterRule{
+        id
+        name
+        status
+        ruleConfiguration
+      }
       campaignType
       status
       feedbackForm {
