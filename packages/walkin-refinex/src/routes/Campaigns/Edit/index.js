@@ -425,7 +425,7 @@ class EditCampaign extends Component {
     const { campaign } = this.props.campaign;
     let triggerRule={id:1,combinator: "and", rules: [] }
     let audienceRule={id:1,combinator: "and", rules: [] };
-    if(campaign.triggerRule){
+    if(campaign && campaign.triggerRule){
       triggerRule= campaign.triggerRule.ruleConfiguration;
       var mapObj = {
         ruleAttributeId: 'field',
@@ -438,7 +438,7 @@ class EditCampaign extends Component {
       });
       triggerRule= JSON.parse(triggerRule)
     };
-    if(campaign.audienceFilterRule){
+    if(campaign && campaign.audienceFilterRule){
       audienceRule= campaign.audienceFilterRule.ruleConfiguration;
       audienceRule= JSON.stringify(audienceRule)
       var mapObj = {
@@ -521,12 +521,13 @@ class EditCampaign extends Component {
                 onValuesSelected={this.onValuesSelected}
                 selectedSegments={this.state.selectedSegments}
                 segmentSelectionData={this.props.segmentList.segments}
+                
                 uploadCsvText="Upload CSV"
                 // uploadProps={props}
                 segmentFilterText="Filter"
                 segmentFilterSubText="Campaign applies to :"
                 attributeData={attributeData}
-                logQuery={this.logQuery}
+                logQuery={this.logQueryAudience}
                 ruleQuery={this.state.oldQueryAudience ? this.state.oldQueryAudience :audienceRule}
               />}
           </CustomScrollbars>
@@ -684,6 +685,7 @@ export default compose(
     name:"allAudiences",
     options:props =>({
       variables:{
+        status:"ACTIVE",
         campaign_id:props.match.params.id,
         organization_id:jwt.decode(localStorage.getItem("jwt")).org_id,
         status:"Active"
