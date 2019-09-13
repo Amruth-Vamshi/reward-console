@@ -22,7 +22,7 @@ import {
   attributes,
   createRule,
   UPDATE_CAMPAIGN,
-  createCommunication,updateAudiencesWithCampaignId,
+  createCommunication,updateAudiencesWithCampaignId,updateRule,
   createMessageTemplate,createAudience,communications,audiences,updateCommunication,updateMessageTemplate
 } from "../../../containers/Query";
 import { CustomScrollbars } from "@walkinsole/walkin-components";
@@ -133,9 +133,11 @@ class EditCampaign extends Component {
       //  this.createAudience(this.state.current, segmentId);
       this.updateAudiencesWithCampaignId(this.state.current, selectedSegments)
       }
-      if(!(this.state.query.rules.length == 0)){
-      this.ruleQuery(this.state.current);
-      }
+      // if(!(this.state.query.rules.length == 0)){
+      // this.ruleQuery(this.state.current);
+      // }else{
+
+      // }
     }
     //Trigger module
     if (this.state.current == 3) {
@@ -640,6 +642,9 @@ export default compose(
   graphql(createRule, {
     name: "rule"
   }),
+  graphql(updateRule,{
+    name:"updateRule"
+  }),
   graphql(UPDATE_CAMPAIGN, {
     name: "updateCampaign"
   }),
@@ -681,6 +686,7 @@ export default compose(
       variables:{
         campaign_id:props.match.params.id,
         organization_id:jwt.decode(localStorage.getItem("jwt")).org_id,
+        status:"Active"
       },
       fetchPolicy:"cache-and-network"
     })
