@@ -5,7 +5,7 @@ import Audience from "./campaignCreation/audience";
 import Offer from "./campaignCreation/offer";
 import Communication from "./campaignCreation/communication";
 import { campaignOverview as Overview } from "@walkinsole/walkin-components";
-import { allSegments, attributes, GET_AUDIENCE } from "../../query/audience";
+import { allSegments, attributes, GET_AUDIENCE, CREATE_AUDIENCE } from "../../query/audience";
 import { getOffers } from "../../query/offer";
 import { withApollo, graphql, compose } from 'react-apollo';
 import isEmpty from 'lodash/isEmpty';
@@ -88,10 +88,9 @@ class CampaignCreation extends Component {
 		console.log(current);
 		let current1 = this.state.current
 
-		// if (current1 == 0) {
-		// 	// this.createOrUpdateBasicCampaign(current)
-		// } else 
-		if (current1 == 1)
+		if (current1 == 0) {
+			this.createOrUpdateBasicCampaign(current)
+		} else if (current1 == 1)
 			this.createAudience(current)
 		this.setState({ current });
 
@@ -101,7 +100,22 @@ class CampaignCreation extends Component {
 	createAudience = current => {
 		let segments = this.state.selectedSegments
 		if (segments[0] && segments[0] != "") {
-
+			let { allApplications: { organization } } = this.props;
+			var input = {
+				campaign_id: this.state.campaign.id,
+				segment_id: segments[0],
+				organization_id: organization.id,
+				application_id: organization.applications[0].id,
+				status: "ACTIVE"
+			};
+			this.props.createAudience({
+				variables: { input: input }
+			}).then(data => {
+				console.log("Create Audience..", data)
+				this.setState({ current });
+			}).catch(err => {
+				console.log("Error while creating audience..", err)
+			});
 		}
 	}
 
@@ -363,6 +377,9 @@ export default withRouter(
 			// graphql(createCommunication, {
 			// 	name: "communication"
 			// }),
+			graphql(CREATE_AUDIENCE, {
+				name: "createAudience"
+			}),
 			graphql(GET_ALL_APPS_OF_ORGANIZATION, {
 				name: "allApplications",
 				options: props => {
@@ -380,7 +397,7 @@ export default withRouter(
 			// 			variables: {
 			// 				campaign_id:
 			// 			}
-			// 		};
+			// 		}
 			// 	}
 			// }),
 		)(CampaignCreation)

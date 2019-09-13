@@ -102,3 +102,12 @@ export const GET_AUDIENCE = gql`
 		}
 	}
 `;
+
+export const CREATE_AUDIENCE = gql`
+	mutation createAudience($input:createAudienceInput!){
+		createAudience(input:$input){
+			id status campaign{ id name  }
+			segment{ id name segmentType }
+		}
+	}
+`
