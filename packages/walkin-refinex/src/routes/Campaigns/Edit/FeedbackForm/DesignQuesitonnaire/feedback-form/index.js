@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import { Layout, PageHeader, Button, Icon, Radio, Input, Row } from "antd"
+import { Layout, PageHeader, Button, Icon, Radio, Input, Row, Col } from "antd"
 const { Header, Content, Footer } = Layout;
 import "./index.css"
+import { CustomScrollbars } from "@walkinsole/walkin-components";
 class Home extends Component {
 
   constructor(props) {
@@ -35,31 +36,46 @@ class Home extends Component {
 
     const { backgroundColor, templateStructure, transitions, logo, subtitle, title, buttonColor } = this.state;
     const { question } = this.props;
+    const radioStyle = {
+      display: 'block',
+      height: '40px',
+      lineHeight: '40px',
+      width: "30px"
+    };
     return (
-      <Layout className="layout" style={{ marginLeft: "30%" }}>
+      <Layout className="layout" style={{ marginLeft: "30%", backgroundColor: "white" }}>
         <Header style={{ backgroundColor: backgroundColor }}>
           <Button onClick={this.goBack} style={{ backgroundColor: backgroundColor, border: "0px" }}>
             <Icon type="left" />
           </Button>
           <div className="logo" />
         </Header>
-        <Content style={{ minHeight: "43vh", padding: '0 40px', marginTop: "10px" }}>
+        <div style={{ minHeight: "43vh", padding: '0 40px', marginTop: "10px" }}>
           <Row>
-            <h3 style={{ textAlign: "center" }}>{question ? question.questionText : ""}</h3>
-            <Radio.Group onChange={this.onChange} value={this.state.value}>
-              {
-                question.choices.map(choice => {
-                  return (
-                    <Radio key={choice.id} value={choice.id}>
-                      {choice.choiceText}
-                    </Radio>
-                  )
-                })
-              }
-            </Radio.Group>
+            <Col>
+              <h3 style={{ textAlign: "center" }}>{question ? question.questionText : ""}</h3>
+            </Col>
+
+
+            <Col>
+              <Radio.Group onChange={this.onChange} value={this.state.value}>
+                {
+                  question.choices.map(choice => {
+                    return (
+                      <Radio style={radioStyle} key={choice.id} value={choice.id}>
+                        {choice.choiceText}
+                      </Radio>
+                    )
+                  })
+                }
+              </Radio.Group>
+            </Col>
+
+
+
           </Row>
 
-        </Content>
+        </div>
         <footer>
           <div className="error-text">
             error message
