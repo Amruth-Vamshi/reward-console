@@ -361,7 +361,7 @@ class EditCampaign extends Component {
       this.props.allAttributes &&
       this.props.allAttributes.ruleAttributes &&
       this.props.allAttributes.ruleAttributes.map(el => ({
-        name: el.attributeName,
+        name: el.id,
         id: el.id,
         label: el.attributeName
       }));
