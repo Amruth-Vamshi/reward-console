@@ -64,7 +64,7 @@ export const createRule = gql`
 `;
 
 export const updateRule = gql`
-  mutation updateRule($id:ID! ,$input: UpdateRuleInput) {
+  mutation updateRule($id:ID! ,$input: UpdateRuleInput!) {
     updateRule(id:$id, input:$input) {
       id
     name
