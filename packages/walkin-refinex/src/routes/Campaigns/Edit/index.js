@@ -22,8 +22,8 @@ import {
   attributes,
   createRule,
   UPDATE_CAMPAIGN,
-  createCommunication,
-  createMessageTemplate,createAudience,communications,audiences
+  createCommunication,updateAudiencesWithCampaignId,
+  createMessageTemplate,createAudience,communications,audiences,updateCommunication,updateMessageTemplate
 } from "../../../containers/Query";
 import { CustomScrollbars } from "@walkinsole/walkin-components";
 import jwt from "jsonwebtoken";
@@ -51,7 +51,6 @@ class EditCampaign extends Component {
       testControlSelected: "",
       communicationSelected: "SMS",
       communicationFormValues: {},
-      segmentId:"",
       formValues: {},
       campaign: {},
       segmentList: {},
@@ -82,23 +81,26 @@ class EditCampaign extends Component {
   }
 
   componentWillMount() {
-    let communicationFormValues = {}
-    let audienceSegment = {}
+    let {communicationFormValues} = this.state
+    let communicationId = {}
+    let selectedSegments = []
     if(this.props.allCommunications.communications) {
       this.props.allCommunications.communications.map(item => {
         if(item.messageTemplate.messageFormat == "SMS"){
+          communicationId.smsid = item.messageTemplate.id
         communicationFormValues.smsTag = item.messageTemplate.templateSubjectText 
         communicationFormValues.smsBody = item.messageTemplate.templateBodyText
         }else if(item.messageTemplate.messageFormat == "EMAIL"){
+          communicationId.emailid = item.messageTemplate.id
         communicationFormValues.email_subject = item.messageTemplate.templateSubjectText 
         communicationFormValues.email_body = item.messageTemplate.templateBodyText
         }
       })
     }
     if(this.props.allAudiences.audiences){
-      console.log("Audiencess..", this.props.allAudiences.audiences)
+      this.props.allAudiences.audiences.map(item=>selectedSegments.push(item.segment.id))
     }
-    this.setState({communicationFormValues,audienceSegment})
+    this.setState({communicationFormValues,selectedSegments,communicationId})
   }
 
   onTestAndControlEdit = () => {
@@ -118,34 +120,43 @@ class EditCampaign extends Component {
     this.setState({ query: query,oldQueryAudience:oldQuery });
   };
   
-  onValuesSelected = selectedSegment =>{
-    this.setState({segmentId:selectedSegment[0]})
+  onValuesSelected = selectedSegments =>{
+    this.setState({selectedSegments})
   }
 
   onFormNext = current => {
-    const { formValues, communicationFormValues, segmentId} = this.state;
+    const { formValues, selectedSegments} = this.state;
+    //Audience module
     if (this.state.current == 2) {
-      //this.audiences(this.state.current)
       //Audience Rule
-      if(!(segmentId == "Undefined")){
-       this.createAudience(this.state.current, segmentId);
+      if(!(selectedSegments == "Undefined")){
+      //  this.createAudience(this.state.current, segmentId);
+      this.updateAudiencesWithCampaignId(this.state.current, selectedSegments)
       }
       if(!(this.state.query.rules.length == 0)){
       this.ruleQuery(this.state.current);
       }
     }
+    //Trigger module
     if (this.state.current == 3) {
       //Trigger Rule
       this.ruleQuery(this.state.current);
     }
+    //Communication module
     if (this.state.current == 4) {
-      //this.communications(this.state.current);
+      let {communicationFormValues} = this.state;
       const comForm = this.formRef1 && this.formRef1.props && this.formRef1.props.form;
       comForm.validateFields((err, values) => {
         if (err)  return
         else {
-          console.log('>>',values)
-          this.setState({communicationFormValues:values})
+          if(this.state.communicationSelected == "SMS"){
+            communicationFormValues.smsTag = values.smsTag 
+            communicationFormValues.smsBody = values.smsBody
+          }else{
+            communicationFormValues.email_subject = values.email_subject 
+          communicationFormValues.email_body = values.email_body
+          }
+          this.setState({communicationFormValues})
           this.createCommunicationMutation(this.state.current, values);
         }
       })
@@ -176,6 +187,18 @@ class EditCampaign extends Component {
     }
   };
 
+  updateAudiencesWithCampaignId = (current, segmentId ) =>{
+    this.props.updateAudiencesWithCampaignIdWithSegments({
+      variables:{
+        campaignId:this.props.campaign.campaign.id,
+        segments:segmentId
+    }
+  }).then(data => {
+    console.log("updateAudiencesWithCampaignIdWithSegments...", data)
+  }).catch(err => {
+    console.log("Error while updateAudiencesWithCampaignIdWithSegments", err)
+  })
+  }
   createAudience = (current, segmentId) =>{
     var input = {
       campaign_id:this.props.campaign.campaign.id,
@@ -196,47 +219,79 @@ class EditCampaign extends Component {
   }
 
   createCommunicationMutation = (current, values) => {
+    //Update
+    let update = false
     var input = {
-      name: this.props.campaign.campaign.name +"_"+ Math.random().toString(36).substring(2),
-      description: "",
-      messageFormat: this.state.communicationSelected,
-      templateBodyText: this.state.communicationSelected == "SMS"?values.smsBody:values.email_body,
-      templateSubjectText: this.state.communicationSelected == "SMS"?values.smsTag:values.email_subject,
-      templateStyle: "MUSTACHE",
-      organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
-      status:"ACTIVE"
-    };
-    this.props
-      .messageTemplate({
-        variables: {
-          input: input
+        templateBodyText: this.state.communicationSelected == "SMS"?values.smsBody:values.email_body,
+        templateSubjectText: this.state.communicationSelected == "SMS"?values.smsTag:values.email_subject,
+        organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
+    }
+    if(this.state.communicationSelected == "SMS"){
+      if(this.state.communicationId.smsid){
+        update = true
+        input.id=this.state.communicationId.smsid
+      }
+    }else{
+      if(this.state.communicationId.emailid){
+        update = true
+        input.id=this.state.communicationId.emailid
+      }
+    }
+    if(update){
+      this.props.updateMessageTemplate({
+        variables:{
+          input:input
         }
+      }).then(data =>{
+        console.log("UpdateMessageTemplateData...", updateMessageTemplate)
+      }).catch(err =>{
+        console.log("Error while updating messageTemptae for communication", err)
       })
-      .then(data => {
-        console.log("MessageTemplate data..", data);
-        var input = {
-          entityId: this.props.campaign.campaign.id, // campainId
-          entityType: "Campaign",
-          messageTemplateId: data.data.createMessageTemplate.id,
-          isScheduled: true,
-          isRepeatable: false,
-          organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
-          status: "ACTIVE",
-          firstScheduleDateTime: this.props.campaign.campaign.startTime,
-          // repeatRuleId: "",
-          commsChannelName: "Test"
-        };
-        this.props
-          .communication({
-            variables: {
-              input: input
-            }
-          }).then(data =>{
-            console.log("Communication data..", data)
-          })
-      }).catch(err => {
-        console.log("Error creating for message template", err);
-      });
+    }else{
+      //Create
+      var input = {
+        name: this.props.campaign.campaign.name +"_"+ Math.random().toString(36).substring(2),
+        description: "",
+        messageFormat: this.state.communicationSelected,
+        templateBodyText: this.state.communicationSelected == "SMS"?values.smsBody:values.email_body,
+        templateSubjectText: this.state.communicationSelected == "SMS"?values.smsTag:values.email_subject,
+        templateStyle: "MUSTACHE",
+        organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
+        status:"ACTIVE"
+      };
+      this.props
+        .messageTemplate({
+          variables: {
+            input: input
+          }
+        })
+        .then(data => {
+          console.log("MessageTemplate data..", data);
+          var input = {
+            entityId: this.props.campaign.campaign.id, // campainId
+            entityType: "Campaign",
+            messageTemplateId: data.data.createMessageTemplate.id,
+            isScheduled: true,
+            isRepeatable: false,
+            organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
+            status: "ACTIVE",
+            firstScheduleDateTime: this.props.campaign.campaign.startTime,
+            // repeatRuleId: "",
+            commsChannelName: "Test"
+          };
+          this.props
+            .communication({
+              variables: {
+                input: input
+              }
+            }).then(data =>{
+              console.log("Communication data..", data)
+            })
+        }).catch(err => {
+          console.log("Error creating for message template", err);
+        });
+    }
+   
   };
 
   ruleQuery = current => {
@@ -363,6 +418,8 @@ class EditCampaign extends Component {
 
 
   getContainer = () => {
+    console.log("This.props is..", this.props)
+    console.log("This.state is..", this.state)
     const { campaign } = this.props.campaign;
     let triggerRule={id:1,combinator: "and", rules: [] }
     let audienceRule={id:1,combinator: "and", rules: [] };
@@ -456,19 +513,20 @@ class EditCampaign extends Component {
       case 2:
         return (
           <CustomScrollbars>
-            <Audience
-              audienceTitle="Audience"
-              segmentSubTitle="Segment"
-              onValuesSelected={this.onValuesSelected}
-              segmentSelectionData={this.props.segmentList.segments}
-              uploadCsvText="Upload CSV"
-              // uploadProps={props}
-              segmentFilterText="Filter"
-              segmentFilterSubText="Campaign applies to :"
-              attributeData={attributeData}
-              logQuery={this.logQueryAudience}
-              ruleQuery={this.state.oldQueryAudience ? this.state.oldQueryAudience :audienceRule}
-            />
+              {this.props.segmentList.loading? <Spin/>:<Audience
+                audienceTitle="Audience"
+                segmentSubTitle="Segment"
+                onValuesSelected={this.onValuesSelected}
+                selectedSegments={this.state.selectedSegments}
+                segmentSelectionData={this.props.segmentList.segments}
+                uploadCsvText="Upload CSV"
+                // uploadProps={props}
+                segmentFilterText="Filter"
+                segmentFilterSubText="Campaign applies to :"
+                attributeData={attributeData}
+                logQuery={this.logQuery}
+                ruleQuery={this.state.oldQueryAudience ? this.state.oldQueryAudience :audienceRule}
+              />}
           </CustomScrollbars>
         );
 
@@ -481,6 +539,7 @@ class EditCampaign extends Component {
         );
       case 4:
         return (
+          <CustomScrollbars>
           <Comm
             subTitle="Communication"
             onChange={this.onCommunicationChange}
@@ -492,7 +551,7 @@ class EditCampaign extends Component {
             // saveFormRef={this.saveComFormRef}
             onFormNext={this.onFormNext
             }
-          />
+          /></CustomScrollbars>
           // <Communication
           //   // campaign={this.props.campaign.campaign}
           //   saveFormRef={this.saveComFormRef}
@@ -501,13 +560,11 @@ class EditCampaign extends Component {
           // />
         );
       default:
-        return <Overview campaign={this.props.campaign.campaign} />;
+        return <CustomScrollbars> <Overview campaign={this.props.campaign.campaign} /></CustomScrollbars>;
     }
   };
 
   render() {
-    console.log("This.props..",this.props);
-    console.log("This.state..",this.state);
     const { current, stepperData } = this.state;
     const {campaign}=this.props
     return (
@@ -597,6 +654,15 @@ export default compose(
   }),
   graphql(createAudience,{
     name:"audience"
+  }),
+  graphql(updateAudiencesWithCampaignId,{
+    name:"updateAudiencesWithCampaignIdWithSegments"
+  }),
+  graphql(updateCommunication,{
+    name:"updateCommunication"
+  }),
+  graphql(updateMessageTemplate,{
+    name:"updateMessageTemplate"
   }),
   graphql(communications,{
     name:"allCommunications",
