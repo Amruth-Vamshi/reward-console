@@ -183,6 +183,15 @@ class CreateCampaign extends Component {
         campaign: createCampaign.data.createCampaign,
         feedbackForm: feedbackForm.data.createFeedbackForm
       });
+      if(createCampaign.data.createCampaign.id){
+        this.props.history.push({
+          pathname: `/refinex/feedback/${createCampaign.data.createCampaign.id}/edit`,
+			state: {
+				current: this.state.current + 1,
+			},
+    }); 
+      }
+     
     } catch (err) {
       console.log(err);
     }

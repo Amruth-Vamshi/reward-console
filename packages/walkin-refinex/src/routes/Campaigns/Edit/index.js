@@ -81,7 +81,14 @@ class EditCampaign extends Component {
     };
   }
 
-  
+  componentDidMount(){
+    const {location}= this.props;
+    if (location && location.state) {
+      if(location.state.current){
+        this.setState({current:current})
+      }
+    }
+  }
 
 
   componentDidUpdate(preValue) {
