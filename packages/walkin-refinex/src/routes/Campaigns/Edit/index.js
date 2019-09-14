@@ -81,8 +81,19 @@ class EditCampaign extends Component {
     };
   }
 
-  componentDidMount() {
-    let {communicationFormValues} = this.state
+  
+
+
+  componentDidUpdate(preValue) {
+    if (this.props.allAudiences.loading !== preValue.allAudiences.loading) {
+      if(this.props.allAudiences.audiences){
+        let selectedSegments=[]
+        this.props.allAudiences.audiences.map(item=>selectedSegments.push(item.segment.id))
+        this.setState({selectedSegments:selectedSegments})
+      }
+    }
+    if(this.props.allCommunications.loading !== preValue.allCommunications.loading){
+      let {communicationFormValues} = this.state
     let communicationId = {}
     if(this.props.allCommunications.communications) {
       this.props.allCommunications.communications.map(item => {
@@ -99,16 +110,6 @@ class EditCampaign extends Component {
     }
     
     this.setState({communicationFormValues,communicationId})
-  }
-
-
-  componentDidUpdate(preValue) {
-    if (this.props.allAudiences.loading !== preValue.allAudiences.loading) {
-      if(this.props.allAudiences.audiences){
-        let selectedSegments=[]
-        this.props.allAudiences.audiences.map(item=>selectedSegments.push(item.segment.id))
-        this.setState({selectedSegments:selectedSegments})
-      }
     }
   }
 
@@ -138,7 +139,7 @@ class EditCampaign extends Component {
     //Audience module
     if (this.state.current == 2) {
       //Audience Rule
-      if(this.props.campaign.campaign.audienceFilterRule == ""){
+      if(this.props.campaign.campaign.audienceFilterRule ==null){
       this.ruleQuery(this.state.current);
       }else{
         this.updateRule(this.state.current)
@@ -151,12 +152,8 @@ class EditCampaign extends Component {
     //Trigger module
     if (this.state.current == 3) {
       //Trigger Rule
-      if(this.props.campaign.campaign.audienceFilterRule == ""){
-      this.ruleQuery(this.state.current);
-      }else{
-        this.updateRule(this.state.current)
-      }
-      if(this.props.campaign.campaign.triggerRule == ""){
+      
+      if(this.props.campaign.campaign.triggerRule == null){
         this.ruleQuery(this.state.current);
       }
         else{
@@ -651,8 +648,10 @@ export default compose(
     name: "campaign",
     options: props => ({
       variables: {
-        id: props.match.params.id
-      }
+        id: props.match.params.id,
+        
+      },
+      fetchPolicy:"network-only"
     })
   }),
   graphql(allSegments, {
