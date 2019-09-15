@@ -10,11 +10,15 @@ import { Card, Row, Col, Button, TimePicker, DatePicker, Input, Icon, Select, Fo
 const formItemLayout = {
     labelCol: {
         xs: { span: 24 },
-        sm: { span: 7 }
+        sm: { span: 7 },
+        md: { span: 24 },
+        lg: { span: 7 }
     },
     wrapperCol: {
         xs: { span: 24 },
-        sm: { span: 17 }
+        sm: { span: 17 },
+        md: { span: 24 },
+        lg: { span: 17 }
     }
 };
 
@@ -25,7 +29,8 @@ class Schedule extends React.Component {
         super(props);
         this.state = {
             repeatType: "daily",
-            repeatOn: [false, false, false, false, false, false, false]
+            repeatOn: [false, false, false, false, false, false, false],
+            end: "onEndDate"
         };
     }
 
@@ -39,6 +44,12 @@ class Schedule extends React.Component {
         this.setState({ repeatOn })
     }
 
+    saveSchedule = () => {
+        this.props.saveSchedule(this.state)
+    }
+    handleOnEndChange = e => {
+        this.setState({ end: e })
+    }
 
     handleTypeChange = e => {
         this.setState({ repeatType: e })
@@ -63,7 +74,7 @@ class Schedule extends React.Component {
                                 <Option value="weekly">Weekly</Option>
                             </Select>
                         </Form.Item>
-                        {this.state.repeatType == "weekly" ?
+                        {this.state.repeatType == "weekly" &&
                             <Form.Item style={{ marginTop: 10 }} label="Repeat On" {...formItemLayout}>
                                 <span>
                                     <Button className="dBtn" onClick={() => this.dClick(0)} type={this.daySelected(0)} shape="circle"> S </Button>
@@ -74,7 +85,7 @@ class Schedule extends React.Component {
                                     <Button className="dBtn" onClick={() => this.dClick(5)} type={this.daySelected(5)} shape="circle"> F </Button>
                                     <Button className="dBtn" onClick={() => this.dClick(6)} type={this.daySelected(6)} shape="circle"> S </Button>
                                 </span>
-                            </Form.Item> : ''
+                            </Form.Item>
                         }
 
 
@@ -85,13 +96,13 @@ class Schedule extends React.Component {
                         <Form.Item style={{ marginTop: 5 }} label="Ends" {...formItemLayout}>
                             <Select
                                 // getPopupContainer={() => document.getElementById('OffArea')}
-                                value={this.props.offer} name="type" className="scheduleEnd"
+                                value={this.state.end} name="type" className="scheduleEnd"
                                 placeholder="Select Type" optionFilterProp="children"
-                                onChange={e => this.props.handleOnOfferChange(e)}
+                                onChange={e => this.handleOnEndChange(e)}
                                 filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                             >
-                                <Option value="1">On End Date</Option>
-                                <Option value="2">After Occurrences</Option>
+                                <Option value="onEndDate">On End Date</Option>
+                                <Option value="afterOccurrences">After Occurrences</Option>
                             </Select>
                         </Form.Item>
 
@@ -100,7 +111,7 @@ class Schedule extends React.Component {
                                 {this.props.saved ? <span className="saveMark divCenterVertical"> <Icon type="check-circle" theme="filled" /> &nbsp;  Saved</span> : ''}
                             </Col>
                             <Col span={8}>
-                                <Button style={{ marginBottom: 0, float: "right" }} type="primary" shape="round" > Save </Button>
+                                <Button onClick={() => this.saveSchedule()} style={{ marginBottom: 0, float: "right" }} type="primary" shape="round" > Save </Button>
                             </Col>
                         </Row>
 

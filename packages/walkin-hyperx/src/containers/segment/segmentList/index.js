@@ -155,6 +155,13 @@ class SegmentList extends Component {
 		// 	[]
 		// );
 
+		const paginationData = {
+			position: "bottom",
+			total: segmentData ? segmentData.length : 0,
+			defaultPageSize: 6,
+			showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`
+		}
+
 		const columns = [
 			{
 				title: 'Name',
@@ -222,7 +229,7 @@ class SegmentList extends Component {
 							onFilteredList={this.onSegmentFilteredList}
 						/>
 					</div>
-					<SortableDataTable data={segmentData} onChange={this.handleChange} columns={columns} />
+					<SortableDataTable data={segmentData} pagination={paginationData} onChange={this.handleChange} columns={columns} />
 				</Card>
 			</Fragment>
 		);

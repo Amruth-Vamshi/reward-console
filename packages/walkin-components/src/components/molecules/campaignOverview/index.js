@@ -9,7 +9,7 @@ import './style.css'
 
 export default class Overview extends Component {
   render() {
-    const { campaign } = this.props;
+    const { campaign, audience, offer } = this.props;
     var now = moment();
     var startDate = moment(campaign.startTime);
     var endDate = moment(campaign.endTime);
@@ -31,7 +31,7 @@ export default class Overview extends Component {
     //   var diff = start.diff(end);
     //   console.log("Diff..", diff);
     // }
-
+    console.log(">>", audience);
     return (
       // <CustomScrollbars> 
       <div className="campaignOverview">
@@ -41,7 +41,7 @@ export default class Overview extends Component {
           <div className="cpName"> {campaign.name} </div>
 
           <div className="cpDec mb-15">{campaign.description != null ? campaign.description : ""}</div>
-          <div className="cpDaysLeft mb-15"> <b>{diff ? diff : ''}</b> {value} </div>
+          <div className="cpDaysLeft mb-15"> <b style={{ textTransform: "capitalize" }}>{diff ? diff : ''}</b> {value} </div>
           <div className="mb-25">
             <Row >
               <Col md={24} lg={8}>  Start date &nbsp; &nbsp;:&nbsp;&nbsp;&nbsp;{start} </Col>
@@ -64,33 +64,34 @@ export default class Overview extends Component {
               <Col className='AudienceTitle' sm={16} md={12} xl={10} xxl={9}> <h3>Audience</h3></Col>
               <Col >Total Reach : 6412 </Col>
             </Row>
-
-            <Row style={{ marginBottom: 10 }}>
-              <Col xs={24} sm={16} md={12} xl={10} xxl={9} className="audBg">
-                HLVR(Modified)
+            {audience && audience.length &&
+              audience.map((i, n) =>
+                <Row key={n} style={{ marginBottom: 10 }}>
+                  <Col xs={24} sm={16} md={12} xl={10} xxl={9} className="audBg">
+                    {i.segment.name}
+                  </Col>
+                  <Col xs={24} sm={8} md={5} xl={4} xxl={3} className="audBg">
+                    users 3422
                 </Col>
-              <Col xs={24} sm={8} md={5} xl={4} xxl={3} className="audBg">
-                users 3422
-                </Col>
-            </Row>
-            <Row>
+                </Row>)}
+            {/* <Row>
               <Col xs={24} sm={16} md={12} xl={10} xxl={9} className="audBg">
                 Gold Members
               </Col>
               <Col xs={24} sm={8} md={5} xl={4} xxl={3} className="audBg">
                 users 2990
               </Col>
-            </Row>
+            </Row> */}
           </div>
 
-          {/* <div className="mb-25">
+          {offer && <div className="mb-25">
             <h3>Offer</h3>
             <Row>
               <Col xs={24} sm={24} md={17} xl={14} xxl={12} className="offerBg">
                 50% discount on cars
               </Col>
             </Row>
-          </div> */}
+          </div>}
 
           <div className="mb-25">
             <h3>Communication</h3>

@@ -163,7 +163,7 @@ class CampaignList extends Component {
 		const paginationData = {
 			position: "bottom",
 			total: campaignData ? campaignData.length : 0,
-			defaultPageSize: 5,
+			defaultPageSize: 6,
 			showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`
 		}
 

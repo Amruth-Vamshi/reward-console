@@ -2,11 +2,11 @@ import React from 'react';
 import { Row, Col, Button } from 'antd';
 import './style.css';
 
-const CampaignFooter = ({ nextButtonText, saveDraftText, onPage1SaveDraft, goToPage2 }) => {
+const CampaignFooter = ({ nextButtonText, loading, saveDraftText, onPage1SaveDraft, goToPage2 }) => {
 	return (
 		<Row className="campaignFooterStyle">
 			<Col span={8}>
-				<Button onClick={goToPage2} type="primary">
+				<Button loading={loading} onClick={goToPage2} type="primary">
 					{nextButtonText}
 				</Button>
 			</Col>

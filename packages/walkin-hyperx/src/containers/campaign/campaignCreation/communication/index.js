@@ -18,6 +18,8 @@ const Communication = ({
   pushFormData,
   onFormNext,
   schedule,
+  scheduleSaveMark,
+  saveSchedule,
   smsFormData,
   form
 }) => {
@@ -58,7 +60,7 @@ const Communication = ({
         {schedule && (
           <Col sm={24} md={11} lg={11} xl={10} xxl={9}>
             <div style={{ padding: 20 }}>
-              <Schedule saved={true} getScheduleData={getScheduleData} />
+              <Schedule saved={scheduleSaveMark} saveSchedule={saveSchedule} getScheduleData={getScheduleData} />
             </div>
           </Col>
         )}
