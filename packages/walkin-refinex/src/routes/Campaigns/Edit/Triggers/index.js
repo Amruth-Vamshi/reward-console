@@ -48,6 +48,7 @@ class Triggers extends Component {
         <Divider />
         <Col span={24}>
           <Filter
+            query={this.props.query}
             attributeData={this.props.attributeData}
             logQuery={this.props.logQuery}
           />

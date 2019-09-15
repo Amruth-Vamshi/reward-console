@@ -9,9 +9,7 @@ import './style.css'
 
 export default class Overview extends Component {
   render() {
-    console.log("Overview page");
-    const { campaign, audience } = this.props;
-    console.log("Campaign data", campaign);
+    const { campaign, audience, offer } = this.props;
     var now = moment();
     var startDate = moment(campaign.startTime);
     var endDate = moment(campaign.endTime);
@@ -86,14 +84,14 @@ export default class Overview extends Component {
             </Row> */}
           </div>
 
-          <div className="mb-25">
+          {offer && <div className="mb-25">
             <h3>Offer</h3>
             <Row>
               <Col xs={24} sm={24} md={17} xl={14} xxl={12} className="offerBg">
                 50% discount on cars
               </Col>
             </Row>
-          </div>
+          </div>}
 
           <div className="mb-25">
             <h3>Communication</h3>

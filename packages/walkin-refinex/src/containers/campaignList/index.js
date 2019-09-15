@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
 import { NEW_CAMPAIGN } from '../../Utils/index';
 import { campaigns } from '../Query/index';
-import { Card, Menu, Dropdown, Col, Button, Progress, Tabs } from 'antd';
+import { Card, Menu, Dropdown, Col, Button, Progress, Tabs, message } from 'antd';
 import moment from 'moment';
 import { withApollo, graphql } from 'react-apollo';
 import { SortableDataTable, InstantSearch, CampaignHeader, CircularProgress } from '@walkinsole/walkin-components';
@@ -20,15 +20,28 @@ class CampaignList extends Component {
 			filtered: null,
 			allCampaigns: null,
 			data: null,
-			loading: false
+			loading: false,
+			showPopUp: false,
+			popupmessage: ""
 		};
 	}
 	componentDidMount() {
-		const { campaigns, loading } = this.props;
-		this.setState({ loading: loading })
+		const { campaigns, loading, history } = this.props;
+		if (history.location.state) {
+			if (history.location.state.showPopup && history.location.state.message) {
+				this.setState({ loading: loading, showPopUp: history.location.state.showPopup, popupmessage: history.location.state.message })
+			} else {
+				this.setState({ loading: loading })
+			}
+		} else {
+			this.setState({ loading: loading })
+		}
 	}
 
-
+	success = () => {
+		message.success(this.state.popupmessage, 5);
+		this.setState({ showPopUp: false, popupmessage: "" })
+	};
 	componentDidUpdate(preValue) {
 		if (this.props.loading !== preValue.loading) {
 			this.setInitialValues()
@@ -151,7 +164,10 @@ class CampaignList extends Component {
 	};
 
 	render() {
-		let { sortedInfo, filteredInfo, filtered, data, loading } = this.state;
+		let { sortedInfo, filteredInfo, filtered, data, loading, showPopUp } = this.state;
+		if (showPopUp) {
+			this.success()
+		}
 		sortedInfo = sortedInfo || {};
 		filteredInfo = filteredInfo || {};
 		let campaignData = [];
