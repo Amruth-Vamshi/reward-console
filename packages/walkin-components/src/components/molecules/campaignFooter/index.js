@@ -1,6 +1,6 @@
 import React from 'react';
 import { Row, Col, Button } from 'antd';
-import './style.css';
+import './foo.css';
 
 const CampaignFooter = ({ nextButtonText, loading, saveDraftText, onPage1SaveDraft, goToPage2 }) => {
 	return (
