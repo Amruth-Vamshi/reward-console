@@ -73,9 +73,10 @@ class QuestionnaireFormPane extends Component {
       questionType,
       choiceToAddQuestion,
       isChoiceLoading,
-      isQuestionLoading
+      isQuestionLoading,
+      questionnaire
     } = this.props;
-    console.log("questionToEdit", questionToEdit)
+    console.log("questionToEdit", questionnaire)
     return (
       <Row
         style={{
@@ -86,6 +87,7 @@ class QuestionnaireFormPane extends Component {
         <Col span={24}>
           {questionType != null && choiceToAddQuestion != null ? (
             <CreateQuestion
+              questionnaire={questionnaire}
               onQuestionEdited={this.onQuestionEdited}
               onQuestionSubmitted={this.onQuestionSubmitted}
               onChoiceEdited={this.onChoiceEdited}
@@ -102,6 +104,7 @@ class QuestionnaireFormPane extends Component {
             />
           ) : (
               <ShowQuestion
+                questionnaire={questionnaire}
                 onQuestionEdited={this.onQuestionEdited}
                 onQuestionSubmitted={this.onQuestionSubmitted}
                 onChoiceEdited={this.onChoiceEdited}

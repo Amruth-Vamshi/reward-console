@@ -304,6 +304,7 @@ class Questionnaire extends Component {
           {
             (this.props.questionnaire.length > 0 ? !isEmpty(questionToEdit) && !addQuestion ? (
               <FormPane
+                questionnaire={this.props.questionnaire}
                 questionToEdit={questionToEdit}
                 onQuestionSubmitted={this.onQuestionSubmitted}
                 addChoice={this.addChoice}
@@ -323,6 +324,7 @@ class Questionnaire extends Component {
               ) :
               !addQuestion && !isEmpty(questionToEdit) ? (
                 <FormPane
+                  questionnaire={this.props.questionnaire}
                   questionToEdit={questionToEdit}
                   onQuestionSubmitted={this.createRootQuestionnaire}
                   addChoice={this.addChoice}

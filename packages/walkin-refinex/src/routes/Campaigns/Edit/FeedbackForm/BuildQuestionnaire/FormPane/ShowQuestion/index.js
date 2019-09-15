@@ -14,8 +14,10 @@ export default function ShowQuestion({
   choiceData,
   onChoiceEdited,
   submitChoice,
-  isChoiceLoading
+  isChoiceLoading,
+  questionnaire
 }) {
+  console.log(questionnaire)
   return (
     <React.Fragment>
       <Col span={24}>
@@ -39,6 +41,7 @@ export default function ShowQuestion({
         <Row>
           <Col span={24}>
             <ChoiceForm
+              questionnaire={questionnaire}
               questionToEdit={questionToEdit}
               onChoiceEdited={onChoiceEdited}
               addChoice={addChoice}

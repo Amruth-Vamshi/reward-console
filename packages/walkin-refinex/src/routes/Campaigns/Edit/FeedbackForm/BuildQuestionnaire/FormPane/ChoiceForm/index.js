@@ -28,6 +28,7 @@ export default class ChoiceForm extends Component {
             <CardBox>
               <ChoiceInput
                 choice={choice}
+                questionnaire={this.props.questionnaire}
                 questionType={this.props.questionToEdit.type}
                 removeChoice={this.props.removeChoice}
                 addNewQuestion={this.props.addNewQuestion}
