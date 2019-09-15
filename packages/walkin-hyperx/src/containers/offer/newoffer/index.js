@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { Col, Alert, message, Radio, Checkbox, Input } from 'antd';
 import { withRouter } from 'react-router-dom';
 import { withApollo, graphql, compose, mutate } from 'react-apollo';
-import { createRule } from '../../../query/audience';
+import { CREATE_RULE } from '../../../query/audience';
 import { OFFER_LIST } from '../../../utils/RouterConstants';
 import get from 'lodash/get';
 import { Stepper, CampaignHeader, CampaignFooter } from '@walkinsole/walkin-components';
@@ -366,7 +366,7 @@ class NewOffer extends Component {
 		}
 	};
 
-	onBasicInfoSubmit = val => {};
+	onBasicInfoSubmit = val => { };
 	saveFormValues = (current, state, ref) => {
 		const form = ref && ref.props.form;
 		if (form) {
@@ -409,7 +409,7 @@ class NewOffer extends Component {
 					current: current,
 				});
 			}
-		} else if (e && e.target.innerText === 'Launch') {
+		} else if (e && e.target.innerText === 'Save') {
 			const { formValues } = this.state;
 			if (!isEmpty(formValues.basicForm)) {
 				if (isEmpty(formValues.redemptionForm) || isValidObject(formValues.redemptionForm)) {
@@ -423,7 +423,7 @@ class NewOffer extends Component {
 						let org_id = get(client, 'cache.data.data["$ROOT_QUERY.auth"].organizationId');
 						client
 							.mutate({
-								mutation: createRule,
+								mutation: CREATE_RULE,
 								variables: {
 									name: Math.random()
 										.toString(36)
@@ -441,7 +441,7 @@ class NewOffer extends Component {
 								});
 								client
 									.mutate({
-										mutation: createRule,
+										mutation: CREATE_RULE,
 										variables: {
 											name: Math.random()
 												.toString(36)
@@ -760,8 +760,8 @@ class NewOffer extends Component {
 					)}
 					<div className="offerFooterStyle">
 						<CampaignFooter
-							nextButtonText={current === 1 ? 'Launch' : 'Next'}
-							saveDraftText="Save Draft"
+							nextButtonText={current === 1 ? 'Save' : 'Next'}
+							// saveDraftText="Save Draft"
 							onPage1SaveDraft={this.onPage1SaveDraft}
 							goToPage2={e => {
 								this.goToNextPage(current + 1, e);

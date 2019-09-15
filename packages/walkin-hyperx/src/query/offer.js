@@ -20,8 +20,8 @@ export const categories = gql`
 	}
 `;
 export const getOffers = gql`
-	query($organizationId: ID!) {
-		getOffers(organizationId: $organizationId) {
+	query($organizationId: ID!,$state:String) {
+		getOffers(organizationId: $organizationId,state:$state) {
 			id
 			name
 			offerType
@@ -104,6 +104,14 @@ export const closeOffer = gql`
 	mutation closeOffer($id: ID!) {
 		closeOffer(id: $id) {
 			id
+		}
+	}
+`;
+
+export const LAUNCH_OFFER = gql`
+	mutation launchOffer($id: ID!) {
+			launchOffer(id:$id){
+			id name state
 		}
 	}
 `;

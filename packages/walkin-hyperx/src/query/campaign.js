@@ -26,8 +26,8 @@ export const CREATE_CAMPAIGN = gql`
 `;
 
 export const UPDATE_CAMPAIGN = gql`
-  mutation createCampaign($input: CampaingAddInput) {
-    createCampaign(input: $input) {
+  mutation updateCampaign($id:ID! $input: CampaignUpdateInput) {
+    updateCampaign(id:$id, input: $input) {
       id name description
       startTime endTime
       status triggerRule { id }

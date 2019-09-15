@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
-import { getOffers, closeOffer } from '../../../query/offer';
+import { getOffers, closeOffer, LAUNCH_OFFER } from '../../../query/offer';
 import { withApollo, graphql } from 'react-apollo';
 import { NEW_SEGMENT, NEW_OFFER } from '../../../utils/RouterConstants';
 import { Card, Menu, Dropdown, Button, Col } from 'antd';
@@ -46,6 +46,21 @@ class OfferList extends Component {
 				console.log('err', error);
 			});
 	};
+
+	onLaunchOffer = contact => {
+		let { client } = this.props;
+		client.mutate({
+			mutation: LAUNCH_OFFER,
+			variables: { id: contact.id },
+		}).then(({ data }) => {
+			console.log('close offer', data);
+			const { refetchOffers } = this.props;
+			refetchOffers();
+		}).catch(error => {
+			console.log('err', error);
+		});
+	};
+
 	onDuplicateContact = record => {
 		// const { history } = this.props;
 		// history.push({
@@ -60,13 +75,15 @@ class OfferList extends Component {
 			onClick={e => {
 				if (e.key === 'duplicate') {
 					this.onDuplicateContact(record);
-				} else {
+				} else if (e.key === 'CLOSED') {
 					this.onDeleteContact(record);
-				}
+				} else this.onLaunchOffer(record, e.key)
 			}}
 		>
-			<Menu.Item key="duplicate">Duplicate</Menu.Item>
-			<Menu.Item key="delete">Delete</Menu.Item>
+			{record.state == "DRAFT" ? <Menu.Item key="LIVE">Launch offer</Menu.Item> :
+				record.state == "LIVE" ? <Menu.Item key="CLOSED">Close offer</Menu.Item> : ''}
+			{/* <Menu.Item key="duplicate">Duplicate</Menu.Item> */}
+			{/* <Menu.Item key="delete">Delete</Menu.Item> */}
 		</Menu>
 	);
 

@@ -102,6 +102,7 @@ class Filter extends Component {
           <Form layout="inline" onSubmit={this.handleSubmit}>
             {formItems}
             <WalkinQueryBuilder
+              query={this.props.query}
               fields={this.props.attributeData}
               onQueryChange={this.props.logQuery}
             />

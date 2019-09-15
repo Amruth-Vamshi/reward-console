@@ -54,8 +54,8 @@ class Questionnaire extends Component {
         input: {
           questionText: "click here to edit",
           type: questionType,
-          rangeMax: 0,
-          rangeMin: 10
+          rangeMax: 10,
+          rangeMin: 1
         }
       }
     }).then(async data => {
@@ -82,17 +82,23 @@ class Questionnaire extends Component {
           input: {
             questionText: "click here to edit",
             type: questionType,
-            rangeMax: 0,
-            rangeMin: 10
+            rangeMax: 10,
+            rangeMin: 1
           }
         }
       }).then(async data => {
         console.log(data)
         await this.props.refetchQuestionnaire();
-        this.setState({
-          isQuestionLoading: false,
-          addQuestion: false
-        })
+        if (questionType == "TEXT") {
+
+          this.addChoice(data.addQuestion.id)
+        } else {
+          this.setState({
+            isQuestionLoading: false,
+            addQuestion: false
+          })
+        }
+
       }).catch(err => {
         this.setState({ isQuestionLoading: false })
         console.log("Error creating the question", err)
@@ -119,7 +125,13 @@ class Questionnaire extends Component {
       });
       console.log(data);
       await this.props.refetchFeedbackForm();
-      this.setState({ isQuestionLoading: false })
+      if (questionType == "TEXT") {
+
+        this.addChoice(data.createQuestionnaire.id)
+      } else {
+        this.setState({ isQuestionLoading: false })
+      }
+
     } catch (e) {
       this.setState({ isQuestionLoading: false })
       console.log("Error in creating questionnaire", e);
@@ -143,6 +155,7 @@ class Questionnaire extends Component {
     }).then(data => {
       console.log(data)
       this.props.refetchQuestionnaire();
+
       this.setState({
         questionTypeSelector: questionType,
         addQuestion: false,
@@ -222,15 +235,15 @@ class Questionnaire extends Component {
     this.setState({ addQuestion: true, choiceToAddQuestion: choiceId });
   };
 
-  addChoice = () => {
+  addChoice = (id) => {
     this.setState({ isChoiceLoading: true })
     this.props
       .addChoice({
         variables: {
-          questionId: this.state.questionToEdit.id,
+          questionId: this.state.questionToEdit ? this.state.questionToEdit.id : id,
           input: {
             choiceText: "  ",
-            rangeStart: 0,
+            rangeStart: 1,
             rangeEnd: 10
           }
         }

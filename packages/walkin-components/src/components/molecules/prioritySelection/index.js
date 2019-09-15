@@ -55,7 +55,7 @@ class PrioritySelection extends React.Component {
 						handleChange={this.handleButtonGroup}
 						maxPriority={this.state.maxPriority}
 					/>
-					<Input style={{ marginLeft: 20 }}
+					<Input style={{ marginLeft: 10 }}
 						className="prioritySelectionInputStyle"
 						placeholder={priorityButtonText}
 						onChange={this.validateCampaignPriority}

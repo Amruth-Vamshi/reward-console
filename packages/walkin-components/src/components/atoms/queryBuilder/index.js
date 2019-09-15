@@ -28,18 +28,19 @@ class WalkinQueryBuilder extends React.Component {
 		return obj;
 	};
 	renameQueryProperties = query => {
+
 		let str = JSON.stringify(query);
 		var mapObj = {
-			field: 'attributeName',
+			field: 'ruleAttributeId',
 			value: 'attributeValue',
 			operator: 'expressionType',
 		};
-		str = str.replace(/field|value|operator/gi, function(matched) {
+		str = str.replace(/field|value|operator/gi, function (matched) {
 			return mapObj[matched];
 		});
-		query = JSON.parse(str);
-		// let refinedQuery = this.removeProp(query, 'id');
-		this.props.onQueryChange(query);
+		let renamedQuery = JSON.parse(str);
+		// let refinedQuery = this.removeProp(renamedQuery, 'id');
+		this.props.onQueryChange(renamedQuery, query);
 	};
 
 	handleMultiSelect = value => {
@@ -59,23 +60,23 @@ class WalkinQueryBuilder extends React.Component {
 							onQueryChange={this.renameQueryProperties}
 							operators={operators}
 							query={query}
-							// required to allow multiple values
-							// controlElements={{
-							// 	valueEditor: () => {
-							// 		return (
-							// 			<Select
-							// 				mode="multiple"
-							// 				size="default"
-							// 				placeholder="Please select"
-							// 				defaultValue={['a10', 'c12']}
-							// 				onChange={this.handleMultiSelect}
-							// 				style={{ width: '500px' }}
-							// 			>
-							// 				{children}
-							// 			</Select>
-							// 		);
-							// 	},
-							// }}
+						// required to allow multiple values
+						// controlElements={{
+						// 	valueEditor: () => {
+						// 		return (
+						// 			<Select
+						// 				mode="multiple"
+						// 				size="default"
+						// 				placeholder="Please select"
+						// 				defaultValue={['a10', 'c12']}
+						// 				onChange={this.handleMultiSelect}
+						// 				style={{ width: '500px' }}
+						// 			>
+						// 				{children}
+						// 			</Select>
+						// 		);
+						// 	},
+						// }}
 						/>
 					</div>
 				</div>
@@ -105,8 +106,8 @@ WalkinQueryBuilder.propTypes = {
 
 WalkinQueryBuilder.defaultProps = {
 	fields: [{ name: '', label: '' }],
-	onQueryChange: () => {},
-	valueEditor: () => {},
+	onQueryChange: () => { },
+	valueEditor: () => { },
 	operators: [
 		{ name: 'EQUALS', label: 'Equal to' },
 		{ name: 'NOT_EQUALS', label: 'Not equal to' },

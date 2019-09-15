@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
-import { allSegments, disableSegment } from '../../../query/audience';
+import { allSegments, disableSegment, UPDATE_SEGMENT } from '../../../query/audience';
 import { withApollo, graphql } from 'react-apollo';
 import { NEW_SEGMENT } from '../../../utils/RouterConstants';
 import { Card, Menu, Dropdown, Button, Col } from 'antd';
@@ -46,6 +46,27 @@ class SegmentList extends Component {
 				console.log('err', error);
 			});
 	};
+
+	// onUpdateStatusContact = (contact, status) => {
+	// 	let { client } = this.props;
+	// 	console.log(contact.id + " " + status);
+	// 	client
+	// 		.mutate({
+	// 			mutation: UPDATE_SEGMENT,
+	// 			variables: {
+	// 				id: contact.id,
+	// 				status: status
+	// 			},
+	// 		})
+	// 		.then(({ data }) => {
+	// 			const { refetchSegments } = this.props;
+	// 			refetchSegments();
+	// 		})
+	// 		.catch(error => {
+	// 			console.log('err', error);
+	// 		});
+	// };
+
 	onDuplicateContact = record => {
 		const { history } = this.props;
 		history.push({
@@ -60,11 +81,12 @@ class SegmentList extends Component {
 			onClick={e => {
 				if (e.key === 'duplicate') {
 					this.onDuplicateContact(record);
-				} else {
+				} else if (e.key === 'delete') {
 					this.onDeleteContact(record);
-				}
+				} else this.onUpdateStatusContact(record, e.key)
 			}}
 		>
+			{/* {record.status != "ACTIVE" ? <Menu.Item key="ACTIVE">Make Active</Menu.Item> : <Menu.Item key="INACTIVE">Make Inactive</Menu.Item>} */}
 			<Menu.Item key="duplicate">Duplicate</Menu.Item>
 			<Menu.Item key="delete">Delete</Menu.Item>
 		</Menu>
@@ -135,19 +157,26 @@ class SegmentList extends Component {
 
 		const columns = [
 			{
-				title: 'Segment Name',
+				title: 'Name',
 				dataIndex: 'name',
 				key: 'name',
 				sorter: (a, b) => (a.name !== b.name ? (a.name < b.name ? -1 : 1) : 0),
 				sortOrder: sortedInfo.columnKey === 'name' && sortedInfo.order,
 			},
 			{
-				title: 'Segment type',
+				title: 'Type',
 				dataIndex: 'segmentType',
 				key: 'segmentType',
 				sorter: (a, b) => a.segmentType - b.segmentType,
 				sortOrder: sortedInfo.columnKey === 'segmentType' && sortedInfo.order,
 			},
+			// {
+			// 	title: 'Status',
+			// 	dataIndex: 'status',
+			// 	key: 'status',
+			// 	sorter: (a, b) => a.status - b.status,
+			// 	sortOrder: sortedInfo.columnKey === 'status' && sortedInfo.order,
+			// },
 			// {
 			// 	title: 'Created On',
 			// 	dataIndex: 'createdOn',

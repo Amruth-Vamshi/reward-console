@@ -8,45 +8,45 @@ export const allSegments = gql`
       segmentType
       status
       rule {
-				id
-				ruleConfiguration
-			}
+        id
+        ruleConfiguration
+      }
     }
   }
 `;
 
 export const disableSegment = gql`
-	mutation disableSegment($id: ID!) {
-		disableSegment(id: $id) {
-			id
-			name
-		}
-	}
+  mutation disableSegment($id: ID!) {
+    disableSegment(id: $id) {
+      id
+      name
+    }
+  }
 `;
 
 export const createSegment = gql`
-	mutation createSegment(
-		$name: String!
-		$segmentType: SEGMENT_TYPE!
-		$organization_id: ID!
-		$application_id: ID!
-		$rule_id: ID!
-		$status: STATUS!
-	) {
-		createSegment(
-			input: {
-				name: $name
-				segmentType: $segmentType
-				status: $status
-				organization_id: $organization_id
-				application_id: $application_id
-				rule_id: $rule_id
-			}
-		) {
-			id
-			name
-		}
-	}
+  mutation createSegment(
+    $name: String!
+    $segmentType: SEGMENT_TYPE!
+    $organization_id: ID!
+    $application_id: ID!
+    $rule_id: ID!
+    $status: STATUS!
+  ) {
+    createSegment(
+      input: {
+        name: $name
+        segmentType: $segmentType
+        status: $status
+        organization_id: $organization_id
+        application_id: $application_id
+        rule_id: $rule_id
+      }
+    ) {
+      id
+      name
+    }
+  }
 `;
 
 export const createRule = gql`
@@ -62,6 +62,144 @@ export const createRule = gql`
     }
   }
 `;
+
+export const updateRule = gql`
+  mutation updateRule($id:ID! ,$input: UpdateRuleInput!) {
+    updateRule(id:$id, input:$input) {
+      id
+    name
+    description
+    status
+    type
+    }
+  }
+`;
+
+export const communications = gql`
+  query communications($entityId: ID!,$entityType:ENTITY_TYPE,$organization_id: ID!) {
+      communications(entityId: $entityId, entityType:$entityType, organization_id:$organization_id, status: ACTIVE) {
+        id
+        entityId
+        entityType
+        messageTemplate{
+          id
+          name
+          messageFormat
+          templateBodyText
+          templateSubjectText
+        }
+      }
+    }
+`;
+export const audiences = gql`
+query audiences($campaign_id:ID, $organization_id:ID,$segment_id:ID){
+  audiences(campaign_id:$campaign_id, organization_id:$organization_id,segment_id:$segment_id,status:ACTIVE){
+    id
+    segment{
+      id
+      name
+      rule{
+        id
+        name
+        type
+      }
+      status
+    }
+  }
+}
+`;
+
+
+export const createCommunication = gql`
+  mutation createCommunication($input: CreateCommunicationInput!) {
+    createCommunication(input: $input) {
+      id
+      entityId
+      entityType
+      messageTemplate {
+        id
+        name
+      }
+    }
+  }
+`;
+
+export const updateCommunication = gql`
+  mutation updateCommunication($input: UpdateCommunicationInput!) {
+    updateCommunication(input: $input) {
+    id
+    entityId
+    entityType
+    isScheduled
+    firstScheduleDateTime
+    isRepeatable
+    lastProcessedDateTime
+    commsChannelName
+    status
+    }
+  }
+`;
+
+
+export const createMessageTemplate = gql`
+  mutation createMessageTemplate($input: CreateMessageTemplateInput!) {
+    createMessageTemplate(input: $input) {
+      id
+      name
+      description
+      messageFormat
+      templateBodyText
+      templateSubjectText
+      templateStyle
+    }
+  }
+`;
+
+export const updateMessageTemplate = gql`
+mutation updateMessageTemplate($input:UpdateMessageTemplateInput!){
+  updateMessageTemplate(input:$input){
+    id
+    name
+    description
+    messageFormat
+    templateBodyText
+  	templateSubjectText
+    templateStyle
+    status
+  }
+}
+`;
+export const createAudience = gql`
+mutation createAudience($input:createAudienceInput!){
+  createAudience(input:$input){
+    id
+    campaign{
+      id
+      name
+      audienceFilterRule
+    }
+    segment{
+      id
+      name
+      segmentType
+    }status
+  }
+}`;
+
+export const updateAudiencesWithCampaignId = gql`
+mutation updateAudiencesWithCampaignId($campaignId:ID, $segments:[ID]!){
+  updateAudiencesWithCampaignId(campaignId:$campaignId, segments:$segments){
+    id
+    campaign{
+      id
+    }
+    segment{
+      id
+      name
+      segmentType
+    }
+  }
+}`;
 
 export const attributes = gql`
   query ruleAttributes {
@@ -118,6 +256,22 @@ export const UPDATE_CAMPAIGN = gql`
         id
         title
       }
+      audienceFilterRule{
+        id
+        name
+        description
+        type
+        ruleConfiguration
+        ruleExpression
+      }
+      triggerRule{
+        id
+        name
+        description
+        type
+        ruleConfiguration
+        ruleExpression
+      }
     }
   }
 `;
@@ -165,6 +319,18 @@ export const GET_CAMPAIGN = gql`
       startTime
       endTime
       status
+      triggerRule{
+        id
+        name
+        status
+        ruleConfiguration
+      }
+      audienceFilterRule{
+        id
+        name
+        status
+        ruleConfiguration
+      }
       campaignType
       status
       feedbackForm {
@@ -313,6 +479,13 @@ export const GET_QUESTIONNAIRE = gql`
       type
       rangeMax
       rangeMin
+      fromChoice{
+        id
+        choiceText
+        
+        rangeStart
+        rangeEnd
+      }
       feedbackCategory {
         id
         title
