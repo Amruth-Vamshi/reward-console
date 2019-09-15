@@ -9,7 +9,8 @@ const ChoiceMap = {
   RATING_SCALE: true,
   OPINION_SCALE: true,
   RANKING: true,
-  DICHOTOMOUS: true
+  DICHOTOMOUS: true,
+  TEXT: true
 };
 
 export default class ChoiceForm extends Component {

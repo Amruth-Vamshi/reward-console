@@ -75,8 +75,8 @@ class ChoiceInput extends Component {
                 dropdownRender={menu => (
                   <div>
                     <div style={{ padding: '8px', cursor: 'pointer' }}>
-                      <Icon type="plus" /> Add new Question
-                  </div>
+                      <Button style={{ marginLeft: "15px" }} onClick={() => addNewQuestion(choice)}> <Icon type="plus" /> Add new Question </Button>
+                    </div>
                     <Divider style={{ margin: '4px 0' }} />
                     {menu}
                   </div>
