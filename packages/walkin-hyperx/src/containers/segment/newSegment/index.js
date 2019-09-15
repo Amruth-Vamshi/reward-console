@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { Input, Button, Alert, Col } from 'antd';
 import { withRouter } from 'react-router-dom';
 import { withApollo, graphql, compose, mutate } from 'react-apollo';
-import { attributes, CREATE_RULE, createSegment } from '../../../query/audience';
+import { attributes, CREATE_RULE, createRule, createSegment } from '../../../query/audience';
 import './style.css';
 import { SEGMENT_LIST } from '../../../utils/RouterConstants';
 import get from 'lodash/get';
@@ -48,7 +48,7 @@ class NewSegment extends Component {
 		let org_id = jwt.decode(localStorage.getItem("jwt")).org_id;
 		client
 			.mutate({
-				mutation: CREATE_RULE,
+				mutation: createRule,
 				variables: {
 					name: Math.random()
 						.toString(36)
@@ -100,7 +100,7 @@ class NewSegment extends Component {
 					attributeValue: 'value',
 					expressionType: 'operator',
 				};
-				str = str.replace(/attributeName|attributeValue|expressionType/gi, function (matched) {
+				str = str.replace(/ruleAttributeId|attributeValue|expressionType/gi, function (matched) {
 					return mapObj[matched];
 				});
 				this.setState({ query: JSON.parse(str) });

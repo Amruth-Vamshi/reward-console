@@ -77,9 +77,6 @@ export default class Places extends Component {
   }
 
   componentWillMount() {
-    this.setState({ spin: true });
-    let input = { limit: 7, offset: 0 };
-    // if(search && search.trim() !== '') input.search = search.trim()
     this.getPlacesData(0, 7, '', 'network-only')
   }
 

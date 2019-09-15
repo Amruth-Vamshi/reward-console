@@ -41,10 +41,10 @@ const BasicInfo = ({
 				<h3 className="gx-text-grey">{subTitle}</h3>
 			</div>
 			<Row style={{ marginTop: 34 }}>
-				<Col span={14}>
+				<Col sd={24} md={14} style={{ marginBottom: 15 }}>
 					<BasicInfoForm errors={errors} onFormNext={onFormNext} wrappedComponentRef={saveFormRef} formValues={formValues} />
 				</Col>
-				<Col span={10}>
+				<Col sd={24} md={10}>
 					<CampaignPriority
 						text={textAndControlText}
 						promptText={promptText}

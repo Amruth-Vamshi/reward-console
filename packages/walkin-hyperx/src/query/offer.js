@@ -115,3 +115,12 @@ export const LAUNCH_OFFER = gql`
 		}
 	}
 `;
+
+
+export const ADD_OFFER_TO_CAMPAIGN = gql`
+mutation addOfferToCampaign($input:CampaignOfferInput){
+	addOfferToCampaign(input:$input){
+	  id offer{id name }
+	}
+  }
+`

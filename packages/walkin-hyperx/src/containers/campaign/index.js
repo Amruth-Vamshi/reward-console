@@ -6,11 +6,11 @@ import Offer from "./campaignCreation/offer";
 import Communication from "./campaignCreation/communication";
 import { campaignOverview as Overview } from "@walkinsole/walkin-components";
 import { allSegments, attributes, GET_AUDIENCE, CREATE_AUDIENCE, CREATE_RULE } from "../../query/audience";
-import { getOffers } from "../../query/offer";
+import { getOffers, ADD_OFFER_TO_CAMPAIGN } from "../../query/offer";
 import { withApollo, graphql, compose } from 'react-apollo';
 import isEmpty from 'lodash/isEmpty';
 import { GET_ALL_APPS_OF_ORGANIZATION } from "@walkinsole/walkin-components/src/PlatformQueries";
-import { Col } from 'antd';
+import { Col, Row, message } from 'antd';
 import jwt from "jsonwebtoken";
 import { CampaignFooter, CampaignHeader, Stepper } from '@walkinsole/walkin-components';
 import { CREATE_CAMPAIGN, UPDATE_CAMPAIGN } from '../../query/campaign';
@@ -64,12 +64,17 @@ class CampaignCreation extends Component {
 			communicationSelected: 'SMS',
 			communicationFormValues: {},
 			errors: {},
+			loading: false,
 			offer: '',
+			scheduleData: {},
+			scheduleSaveMark: false,
 			ruleQuery: { id: '1', combinator: 'and', rules: [] },
 			selectedSegments: [''],
 			campaignCreated: false,
 			audienceCreated: false,
+			audienceFilterRuleCreated: false,
 			offerCreated: false,
+			audience: [],
 			audienceChange: { audience: false, rule: false }
 		};
 	}
@@ -88,23 +93,50 @@ class CampaignCreation extends Component {
 		e.preventDefault();
 	};
 
-	goToNextPage(current) {
+	goToNextPage(current, e) {
 		console.log(current);
 		let current1 = this.state.current
 
-		// if (current1 == 0) {
-		// 	this.createOrUpdateBasicCampaign(current)
-		// } else if (current1 == 1) {
-		// 	this.createAudience(current)
-		// 	this.ruleQuery(current)
-		// } else
-		this.setState({ current });
+		if (current1 == 0) {
+			this.createOrUpdateBasicCampaign(current)
+		} else if (current1 == 1) {
+			this.createAudience(current)
+			this.ruleQuery(current)
+			// } else if (current1 == 2) {
+			// 	this.linkOffer(current)
+		} else if (e && e.target.innerText === 'Launch') {
+			message.success('Campaign Launched')
+			this.props.history.push('/hyperx/campaign')
+		} else
+			this.setState({ current });
 
 
 	}
 
+	linkOffer = current => {
+		if (this.state.offer != "" && !this.state.offerCreated) {
+			this.setState({ loading: true })
+			let { allApplications: { organization } } = this.props;
+			var input = {
+				campaignId: this.state.campaign.id,
+				offerId: this.state.offer,
+				organizationId: organization.id,
+				// status: "ACTIVE"
+			};
+			this.props.addOfferToCampaign({
+				variables: { input: input }
+			}).then(data => {
+				console.log("Add Offer..", data)
+				this.setState({ loading: false, current, offer: data.addOfferToCampaign })
+			}).catch(err => {
+				this.setState({ loading: false })
+				console.log("Error while creating audience..", err)
+			});
+		}
+	}
+
 	ruleQuery = current => {
-		if (this.state.audienceFilterRule) {
+		if (this.state.audienceFilterRule.rules.length && !this.state.audienceFilterRuleCreated) {
 			let { allApplications: { organization } } = this.props;
 			const input = {
 				name: Math.random().toString(36).substring(7),
@@ -126,32 +158,39 @@ class CampaignCreation extends Component {
 					}).then(data => {
 						console.log("Update campaign data..", data);
 						this.audienceChange(current, "rule")
-					}).catch(err => console.log("Error Update campaign", err));
-				}).catch(err => console.log("Error creating the question", err));
+					}).catch(err => {
+						console.log("Error Update campaign", err)
+						this.setState({ loading: false })
+					});
+				}).catch(err => {
+					console.log("Error creating the question", err)
+					this.setState({ loading: false })
+				});
 		} else this.audienceChange(current, "rule")
 	};
 
 	createAudience = current => {
 		let segments = this.state.selectedSegments
-		if (segments[0] && segments[0] != "" && !this.state.audienceCreated) {
-			let { allApplications: { organization } } = this.props;
-			var input = {
-				campaign_id: this.state.campaign.id,
-				segment_id: segments,
-				organization_id: organization.id,
-				application_id: organization.applications[0].id,
-				status: "ACTIVE"
-			};
-			this.props.createAudience({
-				variables: { input: input }
-			}).then(data => {
-				console.log("Create Audience..", data)
-				this.audienceChange(current, "audience")
-				// this.setState({ current, audienceCreated: true });
-			}).catch(err => {
-				console.log("Error while creating audience..", err)
-			});
-		} else this.audienceChange(current, "audience")
+		// if (segments[0] && segments[0] != "" && !this.state.audienceCreated) {
+		let { allApplications: { organization } } = this.props;
+		this.setState({ loading: true });
+		var input = {
+			campaign_id: this.state.campaign.id,
+			segment_id: segments,
+			organization_id: organization.id,
+			application_id: organization.applications[0].id,
+			status: "ACTIVE"
+		};
+		this.props.createAudience({
+			variables: { input: input }
+		}).then(data => {
+			console.log("Create Audience..", data)
+			this.audienceChange(current, "audience")
+			this.setState({ audience: data.data.createAudience });
+		}).catch(err => {
+			console.log("Error while creating audience..", err)
+		});
+		// } else this.audienceChange(current, "audience")
 	}
 
 	createOrUpdateBasicCampaign = current => {
@@ -161,17 +200,14 @@ class CampaignCreation extends Component {
 				if (err) return
 				else {
 					console.log('values', values);
-					!this.state.campaignCreated ? this.createCampaign(values) : this.updateBasicCampaign(values);
-					this.setState({
-						formValues: values,
-						current: current,
-					});
+					!this.state.campaignCreated ? this.createCampaign(values, current) : this.updateBasicCampaign(values, current);
+					this.setState({ formValues: values });
 				}
 			});
 		}
 	}
 
-	createCampaign = async values => {
+	createCampaign = (values, current) => {
 		const { client } = this.props;
 		const { priorityChosen, controlValue } = this.state;
 		const { allApplications: { organization } } = this.props;
@@ -184,42 +220,42 @@ class CampaignCreation extends Component {
 			campaignType: "OFFER"
 		};
 		this.setState({ loading: true });
-		try {
-			const createCampaign = await client.mutate({
-				mutation: CREATE_CAMPAIGN,
-				variables: { input: input }
-			});
+		client.mutate({
+			mutation: CREATE_CAMPAIGN,
+			variables: { input: input }
+		}).then(res =>
 			this.setState({
-				loading: false, campaignCreated: true,
-				campaign: createCampaign.data.createCampaign
-			});
-		} catch (err) {
-			console.log(err);
-		}
+				campaignCreated: true, current, loading: false,
+				campaign: res.data.createCampaign
+			})
+		).catch(err => {
+			console.log(err)
+			this.setState({ loading: false })
+		})
 	};
 
 	updateBasicCampaign = async values => {
-		const { client } = this.props;
-		const { priorityChosen, controlValue } = this.state;
-		const input = {
-			...values,
-			priority: parseInt(priorityChosen),
-			campaignControlPercent: parseInt(controlValue),
-			campaignType: "OFFER"
-		}; this.setState({ loading: true });
-		try {
-			const updateCampaign = await client.mutate({
-				mutation: UPDATE_CAMPAIGN,
-				variables: { input: input }
-			});
-			console.log("Updated");
-			// this.setState({
-			// 	loading: false,
-			// 	campaign: createCampaign.data.createCampaign
-			// });
-		} catch (err) {
-			console.log(err);
-		}
+		// 	const { client } = this.props;
+		// 	const { priorityChosen, controlValue } = this.state;
+		// 	const input = {
+		// 		...values,
+		// 		priority: parseInt(priorityChosen),
+		// 		campaignControlPercent: parseInt(controlValue),
+		// 		campaignType: "OFFER"
+		// 	}; this.setState({ loading: true });
+		// 	try {
+		// 		const updateCampaign = await client.mutate({
+		// 			mutation: UPDATE_CAMPAIGN,
+		// 			variables: { input: input }
+		// 		});
+		// 		console.log("Updated");
+		// 		// this.setState({
+		// 		// 	loading: false,
+		// 		// 	campaign: createCampaign.data.createCampaign
+		// 		// });
+		// 	} catch (err) {
+		// 		console.log(err);
+		// 	}
 	};
 
 	audienceChange = (current, type) => {
@@ -227,7 +263,7 @@ class CampaignCreation extends Component {
 		audienceChange[type] = true
 		if (audienceChange.audience && audienceChange.rule) {
 			audienceChange = { audience: false, rule: false }
-			this.setState({ current, audienceChange })
+			this.setState({ current, audienceChange, loading: false })
 		} else this.setState({ audienceChange })
 	}
 
@@ -252,17 +288,14 @@ class CampaignCreation extends Component {
 	};
 
 	handleOnOfferChange = e => {
-		console.log("offer >> ", e);
 		this.setState({ offer: e });
 	};
 
 	handleOnOfferChange = e => {
-		console.log('offer >> ', e);
 		this.setState({ offer: e })
 	}
 
 	onValuesSelected = e => {
-		console.log('>>', e);
 		this.setState({ selectedSegments: e })
 	}
 
@@ -271,6 +304,11 @@ class CampaignCreation extends Component {
 		console.log('rule', audienceFilterRule);
 		this.setState({ audienceFilterRule, ruleQuery });
 	};
+
+	saveSchedule = e => {
+		message.success('schedule saved')
+		this.setState({ scheduleSaveMark: true })
+	}
 
 	render() {
 		const { formValues, current, showTestAndControl, testValue, controlValue, testControlSelected, rows, values, communicationSelected, communicationFormValues } = this.state;
@@ -365,8 +403,10 @@ class CampaignCreation extends Component {
 							subTitle="Offer" />}
 					{current === 3 && (
 						<Communication
-							subTitle="Communication"
+							subTitle="Communizcation"
 							schedule={[]}
+							saveSchedule={this.saveSchedule}
+							scheduleSaveMark={this.state.scheduleSaveMark}
 							onChange={this.onCommunicationChange}
 							communicationData={communicationData}
 							defaultValue={communicationSelected}
@@ -376,11 +416,16 @@ class CampaignCreation extends Component {
 							communicationFormValues={communicationFormValues}
 						/>
 					)}
-					{current === 4 ? <Overview campaign={this.state.formValues} /> : ""}
+					{current === 4 &&
+						<Overview
+							campaign={this.state.formValues}
+							audience={this.state.audience}
+						/>}
 				</div>
 				<div style={{ margin: '32px' }}>
 					<CampaignFooter
-						nextButtonText="Next"
+						loading={this.state.loading}
+						nextButtonText={current === 4 ? 'Launch' : 'Next'}
 						saveDraftText="Save Draft"
 						onPage1SaveDraft={this.onPage1SaveDraft}
 						goToPage2={this.goToNextPage.bind(this, current + 1)}
@@ -399,7 +444,7 @@ export default withRouter(
 				options: ownProps => ({
 					variables: {
 						organization_id: ownProps.client.cache.data.data['$ROOT_QUERY.auth'].organizationId ?
-							ownProps.client.cache.data.data['$ROOT_QUERY.auth'].organizationId : jwt.decode(localStorage.getItem('jwt')),
+							ownProps.client.cache.data.data['$ROOT_QUERY.auth'].organizationId : jwt.decode(localStorage.getItem('jwt')).org_id,
 						status: 'ACTIVE',
 					},
 					fetchPolicy: 'network-only',
@@ -409,7 +454,7 @@ export default withRouter(
 				name: 'allAttributes',
 				options: ownProps => ({
 					variables: {
-						organizationId: ownProps.client.cache.data.data['$ROOT_QUERY.auth'].organizationId,
+						organizationId: jwt.decode(localStorage.getItem("jwt")).org_id,
 					},
 					fetchPolicy: 'network-only',
 				}),
@@ -417,13 +462,15 @@ export default withRouter(
 				name: 'allOffers',
 				options: ownProps => ({
 					variables: {
-						organizationId: ownProps.client.cache.data.data['$ROOT_QUERY.auth'].organizationId,
+						organizationId: jwt.decode(localStorage.getItem("jwt")).org_id,
 						state: "LIVE"
 					},
 					fetchPolicy: 'network-only',
 				})
 			}), graphql(CREATE_RULE, {
 				name: "createRule"
+			}), graphql(ADD_OFFER_TO_CAMPAIGN, {
+				name: "addOfferToCampaign"
 			}), graphql(UPDATE_CAMPAIGN, {
 				name: "updateCampaign"
 			}),
