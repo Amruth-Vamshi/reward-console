@@ -85,7 +85,7 @@ class EditCampaign extends Component {
     const {location}= this.props;
     if (location && location.state) {
       if(location.state.current){
-        this.setState({current:current})
+        this.setState({current:location.state.current})
       }
     }
   }
@@ -615,6 +615,16 @@ class EditCampaign extends Component {
   render() {
     const { current, stepperData } = this.state;
     const {campaign}=this.props
+    //exit to all campaign screen if all the steppers are completed
+    if(current >5){
+      this.props.history.push({
+       pathname: "/refinex/feedback/overview",
+        state:{
+          showPopup:true,
+          message:"Feedback form successfully created"
+        }
+      })
+    }
     return (
       <div className="PageContainer" style={{ margin: "-32px" }}>
         <ContainerHeader
@@ -639,7 +649,7 @@ class EditCampaign extends Component {
         </Row> */}
         <div style={{ margin: "32px" }}>
           <CampaignFooter
-            nextButtonText="Next"
+            nextButtonText={current>=5?"Save" :"Next"}
             saveDraftText="Save Draft"
             onPage1SaveDraft={this.onPage1SaveDraft}
             goToPage2={this.onFormNext.bind(this, current + 1)}
