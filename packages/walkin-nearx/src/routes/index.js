@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
-
+import '../styles/styles.css'
 import Dashboard from './Home/index';
 import AnalyticsManager from './Dashboard';
 import Places from './Places';

@@ -596,6 +596,8 @@ class EditCampaign extends Component {
             value={this.state.communicationSelected}
             commWrappedComponentRef={this.commWrappedComponentRef}
             communicationFormValues={this.state.communicationFormValues}
+            emailFormRef={this.commWrappedComponentRef}
+            emailFormData={this.state.communicationFormValues}
             // saveFormRef={this.saveComFormRef}
             onFormNext={this.onFormNext
             }
@@ -651,7 +653,7 @@ class EditCampaign extends Component {
           <CampaignFooter
             nextButtonText={current>=5?"Save" :"Next"}
             saveDraftText="Save Draft"
-            onPage1SaveDraft={this.onPage1SaveDraft}
+            saveDraft={this.onPage1SaveDraft}
             goToPage2={this.onFormNext.bind(this, current + 1)}
           />
         </div>

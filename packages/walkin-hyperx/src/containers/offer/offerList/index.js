@@ -5,6 +5,7 @@ import { withApollo, graphql } from 'react-apollo';
 import { NEW_SEGMENT, NEW_OFFER } from '../../../utils/RouterConstants';
 import { Card, Menu, Dropdown, Button, Col } from 'antd';
 import moment from 'moment';
+import jwt from "jsonwebtoken";
 import { SortableDataTable, InstantSearch, CampaignHeader } from '@walkinsole/walkin-components';
 
 class OfferList extends Component {
@@ -105,6 +106,13 @@ class OfferList extends Component {
 			offerData = getOffers;
 		}
 
+		const paginationData = {
+			position: "bottom",
+			total: offerData ? offerData.length : 0,
+			defaultPageSize: 6,
+			showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`
+		}
+
 		const columns = [
 			{
 				title: 'Offer Name',
@@ -165,7 +173,7 @@ class OfferList extends Component {
 							onFilteredList={this.onOfferFilteredList}
 						/>
 					</div>
-					<SortableDataTable data={offerData} onChange={this.handleChange} columns={columns} />
+					<SortableDataTable pagination={paginationData} data={offerData} onChange={this.handleChange} columns={columns} />
 				</Card>
 			</Fragment>
 		);
@@ -177,7 +185,7 @@ export default withRouter(
 		graphql(getOffers, {
 			options: ownProps => ({
 				variables: {
-					organizationId: ownProps.client.cache.data.data['$ROOT_QUERY.auth'].organizationId,
+					organizationId: jwt.decode(localStorage.getItem("jwt")).org_id,
 				},
 				forceFetch: true,
 				fetchPolicy: 'network-only',
@@ -187,7 +195,7 @@ export default withRouter(
 				refetchOffers: props => {
 					refetch({
 						variables: {
-							organization_id: props.client.cache.data.data['$ROOT_QUERY.auth'].organizationId,
+							organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
 							status: 'ACTIVE',
 						},
 					});

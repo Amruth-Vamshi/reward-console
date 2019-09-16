@@ -44,7 +44,7 @@ const Audience = ({
 						<p className="gx-text-grey gx-mb-1">{segmentFilterText}</p>
 					</Divider>
 					<p className="gx-text-grey gx-mb-1">{segmentFilterSubText}</p>
-					<WalkinQueryBuilder query={ruleQuery} fields={attributeData} onQueryChange={logQuery} query={ruleQuery} />
+					<WalkinQueryBuilder fields={attributeData} onQueryChange={logQuery} query={ruleQuery} />
 				</div>
 			</div>
 		</div>
