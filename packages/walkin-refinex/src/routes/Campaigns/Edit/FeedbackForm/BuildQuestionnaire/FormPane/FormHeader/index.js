@@ -178,19 +178,38 @@ class FormHeader extends Component {
             height: "6rem"
           }}
         >
-          <Form layout="inline">
-            <Item>
+          <Col span={24}>
+            <Form layout="inline">
               <Item>
-                <Popconfirm
-                  title="Changing question type will delete the existing choices, continue?"
-                  visible={this.state.popUpVisible}
-                  onConfirm={this.confirmTypeChange}
-                  onCancel={this.closeTypeChange}
-                  okText="Yes"
-                  cancelText="No"
-                >
+                <Item>
+                  <Popconfirm
+                    title="Changing question type will delete the existing choices, continue?"
+                    visible={this.state.popUpVisible}
+                    onConfirm={this.confirmTypeChange}
+                    onCancel={this.closeTypeChange}
+                    okText="Yes"
+                    cancelText="No"
+                  >
+                    <Item validateStatus={this.state.validationStatus}>
+                      <p>Question Type</p>
+                      {getFieldDecorator("type", {
+                        rules: [
+                          {
+                            required: true
+                          }
+                        ],
+                        getValueFromEvent: this.triggerPopup
+                      })(
+                        <TreeSelect placeholder="Please select">
+                          {this.getQuestionTypes()}
+                        </TreeSelect>
+                      )}
+                    </Item>
+                  </Popconfirm>
+                </Item>
+                <Item>
                   <Item validateStatus={this.state.validationStatus}>
-                    <p>Question Type</p>
+                    <p>Related to</p>
                     {getFieldDecorator("type", {
                       rules: [
                         {
@@ -204,43 +223,26 @@ class FormHeader extends Component {
                       </TreeSelect>
                     )}
                   </Item>
-                </Popconfirm>
+                </Item>
+
               </Item>
-              <Item>
-                <Item validateStatus={this.state.validationStatus}>
-                  <p>Related to</p>
-                  {getFieldDecorator("type", {
-                    rules: [
-                      {
-                        required: true
-                      }
-                    ],
-                    getValueFromEvent: this.triggerPopup
-                  })(
-                    <TreeSelect placeholder="Please select">
-                      {this.getQuestionTypes()}
-                    </TreeSelect>
-                  )}
+              <Item style={{ marginTop: "3rem" }}>
+                <Item label="Mandatory">
+                  <Switch
+                    defaultChecked={true}
+                    onChange={this.onChangeMandatory}
+                  />
+                </Item>
+                <Item label="Branch Logic">
+                  <Switch
+                    defaultChecked={true}
+                    onChange={this.onChangeBranchLogic}
+                  />
                 </Item>
               </Item>
-            </Item>
 
-            <Item style={{ marginTop: "3rem" }}>
-              <Item label="Mandatory">
-                <Switch
-                  defaultChecked={true}
-                  onChange={this.onChangeMandatory}
-                />
-              </Item>
-              <Item label="Branch Logic">
-                <Switch
-                  defaultChecked={true}
-                  onChange={this.onChangeBranchLogic}
-                />
-              </Item>
-            </Item>
 
-            {/* <Col span={12}>
+              {/* <Col span={12}>
               <Row>
                 <Col span={12}>
                   <p>Question Type</p>
@@ -278,7 +280,8 @@ class FormHeader extends Component {
                 </Col>
               </Row>
             </Col> */}
-          </Form>
+            </Form>
+          </Col>
         </Row>
       </ErrorBoundary>
     );

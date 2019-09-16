@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { ErrorBoundary, CardBox } from "@walkinsole/walkin-components";
-import { Row, Col, Button, Tooltip, Form, Input } from "antd";
+import { Row, Col, Button, Tooltip, Form, Input, Select, Divider, Icon } from "antd";
+const { Option } = Select;
 
 const getMultiChoice = () => {
   return <span>Multi Choice</span>;
@@ -24,6 +25,17 @@ class ChoiceInput extends Component {
     this.props.submitChoice()
   }
 
+  onChange = (choice, questionId) => {
+    console.log("choiceId,questionId", choice, questionId)
+    if (questionId == "addNewQuestion") {
+      this.props.addNewQuestion(choice)
+    } else {
+      this.props.onLinkChoiceToQuestion(questionId, choice.id)
+    }
+
+
+  }
+
   componentDidMount() {
     this.setFieldValues();
   }
@@ -33,7 +45,8 @@ class ChoiceInput extends Component {
       removeChoice,
       choice,
       addNewQuestion,
-      form
+      form,
+      questionnaire
     } = this.props;
     const ChoiceMap = {
       SINGLE_ANSWER: getMultiChoice(),
@@ -46,13 +59,12 @@ class ChoiceInput extends Component {
     const { getFieldDecorator } = form;
 
     const { Item } = Form;
-    console.log("choice", choice);
 
     return (
       <ErrorBoundary>
         <Row>
-          <Col span={20}>
-            <Form labelCol={{ span: 6 }} wrapperCol={{ span: 12 }} onSubmit={this.onSubmit}>
+          <Col span={10}>
+            <Form labelCol={{ span: 24 }} wrapperCol={{ span: 24 }} onSubmit={this.onSubmit}>
               <Item>
                 {getFieldDecorator("choiceText", {
                   rules: [
@@ -60,9 +72,46 @@ class ChoiceInput extends Component {
                       required: true
                     }
                   ]
-                })(<Input />)}
+                })(<Input size="large" />)}
               </Item>
             </Form>
+          </Col>
+          <Col span={10}>
+            <Tooltip title="Add Question for this choice">
+              <Select defaultValue={choice.toQuestion ? choice.toQuestion.id : null} onChange={this.onChange.bind(this, choice)} style={{ width: "100%" }} size="large" style={{ width: "100%" }}
+                dropdownRender={menu => (
+                  <div>
+                    {menu}
+                  </div>
+                )}>
+                <Option key="addNewQuestion">
+                  <div style={{ padding: '8px', cursor: 'pointer' }}>
+                    <Button style={{ marginLeft: "15px" }} > <Icon type="plus" /> Add new Question </Button>
+                  </div>
+                  <Divider style={{ margin: '4px 0' }} />
+                </Option>
+                {
+
+                  questionnaire.map(question => {
+                    return (
+
+                      <Option style={{ marginTop: "2px" }} key={question.id} value={question.id}>{question.questionText}</Option>
+
+
+
+                    )
+                  })
+                }
+
+
+              </Select>
+              { /*  <Button
+                onClick={() => addNewQuestion(choice)}
+                type="ghost"
+                shape="circle"
+                icon="plus"
+           /> */}
+            </Tooltip>
           </Col>
           <Col span={2}>
             <Tooltip title="Remove choice">
@@ -71,16 +120,6 @@ class ChoiceInput extends Component {
                 type="ghost"
                 shape="circle"
                 icon="close"
-              />
-            </Tooltip>
-          </Col>
-          <Col span={2}>
-            <Tooltip title="Add Question for this choice">
-              <Button
-                onClick={() => addNewQuestion(choice)}
-                type="ghost"
-                shape="circle"
-                icon="plus"
               />
             </Tooltip>
           </Col>
