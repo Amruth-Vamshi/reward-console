@@ -762,7 +762,7 @@ class NewOffer extends Component {
 						<CampaignFooter
 							nextButtonText={current === 1 ? 'Save' : 'Next'}
 							// saveDraftText="Save Draft"
-							onPage1SaveDraft={this.onPage1SaveDraft}
+							saveDraft={this.onPage1SaveDraft}
 							goToPage2={e => {
 								this.goToNextPage(current + 1, e);
 							}}

@@ -653,7 +653,7 @@ class EditCampaign extends Component {
           <CampaignFooter
             nextButtonText={current>=5?"Save" :"Next"}
             saveDraftText="Save Draft"
-            onPage1SaveDraft={this.onPage1SaveDraft}
+            saveDraft={this.onPage1SaveDraft}
             goToPage2={this.onFormNext.bind(this, current + 1)}
           />
         </div>
