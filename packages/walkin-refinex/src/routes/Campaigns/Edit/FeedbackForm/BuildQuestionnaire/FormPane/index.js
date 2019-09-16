@@ -74,7 +74,8 @@ class QuestionnaireFormPane extends Component {
       choiceToAddQuestion,
       isChoiceLoading,
       isQuestionLoading,
-      questionnaire
+      questionnaire,
+      onLinkChoiceToQuestion
     } = this.props;
     console.log("questionToEdit", questionnaire)
     return (
@@ -101,6 +102,7 @@ class QuestionnaireFormPane extends Component {
               submitChoice={this.onChoiceSubmitted}
               isChoiceLoading={isChoiceLoading}
               isQuestionLoading={isQuestionLoading}
+              onLinkChoiceToQuestion={onLinkChoiceToQuestion}
             />
           ) : (
               <ShowQuestion
@@ -116,6 +118,7 @@ class QuestionnaireFormPane extends Component {
                 submitChoice={this.onChoiceSubmitted}
                 isChoiceLoading={isChoiceLoading}
                 isQuestionLoading={isQuestionLoading}
+                onLinkChoiceToQuestion={onLinkChoiceToQuestion}
 
               />
             )}

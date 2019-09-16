@@ -140,6 +140,24 @@ export const updateCommunication = gql`
   }
 `;
 
+export const LINK_CHOICE_TO_QUESTION = gql`
+  mutation linkChoiceToQuestion($choiceId:ID!,$questionId:ID!){
+    linkChoiceToQuestion(choiceId:$choiceId,questionId:$questionId){
+      id
+      fromQuestion{
+        id
+        questionText
+        type
+
+      }
+      choiceText
+      rangeStart
+      rangeEnd
+    }
+  }
+
+`
+
 
 export const createMessageTemplate = gql`
   mutation createMessageTemplate($input: CreateMessageTemplateInput!) {
@@ -176,13 +194,17 @@ mutation createAudience($input:createAudienceInput!){
     campaign{
       id
       name
-      audienceFilterRule
+      audienceFilterRule{
+        id 
+        name
+      }
     }
     segment{
       id
       name
       segmentType
-    }status
+    }
+    status
   }
 }`;
 

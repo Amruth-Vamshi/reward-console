@@ -25,8 +25,9 @@ class ChoiceInput extends Component {
     this.props.submitChoice()
   }
 
-  onChange = (e) => {
-    console.log(e)
+  onChange = (choiceId, questionId) => {
+    console.log("choiceId,questionId", choiceId, questionId)
+    this.props.onLinkChoiceToQuestion(questionId, choiceId)
   }
 
   componentDidMount() {
@@ -71,7 +72,7 @@ class ChoiceInput extends Component {
           </Col>
           <Col span={10}>
             <Tooltip title="Add Question for this choice">
-              <Select defaultValue={choice.toQuestion ? choice.toQuestion.id : null} onChange={this.onChange} style={{ width: "100%" }} size="large" style={{ width: "100%" }}
+              <Select defaultValue={choice.toQuestion ? choice.toQuestion.id : null} onChange={this.onChange.bind(this, choice.id)} style={{ width: "100%" }} size="large" style={{ width: "100%" }}
                 dropdownRender={menu => (
                   <div>
                     <div style={{ padding: '8px', cursor: 'pointer' }}>

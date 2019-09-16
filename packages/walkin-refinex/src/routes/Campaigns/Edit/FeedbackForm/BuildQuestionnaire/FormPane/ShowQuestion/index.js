@@ -15,7 +15,8 @@ export default function ShowQuestion({
   onChoiceEdited,
   submitChoice,
   isChoiceLoading,
-  questionnaire
+  questionnaire,
+  onLinkChoiceToQuestion
 }) {
   console.log(questionnaire)
   return (
@@ -50,6 +51,7 @@ export default function ShowQuestion({
               choiceData={choiceData}
               submitChoice={submitChoice}
               isChoiceLoading={isChoiceLoading}
+              onLinkChoiceToQuestion={onLinkChoiceToQuestion}
             />
           </Col>
         </Row>

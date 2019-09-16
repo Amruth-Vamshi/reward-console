@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import FormPane from "./FormPane";
 import { Query, graphql, compose } from "react-apollo";
 import gql from "graphql-tag";
-import { Row, Col, Spin, Icon } from "antd";
+import { Row, Col, Spin, Icon, message } from "antd";
 import QuestionsList from "./QuestionsList";
 import QuestionTypeSelector from "./QuestionTypeSelection";
 import {
@@ -12,7 +12,8 @@ import {
   ADD_CHOICE,
   REMOVE_CHOICE,
   ADD_QUESTION,
-  EDIT_CHOICE
+  EDIT_CHOICE,
+  LINK_CHOICE_TO_QUESTION
 } from "../../../../../containers/Query";
 import { Card } from "antd";
 import { isEmptyStatement } from "@babel/types";
@@ -34,6 +35,10 @@ class Questionnaire extends Component {
     };
   }
 
+  success = (message) => {
+    message.success('This is a prompt message for success, and it will disappear in 10 seconds', 5);
+  };
+
   onQuestionSelected = questionIndex => {
     console.log("this.props.questionnaire", this.props.questionnaire)
     this.setState(prevState => ({
@@ -45,6 +50,22 @@ class Questionnaire extends Component {
       questionTypeSelector: null
     }));
   };
+
+  onLinkChoiceToQuestion = (questionId, choiceId) => {
+    this.setState({ isChoiceLoading: true })
+    console.log("choiceId,QuestionId", choiceId, questionId)
+    this.props.linkChoieToQuestion({
+      variables: {
+        choiceId: choiceId,
+        questionId: questionId
+      }
+    }).then(data => {
+      this.success("Choice successfully linked to question ")
+      this.setState({ isChoiceLoading: false })
+    }).catch(err => {
+      this.setState({ isChoiceLoading: false })
+    })
+  }
 
   onNewQuestionAdd = () => {
     const { choiceToAddQuestion } = this.state;
@@ -316,6 +337,7 @@ class Questionnaire extends Component {
                 onChoiceSubmitted={this.onChoiceSubmitted}
                 isChoiceLoading={isChoiceLoading}
                 isQuestionLoading={isQuestionLoading}
+                onLinkChoiceToQuestion={this.onLinkChoiceToQuestion}
               />
             ) : (
                 <QuestionTypeSelector
@@ -336,6 +358,7 @@ class Questionnaire extends Component {
                   onChoiceSubmitted={this.onChoiceSubmitted}
                   isChoiceLoading={isChoiceLoading}
                   isQuestionLoading={isQuestionLoading}
+                  onLinkChoiceToQuestion={this.onLinkChoiceToQuestion}
                 />
               ) : (
                   <QuestionTypeSelector
@@ -358,5 +381,6 @@ export default compose(
   }),
   graphql(ADD_CHOICE, { name: "addChoice" }),
   graphql(REMOVE_CHOICE, { name: "removeChoice" }),
-  graphql(EDIT_CHOICE, { name: "editChoice" })
+  graphql(EDIT_CHOICE, { name: "editChoice" }),
+  graphql(LINK_CHOICE_TO_QUESTION, { name: "linkChoieToQuestion" })
 )(Questionnaire);

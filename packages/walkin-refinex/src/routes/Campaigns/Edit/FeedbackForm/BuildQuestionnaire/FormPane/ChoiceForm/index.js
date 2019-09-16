@@ -35,6 +35,7 @@ export default class ChoiceForm extends Component {
                 addNewQuestion={this.props.addNewQuestion}
                 onChoiceEdited={this.props.onChoiceEdited}
                 submitChoice={this.props.submitChoice}
+                onLinkChoiceToQuestion={this.props.onLinkChoiceToQuestion}
               />
             </CardBox>
           </Col>
