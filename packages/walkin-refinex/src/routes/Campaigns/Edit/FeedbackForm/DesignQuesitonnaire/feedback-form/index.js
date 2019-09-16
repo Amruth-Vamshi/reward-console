@@ -65,7 +65,9 @@ class Home extends Component {
       case "MULTIPLE_ANSWER":
         return <MultipleAnswer question={question} onChange={this.onChangeMultiple} radioStyle={radioStyle} />
       case "RATING_SCALE":
-        return <RateScale question={question} onChange={this.handleChangeRate} value={this.state.rateValue} />
+        return <RateScale character="star" question={question} onChange={this.handleChangeRate} value={this.state.rateValue} />
+      case "OPINION_SCALE":
+        return <RateScale character="smile" question={question} onChange={this.handleChangeRate} value={this.state.rateValue} />
     }
   }
   render() {
