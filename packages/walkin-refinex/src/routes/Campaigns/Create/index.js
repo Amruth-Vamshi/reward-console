@@ -492,7 +492,7 @@ class CreateCampaign extends Component {
           <CampaignFooter
             nextButtonText="Next"
             saveDraftText="Save Draft"
-            onPage1SaveDraft={this.onPage1SaveDraft}
+            saveDraft={this.onPage1SaveDraft}
             goToPage2={this.goToNextPage.bind(this, current + 1)}
           />
         </div>

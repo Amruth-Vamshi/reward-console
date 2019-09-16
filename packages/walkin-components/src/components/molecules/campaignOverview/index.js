@@ -33,7 +33,6 @@ export default class Overview extends Component {
     // }
     console.log(this.props);
     return (
-      // <CustomScrollbars> 
       <div className="campaignOverview">
         <Title level={2} className="gx-text-grey"> Overview </Title>
         <div style={{ margin: 15 }}>
@@ -59,13 +58,13 @@ export default class Overview extends Component {
               </Row>
             </div> : ''}
 
-          <div className="mb-25">
-            <Row>
-              <Col className='AudienceTitle' sm={16} md={12} xl={10} xxl={9}> <h3>Audience</h3></Col>
-              <Col >Total Reach : 6412 </Col>
-            </Row>
-            {audience && audience.length &&
-              audience.map((i, n) =>
+          {audience && audience.length ?
+            <div className="mb-25">
+              <Row>
+                <Col className='AudienceTitle' sm={16} md={12} xl={10} xxl={9}> <h3>Audience</h3></Col>
+                <Col >Total Reach : 6412 </Col>
+              </Row>
+              {audience.map((i, n) =>
                 <Row key={n} style={{ marginBottom: 10 }}>
                   <Col xs={24} sm={16} md={12} xl={10} xxl={9} className="audBg">
                     {i.segment.name}
@@ -74,7 +73,7 @@ export default class Overview extends Component {
                     users 3422
                 </Col>
                 </Row>)}
-          </div>
+            </div> : ''}
 
           {offer && <div className="mb-25">
             <h3>Offer</h3>
@@ -85,17 +84,17 @@ export default class Overview extends Component {
             </Row>
           </div>}
 
-          <div className="mb-25">
-            <h3>Communication</h3>
-            <Row>
-              <Col xs={24} sm={24} md={17} xl={14} xxl={12} className="overViewBg">
-                {communication.messageTemplate.templateSubjectText}
-              </Col>
-            </Row>
-          </div>
+          {communication &&
+            <div className="mb-25">
+              <h3>Communication</h3>
+              <Row>
+                <Col xs={24} sm={24} md={17} xl={14} xxl={12} className="overViewBg">
+                  {communication.messageTemplate.templateSubjectText}
+                </Col>
+              </Row>
+            </div>}
         </div>
       </div>
-      // </CustomScrollbars>
     );
   }
 }

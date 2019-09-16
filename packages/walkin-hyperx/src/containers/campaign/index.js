@@ -98,6 +98,8 @@ class CampaignCreation extends Component {
 		e.preventDefault();
 	};
 
+	saveDraft = current => this.setState({ current });
+
 	goToNextPage(current, e) {
 		console.log(current);
 		let current1 = this.state.current
@@ -517,8 +519,8 @@ class CampaignCreation extends Component {
 					<CampaignFooter
 						loading={this.state.loading}
 						nextButtonText={current === 4 ? 'Launch' : 'Save and Next'}
-						saveDraftText="Save Draft"
-						onPage1SaveDraft={this.onPage1SaveDraft}
+						saveDraftText={current === 0 ? "" : current === 4 ? "Save Draft" : 'Skip'}
+						saveDraft={() => this.saveDraft(current + 1)}
 						goToPage2={this.goToNextPage.bind(this, current + 1)}
 					/>
 				</div>
