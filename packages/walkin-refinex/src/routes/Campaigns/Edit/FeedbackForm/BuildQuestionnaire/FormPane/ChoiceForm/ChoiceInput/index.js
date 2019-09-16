@@ -86,7 +86,7 @@ class ChoiceInput extends Component {
                 )}>
                 <Option key="addNewQuestion">
                   <div style={{ padding: '8px', cursor: 'pointer' }}>
-                    <Button style={{ marginLeft: "15px" }} onClick={() => console.log("here")}> <Icon type="plus" /> Add new Question </Button>
+                    <Button style={{ marginLeft: "15px" }} > <Icon type="plus" /> Add new Question </Button>
                   </div>
                   <Divider style={{ margin: '4px 0' }} />
                 </Option>

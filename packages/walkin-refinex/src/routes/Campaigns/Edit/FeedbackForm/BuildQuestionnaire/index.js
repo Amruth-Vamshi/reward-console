@@ -35,8 +35,12 @@ class Questionnaire extends Component {
     };
   }
 
-  success = (message) => {
-    message.success('This is a prompt message for success, and it will disappear in 10 seconds', 5);
+  success = (message1) => {
+    message.success(message1, 5);
+  };
+
+  error = (message1) => {
+    message.error(message1, 5);
   };
 
   onQuestionSelected = questionIndex => {
@@ -63,7 +67,7 @@ class Questionnaire extends Component {
       this.success("Choice successfully linked to question ")
       this.setState({ isChoiceLoading: false })
     }).catch(err => {
-      this.success("Some error occured while linking! Please try again")
+      this.error("Some error occured while linking! Please try again")
       this.setState({ isChoiceLoading: false })
     })
   }

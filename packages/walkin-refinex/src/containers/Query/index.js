@@ -76,7 +76,7 @@ export const updateRule = gql`
 `;
 
 export const communications = gql`
-  query communications($entityId: ID!,$entityType:ENTITY_TYPE,$organization_id: ID!) {
+  query communications($entityId: ID!,$entityType:COMMUNICATION_ENTITY_TYPE,$organization_id: ID!) {
       communications(entityId: $entityId, entityType:$entityType, organization_id:$organization_id, status: ACTIVE) {
         id
         entityId
