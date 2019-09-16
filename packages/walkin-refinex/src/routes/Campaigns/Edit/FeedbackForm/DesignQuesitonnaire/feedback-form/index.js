@@ -1,8 +1,12 @@
 import React, { Component } from 'react'
-import { Layout, PageHeader, Button, Icon, Radio, Input, Row, Col } from "antd"
+import { Layout, PageHeader, Button, Icon, Radio, Input, Row, Col, Switch } from "antd"
 const { Header, Content, Footer } = Layout;
 import "./index.css"
 import { CustomScrollbars } from "@walkinsole/walkin-components";
+import SingleAnswer from "./Components/Fields/SigleChoice"
+import MultipleAnswer from "./Components/Fields/MultipleChoice"
+import Text from "./Components/Fields/Text"
+import RateScale from "./Components/Fields/RatingScale"
 class Home extends Component {
 
   constructor(props) {
@@ -15,7 +19,9 @@ class Home extends Component {
       title: "This will be title",
       subtitle: "This will be subtitle",
       value: 1,
-      buttonColor: "red"
+      buttonColor: "red",
+      textValue: "",
+      rateValue: 0
     }
   }
 
@@ -32,16 +38,41 @@ class Home extends Component {
       value: e.target.value,
     });
   };
-  render() {
+  onChangeMultiple = (checkedValues) => {
+    console.log('checked = ', checkedValues);
+  }
 
-    const { backgroundColor, templateStructure, transitions, logo, subtitle, title, buttonColor } = this.state;
-    const { question, color } = this.props;
+  onChangeText = ({ target: { value } }) => {
+    this.setState({ textValue: value });
+  };
+
+  handleChangeRate = value => {
+    this.setState({ rateValue: value });
+  };
+
+  getChoices = (question) => {
     const radioStyle = {
       display: 'block',
       height: '40px',
       lineHeight: '40px',
       width: "50px"
     };
+    switch (question.type) {
+      case "SINGLE_ANSWER":
+        return <SingleAnswer question={question} onChange={this.onChange} radioStyle={radioStyle} value={this.state.value} />
+      case "TEXT":
+        return <Text value={this.state.textValue} onChange={this.onChangeText} />
+      case "MULTIPLE_ANSWER":
+        return <MultipleAnswer question={question} onChange={this.onChangeMultiple} radioStyle={radioStyle} />
+      case "RATING_SCALE":
+        return <RateScale question={question} onChange={this.handleChangeRate} value={this.state.rateValue} />
+    }
+  }
+  render() {
+
+    const { backgroundColor, templateStructure, transitions, logo, subtitle, title, buttonColor } = this.state;
+    const { question, color } = this.props;
+    console.log(question)
     return (
       <Layout className="layout" style={{ marginLeft: "30%", backgroundColor: "white" }}>
         <Header style={{ backgroundColor: color }}>
@@ -58,17 +89,9 @@ class Home extends Component {
           </Row>
           <Row>
             <Col style={{ marginTop: "10px" }}>
-              <Radio.Group onChange={this.onChange} value={this.state.value}>
-                {
-                  question.choices.map(choice => {
-                    return (
-                      <Radio style={radioStyle} key={choice.id} value={choice.id}>
-                        {choice.choiceText}
-                      </Radio>
-                    )
-                  })
-                }
-              </Radio.Group>
+              {
+                this.getChoices(question)
+              }
             </Col>
           </Row>
 

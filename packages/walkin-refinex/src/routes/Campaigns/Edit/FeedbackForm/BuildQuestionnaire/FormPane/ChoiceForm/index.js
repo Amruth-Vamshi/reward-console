@@ -9,7 +9,8 @@ const ChoiceMap = {
   RATING_SCALE: true,
   OPINION_SCALE: true,
   RANKING: true,
-  DICHOTOMOUS: true
+  DICHOTOMOUS: true,
+  TEXT: true
 };
 
 export default class ChoiceForm extends Component {
@@ -28,11 +29,13 @@ export default class ChoiceForm extends Component {
             <CardBox>
               <ChoiceInput
                 choice={choice}
+                questionnaire={this.props.questionnaire}
                 questionType={this.props.questionToEdit.type}
                 removeChoice={this.props.removeChoice}
                 addNewQuestion={this.props.addNewQuestion}
                 onChoiceEdited={this.props.onChoiceEdited}
                 submitChoice={this.props.submitChoice}
+                onLinkChoiceToQuestion={this.props.onLinkChoiceToQuestion}
               />
             </CardBox>
           </Col>
@@ -48,7 +51,7 @@ export default class ChoiceForm extends Component {
       return (
         <ErrorBoundary>
           <Row>
-            <Col>
+            <Col span={24}>
               <h2>Configure choices</h2>
             </Col>
           </Row>

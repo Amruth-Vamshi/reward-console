@@ -76,7 +76,7 @@ export const updateRule = gql`
 `;
 
 export const communications = gql`
-  query communications($entityId: ID!,$entityType:ENTITY_TYPE,$organization_id: ID!) {
+  query communications($entityId: ID!,$entityType:COMMUNICATION_ENTITY_TYPE,$organization_id: ID!) {
       communications(entityId: $entityId, entityType:$entityType, organization_id:$organization_id, status: ACTIVE) {
         id
         entityId
@@ -140,6 +140,24 @@ export const updateCommunication = gql`
   }
 `;
 
+export const LINK_CHOICE_TO_QUESTION = gql`
+  mutation linkChoiceToQuestion($choiceId:ID!,$questionId:ID!){
+    linkChoiceToQuestion(choiceId:$choiceId,questionId:$questionId){
+      id
+      fromQuestion{
+        id
+        questionText
+        type
+
+      }
+      choiceText
+      rangeStart
+      rangeEnd
+    }
+  }
+
+`
+
 
 export const createMessageTemplate = gql`
   mutation createMessageTemplate($input: CreateMessageTemplateInput!) {
@@ -176,13 +194,17 @@ mutation createAudience($input:createAudienceInput!){
     campaign{
       id
       name
-      audienceFilterRule
+      audienceFilterRule{
+        id 
+        name
+      }
     }
     segment{
       id
       name
       segmentType
-    }status
+    }
+    status
   }
 }`;
 
