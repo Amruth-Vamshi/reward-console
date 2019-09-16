@@ -10,7 +10,7 @@
 
   .overViewBg {
     padding: 10px 15px 10px 20px;
-    background-color: #efefef;
+    background-color: #e2e2e2;
   } 
 
   .offerBg {
@@ -20,7 +20,7 @@
 
   .audBg {
     padding: 10px 15px 10px 20px;
-    background-color: #dbeff3;
+    background-color: #c7e4eb;
   }
 
   .campaignOverview .ant-row{

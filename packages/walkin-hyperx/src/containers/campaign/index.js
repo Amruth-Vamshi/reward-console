@@ -13,7 +13,7 @@ import { GET_ALL_APPS_OF_ORGANIZATION } from "@walkinsole/walkin-components/src/
 import { Col, Row, message } from 'antd';
 import jwt from "jsonwebtoken";
 import { CampaignFooter, CampaignHeader, Stepper } from '@walkinsole/walkin-components';
-import { CREATE_CAMPAIGN, UPDATE_CAMPAIGN } from '../../query/campaign';
+import { CREATE_CAMPAIGN, UPDATE_CAMPAIGN, CREATE_MESSAGE_TEMPLETE, CREATE_COMMUNICATION } from '../../query/campaign';
 
 const stepData = [
 	{
@@ -62,11 +62,13 @@ class CampaignCreation extends Component {
 			controlValue: 5,
 			testControlSelected: '',
 			communicationSelected: 'SMS',
-			communicationFormValues: {},
 			errors: {},
 			loading: false,
 			offer: '',
 			scheduleData: {},
+			smsForm: {},
+			emailForm: {},
+			pushForm: {},
 			scheduleSaveMark: false,
 			ruleQuery: { id: '1', combinator: 'and', rules: [] },
 			selectedSegments: [''],
@@ -81,12 +83,22 @@ class CampaignCreation extends Component {
 	saveFormRef = formRef => {
 		this.formRef = formRef;
 	};
-	communicationWrappedComponentRef = formRef => {
-		this.formRef = formRef;
-	};
+
+	saveSmsFormRef = formRef => this.smsForm = formRef;
+	saveEmailFormRef = formRef => this.emailForm = formRef;
+	savePushFormRef = formRef => this.pushForm = formRef;
+
 
 	handleCancel = () => {
 		this.setState({ showTestAndControl: false });
+	};
+
+	onControlValueChange = val => {
+		this.setState({ controlValue: val });
+	};
+
+	onTestValueChange = val => {
+		this.setState({ testValue: val });
 	};
 
 	onFormNext = e => {
@@ -102,8 +114,10 @@ class CampaignCreation extends Component {
 		} else if (current1 == 1) {
 			this.createAudience(current)
 			this.ruleQuery(current)
-			// } else if (current1 == 2) {
-			// 	this.linkOffer(current)
+		} else if (current1 == 2) {
+			this.linkOffer(current)
+		} else if (current1 == 3) {
+			this.createComm(current)
 		} else if (e && e.target.innerText === 'Launch') {
 			message.success('Campaign Launched')
 			this.props.history.push('/hyperx/campaign')
@@ -112,6 +126,73 @@ class CampaignCreation extends Component {
 
 
 	}
+
+	createComm = c => {
+		let { communicationSelected } = this.state;
+		let formRef =
+			communicationSelected == "SMS" ? this.smsForm :
+				communicationSelected == "EMAIL" ? this.emailForm : this.pushForm
+
+		console.log('COMM', formRef, communicationSelected);
+		console.log(communicationSelected);
+		const comForm = formRef && formRef.props && formRef.props.form;
+		comForm.validateFields((err, values) => {
+			if (err) return
+			else {
+				if (communicationSelected == "SMS")
+					this.setState({ smsForm: values })
+				else if (communicationSelected == "EMAIL")
+					this.setState({ emailForm: values })
+				else this.setState({ pushForm: values })
+
+				this.createCommunicationMutation(c, values);
+			}
+		})
+
+	}
+
+	createCommunicationMutation = (current, values) => {
+		let { communicationSelected } = this.state;
+		console.log('COMM', communicationSelected, values);
+		var input = {
+			name: this.state.campaign.name,
+			description: "",
+			messageFormat: communicationSelected,
+			templateBodyText: communicationSelected == "SMS" ? values.smsBody : values.email_body,
+			templateSubjectText: communicationSelected == "SMS" ? values.smsTag : values.email_subject,
+			templateStyle: "MUSTACHE",
+			organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
+			status: "ACTIVE"
+		};
+		this.props.messageTemplate({
+			variables: { input: input }
+		}).then(data => {
+			console.log("MessageTemplate data..", data);
+			var input = {
+				entityId: this.state.campaign.id, // campainId
+				entityType: "Campaign",
+				messageTemplateId: data.data.createMessageTemplate.id,
+				isScheduled: true,
+				isRepeatable: false,
+				organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
+				status: "ACTIVE",
+				firstScheduleDateTime: this.state.campaign.startTime,
+				commsChannelName: "Test"
+			};
+			this.props.createCommunication({
+				variables: { input: input }
+			}).then(data => {
+				console.log("Communication data..", data)
+				this.setState({ loading: false, current, communication: data.data.createCommunication })
+			}).catch(err => {
+				this.setState({ loading: false })
+				console.log("Error creating for communication", err)
+			})
+		}).catch(err => {
+			this.setState({ loading: false })
+			console.log("Error creating for message template", err);
+		});
+	};
 
 	linkOffer = current => {
 		if (this.state.offer != "" && !this.state.offerCreated) {
@@ -127,7 +208,7 @@ class CampaignCreation extends Component {
 				variables: { input: input }
 			}).then(data => {
 				console.log("Add Offer..", data)
-				this.setState({ loading: false, current, offer: data.addOfferToCampaign })
+				this.setState({ loading: false, current, offer: data.data.addOfferToCampaign.offer })
 			}).catch(err => {
 				this.setState({ loading: false })
 				console.log("Error while creating audience..", err)
@@ -275,8 +356,8 @@ class CampaignCreation extends Component {
 		});
 	};
 
-	handleButtonGroupChange = e => {
-		this.setState({ value: e.target.value });
+	onTestAndControlEdit = () => {
+		this.setState({ showTestAndControl: true });
 	};
 
 	handleButtonGroupChange = e => {
@@ -345,7 +426,7 @@ class CampaignCreation extends Component {
 						</Fragment>
 					}
 				/>
-				<div style={{ margin: '40px' }}>
+				<div style={{ margin: '40px', height: '70vh' }}>
 					{current === 0 && (
 						<BasicInfo
 							subTitle="Basic information"
@@ -359,7 +440,7 @@ class CampaignCreation extends Component {
 							prioritySelectionTitle="Campaign Priority"
 							priorityButtonText="Custom no"
 							testControlTitle="Test & Control"
-							testControlPercentage={testControlSelected ? testControlSelected : '95% - 5%'}
+							testControlPercentage={testControlSelected ? testControlSelected : `${testValue}% - ${controlValue}%`}
 							handleButtonGroupChange={this.handleButtonGroupChange}
 							testControlPercentageEditText="Edit"
 							priorityNumberInvalidErrorMessage="Enter a value between 1 and 99"
@@ -403,7 +484,7 @@ class CampaignCreation extends Component {
 							subTitle="Offer" />}
 					{current === 3 && (
 						<Communication
-							subTitle="Communizcation"
+							subTitle="Communication"
 							schedule={[]}
 							saveSchedule={this.saveSchedule}
 							scheduleSaveMark={this.state.scheduleSaveMark}
@@ -412,14 +493,20 @@ class CampaignCreation extends Component {
 							defaultValue={communicationSelected}
 							value={communicationSelected}
 							OnCommunicationFormNext={this.onFormNext}
-							communicationWrappedComponentRef={this.communicationWrappedComponentRef}
-							communicationFormValues={communicationFormValues}
+							commWrappedComponentRef={this.saveSmsFormRef}
+							communicationFormValues={this.state.smsForm}
+							emailFormRef={this.saveEmailFormRef}
+							emailFormData={this.state.emailForm}
+							pushFormRef={this.savePushFormRef}
+							pushFormData={this.state.pushForm}
 						/>
 					)}
 					{current === 4 &&
 						<Overview
 							campaign={this.state.formValues}
 							audience={this.state.audience}
+							offer={this.state.offer}
+							communication={this.state.communication}
 						/>}
 				</div>
 				<div style={{ margin: '32px' }}>
@@ -474,11 +561,15 @@ export default withRouter(
 			}), graphql(UPDATE_CAMPAIGN, {
 				name: "updateCampaign"
 			}),
-			// graphql(createCommunication, {
-			// 	name: "communication"
-			// }),
+
 			graphql(CREATE_AUDIENCE, {
 				name: "createAudience"
+			}),
+			graphql(CREATE_MESSAGE_TEMPLETE, {
+				name: "messageTemplate"
+			}),
+			graphql(CREATE_COMMUNICATION, {
+				name: "createCommunication"
 			}),
 			graphql(GET_ALL_APPS_OF_ORGANIZATION, {
 				name: "allApplications",

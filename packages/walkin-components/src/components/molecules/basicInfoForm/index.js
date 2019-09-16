@@ -38,8 +38,8 @@ const BasicInfoForm = Form.create({ name: "form_in_modal" })(
 
     render() {
       const { form, onFormNext, wrappedComponentRef, formValues = {}, text, edit } = this.props;
-      let startTime = moment()
-      let endTime = moment()
+      let startTime = moment().add(10, 'm')
+      let endTime = ''
       if (Object.keys(formValues).length != 0) {
         startTime = moment(formValues.startTime);
         endTime = moment(formValues.endTime);

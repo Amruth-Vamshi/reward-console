@@ -31,7 +31,7 @@ export default class Overview extends Component {
     //   var diff = start.diff(end);
     //   console.log("Diff..", diff);
     // }
-    console.log(">>", audience);
+    console.log(this.props);
     return (
       // <CustomScrollbars> 
       <div className="campaignOverview">
@@ -74,21 +74,13 @@ export default class Overview extends Component {
                     users 3422
                 </Col>
                 </Row>)}
-            {/* <Row>
-              <Col xs={24} sm={16} md={12} xl={10} xxl={9} className="audBg">
-                Gold Members
-              </Col>
-              <Col xs={24} sm={8} md={5} xl={4} xxl={3} className="audBg">
-                users 2990
-              </Col>
-            </Row> */}
           </div>
 
           {offer && <div className="mb-25">
             <h3>Offer</h3>
             <Row>
               <Col xs={24} sm={24} md={17} xl={14} xxl={12} className="offerBg">
-                50% discount on cars
+                {offer.name}
               </Col>
             </Row>
           </div>}
