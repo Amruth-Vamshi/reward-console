@@ -9,7 +9,7 @@ import './style.css'
 
 export default class Overview extends Component {
   render() {
-    const { campaign, audience, offer } = this.props;
+    const { campaign, audience, offer, communication } = this.props;
     var now = moment();
     var startDate = moment(campaign.startTime);
     var endDate = moment(campaign.endTime);
@@ -89,7 +89,7 @@ export default class Overview extends Component {
             <h3>Communication</h3>
             <Row>
               <Col xs={24} sm={24} md={17} xl={14} xxl={12} className="overViewBg">
-                SMS - Store Experience
+                {communication.messageTemplate.templateSubjectText}
               </Col>
             </Row>
           </div>

@@ -57,3 +57,14 @@ export const CREATE_COMMUNICATION = gql`
     }
   }
 `;
+
+export const LAUNCH_CAMPAIGN = gql`
+  mutation launchCampaign($id:ID!) {
+    launchCampaign(id:$id) {
+      id name description
+      startTime endTime
+      status triggerRule { id }
+      campaignType priority
+    }
+  }
+`;

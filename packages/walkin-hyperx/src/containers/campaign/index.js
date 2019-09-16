@@ -8,12 +8,11 @@ import { campaignOverview as Overview } from "@walkinsole/walkin-components";
 import { allSegments, attributes, GET_AUDIENCE, CREATE_AUDIENCE, CREATE_RULE } from "../../query/audience";
 import { getOffers, ADD_OFFER_TO_CAMPAIGN } from "../../query/offer";
 import { withApollo, graphql, compose } from 'react-apollo';
-import isEmpty from 'lodash/isEmpty';
 import { GET_ALL_APPS_OF_ORGANIZATION } from "@walkinsole/walkin-components/src/PlatformQueries";
 import { Col, Row, message } from 'antd';
 import jwt from "jsonwebtoken";
 import { CampaignFooter, CampaignHeader, Stepper } from '@walkinsole/walkin-components';
-import { CREATE_CAMPAIGN, UPDATE_CAMPAIGN, CREATE_MESSAGE_TEMPLETE, CREATE_COMMUNICATION } from '../../query/campaign';
+import { CREATE_CAMPAIGN, UPDATE_CAMPAIGN, CREATE_MESSAGE_TEMPLETE, CREATE_COMMUNICATION, LAUNCH_CAMPAIGN } from '../../query/campaign';
 
 const stepData = [
 	{
@@ -119,12 +118,23 @@ class CampaignCreation extends Component {
 		} else if (current1 == 3) {
 			this.createComm(current)
 		} else if (e && e.target.innerText === 'Launch') {
+			this.launchCampaign()
+		} else this.setState({ current });
+
+	}
+
+	launchCampaign = () => {
+		this.setState({ loading: true })
+		this.props.launchCampaign({
+			variables: { id: this.state.campaign.id }
+		}).then(data => {
+			console.log("campaign data..", data);
 			message.success('Campaign Launched')
 			this.props.history.push('/hyperx/campaign')
-		} else
-			this.setState({ current });
-
-
+		}).catch(err => {
+			console.log("Error Update campaign", err)
+			this.setState({ loading: false })
+		});
 	}
 
 	createComm = c => {
@@ -208,7 +218,7 @@ class CampaignCreation extends Component {
 				variables: { input: input }
 			}).then(data => {
 				console.log("Add Offer..", data)
-				this.setState({ loading: false, current, offer: data.data.addOfferToCampaign.offer })
+				this.setState({ loading: false, current, offerData: data.data.addOfferToCampaign.offer })
 			}).catch(err => {
 				this.setState({ loading: false })
 				console.log("Error while creating audience..", err)
@@ -392,7 +402,7 @@ class CampaignCreation extends Component {
 	}
 
 	render() {
-		const { formValues, current, showTestAndControl, testValue, controlValue, testControlSelected, rows, values, communicationSelected, communicationFormValues } = this.state;
+		const { formValues, current, showTestAndControl, testValue, controlValue, testControlSelected, rows, values, communicationSelected } = this.state;
 		let attributeData = this.props.allAttributes && this.props.allAttributes.ruleAttributes &&
 			this.props.allAttributes.ruleAttributes.map(el => ({
 				name: el.attributeName,
@@ -505,7 +515,7 @@ class CampaignCreation extends Component {
 						<Overview
 							campaign={this.state.formValues}
 							audience={this.state.audience}
-							offer={this.state.offer}
+							offer={this.state.offerData}
 							communication={this.state.communication}
 						/>}
 				</div>
@@ -560,8 +570,9 @@ export default withRouter(
 				name: "addOfferToCampaign"
 			}), graphql(UPDATE_CAMPAIGN, {
 				name: "updateCampaign"
+			}), graphql(LAUNCH_CAMPAIGN, {
+				name: "launchCampaign"
 			}),
-
 			graphql(CREATE_AUDIENCE, {
 				name: "createAudience"
 			}),
