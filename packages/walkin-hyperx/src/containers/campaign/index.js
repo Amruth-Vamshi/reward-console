@@ -436,7 +436,7 @@ class CampaignCreation extends Component {
 						</Fragment>
 					}
 				/>
-				<div style={{ margin: '40px', height: '70vh' }}>
+				<div style={{ margin: '40px', height: '65vh' }}>
 					{current === 0 && (
 						<BasicInfo
 							subTitle="Basic information"
