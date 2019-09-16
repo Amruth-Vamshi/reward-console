@@ -21,41 +21,43 @@ export default function ShowQuestion({
   console.log(questionnaire)
   return (
     <React.Fragment>
-      <Col span={24}>
-        <FormHeader
-          onQuestionEdited={onQuestionEdited}
-          questionToEdit={questionToEdit}
-          questionType={questionToEdit.type}
-        />
-      </Col>
-      <Col span={22}>
-        <Row>
-          <Col span={24}>
-            <QuestionForm
-              onQuestionEdited={onQuestionEdited}
-              onQuestionSubmitted={onQuestionSubmitted}
-              questionToEdit={questionToEdit}
-              style={{ marginTop: "4%" }}
-            />
-          </Col>
-        </Row>
-        <Row>
-          <Col span={24}>
-            <ChoiceForm
-              questionnaire={questionnaire}
-              questionToEdit={questionToEdit}
-              onChoiceEdited={onChoiceEdited}
-              addChoice={addChoice}
-              removeChoice={removeChoice}
-              addNewQuestion={addNewQuestion}
-              choiceData={choiceData}
-              submitChoice={submitChoice}
-              isChoiceLoading={isChoiceLoading}
-              onLinkChoiceToQuestion={onLinkChoiceToQuestion}
-            />
-          </Col>
-        </Row>
-      </Col>
+      <Row>
+        <Col span={24}>
+          <FormHeader
+            onQuestionEdited={onQuestionEdited}
+            questionToEdit={questionToEdit}
+            questionType={questionToEdit.type}
+          />
+        </Col>
+        <Col span={24}>
+          <Row>
+            <Col span={24}>
+              <QuestionForm
+                onQuestionEdited={onQuestionEdited}
+                onQuestionSubmitted={onQuestionSubmitted}
+                questionToEdit={questionToEdit}
+                style={{ marginTop: "4%" }}
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col span={24}>
+              <ChoiceForm
+                questionnaire={questionnaire}
+                questionToEdit={questionToEdit}
+                onChoiceEdited={onChoiceEdited}
+                addChoice={addChoice}
+                removeChoice={removeChoice}
+                addNewQuestion={addNewQuestion}
+                choiceData={choiceData}
+                submitChoice={submitChoice}
+                isChoiceLoading={isChoiceLoading}
+                onLinkChoiceToQuestion={onLinkChoiceToQuestion}
+              />
+            </Col>
+          </Row>
+        </Col>
+      </Row>
     </React.Fragment>
   );
 }

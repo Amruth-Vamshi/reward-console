@@ -51,7 +51,7 @@ export default class ChoiceForm extends Component {
       return (
         <ErrorBoundary>
           <Row>
-            <Col>
+            <Col span={24}>
               <h2>Configure choices</h2>
             </Col>
           </Row>

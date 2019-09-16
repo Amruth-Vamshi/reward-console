@@ -224,8 +224,8 @@ class FormHeader extends Component {
                     )}
                   </Item>
                 </Item>
-              </Item>
 
+              </Item>
               <Item style={{ marginTop: "3rem" }}>
                 <Item label="Mandatory">
                   <Switch
@@ -240,6 +240,7 @@ class FormHeader extends Component {
                   />
                 </Item>
               </Item>
+
 
               {/* <Col span={12}>
               <Row>

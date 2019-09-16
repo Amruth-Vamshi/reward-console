@@ -25,9 +25,15 @@ class ChoiceInput extends Component {
     this.props.submitChoice()
   }
 
-  onChange = (choiceId, questionId) => {
-    console.log("choiceId,questionId", choiceId, questionId)
-    this.props.onLinkChoiceToQuestion(questionId, choiceId)
+  onChange = (choice, questionId) => {
+    console.log("choiceId,questionId", choice, questionId)
+    if (questionId == "addNewQuestion") {
+      this.props.addNewQuestion(choice)
+    } else {
+      this.props.onLinkChoiceToQuestion(questionId, choice.id)
+    }
+
+
   }
 
   componentDidMount() {
@@ -72,17 +78,20 @@ class ChoiceInput extends Component {
           </Col>
           <Col span={10}>
             <Tooltip title="Add Question for this choice">
-              <Select defaultValue={choice.toQuestion ? choice.toQuestion.id : null} onChange={this.onChange.bind(this, choice.id)} style={{ width: "100%" }} size="large" style={{ width: "100%" }}
+              <Select defaultValue={choice.toQuestion ? choice.toQuestion.id : null} onChange={this.onChange.bind(this, choice)} style={{ width: "100%" }} size="large" style={{ width: "100%" }}
                 dropdownRender={menu => (
                   <div>
-                    <div style={{ padding: '8px', cursor: 'pointer' }}>
-                      <Button style={{ marginLeft: "15px" }} onClick={() => addNewQuestion(choice)}> <Icon type="plus" /> Add new Question </Button>
-                    </div>
-                    <Divider style={{ margin: '4px 0' }} />
                     {menu}
                   </div>
                 )}>
+                <Option key="addNewQuestion">
+                  <div style={{ padding: '8px', cursor: 'pointer' }}>
+                    <Button style={{ marginLeft: "15px" }} onClick={() => console.log("here")}> <Icon type="plus" /> Add new Question </Button>
+                  </div>
+                  <Divider style={{ margin: '4px 0' }} />
+                </Option>
                 {
+
                   questionnaire.map(question => {
                     return (
 
