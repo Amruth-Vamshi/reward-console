@@ -14,33 +14,27 @@ import jwt from "jsonwebtoken";
 import { CampaignFooter, CampaignHeader, Stepper } from '@walkinsole/walkin-components';
 import { CREATE_CAMPAIGN, UPDATE_CAMPAIGN, CREATE_MESSAGE_TEMPLETE, CREATE_COMMUNICATION, LAUNCH_CAMPAIGN } from '../../query/campaign';
 
-const stepData = [
-	{
-		id: 1,
-		route: "basicInfo",
-		title: "Basic Info"
-	},
-	{
-		id: 2,
-		title: "Audience",
-		route: "audience"
-	},
-	{
-		id: 3,
-		title: "Offer",
-		route: "offer"
-	},
-	{
-		id: 4,
-		title: "Communication",
-		route: "ommunication"
-	},
-	{
-		id: 5,
-		title: "Overview",
-		route: "overview"
-	}
-];
+const stepData = [{
+	id: 1,
+	route: "basicInfo",
+	title: "Basic Info"
+}, {
+	id: 2,
+	title: "Audience",
+	route: "audience"
+}, {
+	id: 3,
+	title: "Offer",
+	route: "offer"
+}, {
+	id: 4,
+	title: "Communication",
+	route: "ommunication"
+}, {
+	id: 5,
+	title: "Overview",
+	route: "overview"
+}];
 
 const communicationData = [
 	{ value: "SMS", title: "SMS" },
@@ -168,8 +162,8 @@ class CampaignCreation extends Component {
 			name: this.state.campaign.name,
 			description: "",
 			messageFormat: communicationSelected,
-			templateBodyText: communicationSelected == "SMS" ? values.smsBody : values.email_body,
-			templateSubjectText: communicationSelected == "SMS" ? values.smsTag : values.email_subject,
+			templateBodyText: communicationSelected == "SMS" ? values.smsBody : communicationSelected == "EMAIL" ? values.email_body : values.notificationBody,
+			templateSubjectText: communicationSelected == "SMS" ? values.smsTag : communicationSelected == "EMAIL" ? values.email_subject : values.notificationTag,
 			templateStyle: "MUSTACHE",
 			organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
 			status: "ACTIVE"
@@ -522,7 +516,7 @@ class CampaignCreation extends Component {
 				<div style={{ margin: '32px' }}>
 					<CampaignFooter
 						loading={this.state.loading}
-						nextButtonText={current === 4 ? 'Launch' : 'Next'}
+						nextButtonText={current === 4 ? 'Launch' : 'Save and Next'}
 						saveDraftText="Save Draft"
 						onPage1SaveDraft={this.onPage1SaveDraft}
 						goToPage2={this.goToNextPage.bind(this, current + 1)}
@@ -564,13 +558,17 @@ export default withRouter(
 					},
 					fetchPolicy: 'network-only',
 				})
-			}), graphql(CREATE_RULE, {
+			}),
+			graphql(CREATE_RULE, {
 				name: "createRule"
-			}), graphql(ADD_OFFER_TO_CAMPAIGN, {
+			}),
+			graphql(ADD_OFFER_TO_CAMPAIGN, {
 				name: "addOfferToCampaign"
-			}), graphql(UPDATE_CAMPAIGN, {
+			}),
+			graphql(UPDATE_CAMPAIGN, {
 				name: "updateCampaign"
-			}), graphql(LAUNCH_CAMPAIGN, {
+			}),
+			graphql(LAUNCH_CAMPAIGN, {
 				name: "launchCampaign"
 			}),
 			graphql(CREATE_AUDIENCE, {
