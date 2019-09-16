@@ -6,21 +6,21 @@ import Email from "../../../../components/atoms/communicationForm/Email";
 import Schedule from "../../../../components/atoms/communicationForm/schedule";
 
 const Communication = ({
-  subTitle,
-  onChange,
+  subTitle, onChange,
   communicationData,
   defaultValue,
-  value,
-  getScheduleData,
+  value, getScheduleData,
   OnCommunicationFormNext,
   commWrappedComponentRef,
   communicationFormValues,
   pushFormData,
+  pushFormRef,
+  emailFormRef,
+  emailFormData,
   onFormNext,
   schedule,
   scheduleSaveMark,
   saveSchedule,
-  smsFormData,
   form
 }) => {
   return (
@@ -50,10 +50,13 @@ const Communication = ({
               onFormNext={onFormNext}
             />
           )}{" "}
-          {value == "PUSH" && <PushNotificationForm />}
+          {value == "PUSH" && <PushNotificationForm
+            wrappedComponentRef={pushFormData}
+            formValues={pushFormRef}
+            onFormNext={onFormNext} />}
           {value == "EMAIL" && (<Email
-            wrappedComponentRef={commWrappedComponentRef}
-            formValues={communicationFormValues}
+            wrappedComponentRef={emailFormRef}
+            formValues={emailFormData}
             onFormNext={onFormNext} />)}
         </Col>
 

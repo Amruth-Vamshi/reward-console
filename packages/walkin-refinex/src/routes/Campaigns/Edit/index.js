@@ -596,6 +596,8 @@ class EditCampaign extends Component {
             value={this.state.communicationSelected}
             commWrappedComponentRef={this.commWrappedComponentRef}
             communicationFormValues={this.state.communicationFormValues}
+            emailFormRef={this.commWrappedComponentRef}
+            emailFormData={this.state.communicationFormValues}
             // saveFormRef={this.saveComFormRef}
             onFormNext={this.onFormNext
             }
