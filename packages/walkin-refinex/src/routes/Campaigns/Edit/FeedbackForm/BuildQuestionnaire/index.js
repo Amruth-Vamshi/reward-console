@@ -63,6 +63,7 @@ class Questionnaire extends Component {
       this.success("Choice successfully linked to question ")
       this.setState({ isChoiceLoading: false })
     }).catch(err => {
+      this.success("Some error occured while linking! Please try again")
       this.setState({ isChoiceLoading: false })
     })
   }
