@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import ChoiceInput from "./ChoiceInput";
 import { ErrorBoundary, CardBox } from "@walkinsole/walkin-components";
-import { Row, Col, Button, Icon, Spin } from "antd";
+import { Row, Col, Button, Icon, Spin, Modal, Slider, InputNumber } from "antd";
+import Includes from "lodash/includes"
 import "./index.css"
 const ChoiceMap = {
   SINGLE_ANSWER: true,
@@ -14,6 +15,47 @@ const ChoiceMap = {
 };
 
 export default class ChoiceForm extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      visible: false,
+      inputValue: ""
+    }
+  }
+
+  handleClick = e => {
+    e.preventDefault();
+    if (Includes(["RATING_SCALE", "OPINION_SCALE", "RANKING"], this.props.questionToEdit.type)) {
+      this.setState({ visible: true })
+    } else {
+      this.props.addChoice();
+    }
+
+  }
+
+  onChange = value => {
+    console.log(value)
+    this.setState({
+      inputValue: value,
+    });
+  };
+
+  CancelModal = () => {
+    this.setState({
+      visible: false,
+    });
+  }
+
+  hideModal = () => {
+    const range = {
+      rangeStart: this.state.inputValue[0],
+      rangeEnd: this.state.inputValue[1]
+    }
+    this.setState({
+      visible: false,
+    });
+    this.props.addChoice(null, range)
+  };
   getChoiceRows = () => {
     this.props.questionToEdit.choices ? this.props.questionToEdit.choices = this.props.questionToEdit.choices : this.props.questionToEdit.choices = []
     return this.props.questionToEdit.choices.map(choice => {
@@ -46,11 +88,32 @@ export default class ChoiceForm extends Component {
 
   render() {
     const { isChoiceLoading } = this.props;
+    const { inputValue } = this.state;
     const antIcon = <Icon type="loading" style={{ fontSize: 50 }} spin />;
     if (ChoiceMap[this.props.questionToEdit.type]) {
       return (
         <ErrorBoundary>
           <Row>
+            <Modal
+              title="Please select the range for this choice"
+              visible={this.state.visible}
+              onOk={this.hideModal}
+              onCancel={this.CancelModal}
+              okText="Save"
+            >
+              <Row>
+                <Col span={16}>
+                  <Slider
+                    range
+                    min={this.props.questionToEdit.rangeMin}
+                    max={this.props.questionToEdit.rangeMax}
+                    onChange={this.onChange}
+                    defaultValue={[0, 5]}
+                  />
+                </Col>
+
+              </Row>
+            </Modal>
             <Col span={24}>
               <h2>Configure choices</h2>
             </Col>
@@ -62,10 +125,7 @@ export default class ChoiceForm extends Component {
                 <Col>
                   <Button
                     type="dashed"
-                    onClick={e => {
-                      e.preventDefault();
-                      this.props.addChoice();
-                    }}
+                    onClick={this.handleClick}
                   >
                     <Icon type="plus" /> Add Choice
                   </Button>

@@ -74,7 +74,6 @@ class Home extends Component {
 
     const { backgroundColor, templateStructure, transitions, logo, subtitle, title, buttonColor } = this.state;
     const { question, color } = this.props;
-    console.log(question)
     return (
       <Layout className="layout" style={{ marginLeft: "30%", backgroundColor: "white" }}>
         <Header style={{ backgroundColor: color }}>
