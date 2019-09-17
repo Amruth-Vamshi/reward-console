@@ -27,7 +27,10 @@ import {
 } from "../../../containers/Query";
 import { CustomScrollbars } from "@walkinsole/walkin-components";
 import jwt from "jsonwebtoken";
+import {TEMPLATE_STYLE} from '../../../Utils'
 import { async } from "q";
+import { from } from "zen-observable";
+
 
 const communicationData = [
   { value: "SMS", title: "SMS" },
@@ -280,7 +283,7 @@ class EditCampaign extends Component {
         messageFormat: this.state.communicationSelected,
         templateBodyText: this.state.communicationSelected == "SMS"?values.smsBody:values.email_body,
         templateSubjectText: this.state.communicationSelected == "SMS"?values.smsTag:values.email_subject,
-        templateStyle: "MUSTACHE",
+        templateStyle: TEMPLATE_STYLE,
         organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
         status:"ACTIVE"
       };
@@ -387,7 +390,6 @@ class EditCampaign extends Component {
 
    
   onCampaignUpdate= (formValues)=>{
-    console.log(formValues)
     this.props.updateCampaign({
       variables:{
         id:this.props.campaign.campaign.id,
@@ -610,8 +612,11 @@ class EditCampaign extends Component {
           // />
         );
       default:
-        return <CustomScrollbars> <Overview campaign={this.props.campaign.campaign} /></CustomScrollbars>;
+        return <CustomScrollbars> <Overview campaign={this.props.campaign.campaign} 
+        communication={this.props.allCommunications.communications[0].messageTemplate ?
+          this.props.allCommunications.communications[0].messageTemplate.messageFormat : ''}/></CustomScrollbars>
     }
+
   };
 
   render() {
