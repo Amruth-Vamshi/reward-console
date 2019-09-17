@@ -70,6 +70,7 @@ class CampaignCreation extends Component {
 			audienceCreated: false,
 			audienceFilterRuleCreated: false,
 			offerCreated: false,
+			createComm: false,
 			audience: [],
 			audienceChange: { audience: false, rule: false }
 		};
@@ -105,19 +106,19 @@ class CampaignCreation extends Component {
 		console.log(current);
 		let current1 = this.state.current
 
-		// if (current1 == 0) {
-		// 	this.createOrUpdateBasicCampaign(current)
-		// } else if (current1 == 1) {
-		// 	this.createAudience(current)
-		// 	this.ruleQuery(current)
-		// } else if (current1 == 2) {
-		// 	this.linkOffer(current)
-		// } else if (current1 == 3) {
-		// 	this.createComm(current)
-		// } else if (e && e.target.innerText === 'Launch') {
-		// 	this.launchCampaign()
-		// } else 
-		this.setState({ current });
+		if (current1 == 0) {
+			this.createOrUpdateBasicCampaign(current)
+		} else if (current1 == 1) {
+			this.createAudience(current)
+			this.ruleQuery(current)
+		} else if (current1 == 2) {
+			this.linkOffer(current)
+		} else if (current1 == 3) {
+			this.createComm(current)
+		} else if (e && e.target.innerText === 'Launch') {
+			this.launchCampaign()
+		} else
+			this.setState({ current });
 
 	}
 
@@ -136,7 +137,7 @@ class CampaignCreation extends Component {
 	}
 
 	createComm = c => {
-		let { communicationSelected } = this.state;
+		let { communicationSelected, createComm } = this.state;
 		let formRef =
 			communicationSelected == "SMS" ? this.smsForm :
 				communicationSelected == "EMAIL" ? this.emailForm : this.pushForm
@@ -152,8 +153,8 @@ class CampaignCreation extends Component {
 				else if (communicationSelected == "EMAIL")
 					this.setState({ emailForm: values })
 				else this.setState({ pushForm: values })
-
-				this.createCommunicationMutation(c, values);
+				!createComm ?
+					this.createCommunicationMutation(c, values) : ''
 			}
 		})
 
