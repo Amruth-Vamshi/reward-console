@@ -63,8 +63,9 @@ class Questionnaire extends Component {
         choiceId: choiceId,
         questionId: questionId
       }
-    }).then(data => {
+    }).then(async data => {
       this.success("Choice successfully linked to question ")
+      await this.props.refetchQuestionnaire();
       this.setState({ isChoiceLoading: false })
     }).catch(err => {
       this.error("Some error occured while linking! Please try again")
