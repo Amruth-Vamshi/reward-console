@@ -64,20 +64,24 @@ class ChoiceInput extends Component {
       <ErrorBoundary>
         <Row>
           <Col span={10}>
-            <Form labelCol={{ span: 24 }} wrapperCol={{ span: 24 }} onSubmit={this.onSubmit}>
-              <Item>
-                {getFieldDecorator("choiceText", {
-                  rules: [
-                    {
-                      required: true
-                    }
-                  ]
-                })(<Input size="large" />)}
-              </Item>
-            </Form>
+            <Tooltip title="Choice Text">
+              <Form labelCol={{ span: 24 }} wrapperCol={{ span: 24 }} onSubmit={this.onSubmit}>
+
+                <Item>
+                  {getFieldDecorator("choiceText", {
+                    rules: [
+                      {
+                        required: true
+                      }
+                    ]
+                  })(<Input size="large" />)}
+                </Item>
+
+              </Form>
+            </Tooltip>
           </Col>
           <Col span={10}>
-            <Tooltip title="Add Question for this choice">
+            <Tooltip title="Added Question for this choice">
               <Select defaultValue={choice.toQuestion ? choice.toQuestion.id : null} onChange={this.onChange.bind(this, choice)} style={{ width: "100%" }} size="large" style={{ width: "100%" }}
                 dropdownRender={menu => (
                   <div>
