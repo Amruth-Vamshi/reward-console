@@ -261,16 +261,22 @@ class Questionnaire extends Component {
     this.setState({ addQuestion: true, choiceToAddQuestion: choiceId });
   };
 
-  addChoice = (id) => {
+  addChoice = (id, range) => {
     this.setState({ isChoiceLoading: true })
+    let rangeStart = 1;
+    let rangeEnd = 10;
+    if (range) {
+      rangeStart = range.rangeStart;
+      rangeEnd = range.rangeEnd;
+    }
     this.props
       .addChoice({
         variables: {
           questionId: this.state.questionToEdit ? this.state.questionToEdit.id : id,
           input: {
             choiceText: "  ",
-            rangeStart: 1,
-            rangeEnd: 10
+            rangeStart: rangeStart,
+            rangeEnd: rangeEnd
           }
         }
       })
@@ -282,6 +288,7 @@ class Questionnaire extends Component {
         this.setState({ isChoiceLoading: false })
       })
       .catch(err => {
+        this.setState({ isChoiceLoading: false })
         console.log(err);
       });
   };
