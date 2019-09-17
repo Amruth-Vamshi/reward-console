@@ -54,6 +54,7 @@ class CampaignCreation extends Component {
 			testValue: 95,
 			controlValue: 5,
 			testControlSelected: '',
+			communication: '',
 			communicationSelected: 'SMS',
 			errors: {},
 			loading: false,
@@ -104,18 +105,19 @@ class CampaignCreation extends Component {
 		console.log(current);
 		let current1 = this.state.current
 
-		if (current1 == 0) {
-			this.createOrUpdateBasicCampaign(current)
-		} else if (current1 == 1) {
-			this.createAudience(current)
-			this.ruleQuery(current)
-		} else if (current1 == 2) {
-			this.linkOffer(current)
-		} else if (current1 == 3) {
-			this.createComm(current)
-		} else if (e && e.target.innerText === 'Launch') {
-			this.launchCampaign()
-		} else this.setState({ current });
+		// if (current1 == 0) {
+		// 	this.createOrUpdateBasicCampaign(current)
+		// } else if (current1 == 1) {
+		// 	this.createAudience(current)
+		// 	this.ruleQuery(current)
+		// } else if (current1 == 2) {
+		// 	this.linkOffer(current)
+		// } else if (current1 == 3) {
+		// 	this.createComm(current)
+		// } else if (e && e.target.innerText === 'Launch') {
+		// 	this.launchCampaign()
+		// } else 
+		this.setState({ current });
 
 	}
 
@@ -512,7 +514,8 @@ class CampaignCreation extends Component {
 							campaign={this.state.formValues}
 							audience={this.state.audience}
 							offer={this.state.offerData}
-							communication={this.state.communication}
+							communication={this.state.communication.messageTemplate ?
+								this.state.communication.messageTemplate.templateSubjectText : ''}
 						/>}
 				</div>
 				<div style={{ margin: '32px' }}>

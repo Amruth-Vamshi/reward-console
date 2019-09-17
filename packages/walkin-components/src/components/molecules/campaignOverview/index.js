@@ -89,7 +89,7 @@ export default class Overview extends Component {
               <h3>Communication</h3>
               <Row>
                 <Col xs={24} sm={24} md={17} xl={14} xxl={12} className="overViewBg">
-                  {communication.messageTemplate.templateSubjectText}
+                  {communication}
                 </Col>
               </Row>
             </div>}

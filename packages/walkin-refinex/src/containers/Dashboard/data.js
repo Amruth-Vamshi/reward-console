@@ -156,7 +156,7 @@ export const AnyNear = {
   "data": {
     "analytics": [
       {
-        "name": "Total_feedback_completed",
+        "name": "TOTAL_CAMPAIGNS",
         "type": "SCALAR",
         "rows": 1,
         "response": [
@@ -167,7 +167,7 @@ export const AnyNear = {
         "total": 733
       },
       {
-        "name": "Partial_complete_feedback",
+        "name": "TOTAL_FORMS",
         "type": "SCALAR",
         "rows": 1,
         "response": [
@@ -178,15 +178,26 @@ export const AnyNear = {
         "total": 80
       },
       {
-        "name": "NPS_RATING",
+        "name": "TOTAL_QUESTIONS",
         "type": "SCALAR",
         "rows": 1,
         "response": [
           {
-            "count": 6.89
+            "count": 90
           }
         ],
-        "total": 6.89
+        "total": 90
+      },
+      {
+        "name": "TOTAL_CHOICES",
+        "type": "SCALAR",
+        "rows": 1,
+        "response": [
+          {
+            "count": 172
+          }
+        ],
+        "total": 172
       },
       {
         "name": "TOTAL_FEEDBACKS",
@@ -211,54 +222,6 @@ export const AnyNear = {
         ],
         "total": 2
       },
-      // {
-      //   "name": "POPULAR_PLACES",
-      //   "type": "SCALAR",
-      //   "rows": 10,
-      //   "response": [
-      //     {
-      //       "geofence_name": "Walkin Office",
-      //       "count": 511
-      //     },
-      //     {
-      //       "geofence_name": "Karthikeya PG",
-      //       "count": 208
-      //     },
-      //     {
-      //       "geofence_name": "opp. Brand Factory, Cross Roads",
-      //       "count": 52
-      //     },
-      //     {
-      //       "geofence_name": "Outside restaurant, Cross Roads",
-      //       "count": 51
-      //     },
-      //     {
-      //       "geofence_name": "Sagar Fast Food",
-      //       "count": 46
-      //     },
-      //     {
-      //       "geofence_name": "First WalkIn Technologies Pvt Ltd",
-      //       "count": 37
-      //     },
-      //     {
-      //       "geofence_name": "Rahul's Home",
-      //       "count": 24
-      //     },
-      //     {
-      //       "geofence_name": "Anvesh Home",
-      //       "count": 20
-      //     },
-      //     {
-      //       "geofence_name": "AyyapaSwamy temple",
-      //       "count": 19
-      //     },
-      //     {
-      //       "geofence_name": "Harish's Home",
-      //       "count": 18
-      //     }
-      //   ],
-      //   "total": 986
-      // },
       {
         "name": "COMPLAIN_BY_CATAGORY",
         "type": "SEQUENCE",

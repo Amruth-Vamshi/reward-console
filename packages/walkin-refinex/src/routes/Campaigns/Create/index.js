@@ -31,7 +31,7 @@ import {
   createMessageTemplate,
   ADD_APPLICATION
 } from "../../../containers/Query";
-import { CAMPAIGN_TYPE } from "../../../Utils";
+import { CAMPAIGN_TYPE, TEMPLATE_STYLE } from "../../../Utils";
 import jwt from "jsonwebtoken";
 import { GET_ALL_APPS_OF_ORGANIZATION } from "@walkinsole/walkin-components/src/PlatformQueries";
 import { CustomScrollbars } from "@walkinsole/walkin-components";
@@ -286,7 +286,7 @@ class CreateCampaign extends Component {
       messageFormat: this.state.communicationSelected,
       templateBodyText: this.state.communicationSelected == "SMS"?values.smsBody:values.email_body,
       templateSubjectText: this.state.communicationSelected == "SMS"?values.smsTag:values.email_subject,
-      templateStyle: "MUSTACHE",
+      templateStyle: TEMPLATE_STYLE,
       organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
       status:"ACTIVE"
     };
@@ -316,6 +316,8 @@ class CreateCampaign extends Component {
             }
           }).then(data =>{
             console.log("Communication data..", data)
+            console.log("this.setState...",data.data.createCommunication)
+            this.setState({communications:data.data.createCommunication})
           }).catch(err =>{
             console.log("Error creating for communication", err)
           })
@@ -462,7 +464,7 @@ class CreateCampaign extends Component {
         onFormNext={this.onFormNext}
       /> ;
       default:
-        return <Overview campaign={this.state.campaign} />;
+        return <Overview campaign={this.state.campaign} communication={this.state.communication}/>;
     }
   };
 
