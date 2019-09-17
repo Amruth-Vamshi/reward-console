@@ -55,7 +55,7 @@ class SidebarContent extends Component {
             </Menu.Item>
             <Menu.Item key="feedbacks">
               <Link to="/refinex/feedback">
-                <i className="icon icon-alert" />
+                <i className="icon icon-feedback" />
                 <IntlMessages id="sidebar.refinex.feedbacks" />
               </Link>
             </Menu.Item>

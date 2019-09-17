@@ -1,6 +1,6 @@
 import React from 'react';
-const OpinionScale = () => {
+const RatingScale = () => {
     return (<h1>Rating Scale</h1>);
 }
 
-export default OpinionScale;
+export default RatingScale;
