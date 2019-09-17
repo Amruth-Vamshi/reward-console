@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Col, Row, DatePicker, Button, Icon, Empty, Spin } from "antd";
 import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis } from "recharts";
-import { increamentData, AnyNear } from "./data";
 import { IconWithTextCard, Widget, ChartCard, Auxiliary } from "@walkinsole/walkin-components";
 import moment from 'moment';
 import Cylinder3DChart from "./Cylinder3DChart";
@@ -11,6 +10,7 @@ import "./style.css"
 import { withApollo } from "react-apollo";
 import { Link } from "react-router-dom";
 import { GET_ANALYTICS } from "@walkinsole/walkin-components/src/PlatformQueries";
+import { AnyNear } from "./data";
 
 const dateFormat = 'YYYY/MM/DD';
 
@@ -18,10 +18,11 @@ class Landing extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      totalCampaigns: 0,
       totalFeedbacks: 0,
-      nps: 0,
-      partialComplete: 0,
-      totalFeedbackCompleted: 0,
+      totalForms: 0,
+      totalQuestions: 0,
+      totalChoices: 0,
       customers: [],
       popularPlaces: [],
       complains: [],
@@ -33,8 +34,9 @@ class Landing extends Component {
     }
   }
 
-  componentWillMount() {
 
+  componentWillMount() {
+    console.log("This.state...", this.state)
     const { id, org_id } = jwt.decode(localStorage.getItem("jwt"));
     if (org_id && id) {
       this.setState({ org_id })
@@ -63,23 +65,22 @@ class Landing extends Component {
   }
 
   formatData = data => {
-    let { totalFeedbackCompleted, totalFeedbacks, nps, partialComplete, customerCount, customers, popularPlaces, complains } = this.state
-    console.log(AnyNear.data.analytics);
+    let { totalCampaigns, totalFeedbacks, totalForms, totalQuestions, totalChoices, customerCount, customers, popularPlaces, complains } = this.state
     if (!data) {
       data = AnyNear
     }
+    console.log("Service analytics data..", data.data.analytics);
     data.data.analytics.map(i => {
-      if (i.name === "Total_feedback_completed") totalFeedbackCompleted = i.total
-      else if (i.name === "Partial_complete_feedback") partialComplete = i.total
-      else if (i.name === "NPS_RATING") nps = i.total
+      if (i.name === "TOTAL_CAMPAIGNS") totalCampaigns = i.total
       else if (i.name === "TOTAL_FEEDBACKS") totalFeedbacks = i.total
-      else if (i.name === "CUSTOMER_COUNTS") {
+      else if (i.name === "TOTAL_FORMS") totalForms = i.total
+      else if (i.name === "TOTAL_QUESTIONS") totalQuestions = i.total
+      else if (i.name === "TOTAL_CHOICES") totalChoices = i.total
+      else if (i.name == "CUSTOMER_COUNTS") {
         customerCount = i.total; customers = [{ "count": 0 }, ...i.response]
-      } else if (i.name === "POPULAR_PLACES") popularPlaces = i.response
-      else if (i.name === "COMPLAIN_BY_CATAGORY") complains = i.response
+      }
     })
-    this.setState({ totalFeedbacks, totalFeedbackCompleted, nps, totalFeedbacks, partialComplete, customerCount, customers, popularPlaces, complains, spin: false })
-    console.log('Done');
+    this.setState({ totalCampaigns, totalFeedbacks, totalForms, totalQuestions, totalChoices, customerCount, customers, popularPlaces, complains, spin: false })
   }
 
   disabledDate = current => {
@@ -132,7 +133,7 @@ class Landing extends Component {
     //   for (let i = 0; i < nRows && i < this.state.complains.length && i < 5; i++)
     //     demoData[i] = this.state.complains[i]
     // else 
-    demoData = this.state.complains.slice(0, 5)
+    demoData = this.state.complains.slice(0, 6)
     // demoData.splice(nRows)
     return (
       <Auxiliary>
@@ -203,21 +204,26 @@ class Landing extends Component {
             </div>
             : <div>
 
-              <Row>
-                <Col xl={6} lg={6} md={6} sm={12} xs={12} className="gx-col-full">
-                  <IconWithTextCard cardColor="cyan" icon="wall" title={this.state.totalFeedbackCompleted} subTitle="Feedback Completed" />
+              <Row gutter={12}>
+                <Col span={5} className="gx-col-full">
+                  <IconWithTextCard cardColor="cyan" antIcon="dollar" title={this.state.totalCampaigns} subTitle="Total Campaigns" />
                 </Col>
-                <Col xl={6} lg={6} md={6} sm={12} xs={12}>
-                  <IconWithTextCard cardColor="orange" antIcon="login" title={this.state.totalFeedbacks} subTitle="Total Feedback Sent" />
+                <Col span={5} className="gx-col-full">
+                  <IconWithTextCard cardColor="orange" icon="feedback" title={this.state.totalFeedbacks} subTitle="Total Feedbacks" />
                 </Col>
-                <Col xl={6} lg={6} md={6} sm={12} xs={12}>
-                  <IconWithTextCard cardColor="teal" antIcon="logout" title={this.state.partialComplete} subTitle="Partial Complete" />
+                <Col span={4} className="gx-col-full">
+                  <IconWithTextCard cardColor="teal" antIcon="form" title={this.state.totalForms} subTitle="Total Forms" />
                 </Col>
-                <Col xl={6} lg={6} md={6} sm={12} xs={12} className="gx-col-full">
-                  <IconWithTextCard cardColor="red" icon="map-street-view" title={this.state.nps} subTitle="NPS Rating" />
+                <Col span={5} className="gx-col-full">
+                  <IconWithTextCard cardColor="red" icon="question-circle" title={this.state.totalQuestions} subTitle="Total Questions" />
                 </Col>
+                <Col span={5} className="gx-col-full">
+                  <IconWithTextCard cardColor="blue" antIcon="more" title={this.state.totalChoices} subTitle="Total Choices" />
+                </Col>
+                {/* <Col xl={6} lg={6} md={6} sm={12} xs={12} className="gx-col-full">
+                  <IconWithTextCard cardColor="cyan" antIcon="more" title={this.state.totalChoices} subTitle="Total Choices" />
+                </Col> */}
               </Row>
-
 
               <Row>
                 <Col span={24}>
@@ -250,7 +256,7 @@ class Landing extends Component {
 
                 <Col xl={24} lg={24} md={24}>
                   <div className='homeNewPlaces'>
-                    <Widget title="Comlplaints by category" styleName="gx-card">
+                    <Widget title="RefineX Events" styleName="gx-card">
 
                       {demoData.length ?
                         demoData.map((i, n) => <ComplainCard key={n} complain={i} />) :
@@ -263,20 +269,6 @@ class Landing extends Component {
                     </Widget>
                   </div>
                 </Col>
-
-
-
-                {/* <Col xl={9} lg={9} md={24} sm={24} xs={24}>
-                  <div className="gx-card">
-                    <div style={{ paddingBottom: 0 }} className="gx-card-head">
-                      <h4 className="gx-card-title">Popular  Places</h4>
-                    </div>
-                    <div style={{ paddingTop: 0 }} className="gx-card-body">
-                      {this.state.popularPlaces.length ?
-                        <Cylinder3DChart data={this.state.popularPlaces} /> : <Empty />}
-                    </div>
-                  </div>
-                </Col> */}
 
               </Row>
             </div>}

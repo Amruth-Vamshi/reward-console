@@ -7,18 +7,22 @@ import { Card, Row, Col, Button, TimePicker, DatePicker, Input, Icon, Select, Fo
 //     wrapperCol: { span: 18, offset: 6 },
 // };
 
+const weekDays = ["SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SUNDAY"]
+
 const formItemLayout = {
     labelCol: {
         xs: { span: 24 },
         sm: { span: 7 },
         md: { span: 24 },
-        lg: { span: 7 }
+        lg: { span: 24 },
+        xl: { span: 7 }
     },
     wrapperCol: {
         xs: { span: 24 },
         sm: { span: 17 },
         md: { span: 24 },
-        lg: { span: 17 }
+        lg: { span: 24 },
+        xl: { span: 17 }
     }
 };
 
@@ -28,7 +32,9 @@ class Schedule extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            errors: {},
             repeatType: "daily",
+            time: '',
             repeatOn: [false, false, false, false, false, false, false],
             end: "onEndDate"
         };
@@ -37,15 +43,34 @@ class Schedule extends React.Component {
     daySelected = e => this.state.repeatOn[e] ? "primary" : "default"
 
     dClick = e => {
-        let { repeatOn } = this.state
+        let { repeatOn, errors } = this.state
+        errors.repeatOn = ''
         repeatOn[e] = !repeatOn[e]
-
-        console.log(repeatOn);
-        this.setState({ repeatOn })
+        this.setState({ repeatOn, errors })
     }
 
     saveSchedule = () => {
-        this.props.saveSchedule(this.state)
+        let errors = {};
+
+        if (this.state.repeatType == "weekly") {
+            console.log(this.state.repeatOn.find(i => i));
+            !this.state.repeatOn.find(i => i) ?
+                errors.repeatOn = "select atleast one day" : ''
+        }
+
+
+        if (this.state.time = '') errors.time = "* this field is mandatory";
+
+
+
+        if (Object.keys(errors).length !== 0) {
+            this.setState({ errors });
+        } else {
+            this.props.saveSchedule(this.state)
+        }
+
+
+
     }
     handleOnEndChange = e => {
         this.setState({ end: e })
@@ -76,21 +101,25 @@ class Schedule extends React.Component {
                         </Form.Item>
                         {this.state.repeatType == "weekly" &&
                             <Form.Item style={{ marginTop: 10 }} label="Repeat On" {...formItemLayout}>
-                                <span>
-                                    <Button className="dBtn" onClick={() => this.dClick(0)} type={this.daySelected(0)} shape="circle"> S </Button>
-                                    <Button className="dBtn" onClick={() => this.dClick(1)} type={this.daySelected(1)} shape="circle"> M </Button>
-                                    <Button className="dBtn" onClick={() => this.dClick(2)} type={this.daySelected(2)} shape="circle"> T </Button>
-                                    <Button className="dBtn" onClick={() => this.dClick(3)} type={this.daySelected(3)} shape="circle"> W </Button>
-                                    <Button className="dBtn" onClick={() => this.dClick(4)} type={this.daySelected(4)} shape="circle"> T </Button>
-                                    <Button className="dBtn" onClick={() => this.dClick(5)} type={this.daySelected(5)} shape="circle"> F </Button>
-                                    <Button className="dBtn" onClick={() => this.dClick(6)} type={this.daySelected(6)} shape="circle"> S </Button>
-                                </span>
+                                <div>
+                                    <div>
+                                        <Button className="dBtn" onClick={() => this.dClick(0)} type={this.daySelected(0)} shape="circle"> S </Button>
+                                        <Button className="dBtn" onClick={() => this.dClick(1)} type={this.daySelected(1)} shape="circle"> M </Button>
+                                        <Button className="dBtn" onClick={() => this.dClick(2)} type={this.daySelected(2)} shape="circle"> T </Button>
+                                        <Button className="dBtn" onClick={() => this.dClick(3)} type={this.daySelected(3)} shape="circle"> W </Button>
+                                        <Button className="dBtn" onClick={() => this.dClick(4)} type={this.daySelected(4)} shape="circle"> T </Button>
+                                        <Button className="dBtn" onClick={() => this.dClick(5)} type={this.daySelected(5)} shape="circle"> F </Button>
+                                        <Button className="dBtn" onClick={() => this.dClick(6)} type={this.daySelected(6)} shape="circle"> S </Button>
+                                    </div>
+                                    <span style={{ color: 'Red' }}>{this.state.errors.repeatOn}</span>
+                                </div>
                             </Form.Item>
                         }
 
 
                         <Form.Item label="@ Time" {...formItemLayout}>
                             <TimePicker className="scheduleTime" use12Hours format="h:mm a" onChange={this.onChange} />
+                            <div style={{ color: 'Red' }}>{this.state.errors.time}</div>
                         </Form.Item>
 
                         <Form.Item style={{ marginTop: 5 }} label="Ends" {...formItemLayout}>
@@ -104,6 +133,7 @@ class Schedule extends React.Component {
                                 <Option value="onEndDate">On End Date</Option>
                                 <Option value="afterOccurrences">After Occurrences</Option>
                             </Select>
+                            <span style={{ color: 'Red' }}>{this.state.errors.end}</span>
                         </Form.Item>
 
                         <Row type="flex" justify="space-around" className="saveRow">
