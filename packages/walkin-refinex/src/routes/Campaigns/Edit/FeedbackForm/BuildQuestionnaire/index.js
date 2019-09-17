@@ -56,19 +56,20 @@ class Questionnaire extends Component {
   };
 
   onLinkChoiceToQuestion = (questionId, choiceId) => {
-    this.setState({ isChoiceLoading: true })
+    this.setState({ isChoiceLoading: true, isQuestionLoading: true })
     console.log("choiceId,QuestionId", choiceId, questionId)
     this.props.linkChoieToQuestion({
       variables: {
         choiceId: choiceId,
         questionId: questionId
       }
-    }).then(data => {
+    }).then(async data => {
       this.success("Choice successfully linked to question ")
-      this.setState({ isChoiceLoading: false })
+      await this.props.refetchQuestionnaire();
+      this.setState({ isChoiceLoading: false, isQuestionLoading: false })
     }).catch(err => {
       this.error("Some error occured while linking! Please try again")
-      this.setState({ isChoiceLoading: false })
+      this.setState({ isChoiceLoading: false, isQuestionLoading: false })
     })
   }
 
