@@ -1,18 +1,21 @@
 import React, { Component, Fragment } from "react";
 import { withRouter } from "react-router-dom";
-import BasicInfo from "./campaignCreation/basicInfo";
-import Audience from "./campaignCreation/audience";
-import Offer from "./campaignCreation/offer";
-import Communication from "./campaignCreation/communication";
+import BasicInfo from "./basicInfo";
+import Audience from "./audience";
+import Offer from "./offer";
+import Communication from "./communication";
 import { campaignOverview as Overview } from "@walkinsole/walkin-components";
-import { allSegments, attributes, GET_AUDIENCE, CREATE_AUDIENCE, CREATE_RULE } from "../../query/audience";
-import { getOffers, ADD_OFFER_TO_CAMPAIGN } from "../../query/offer";
+import { allSegments, attributes, GET_AUDIENCE, CREATE_AUDIENCE, CREATE_RULE } from "../../../query/audience";
+import { getOffers, ADD_OFFER_TO_CAMPAIGN } from "../../../query/offer";
 import { withApollo, graphql, compose } from 'react-apollo';
 import { GET_ALL_APPS_OF_ORGANIZATION } from "@walkinsole/walkin-components/src/PlatformQueries";
 import { Col, Row, message } from 'antd';
 import jwt from "jsonwebtoken";
+import '../styles.css'
+import { CustomScrollbars } from "@walkinsole/walkin-components";
+import ContainerHeader from "@walkinsole/walkin-refinex/src/routes/Campaigns/CampaignHeader";
 import { CampaignFooter, CampaignHeader, Stepper } from '@walkinsole/walkin-components';
-import { CREATE_CAMPAIGN, UPDATE_CAMPAIGN, CREATE_MESSAGE_TEMPLETE, CREATE_COMMUNICATION, LAUNCH_CAMPAIGN } from '../../query/campaign';
+import { CREATE_CAMPAIGN, UPDATE_CAMPAIGN, CREATE_MESSAGE_TEMPLETE, CREATE_COMMUNICATION, LAUNCH_CAMPAIGN } from '../../../query/campaign';
 
 const stepData = [{
 	id: 1,
@@ -106,19 +109,19 @@ class CampaignCreation extends Component {
 		console.log(current);
 		let current1 = this.state.current
 
-		if (current1 == 0) {
-			this.createOrUpdateBasicCampaign(current)
-		} else if (current1 == 1) {
-			this.createAudience(current)
-			this.ruleQuery(current)
-		} else if (current1 == 2) {
-			this.linkOffer(current)
-		} else if (current1 == 3) {
-			this.createComm(current)
-		} else if (e && e.target.innerText === 'Launch') {
-			this.launchCampaign()
-		} else
-			this.setState({ current });
+		// if (current1 == 0) {
+		// 	this.createOrUpdateBasicCampaign(current)
+		// } else if (current1 == 1) {
+		// 	this.createAudience(current)
+		// 	this.ruleQuery(current)
+		// } else if (current1 == 2) {
+		// 	this.linkOffer(current)
+		// } else if (current1 == 3) {
+		// 	this.createComm(current)
+		// } else if (e && e.target.innerText === 'Launch') {
+		// 	this.launchCampaign()
+		// } else
+		this.setState({ current });
 
 	}
 
@@ -420,12 +423,12 @@ class CampaignCreation extends Component {
 				<CampaignHeader
 					children={
 						<Fragment>
-							<Col span={12}>
+							<Col sm={5} md={8} lg={10} xl={12} xxl={15}>
 								<h3 className="gx-text-grey paddingLeftStyle campaignHeaderTitleStyle">
 									Create Campaign
 								</h3>
 							</Col>
-							<Col style={{ display: 'flex', justifyContent: 'flexEnd' }} span={12}>
+							<Col sm={19} md={16} lg={14} xl={12} xxl={9}>
 								<Stepper
 									stepData={stepData}
 									current={current}
@@ -435,89 +438,92 @@ class CampaignCreation extends Component {
 						</Fragment>
 					}
 				/>
-				<div style={{ margin: '40px', height: '65vh' }}>
-					{current === 0 && (
-						<BasicInfo
-							subTitle="Basic information"
-							onFormNext={this.onFormNext}
-							saveFormRef={this.saveFormRef}
-							formValues={formValues}
-							priorityChosen={this.state.priorityChosen}
-							testAndControlText="Test & Control"
-							promptText="prompt text"
-							toolTipText="what is test and control?"
-							prioritySelectionTitle="Campaign Priority"
-							priorityButtonText="Custom no"
-							testControlTitle="Test & Control"
-							testControlPercentage={testControlSelected ? testControlSelected : `${testValue}% - ${controlValue}%`}
-							handleButtonGroupChange={this.handleButtonGroupChange}
-							testControlPercentageEditText="Edit"
-							priorityNumberInvalidErrorMessage="Enter a value between 1 and 99"
-							onTestAndControlEdit={this.onTestAndControlEdit}
-							showTestAndControl={showTestAndControl}
-							popupTitle="Test & Control"
-							handleOk={this.handleOk}
-							handleCancel={this.handleCancel}
-							applyTestControlChange={this.applyTestControlChange}
-							popupbodyText="Divide customers selected for a specific audience into local test and local control groups"
-							controlValue={controlValue}
-							testValue={testValue}
-							maxValueAllowed={75}
-							onTestValueChange={this.onTestValueChange}
-							onControlValueChange={this.onControlValueChange}
-							popupButtonText="apply"
-						/>
-					)}
-					{current === 1 && (
-						<Audience
-							audienceTitle="Audience"
-							segmentSubTitle="Segment"
-							onValuesSelected={this.onValuesSelected}
-							selectedSegments={this.state.selectedSegments}
-							segmentSelectionData={this.props.segmentList.segments}
-							// uploadCsvText="Upload CSV"
-							uploadProps={props}
-							ruleQuery={this.state.ruleQuery}
-							segmentFilterText="Filter"
-							segmentFilterSubText="Campaign applies to :"
-							attributeData={attributeData}
-							logQuery={this.logQuery}
-						/>
-					)}
-					{current === 2 &&
-						<Offer onFormNext={this.onFormNext}
-							offersList={this.props.allOffers.getOffers}
-							errors={this.state.errors}
-							offer={this.state.offer}
-							handleOnOfferChange={this.handleOnOfferChange}
-							subTitle="Offer" />}
-					{current === 3 && (
-						<Communication
-							subTitle="Communication"
-							schedule={[]}
-							saveSchedule={this.saveSchedule}
-							scheduleSaveMark={this.state.scheduleSaveMark}
-							onChange={this.onCommunicationChange}
-							communicationData={communicationData}
-							defaultValue={communicationSelected}
-							value={communicationSelected}
-							OnCommunicationFormNext={this.onFormNext}
-							commWrappedComponentRef={this.saveSmsFormRef}
-							communicationFormValues={this.state.smsForm}
-							emailFormRef={this.saveEmailFormRef}
-							emailFormData={this.state.emailForm}
-							pushFormRef={this.savePushFormRef}
-							pushFormData={this.state.pushForm}
-						/>
-					)}
-					{current === 4 &&
-						<Overview
-							campaign={this.state.formValues}
-							audience={this.state.audience}
-							offer={this.state.offerData}
-							communication={this.state.communication.messageTemplate ?
-								this.state.communication.messageTemplate.templateSubjectText : ''}
-						/>}
+				<div className="stepperContainer">
+					<div style={{ margin: '40px', height: '65vh' }}>
+						{current === 0 && (
+							<BasicInfo
+								subTitle="Basic information"
+								onFormNext={this.onFormNext}
+								saveFormRef={this.saveFormRef}
+								formValues={formValues}
+								priorityChosen={this.state.priorityChosen}
+								testAndControlText="Test & Control"
+								promptText="prompt text"
+								toolTipText="what is test and control?"
+								prioritySelectionTitle="Campaign Priority"
+								priorityButtonText="Custom no"
+								testControlTitle="Test & Control"
+								testControlPercentage={testControlSelected ? testControlSelected : `${testValue}% - ${controlValue}%`}
+								handleButtonGroupChange={this.handleButtonGroupChange}
+								testControlPercentageEditText="Edit"
+								priorityNumberInvalidErrorMessage="Enter a value between 1 and 99"
+								onTestAndControlEdit={this.onTestAndControlEdit}
+								showTestAndControl={showTestAndControl}
+								popupTitle="Test & Control"
+								handleOk={this.handleOk}
+								handleCancel={this.handleCancel}
+								applyTestControlChange={this.applyTestControlChange}
+								popupbodyText="Divide customers selected for a specific audience into local test and local control groups"
+								controlValue={controlValue}
+								testValue={testValue}
+								maxValueAllowed={75}
+								onTestValueChange={this.onTestValueChange}
+								onControlValueChange={this.onControlValueChange}
+								popupButtonText="apply"
+							/>
+						)}
+						{current === 1 && <div style={{ marginBottom: 200 }}>
+							<Audience
+								audienceTitle="Audience"
+								segmentSubTitle="Segment"
+								onValuesSelected={this.onValuesSelected}
+								selectedSegments={this.state.selectedSegments}
+								segmentSelectionData={this.props.segmentList.segments}
+								// uploadCsvText="Upload CSV"
+								uploadProps={props}
+								ruleQuery={this.state.ruleQuery}
+								segmentFilterText="Filter"
+								segmentFilterSubText="Campaign applies to :"
+								attributeData={attributeData}
+								logQuery={this.logQuery}
+							/>
+						</div>
+						}
+						{current === 2 &&
+							<Offer onFormNext={this.onFormNext}
+								offersList={this.props.allOffers.getOffers}
+								errors={this.state.errors}
+								offer={this.state.offer}
+								handleOnOfferChange={this.handleOnOfferChange}
+								subTitle="Offer" />}
+						{current === 3 && (
+							<Communication
+								subTitle="Communication"
+								schedule={[]}
+								saveSchedule={this.saveSchedule}
+								scheduleSaveMark={this.state.scheduleSaveMark}
+								onChange={this.onCommunicationChange}
+								communicationData={communicationData}
+								defaultValue={communicationSelected}
+								value={communicationSelected}
+								OnCommunicationFormNext={this.onFormNext}
+								commWrappedComponentRef={this.saveSmsFormRef}
+								communicationFormValues={this.state.smsForm}
+								emailFormRef={this.saveEmailFormRef}
+								emailFormData={this.state.emailForm}
+								pushFormRef={this.savePushFormRef}
+								pushFormData={this.state.pushForm}
+							/>
+						)}
+						{current === 4 &&
+							<Overview
+								campaign={this.state.formValues}
+								audience={this.state.audience}
+								offer={this.state.offerData}
+								communication={this.state.communication.messageTemplate ?
+									this.state.communication.messageTemplate.templateSubjectText : ''}
+							/>}
+					</div>
 				</div>
 				<div style={{ margin: '32px' }}>
 					<CampaignFooter
@@ -528,7 +534,7 @@ class CampaignCreation extends Component {
 						goToPage2={this.goToNextPage.bind(this, current + 1)}
 					/>
 				</div>
-			</div>
+			</div >
 		);
 	}
 }
