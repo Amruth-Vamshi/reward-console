@@ -86,6 +86,7 @@ class EditCampaign extends Component {
   }
 
   componentDidMount(){
+    console.log("component mounted...")
     const {location}= this.props;
     if (location && location.state) {
       if(location.state.current){

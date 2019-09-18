@@ -122,6 +122,8 @@ const GET_SETTINGS = gql`
   }
 `;
 
+
+
 export default compose(
   withRouter,
   graphql(GET_SETTINGS, {

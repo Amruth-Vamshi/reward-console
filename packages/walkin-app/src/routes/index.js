@@ -1,7 +1,7 @@
 import React, { Suspense, lazy } from 'react';
 import { Route, Switch } from 'react-router-dom';
 
-import { asyncComponent } from '@walkinsole/walkin-components';
+
 import ErrorPage from './errorPages/404';
 import Home from './Home'
 
