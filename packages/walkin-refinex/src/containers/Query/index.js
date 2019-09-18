@@ -24,6 +24,13 @@ export const disableSegment = gql`
   }
 `;
 
+export const CREATE_APP = gql`
+mutation createApplication($organizationId:ID!,$input:ApplicationInput!) {
+  createApplication(organizationId:$organizationId  input: $input){
+    id  name platform organization{ id name }
+  }
+}`
+
 export const createSegment = gql`
   mutation createSegment(
     $name: String!

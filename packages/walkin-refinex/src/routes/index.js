@@ -4,7 +4,7 @@ import { asyncComponent } from "@walkinsole/walkin-components";
 import SegmentList from '../containers/segment/segmentList';
 import NewSegment from '../containers/segment/newSegment';
 import { NEW_SEGMENT, SEGMENT_LIST } from "../Utils"
-
+import RefineXApps from "../containers/App"
 const RefineXRoutes = ({ match }) => {
   return (
     <div>
@@ -26,6 +26,7 @@ const RefineXRoutes = ({ match }) => {
           path={`${match.url}/segment/newSegment`}
           component={NewSegment}
         />
+        <Route path={`${match.url}/apps`} component={RefineXApps} />
       </Switch>
     </div>
   );
