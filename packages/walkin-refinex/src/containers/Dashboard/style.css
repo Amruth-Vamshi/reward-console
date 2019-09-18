@@ -87,3 +87,11 @@
     margin-top: 5px;
     color: rgb(3, 0, 173);
 }
+.ant-table-fixed {
+    table-layout: fixed;
+  }
+
+  .ant-table-tbody > tr > td {
+    word-wrap: break-word;
+    word-break: break-all;
+  }
