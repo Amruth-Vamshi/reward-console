@@ -17,7 +17,8 @@ export default function ShowQuestion({
   submitChoice,
   isChoiceLoading,
   questionnaire,
-  onLinkChoiceToQuestion
+  onLinkChoiceToQuestion,
+  showButton
 }) {
   console.log(
     "new question addition",
@@ -36,6 +37,7 @@ export default function ShowQuestion({
       <Col span={22}>
         <Col span={24}>
           <QuestionForm
+            showButton={showButton}
             onQuestionEdited={onQuestionEdited}
             onQuestionSubmitted={onQuestionSubmitted}
             questionToEdit={questionToEdit}

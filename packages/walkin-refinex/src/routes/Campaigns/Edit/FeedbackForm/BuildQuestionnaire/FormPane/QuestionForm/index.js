@@ -11,7 +11,9 @@ import {
   Row,
   Col,
   Popconfirm,
-  message
+  message,
+  Tooltip,
+  Icon
 } from "antd";
 import { QUESTION_TYPES } from "../../../../../../../containers/Query";
 
@@ -26,7 +28,8 @@ class QuestionForm extends Component {
     this.state = {
       popUpVisible: false,
       newTypeValue: null,
-      validationStatus: "success"
+      validationStatus: "success",
+      showButton: false
     };
   }
 
@@ -132,6 +135,16 @@ class QuestionForm extends Component {
     const { questionToEdit, form, style } = this.props;
     const { getFieldDecorator } = form;
     const { Item } = Form;
+    let props = {}
+    if (this.props.showButton) {
+      props = {
+        suffix: (<Tooltip title="Submit">
+          <Icon type="info-circle" style={{ color: 'rgba(0,0,0,.45)' }} />
+        </Tooltip>)
+
+      }
+    }
+
     return (
       <ErrorBoundary>
         <Row style={style}>
@@ -148,7 +161,7 @@ class QuestionForm extends Component {
                       required: true
                     }
                   ]
-                })(<Input />)}
+                })(<Input {...props} />)}
               </Item>
               {/* <Popconfirm
                 title="Changin question type will delete the existing choices, continue?"
@@ -180,8 +193,8 @@ class QuestionForm extends Component {
                   QUESTION_WITH_SLIDER[this.props.questionToEdit.type]
                     ? {}
                     : {
-                        display: "none"
-                      }
+                      display: "none"
+                    }
                 }
               >
                 {getFieldDecorator("range", {
@@ -197,7 +210,7 @@ class QuestionForm extends Component {
             </Form>
           </Col>
         </Row>
-      </ErrorBoundary>
+      </ErrorBoundary >
     );
   }
 }
