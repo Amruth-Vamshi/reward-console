@@ -233,12 +233,12 @@ class FormHeader extends Component {
                     onChange={this.onChangeMandatory}
                   />
                 </Item>
-                <Item label="Branch Logic">
+                {/* <Item label="Branch Logic">
                   <Switch
                     defaultChecked={true}
                     onChange={this.onChangeBranchLogic}
                   />
-                </Item>
+                </Item> */}
               </Item>
 
 

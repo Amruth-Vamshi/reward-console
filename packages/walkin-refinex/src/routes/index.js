@@ -1,7 +1,6 @@
 import React from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { asyncComponent } from "@walkinsole/walkin-components";
-import SegmentList from '../containers/segment/segmentList';
 import NewSegment from '../containers/segment/newSegment';
 import { NEW_SEGMENT, SEGMENT_LIST } from "../Utils"
 import RefineXApps from "../containers/App"
@@ -20,13 +19,13 @@ const RefineXRoutes = ({ match }) => {
         />
         <Route
           path={`${match.url}/segment/segmentList`}
-          component={SegmentList}
+          component={asyncComponent(() => import('../containers/segment/segmentList'))}
         />
         <Route
           path={`${match.url}/segment/newSegment`}
-          component={NewSegment}
+          component={asyncComponent(() => import('../containers/segment/newSegment'))}
         />
-        <Route path={`${match.url}/apps`} component={RefineXApps} />
+        <Route path={`${match.url}/apps`} component={asyncComponent(() => import("../containers/App"))} />
       </Switch>
     </div>
   );

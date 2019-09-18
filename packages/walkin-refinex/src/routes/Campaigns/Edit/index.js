@@ -618,7 +618,7 @@ class EditCampaign extends Component {
         );
       default:
         return <CustomScrollbars> <Overview campaign={this.props.campaign.campaign} 
-        communication={this.props.allCommunications.communications.length >0 ?
+        communication={this.props.allCommunications.communications && this.props.allCommunications.communications.length >0 ?
           this.props.allCommunications.communications[0].messageTemplate.messageFormat : this.state.communicationSelected}/></CustomScrollbars>
     }
 
