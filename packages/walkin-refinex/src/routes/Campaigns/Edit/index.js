@@ -237,7 +237,7 @@ class EditCampaign extends Component {
       campaign_id:this.props.campaign.campaign.id,
      segment_id:segmentId,
      organization_id:jwt.decode(localStorage.getItem("jwt")).org_id,
-     application_id:"42c8506c-4185-4fc3-aa99-55f68080f71c",
+     application_id:this.props.campaign.campaign.application.id,
      status:"ACTIVE"
     };
     this.props.audience({

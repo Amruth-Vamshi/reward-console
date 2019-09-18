@@ -354,6 +354,11 @@ export const GET_CAMPAIGN = gql`
         status
         ruleConfiguration
       }
+      application{
+        id
+        name
+        
+      }
       audienceFilterRule{
         id
         name
