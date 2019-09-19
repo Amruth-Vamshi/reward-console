@@ -109,19 +109,19 @@ class CampaignCreation extends Component {
 		console.log(current);
 		let current1 = this.state.current
 
-		if (current1 == 0)
+		if (current1 == 0) {
 			this.createOrUpdateBasicCampaign(current)
-		// } else if (current1 == 1) {
-		// 	this.createAudience(current)
-		// 	this.ruleQuery(current)
-		// } else if (current1 == 2) {
-		// 	this.linkOffer(current)
-		// } else if (current1 == 3) {
-		// 	this.createComm(current)
-		// } else if (e && e.target.innerText === 'Launch') {
-		// 	this.launchCampaign()
-		// } else
-		this.setState({ current });
+		} else if (current1 == 1) {
+			this.createAudience(current)
+			this.ruleQuery(current)
+		} else if (current1 == 2) {
+			this.linkOffer(current)
+		} else if (current1 == 3) {
+			this.createComm(current)
+		} else if (e && e.target.innerText === 'Launch') {
+			this.launchCampaign()
+		} else
+			this.setState({ current });
 
 	}
 
@@ -164,7 +164,7 @@ class CampaignCreation extends Component {
 	}
 
 	createCommunicationMutation = (current, values) => {
-		let { communicationSelected } = this.state;
+		let { communicationSelected, scheduleData, scheduleSaveMark } = this.state;
 		console.log('COMM', communicationSelected, values);
 		var input = {
 			name: this.state.campaign.name,
@@ -184,13 +184,19 @@ class CampaignCreation extends Component {
 				entityId: this.state.campaign.id, // campainId
 				entityType: "Campaign",
 				messageTemplateId: data.data.createMessageTemplate.id,
-				isScheduled: true,
-				isRepeatable: false,
+				isScheduled: scheduleSaveMark,
+				isRepeatable: scheduleSaveMark,
 				organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
 				status: "ACTIVE",
 				firstScheduleDateTime: this.state.campaign.startTime,
 				commsChannelName: "Test"
 			};
+			if (scheduleSaveMark) {
+				let repeatRuleConf = { frequency: scheduleData.repeatType, time: scheduleData.time }
+				frequency == "WEEKLY" ? repeatRuleConf.byWeekDay = scheduleData.days : ''
+				scheduleData.hasOwnProperty('endTime') ? repeatRuleConf.endAfter = scheduleData.endTime : ''
+				input.repeatRuleConfiguration = repeatRuleConf
+			}
 			this.props.createCommunication({
 				variables: { input: input }
 			}).then(data => {
@@ -293,7 +299,7 @@ class CampaignCreation extends Component {
 				if (err) return
 				else {
 					console.log('values', values);
-					// !this.state.campaignCreated ? this.createCampaign(values, current) : this.updateBasicCampaign(values, current);
+					!this.state.campaignCreated ? this.createCampaign(values, current) : this.updateBasicCampaign(values, current);
 					this.setState({ formValues: values });
 				}
 			});
@@ -304,6 +310,8 @@ class CampaignCreation extends Component {
 		const { client } = this.props;
 		const { priorityChosen, controlValue } = this.state;
 		const { allApplications: { organization } } = this.props;
+
+		console.log(organization.applications);
 		const input = {
 			...values,
 			priority: parseInt(priorityChosen),
@@ -398,9 +406,10 @@ class CampaignCreation extends Component {
 		this.setState({ audienceFilterRule, ruleQuery });
 	};
 
-	saveSchedule = e => {
+	saveSchedule = ScheduleData => {
+		console.log(ScheduleData);
 		message.success('schedule saved')
-		this.setState({ scheduleSaveMark: true })
+		this.setState({ ScheduleData, scheduleSaveMark: true })
 	}
 
 	render() {
