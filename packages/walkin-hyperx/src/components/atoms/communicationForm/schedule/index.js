@@ -84,7 +84,7 @@ class Schedule extends React.Component {
                 ScheduleData.days = days
             }
             end == "afterOccurrences" ? ScheduleData.noOfOcc = noOfOcc : ScheduleData.endTime = this.props.campaign.endTime
-            this.props.saveSchedule(this.state)
+            this.props.saveSchedule(ScheduleData)
         }
     }
 

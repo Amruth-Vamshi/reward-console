@@ -61,6 +61,7 @@ class CampaignCreation extends Component {
 			communicationSelected: 'SMS',
 			errors: {},
 			loading: false,
+			noOfferRequired: false,
 			offer: '',
 			scheduleData: {},
 			smsForm: {},
@@ -109,19 +110,19 @@ class CampaignCreation extends Component {
 		console.log(current);
 		let current1 = this.state.current
 
-		// if (current1 == 0) {
-		// 	this.createOrUpdateBasicCampaign(current)
-		// } else if (current1 == 1) {
-		// 	this.createAudience(current)
-		// 	this.ruleQuery(current)
-		// } else if (current1 == 2) {
-		// 	this.linkOffer(current)
-		// } else if (current1 == 3) {
-		// 	this.createComm(current)
-		// } else if (e && e.target.innerText === 'Launch') {
-		// 	this.launchCampaign()
-		// } else
-		this.setState({ current });
+		if (current1 == 0) {
+			this.createOrUpdateBasicCampaign(current)
+		} else if (current1 == 1) {
+			this.createAudience(current)
+			this.ruleQuery(current)
+		} else if (current1 == 2) {
+			this.linkOffer(current)
+		} else if (current1 == 3) {
+			this.createComm(current)
+		} else if (e && e.target.innerText === 'Launch') {
+			this.launchCampaign()
+		} else
+			this.setState({ current });
 
 	}
 
@@ -192,11 +193,13 @@ class CampaignCreation extends Component {
 				commsChannelName: "Test"
 			};
 			if (scheduleSaveMark) {
+				console.log(this.state.scheduleData);
 				let repeatRuleConf = { frequency: scheduleData.repeatType, time: scheduleData.time }
-				frequency == "WEEKLY" ? repeatRuleConf.byWeekDay = scheduleData.days : ''
+				scheduleData.repeatType == "WEEKLY" ? repeatRuleConf.byWeekDay = scheduleData.days : ''
 				scheduleData.hasOwnProperty('endTime') ? repeatRuleConf.endAfter = scheduleData.endTime : ''
 				input.repeatRuleConfiguration = repeatRuleConf
 			}
+			console.log(input);
 			this.props.createCommunication({
 				variables: { input: input }
 			}).then(data => {
@@ -213,7 +216,8 @@ class CampaignCreation extends Component {
 	};
 
 	linkOffer = current => {
-		if (this.state.offer != "" && !this.state.offerCreated) {
+		if (this.state.noOfferRequired) this.setState({ current })
+		else if (this.state.offer != "" && !this.state.offerCreated) {
 			this.setState({ loading: true })
 			let { allApplications: { organization } } = this.props;
 			var input = {
@@ -388,6 +392,8 @@ class CampaignCreation extends Component {
 		this.setState({ communicationSelected: e.target.value });
 	};
 
+	noOfferRequired = e => this.setState({ noOfferRequired: e })
+
 	handleOnOfferChange = e => {
 		this.setState({ offer: e });
 	};
@@ -406,10 +412,10 @@ class CampaignCreation extends Component {
 		this.setState({ audienceFilterRule, ruleQuery });
 	};
 
-	saveSchedule = ScheduleData => {
-		console.log(ScheduleData);
+	saveSchedule = scheduleData => {
+		console.log(scheduleData);
 		message.success('schedule saved')
-		this.setState({ ScheduleData, scheduleSaveMark: true })
+		this.setState({ scheduleData, scheduleSaveMark: true })
 	}
 
 	render() {
@@ -504,6 +510,7 @@ class CampaignCreation extends Component {
 								offersList={this.props.allOffers.getOffers}
 								errors={this.state.errors}
 								offer={this.state.offer}
+								noOfferRequired={this.noOfferRequired}
 								handleOnOfferChange={this.handleOnOfferChange}
 								subTitle="Offer" />}
 						{current === 3 && (

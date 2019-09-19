@@ -20,6 +20,7 @@ export default class Offers extends Component {
 		}
 	}
 	onChange = e => {
+		this.props.noOfferRequired(e.target.checked)
 		this.setState({ check: e.target.checked })
 	}
 	render() {
