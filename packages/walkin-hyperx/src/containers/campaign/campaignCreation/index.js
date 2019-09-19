@@ -427,6 +427,7 @@ class CampaignCreation extends Component {
 				authorization: 'authorization-text',
 			},
 		};
+		console.log(this.props)
 		return (
 			<div style={{ margin: '-32px' }}>
 				<CampaignHeader

@@ -6,7 +6,7 @@ import resolvers from "../resolvers";
 import ApolloClient from "apollo-boost";
 import defaults from "../defaults";
 import { message } from "antd";
-import env from "@walkinsole/walkin-components/src/constants/config";
+import env from "../../../config";
 import { async } from "q";
 
 export const configureClient = async () => {

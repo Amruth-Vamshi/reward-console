@@ -8,7 +8,7 @@ import {
 } from "@walkinsole/walkin-core/src/PlatformQueries";
 import jwt from "jsonwebtoken";
 import { withApollo } from "react-apollo";
-import conf from '@walkinsole/walkin-components/src/constants/config'
+import conf from 'walkin-app/config'
 // import { nearXClient as client } from "../../nearXApollo";
 const { TextArea } = Input;
 
