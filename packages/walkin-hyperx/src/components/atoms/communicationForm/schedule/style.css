@@ -37,7 +37,8 @@
 }
 
 .scheduleCard .scheduleEnd{
-    width: 200px
+    width: 150px;
+    margin-right: 5px
 }
 
 .scheduleCard .scheduleType{
@@ -46,4 +47,8 @@
 
 .scheduleCard .scheduleTime{
     width: 200px
+}
+
+.scheduleCard .ant-form-item{
+ margin-bottom: 20px
 }

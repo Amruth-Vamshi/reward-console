@@ -16,13 +16,15 @@ const formItemLayout = {
         md: { span: 24 },
         lg: { span: 24 },
         xl: { span: 7 }
+        // xl: { span: 7 }
     },
     wrapperCol: {
         xs: { span: 24 },
         sm: { span: 17 },
         md: { span: 24 },
         lg: { span: 24 },
-        xl: { span: 17 }
+        xl: { span: 17 },
+        // xl: { span: 17 }
     }
 };
 
@@ -133,6 +135,7 @@ class Schedule extends React.Component {
                                 <Option value="onEndDate">On End Date</Option>
                                 <Option value="afterOccurrences">After Occurrences</Option>
                             </Select>
+                            <Input type='number' maxLength={10} style={{ width: 60 }} />
                             <span style={{ color: 'Red' }}>{this.state.errors.end}</span>
                         </Form.Item>
 
