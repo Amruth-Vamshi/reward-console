@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import './style.css'
-import { Card, Row, Col, Button, TimePicker, DatePicker, Input, Icon, Select, Form } from "antd";
+import { Card, Row, Col, Button, TimePicker, DatePicker, InputNumber, Input, Icon, Select, Form } from "antd";
+import moment from "moment";
 
 // const formItemLayout = {
 //     labelCol: { span: 6 },
@@ -38,7 +39,8 @@ class Schedule extends React.Component {
             repeatType: "daily",
             time: '',
             repeatOn: [false, false, false, false, false, false, false],
-            end: "onEndDate"
+            end: "onEndDate",
+            noOfOcc: 10
         };
     }
 
@@ -82,11 +84,17 @@ class Schedule extends React.Component {
         this.setState({ repeatType: e })
     }
     render() {
+        let { campaign } = this.props
+        // var start = moment(campaign.startTime).format("DD-MM-YYYY HH:mm:ss");
+        // var end = moment(campaign.endTime).format("DD-MM-YYYY HH:mm:ss");
 
         return (
             <div>
                 <Card className="scheduleCard">
                     <Row><p style={{ fontSize: 18 }}>Schedule</p></Row>
+                    {this.props.campaign &&
+                        <p className="campDate"> Campaign Date: &nbsp;  <b>{moment(campaign.startTime).format("DD MMM YY HH:mm") + ' - ' +
+                            moment(campaign.endTime).format("DD MMM YY HH:mm")} </b></p>}
 
                     <Form ref={this.props.wrappedComponentRef} onSubmit={this.props.submit}>
                         <Form.Item label="Repeat Every" {...formItemLayout}>
@@ -135,7 +143,8 @@ class Schedule extends React.Component {
                                 <Option value="onEndDate">On End Date</Option>
                                 <Option value="afterOccurrences">After Occurrences</Option>
                             </Select>
-                            <Input type='number' maxLength={10} style={{ width: 60 }} />
+                            {this.state.end == "afterOccurrences" &&
+                                <InputNumber max={1000} value={this.state.noOfOcc} style={{ width: 70 }} />}
                             <span style={{ color: 'Red' }}>{this.state.errors.end}</span>
                         </Form.Item>
 

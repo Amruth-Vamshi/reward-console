@@ -52,3 +52,6 @@
 .scheduleCard .ant-form-item{
  margin-bottom: 20px
 }
+.scheduleCard .campDate{
+    margin: 0 0 15px 10px
+}

@@ -109,8 +109,8 @@ class CampaignCreation extends Component {
 		console.log(current);
 		let current1 = this.state.current
 
-		// if (current1 == 0) {
-		// 	this.createOrUpdateBasicCampaign(current)
+		if (current1 == 0)
+			this.createOrUpdateBasicCampaign(current)
 		// } else if (current1 == 1) {
 		// 	this.createAudience(current)
 		// 	this.ruleQuery(current)
@@ -293,7 +293,7 @@ class CampaignCreation extends Component {
 				if (err) return
 				else {
 					console.log('values', values);
-					!this.state.campaignCreated ? this.createCampaign(values, current) : this.updateBasicCampaign(values, current);
+					// !this.state.campaignCreated ? this.createCampaign(values, current) : this.updateBasicCampaign(values, current);
 					this.setState({ formValues: values });
 				}
 			});
@@ -500,6 +500,7 @@ class CampaignCreation extends Component {
 							<Communication
 								subTitle="Communication"
 								schedule={[]}
+								campaign={this.state.formValues}
 								saveSchedule={this.saveSchedule}
 								scheduleSaveMark={this.state.scheduleSaveMark}
 								onChange={this.onCommunicationChange}
