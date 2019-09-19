@@ -376,14 +376,22 @@ class EditCampaign extends Component {
             // repeatRuleId: "",
             commsChannelName: "Test"
           };
-          this.props
+       const createdCommunication=  await this.props
             .communication({
               variables: {
                 input: input
               }
-            }).then(data =>{
-              console.log("Communication data..", data)
             })
+            console.log("createCommunication",createdCommunication)
+            const cummunicationCreationInput={
+              communication_id:createdCommunication.createCommunication.id
+            }
+          this.props.updateCampaign({
+            variables: {
+              id: this.props.campaign.campaign.id,
+              input: cummunicationCreationInput
+            }
+          })
            
         }).catch(err => {
           console.log("Error creating for message template", err);
@@ -788,7 +796,18 @@ export default compose(
     name: "updateCampaign"
   }),
   graphql(attributes, {
-    name: "allAttributes"
+    name: "allAttributes",
+    options:props=>{
+      const input= {
+        status: "ACTIVE", 
+      organizationId: "577bddb7-17df-4884-b16f-8b5db5b00b95"
+      }
+     const a= {
+       variables:{
+        input:input
+      }}
+      return a;
+    }
   }),
   graphql(createCommunication, {
     name: "communication"

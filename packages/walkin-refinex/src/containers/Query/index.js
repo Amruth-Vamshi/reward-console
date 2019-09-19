@@ -265,8 +265,8 @@ mutation updateAudiencesWithCampaignId($campaignId:ID, $segments:[ID]!){
 }`;
 
 export const attributes = gql`
-  query ruleAttributes {
-    ruleAttributes {
+  query ruleAttributes($input:SearchRuleAttributeInput!) {
+    ruleAttributes(input:$input) {
       id
       attributeName
       description
