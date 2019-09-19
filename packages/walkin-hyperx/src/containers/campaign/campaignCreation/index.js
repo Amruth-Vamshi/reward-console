@@ -109,19 +109,19 @@ class CampaignCreation extends Component {
 		console.log(current);
 		let current1 = this.state.current
 
-		if (current1 == 0) {
-			this.createOrUpdateBasicCampaign(current)
-		} else if (current1 == 1) {
-			this.createAudience(current)
-			this.ruleQuery(current)
-		} else if (current1 == 2) {
-			this.linkOffer(current)
-		} else if (current1 == 3) {
-			this.createComm(current)
-		} else if (e && e.target.innerText === 'Launch') {
-			this.launchCampaign()
-		} else
-			this.setState({ current });
+		// if (current1 == 0) {
+		// 	this.createOrUpdateBasicCampaign(current)
+		// } else if (current1 == 1) {
+		// 	this.createAudience(current)
+		// 	this.ruleQuery(current)
+		// } else if (current1 == 2) {
+		// 	this.linkOffer(current)
+		// } else if (current1 == 3) {
+		// 	this.createComm(current)
+		// } else if (e && e.target.innerText === 'Launch') {
+		// 	this.launchCampaign()
+		// } else
+		this.setState({ current });
 
 	}
 
