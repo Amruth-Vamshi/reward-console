@@ -128,160 +128,20 @@ class Landing extends Component {
 
 
   render() {
-    const data = [
-      {
-        id: '972f009e-d57a-11e9-b4d6-026466bd12fc',
-        customer_feedback_id: 123456789009876543,
-        producer_event_id: '10391990',
-        created: "September 13, 2019, 3:34 AM",
-        created_by: "defaultuser",
-        last_updated: "September 13, 2019, 3:34 AM",
-        last_updated_by: "September 13, 2019, 3:34 AM",
-        producer_event_time: "defaultuser",
-        event_arrival_time: "September 11, 2019, 5:56 AM",
-        source: "REFINEX_CCD",
-        event_type: "REFINEX_RESPONSE",
-        campaign_id: 1,
-        feedback_form_id: 1,
-        feedback_category_id: "",
-        question_id: 79,
-        response_id: 6189,
-        user_response: "Good",
-        choiceIds: [],
-        customerId: 1,
-        application_id: "73713ef2-b987-4d92-885a-69ca20a4af69",
-        organization_id: "298cf4bd-bf0a-4627-875b-7dbe2dd599e2",
-        campaign_priority: "0",
-        is_campaign_control_enabled: "False",
-        campaign_control_percent: 0,
-        is_global_control_enabled: 1,
-        operation: "CREATED",
-        completed: "True"
-      },
-      {
-        id: '2',
-        customer_feedback_id: 1,
-        producer_event_id: 1,
-        created: "September 13, 2019, 3:34 AM",
-        created_by: "defaultuser",
-        last_updated: "September 13, 2019, 3:34 AM",
-        last_updated_by: "September 13, 2019, 3:34 AM",
-        producer_event_time: "defaultuser",
-        event_arrival_time: "September 11, 2019, 5:56 AM",
-        source: "REFINEX_CCD",
-        event_type: "REFINEX_RESPONSE",
-        campaign_id: 1,
-        feedback_form_id: 1,
-        feedback_category_id: "",
-        question_id: 79,
-        response_id: 6189,
-        user_response: "Good",
-        choiceIds: [],
-        customerId: 1,
-        application_id: "73713ef2-b987-4d92-885a-69ca20a4af69",
-        organization_id: "298cf4bd-bf0a-4627-875b-7dbe2dd599e2",
-        campaign_priority: "0",
-        is_campaign_control_enabled: "False",
-        campaign_control_percent: 0,
-        is_global_control_enabled: 1,
-        operation: "CREATED",
-        completed: "True"
-      }, {
-        id: '3',
-        customer_feedback_id: 1,
-        producer_event_id: 1,
-        created: "September 13, 2019, 3:34 AM",
-        created_by: "defaultuser",
-        last_updated: "September 13, 2019, 3:34 AM",
-        last_updated_by: "September 13, 2019, 3:34 AM",
-        producer_event_time: "defaultuser",
-        event_arrival_time: "September 11, 2019, 5:56 AM",
-        source: "REFINEX_CCD",
-        event_type: "REFINEX_RESPONSE",
-        campaign_id: 1,
-        feedback_form_id: 1,
-        feedback_category_id: "",
-        question_id: 79,
-        response_id: 6189,
-        user_response: "Good",
-        choiceIds: [],
-        customerId: 1,
-        application_id: "73713ef2-b987-4d92-885a-69ca20a4af69",
-        organization_id: "298cf4bd-bf0a-4627-875b-7dbe2dd599e2",
-        campaign_priority: "0",
-        is_campaign_control_enabled: "False",
-        campaign_control_percent: 0,
-        is_global_control_enabled: 1,
-        operation: "CREATED",
-        completed: "True"
-      },
-      {
-        id: '4',
-        customer_feedback_id: 1,
-        producer_event_id: 1,
-        created: "September 13, 2019, 3:34 AM",
-        created_by: "defaultuser",
-        last_updated: "September 13, 2019, 3:34 AM",
-        last_updated_by: "September 13, 2019, 3:34 AM",
-        producer_event_time: "defaultuser",
-        event_arrival_time: "September 11, 2019, 5:56 AM",
-        source: "REFINEX_CCD",
-        event_type: "REFINEX_RESPONSE",
-        campaign_id: 1,
-        feedback_form_id: 1,
-        feedback_category_id: "",
-        question_id: 79,
-        response_id: 6189,
-        user_response: "Good",
-        choiceIds: [],
-        customerId: 1,
-        application_id: "73713ef2-b987-4d92-885a-69ca20a4af69",
-        organization_id: "298cf4bd-bf0a-4627-875b-7dbe2dd599e2",
-        campaign_priority: "0",
-        is_campaign_control_enabled: "False",
-        campaign_control_percent: 0,
-        is_global_control_enabled: 1,
-        operation: "CREATED",
-        completed: "True"
-      }, {
-        id: '5',
-        customer_feedback_id: 1,
-        producer_event_id: 1,
-        created: "September 13, 2019, 3:34 AM",
-        created_by: "defaultuser",
-        last_updated: "September 13, 2019, 3:34 AM",
-        last_updated_by: "September 13, 2019, 3:34 AM",
-        producer_event_time: "defaultuser",
-        event_arrival_time: "September 11, 2019, 5:56 AM",
-        source: "REFINEX_CCD",
-        event_type: "REFINEX_RESPONSE",
-        campaign_id: 1,
-        feedback_form_id: 1,
-        feedback_category_id: "",
-        question_id: 79,
-        response_id: 6189,
-        user_response: "Good",
-        choiceIds: [],
-        customerId: 1,
-        application_id: "73713ef2-b987-4d92-885a-69ca20a4af69",
-        organization_id: "298cf4bd-bf0a-4627-875b-7dbe2dd599e2",
-        campaign_priority: "0",
-        is_campaign_control_enabled: "False",
-        campaign_control_percent: 0,
-        is_global_control_enabled: 1,
-        operation: "CREATED",
-        completed: "True"
-      }
-    ]
 
     const columns = [
       {
-        title: 'ID',
+        title: 'REFINEX_EVENT_ID',
         dataIndex: 'id',
         key: 1,
         width: 200,
         fixed: 'left',
-        // render: text => <a>{text}</a>,
+      },
+      {
+        title: 'customer_id',
+        dataIndex: 'customer_id',
+        key: 'customer_id',
+        width: 200
       },
       {
         title: 'customer_feedback_id',
@@ -289,24 +149,24 @@ class Landing extends Component {
         key: 2,
         width: 200,
       },
-      {
-        title: 'producer_event_id',
-        dataIndex: 'producer_event_id',
-        key: 'producer_event_id',
-        width: 200,
-      },
-      {
-        title: 'created',
-        dataIndex: 'created',
-        key: 'created',
-        width: 200,
-      },
-      {
-        title: 'created_by',
-        dataIndex: 'created_by',
-        key: 'created_by',
-        width: 200,
-      },
+      // {
+      //   title: 'producer_event_id',
+      //   dataIndex: 'producer_event_id',
+      //   key: 'producer_event_id',
+      //   width: 200,
+      // },
+      // {
+      //   title: 'created',
+      //   dataIndex: 'created',
+      //   key: 'created',
+      //   width: 200,
+      // },
+      // {
+      //   title: 'created_by',
+      //   dataIndex: 'created_by',
+      //   key: 'created_by',
+      //   width: 200,
+      // },
       {
         title: 'last_updated',
         dataIndex: 'last_updated',
@@ -314,84 +174,78 @@ class Landing extends Component {
         width: 200,
         // fixed: 'left',
       },
-      {
-        title: 'last_updated_by',
-        dataIndex: 'last_updated_by',
-        key: 'last_updated_by',
-        width: 200,
-        // fixed: 'left',
-      },
-      {
-        title: 'producer_event_time',
-        dataIndex: 'producer_event_time',
-        key: 'producer_event_time',
-        width: 200,
-      },
-      {
-        title: 'event_arrival_time',
-        dataIndex: 'event_arrival_time',
-        key: 'event_arrival_time',
-        width: 200,
-      },
+      // {
+      //   title: 'last_updated_by',
+      //   dataIndex: 'last_updated_by',
+      //   key: 'last_updated_by',
+      //   width: 200,
+      //   // fixed: 'left',
+      // },
+      // {
+      //   title: 'producer_event_time',
+      //   dataIndex: 'producer_event_time',
+      //   key: 'producer_event_time',
+      //   width: 200,
+      // },
+      // {
+      //   title: 'event_arrival_time',
+      //   dataIndex: 'event_arrival_time',
+      //   key: 'event_arrival_time',
+      //   width: 200,
+      // },
       {
         title: 'source',
         dataIndex: 'source',
         key: 'source',
-        width: 200
+        width: 150
       },
-      {
-        title: 'event_type',
-        dataIndex: 'event_type',
-        key: 'event_type',
-        width: 200
-      },
+      // {
+      //   title: 'event_type',
+      //   dataIndex: 'event_type',
+      //   key: 'event_type',
+      //   width: 200
+      // },
       {
         title: 'campaign_id',
         dataIndex: 'campaign_id',
         key: 'campaign_id',
-        width: 200
+        width: 150
       },
-      {
-        title: 'feedback_form_id',
-        dataIndex: 'feedback_form_id',
-        key: 'feedback_form_id',
-        width: 200
-      },
-      {
-        title: 'feedback_category_id',
-        dataIndex: 'feedback_category_id',
-        key: 'feedback_category_id',
-        width: 200
-      },
+      // {
+      //   title: 'feedback_form_id',
+      //   dataIndex: 'feedback_form_id',
+      //   key: 'feedback_form_id',
+      //   width: 200
+      // },
+      // {
+      //   title: 'feedback_category_id',
+      //   dataIndex: 'feedback_category_id',
+      //   key: 'feedback_category_id',
+      //   width: 200
+      // },
       {
         title: 'question_id',
         dataIndex: 'question_id',
         key: 'question_id',
-        width: 200
+        width: 150
       },
       {
         title: 'response_id',
         dataIndex: 'response_id',
         key: 'response_id',
-        width: 200
+        width: 150
       },
-      {
-        title: 'user_response',
-        dataIndex: 'user_response',
-        key: 'user_response',
-        width: 200
-      },
+      // {
+      //   title: 'user_response',
+      //   dataIndex: 'user_response',
+      //   key: 'user_response',
+      //   width: 200
+      // },
       {
         title: 'choiceIds',
-        dataIndex: 'choiceIds',
+        dataIndex: 'choiceId',
         key: 'choiceIds',
-        width: 200
-      }, ,
-      {
-        title: 'customer_id',
-        dataIndex: 'customer_id',
-        key: 'customer_id',
-        width: 200
+        width: 150
       },
       {
         title: 'application_id',
@@ -405,49 +259,48 @@ class Landing extends Component {
         key: 'organization_id',
         width: 200
       },
-      {
-        title: 'campaign_priority',
-        dataIndex: 'campaign_priority',
-        key: 'campaign_priority',
-        width: 200
-      },
-      {
-        title: 'is_campaign_control_enabled',
-        dataIndex: 'is_campaign_control_enabled',
-        key: 'is_campaign_control_enabled',
-        width: 200
-      },
-      {
-        title: 'campaign_control_percent',
-        dataIndex: 'campaign_control_percent',
-        key: 'campaign_control_percent',
-        width: 200
-      },
-      {
-        title: 'is_global_control_enabled',
-        dataIndex: 'is_global_control_enabled',
-        key: 'is_global_control_enabled',
-        width: 200
-      },
-      {
-        title: 'operation',
-        dataIndex: 'operation',
-        key: 'operation',
-        width: 200
-      },
+      // {
+      //   title: 'campaign_priority',
+      //   dataIndex: 'campaign_priority',
+      //   key: 'campaign_priority',
+      //   width: 200
+      // },
+      // {
+      //   title: 'is_campaign_control_enabled',
+      //   dataIndex: 'is_campaign_control_enabled',
+      //   key: 'is_campaign_control_enabled',
+      //   width: 200
+      // },
+      // {
+      //   title: 'campaign_control_percent',
+      //   dataIndex: 'campaign_control_percent',
+      //   key: 'campaign_control_percent',
+      //   width: 200
+      // },
+      // {
+      //   title: 'is_global_control_enabled',
+      //   dataIndex: 'is_global_control_enabled',
+      //   key: 'is_global_control_enabled',
+      //   width: 200
+      // },
+      // {
+      //   title: 'operation',
+      //   dataIndex: 'operation',
+      //   key: 'operation',
+      //   width: 200
+      // },
       {
         title: 'completed',
         dataIndex: 'completed',
         key: 'completed',
-        width: 200
+        width: 150
       }
     ]
 
     let nRows = parseInt(window.innerWidth / 300)
     let demoData = []
     const antIcon = <Icon type="loading" style={{ fontSize: 100 }} spin />;
-    demoData = this.state.totalRefinexEvents.slice(0, 5)
-    // demoData.splice(nRows)
+    demoData = this.state.totalRefinexEvents
     return (
       <Auxiliary>
         <div className="gx-main-content-wrapper">
@@ -542,8 +395,8 @@ class Landing extends Component {
                 <Col xl={24} lg={24} md={24}>
                   <div className='homeNewPlaces ant-table-tbody'>
                     <Widget title="RefineX Events" styleName="gx-card">
-                      <Table columns={columns} dataSource={data} bordered pagination={{ pageSize: 5 }} scroll={{ x: '20%', y: 200 }} />
-                      {/* <Table columns={columns} dataSource={demoData} bordered pagination={{ pageSize: 5 }} scroll={{ x: '20%', y: 200 }} /> */}
+                      {/* <Table columns={columns} dataSource={data} bordered pagination={{ pageSize: 5 }} scroll={{ x: '20%', y: 200 }} /> */}
+                      <Table columns={columns} dataSource={demoData} bordered pagination={{ pageSize: 5 }} scroll={{ x: '20%', y: 200 }} />
 
                     </Widget>
                   </div>
