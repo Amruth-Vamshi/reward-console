@@ -14,7 +14,9 @@ const Option = Select.Option;
 
 export default class Offers extends Component {
 	render() {
-		var options = this.props.offersList.map((item, index) => <Option key={index} value={item.id}>{item.name}</Option>)
+		var options
+		if (this.props.offersList)
+			options = this.props.offersList.map((item, index) => <Option key={index} value={item.id}>{item.name}</Option>)
 		return (
 			<div>
 				<h3 style={{ marginLeft: -5 }} className="gx-text-grey gx-mb-1">{this.props.subTitle}</h3>

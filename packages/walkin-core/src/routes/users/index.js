@@ -6,7 +6,7 @@ import UserInfo from './UserInfo';
 import jwt from 'jsonwebtoken';
 import { withApollo } from 'react-apollo';
 import './users.css';
-import { GET_ALL_USERS_OF_ORGANIZATION } from '@walkinsole/walkin-components/src/PlatformQueries';
+import { GET_ALL_USERS_OF_ORGANIZATION } from '../../PlatformQueries';
 import CreateUser from './CreateUser';
 
 const TabPane = Tabs.TabPane;

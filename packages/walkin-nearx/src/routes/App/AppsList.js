@@ -5,7 +5,7 @@ import {
   GET_ALL_APPS_OF_ORGANIZATION,
   GENERATE_API_KEY,
   DELETE_APP
-} from "@walkinsole/walkin-components/src/PlatformQueries";
+} from "@walkinsole/walkin-core/src/PlatformQueries";
 import jwt from "jsonwebtoken";
 import { withApollo } from "react-apollo";
 import conf from '@walkinsole/walkin-components/src/constants/config'

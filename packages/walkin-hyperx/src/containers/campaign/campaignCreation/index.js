@@ -8,7 +8,7 @@ import { campaignOverview as Overview } from "@walkinsole/walkin-components";
 import { allSegments, attributes, GET_AUDIENCE, CREATE_AUDIENCE, CREATE_RULE } from "../../../query/audience";
 import { getOffers, ADD_OFFER_TO_CAMPAIGN } from "../../../query/offer";
 import { withApollo, graphql, compose } from 'react-apollo';
-import { GET_ALL_APPS_OF_ORGANIZATION } from "@walkinsole/walkin-components/src/PlatformQueries";
+import { GET_ALL_APPS_OF_ORGANIZATION } from "@walkinsole/walkin-core/src/PlatformQueries";
 import { Col, Row, message } from 'antd';
 import jwt from "jsonwebtoken";
 import '../styles.css'

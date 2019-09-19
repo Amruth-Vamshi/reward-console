@@ -33,7 +33,7 @@ import {
 } from "../../../containers/Query";
 import { CAMPAIGN_TYPE } from "../../../Utils";
 import jwt from "jsonwebtoken";
-import { GET_ALL_APPS_OF_ORGANIZATION } from "@walkinsole/walkin-components/src/PlatformQueries";
+import { GET_ALL_APPS_OF_ORGANIZATION } from "@walkinsole/walkin-core/src/PlatformQueries";
 import { CustomScrollbars } from "@walkinsole/walkin-components";
 
 const communicationData = [

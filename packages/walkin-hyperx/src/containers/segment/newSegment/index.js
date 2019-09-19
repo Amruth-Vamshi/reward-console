@@ -8,7 +8,7 @@ import { SEGMENT_LIST } from '../../../utils/RouterConstants';
 import get from 'lodash/get';
 import { WalkinQueryBuilder, CampaignHeader } from '@walkinsole/walkin-components';
 import jwt from "jsonwebtoken";
-import { GET_ALL_APPS_OF_ORGANIZATION } from "@walkinsole/walkin-components/src/PlatformQueries";
+import { GET_ALL_APPS_OF_ORGANIZATION } from "@walkinsole/walkin-core/src/PlatformQueries";
 
 class NewSegment extends Component {
 	constructor(props) {
