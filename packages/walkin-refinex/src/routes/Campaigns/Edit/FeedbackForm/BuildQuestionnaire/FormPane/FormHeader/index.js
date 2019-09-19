@@ -226,20 +226,25 @@ class FormHeader extends Component {
                 </Item>
 
               </Item>
-              <Item style={{ marginTop: "3rem" }}>
+              {/**
+                TODO: UNCOMMENT THE FOLLOWING LINES WHEN WE HAVE SUPPORT CONTROLLING FOR MANDATORY AND BRANCH LOGIC IN BACKEND
+              
+              */}
+
+              {/* <Item style={{ marginTop: "3rem" }}>
                 <Item label="Mandatory">
                   <Switch
                     defaultChecked={true}
                     onChange={this.onChangeMandatory}
                   />
                 </Item>
-                {/* <Item label="Branch Logic">
+                <Item label="Branch Logic">
                   <Switch
                     defaultChecked={true}
                     onChange={this.onChangeBranchLogic}
                   />
-                </Item> */}
-              </Item>
+                </Item> 
+              </Item> */}
 
 
               {/* <Col span={12}>

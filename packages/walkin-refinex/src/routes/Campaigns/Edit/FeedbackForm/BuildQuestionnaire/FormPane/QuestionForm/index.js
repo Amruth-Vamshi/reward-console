@@ -133,13 +133,17 @@ class QuestionForm extends Component {
 
   render() {
     const { questionToEdit, form, style } = this.props;
-    const { getFieldDecorator } = form;
+    const { getFieldDecorator, isFieldsTouched } = form;
     const { Item } = Form;
     let props = {}
-    if (this.props.showButton) {
+    if (isFieldsTouched(["questionText"])) {
       props = {
-        suffix: (<Tooltip title="Submit">
-          <Icon type="info-circle" style={{ color: 'rgba(0,0,0,.45)' }} />
+        suffix: (<Tooltip title="Update Question">
+          <Button
+            onClick={this.submitQuestion}
+            type="primary"
+            style={{ margin: "auto" }}
+            size={"small"}>Update</Button>
         </Tooltip>)
 
       }

@@ -15,6 +15,18 @@ export const allSegments = gql`
   }
 `;
 
+export const EVENT_TYPES = gql`
+  query eventTypes($status:STATUS!){
+    eventTypes(status:$status){
+      id
+      type
+      format
+      schema 
+      status
+    }
+  }
+`
+
 export const disableSegment = gql`
   mutation disableSegment($id: ID!) {
     disableSegment(id: $id) {
@@ -55,6 +67,28 @@ export const createSegment = gql`
     }
   }
 `;
+
+
+export const CREATE_EVENT_SUBSCRIPTION = gql`
+ mutation createEventSubscription($input:CreateEventSubscriptionInput){
+  createEventSubscription(input:$input){
+    id
+    name
+    status
+  }
+ }
+
+`
+
+export const UPDATE_EVENT_SUBSCRIPTION = gql`
+mutation updateEventSubscriptionStatus($input:UpdateEventSubscriptionStatusInput){
+  updateEventSubscriptionStatus(input:$input){
+    id
+    name
+    status
+  }
+}
+`
 
 export const createRule = gql`
   mutation createRule($input: CreateRuleInput!) {
@@ -305,9 +339,19 @@ export const UPDATE_CAMPAIGN = gql`
   }
 `;
 
+export const DISABLE_CAMPAIGN = gql`
+  mutation disableCampaign($id:ID!){
+    disableCampaign(id:$id){
+      id
+      name
+      description
+    }
+  }
+`
+
 export const campaigns = gql`
-  query campaigns($status: STATUS!) {
-    campaigns(status: $status) {
+  query campaigns($status: STATUS!,$campaignType:String,$organization_id:ID) {
+    campaigns(status: $status,campaignType:$campaignType,organization_id:$organization_id) {
       id
       name
       description

@@ -8,9 +8,6 @@ import {
 
 let id = 0;
 class Filter extends Component {
-  static propTypes = {
-    prop: PropTypes
-  };
 
   constructor(props) {
     super(props);

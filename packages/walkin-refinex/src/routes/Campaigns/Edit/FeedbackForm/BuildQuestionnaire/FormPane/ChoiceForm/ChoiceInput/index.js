@@ -56,7 +56,7 @@ class ChoiceInput extends Component {
       RANKING: getMultiChoice(),
       DICHOTOMOUS: getMultiChoice()
     };
-    const { getFieldDecorator } = form;
+    const { getFieldDecorator, isFieldsTouched } = form;
 
     const { Item } = Form;
     let props = {}
@@ -64,6 +64,19 @@ class ChoiceInput extends Component {
     if (toQuestion) {
       props = {
         defaultValue: toQuestion.id
+      }
+    }
+    let propsInput = {}
+    if (isFieldsTouched(["choiceText"])) {
+      propsInput = {
+        suffix: (
+          <Button
+            onClick={this.onSubmit}
+            type="primary"
+            style={{ margin: "auto" }}
+            size={"small"}>Update</Button>
+        )
+
       }
     }
     return (
@@ -80,7 +93,7 @@ class ChoiceInput extends Component {
                         required: true
                       }
                     ]
-                  })(<Input size="large" />)}
+                  })(<Input size="large" {...propsInput} />)}
                 </Item>
 
               </Form>
