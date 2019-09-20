@@ -42,9 +42,11 @@ class CampaignList extends Component {
 		this.setState({ showPopUp: false, popupmessage: "" })
 	};
 	componentDidUpdate(preValue) {
-		if (this.props.loading !== preValue.loading) {
+		if (
+			this.props.loading !== preValue.loading
+			|| (this.props.campaigns && this.props.campaigns.length !== preValue.campaigns.length)) {
 			this.setInitialValues()
-			console.log(this.props)
+			console.log("PREVvALUE", this.props)
 		}
 	}
 
@@ -159,10 +161,11 @@ class CampaignList extends Component {
 		if (key == 4) {
 			const { changeStatus } = this.props;
 			//If api works
-			// changeStatus('DRAFT')
-			// this.setState({data: this.props.campaigns})
+			// changeStatus('INACTIVE')
+			// this.setState({ data: this.props.campaigns })
+
 			let draftCampaigns = allCampaigns.filter(val => {
-				return val.status == 'DRAFT';
+				return val.status == 'INACTIVE';
 			});
 			this.setState({ data: draftCampaigns, filtered: null });
 		}
@@ -302,7 +305,17 @@ export default withRouter(
 				loading,
 				campaigns,
 				error,
-				refetch
+				refetch,
+				changeStatus: status => {
+					const variables = {
+						status,
+						campaignType: DEFAULT_REFINEX_CAMPAIGN,
+						organization_id: jwt.decode(localStorage.getItem("jwt")).org_id
+					};
+					refetch(variables);
+				}
+
+
 			})
 			,
 		}

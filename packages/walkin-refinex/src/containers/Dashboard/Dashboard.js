@@ -29,7 +29,7 @@ class Landing extends Component {
       complains: [],
       customerCount: 0,
       org_id: '',
-      startDate: moment().subtract(30, 'day'),
+      startDate: moment().subtract(30, 'months'),
       endDate: moment(),
       errors: {}
     }
@@ -143,12 +143,12 @@ class Landing extends Component {
         key: 'customer_id',
         width: 200
       },
-      {
-        title: 'customer_feedback_id',
-        dataIndex: 'customer_feedback_id',
-        key: 2,
-        width: 200,
-      },
+      // {
+      //   title: 'customer_feedback_id',
+      //   dataIndex: 'customer_feedback_id',
+      //   key: 2,
+      //   width: 200,
+      // },
       // {
       //   title: 'producer_event_id',
       //   dataIndex: 'producer_event_id',
@@ -167,13 +167,13 @@ class Landing extends Component {
       //   key: 'created_by',
       //   width: 200,
       // },
-      {
-        title: 'last_updated',
-        dataIndex: 'last_updated',
-        key: 'last_updated',
-        width: 200,
-        // fixed: 'left',
-      },
+      // {
+      //   title: 'last_updated',
+      //   dataIndex: 'last_updated',
+      //   key: 'last_updated',
+      //   width: 200,
+      //   // fixed: 'left',
+      // },
       // {
       //   title: 'last_updated_by',
       //   dataIndex: 'last_updated_by',
@@ -223,42 +223,42 @@ class Landing extends Component {
       //   key: 'feedback_category_id',
       //   width: 200
       // },
-      {
-        title: 'question_id',
-        dataIndex: 'question_id',
-        key: 'question_id',
-        width: 150
-      },
-      {
-        title: 'response_id',
-        dataIndex: 'response_id',
-        key: 'response_id',
-        width: 150
-      },
+      // {
+      //   title: 'question_id',
+      //   dataIndex: 'question_id',
+      //   key: 'question_id',
+      //   width: 150
+      // },
+      // {
+      //   title: 'response_id',
+      //   dataIndex: 'response_id',
+      //   key: 'response_id',
+      //   width: 150
+      // },
       // {
       //   title: 'user_response',
       //   dataIndex: 'user_response',
       //   key: 'user_response',
       //   width: 200
       // },
-      {
-        title: 'choiceIds',
-        dataIndex: 'choiceId',
-        key: 'choiceIds',
-        width: 150
-      },
-      {
-        title: 'application_id',
-        dataIndex: 'application_id',
-        key: 'application_id',
-        width: 200
-      },
-      {
-        title: 'organization_id',
-        dataIndex: 'organization_id',
-        key: 'organization_id',
-        width: 200
-      },
+      // {
+      //   title: 'choiceIds',
+      //   dataIndex: 'choiceId',
+      //   key: 'choiceIds',
+      //   width: 150
+      // },
+      // {
+      //   title: 'application_id',
+      //   dataIndex: 'application_id',
+      //   key: 'application_id',
+      //   width: 200
+      // },
+      // {
+      //   title: 'organization_id',
+      //   dataIndex: 'organization_id',
+      //   key: 'organization_id',
+      //   width: 200
+      // },
       // {
       //   title: 'campaign_priority',
       //   dataIndex: 'campaign_priority',

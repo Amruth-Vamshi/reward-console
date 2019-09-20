@@ -384,7 +384,7 @@ class EditCampaign extends Component {
             })
             console.log("createCommunication",createdCommunication)
             const cummunicationCreationInput={
-              communication_id:createdCommunication.createCommunication.id
+              communication_id: parseInt(createdCommunication.data.createCommunication.id) 
             }
           this.props.updateCampaign({
             variables: {
@@ -399,6 +399,16 @@ class EditCampaign extends Component {
     }
    
   };
+
+  onPage1SaveDraft=()=>{
+    this.props.history.push({
+      pathname: "/refinex/feedback/overview",
+       state:{
+         showPopup:true,
+         message:"Feedback saved in draft state"
+       }
+     })
+  }
 
   updateRule = current => {
     let id;
@@ -749,6 +759,7 @@ class EditCampaign extends Component {
   }
 }
 
+
 export default compose(
   graphql(GET_CAMPAIGN, {
     name: "campaign",
@@ -770,22 +781,6 @@ export default compose(
       fetchPolicy: "cache-and-network"
     })
   }),
-  // graphql(createRule, {
-  //   name: "rule",
-  //   options: props => ({
-  //     variables: {
-  //       name: Math.random()
-  //         .toString(36)
-  //         .substring(7),
-  //       description: "",
-  //       type: "SIMPLE",
-  //       organizationId: jwt.decode(localStorage.getItem("jwt")).org_id,
-  //       status: "ACTIVE",
-  //       ruleConfiguration: JSON.stringify(query)
-  //     },
-  //     fetchPolicy: "cache-and-network"
-  //   })
-  // }),
   graphql(createRule, {
     name: "rule"
   }),
