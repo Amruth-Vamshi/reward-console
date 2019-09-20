@@ -1,9 +1,13 @@
-import React from "react";
+import React, { lazy } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
-import { asyncComponent } from "@walkinsole/walkin-components";
-import SegmentList from '../containers/segment/segmentList';
 import NewSegment from '../containers/segment/newSegment';
 import { NEW_SEGMENT, SEGMENT_LIST } from "../Utils"
+import RefineXApps from "../containers/App"
+import Dashboard from "../containers/Dashboard"
+import Campaign from "./Campaigns"
+import SegementLIst from '../containers/segment/segmentList'
+import NewSegement from '../containers/segment/newSegment'
+import analytics from '../containers/Analytics'
 
 const RefineXRoutes = ({ match }) => {
   return (
@@ -12,20 +16,22 @@ const RefineXRoutes = ({ match }) => {
         <Redirect exact from={`${match.url}/`} to={`${match.url}/dashboard`} />
         <Route
           path={`${match.url}/dashboard`}
-          component={asyncComponent(() => import("../containers/Dashboard"))}
+          component={Dashboard}
         />
         <Route
           path={`${match.url}/feedback`}
-          component={asyncComponent(() => import("./Campaigns"))}
+          component={Campaign}
         />
         <Route
           path={`${match.url}/segment/segmentList`}
-          component={SegmentList}
+          component={SegementLIst}
         />
         <Route
           path={`${match.url}/segment/newSegment`}
-          component={NewSegment}
+          component={NewSegement}
         />
+        <Route path={`${match.url}/apps`} component={RefineXApps} />
+        <Route path={`${match.url}/analytics`} component={analytics} />
       </Switch>
     </div>
   );

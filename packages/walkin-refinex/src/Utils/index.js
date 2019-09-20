@@ -3,3 +3,7 @@ export const CAMPAIGN_TYPE = "FEEDBACK"
 export const TEMPLATE_STYLE = "MUSTACHE"
 export const NEW_SEGMENT = `/refinex/segment/newSegment`;
 export const SEGMENT_LIST = '/refinex/segment/segmentList';
+export const DEFAULT_QUEUE = "REFINEX_EVENTS_QUEUE"
+export const DEFAULT_ACTIVE_STATUS = "ACTIVE"
+export const DEFAULT_INACTIVE_STATUS = "INACTIVE"
+export const DEFAULT_REFINEX_CAMPAIGN = "FEEDBACK"

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { graphql } from "react-apollo"
 import {
   Col,
   Row,
@@ -8,16 +9,32 @@ import {
   Form,
   Select,
   Input,
-  Button
+  Button,
+  Spin
 } from "antd";
-
+import { EVENT_TYPES } from "../../../../../containers/Query"
 class EventType extends Component {
-  static propTypes = {
-    prop: PropTypes
+
+  componentDidMount() {
+    this.setFieldValues()
+  }
+  setFieldValues = () => {
+    const { event } = this.props;
+    this.props.form.setFieldsValue({
+      event: event.type
+    });
   };
 
+  getOptions = () => {
+    return this.props.eventType.eventTypes.map(event => {
+      return (
+        <Select.Option value={event.id} key={event.id}>{event.type}</Select.Option>
+      )
+    })
+  }
   render() {
     const { getFieldDecorator } = this.props.form;
+    console.log(this.props.eventType.loading)
     return (
       <Row style={{ marginTop: "1rem" }}>
         <Col span={6}>
@@ -35,11 +52,14 @@ class EventType extends Component {
                 ]
               })(
                 <Select
+                  notFoundContent={this.props.eventType.loading ? <Spin size="small" /> : null}
                   placeholder="Select a option and change input text above"
                   onChange={this.handleSelectChange}
                 >
-                  <Select.Option value="ccd_event">CCD events</Select.Option>
-                  <Select.Option value="ccd_event2">CCD events 2</Select.Option>
+                  {
+                    this.getOptions()
+                  }
+
                 </Select>
               )}
             </Form.Item>
@@ -50,6 +70,20 @@ class EventType extends Component {
   }
 }
 
-const EventTypeForm = Form.create({ name: "EventType" })(EventType);
+const EventTypeForm = Form.create({
+  name: "EventType",
+  onValuesChange(props, values) {
+    console.log("values", values)
+    props.onEventTypeEdited(values);
+  }
+})(EventType);
 
-export default EventTypeForm;
+export default graphql(EVENT_TYPES, {
+  name: "eventType",
+  options: {
+    fetchPolicy: "cache-first",
+    variables: {
+      status: "ACTIVE"
+    }
+  }
+})(EventTypeForm);
