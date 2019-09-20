@@ -1,14 +1,13 @@
 import React, { Component, Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
-import { NEW_CAMPAIGN } from '../../Utils/index';
-import { campaigns } from '../Query/index';
+import { campaigns, DISABLE_CAMPAIGN } from '../Query/index';
 import { Card, Menu, Dropdown, Col, Button, Progress, Tabs, message } from 'antd';
 import moment from 'moment';
-import { withApollo, graphql } from 'react-apollo';
+import { withApollo, graphql, compose } from 'react-apollo';
 import { SortableDataTable, InstantSearch, CampaignHeader, CircularProgress } from '@walkinsole/walkin-components';
 import './style.css';
-
-const DEFAULT_STATUS = 'ACTIVE';
+import { DEFAULT_ACTIVE_STATUS, DEFAULT_REFINEX_CAMPAIGN, NEW_CAMPAIGN } from "../../Utils"
+import jwt from "jsonwebtoken";
 
 const { TabPane } = Tabs;
 
@@ -43,9 +42,11 @@ class CampaignList extends Component {
 		this.setState({ showPopUp: false, popupmessage: "" })
 	};
 	componentDidUpdate(preValue) {
-		if (this.props.loading !== preValue.loading) {
+		if (
+			this.props.loading !== preValue.loading
+			|| (this.props.campaigns && this.props.campaigns.length !== preValue.campaigns.length)) {
 			this.setInitialValues()
-			console.log(this.props)
+			console.log("PREVvALUE", this.props)
 		}
 	}
 
@@ -76,8 +77,22 @@ class CampaignList extends Component {
 		});
 	};
 
-	onDeleteContact = contact => {
+	onDeleteContact = async  contact => {
 		console.log('delete', contact);
+		this.setState({ loading: true })
+		await this.props.disableCampaign({
+			variables: {
+				id: contact.id
+			}
+		})
+		try {
+			await this.props.refetch()
+			this.setState({ loading: false })
+		}
+		catch (err) {
+			this.setState({ loading: false })
+			console.log(err)
+		}
 	};
 	onDuplicateContact = contact => {
 		console.log('dupl', contact);
@@ -146,10 +161,11 @@ class CampaignList extends Component {
 		if (key == 4) {
 			const { changeStatus } = this.props;
 			//If api works
-			// changeStatus('DRAFT')
-			// this.setState({data: this.props.campaigns})
+			// changeStatus('INACTIVE')
+			// this.setState({ data: this.props.campaigns })
+
 			let draftCampaigns = allCampaigns.filter(val => {
-				return val.status == 'DRAFT';
+				return val.status == 'INACTIVE';
 			});
 			this.setState({ data: draftCampaigns, filtered: null });
 		}
@@ -164,6 +180,7 @@ class CampaignList extends Component {
 	};
 
 	render() {
+		console.log(this.props)
 		let { sortedInfo, filteredInfo, filtered, data, loading, showPopUp } = this.state;
 		if (showPopUp) {
 			this.success()
@@ -270,11 +287,17 @@ class CampaignList extends Component {
 }
 
 export default withRouter(
-	withApollo(
+	compose(
+
+		graphql(DISABLE_CAMPAIGN, {
+			name: "disableCampaign"
+		}),
 		graphql(campaigns, {
 			options: () => ({
 				variables: {
-					status: DEFAULT_STATUS,
+					status: DEFAULT_ACTIVE_STATUS,
+					campaignType: DEFAULT_REFINEX_CAMPAIGN,
+					organization_id: jwt.decode(localStorage.getItem("jwt")).org_id
 				},
 				fetchPolicy: "network-only"
 			}),
@@ -282,12 +305,21 @@ export default withRouter(
 				loading,
 				campaigns,
 				error,
+				refetch,
 				changeStatus: status => {
-					const variables = { status };
+					const variables = {
+						status,
+						campaignType: DEFAULT_REFINEX_CAMPAIGN,
+						organization_id: jwt.decode(localStorage.getItem("jwt")).org_id
+					};
 					refetch(variables);
-				},
+				}
+
+
 			})
 			,
-		})(CampaignList)
-	)
+		}
+		)
+
+	)(CampaignList)
 );

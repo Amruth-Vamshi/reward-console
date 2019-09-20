@@ -47,7 +47,7 @@ export default class Controls extends React.Component {
                             </Col>
                         </Row>
                         <Divider />
-                        <Row>
+                        {/*<Row>
                             <Col span={24}>
                                 <h5>Header</h5>
                                 <div>
@@ -58,7 +58,7 @@ export default class Controls extends React.Component {
                                     </Upload>
                                 </div>
                             </Col>
-                        </Row>
+                        </Row>*/}
                         <Divider />
                         <Row>
                             <Col span={24}>

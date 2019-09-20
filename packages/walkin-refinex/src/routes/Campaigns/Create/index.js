@@ -547,7 +547,18 @@ export default
       name: "messageTemplate"
     }),
     graphql(attributes, {
-      name: "allAttributes"
+      name: "allAttributes",
+      options:props=>{
+        const input= {
+          status: "ACTIVE", 
+        organizationId: "577bddb7-17df-4884-b16f-8b5db5b00b95"
+        }
+       const a= {
+         variables:{
+          input:input
+        }}
+        return a;
+      }
     }),
     graphql(GET_USER_IDENTITY, {
       name: "auth"

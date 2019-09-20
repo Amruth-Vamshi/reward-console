@@ -1,0 +1,74 @@
+.appHeader .name{
+    font-size: 35px;
+    word-spacing: 8px;
+    color:#705d94
+}
+
+.appHeader{
+    margin: 25px 10px 20px 40px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow'
+}
+
+.appHeader .title{
+    font-size: 20px;
+    margin-top: 5px;
+}
+
+.appForm label{
+    color: #848484
+}
+
+.divCenter {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+}
+
+.divCenterVertical {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+	float: left;
+}
+
+.headerCard .ant-card-body{
+	background-color: rgb(238, 238, 238);
+	padding: 0px !important;
+}
+
+.headerCard .ant-tabs-bar {
+	margin: 0;
+}
+
+.haderCard .ant-tabs {
+    margin-top: -45px;
+}
+
+  /* .ant-layout > .gx-layout-content {
+    background-color: #eeeeee;
+} */
+
+
+
+
+/* .headerRow {
+	padding:13px 30px;
+	margin: 0;
+	background-color:#b3faff;
+} */
+
+.headerTitle{
+	font-size: 17px
+
+}
+
+/* .mainDrawer div.ant-drawer-wrapper-body{
+	background-color: #003366
+} */
+
+/* 
+.ant-row > [class*=ant-col-] {
+    margin: "!important";
+} */

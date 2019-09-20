@@ -63,10 +63,23 @@ class SidebarContent extends Component {
               <Link to="/refinex/segment/segmentList">
                 <i className="icon icon-select" />
                 {/* <IntlMessages id="sidebar.samplePage" /> */}
-                Segments
-							</Link>
+                <span>Segments</span>
+              </Link>
             </Menu.Item>
-            <Menu.Item key="settings">
+            <Menu.Item key="refinex/apps">
+              <Link to="/refinex/apps">
+                <i className="icon icon-apps" />
+                {/* <IntlMessages id="sidebar.samplePage" /> */}
+                <span>Apps</span>
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="analytics">
+              <Link to="/refinex/analytics">
+                <i className="icon icon-chart" />
+                <IntlMessages id="sidebar.refinex.analytics" />
+              </Link>
+            </Menu.Item>
+            {/* <Menu.Item key="settings">
               <Link to="/refinex/settings">
                 <i className="icon icon-setting" />
                 <IntlMessages id="sidebar.refinex.settings" />
@@ -83,7 +96,7 @@ class SidebarContent extends Component {
                 <i className="icon icon-geo-location" />
                 <IntlMessages id="sidebar.refinex.help" />
               </Link>
-            </Menu.Item>
+            </Menu.Item> */}
           </Menu>
         </div>
       </Auxiliary>
@@ -114,6 +127,8 @@ const GET_SETTINGS = gql`
     }
   }
 `;
+
+
 
 export default compose(
   withRouter,

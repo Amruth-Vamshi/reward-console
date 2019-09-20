@@ -15,13 +15,14 @@ import Delay from "./Delay";
 import EventType from "./EventType";
 import Filter from "./Filter";
 class Triggers extends Component {
-  static propTypes = {
-    prop: PropTypes
-  };
+
 
   constructor(props) {
     super(props);
+
   }
+
+
 
   render() {
     return (
@@ -42,7 +43,7 @@ class Triggers extends Component {
         </Row>
         <Divider />
         <Col span={24}>
-          <EventType />
+          <EventType event={this.props.eventValues} onEventTypeEdited={this.props.onEventTypeEdited} />
         </Col>
 
         <Divider />

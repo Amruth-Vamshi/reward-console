@@ -3,7 +3,6 @@ import { Query } from "react-apollo";
 import { gql } from "apollo-boost";
 import RefineXRoutes from "./routes";
 import { Redirect, Route, Switch } from "react-router-dom";
-import { asyncComponent } from "@walkinsole/walkin-components";
 import "./index.css"
 export default class extends Component {
   render() {

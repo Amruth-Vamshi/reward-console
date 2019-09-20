@@ -19,7 +19,8 @@ class QuestionnaireFormPane extends Component {
     super(props);
     this.state = {
       questionToEdit: {},
-      choiceToEdit: {}
+      choiceToEdit: {},
+      showButton: false
     };
   }
 
@@ -47,7 +48,8 @@ class QuestionnaireFormPane extends Component {
     }
     delete values.range;
     this.setState({
-      questionToEdit: Object.assign(this.state.questionToEdit, values)
+      questionToEdit: Object.assign(this.state.questionToEdit, values),
+      showButton: true
     });
   };
 
@@ -88,6 +90,7 @@ class QuestionnaireFormPane extends Component {
         <Col span={24}>
           {questionType != null && choiceToAddQuestion != null ? (
             <CreateQuestion
+              showButton={this.state.showButton}
               questionnaire={questionnaire}
               onQuestionEdited={this.onQuestionEdited}
               onQuestionSubmitted={this.onQuestionSubmitted}
@@ -106,6 +109,7 @@ class QuestionnaireFormPane extends Component {
             />
           ) : (
               <ShowQuestion
+                showButton={this.state.showButton}
                 questionnaire={questionnaire}
                 onQuestionEdited={this.onQuestionEdited}
                 onQuestionSubmitted={this.onQuestionSubmitted}

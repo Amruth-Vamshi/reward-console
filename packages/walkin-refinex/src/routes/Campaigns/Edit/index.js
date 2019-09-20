@@ -23,11 +23,23 @@ import {
   createRule,
   UPDATE_CAMPAIGN,
   createCommunication,updateAudiencesWithCampaignId,updateRule,
-  createMessageTemplate,createAudience,communications,audiences,updateCommunication,updateMessageTemplate
+  createMessageTemplate,
+  createAudience,
+  communications,
+  audiences,
+  updateCommunication,
+  updateMessageTemplate,
+  CREATE_EVENT_SUBSCRIPTION,
+  UPDATE_EVENT_SUBSCRIPTION
 } from "../../../containers/Query";
 import { CustomScrollbars } from "@walkinsole/walkin-components";
 import jwt from "jsonwebtoken";
-import {TEMPLATE_STYLE} from '../../../Utils'
+import {
+  TEMPLATE_STYLE,
+  DEFAULT_QUEUE,
+  DEFAULT_ACTIVE_STATUS,
+  DEFAULT_INACTIVE_STATUS
+} from '../../../Utils'
 import { async } from "q";
 import { from } from "zen-observable";
 
@@ -58,6 +70,7 @@ class EditCampaign extends Component {
       campaign: {},
       segmentList: {},
       attributeData: {},
+      eventValues:{},
       formName:"",
       selectedSegments:[],
       query: {combinator: "and", rules: [] },
@@ -86,12 +99,21 @@ class EditCampaign extends Component {
   }
 
   componentDidMount(){
+    console.log("component mounted...")
     const {location}= this.props;
     if (location && location.state) {
       if(location.state.current){
         this.setState({current:location.state.current})
       }
     }
+  }
+
+  onEventTypeEdited=(value)=>{
+    console.log("top level values of event type",value,this.state.eventValues)
+    const event={
+      event:value.event
+    }
+    this.setState({eventValues:event})
   }
 
 
@@ -122,6 +144,45 @@ class EditCampaign extends Component {
     
     this.setState({communicationFormValues,communicationId})
     }
+  }
+
+  createEvenetSubscription= ()=>{
+    const input={
+      queue:DEFAULT_QUEUE,
+        meta:{},
+        application_id:this.props.campaign.campaign.application.id,
+        organization_id:jwt.decode(localStorage.getItem("jwt")).org_id,
+        event_type_id:this.state.eventValues.event,
+        description:"",
+        name:Math.random()
+        .toString(36)
+        .substring(7)
+    }
+    this.props.createEventSubscription({
+      variables:{
+        input
+      }
+    }).then(async data=>{
+      console.log(data.data.createEventSubscription)
+      if(data.data.createEventSubscription.status===DEFAULT_INACTIVE_STATUS){
+      const activeSubs= await this.props.updateEventSubscription({
+          variables:{
+            input:{
+              id:data.data.createEventSubscription.id,
+              status:DEFAULT_ACTIVE_STATUS
+            }
+          }
+        })
+        try{
+          console.log(activeSubs)
+        }
+        catch(err){
+          console.log(err)
+        }
+      }
+    }).catch(err=>{
+      console.log(err)
+    })
   }
 
   onTestAndControlEdit = () => {
@@ -163,8 +224,11 @@ class EditCampaign extends Component {
     }
     //Trigger module
     if (this.state.current == 3) {
-      //Trigger Rule
       
+      if(this.state.eventValues.event!==null){
+        this.createEvenetSubscription()
+      }
+      //Trigger Rule
       if(this.props.campaign.campaign.triggerRule == null){
         this.ruleQuery(this.state.current);
       }
@@ -236,7 +300,7 @@ class EditCampaign extends Component {
       campaign_id:this.props.campaign.campaign.id,
      segment_id:segmentId,
      organization_id:jwt.decode(localStorage.getItem("jwt")).org_id,
-     application_id:"42c8506c-4185-4fc3-aa99-55f68080f71c",
+     application_id:this.props.campaign.campaign.application.id,
      status:"ACTIVE"
     };
     this.props.audience({
@@ -312,14 +376,22 @@ class EditCampaign extends Component {
             // repeatRuleId: "",
             commsChannelName: "Test"
           };
-          this.props
+       const createdCommunication=  await this.props
             .communication({
               variables: {
                 input: input
               }
-            }).then(data =>{
-              console.log("Communication data..", data)
             })
+            console.log("createCommunication",createdCommunication)
+            const cummunicationCreationInput={
+              communication_id: parseInt(createdCommunication.data.createCommunication.id) 
+            }
+          this.props.updateCampaign({
+            variables: {
+              id: this.props.campaign.campaign.id,
+              input: cummunicationCreationInput
+            }
+          })
            
         }).catch(err => {
           console.log("Error creating for message template", err);
@@ -327,6 +399,16 @@ class EditCampaign extends Component {
     }
    
   };
+
+  onPage1SaveDraft=()=>{
+    this.props.history.push({
+      pathname: "/refinex/feedback/overview",
+       state:{
+         showPopup:true,
+         message:"Feedback saved in draft state"
+       }
+     })
+  }
 
   updateRule = current => {
     let id;
@@ -512,6 +594,8 @@ class EditCampaign extends Component {
         id: el.id,
         label: el.attributeName
       }));
+
+      console.log("triggerRule",triggerRule)
     // let templateData = this.props.messageTemplate;
     const {
       formValues,
@@ -589,6 +673,8 @@ class EditCampaign extends Component {
       case 3:
         return (
           <Triggers 
+          onEventTypeEdited={this.onEventTypeEdited}
+          eventValues={this.state.eventValues}
           query={this.state.oldQueryTriggers?this.state.oldQueryTriggers:triggerRule} 
           attributeData={attributeData} 
           logQuery={this.logQuery} />
@@ -618,7 +704,7 @@ class EditCampaign extends Component {
         );
       default:
         return <CustomScrollbars> <Overview campaign={this.props.campaign.campaign} 
-        communication={this.props.allCommunications.communications.length >0 ?
+        communication={this.props.allCommunications.communications && this.props.allCommunications.communications.length >0 ?
           this.props.allCommunications.communications[0].messageTemplate.messageFormat : this.state.communicationSelected}/></CustomScrollbars>
     }
 
@@ -673,6 +759,7 @@ class EditCampaign extends Component {
   }
 }
 
+
 export default compose(
   graphql(GET_CAMPAIGN, {
     name: "campaign",
@@ -694,22 +781,6 @@ export default compose(
       fetchPolicy: "cache-and-network"
     })
   }),
-  // graphql(createRule, {
-  //   name: "rule",
-  //   options: props => ({
-  //     variables: {
-  //       name: Math.random()
-  //         .toString(36)
-  //         .substring(7),
-  //       description: "",
-  //       type: "SIMPLE",
-  //       organizationId: jwt.decode(localStorage.getItem("jwt")).org_id,
-  //       status: "ACTIVE",
-  //       ruleConfiguration: JSON.stringify(query)
-  //     },
-  //     fetchPolicy: "cache-and-network"
-  //   })
-  // }),
   graphql(createRule, {
     name: "rule"
   }),
@@ -720,7 +791,18 @@ export default compose(
     name: "updateCampaign"
   }),
   graphql(attributes, {
-    name: "allAttributes"
+    name: "allAttributes",
+    options:props=>{
+      const input= {
+        status: "ACTIVE", 
+      organizationId: "577bddb7-17df-4884-b16f-8b5db5b00b95"
+      }
+     const a= {
+       variables:{
+        input:input
+      }}
+      return a;
+    }
   }),
   graphql(createCommunication, {
     name: "communication"
@@ -739,6 +821,12 @@ export default compose(
   }),
   graphql(updateMessageTemplate,{
     name:"updateMessageTemplate"
+  }),
+  graphql(CREATE_EVENT_SUBSCRIPTION,{
+    name:"createEventSubscription"
+  }),
+  graphql(UPDATE_EVENT_SUBSCRIPTION,{
+    name:"updateEventSubscription"
   }),
   graphql(communications,{
     name:"allCommunications",
