@@ -73,6 +73,12 @@ class SidebarContent extends Component {
                 <span>Apps</span>
               </Link>
             </Menu.Item>
+            <Menu.Item key="analytics">
+              <Link to="/refinex/analytics">
+                <i className="icon icon-chart" />
+                <IntlMessages id="sidebar.refinex.analytics" />
+              </Link>
+            </Menu.Item>
             {/* <Menu.Item key="settings">
               <Link to="/refinex/settings">
                 <i className="icon icon-setting" />
