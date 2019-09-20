@@ -7,6 +7,7 @@ import Dashboard from "../containers/Dashboard"
 import Campaign from "./Campaigns"
 import SegementLIst from '../containers/segment/segmentList'
 import NewSegement from '../containers/segment/newSegment'
+import analytics from '../containers/Analytics'
 
 const RefineXRoutes = ({ match }) => {
   return (
@@ -30,6 +31,7 @@ const RefineXRoutes = ({ match }) => {
           component={NewSegement}
         />
         <Route path={`${match.url}/apps`} component={RefineXApps} />
+        <Route path={`${match.url}/analytics`} component={analytics} />
       </Switch>
     </div>
   );
