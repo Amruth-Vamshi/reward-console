@@ -18,6 +18,7 @@ class NewSegment extends Component {
 			query: { id: '1', combinator: 'and', rules: [] },
 			newSegmentError: false,
 			isDuplicateSegment: false,
+			errors: {}
 		};
 	}
 	logQuery = query => {
@@ -27,6 +28,7 @@ class NewSegment extends Component {
 		});
 	};
 	onChange = e => {
+		this.state.errors.name = ''
 		this.setState({ value: e.target.value });
 	};
 
@@ -44,6 +46,11 @@ class NewSegment extends Component {
 			this.displayError('newSegmentError');
 		}
 		let { client } = this.props;
+		if (!this.state.value || this.state.value.trim() == '') {
+			this.state.errors.name = "* this field is mandatory"
+			return
+		}
+
 		console.log(this.props.allApplications.organization.applications[0])
 		let org_id = jwt.decode(localStorage.getItem("jwt")).org_id;
 		client
@@ -148,13 +155,17 @@ class NewSegment extends Component {
 					/>
 				</div>
 				<div style={{ margin: '32px' }}>
-					<p className="gx-text-grey gx-mb-1">Segment Name</p>
-					<Input
-						defaultValue={isDuplicateSegment ? value : 'Enter segment name'}
-						style={{ width: '50%', marginBottom: '40px' }}
-						value={value}
-						onChange={this.onChange}
-					/>
+					<div style={{ width: '50%', marginBottom: '40px' }}>
+						<div style={{ marginBottom: '10px' }}>
+							<p className="gx-text-grey gx-mb-1">Segment Name</p>
+							<Input
+								defaultValue={isDuplicateSegment ? value : 'Enter segment name'}
+								value={value} placeholder="Enter Segment Name"
+								onChange={this.onChange}
+							/>
+						</div>
+						<span style={{ color: "Red" }}> {this.state.errors.name} </span>
+					</div>
 					<WalkinQueryBuilder fields={attributeData} onQueryChange={this.logQuery} query={query} />
 				</div>
 				{newSegmentError && <Alert message="Not a valid Segment" type="error" />}
