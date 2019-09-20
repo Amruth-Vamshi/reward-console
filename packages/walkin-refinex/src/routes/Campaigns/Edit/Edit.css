@@ -38,3 +38,10 @@
 .audienceSubTitleText {
   margin-top: 20px;
 }
+
+.divCenter {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+}

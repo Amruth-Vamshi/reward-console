@@ -1,6 +1,6 @@
 import "./Edit.css";
 import React, { Component } from "react";
-import { Row, Col, Button, Spin } from "antd";
+import { Row, Col, Button, Spin ,Icon} from "antd";
 import CampaignConfig from "./Campaign";
 // import Audience from "./Audience";
 import Audience from "@walkinsole/walkin-hyperx/src/containers/campaign/campaignCreation/audience";
@@ -27,7 +27,10 @@ import {
 } from "../../../containers/Query";
 import { CustomScrollbars } from "@walkinsole/walkin-components";
 import jwt from "jsonwebtoken";
+import {TEMPLATE_STYLE} from '../../../Utils'
 import { async } from "q";
+import { from } from "zen-observable";
+
 
 const communicationData = [
   { value: "SMS", title: "SMS" },
@@ -58,6 +61,7 @@ class EditCampaign extends Component {
       formName:"",
       selectedSegments:[],
       query: {combinator: "and", rules: [] },
+      loading:false,
       stepperData: [
         {
           title: "Basic Info"
@@ -143,6 +147,7 @@ class EditCampaign extends Component {
 
   onFormNext = current => {
     const { formValues, selectedSegments} = this.state;
+    this.setState({loading:true})
     //Audience module
     if (this.state.current == 2) {
       //Audience Rule
@@ -197,7 +202,8 @@ class EditCampaign extends Component {
             // this.ruleQuery();
            this.setState({
               formValues: values,
-              current: current
+              current: current,
+              loading:false
             });
             switch(current){
               case 1:
@@ -207,7 +213,8 @@ class EditCampaign extends Component {
         });
     } else {
       this.setState({
-        current: current
+        current: current,
+        loading:false
       });
     }
   };
@@ -267,7 +274,8 @@ class EditCampaign extends Component {
         variables:{
           input:input
         }
-      }).then(data =>{
+      }).then(async data =>{
+      
         console.log("UpdateMessageTemplateData...", updateMessageTemplate)
       }).catch(err =>{
         console.log("Error while updating messageTemptae for communication", err)
@@ -280,7 +288,7 @@ class EditCampaign extends Component {
         messageFormat: this.state.communicationSelected,
         templateBodyText: this.state.communicationSelected == "SMS"?values.smsBody:values.email_body,
         templateSubjectText: this.state.communicationSelected == "SMS"?values.smsTag:values.email_subject,
-        templateStyle: "MUSTACHE",
+        templateStyle: TEMPLATE_STYLE,
         organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
         status:"ACTIVE"
       };
@@ -290,7 +298,7 @@ class EditCampaign extends Component {
             input: input
           }
         })
-        .then(data => {
+        .then(async data => {
           console.log("MessageTemplate data..", data);
           var input = {
             entityId: this.props.campaign.campaign.id, // campainId
@@ -312,6 +320,7 @@ class EditCampaign extends Component {
             }).then(data =>{
               console.log("Communication data..", data)
             })
+           
         }).catch(err => {
           console.log("Error creating for message template", err);
         });
@@ -387,7 +396,6 @@ class EditCampaign extends Component {
 
    
   onCampaignUpdate= (formValues)=>{
-    console.log(formValues)
     this.props.updateCampaign({
       variables:{
         id:this.props.campaign.campaign.id,
@@ -599,8 +607,7 @@ class EditCampaign extends Component {
             emailFormRef={this.commWrappedComponentRef}
             emailFormData={this.state.communicationFormValues}
             // saveFormRef={this.saveComFormRef}
-            onFormNext={this.onFormNext
-            }
+            onFormNext={this.onFormNext}
           /></CustomScrollbars>
           // <Communication
           //   // campaign={this.props.campaign.campaign}
@@ -610,13 +617,17 @@ class EditCampaign extends Component {
           // />
         );
       default:
-        return <CustomScrollbars> <Overview campaign={this.props.campaign.campaign} /></CustomScrollbars>;
+        return <CustomScrollbars> <Overview campaign={this.props.campaign.campaign} 
+        communication={this.props.allCommunications.communications.length >0 ?
+          this.props.allCommunications.communications[0].messageTemplate.messageFormat : this.state.communicationSelected}/></CustomScrollbars>
     }
+
   };
 
   render() {
     const { current, stepperData } = this.state;
     const {campaign}=this.props
+    const antIcon = <Icon type="loading" style={{ fontSize: 50 }} spin />;
     //exit to all campaign screen if all the steppers are completed
     if(current >5){
       this.props.history.push({
@@ -635,11 +646,11 @@ class EditCampaign extends Component {
           title="Create RefineX Campaign"
           StepperData={stepperData}
         />
-        <Row>
+        {this.state.loading ? (<div className="divCenter"><Spin size="large" indicator={antIcon} /> </div>)  :<Row>
           <Col span={24}>
             <div className="stepperContainer">{campaign.loading ? <CircularProgress /> :this.getContainer()}</div>
           </Col>
-        </Row>
+        </Row>}
         {/* <Row className="BottomBar">
           <Col offset={1}>
             <Button onClick={this.onFormNext} type="primary">Next</Button>

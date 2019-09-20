@@ -59,7 +59,13 @@ class ChoiceInput extends Component {
     const { getFieldDecorator } = form;
 
     const { Item } = Form;
-
+    let props = {}
+    const { toQuestion } = choice;
+    if (toQuestion) {
+      props = {
+        defaultValue: toQuestion.id
+      }
+    }
     return (
       <ErrorBoundary>
         <Row>
@@ -82,7 +88,10 @@ class ChoiceInput extends Component {
           </Col>
           <Col span={10}>
             <Tooltip title="Added Question for this choice">
-              <Select defaultValue={choice.toQuestion ? choice.toQuestion.id : null} onChange={this.onChange.bind(this, choice)} style={{ width: "100%" }} size="large" style={{ width: "100%" }}
+              <Select
+                placeholder="Choose or add next question"
+                {...props}
+                onChange={this.onChange.bind(this, choice)} style={{ width: "100%" }} size="large" style={{ width: "100%" }}
                 dropdownRender={menu => (
                   <div>
                     {menu}
@@ -90,7 +99,7 @@ class ChoiceInput extends Component {
                 )}>
                 <Option key="addNewQuestion">
                   <div style={{ padding: '8px', cursor: 'pointer' }}>
-                    <Button style={{ marginLeft: "15px" }} > <Icon type="plus" /> Add new Question </Button>
+                    <Button style={{ margin: "auto", left: "15%" }} > <Icon type="plus" /> Add new Question </Button>
                   </div>
                   <Divider style={{ margin: '4px 0' }} />
                 </Option>
