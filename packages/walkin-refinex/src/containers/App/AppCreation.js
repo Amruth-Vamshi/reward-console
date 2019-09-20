@@ -5,7 +5,7 @@ import {
   GET_ALL_APPS_OF_ORGANIZATION,
   USER_DATA,
   UPDATE_APP
-} from "@walkinsole/walkin-components/src/PlatformQueries";
+} from "@walkinsole/walkin-core/src/PlatformQueries";
 
 import { CREATE_APP } from "../Query";
 import jwt from "jsonwebtoken";

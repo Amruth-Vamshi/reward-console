@@ -4,7 +4,7 @@ import { Col, Row, DatePicker, Button, Icon, Empty, Spin, Table } from "antd";
 import { IconWithTextCard, Widget, ChartCard, Auxiliary } from "@walkinsole/walkin-components";
 import { Bar, BarChart, Legend, CartesianGrid, Tooltip, XAxis, YAxis, RadialBarChart, RadialBar } from "recharts";
 import { graphql, compose, withApollo } from "react-apollo";
-import { GET_ANALYTICS, ANALYTICS } from "@walkinsole/walkin-components/src/PlatformQueries";
+import { GET_ANALYTICS, ANALYTICS } from "@walkinsole/walkin-core/src/PlatformQueries";
 import moment from 'moment';
 const dateFormat = 'YYYY/MM/DD';
 import jwt from "jsonwebtoken";

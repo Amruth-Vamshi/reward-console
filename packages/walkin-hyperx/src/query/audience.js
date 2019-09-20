@@ -12,12 +12,27 @@ export const allSegments = gql`
 	}
 `;
 export const attributes = gql`
-	query {
-		ruleAttributes {
+	query ruleAttributes($input:SearchRuleAttributeInput!) {
+		ruleAttributes(input:$input) {
 			id status
-			attributeName
 			description
+			attributeName
 			attributeValueType
+			organization{ id name }
+			ruleEntity{ id  entityName entityCode}
+		}
+	}
+`;
+
+export const RULE_ATTRIBUTES = gql`
+	query ruleAttributes($input:SearchRuleAttributeInput!) {
+		ruleAttributes(input:$input) {
+			id status
+			description
+			attributeName
+			attributeValueType
+			organization{ id name }
+			ruleEntity{ id  entityName entityCode}
 		}
 	}
 `;
