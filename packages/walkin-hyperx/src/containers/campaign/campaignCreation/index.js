@@ -203,7 +203,7 @@ class CampaignCreation extends Component {
 				console.log(this.state.scheduleData);
 				let repeatRuleConf = { frequency: scheduleData.repeatType, time: scheduleData.time }
 				scheduleData.repeatType == "WEEKLY" ? repeatRuleConf.byWeekDay = scheduleData.days : ''
-				scheduleData.hasOwnProperty('endTime') ? repeatRuleConf.endAfter = scheduleData.endTime : ''
+				scheduleData.hasOwnProperty('endTime') ? repeatRuleConf.endAfter = scheduleData.endTime : repeatRuleConf.scheduleData = scheduleData.noOfOccurances
 				input.repeatRuleConfiguration = repeatRuleConf
 			}
 			console.log(input);

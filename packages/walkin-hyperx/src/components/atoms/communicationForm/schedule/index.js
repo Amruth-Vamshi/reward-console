@@ -40,7 +40,7 @@ class Schedule extends React.Component {
             time: '',
             repeatOn: [false, false, false, false, false, false, false],
             end: "onEndDate",
-            noOfOcc: 10,
+            noOfOccurances: 10,
             saved: this.props.saved
         };
     }
@@ -56,7 +56,7 @@ class Schedule extends React.Component {
 
     handleChange = e => {
         console.log(e);
-        this.setState({ noOfOcc: e, saved: false })
+        this.setState({ noOfOccurances: e, saved: false })
     }
 
     saveSchedule = () => {
@@ -77,13 +77,13 @@ class Schedule extends React.Component {
         if (Object.keys(errors).length !== 0) {
             this.setState({ errors });
         } else {
-            let { repeatType, time, repeatOn, end, noOfOcc } = this.state, days = []
+            let { repeatType, time, repeatOn, end, noOfOccurances } = this.state, days = []
             let ScheduleData = { repeatType, time }
             if (repeatType == "WEEKLY") {
                 repeatOn.map((day, i) => day && days.push(weekDays[i]))
                 ScheduleData.days = days
             }
-            end == "afterOccurrences" ? ScheduleData.noOfOcc = noOfOcc : ScheduleData.endTime = this.props.campaign.endTime
+            end == "afterOccurrences" ? ScheduleData.noOfOccurances = noOfOccurances : ScheduleData.endTime = this.props.campaign.endTime
             this.props.saveSchedule(ScheduleData)
         }
     }
@@ -162,7 +162,7 @@ class Schedule extends React.Component {
                                 <Option value="afterOccurrences">After Occurrences</Option>
                             </Select>
                             {this.state.end == "afterOccurrences" &&
-                                <InputNumber max={1000} min={1} value={this.state.noOfOcc} onChange={(e) => this.handleChange(e)} style={{ width: 70 }} />}
+                                <InputNumber max={1000} min={1} value={this.state.noOfOccurances} onChange={(e) => this.handleChange(e)} style={{ width: 70 }} />}
                             <span style={{ color: 'Red' }}>{this.state.errors.end}</span>
                         </Form.Item>
 
