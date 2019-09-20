@@ -67,17 +67,15 @@ class SidebarLogo extends Component {
 					) : null}
 				<Link to="/" className="gx-site-logo">
 					{navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR &&
-						width >= TAB_SIZE ? (
-							<img
-								alt=""
-								src={require("@walkinsole/walkin-components/src/assets/images/w-logo.png")}
-							/>
-						) : themeType === THEME_TYPE_LITE ?
+						width >= TAB_SIZE ?
+						<img
+							alt=""
+							src={require("@walkinsole/walkin-components/src/assets/images/w-logo.png")}
+						/> : themeType === THEME_TYPE_LITE ?
 							<img
 								alt=""
 								src={require("@walkinsole/walkin-components/src/assets/images/logo-white.png")}
-							/>
-							:
+							/> :
 							<img
 								alt=""
 								src={require("@walkinsole/walkin-components/src/assets/images/hyperx.png")}

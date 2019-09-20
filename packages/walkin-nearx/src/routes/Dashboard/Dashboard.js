@@ -4,7 +4,6 @@ import Auxiliary from "../../util/Auxiliary";
 import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis } from "recharts";
 import { increamentData, AnyNear } from "./data";
 import { IconWithTextCard, Widget, ChartCard } from "@walkinsole/walkin-components";
-import { getNewPlaces } from '../Places/data'
 import moment from 'moment';
 import Cylinder3DChart from "./Cylinder3DChart";
 import NewPlaceCard from "./NewPlaceCard";

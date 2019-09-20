@@ -104,8 +104,15 @@ class CampaignCreation extends Component {
 		e.preventDefault();
 	};
 
-	saveDraft = current => this.setState({ current });
-
+	saveDraft = current => {
+		this.props.history.push('/hyperx/campaign')
+		//  this.setState({ current });
+		this.props.history.push({
+			pathname: '/hyperx/campaign',
+			key: "4",
+			state: { key: "4" }
+		})
+	}
 	goToNextPage(current, e) {
 		console.log(current);
 		let current1 = this.state.current
@@ -455,7 +462,7 @@ class CampaignCreation extends Component {
 					}
 				/>
 				<div className="stepperContainer">
-					<div style={{ margin: '40px', height: '65vh' }}>
+					<div style={{ margin: '40px', height: '60vh' }}>
 						{current === 0 && (
 							<BasicInfo
 								subTitle="Basic information"
@@ -543,14 +550,18 @@ class CampaignCreation extends Component {
 							/>}
 					</div>
 				</div>
-				<div style={{ margin: '32px' }}>
-					<CampaignFooter
-						loading={this.state.loading}
-						nextButtonText={current === 4 ? 'Launch' : 'Save and Next'}
-						saveDraftText={current === 0 ? "" : current === 4 ? "Save Draft" : 'Skip'}
-						saveDraft={() => this.saveDraft(current + 1)}
-						goToPage2={this.goToNextPage.bind(this, current + 1)}
-					/>
+				<div style={{}}>
+					<div className="gx-card campFooter" style={{ position: 'absolute', width: '100%' }}>
+						<div className="gx-card-body" style={{ background: "#e5e5e5" }}>
+							<CampaignFooter
+								loading={this.state.loading}
+								nextButtonText={current === 4 ? 'Launch' : 'Save and Next'}
+								saveDraftText={current === 0 ? "" : current === 4 ? "" : 'Save Draft'}
+								saveDraft={() => this.saveDraft(current + 1)}
+								goToPage2={this.goToNextPage.bind(this, current + 1)}
+							/>
+						</div>
+					</div>
 				</div>
 			</div >
 		);

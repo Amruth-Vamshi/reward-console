@@ -20,7 +20,8 @@ class CampaignList extends Component {
 			filtered: null,
 			allCampaigns: null,
 			data: null,
-			loading: null
+			loading: null,
+			key: this.props.location.state ? this.props.location.state.key : ''
 		};
 	}
 	componentDidMount() {
@@ -151,7 +152,7 @@ class CampaignList extends Component {
 	};
 
 	render() {
-		let { sortedInfo, filteredInfo, filtered, data, loading } = this.state;
+		let { sortedInfo, filteredInfo, filtered, data, loading, key } = this.state;
 		sortedInfo = sortedInfo || {};
 		filteredInfo = filteredInfo || {};
 		let campaignData = [];
@@ -216,7 +217,7 @@ class CampaignList extends Component {
 									<h3 className="gx-text-grey paddingLeftStyle campaignHeaderTitleStyle">Campaigns</h3>
 								</Col>
 								<Col className="searchInputStyle" span={12}>
-									<Button type="primary" onClick={this.onNewCampaign}>
+									<Button type="primary" style={{ marginBottom: 0 }} onClick={this.onNewCampaign}>
 										CREATE CAMPAIGN
 								</Button>
 								</Col>
@@ -232,7 +233,7 @@ class CampaignList extends Component {
 									onFilteredList={this.onCampaignFilteredList}
 								/>
 							</div>
-							<Tabs defaultActiveKey="1" onChange={this.onTabChange}>
+							<Tabs defaultActiveKey={key ? key : "1"} onChange={this.onTabChange}>
 								<TabPane tab="Live" key="1">
 									<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} pagination={paginationData} />
 								</TabPane>
