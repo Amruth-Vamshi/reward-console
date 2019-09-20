@@ -5,7 +5,7 @@ import Audience from "./audience";
 import Offer from "./offer";
 import Communication from "./communication";
 import { campaignOverview as Overview } from "@walkinsole/walkin-components";
-import { allSegments, attributes, GET_AUDIENCE, CREATE_AUDIENCE, CREATE_RULE } from "../../../query/audience";
+import { allSegments, RULE_ATTRIBUTES, GET_AUDIENCE, CREATE_AUDIENCE, CREATE_RULE } from "../../../query/audience";
 import { getOffers, ADD_OFFER_TO_CAMPAIGN } from "../../../query/offer";
 import { withApollo, graphql, compose } from 'react-apollo';
 import { GET_ALL_APPS_OF_ORGANIZATION } from "@walkinsole/walkin-core/src/PlatformQueries";
@@ -582,11 +582,14 @@ export default withRouter(
 					fetchPolicy: 'network-only',
 				}),
 			}),
-			graphql(attributes, {
+			graphql(RULE_ATTRIBUTES, {
 				name: 'allAttributes',
 				options: ownProps => ({
 					variables: {
-						organizationId: jwt.decode(localStorage.getItem("jwt")).org_id,
+						input: {
+							status: "ACTIVE",
+							organizationId: jwt.decode(localStorage.getItem("jwt")).org_id,
+						}
 					},
 					fetchPolicy: 'network-only',
 				}),

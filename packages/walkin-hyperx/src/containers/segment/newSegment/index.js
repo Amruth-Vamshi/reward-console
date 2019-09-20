@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { Input, Button, Alert, Col } from 'antd';
 import { withRouter } from 'react-router-dom';
 import { withApollo, graphql, compose, mutate } from 'react-apollo';
-import { attributes, CREATE_RULE, createRule, createSegment } from '../../../query/audience';
+import { RULE_ATTRIBUTES, CREATE_RULE, createRule, createSegment } from '../../../query/audience';
 import './style.css';
 import { SEGMENT_LIST } from '../../../utils/RouterConstants';
 import get from 'lodash/get';
@@ -171,7 +171,17 @@ class NewSegment extends Component {
 export default withRouter(
 	withApollo(
 		compose(
-			graphql(attributes, {
+			graphql(RULE_ATTRIBUTES, {
+				options: props => {
+					return {
+						variables: {
+							input: {
+								status: "ACTIVE",
+								organizationId: jwt.decode(localStorage.getItem("jwt")).org_id,
+							}
+						}
+					}
+				},
 				props: ({ data: { loading, error, ruleAttributes } }) => ({
 					loading,
 					ruleAttributes,
