@@ -4,7 +4,6 @@ import Auxiliary from "../../util/Auxiliary";
 import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis } from "recharts";
 import { increamentData, AnyNear } from "./data";
 import { IconWithTextCard, Widget, ChartCard } from "@walkinsole/walkin-components";
-import { getNewPlaces } from '../Places/data'
 import moment from 'moment';
 import Cylinder3DChart from "./Cylinder3DChart";
 import NewPlaceCard from "./NewPlaceCard";
@@ -12,7 +11,7 @@ import jwt from "jsonwebtoken";
 import '../../styles/home.css'
 import { withApollo } from "react-apollo";
 import { Link } from "react-router-dom";
-import { GET_ANALYTICS } from "@walkinsole/walkin-components/src/PlatformQueries";
+import { GET_ANALYTICS } from "@walkinsole/walkin-core/src/PlatformQueries";
 
 const dateFormat = 'YYYY/MM/DD';
 

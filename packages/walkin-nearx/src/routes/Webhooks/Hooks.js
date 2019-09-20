@@ -7,7 +7,7 @@ import {
   CREATE_WEBHOOK,
   UPDATE_WEBHOOK,
   DELETE_WEBHOOK
-} from "@walkinsole/walkin-components/src/PlatformQueries";
+} from "@walkinsole/walkin-core/src/PlatformQueries";
 import jwt from "jsonwebtoken";
 import { withApollo } from "react-apollo";
 // import { nearXClient as client } from "../../nearXApollo";

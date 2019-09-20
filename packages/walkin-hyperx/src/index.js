@@ -9,7 +9,7 @@ import {
 	NEW_OFFER,
 } from '../src/utils/RouterConstants';
 import CampaignList from './containers/campaign/campaignList';
-import CampaignCreation from './containers/campaign';
+import CampaignCreation from './containers/campaign/campaignCreation';
 import SegmentList from './containers/segment/segmentList';
 import NewSegment from './containers/segment/newSegment';
 import OfferList from './containers/offer/offerList';

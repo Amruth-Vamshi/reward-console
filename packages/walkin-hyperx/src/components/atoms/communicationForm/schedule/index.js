@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import './style.css'
-import { Card, Row, Col, Button, TimePicker, DatePicker, Input, Icon, Select, Form } from "antd";
+import { Card, Row, Col, Button, TimePicker, DatePicker, InputNumber, Input, Icon, Select, Form } from "antd";
+import moment from "moment";
 
 // const formItemLayout = {
 //     labelCol: { span: 6 },
@@ -16,13 +17,15 @@ const formItemLayout = {
         md: { span: 24 },
         lg: { span: 24 },
         xl: { span: 7 }
+        // xl: { span: 7 }
     },
     wrapperCol: {
         xs: { span: 24 },
         sm: { span: 17 },
         md: { span: 24 },
         lg: { span: 24 },
-        xl: { span: 17 }
+        xl: { span: 17 },
+        // xl: { span: 17 }
     }
 };
 
@@ -33,10 +36,12 @@ class Schedule extends React.Component {
         super(props);
         this.state = {
             errors: {},
-            repeatType: "daily",
+            repeatType: "DAILY",
             time: '',
             repeatOn: [false, false, false, false, false, false, false],
-            end: "onEndDate"
+            end: "onEndDate",
+            noOfOccurances: 10,
+            saved: this.props.saved
         };
     }
 
@@ -46,45 +51,68 @@ class Schedule extends React.Component {
         let { repeatOn, errors } = this.state
         errors.repeatOn = ''
         repeatOn[e] = !repeatOn[e]
-        this.setState({ repeatOn, errors })
+        this.setState({ repeatOn, errors, saved: false })
+    }
+
+    handleChange = e => {
+        console.log(e);
+        this.setState({ noOfOccurances: e, saved: false })
     }
 
     saveSchedule = () => {
         let errors = {};
 
-        if (this.state.repeatType == "weekly") {
+        if (this.state.repeatType == "WEEKLY") {
             console.log(this.state.repeatOn.find(i => i));
             !this.state.repeatOn.find(i => i) ?
                 errors.repeatOn = "select atleast one day" : ''
         }
 
+        console.log(this.state.time);
 
-        if (this.state.time = '') errors.time = "* this field is mandatory";
+        if (this.state.time == '') errors.time = "* this field is mandatory";
 
 
 
         if (Object.keys(errors).length !== 0) {
             this.setState({ errors });
         } else {
-            this.props.saveSchedule(this.state)
+            let { repeatType, time, repeatOn, end, noOfOccurances } = this.state, days = []
+            let ScheduleData = { repeatType, time }
+            if (repeatType == "WEEKLY") {
+                repeatOn.map((day, i) => day && days.push(weekDays[i]))
+                ScheduleData.days = days
+            }
+            end == "afterOccurrences" ? ScheduleData.noOfOccurances = noOfOccurances : ScheduleData.endTime = this.props.campaign.endTime
+            this.props.saveSchedule(ScheduleData)
         }
+    }
 
+    componentWillReceiveProps = p => {
+        this.setState({ saved: p.saved })
+    }
 
-
+    onChangeTime = (e, n) => {
+        this.state.errors.time = "";
+        this.setState({ time: e, saved: false })
     }
     handleOnEndChange = e => {
-        this.setState({ end: e })
+        this.setState({ end: e, saved: false })
     }
 
     handleTypeChange = e => {
-        this.setState({ repeatType: e })
+        this.setState({ repeatType: e, saved: false })
     }
     render() {
+        let { campaign } = this.props
 
         return (
             <div>
                 <Card className="scheduleCard">
                     <Row><p style={{ fontSize: 18 }}>Schedule</p></Row>
+                    {this.props.campaign &&
+                        <p className="campDate"> Campaign Date: &nbsp;  <b>{moment(campaign.startTime).format("DD MMM YY HH:mm") + ' - ' +
+                            moment(campaign.endTime).format("DD MMM YY HH:mm")} </b></p>}
 
                     <Form ref={this.props.wrappedComponentRef} onSubmit={this.props.submit}>
                         <Form.Item label="Repeat Every" {...formItemLayout}>
@@ -95,11 +123,11 @@ class Schedule extends React.Component {
                                 onChange={e => this.handleTypeChange(e)}
                                 filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                             >
-                                <Option value="daily">Daily</Option>
-                                <Option value="weekly">Weekly</Option>
+                                <Option value="DAILY">Daily</Option>
+                                <Option value="WEEKLY">Weekly</Option>
                             </Select>
                         </Form.Item>
-                        {this.state.repeatType == "weekly" &&
+                        {this.state.repeatType == "WEEKLY" &&
                             <Form.Item style={{ marginTop: 10 }} label="Repeat On" {...formItemLayout}>
                                 <div>
                                     <div>
@@ -118,7 +146,7 @@ class Schedule extends React.Component {
 
 
                         <Form.Item label="@ Time" {...formItemLayout}>
-                            <TimePicker className="scheduleTime" use12Hours format="h:mm a" onChange={this.onChange} />
+                            <TimePicker className="scheduleTime" use12Hours format="h:mm a" onChange={this.onChangeTime} />
                             <div style={{ color: 'Red' }}>{this.state.errors.time}</div>
                         </Form.Item>
 
@@ -133,12 +161,14 @@ class Schedule extends React.Component {
                                 <Option value="onEndDate">On End Date</Option>
                                 <Option value="afterOccurrences">After Occurrences</Option>
                             </Select>
+                            {this.state.end == "afterOccurrences" &&
+                                <InputNumber max={1000} min={1} value={this.state.noOfOccurances} onChange={(e) => this.handleChange(e)} style={{ width: 70 }} />}
                             <span style={{ color: 'Red' }}>{this.state.errors.end}</span>
                         </Form.Item>
 
                         <Row type="flex" justify="space-around" className="saveRow">
                             <Col style={{ justifyContent: "center", flex: "auto" }} span={8}>
-                                {this.props.saved ? <span className="saveMark divCenterVertical"> <Icon type="check-circle" theme="filled" /> &nbsp;  Saved</span> : ''}
+                                {this.state.saved ? <span className="saveMark divCenterVertical"> <Icon type="check-circle" theme="filled" /> &nbsp;  Saved</span> : ''}
                             </Col>
                             <Col span={8}>
                                 <Button onClick={() => this.saveSchedule()} style={{ marginBottom: 0, float: "right" }} type="primary" shape="round" > Save </Button>

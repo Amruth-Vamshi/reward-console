@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Avatar, Popover } from "antd";
 import { withApollo, compose, graphql } from "react-apollo";
 import { Redirect, Link } from "react-router-dom";
-import { USER_DATA } from "@walkinsole/walkin-components/src/PlatformQueries";
+import { USER_DATA } from "@walkinsole/walkin-core/src/PlatformQueries";
 import jwt from "jsonwebtoken";
 import { withRouter } from "react-router-dom";
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { CREATE_USER, GET_ALL_APPS_OF_ORGANIZATION, ROLES_LIST } from "@walkinsole/walkin-components/src/PlatformQueries";
+import { CREATE_USER, GET_ALL_APPS_OF_ORGANIZATION, ROLES_LIST } from "../../PlatformQueries";
 import { Form, Input, Button, Select } from "antd";
 import { withApollo, compose, graphql } from "react-apollo";
 

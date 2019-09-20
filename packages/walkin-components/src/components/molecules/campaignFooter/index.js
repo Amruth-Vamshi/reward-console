@@ -4,7 +4,7 @@ import './foo.css';
 
 const CampaignFooter = ({ nextButtonText, loading, saveDraftText, saveDraft, goToPage2 }) => {
 	return (
-		<div className="campaignFooterStyle">
+		<div className="">
 			<Button loading={loading} onClick={goToPage2} type="primary">
 				{nextButtonText}
 			</Button>

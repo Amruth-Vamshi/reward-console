@@ -7,7 +7,7 @@ import { Spin } from "antd";
 import { withApollo } from "react-apollo";
 import jwt from "jsonwebtoken";
 
-import { GET_PRODUCTS } from "@walkinsole/walkin-components/src/PlatformQueries";
+import { GET_PRODUCTS } from "@walkinsole/walkin-core/src/PlatformQueries";
 
 const apps = [
 	{

@@ -14,11 +14,10 @@ export const allSegments = gql`
 export const attributes = gql`
 	query {
 		ruleAttributes {
-			id
+			id status
 			attributeName
 			description
 			attributeValueType
-			status
 		}
 	}
 `;
