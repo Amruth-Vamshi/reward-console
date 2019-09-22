@@ -68,14 +68,14 @@ class SidebarContent extends Component {
 						</Menu.Item>
 						{/* <Menu.Item key="analytics">
 							<Link to="/nearx">
-							<i className="icon icon-geo-location" />
-							Analytics
+								<i className="icon icon-geo-location" />
+								Analytics
 							</Link>
 						</Menu.Item>
 						<Menu.Item key="settings">
 							<Link to="/nearx">
-							<i className="icon icon-geo-location" />
-							Settings
+								<i className="icon icon-geo-location" />
+								Settings
 							</Link>
 						</Menu.Item> */}
 					</Menu>
