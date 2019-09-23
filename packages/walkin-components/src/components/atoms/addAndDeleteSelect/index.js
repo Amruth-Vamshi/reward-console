@@ -9,7 +9,8 @@ class AddAndDeleteSelectDynamically extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			values: this.props.values ? this.props.values : [""]
+			values: this.props.values ? this.props.values : [""],
+			errors: this.props.errors ? this.props.errors : {}
 		};
 	}
 	addClick() {
@@ -21,12 +22,17 @@ class AddAndDeleteSelectDynamically extends React.Component {
 
 	handleChange(i, value) {
 		let values = [...this.state.values];
-		console.log(values.find(i => i == value));
 		if (!values.find(i => i == value)) {
 			values[i] = value;
 			this.setState({ values });
 			this.props.onValuesSelected(values);
 		}
+		if (!values[0] || values[0] == '') this.state.errors.segment = ''
+	}
+
+	componentWillReceiveProps = p => {
+		let { errors } = this.state
+		this.setState({ errors: p.errors ? p.errors : errors })
 	}
 
 	removeClick(i, e) {
@@ -61,6 +67,7 @@ class AddAndDeleteSelectDynamically extends React.Component {
 						</div>
 					);
 				})}
+				<div style={{ color: "Red", marginTop: 10 }}> {this.state.errors.segment} </div>
 				<Button className="newSegmentAddButton" type="primary" onClick={this.addClick.bind(this)}> Add </Button>
 			</Fragment>
 		);

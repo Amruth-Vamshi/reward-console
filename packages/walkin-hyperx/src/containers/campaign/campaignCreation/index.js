@@ -115,13 +115,20 @@ class CampaignCreation extends Component {
 	}
 	goToNextPage(current, e) {
 		console.log(current);
+		let errors = {}
+		let segments = this.state.selectedSegments
 		let current1 = this.state.current
 
 		if (current1 == 0) {
 			this.createOrUpdateBasicCampaign(current)
 		} else if (current1 == 1) {
-			this.createAudience(current)
-			this.ruleQuery(current)
+			if (segments[0] && segments[0] != "") {
+				this.createAudience(current)
+				this.ruleQuery(current)
+			} else {
+				errors.segment = "* this field is mandatory"
+				this.setState({ errors })
+			}
 		} else if (current1 == 2) {
 			this.linkOffer(current)
 		} else if (current1 == 3) {
@@ -280,26 +287,27 @@ class CampaignCreation extends Component {
 
 	createAudience = current => {
 		let segments = this.state.selectedSegments
-		// if (segments[0] && segments[0] != "" && !this.state.audienceCreated) {
-		let { allApplications: { organization } } = this.props;
-		this.setState({ loading: true });
-		var input = {
-			campaign_id: this.state.campaign.id,
-			segment_id: segments,
-			organization_id: organization.id,
-			application_id: organization.applications[0].id,
-			status: "ACTIVE"
-		};
-		this.props.createAudience({
-			variables: { input: input }
-		}).then(data => {
-			console.log("Create Audience..", data)
-			this.audienceChange(current, "audience")
-			this.setState({ audience: data.data.createAudience });
-		}).catch(err => {
-			console.log("Error while creating audience..", err)
-		});
-		// } else this.audienceChange(current, "audience")
+		if (segments[0] && segments[0] != "" && !this.state.audienceCreated) {
+			let { allApplications: { organization } } = this.props;
+			this.setState({ loading: true });
+			var input = {
+				campaign_id: this.state.campaign.id,
+				segment_id: segments,
+				organization_id: organization.id,
+				application_id: organization.applications[0].id,
+				status: "ACTIVE"
+			};
+			this.props.createAudience({
+				variables: { input: input }
+			}).then(data => {
+				console.log("Create Audience..", data)
+				this.audienceChange(current, "audience")
+				this.setState({ audience: data.data.createAudience });
+			}).catch(err => {
+				this.setState({ loading: false });
+				console.log("Error while creating audience..", err)
+			});
+		} else this.audienceChange(current, "audience")
 	}
 
 	createOrUpdateBasicCampaign = current => {
@@ -309,7 +317,7 @@ class CampaignCreation extends Component {
 				if (err) return
 				else {
 					console.log('values', values);
-					!this.state.campaignCreated ? this.createCampaign(values, current) : this.updateBasicCampaign(values, current);
+					!this.state.campaignCreated ? this.createCampaign(values, current) : "";
 					this.setState({ formValues: values });
 				}
 			});
@@ -343,30 +351,6 @@ class CampaignCreation extends Component {
 			console.log(err)
 			this.setState({ loading: false })
 		})
-	};
-
-	updateBasicCampaign = async values => {
-		// 	const { client } = this.props;
-		// 	const { priorityChosen, controlValue } = this.state;
-		// 	const input = {
-		// 		...values,
-		// 		priority: parseInt(priorityChosen),
-		// 		campaignControlPercent: parseInt(controlValue),
-		// 		campaignType: "OFFER"
-		// 	}; this.setState({ loading: true });
-		// 	try {
-		// 		const updateCampaign = await client.mutate({
-		// 			mutation: UPDATE_CAMPAIGN,
-		// 			variables: { input: input }
-		// 		});
-		// 		console.log("Updated");
-		// 		// this.setState({
-		// 		// 	loading: false,
-		// 		// 	campaign: createCampaign.data.createCampaign
-		// 		// });
-		// 	} catch (err) {
-		// 		console.log(err);
-		// 	}
 	};
 
 	audienceChange = (current, type) => {
@@ -410,6 +394,7 @@ class CampaignCreation extends Component {
 
 	onValuesSelected = e => {
 		this.setState({ selectedSegments: e })
+		this.state.errors.segment = ''
 	}
 
 
@@ -439,7 +424,8 @@ class CampaignCreation extends Component {
 				authorization: 'authorization-text',
 			},
 		};
-		console.log(this.props)
+		console.log(this.state.errors)
+
 		return (
 			<div style={{ margin: '-32px' }}>
 				<CampaignHeader
@@ -454,7 +440,7 @@ class CampaignCreation extends Component {
 								<Stepper
 									stepData={stepData}
 									current={current}
-									onChange={this.goToNextPage.bind(this)}
+								// onChange={this.goToNextPage.bind(this)}
 								/>
 							</Col>
 						</Fragment>
@@ -508,6 +494,7 @@ class CampaignCreation extends Component {
 								segmentFilterSubText="Campaign applies to :"
 								attributeData={attributeData}
 								logQuery={this.logQuery}
+								errors={this.state.errors}
 							/>
 						</div>
 						}
@@ -555,7 +542,7 @@ class CampaignCreation extends Component {
 							<CampaignFooter
 								loading={this.state.loading}
 								nextButtonText={current === 4 ? 'Launch' : 'Save and Next'}
-								saveDraftText={current === 0 ? "" : current === 4 ? "" : 'Save Draft'}
+								saveDraftText={current === 0 ? "" : 'Save Draft'}
 								saveDraft={() => this.saveDraft(current + 1)}
 								goToPage2={this.goToNextPage.bind(this, current + 1)}
 							/>

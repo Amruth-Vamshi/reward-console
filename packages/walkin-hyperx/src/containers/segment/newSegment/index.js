@@ -166,6 +166,7 @@ class NewSegment extends Component {
 						</div>
 						<span style={{ color: "Red" }}> {this.state.errors.name} </span>
 					</div>
+					<div style={{ marginTop: 10, marginBottom: 10 }}>Segment selection criteria</div>
 					<WalkinQueryBuilder fields={attributeData} onQueryChange={this.logQuery} query={query} />
 				</div>
 				{newSegmentError && <Alert message="Not a valid Segment" type="error" />}
