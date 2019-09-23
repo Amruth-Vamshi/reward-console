@@ -9,6 +9,10 @@ import { message } from "antd";
 import env from "../../../config";
 import { async } from "q";
 
+message.config({
+  maxCount: 2,
+});
+
 export const configureClient = async () => {
   const cache = new InMemoryCache();
 

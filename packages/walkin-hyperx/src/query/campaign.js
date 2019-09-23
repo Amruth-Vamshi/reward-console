@@ -2,7 +2,8 @@ import gql from 'graphql-tag';
 export const campaigns = gql`
 	query campaigns($status: STATUS!) {
 		campaigns(status: $status) {
-			id name 
+			id name priority
+      campaignStatus
 			description
 			startTime
 			endTime
@@ -64,6 +65,7 @@ export const LAUNCH_CAMPAIGN = gql`
       startTime endTime
       status triggerRule { id }
       campaignType priority
+      campaignStatus
     }
   }
 `;

@@ -9,3 +9,9 @@
 	align-items: center;
 	height: 100%;
 }
+
+.priorityTextStyle{
+	font-size: 17px;
+	font-weight: bold;
+	color: #9e9e9e
+}
