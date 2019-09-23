@@ -2,8 +2,7 @@ import gql from 'graphql-tag';
 export const campaigns = gql`
 	query campaigns($status: STATUS!) {
 		campaigns(status: $status) {
-			id
-			name
+			id name 
 			description
 			startTime
 			endTime

@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
 import { NEW_CAMPAIGN } from '../../../utils/RouterConstants';
 import { campaigns } from '../../../query/campaign';
-import { Card, Menu, Dropdown, Col, Button, Progress, Tabs } from 'antd';
+import { Card, Menu, Dropdown, Col, Spin, Button, Progress, Tabs } from 'antd';
 import moment from 'moment';
 import { withApollo, graphql } from 'react-apollo';
 import { SortableDataTable, InstantSearch, CampaignHeader, CircularProgress } from '@walkinsole/walkin-components';
@@ -133,11 +133,8 @@ class CampaignList extends Component {
 		}
 		if (key == 4) {
 			const { changeStatus } = this.props;
-			//If api works
-			// changeStatus('DRAFT')
-			// this.setState({data: this.props.campaigns})
 			let draftCampaigns = allCampaigns.filter(val => {
-				return val.status == 'DRAFT';
+				return val.state == 'DRAFT';
 			});
 			this.setState({ data: draftCampaigns, filtered: null });
 		}
@@ -183,7 +180,7 @@ class CampaignList extends Component {
 				key: 'startTime',
 				render: (text, row) => (
 					<div>
-						{moment(text).format('DD-MM-YYYY')}
+						{moment(text).format('DD-MMM-YY')}
 						<Progress
 							style={{ width: '35%', margin: '0px 5px 0px 5px' }}
 							percent={Math.round(
@@ -191,7 +188,7 @@ class CampaignList extends Component {
 							)}
 							showInfo={false}
 						/>
-						{moment(row.endTime).format('DD-MM-YYYY')}
+						{moment(row.endTime).format('DD-MMM-YY')}
 					</div>
 				),
 			},
@@ -208,8 +205,15 @@ class CampaignList extends Component {
 			},
 		];
 		return (
-			loading ? <CircularProgress /> :
-				<div style={{ margin: '-32px' }}>
+			loading ?
+				<div>
+					<br /> <br /> <br /> <br /><br /> <br />
+					<div className="divCenter">
+						<Spin size="large" />
+					</div>
+					<br /> <br /> <br />
+				</div>
+				: <div style={{ margin: '-32px' }}>
 					<CampaignHeader
 						children={
 							<Fragment>

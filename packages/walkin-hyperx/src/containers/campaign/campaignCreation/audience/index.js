@@ -15,7 +15,8 @@ const Audience = ({
 	attributeData,
 	logQuery,
 	selectedSegments,
-	ruleQuery
+	ruleQuery,
+	errors
 }) => {
 	return (
 		<div>
@@ -29,6 +30,7 @@ const Audience = ({
 						onValuesSelected={onValuesSelected}
 						segmentSelectionData={segmentSelectionData}
 						values={selectedSegments}
+						errors={errors}
 					/>
 					{uploadCsvText && <span>
 						or

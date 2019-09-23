@@ -45,9 +45,7 @@ export const configureClient = async () => {
           message.warn(graphQLErrors[0].message)
         }
       } else if (networkError) {
-        message.error(
-          "Hey! Regret to inform that we are experiencing some issues. Please check your internet connection or try again after sometime"
-        );
+        message.error("Hey! Regret to inform that we are experiencing some issues. Please check your internet connection or try again after sometime");
         console.log(networkError);
 
       }

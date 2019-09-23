@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react';
 import { Row, Col, Button } from 'antd';
-import Stepper from '../../atoms/stepper';
 import './style.css';
 import PropTypes from 'prop-types';
 

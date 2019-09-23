@@ -70,7 +70,7 @@ class Schedule extends React.Component {
 
         console.log(this.state.time);
 
-        if (this.state.time == '') errors.time = "* this field is mandatory";
+        if (!this.state.time || this.state.time == '') errors.time = "* this field is mandatory";
 
 
 
