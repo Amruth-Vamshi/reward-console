@@ -9,6 +9,7 @@ import { SortableDataTable, InstantSearch, CampaignHeader, CircularProgress } fr
 import './style.css';
 
 const DEFAULT_STATUS = 'ACTIVE';
+const DEFAULT_TYPE = 'OFFER';
 
 const { TabPane } = Tabs;
 
@@ -21,7 +22,7 @@ class CampaignList extends Component {
 			allCampaigns: null,
 			data: null,
 			loading: null,
-			key: this.props.location.state ? this.props.location.state.key : ''
+			key: this.props.location.tabKey ? this.props.location.tabKey : '1'
 		};
 	}
 	componentDidMount() {
@@ -38,19 +39,11 @@ class CampaignList extends Component {
 	}
 
 	setInitialValues = () => {
-		const { campaigns, loading } = this.props;
-		console.log()
-		let data = []
-		let allCampaigns = []
-		if (campaigns) {
-			data = campaigns.filter(val => {
-				if (val.status == 'ACTIVE') {
-					return moment().isBetween(val.startTime, val.endTime);
-				}
-			})
-			allCampaigns = campaigns;
-		}
-		this.setState({ allCampaigns: allCampaigns, data: data, loading: false })
+		const { campaigns, loading, key } = this.props;
+		this.setState({ allCampaigns: campaigns, loading: false }, () => {
+			this.onTabChange(key ? key : 1)
+		})
+
 	}
 	onNewCampaign = () => {
 		const { history } = this.props;
@@ -59,9 +52,7 @@ class CampaignList extends Component {
 		});
 	};
 	handleChange = (pagination, filters, sorter) => {
-		this.setState({
-			sortedInfo: sorter,
-		});
+		this.setState({ sortedInfo: sorter });
 	};
 
 	onDeleteContact = contact => {
@@ -112,12 +103,14 @@ class CampaignList extends Component {
 	};
 
 	onTabChange = key => {
-		console.log(key)
 		const { allCampaigns } = this.state
+
+		console.log(key, allCampaigns)
+		if (!allCampaigns || allCampaigns.length < 1) return
 		if (key == 2) {
 			let upcomingCampaigns = allCampaigns.filter(val => {
 				if (val.status == 'ACTIVE') {
-					return moment(val.startTime).isAfter(moment());
+					return val.campaignStatus == 'LIVE' && moment(val.startTime).isAfter(moment());
 				}
 			});
 			this.setState({ data: upcomingCampaigns, filtered: null });
@@ -126,7 +119,7 @@ class CampaignList extends Component {
 		if (key == 3) {
 			let completedCampaigns = allCampaigns.filter(val => {
 				if (val.status == 'ACTIVE') {
-					return moment(val.endTime).isBefore(moment());
+					return val.campaignStatus == 'LIVE' && moment(val.endTime).isBefore(moment());
 				}
 			});
 			this.setState({ data: completedCampaigns, filtered: null });
@@ -134,7 +127,7 @@ class CampaignList extends Component {
 		if (key == 4) {
 			const { changeStatus } = this.props;
 			let draftCampaigns = allCampaigns.filter(val => {
-				return val.state == 'DRAFT';
+				return val.campaignStatus == 'DRAFT';
 			});
 			this.setState({ data: draftCampaigns, filtered: null });
 		}
@@ -165,12 +158,14 @@ class CampaignList extends Component {
 			showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`
 		}
 
+		console.log(campaignData);
 
 		const columns = [
 			{
 				title: 'Name',
 				dataIndex: 'name',
 				key: 'name',
+				render: (text, row) => <div style={{ color: '#292929' }}> {text} </div>,
 				sorter: (a, b) => (a.name !== b.name ? (a.name < b.name ? -1 : 1) : 0),
 				sortOrder: sortedInfo.columnKey === 'name' && sortedInfo.order,
 			},
@@ -191,6 +186,15 @@ class CampaignList extends Component {
 						{moment(row.endTime).format('DD-MMM-YY')}
 					</div>
 				),
+			},
+			{
+				title: 'Priority',
+				dataIndex: 'priority',
+				key: 'priority',
+				render: (text, row) => <div className="priorityTextStyle">
+					{text < 10 ? `0${text}` : text} </div>,
+				sorter: (a, b) => (a.priority !== b.priority ? (a.priority < b.priority ? -1 : 1) : 0),
+				sortOrder: sortedInfo.columnKey === 'priority' && sortedInfo.order,
 			},
 			{
 				title: '',
@@ -237,6 +241,7 @@ class CampaignList extends Component {
 									onFilteredList={this.onCampaignFilteredList}
 								/>
 							</div>
+							{console.log(key)}
 							<Tabs defaultActiveKey={key ? key : "1"} onChange={this.onTabChange}>
 								<TabPane tab="Live" key="1">
 									<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} pagination={paginationData} />
@@ -263,7 +268,9 @@ export default withRouter(
 		graphql(campaigns, {
 			options: () => ({
 				variables: {
+
 					status: DEFAULT_STATUS,
+					campaignType: DEFAULT_TYPE
 				}, fetchPolicy: "network-only"
 			}),
 			props: ({ data: { loading, error, campaigns, refetch } }) => ({

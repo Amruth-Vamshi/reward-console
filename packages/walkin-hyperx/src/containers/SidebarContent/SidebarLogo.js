@@ -21,68 +21,70 @@ class SidebarLogo extends Component {
 			navStyle = NAV_STYLE_DRAWER;
 		}
 		return (
-			<div className="gx-layout-sider-header">
-				{width < TAB_SIZE_MAX && width > TAB_SIZE ?
-					<Link to="/" className="gx-pointer">
-						<img alt="fgd" src={require("@walkinsole/walkin-components/src/assets/images/walkin_logo_mini.png")} style={{ maxWidth: 35 }} />
-					</Link> :
-					navStyle === NAV_STYLE_FIXED || navStyle === NAV_STYLE_MINI_SIDEBAR ? (
-						<div className="gx-linebar">
-							<i
-								className={`gx-icon-btn icon icon-${
-									navStyle === NAV_STYLE_MINI_SIDEBAR
-										? "menu-unfold"
-										: "menu-fold"
-									} ${themeType !== THEME_TYPE_LITE ? "gx-text-white" : ""}`}
+			<div className="HyperX-Logo">
+				<div className="gx-layout-sider-header">
+					{width < TAB_SIZE_MAX && width > TAB_SIZE ?
+						<Link to="/" className="gx-pointer">
+							<img alt="fgd" src={require("@walkinsole/walkin-components/src/assets/images/walkin_logo_mini.png")} style={{ maxWidth: 35 }} />
+						</Link> :
+						navStyle === NAV_STYLE_FIXED || navStyle === NAV_STYLE_MINI_SIDEBAR ? (
+							<div className="gx-linebar">
+								<i
+									className={`gx-icon-btn icon icon-${
+										navStyle === NAV_STYLE_MINI_SIDEBAR
+											? "menu-unfold"
+											: "menu-fold"
+										} ${themeType !== THEME_TYPE_LITE ? "gx-text-white" : ""}`}
 
-								onClick={() => {
-									if (navStyle === NAV_STYLE_DRAWER) {
-										this.props.toggleCollapsedSideNav({
-											variables: {
-												navCollapsed: !navCollapsed
-											}
-										});
-									} else if (navStyle === NAV_STYLE_FIXED) {
-										this.props.onNavStyleChange({
-											variables: {
-												navStyle: NAV_STYLE_MINI_SIDEBAR
-											}
-										});
-									} else if (navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR) {
-										this.props.toggleCollapsedSideNav({
-											variables: {
-												navCollapsed: !navCollapsed
-											}
-										});
-									} else {
-										this.props.onNavStyleChange({
-											variables: {
-												navStyle: NAV_STYLE_FIXED
-											}
-										});
-									}
-								}}
-							/>
-						</div>
-					) : null}
-				<Link to="/" className="gx-site-logo">
-					{navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR &&
-						width >= TAB_SIZE ?
-						<img
-							alt=""
-							src={require("@walkinsole/walkin-components/src/assets/images/w-logo.png")}
-						/> : themeType === THEME_TYPE_LITE ?
+									onClick={() => {
+										if (navStyle === NAV_STYLE_DRAWER) {
+											this.props.toggleCollapsedSideNav({
+												variables: {
+													navCollapsed: !navCollapsed
+												}
+											});
+										} else if (navStyle === NAV_STYLE_FIXED) {
+											this.props.onNavStyleChange({
+												variables: {
+													navStyle: NAV_STYLE_MINI_SIDEBAR
+												}
+											});
+										} else if (navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR) {
+											this.props.toggleCollapsedSideNav({
+												variables: {
+													navCollapsed: !navCollapsed
+												}
+											});
+										} else {
+											this.props.onNavStyleChange({
+												variables: {
+													navStyle: NAV_STYLE_FIXED
+												}
+											});
+										}
+									}}
+								/>
+							</div>
+						) : null}
+					<Link to="/" className="gx-site-logo">
+						{navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR &&
+							width >= TAB_SIZE ?
 							<img
 								alt=""
-								src={require("@walkinsole/walkin-components/src/assets/images/logo-white.png")}
-							/> :
-							<img
-								alt=""
-								src={require("@walkinsole/walkin-components/src/assets/images/hyperx.png")}
-								style={{ width: 150 }}
-							/>
-					}
-				</Link>
+								src={require("@walkinsole/walkin-components/src/assets/images/w-logo.png")}
+							/> : themeType === THEME_TYPE_LITE ?
+								<img
+									alt=""
+									src={require("@walkinsole/walkin-components/src/assets/images/logo-white.png")}
+								/> :
+								<img
+									alt=""
+									src={require("@walkinsole/walkin-components/src/assets/images/hyperx.png")}
+									style={{ width: 150 }}
+								/>
+						}
+					</Link>
+				</div>
 			</div>
 		);
 	}

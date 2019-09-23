@@ -109,9 +109,10 @@ class CampaignCreation extends Component {
 		//  this.setState({ current });
 		this.props.history.push({
 			pathname: '/hyperx/campaign',
-			key: "4",
-			state: { key: "4" }
+			tabKey: "4",
+			// state: { key: "4" }
 		})
+		// this.props.history.push('/hyperx/campaign', { key: "4" })
 	}
 	goToNextPage(current, e) {
 		console.log(current);
@@ -424,7 +425,6 @@ class CampaignCreation extends Component {
 				authorization: 'authorization-text',
 			},
 		};
-		console.log(this.state.errors)
 
 		return (
 			<div style={{ margin: '-32px' }}>
@@ -542,7 +542,7 @@ class CampaignCreation extends Component {
 							<CampaignFooter
 								loading={this.state.loading}
 								nextButtonText={current === 4 ? 'Launch' : 'Save and Next'}
-								saveDraftText={current === 0 ? "" : 'Save Draft'}
+								saveDraftText={current === 0 ? "Save Draft" : 'Save Draft'}
 								saveDraft={() => this.saveDraft(current + 1)}
 								goToPage2={this.goToNextPage.bind(this, current + 1)}
 							/>
