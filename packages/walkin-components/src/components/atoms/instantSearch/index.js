@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { Input } from 'antd';
 
+const Search = Input.Search;
 class InstantSearch extends React.Component {
 	onChange(data, e) {
 		let currentList = [];
@@ -32,7 +33,7 @@ class InstantSearch extends React.Component {
 		return (
 			<div className="gx-search-bar gx-lt-icon-search-bar">
 				<div className="gx-form-group">
-					<Input
+					<Search
 						style={{ width: 200 }}
 						placeholder={placeHolder}
 						allowClear
