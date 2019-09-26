@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
 import { Menu } from 'antd';
 import { Link } from 'react-router-dom';
-
 import { CustomScrollbars, Auxiliary, IntlMessages } from '@walkinsole/walkin-components';
 import SidebarLogo from './SidebarLogo';
-
-import UserProfile from './UserProfile';
-import AppsNavigation from './AppsNavigation';
 import { withRouter } from 'react-router-dom';
+import { Icon } from "antd";
 
 import {
 	NAV_STYLE_NO_HEADER_EXPANDED_SIDEBAR,
@@ -16,6 +13,7 @@ import {
 } from '@walkinsole/walkin-components/src/constants/ThemeSetting';
 import { compose, graphql } from 'react-apollo';
 import gql from 'graphql-tag';
+import { CAMPAIGN_MANAGEMENT, SEGMENT_LIST, OFFER_LIST } from '../../utils/RouterConstants';
 
 const SubMenu = Menu.SubMenu;
 
@@ -48,21 +46,21 @@ class SidebarContent extends Component {
 						theme={themeType === THEME_TYPE_LITE ? 'lite' : 'dark'}
 						mode="inline"
 					>
-						<Menu.Item key="createCampaign">
-							<Link to="/hyperx/campaign/campaignManagement">
-								<i className="icon icon-setting" />
+						<Menu.Item key='hyperx/campaigns'>
+							<Link to={CAMPAIGN_MANAGEMENT}>
+								<i className="icon icon-select" />
 								<span>Campaigns</span>
 							</Link>
 						</Menu.Item>
-						<Menu.Item key="segment">
-							<Link to="/hyperx/segment/segmentList">
+						<Menu.Item key="hyperx/segments">
+							<Link to={SEGMENT_LIST}>
 								<i className="icon icon-alert" />
 								<span>Segments</span>
 							</Link>
 						</Menu.Item>
-						<Menu.Item key="offers">
-							<Link to="/hyperx/offer/offerList">
-								<i className="icon icon-select" />
+						<Menu.Item key="hyperx/offers">
+							<Link to={OFFER_LIST}>
+								<i><Icon type="tag" style={{ fontSize: 'inherit' }} /></i>
 								<span>Offers</span>
 							</Link>
 						</Menu.Item>

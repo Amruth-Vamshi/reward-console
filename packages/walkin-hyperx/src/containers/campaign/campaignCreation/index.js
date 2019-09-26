@@ -105,10 +105,10 @@ class CampaignCreation extends Component {
 	};
 
 	saveDraft = current => {
-		this.props.history.push('/hyperx/campaign')
+		this.props.history.push('/hyperx/campaigns')
 		//  this.setState({ current });
 		this.props.history.push({
-			pathname: '/hyperx/campaign',
+			pathname: '/hyperx/campaigns',
 			tabKey: "4",
 			// state: { key: "4" }
 		})
@@ -148,7 +148,7 @@ class CampaignCreation extends Component {
 		}).then(data => {
 			console.log("campaign data..", data);
 			message.success('Campaign Launched')
-			this.props.history.push('/hyperx/campaign')
+			this.props.history.push('/hyperx/campaigns')
 		}).catch(err => {
 			console.log("Error Update campaign", err)
 			this.setState({ loading: false })
@@ -181,6 +181,7 @@ class CampaignCreation extends Component {
 	createCommunicationMutation = (current, values) => {
 		let { communicationSelected, scheduleData, scheduleSaveMark } = this.state;
 		console.log('COMM', communicationSelected, values);
+		this.setState({ loading: true })
 		var input = {
 			name: this.state.campaign.name,
 			description: "",
@@ -427,7 +428,7 @@ class CampaignCreation extends Component {
 		};
 
 		return (
-			<div style={{ margin: '-32px' }}>
+			<div>
 				<CampaignHeader
 					children={
 						<Fragment>
@@ -527,18 +528,22 @@ class CampaignCreation extends Component {
 							/>
 						)}
 						{current === 4 &&
-							<Overview
-								campaign={this.state.formValues}
-								audience={this.state.audience}
-								offer={this.state.offerData}
-								communication={this.state.communication.messageTemplate ?
-									this.state.communication.messageTemplate.templateSubjectText : ''}
-							/>}
+							<div className="gx-card" style={{ margin: -20 }}>
+								<div className="gx-card-body">
+									<Overview
+										campaign={this.state.formValues}
+										audience={this.state.audience}
+										offer={this.state.offerData}
+										communication={this.state.communication.messageTemplate ?
+											`${communicationSelected} - ${this.state.communication.messageTemplate.templateSubjectText}` : ''}
+									/>
+								</div></div>
+						}
 					</div>
 				</div>
 				<div style={{}}>
 					<div className="gx-card campFooter" style={{ position: 'absolute', width: '100%' }}>
-						<div className="gx-card-body" style={{ background: "#e5e5e5" }}>
+						<div className="gx-card-body" style={{ background: "#F6F6F6" }}>
 							<CampaignFooter
 								loading={this.state.loading}
 								nextButtonText={current === 4 ? 'Launch' : 'Save and Next'}

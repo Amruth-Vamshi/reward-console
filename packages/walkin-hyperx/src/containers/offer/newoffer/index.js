@@ -683,7 +683,7 @@ class NewOffer extends Component {
 		}
 		return (
 			<Fragment>
-				<div style={{ margin: '-32px -32px 0px' }}>
+				<div>
 					<CampaignHeader
 						children={
 							<Fragment>

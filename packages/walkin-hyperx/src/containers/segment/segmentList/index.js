@@ -70,7 +70,7 @@ class SegmentList extends Component {
 	onDuplicateContact = record => {
 		const { history } = this.props;
 		history.push({
-			pathname: `/hyperx/segment/newSegment/${record.id}`,
+			pathname: `/hyperx/segments/create/${record.id}`,
 			state: {
 				segmentSelected: record,
 			},
@@ -205,7 +205,7 @@ class SegmentList extends Component {
 		];
 		return (
 			<Fragment>
-				<div style={{ margin: '-32px -32px 0px' }}>
+				<div style={{ margin: '0 0 32px' }}>
 					<CampaignHeader
 						children={
 							<Fragment>
@@ -213,7 +213,7 @@ class SegmentList extends Component {
 									<h3 className="gx-text-grey paddingLeftStyle campaignHeaderTitleStyle">Segments</h3>
 								</Col>
 								<Col style={{ display: 'flex', justifyContent: 'flex-end' }} span={12}>
-									<Button type="primary" onClick={this.onNewSegment}>
+									<Button type="primary" style={{ marginBottom: 0 }} onClick={this.onNewSegment}>
 										New Segment
 									</Button>
 								</Col>
@@ -221,16 +221,18 @@ class SegmentList extends Component {
 						}
 					/>
 				</div>
-				<Card style={{ margin: '32px' }}>
-					<div style={{ marginBottom: '24px' }}>
-						<InstantSearch
-							placeHolder="Search segment"
-							data={segments}
-							onFilteredList={this.onSegmentFilteredList}
-						/>
+				<div className="gx-card" style={{ margin: '32px' }}>
+					<div className="gx-card-body">
+						<div style={{ marginBottom: '15px' }}>
+							<InstantSearch
+								placeHolder="Search segment"
+								data={segments}
+								onFilteredList={this.onSegmentFilteredList}
+							/>
+						</div>
+						<SortableDataTable loading={this.props.loading} data={segmentData} pagination={paginationData} onChange={this.handleChange} columns={columns} />
 					</div>
-					<SortableDataTable data={segmentData} pagination={paginationData} onChange={this.handleChange} columns={columns} />
-				</Card>
+				</div>
 			</Fragment>
 		);
 	}
