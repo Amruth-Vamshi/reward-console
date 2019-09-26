@@ -19,16 +19,19 @@ const SubMenu = Menu.SubMenu;
 
 class SidebarContent extends Component {
 	getNoHeaderClass = navStyle => {
-		if (navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR || navStyle === NAV_STYLE_NO_HEADER_EXPANDED_SIDEBAR) {
-			return 'gx-no-header-notifications';
+		if (
+			navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR ||
+			navStyle === NAV_STYLE_NO_HEADER_EXPANDED_SIDEBAR
+		) {
+			return "gx-no-header-notifications";
 		}
-		return '';
+		return "";
 	};
 	getNavStyleSubMenuClass = navStyle => {
 		if (navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR) {
-			return 'gx-no-header-submenu-popup';
+			return "gx-no-header-submenu-popup";
 		}
-		return '';
+		return "";
 	};
 
 	render() {
@@ -48,19 +51,19 @@ class SidebarContent extends Component {
 					>
 						<Menu.Item key='hyperx/campaigns'>
 							<Link to={CAMPAIGN_MANAGEMENT}>
-								<i className="icon icon-select" />
+								<i className="icon icon-alert" />
 								<span>Campaigns</span>
 							</Link>
 						</Menu.Item>
 						<Menu.Item key="hyperx/segments">
 							<Link to={SEGMENT_LIST}>
-								<i className="icon icon-alert" />
+								<i className="icon icon-chart-radial" />
 								<span>Segments</span>
 							</Link>
 						</Menu.Item>
 						<Menu.Item key="hyperx/offers">
 							<Link to={OFFER_LIST}>
-								<i><Icon type="tag" style={{ fontSize: 'inherit' }} /></i>
+								<i className="icon icon-tag" />
 								<span>Offers</span>
 							</Link>
 						</Menu.Item>
@@ -72,8 +75,14 @@ class SidebarContent extends Component {
 						</Menu.Item>
 						<Menu.Item key="settings">
 							<Link to="/nearx">
-								<i className="icon icon-geo-location" />
+								<i className="icon icon-setting" />
 								Settings
+							</Link>
+						</Menu.Item>
+						<Menu.Item key="settings">
+							<Link to="/nearx">
+								<i className="icon icon-team" />
+								Help
 							</Link>
 						</Menu.Item> */}
 					</Menu>
@@ -92,25 +101,25 @@ const mapStateToProps = ({ settings, ownProps }) => {
 };
 
 const GET_SETTINGS = gql`
-	query settings {
-		settings @client {
-			navStyle
-			themeType
-			locale {
-				icon
-				languageId
-				locale
-				name
-			}
-			pathname
-		}
-	}
+  query settings {
+    settings @client {
+      navStyle
+      themeType
+      locale {
+        icon
+        languageId
+        locale
+        name
+      }
+      pathname
+    }
+  }
 `;
 
 export default compose(
 	withRouter,
 	graphql(GET_SETTINGS, {
 		props: mapStateToProps,
-		name: 'settings',
+		name: "settings"
 	})
 )(SidebarContent);
