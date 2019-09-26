@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { Col, Alert, message, Radio, Checkbox, Input } from 'antd';
+import { Col, Alert, message, Radio, Spin, Checkbox, Input } from 'antd';
 import { withRouter } from 'react-router-dom';
 import { withApollo, graphql, compose, mutate } from 'react-apollo';
 import { createRule } from '../../../query/audience';
@@ -15,6 +15,7 @@ import { returnMatchingKeyvalues } from '../../../utils/common/index';
 import omit from 'lodash/omit';
 import remove from 'lodash/remove';
 import { transposeObject, isValidObject } from '../../../utils/common';
+import jwt from 'jsonwebtoken'
 
 const offerStepData = [
 	{
@@ -199,6 +200,7 @@ class NewOffer extends Component {
 			couponLableSelected: '',
 			productValues: [],
 			redemptionRule: {},
+			loading1: false,
 			offerEligibityRuleId: '',
 			locationValues: [],
 			formValues: {
@@ -420,7 +422,8 @@ class NewOffer extends Component {
 						let ommitedObject = omit(redemptionFormObject, ['type', 'cappingValue']);
 						let redemptionArray = { rules: transposeObject(ommitedObject, '='), combinator: 'and' };
 						const { offerEligibityRule, redemptionRule } = this.state;
-						let org_id = get(client, 'cache.data.data["$ROOT_QUERY.auth"].organizationId');
+						let org_id = jwt.decode(localStorage.getItem('jwt')).org_id
+						this.setState({ loading1: true })
 						client
 							.mutate({
 								mutation: createRule,
@@ -478,34 +481,42 @@ class NewOffer extends Component {
 											})
 											.then(({ data }) => {
 												console.log('created offer', data);
-												client
-													.mutate({
-														mutation: launchOffer,
-														variables: {
-															id: data.createOffer.id,
-														},
-													})
-													.then(({ data }) => {
-														console.log('created offer', data);
-														const { history } = this.props;
-														history.push({
-															pathname: OFFER_LIST,
-														});
+												this.setState({ loading1: false })
+												const { history } = this.props;
+												history.push({
+													pathname: OFFER_LIST,
+												});
 
-														message.success('Your changes were saved', 5);
-													})
-													.catch(error => {
-														console.log('error', error);
-														this.displayError(
-															'newOfferErrorMessage',
-															error && error.graphQLErrors[0]
-																? error.graphQLErrors[0].message
-																: 'Error in submitting the form'
-														);
-													});
+												message.success('Your changes were saved', 5);
+												// client
+												// 	.mutate({
+												// 		mutation: launchOffer,
+												// 		variables: {
+												// 			id: data.createOffer.id,
+												// 		},
+												// 	})
+												// 	.then(({ data }) => {
+												// 		console.log('created offer', data);
+												// 		const { history } = this.props;
+												// 		history.push({
+												// 			pathname: OFFER_LIST,
+												// 		});
+
+												// 		message.success('Your changes were saved', 5);
+												// 	})
+												// 	.catch(error => {
+												// 		console.log('error', error);
+												// 		this.displayError(
+												// 			'newOfferErrorMessage',
+												// 			error && error.graphQLErrors[0]
+												// 				? error.graphQLErrors[0].message
+												// 				: 'Error in submitting the form'
+												// 		);
+												// 	});
 											})
 											.catch(error => {
 												console.log('error', error);
+												this.setState({ loading1: false })
 												this.displayError(
 													'newOfferErrorMessage',
 													error && error.graphQLErrors[0]
@@ -516,6 +527,7 @@ class NewOffer extends Component {
 									})
 									.catch(error => {
 										console.log('error', error);
+										this.setState({ loading1: false })
 										this.displayError(
 											'newOfferErrorMessage',
 											error && error.graphQLErrors[0]
@@ -526,6 +538,7 @@ class NewOffer extends Component {
 							})
 							.catch(error => {
 								console.log('error', error);
+								this.setState({ loading1: false })
 								this.displayError(
 									'newOfferErrorMessage',
 									error && error.graphQLErrors[0]
@@ -580,6 +593,7 @@ class NewOffer extends Component {
 	render() {
 		const {
 			current,
+			loading1,
 			offerTypeStatus,
 			transactionTimeStatus,
 			productDropDown,
@@ -595,7 +609,7 @@ class NewOffer extends Component {
 		console.log(
 			'productsproductsproductsproducts',
 			products,
-			this.props.client.cache.data.data['$ROOT_QUERY.auth'].organizationId,
+			jwt.decode(localStorage.getItem('jwt')).org_id,
 			subOrganizations
 		);
 		let productItems;
@@ -676,7 +690,13 @@ class NewOffer extends Component {
 		}
 
 		if (loading) {
-			return <p>Please wait...</p>;
+			return <div>
+				<br /> <br /> <br /> <br /><br /> <br />
+				<div className="divCenter">
+					<Spin size="large" />
+				</div>
+				<br /> <br /> <br />
+			</div>
 		}
 		if (error) {
 			return <p>{error}</p>;
@@ -699,74 +719,81 @@ class NewOffer extends Component {
 						}
 					/>
 					{/* Each step is different step because the form has to be validated and saved as draft */}
-					{current === 0 && (
-						<Fragment>
-							<div>
-								<h3 className="gx-text-grey subTitlePadding">Basic Information</h3>
-							</div>
-							<div className="offerBasicFormContainer">
-								<OfferBasicInfoForm
-									offerTypeData={offerTypeData}
-									handleOfferTypeChange={this.onOfferTypeChange}
-									offerTypeStatus={offerTypeStatus}
-									transactionTimeData={transactionTimeData}
-									productData={productData}
-									locationData={locationData}
-									handleTransactionTimeChange={this.onTransactionTimeChange}
-									transactionTimeStatus={transactionTimeStatus}
-									cartValueConditionData={cartValueConditionData}
-									wrappedComponentRef={this.saveFormRef}
-									cappingData={cappingData}
-									handleProductChange={this.onProductChange}
-									productDropDown={productDropDown}
-									location={organizationHierarchy}
-									handleLocationChange={this.onLocationChange}
-									locationDropDown={locationDropDown}
-									locationArray={locationArray}
-									values={values}
-									productItems={productItems}
-									onSelectOneValuesSelected={this.onValuesSelected}
-									onSelectTwoValuesSelected={this.onSelectTwoValuesSelected}
-									productValues={productValues}
-									locationValues={locationValues}
-									formValues={formValues.basicForm}
-									products={products}
-									couponDefaultValue={1}
-									onCouponChange={this.onCouponChange}
-									couponTypeSelected={couponTypeSelected}
-									couponInputLabel="Enter Coupon label"
-									onCouponLabelChange={this.onCouponLabelChange}
-									OnNoCouponCodeChange={this.OnNoCouponCodeChange}
-									checked={true}
-									couponTypeData={couponTypeData}
+					<div className="stepperContainer">
+						<div style={{ margin: '10px' }}>
+							{current === 0 && (
+								<Fragment>
+									<div>
+										<h3 className="gx-text-grey subTitlePadding">Basic Information</h3>
+									</div>
+									<div className="offerBasicFormContainer">
+										<OfferBasicInfoForm
+											offerTypeData={offerTypeData}
+											handleOfferTypeChange={this.onOfferTypeChange}
+											offerTypeStatus={offerTypeStatus}
+											transactionTimeData={transactionTimeData}
+											productData={productData}
+											locationData={locationData}
+											handleTransactionTimeChange={this.onTransactionTimeChange}
+											transactionTimeStatus={transactionTimeStatus}
+											cartValueConditionData={cartValueConditionData}
+											wrappedComponentRef={this.saveFormRef}
+											cappingData={cappingData}
+											handleProductChange={this.onProductChange}
+											productDropDown={productDropDown}
+											location={organizationHierarchy}
+											handleLocationChange={this.onLocationChange}
+											locationDropDown={locationDropDown}
+											locationArray={locationArray}
+											values={values}
+											productItems={productItems}
+											onSelectOneValuesSelected={this.onValuesSelected}
+											onSelectTwoValuesSelected={this.onSelectTwoValuesSelected}
+											productValues={productValues}
+											locationValues={locationValues}
+											formValues={formValues.basicForm}
+											products={products}
+											couponDefaultValue={1}
+											onCouponChange={this.onCouponChange}
+											couponTypeSelected={couponTypeSelected}
+											couponInputLabel="Enter Coupon label"
+											onCouponLabelChange={this.onCouponLabelChange}
+											OnNoCouponCodeChange={this.OnNoCouponCodeChange}
+											checked={true}
+											couponTypeData={couponTypeData}
+										/>
+									</div>
+									{newOfferErrorMessage !== '' && <Alert message={newOfferErrorMessage} type="error" />}
+								</Fragment>
+							)}
+							{current === 1 && (
+								<Fragment>
+									<div>
+										<h3 className="gx-text-grey subTitlePadding">Redemption Rules</h3>
+									</div>
+									<div className="offerBasicFormContainer">
+										<OfferRedemptionRulesForm
+											cappingData={cappingData}
+											wrappedComponentRef={this.saveRedemptionFormRef}
+											formValues={formValues.redemptionForm}
+										/>
+									</div>
+								</Fragment>
+							)}
+						</div></div>
+					<div>
+						<div className="gx-card campFooter" style={{ position: 'absolute', width: '100%' }}>
+							<div className="gx-card-body" style={{ background: "#F6F6F6" }}>
+								<CampaignFooter
+									nextButtonText={current === 1 ? 'Save' : 'Next'}
+									// saveDraftText="Save Draft"
+									saveDraft={this.onPage1SaveDraft}
+									loading={loading1}
+									goToPage2={e => this.goToNextPage(current + 1, e)}
+									nextButtonClass={'offersNextButton'}
 								/>
 							</div>
-							{newOfferErrorMessage !== '' && <Alert message={newOfferErrorMessage} type="error" />}
-						</Fragment>
-					)}
-					{current === 1 && (
-						<Fragment>
-							<div>
-								<h3 className="gx-text-grey subTitlePadding">Redemption Rules</h3>
-							</div>
-							<div className="offerBasicFormContainer">
-								<OfferRedemptionRulesForm
-									cappingData={cappingData}
-									wrappedComponentRef={this.saveRedemptionFormRef}
-									formValues={formValues.redemptionForm}
-								/>
-							</div>
-						</Fragment>
-					)}
-					<div className="offerFooterStyle">
-						<CampaignFooter
-							nextButtonText={current === 1 ? 'Save' : 'Next'}
-							// saveDraftText="Save Draft"
-							saveDraft={this.onPage1SaveDraft}
-							goToPage2={e => {
-								this.goToNextPage(current + 1, e);
-							}}
-						/>
+						</div>
 					</div>
 				</div>
 			</Fragment>
@@ -779,7 +806,7 @@ export default withApollo(
 		graphql(products, {
 			options: props => ({
 				variables: {
-					organizationId: props.client.cache.data.data['$ROOT_QUERY.auth'].organizationId,
+					organizationId: jwt.decode(localStorage.getItem('jwt')).org_id,
 				},
 			}),
 			props: ({ data: { loading, error, products } }) => ({
@@ -803,7 +830,7 @@ export default withApollo(
 		graphql(subOrganizations, {
 			options: props => ({
 				variables: {
-					parentId: props.client.cache.data.data['$ROOT_QUERY.auth'].organizationId,
+					parentId: jwt.decode(localStorage.getItem('jwt')).org_id,
 					type: 'STORE',
 				},
 			}),
