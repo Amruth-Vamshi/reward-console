@@ -105,7 +105,7 @@ class CampaignList extends Component {
 	onTabChange = key => {
 		const { allCampaigns } = this.state
 
-		console.log(key, allCampaigns)
+		console.log(key)
 		if (!allCampaigns || allCampaigns.length < 1) return
 		if (key == 2) {
 			let upcomingCampaigns = allCampaigns.filter(val => {

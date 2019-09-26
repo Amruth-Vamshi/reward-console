@@ -547,7 +547,7 @@ class CampaignCreation extends Component {
 							<CampaignFooter
 								loading={this.state.loading}
 								nextButtonText={current === 4 ? 'Launch' : 'Save and Next'}
-								saveDraftText={current === 0 ? "Save Draft" : 'Save Draft'}
+								saveDraftText={current === 0 ? "" : 'Save Draft'}
 								saveDraft={() => this.saveDraft(current + 1)}
 								goToPage2={this.goToNextPage.bind(this, current + 1)}
 							/>
