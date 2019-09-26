@@ -54,7 +54,7 @@ class AddAndDeleteSelectDynamically extends React.Component {
 								placeholder="Choose from the list"
 								classname="segmentSelectBoxStyle"
 								value={el ? el : undefined}
-								style={{ width: '50%' }}
+								style={{ width: '50%' }} optionFilterProp="children"
 								onChange={this.handleChange.bind(this, i)} >
 
 								{segmentSelectionData &&

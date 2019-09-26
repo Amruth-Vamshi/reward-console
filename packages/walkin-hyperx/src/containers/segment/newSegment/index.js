@@ -22,6 +22,7 @@ class NewSegment extends Component {
 		};
 	}
 	logQuery = query => {
+		this.state.errors.rule = ''
 		this.setState({
 			query: query,
 			newSegmentError: false,
@@ -41,15 +42,18 @@ class NewSegment extends Component {
 	};
 
 	onNewSegment = () => {
+		let errors = {}
 		const { value, query } = this.state;
-		if (value === '') {
-			this.displayError('newSegmentError');
-		}
 		let { client } = this.props;
-		if (!this.state.value || this.state.value.trim() == '') {
-			this.state.errors.name = "* this field is mandatory"
+		if (!this.state.value || this.state.value.trim() == '') errors.name = "* this field is mandatory"
+		if (!this.state.query.rules || this.state.query.rules.length < 1) errors.rule = "* this field is mandatory"
+		else if (!this.state.query.rules[0] || this.state.query.rules[0].attributeValue == '') errors.rule = "* enter rule value"
+
+		if (Object.keys(errors).length !== 0) {
+			this.setState({ errors });
 			return
 		}
+
 
 		console.log(this.props.allApplications.organization.applications[0])
 		let org_id = jwt.decode(localStorage.getItem("jwt")).org_id;
@@ -143,21 +147,19 @@ class NewSegment extends Component {
 			}));
 		return (
 			<Fragment>
-				<div style={{ margin: '-32px -32px 0px' }}>
-					<CampaignHeader
-						children={
-							<Col span={12}>
-								<h3 className="gx-text-grey paddingLeftStyle campaignHeaderTitleStyle">
-									{isDuplicateSegment ? 'Duplicate segment' : 'New Segment'}
-								</h3>
-							</Col>
-						}
-					/>
+				<div>
+					<CampaignHeader>
+						<Col span={12}>
+							<h3 className="gx-text-grey paddingLeftStyle campaignHeaderTitleStyle">
+								{isDuplicateSegment ? 'Duplicate segment' : 'New Segment'}
+							</h3>
+						</Col>
+					</CampaignHeader>
 				</div>
 				<div style={{ margin: '32px' }}>
 					<div style={{ width: '50%', marginBottom: '40px' }}>
 						<div style={{ marginBottom: '10px' }}>
-							<p className="gx-text-grey gx-mb-1">Segment Name</p>
+							<p className="gx-mb-1">Segment Name</p>
 							<Input
 								defaultValue={isDuplicateSegment ? value : 'Enter segment name'}
 								value={value} placeholder="Enter Segment Name"
@@ -168,8 +170,9 @@ class NewSegment extends Component {
 					</div>
 					<div style={{ marginTop: 10, marginBottom: 10 }}>Segment selection criteria</div>
 					<WalkinQueryBuilder fields={attributeData} onQueryChange={this.logQuery} query={query} />
+					<p style={{ color: "Red", marginTop: 10 }}> {this.state.errors.rule} </p>
 				</div>
-				{newSegmentError && <Alert message="Not a valid Segment" type="error" />}
+				{newSegmentError && <Alert style={{ margin: '0px 35px' }} message="Not a valid Segment" type="error" />}
 				<div className="segmentFooterButton">
 					<Button type="primary" className="campaignFooterStyle" onClick={this.onNewSegment}>
 						Create segment

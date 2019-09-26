@@ -1,11 +1,11 @@
 import React from "react";
-import {Card} from "antd";
+import { Card } from "antd";
 import PropTypes from "prop-types";
 
-const Widget = ({title, children, styleName, cover, extra, actions}) => {
+const Widget = ({ title, children, styleName, cover, style, extra, actions }) => {
 
   return (
-    <Card title={title} actions={actions} cover={cover} className={`gx-card-widget ${styleName}`} extra={extra}>
+    <Card title={title} style={style} actions={actions} cover={cover} className={`gx-card-widget ${styleName}`} extra={extra}>
       {children}
     </Card>
   )

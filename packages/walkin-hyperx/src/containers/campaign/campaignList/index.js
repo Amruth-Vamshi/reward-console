@@ -5,7 +5,7 @@ import { campaigns } from '../../../query/campaign';
 import { Card, Menu, Dropdown, Col, Spin, Button, Progress, Tabs } from 'antd';
 import moment from 'moment';
 import { withApollo, graphql } from 'react-apollo';
-import { SortableDataTable, InstantSearch, CampaignHeader, CircularProgress } from '@walkinsole/walkin-components';
+import { SortableDataTable, InstantSearch, CampaignHeader, CircularProgress, Widget } from '@walkinsole/walkin-components';
 import './style.css';
 
 const DEFAULT_STATUS = 'ACTIVE';
@@ -105,7 +105,7 @@ class CampaignList extends Component {
 	onTabChange = key => {
 		const { allCampaigns } = this.state
 
-		console.log(key, allCampaigns)
+		console.log(key)
 		if (!allCampaigns || allCampaigns.length < 1) return
 		if (key == 2) {
 			let upcomingCampaigns = allCampaigns.filter(val => {
@@ -119,7 +119,7 @@ class CampaignList extends Component {
 		if (key == 3) {
 			let completedCampaigns = allCampaigns.filter(val => {
 				if (val.status == 'ACTIVE') {
-					return val.campaignStatus == 'LIVE' && moment(val.endTime).isBefore(moment());
+					return moment(val.endTime).isBefore(moment());
 				}
 			});
 			this.setState({ data: completedCampaigns, filtered: null });
@@ -134,7 +134,7 @@ class CampaignList extends Component {
 		if (key == 1) {
 			let liveCampaigns = allCampaigns.filter(val => {
 				if (val.status == 'ACTIVE') {
-					return moment().isBetween(val.startTime, val.endTime);
+					return val.campaignStatus == 'LIVE' && moment().isBetween(val.startTime, val.endTime);
 				}
 			});
 			this.setState({ data: liveCampaigns, filtered: null });
@@ -209,39 +209,48 @@ class CampaignList extends Component {
 			},
 		];
 		return (
-			loading ?
-				<div>
-					<br /> <br /> <br /> <br /><br /> <br />
-					<div className="divCenter">
-						<Spin size="large" />
-					</div>
-					<br /> <br /> <br />
-				</div>
-				: <div style={{ margin: '-32px' }}>
-					<CampaignHeader
-						children={
-							<Fragment>
-								<Col span={12}>
-									<h3 className="gx-text-grey paddingLeftStyle campaignHeaderTitleStyle">Campaigns</h3>
-								</Col>
-								<Col className="searchInputStyle" span={12}>
-									<Button type="primary" style={{ marginBottom: 0 }} onClick={this.onNewCampaign}>
-										CREATE CAMPAIGN
+			<div>
+				<CampaignHeader
+					children={
+						<Fragment>
+							<Col span={12}>
+								<h3 className="gx-text-grey paddingLeftStyle campaignHeaderTitleStyle">Campaigns</h3>
+							</Col>
+							<Col className="searchInputStyle" span={12}>
+								<Button type="primary" style={{ marginBottom: 0 }} onClick={this.onNewCampaign}>
+									CREATE CAMPAIGN
 								</Button>
-								</Col>
-							</Fragment>
-						}
-					/>
-					<Card>
-						<div style={{ marginBottom: '24px' }}>
-							<div className="searchInputStyle">
+							</Col>
+						</Fragment>
+					}
+				/>
+				{loading ?
+					<div>
+						<br /> <br /> <br /> <br /><br /> <br />
+						<div className="divCenter">
+							<Spin size="large" />
+						</div>
+						<br /> <br /> <br />
+					</div>
+					:
+					// <div className="gx-card" style={{ margin: '32px' }}>
+					// 	<div className="gx-card-body">
+					// 		<div className="searchInputStyle">
+					// 			<InstantSearch
+					// 				placeHolder="Search campaign"
+					// 				data={data}
+					// 				onFilteredList={this.onCampaignFilteredList}
+					// 			/>
+					// 		</div>
+					<div className="HyperX-campaignList">
+						<Widget title="Campaign List" style={{ margin: '32px' }} styleName="gx-card-tabs"
+							extra={
 								<InstantSearch
 									placeHolder="Search campaign"
 									data={data}
 									onFilteredList={this.onCampaignFilteredList}
-								/>
-							</div>
-							{console.log(key)}
+								/>}
+						>
 							<Tabs defaultActiveKey={key ? key : "1"} onChange={this.onTabChange}>
 								<TabPane tab="Live" key="1">
 									<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} pagination={paginationData} />
@@ -256,9 +265,12 @@ class CampaignList extends Component {
 									<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} pagination={paginationData} />
 								</TabPane>
 							</Tabs>
-						</div>
-					</Card>
-				</div>
+						</Widget>
+					</div>
+					// 	</div>
+					// </div>
+				}
+			</div>
 		);
 	}
 }
