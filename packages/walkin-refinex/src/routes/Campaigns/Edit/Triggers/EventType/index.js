@@ -57,7 +57,7 @@ class EventType extends Component {
                   onChange={this.handleSelectChange}
                 >
                   {
-                    this.getOptions()
+                    this.props.eventType.loading ? <Spin /> : this.getOptions()
                   }
 
                 </Select>
