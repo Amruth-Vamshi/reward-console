@@ -122,7 +122,7 @@ const OfferBasicInfoForm = Form.create({ name: 'offer_basic_info' })(
 				},
 			};
 			return (
-				<Form {...formItemLayout} style={{ padding: '50px' }} ref={wrappedComponentRef} layout="vertical">
+				<Form {...formItemLayout} style={{ padding: '20px 50px' }} ref={wrappedComponentRef} layout="vertical">
 					<Form.Item style={{ display: 'inline-block', width: 'calc(35% - 12px)' }} label="Offer Type">
 						{getFieldDecorator('offerType', {
 							initialValue: `${Object.keys(formValues).length != 0 ? formValues.offerType : ''}`,
@@ -241,7 +241,7 @@ const OfferBasicInfoForm = Form.create({ name: 'offer_basic_info' })(
 								{getFieldDecorator('noOfTransaction', {
 									initialValue: `${
 										Object.keys(formValues).length != 0 ? formValues.noOfTransaction : ''
-									}`,
+										}`,
 								})(<Input />)}
 							</Form.Item>
 							<Form.Item style={{ display: 'inline-block', marginTop: '20px', width: 'calc(5% - 12px)' }}>
@@ -264,7 +264,7 @@ const OfferBasicInfoForm = Form.create({ name: 'offer_basic_info' })(
 								label="Choose Date"
 							>
 								{getFieldDecorator('dateRange', {
-									initialValue: `${Object.keys(formValues).length != 0 ? formValues.dateRange : ''}`,
+									initialValue: Object.keys(formValues).length != 0 ? formValues.dateRange : '',
 								})(<RangePicker showTime format="DD-MM-YYYY HH:mm:ss" />)}
 							</Form.Item>
 						</Fragment>
@@ -278,7 +278,7 @@ const OfferBasicInfoForm = Form.create({ name: 'offer_basic_info' })(
 								{getFieldDecorator('cartValueCondition', {
 									initialValue: `${
 										Object.keys(formValues).length != 0 ? formValues.cartValueCondition : ''
-									}`,
+										}`,
 								})(
 									<Select onChange={this.handleSelectChange}>
 										{cartValueConditionData &&

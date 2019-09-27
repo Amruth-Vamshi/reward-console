@@ -56,16 +56,16 @@ const BasicInfoForm = Form.create({ name: "form_in_modal" })(
       };
       return (
         <Form layout="vertical" ref={wrappedComponentRef} onSubmit={onFormNext}>
-          <Form.Item size={'large'} label="Campaign name" {...formItemLayout}>
+          <Form.Item label="Campaign name" {...formItemLayout}>
             {getFieldDecorator('name', {
               initialValue: `${Object.keys(formValues).length != 0 ? formValues.name ? formValues.name : '' : ''}`,
               rules: [{ required: true, message: 'Name is required' }],
-            })(<Input value={formValues.name} />)}
+            })(<Input value={formValues.name} size='large' />)}
           </Form.Item>
           <Form.Item label="Description" {...formItemLayout}>
             {getFieldDecorator('description', {
               initialValue: `${Object.keys(formValues).length != 0 ? formValues.description ? formValues.description : '' : ''}`,
-            })(<Input type="textarea" />)}
+            })(<Input type="textarea" size='large' />)}
           </Form.Item>
           <Form.Item
             style={{ display: 'inline-block', width: 'calc(50% - 12px)' }}

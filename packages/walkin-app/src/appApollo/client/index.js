@@ -6,8 +6,12 @@ import resolvers from "../resolvers";
 import ApolloClient from "apollo-boost";
 import defaults from "../defaults";
 import { message } from "antd";
-import env from "@walkinsole/walkin-components/src/constants/config";
+import env from "../../../config";
 import { async } from "q";
+
+message.config({
+  maxCount: 2,
+});
 
 export const configureClient = async () => {
   const cache = new InMemoryCache();
@@ -45,9 +49,7 @@ export const configureClient = async () => {
           message.warn(graphQLErrors[0].message)
         }
       } else if (networkError) {
-        message.error(
-          "Hey! Regret to inform that we are experiencing some issues. Please check your internet connection or try again after sometime"
-        );
+        message.error("Hey! Regret to inform that we are experiencing some issues. Please check your internet connection or try again after sometime");
         console.log(networkError);
 
       }

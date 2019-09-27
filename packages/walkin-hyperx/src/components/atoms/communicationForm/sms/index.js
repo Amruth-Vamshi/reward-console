@@ -28,7 +28,7 @@ const SMSForm = Form.create({ name: 'form_in_modal' })(
 			const { form, onFormNext, wrappedComponentRef, formValues, text } = this.props;
 			const { getFieldDecorator } = form;
 			const formItemLayout = {
-				labelCol: { span: 6 },
+				labelCol: { span: 24 },
 				wrapperCol: { span: 24 },
 			};
 			return (

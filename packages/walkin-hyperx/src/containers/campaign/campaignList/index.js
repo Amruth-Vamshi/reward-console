@@ -2,13 +2,14 @@ import React, { Component, Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
 import { NEW_CAMPAIGN } from '../../../utils/RouterConstants';
 import { campaigns } from '../../../query/campaign';
-import { Card, Menu, Dropdown, Col, Button, Progress, Tabs } from 'antd';
+import { Card, Menu, Dropdown, Col, Spin, Button, Progress, Tabs } from 'antd';
 import moment from 'moment';
 import { withApollo, graphql } from 'react-apollo';
-import { SortableDataTable, InstantSearch, CampaignHeader, CircularProgress } from '@walkinsole/walkin-components';
+import { SortableDataTable, InstantSearch, CampaignHeader, CircularProgress, Widget } from '@walkinsole/walkin-components';
 import './style.css';
 
 const DEFAULT_STATUS = 'ACTIVE';
+const DEFAULT_TYPE = 'OFFER';
 
 const { TabPane } = Tabs;
 
@@ -20,7 +21,8 @@ class CampaignList extends Component {
 			filtered: null,
 			allCampaigns: null,
 			data: null,
-			loading: null
+			loading: null,
+			key: this.props.location.tabKey ? this.props.location.tabKey : '1'
 		};
 	}
 	componentDidMount() {
@@ -37,19 +39,11 @@ class CampaignList extends Component {
 	}
 
 	setInitialValues = () => {
-		const { campaigns, loading } = this.props;
-		console.log()
-		let data = []
-		let allCampaigns = []
-		if (campaigns) {
-			data = campaigns.filter(val => {
-				if (val.status == 'ACTIVE') {
-					return moment().isBetween(val.startTime, val.endTime);
-				}
-			})
-			allCampaigns = campaigns;
-		}
-		this.setState({ allCampaigns: allCampaigns, data: data, loading: false })
+		const { campaigns, loading, key } = this.props;
+		this.setState({ allCampaigns: campaigns, loading: false }, () => {
+			this.onTabChange(key ? key : 1)
+		})
+
 	}
 	onNewCampaign = () => {
 		const { history } = this.props;
@@ -58,9 +52,7 @@ class CampaignList extends Component {
 		});
 	};
 	handleChange = (pagination, filters, sorter) => {
-		this.setState({
-			sortedInfo: sorter,
-		});
+		this.setState({ sortedInfo: sorter });
 	};
 
 	onDeleteContact = contact => {
@@ -111,12 +103,14 @@ class CampaignList extends Component {
 	};
 
 	onTabChange = key => {
-		console.log(key)
 		const { allCampaigns } = this.state
+
+		console.log(key)
+		if (!allCampaigns || allCampaigns.length < 1) return
 		if (key == 2) {
 			let upcomingCampaigns = allCampaigns.filter(val => {
 				if (val.status == 'ACTIVE') {
-					return moment(val.startTime).isAfter(moment());
+					return val.campaignStatus == 'LIVE' && moment(val.startTime).isAfter(moment());
 				}
 			});
 			this.setState({ data: upcomingCampaigns, filtered: null });
@@ -132,18 +126,15 @@ class CampaignList extends Component {
 		}
 		if (key == 4) {
 			const { changeStatus } = this.props;
-			//If api works
-			// changeStatus('DRAFT')
-			// this.setState({data: this.props.campaigns})
 			let draftCampaigns = allCampaigns.filter(val => {
-				return val.status == 'DRAFT';
+				return val.campaignStatus == 'DRAFT';
 			});
 			this.setState({ data: draftCampaigns, filtered: null });
 		}
 		if (key == 1) {
 			let liveCampaigns = allCampaigns.filter(val => {
 				if (val.status == 'ACTIVE') {
-					return moment().isBetween(val.startTime, val.endTime);
+					return val.campaignStatus == 'LIVE' && moment().isBetween(val.startTime, val.endTime);
 				}
 			});
 			this.setState({ data: liveCampaigns, filtered: null });
@@ -151,7 +142,7 @@ class CampaignList extends Component {
 	};
 
 	render() {
-		let { sortedInfo, filteredInfo, filtered, data, loading } = this.state;
+		let { sortedInfo, filteredInfo, filtered, data, loading, key } = this.state;
 		sortedInfo = sortedInfo || {};
 		filteredInfo = filteredInfo || {};
 		let campaignData = [];
@@ -167,12 +158,14 @@ class CampaignList extends Component {
 			showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`
 		}
 
+		console.log(campaignData);
 
 		const columns = [
 			{
 				title: 'Name',
 				dataIndex: 'name',
 				key: 'name',
+				render: (text, row) => <div style={{ color: '#292929' }}> {text} </div>,
 				sorter: (a, b) => (a.name !== b.name ? (a.name < b.name ? -1 : 1) : 0),
 				sortOrder: sortedInfo.columnKey === 'name' && sortedInfo.order,
 			},
@@ -182,7 +175,7 @@ class CampaignList extends Component {
 				key: 'startTime',
 				render: (text, row) => (
 					<div>
-						{moment(text).format('DD-MM-YYYY')}
+						{moment(text).format('DD-MMM-YY')}
 						<Progress
 							style={{ width: '35%', margin: '0px 5px 0px 5px' }}
 							percent={Math.round(
@@ -190,9 +183,18 @@ class CampaignList extends Component {
 							)}
 							showInfo={false}
 						/>
-						{moment(row.endTime).format('DD-MM-YYYY')}
+						{moment(row.endTime).format('DD-MMM-YY')}
 					</div>
 				),
+			},
+			{
+				title: 'Priority',
+				dataIndex: 'priority',
+				key: 'priority',
+				render: (text, row) => <div className="priorityTextStyle">
+					{text < 10 ? `0${text}` : text} </div>,
+				sorter: (a, b) => (a.priority !== b.priority ? (a.priority < b.priority ? -1 : 1) : 0),
+				sortOrder: sortedInfo.columnKey === 'priority' && sortedInfo.order,
 			},
 			{
 				title: '',
@@ -207,32 +209,49 @@ class CampaignList extends Component {
 			},
 		];
 		return (
-			loading ? <CircularProgress /> :
-				<div style={{ margin: '-32px' }}>
-					<CampaignHeader
-						children={
-							<Fragment>
-								<Col span={12}>
-									<h3 className="gx-text-grey paddingLeftStyle campaignHeaderTitleStyle">Campaigns</h3>
-								</Col>
-								<Col className="searchInputStyle" span={12}>
-									<Button type="primary" onClick={this.onNewCampaign}>
-										CREATE CAMPAIGN
+			<div>
+				<CampaignHeader
+					children={
+						<Fragment>
+							<Col span={12}>
+								<h3 className="gx-text-grey paddingLeftStyle campaignHeaderTitleStyle">Campaigns</h3>
+							</Col>
+							<Col className="searchInputStyle" span={12}>
+								<Button type="primary" style={{ marginBottom: 0 }} onClick={this.onNewCampaign}>
+									CREATE CAMPAIGN
 								</Button>
-								</Col>
-							</Fragment>
-						}
-					/>
-					<Card>
-						<div style={{ marginBottom: '24px' }}>
-							<div className="searchInputStyle">
+							</Col>
+						</Fragment>
+					}
+				/>
+				{loading ?
+					<div>
+						<br /> <br /> <br /> <br /><br /> <br />
+						<div className="divCenter">
+							<Spin size="large" />
+						</div>
+						<br /> <br /> <br />
+					</div>
+					:
+					// <div className="gx-card" style={{ margin: '32px' }}>
+					// 	<div className="gx-card-body">
+					// 		<div className="searchInputStyle">
+					// 			<InstantSearch
+					// 				placeHolder="Search campaign"
+					// 				data={data}
+					// 				onFilteredList={this.onCampaignFilteredList}
+					// 			/>
+					// 		</div>
+					<div className="HyperX-campaignList">
+						<Widget title="Campaign List" style={{ margin: '32px' }} styleName="gx-card-tabs"
+							extra={
 								<InstantSearch
 									placeHolder="Search campaign"
 									data={data}
 									onFilteredList={this.onCampaignFilteredList}
-								/>
-							</div>
-							<Tabs defaultActiveKey="1" onChange={this.onTabChange}>
+								/>}
+						>
+							<Tabs defaultActiveKey={key ? key : "1"} onChange={this.onTabChange}>
 								<TabPane tab="Live" key="1">
 									<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} pagination={paginationData} />
 								</TabPane>
@@ -246,9 +265,12 @@ class CampaignList extends Component {
 									<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} pagination={paginationData} />
 								</TabPane>
 							</Tabs>
-						</div>
-					</Card>
-				</div>
+						</Widget>
+					</div>
+					// 	</div>
+					// </div>
+				}
+			</div>
 		);
 	}
 }
@@ -258,7 +280,9 @@ export default withRouter(
 		graphql(campaigns, {
 			options: () => ({
 				variables: {
+
 					status: DEFAULT_STATUS,
+					campaignType: DEFAULT_TYPE
 				}, fetchPolicy: "network-only"
 			}),
 			props: ({ data: { loading, error, campaigns, refetch } }) => ({

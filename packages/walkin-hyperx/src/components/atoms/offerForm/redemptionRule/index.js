@@ -20,12 +20,12 @@ const OfferRedemptionRulesForm = Form.create({ name: 'offer_redemption_rule' })(
 				},
 			};
 			return (
-				<Form {...formItemLayout} style={{ padding: '50px' }} ref={wrappedComponentRef} layout="vertical">
+				<Form {...formItemLayout} style={{ padding: '20px 50px' }} ref={wrappedComponentRef} layout="vertical">
 					<Form.Item style={{ display: 'inline-block', width: 'calc(35% - 12px)' }} label="Usage Limit">
 						{getFieldDecorator('redemption_usage_limit', {
 							initialValue: `${
 								Object.keys(formValues).length != 0 ? formValues.redemption_usage_limit : ''
-							}`,
+								}`,
 						})(<Input type="number" />)}
 					</Form.Item>
 					<Form.Item
@@ -43,7 +43,7 @@ const OfferRedemptionRulesForm = Form.create({ name: 'offer_redemption_rule' })(
 						{getFieldDecorator('redemption_usage_limit_at_customer', {
 							initialValue: `${
 								Object.keys(formValues).length != 0 ? formValues.redemption_usage_limit_at_customer : ''
-							}`,
+								}`,
 						})(<Input type="number" />)}
 					</Form.Item>
 					<Form.Item
@@ -63,7 +63,7 @@ const OfferRedemptionRulesForm = Form.create({ name: 'offer_redemption_rule' })(
 						{getFieldDecorator('redemption_time_limit', {
 							initialValue: `${
 								Object.keys(formValues).length != 0 ? formValues.redemption_time_limit : ''
-							}`,
+								}`,
 						})(
 							<Input
 								type="number"
@@ -110,7 +110,7 @@ const OfferRedemptionRulesForm = Form.create({ name: 'offer_redemption_rule' })(
 						{getFieldDecorator('redemption_limit_sku_number', {
 							initialValue: `${
 								Object.keys(formValues).length != 0 ? formValues.redemption_limit_sku_number : ''
-							}`,
+								}`,
 						})(<Input type="number" />)}
 					</Form.Item>
 					<Form.Item

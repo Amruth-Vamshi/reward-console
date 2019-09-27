@@ -9,6 +9,7 @@ import UserInfo from '../../components/UserInfo';
 import AppNotification from '../../components/AppNotification';
 import MailNotification from '../../components/MailNotification';
 import Auxiliary from '../../util/Auxiliary';
+import '../../styles/styles.css';
 
 import {
 	NAV_STYLE_DRAWER,
@@ -61,10 +62,9 @@ class Topbar extends Component {
 		const { location } = this.props;
 		const appName = location.pathname.split("/")[1];
 		switch (appName) {
-			case "nearx":
-				return 'NearX-Topbar';
-			default:
-				return '';
+			case "nearx": return 'NearX-Topbar';
+			case "hyperx": return 'HyperX-Topbar';
+			default: return '';
 		}
 	}
 

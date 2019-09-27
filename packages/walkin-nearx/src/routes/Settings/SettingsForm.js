@@ -361,19 +361,16 @@ export default class SettingsForm extends Component {
 
                     {/* {console.log(radius.length >= 3 && radius[radius.length-1]==500)} */}
 
-                    {radius.length >= 3 || radius[radius.length - 1] == 500 ? (
-                      ""
-                    ) : (
-                        <Form.Item {...tailFormItemLayout}>
-                          <span
-                            onClick={() => this.addRadius()}
-                            style={{ color: "#34bfe2" }}
-                          >
-                            {" "}
-                            <a to="#"> +Add Radius </a>
-                          </span>
-                        </Form.Item>
-                      )}
+                    {radius.length >= 3 || radius[radius.length - 1] == 500 ? "" :
+                      <Form.Item {...tailFormItemLayout}>
+                        <span
+                          onClick={() => this.addRadius()}
+                          style={{ color: "#34bfe2" }}
+                        >
+                          <a to="#"> +Add Radius </a>
+                        </span>
+                      </Form.Item>
+                    }
                     <Form.Item {...tailFormItemLayout1}>
                       <Button
                         type="primary"

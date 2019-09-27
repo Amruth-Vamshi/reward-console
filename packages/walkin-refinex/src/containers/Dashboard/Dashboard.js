@@ -9,7 +9,7 @@ import jwt from "jsonwebtoken";
 import "./style.css"
 import { withApollo } from "react-apollo";
 import { Link } from "react-router-dom";
-import { GET_ANALYTICS } from "@walkinsole/walkin-components/src/PlatformQueries";
+import { GET_ANALYTICS } from "@walkinsole/walkin-core/src/PlatformQueries";
 import { AnyNear } from "./data";
 
 const dateFormat = 'YYYY/MM/DD';

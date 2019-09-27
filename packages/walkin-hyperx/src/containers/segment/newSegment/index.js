@@ -2,13 +2,13 @@ import React, { Component, Fragment } from 'react';
 import { Input, Button, Alert, Col } from 'antd';
 import { withRouter } from 'react-router-dom';
 import { withApollo, graphql, compose, mutate } from 'react-apollo';
-import { attributes, CREATE_RULE, createRule, createSegment } from '../../../query/audience';
+import { RULE_ATTRIBUTES, CREATE_RULE, createRule, createSegment } from '../../../query/audience';
 import './style.css';
 import { SEGMENT_LIST } from '../../../utils/RouterConstants';
 import get from 'lodash/get';
 import { WalkinQueryBuilder, CampaignHeader } from '@walkinsole/walkin-components';
 import jwt from "jsonwebtoken";
-import { GET_ALL_APPS_OF_ORGANIZATION } from "@walkinsole/walkin-components/src/PlatformQueries";
+import { GET_ALL_APPS_OF_ORGANIZATION } from "@walkinsole/walkin-core/src/PlatformQueries";
 
 class NewSegment extends Component {
 	constructor(props) {
@@ -18,15 +18,18 @@ class NewSegment extends Component {
 			query: { id: '1', combinator: 'and', rules: [] },
 			newSegmentError: false,
 			isDuplicateSegment: false,
+			errors: {}
 		};
 	}
 	logQuery = query => {
+		this.state.errors.rule = ''
 		this.setState({
 			query: query,
 			newSegmentError: false,
 		});
 	};
 	onChange = e => {
+		this.state.errors.name = ''
 		this.setState({ value: e.target.value });
 	};
 
@@ -39,11 +42,19 @@ class NewSegment extends Component {
 	};
 
 	onNewSegment = () => {
+		let errors = {}
 		const { value, query } = this.state;
-		if (value === '') {
-			this.displayError('newSegmentError');
-		}
 		let { client } = this.props;
+		if (!this.state.value || this.state.value.trim() == '') errors.name = "* this field is mandatory"
+		if (!this.state.query.rules || this.state.query.rules.length < 1) errors.rule = "* this field is mandatory"
+		else if (!this.state.query.rules[0] || this.state.query.rules[0].attributeValue == '') errors.rule = "* enter rule value"
+
+		if (Object.keys(errors).length !== 0) {
+			this.setState({ errors });
+			return
+		}
+
+
 		console.log(this.props.allApplications.organization.applications[0])
 		let org_id = jwt.decode(localStorage.getItem("jwt")).org_id;
 		client
@@ -136,28 +147,32 @@ class NewSegment extends Component {
 			}));
 		return (
 			<Fragment>
-				<div style={{ margin: '-32px -32px 0px' }}>
-					<CampaignHeader
-						children={
-							<Col span={12}>
-								<h3 className="gx-text-grey paddingLeftStyle campaignHeaderTitleStyle">
-									{isDuplicateSegment ? 'Duplicate segment' : 'New Segment'}
-								</h3>
-							</Col>
-						}
-					/>
+				<div>
+					<CampaignHeader>
+						<Col span={12}>
+							<h3 className="gx-text-grey paddingLeftStyle campaignHeaderTitleStyle">
+								{isDuplicateSegment ? 'Duplicate segment' : 'New Segment'}
+							</h3>
+						</Col>
+					</CampaignHeader>
 				</div>
 				<div style={{ margin: '32px' }}>
-					<p className="gx-text-grey gx-mb-1">Segment Name</p>
-					<Input
-						defaultValue={isDuplicateSegment ? value : 'Enter segment name'}
-						style={{ width: '50%', marginBottom: '40px' }}
-						value={value}
-						onChange={this.onChange}
-					/>
+					<div style={{ width: '50%', marginBottom: '40px' }}>
+						<div style={{ marginBottom: '10px' }}>
+							<p className="gx-mb-1">Segment Name</p>
+							<Input
+								defaultValue={isDuplicateSegment ? value : 'Enter segment name'}
+								value={value} placeholder="Enter Segment Name"
+								onChange={this.onChange}
+							/>
+						</div>
+						<span style={{ color: "Red" }}> {this.state.errors.name} </span>
+					</div>
+					<div style={{ marginTop: 10, marginBottom: 10 }}>Segment selection criteria</div>
 					<WalkinQueryBuilder fields={attributeData} onQueryChange={this.logQuery} query={query} />
+					<p style={{ color: "Red", marginTop: 10 }}> {this.state.errors.rule} </p>
 				</div>
-				{newSegmentError && <Alert message="Not a valid Segment" type="error" />}
+				{newSegmentError && <Alert style={{ margin: '0px 35px' }} message="Not a valid Segment" type="error" />}
 				<div className="segmentFooterButton">
 					<Button type="primary" className="campaignFooterStyle" onClick={this.onNewSegment}>
 						Create segment
@@ -171,7 +186,17 @@ class NewSegment extends Component {
 export default withRouter(
 	withApollo(
 		compose(
-			graphql(attributes, {
+			graphql(RULE_ATTRIBUTES, {
+				options: props => {
+					return {
+						variables: {
+							input: {
+								status: "ACTIVE",
+								organizationId: jwt.decode(localStorage.getItem("jwt")).org_id,
+							}
+						}
+					}
+				},
 				props: ({ data: { loading, error, ruleAttributes } }) => ({
 					loading,
 					ruleAttributes,
