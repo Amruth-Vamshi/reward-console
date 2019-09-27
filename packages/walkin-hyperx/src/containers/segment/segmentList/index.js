@@ -214,7 +214,7 @@ class SegmentList extends Component {
 								</Col>
 								<Col style={{ display: 'flex', justifyContent: 'flex-end' }} span={12}>
 									<Button type="primary" style={{ marginBottom: 0 }} onClick={this.onNewSegment}>
-										New Segment
+										Create Segment
 									</Button>
 								</Col>
 							</Fragment>

@@ -39,9 +39,9 @@ class CampaignList extends Component {
 	}
 
 	setInitialValues = () => {
-		const { campaigns, loading, key } = this.props;
+		const { campaigns, loading } = this.props;
 		this.setState({ allCampaigns: campaigns, loading: false }, () => {
-			this.onTabChange(key ? key : 1)
+			this.onTabChange(this.state.key)
 		})
 
 	}
@@ -158,7 +158,7 @@ class CampaignList extends Component {
 			showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`
 		}
 
-		console.log(campaignData);
+		console.log(this.state.key);
 
 		const columns = [
 			{

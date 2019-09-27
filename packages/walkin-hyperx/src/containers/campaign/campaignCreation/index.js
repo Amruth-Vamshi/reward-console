@@ -12,6 +12,7 @@ import { GET_ALL_APPS_OF_ORGANIZATION } from "@walkinsole/walkin-core/src/Platfo
 import { Col, Row, message } from 'antd';
 import jwt from "jsonwebtoken";
 import '../styles.css'
+import moment from "moment";
 import { CustomScrollbars } from "@walkinsole/walkin-components";
 import ContainerHeader from "@walkinsole/walkin-refinex/src/routes/Campaigns/CampaignHeader";
 import { CampaignFooter, CampaignHeader, Stepper } from '@walkinsole/walkin-components';
@@ -148,7 +149,9 @@ class CampaignCreation extends Component {
 		}).then(data => {
 			console.log("campaign data..", data);
 			message.success('Campaign Launched')
-			this.props.history.push('/hyperx/campaigns')
+			moment().isBetween(this.state.campaign.startTime, this.state.campaign.endTime) ?
+				this.props.history.push('/hyperx/campaigns') :
+				this.props.history.push({ pathname: '/hyperx/campaigns', tabKey: "2" })
 		}).catch(err => {
 			console.log("Error Update campaign", err)
 			this.setState({ loading: false })
@@ -209,7 +212,7 @@ class CampaignCreation extends Component {
 			};
 			if (scheduleSaveMark) {
 				console.log(this.state.scheduleData);
-				let repeatRuleConf = { frequency: scheduleData.repeatType, time: scheduleData.time }
+				let repeatRuleConf = { frequency: scheduleData.repeatType, time: moment(scheduleData.time).format('HH:MM:SS') }
 				scheduleData.repeatType == "WEEKLY" ? repeatRuleConf.byWeekDay = scheduleData.days : ''
 				scheduleData.hasOwnProperty('endTime') ? repeatRuleConf.endAfter = scheduleData.endTime : repeatRuleConf.noOfOccurances = scheduleData.noOfOccurances
 				input.repeatRuleConfiguration = repeatRuleConf
@@ -578,6 +581,7 @@ export default withRouter(
 				options: ownProps => ({
 					variables: {
 						input: {
+							entityName: "CustomerSearch",
 							status: "ACTIVE",
 							organizationId: jwt.decode(localStorage.getItem("jwt")).org_id,
 						}

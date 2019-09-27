@@ -191,6 +191,7 @@ export default withRouter(
 					return {
 						variables: {
 							input: {
+								entityName: "CustomerSearch",
 								status: "ACTIVE",
 								organizationId: jwt.decode(localStorage.getItem("jwt")).org_id,
 							}
