@@ -3,11 +3,7 @@ import { Menu } from 'antd';
 import { Link } from 'react-router-dom';
 import { CustomScrollbars, Auxiliary, IntlMessages } from '@walkinsole/walkin-components';
 import SidebarLogo from './SidebarLogo';
-
-import UserProfile from './UserProfile';
-import AppsNavigation from './AppsNavigation';
 import { withRouter } from 'react-router-dom';
-import camelCase from 'lodash/camelCase';
 
 import {
 	NAV_STYLE_NO_HEADER_EXPANDED_SIDEBAR,

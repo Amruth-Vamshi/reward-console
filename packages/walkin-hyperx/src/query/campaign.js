@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 export const campaigns = gql`
-	query campaigns($status: STATUS!) {
-		campaigns(status: $status) {
+	query campaigns($status: STATUS!,$campaignType:String,$organization_id:ID) {
+		campaigns(status: $status,campaignType:$campaignType,organization_id: $organization_id) {
 			id name priority
       campaignStatus
 			description
