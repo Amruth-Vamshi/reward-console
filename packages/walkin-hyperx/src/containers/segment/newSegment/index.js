@@ -5,7 +5,6 @@ import { withApollo, graphql, compose, mutate } from 'react-apollo';
 import { RULE_ATTRIBUTES, CREATE_RULE, createRule, createSegment } from '../../../query/audience';
 import './style.css';
 import { SEGMENT_LIST } from '../../../utils/RouterConstants';
-import get from 'lodash/get';
 import { WalkinQueryBuilder, CampaignHeader } from '@walkinsole/walkin-components';
 import jwt from "jsonwebtoken";
 import { GET_ALL_APPS_OF_ORGANIZATION } from "@walkinsole/walkin-core/src/PlatformQueries";
@@ -18,7 +17,8 @@ class NewSegment extends Component {
 			query: { id: '1', combinator: 'and', rules: [] },
 			newSegmentError: false,
 			isDuplicateSegment: false,
-			errors: {}
+			errors: {},
+			loading: false
 		};
 	}
 	logQuery = query => {
@@ -57,6 +57,7 @@ class NewSegment extends Component {
 
 		console.log(this.props.allApplications.organization.applications[0])
 		let org_id = jwt.decode(localStorage.getItem("jwt")).org_id;
+		this.setState({ loading1: true })
 		client
 			.mutate({
 				mutation: createRule,
@@ -87,17 +88,21 @@ class NewSegment extends Component {
 					})
 					.then(({ data }) => {
 						const { history } = this.props;
+						this.setState({ loading1: false })
+
 						history.push({
 							pathname: SEGMENT_LIST,
 						});
 					})
 					.catch(error => {
 						this.displayError('newSegmentError');
+						this.setState({ loading1: false })
 					});
 			})
 			.catch(error => {
 				console.log('error', error);
 				this.displayError('newSegmentError');
+				this.setState({ loading1: false })
 			});
 	};
 
@@ -130,7 +135,7 @@ class NewSegment extends Component {
 	};
 
 	render() {
-		const { value, newSegmentError, query, isDuplicateSegment } = this.state;
+		const { loading1, value, newSegmentError, query, isDuplicateSegment } = this.state;
 		const { loading, error, ruleAttributes } = this.props;
 		if (loading) {
 			return <p>Please wait...</p>;
@@ -174,7 +179,7 @@ class NewSegment extends Component {
 				</div>
 				{newSegmentError && <Alert style={{ margin: '0px 35px' }} message="Not a valid Segment" type="error" />}
 				<div className="segmentFooterButton">
-					<Button type="primary" className="campaignFooterStyle" onClick={this.onNewSegment}>
+					<Button type="primary" loading={loading1} className="campaignFooterStyle" onClick={this.onNewSegment}>
 						Create segment
 					</Button>
 				</div>

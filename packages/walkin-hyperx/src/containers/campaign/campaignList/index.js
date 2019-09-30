@@ -7,6 +7,7 @@ import moment from 'moment';
 import { withApollo, graphql } from 'react-apollo';
 import { SortableDataTable, InstantSearch, CampaignHeader, CircularProgress, Widget } from '@walkinsole/walkin-components';
 import './style.css';
+import jwt from 'jsonwebtoken'
 
 const DEFAULT_STATUS = 'ACTIVE';
 const DEFAULT_TYPE = 'OFFER';
@@ -280,7 +281,7 @@ export default withRouter(
 		graphql(campaigns, {
 			options: () => ({
 				variables: {
-
+					organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
 					status: DEFAULT_STATUS,
 					campaignType: DEFAULT_TYPE
 				}, fetchPolicy: "network-only"
