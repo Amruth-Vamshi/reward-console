@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Row, Col, Typography } from "antd";
 const { Title } = Typography;
-import { CustomScrollbars } from "@walkinsole/walkin-components";
 import moment from "moment";
 import './style.css'
 // import Moment from "react-moment";

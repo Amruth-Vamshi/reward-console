@@ -200,6 +200,7 @@ class CampaignList extends Component {
 			{
 				title: '',
 				key: 'action',
+				width: 10,
 				render: (text, record) => (
 					<div className="gx-module-contact-right">
 						<Dropdown overlay={this.menus(record)} placement="bottomRight" trigger={['click']}>

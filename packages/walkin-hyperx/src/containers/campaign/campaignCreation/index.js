@@ -13,8 +13,6 @@ import { Col, Row, message } from 'antd';
 import jwt from "jsonwebtoken";
 import '../styles.css'
 import moment from "moment";
-import { CustomScrollbars } from "@walkinsole/walkin-components";
-import ContainerHeader from "@walkinsole/walkin-refinex/src/routes/Campaigns/CampaignHeader";
 import { CampaignFooter, CampaignHeader, Stepper } from '@walkinsole/walkin-components';
 import { CREATE_CAMPAIGN, UPDATE_CAMPAIGN, CREATE_MESSAGE_TEMPLETE, CREATE_COMMUNICATION, LAUNCH_CAMPAIGN } from '../../../query/campaign';
 
@@ -416,12 +414,15 @@ class CampaignCreation extends Component {
 
 	render() {
 		const { formValues, current, showTestAndControl, testValue, controlValue, testControlSelected, rows, values, communicationSelected } = this.state;
-		let attributeData = this.props.allAttributes && this.props.allAttributes.ruleAttributes &&
-			this.props.allAttributes.ruleAttributes.map(el => ({
-				name: el.attributeName,
-				id: el.id,
-				label: el.attributeName,
-			}));
+		let attributeData = []
+		if (this.props.allAttributes)
+			attributeData = this.props.allAttributes && this.props.allAttributes.ruleAttributes &&
+				this.props.allAttributes.ruleAttributes.map(el => ({
+					name: el.attributeName,
+					id: el.id,
+					label: el.attributeName,
+				}));
+		else this.state.errors.rule = 'you dont have any rule attributes'
 		const props = {
 			name: 'file',
 			action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',

@@ -140,16 +140,19 @@ class NewSegment extends Component {
 		if (loading) {
 			return <p>Please wait...</p>;
 		}
-		if (error) {
-			return <p>{error}</p>;
-		}
-		let attributeData =
-			ruleAttributes.length > 0 &&
-			ruleAttributes.map(el => ({
-				name: el.attributeName,
-				key: el.id,
-				label: el.attributeName,
-			}));
+		// if (error) {
+		// 	return <p>{error}</p>;
+		// }
+		let attributeData = []
+		if (ruleAttributes)
+			attributeData = ruleAttributes &&
+				ruleAttributes.length > 0 &&
+				ruleAttributes.map(el => ({
+					name: el.attributeName,
+					key: el.id,
+					label: el.attributeName,
+				}));
+		else this.state.errors.rule = 'you dont have any rule attributes'
 		return (
 			<Fragment>
 				<div>
