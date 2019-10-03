@@ -187,7 +187,7 @@ class EditCampaign extends Component {
 
   onTestAndControlEdit = () => {
     this.setState({
-      showTestAndControl: true
+      showTestAndControl: false
     });
   };
   onChange = current => {
@@ -555,8 +555,6 @@ class EditCampaign extends Component {
 
 
   getContainer = () => {
-    console.log("This.props is..", this.props)
-    console.log("This.state is..", this.state)
     const { campaign } = this.props.campaign;
     let triggerRule={id:1,combinator: "and", rules: [] }
     let audienceRule={id:1,combinator: "and", rules: [] };
@@ -594,8 +592,6 @@ class EditCampaign extends Component {
         id: el.id,
         label: el.attributeName
       }));
-
-      console.log("triggerRule",triggerRule)
     // let templateData = this.props.messageTemplate;
     const {
       formValues,

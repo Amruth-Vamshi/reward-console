@@ -4,12 +4,11 @@ import { withRouter } from 'react-router-dom';
 import { withApollo, graphql, compose, mutate } from 'react-apollo';
 import { attributes, createRule, createSegment } from '../../Query';
 import './style.css';
-import { SEGMENT_LIST } from '../../../Utils';
+import { SEGMENT_LIST, DEFAULT_ACTIVE_STATUS } from '../../../Utils';
 import get from 'lodash/get';
-import { WalkinQueryBuilder, CampaignHeader } from '@walkinsole/walkin-components';
+import { WalkinQueryBuilder, CampaignHeader, ErrorBoundary } from '@walkinsole/walkin-components';
 import jwt from "jsonwebtoken";
 import { GET_ALL_APPS_OF_ORGANIZATION } from "@walkinsole/walkin-core/src/PlatformQueries";
-
 class NewSegment extends Component {
 	constructor(props) {
 		super(props);
@@ -122,8 +121,9 @@ class NewSegment extends Component {
 	};
 
 	render() {
+		console.log(this.props)
 		const { value, newSegmentError, query, isDuplicateSegment } = this.state;
-		const { loading, error, ruleAttributes } = this.props;
+		const { loading, error, ruleAttributes } = this.props.attributes;
 		const antIcon = <Icon type="loading" style={{ fontSize: 100 }} spin />;
 		if (loading) {
 			return (<div> <br /> <br /> <br /> <br />
@@ -133,7 +133,7 @@ class NewSegment extends Component {
 			</div>)
 		}
 		if (error) {
-			return <p>{error}</p>;
+			return <p>{error.message}</p>;
 		}
 		let attributeData =
 			ruleAttributes.length > 0 &&
@@ -143,35 +143,37 @@ class NewSegment extends Component {
 				label: el.attributeName,
 			}));
 		return (
-			<Fragment>
-				<div style={{ margin: '-32px -32px 0px' }}>
-					<CampaignHeader
-						children={
-							<Col span={12}>
-								<h3 className="gx-text-grey paddingLeftStyle campaignHeaderTitleStyle">
-									{isDuplicateSegment ? 'Duplicate segment' : 'New Segment'}
-								</h3>
-							</Col>
-						}
-					/>
-				</div>
-				<div style={{ margin: '32px' }}>
-					<p className="gx-text-grey gx-mb-1">Segment Name</p>
-					<Input
-						defaultValue={isDuplicateSegment ? value : 'Enter segment name'}
-						style={{ width: '50%', marginBottom: '40px' }}
-						value={value}
-						onChange={this.onChange}
-					/>
-					<WalkinQueryBuilder fields={attributeData} onQueryChange={this.logQuery} query={query} />
-				</div>
-				{newSegmentError && <Alert message="Not a valid Segment" type="error" />}
-				<div className="segmentFooterButton">
-					<Button type="primary" className="campaignFooterStyle" onClick={this.onNewSegment}>
-						Create segment
+			<ErrorBoundary>
+				<Fragment>
+					<div style={{ margin: '-32px -32px 0px' }}>
+						<CampaignHeader
+							children={
+								<Col span={12}>
+									<h3 className="gx-text-grey paddingLeftStyle campaignHeaderTitleStyle">
+										{isDuplicateSegment ? 'Duplicate segment' : 'New Segment'}
+									</h3>
+								</Col>
+							}
+						/>
+					</div>
+					<div style={{ margin: '32px' }}>
+						<p className="gx-text-grey gx-mb-1">Segment Name</p>
+						<Input
+							defaultValue={isDuplicateSegment ? value : 'Enter segment name'}
+							style={{ width: '50%', marginBottom: '40px' }}
+							value={value}
+							onChange={this.onChange}
+						/>
+						<WalkinQueryBuilder fields={attributeData} onQueryChange={this.logQuery} query={query} />
+					</div>
+					{newSegmentError && <Alert message="Not a valid Segment" type="error" />}
+					<div className="segmentFooterButton">
+						<Button type="primary" className="campaignFooterStyle" onClick={this.onNewSegment}>
+							Create segment
 					</Button>
-				</div>
-			</Fragment>
+					</div>
+				</Fragment>
+			</ErrorBoundary>
 		);
 	}
 }
@@ -180,11 +182,19 @@ export default withRouter(
 	withApollo(
 		compose(
 			graphql(attributes, {
-				props: ({ data: { loading, error, ruleAttributes } }) => ({
-					loading,
-					ruleAttributes,
-					error,
-				}),
+				name: "attributes",
+				options: props => {
+					return {
+						variables: {
+							input: {
+								organizationId: jwt.decode(localStorage.getItem("jwt")).org_id,
+								status: DEFAULT_ACTIVE_STATUS
+							}
+
+						},
+						fetchPolicy: "cache-and-network"
+					};
+				}
 
 			}),
 			graphql(GET_ALL_APPS_OF_ORGANIZATION, {

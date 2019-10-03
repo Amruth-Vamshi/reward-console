@@ -75,7 +75,7 @@ class Home extends Component {
     const { backgroundColor, templateStructure, transitions, logo, subtitle, title, buttonColor } = this.state;
     const { question, color } = this.props;
     return (
-      <Layout className="layout" style={{ marginLeft: "30%", backgroundColor: "white" }}>
+      <Layout className="layout" style={{ height: "100%", backgroundColor: "white" }}>
         <Header style={{ backgroundColor: color }}>
           <Button style={{ backgroundColor: color, border: "0px" }} onClick={this.goBack}>
             <Icon type="left" />

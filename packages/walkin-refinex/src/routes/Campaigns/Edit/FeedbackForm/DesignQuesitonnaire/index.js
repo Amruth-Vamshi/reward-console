@@ -51,7 +51,7 @@ class FormDesign extends Component {
 
       questionnaire && questionnaire[counter] ? (
         <Row >
-          <Col span={17} >
+          <Col span={17} style={{ height: "800px" }}>
             <Preview
               color={color}
               isFirstQuestion={isFirstQuestion}
