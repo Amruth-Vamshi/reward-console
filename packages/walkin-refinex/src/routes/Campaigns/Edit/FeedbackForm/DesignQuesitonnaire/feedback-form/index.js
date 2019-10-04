@@ -82,7 +82,7 @@ class Home extends Component {
           </Button>
           <div className="logo" />
         </Header>
-        <div style={{ minHeight: "43vh", padding: '0 40px', marginTop: "10px" }}>
+        <div style={{ minHeight: "48vh", padding: '0 40px', marginTop: "10px" }}>
           <Row>
             <Col style={{ marginTop: "10px" }}>
               <h3 style={{ textAlign: "center" }}>{question ? question.questionText : ""}</h3>

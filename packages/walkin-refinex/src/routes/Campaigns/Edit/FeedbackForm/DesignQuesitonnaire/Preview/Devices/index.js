@@ -29,7 +29,7 @@ export default class Device extends Component {
         const { question, nextQuestion, isLastQuestion, goTopreviousQuestion, isFirstQuestion, color } = this.props;
 
         return (
-            <HtcOne>
+            <Nexus5>
                 <Row >
                     <Col style={{ width: "100%", height: "100%" }}>
                         {isLastQuestion ? this.warning() : null}
@@ -37,7 +37,7 @@ export default class Device extends Component {
                         <Home color={color} question={question} nextQuestion={nextQuestion} goTopreviousQuestion={goTopreviousQuestion} />
                     </Col>
                 </Row>
-            </HtcOne>
+            </Nexus5>
         )
     }
 }
