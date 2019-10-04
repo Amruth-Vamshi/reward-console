@@ -20,13 +20,6 @@ export default class Controls extends React.Component {
             }}>
                 <Col span={24}>
                     <Card>
-                        {/* <Row>
-                            <Col align="right" span={24} style={{ marginLeft: "10rem", height: "auto", width: "500px" }}>
-                                {isLastQuestion ? this.warning() : null}
-                                {isFirstQuestion ? this.newWarning() : null}
-                                <Home color={color} question={question} nextQuestion={nextQuestion} goTopreviousQuestion={goTopreviousQuestion} />
-                            </Col>
-                        </Row> */}
                         <Row>
                             <Col span={8}>
 
