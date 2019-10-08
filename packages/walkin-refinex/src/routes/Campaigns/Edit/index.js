@@ -14,7 +14,7 @@ import FeedbackFormConfig from "./FeedbackForm";
 import ContainerHeader from "../CampaignHeader";
 import gql from "graphql-tag";
 import { compose, graphql } from "react-apollo";
-import GoLive from "./GoLive";
+import Stepper from "../Stepper"
 import isEmpty from "lodash/isEmpty";
 import {
   GET_CAMPAIGN,
@@ -42,6 +42,7 @@ import {
 } from '../../../Utils'
 import { async } from "q";
 import { from } from "zen-observable";
+
 
 
 const communicationData = [
@@ -706,6 +707,8 @@ class EditCampaign extends Component {
 
   };
 
+
+
   render() {
     const { current, stepperData } = this.state;
     const {campaign}=this.props
@@ -721,36 +724,52 @@ class EditCampaign extends Component {
       })
     }
     return (
-      <div className="PageContainer" style={{ margin: "-32px" }}>
+        <div>
         <ContainerHeader
-          current={current}
-          onChange={this.goToNextPage.bind(this)}
-          title="Create RefineX Campaign"
-          StepperData={stepperData}
+        children={
+            <React.Fragment>
+                <Col sm={5} md={6} lg={8} xl={8} xxl={13}>
+                    <h3 className="gx-text-grey paddingLeftStyle campaignHeaderTitleStyle">
+                        Create Campaign
+                    </h3>
+                </Col>
+                <Col sm={19} md={18} lg={16} xl={16} xxl={11}>
+                    <Stepper
+                    StepperData={stepperData}
+                        current={current}
+                        onChange={this.goToNextPage.bind(this)}
+                    />
+                </Col>
+            </React.Fragment>
+        }
         />
-        {this.state.loading ? (<div className="divCenter"><Spin size="large" indicator={antIcon} /> </div>)  :<Row>
-          <Col span={24}>
-            <div className="stepperContainer">{campaign.loading ? <CircularProgress /> :this.getContainer()}</div>
-          </Col>
-        </Row>}
-        {/* <Row className="BottomBar">
-          <Col offset={1}>
-            <Button onClick={this.onFormNext} type="primary">Next</Button>
-          </Col>
-
-          <Col offset={1}>
-            <Button>Save as Draft</Button>
-          </Col>
-        </Row> */}
-        <div style={{ margin: "32px" }}>
-          <CampaignFooter
-            nextButtonText={current>=5?"Save" :"Next"}
-            saveDraftText="Save Draft"
+        <div className="stepperContainer">
+        <div style={{ margin: '40px', height: '60vh' }}>
+        {this.state.loading ? (<div className="divCenter"><Spin size="large" indicator={antIcon} /> </div>)  : 
+           <React.Fragment>
+            {campaign.loading ? (<div className="divCenter"><Spin size="large" indicator={antIcon} /> </div>) :this.getContainer()} 
+           </React.Fragment>    
+         }
+        </div>
+         
+        </div>
+       
+         
+        <div style={{}}>
+        <div className="gx-card campFooter" style={{ position: 'absolute', width: '100%' }}>
+        <div className="gx-card-body" style={{ background: "#F6F6F6" }}>
+        <CampaignFooter
+            loading={this.state.loading}
+            nextButtonText={current>=5?"Launch" : 'Save and Next'}
+            saveDraftText={current === 0 ? "" : 'Save Draft'}
             saveDraft={this.onPage1SaveDraft}
             goToPage2={this.onFormNext.bind(this, current + 1)}
           />
         </div>
-      </div>
+        </div>
+          </div>
+          </div>
+  
     );
   }
 }

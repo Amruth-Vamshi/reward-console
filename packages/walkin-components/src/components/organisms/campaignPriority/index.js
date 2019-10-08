@@ -5,43 +5,44 @@ import './style.css';
 import { Card } from "antd";
 
 const CampaignPriority = ({
-	buttons,
-	promptText,
-	tootTipText,
-	prioritySelectionTitle,
-	priorityButtonText,
-	testControlTitle,
-	testControlPercentage,
-	testControlPercentageEditText,
-	priorityNumberInvalidErrorMessage,
-	onTestAndControlEdit,
-	handleChange,
-	priorityChosen
+    buttons,
+    promptText,
+    tootTipText,
+    prioritySelectionTitle,
+    priorityButtonText,
+    testControlTitle,
+    testControlPercentage,
+    testControlPercentageEditText,
+    priorityNumberInvalidErrorMessage,
+    onTestAndControlEdit,
+    handleChange,
+    priorityChosen,
+    HideTestConstrol
 }) => {
-	return (
-		<Fragment>
-			<div className="campaignPriorityContainerStyle prioritySection">
-				<PrioritySelection
-					buttons={buttons}
-					priorityChosen={priorityChosen}
-					prioritySelectionTitle={prioritySelectionTitle}
-					priorityButtonText={priorityButtonText}
-					priorityNumberInvalidErrorMessage={priorityNumberInvalidErrorMessage}
-					onClick={handleChange}
-				/>
-			</div>
-			<div className="campaignPriorityContainerStyle">
-				<TestAndControl
-					testControlTitle={testControlTitle}
-					testControlPercentage={testControlPercentage}
-					promptText={promptText}
-					tootTipText={tootTipText}
-					testControlPercentageEditText={testControlPercentageEditText}
-					onTestAndControlEdit={onTestAndControlEdit}
-				/>
-			</div>
-		</Fragment>
-	);
+    return (
+        <Fragment>
+            <div className="campaignPriorityContainerStyle prioritySection">
+                <PrioritySelection
+                    buttons={buttons}
+                    priorityChosen={priorityChosen}
+                    prioritySelectionTitle={prioritySelectionTitle}
+                    priorityButtonText={priorityButtonText}
+                    priorityNumberInvalidErrorMessage={priorityNumberInvalidErrorMessage}
+                    onClick={handleChange}
+                />
+            </div>
+            {!HideTestConstrol ? <div className="campaignPriorityContainerStyle">
+                <TestAndControl
+                    testControlTitle={testControlTitle}
+                    testControlPercentage={testControlPercentage}
+                    promptText={promptText}
+                    tootTipText={tootTipText}
+                    testControlPercentageEditText={testControlPercentageEditText}
+                    onTestAndControlEdit={onTestAndControlEdit}
+                />
+            </div> : null}
+        </Fragment>
+    );
 };
 
 export default CampaignPriority;

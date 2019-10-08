@@ -3,9 +3,9 @@ import { Menu, Icon } from "antd";
 import { Link } from "react-router-dom";
 
 import {
-  CustomScrollbars,
-  Auxiliary,
-  IntlMessages
+    CustomScrollbars,
+    Auxiliary,
+    IntlMessages
 } from "@walkinsole/walkin-components";
 
 import UserProfile from "./UserProfile";
@@ -13,73 +13,80 @@ import AppsNavigation from "./AppsNavigation";
 import { withRouter } from "react-router-dom";
 
 import {
-  NAV_STYLE_NO_HEADER_EXPANDED_SIDEBAR,
-  NAV_STYLE_NO_HEADER_MINI_SIDEBAR,
-  THEME_TYPE_LITE
+    NAV_STYLE_NO_HEADER_EXPANDED_SIDEBAR,
+    NAV_STYLE_NO_HEADER_MINI_SIDEBAR,
+    THEME_TYPE_LITE
 } from "@walkinsole/walkin-components/src/constants/ThemeSetting";
 import SidebarLogo from "@walkinsole/walkin-core/src/containers/SidebarContent/SidebarLogo";
 import { compose, graphql } from "react-apollo";
 import gql from "graphql-tag";
 
 class SidebarContent extends Component {
-  getNoHeaderClass = navStyle => {
-    if (
-      navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR ||
-      navStyle === NAV_STYLE_NO_HEADER_EXPANDED_SIDEBAR
-    ) {
-      return "gx-no-header-notifications";
-    }
-    return "";
-  };
-  getNavStyleSubMenuClass = navStyle => {
-    if (navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR) {
-      return "gx-no-header-submenu-popup";
-    }
-    return "";
-  };
+    getNoHeaderClass = navStyle => {
+        if (
+            navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR ||
+            navStyle === NAV_STYLE_NO_HEADER_EXPANDED_SIDEBAR
+        ) {
+            return "gx-no-header-notifications";
+        }
+        return "";
+    };
+    getNavStyleSubMenuClass = navStyle => {
+        if (navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR) {
+            return "gx-no-header-submenu-popup";
+        }
+        return "";
+    };
 
-  render() {
-    const { themeType, navStyle, pathname, match } = this.props;
-    const selectedKeys = pathname.substr(1);
-    const defaultOpenKeys = selectedKeys.split("/")[1];
-    return (
-      <Auxiliary>
-        <SidebarLogo />
-        <div className="gx-sidebar-content">
-          <Menu theme={themeType === THEME_TYPE_LITE ? "lite" : "dark"}>
-            <Menu.Item key="dashboard">
-              <Link to="/refinex/dashboard">
-                <Icon type="dashboard" style={{ fontSize: '18px' }} />
-                <IntlMessages id="sidebar.refinex.dashboard" />
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="feedbacks">
-              <Link to="/refinex/feedback">
-                <i className="icon icon-feedback" />
-                <IntlMessages id="sidebar.refinex.feedbacks" />
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="segment">
-              <Link to="/refinex/segment/segmentList">
-                <i className="icon icon-select" />
-                {/* <IntlMessages id="sidebar.samplePage" /> */}
-                <span>Segments</span>
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="refinex/apps">
-              <Link to="/refinex/apps">
-                <i className="icon icon-apps" />
-                {/* <IntlMessages id="sidebar.samplePage" /> */}
-                <span>Apps</span>
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="analytics">
-              <Link to="/refinex/analytics">
-                <i className="icon icon-chart" />
-                <IntlMessages id="sidebar.refinex.analytics" />
-              </Link>
-            </Menu.Item>
-            {/* <Menu.Item key="settings">
+    render() {
+        const { themeType, navStyle, pathname, match } = this.props;
+        const selectedKeys = pathname.substr(1);
+        const defaultOpenKeys = selectedKeys.split("/")[1];
+        console.log("defaultOpenKeys", defaultOpenKeys)
+        return (
+            <Auxiliary>
+                <SidebarLogo />
+                <div style={{ height: '100%' }} className="RefineX-Sidebar gx-sidebar-content">
+                    <Menu
+                        style={{ height: '100%' }}
+                        defaultOpenKeys={[defaultOpenKeys]}
+                        selectedKeys={[defaultOpenKeys]}
+                        theme={themeType === THEME_TYPE_LITE ? 'lite' : 'dark'}
+                        mode="inline"
+                    >
+                        <Menu.Item key="dashboard">
+                            <Link to="/refinex/dashboard">
+                                <Icon type="dashboard" style={{ fontSize: '18px' }} />
+                                <IntlMessages id="sidebar.refinex.dashboard" />
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item key="feedback">
+                            <Link to="/refinex/feedback">
+                                <i className="icon icon-feedback" />
+                                <IntlMessages id="sidebar.refinex.feedbacks" />
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item key="segment">
+                            <Link to="/refinex/segment/segmentList">
+                                <i className="icon icon-select" />
+                                {/* <IntlMessages id="sidebar.samplePage" /> */}
+                                <span>Segments</span>
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item key="apps">
+                            <Link to="/refinex/apps">
+                                <i className="icon icon-apps" />
+                                {/* <IntlMessages id="sidebar.samplePage" /> */}
+                                <span>Apps</span>
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item key="analytics">
+                            <Link to="/refinex/analytics">
+                                <i className="icon icon-chart" />
+                                <IntlMessages id="sidebar.refinex.analytics" />
+                            </Link>
+                        </Menu.Item>
+                        {/* <Menu.Item key="settings">
               <Link to="/refinex/settings">
                 <i className="icon icon-setting" />
                 <IntlMessages id="sidebar.refinex.settings" />
@@ -97,19 +104,19 @@ class SidebarContent extends Component {
                 <IntlMessages id="sidebar.refinex.help" />
               </Link>
             </Menu.Item> */}
-          </Menu>
-        </div>
-      </Auxiliary>
-    );
-  }
+                    </Menu>
+                </div>
+            </Auxiliary>
+        );
+    }
 }
 
 SidebarContent.propTypes = {};
 
 const mapStateToProps = ({ settings, ownProps }) => {
-  const { navStyle, themeType, locale } = settings.settings;
-  const { pathname } = ownProps.location;
-  return { navStyle, themeType, locale, pathname };
+    const { navStyle, themeType, locale } = settings.settings;
+    const { pathname } = ownProps.location;
+    return { navStyle, themeType, locale, pathname };
 };
 
 const GET_SETTINGS = gql`
@@ -131,9 +138,9 @@ const GET_SETTINGS = gql`
 
 
 export default compose(
-  withRouter,
-  graphql(GET_SETTINGS, {
-    props: mapStateToProps,
-    name: "settings"
-  })
+    withRouter,
+    graphql(GET_SETTINGS, {
+        props: mapStateToProps,
+        name: "settings"
+    })
 )(SidebarContent);
