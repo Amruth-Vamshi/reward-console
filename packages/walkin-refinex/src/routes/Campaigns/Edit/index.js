@@ -646,7 +646,11 @@ class EditCampaign extends Component {
           />
         );
       case 1:
-        return <FeedbackFormConfig />;
+        return (
+           
+             <FeedbackFormConfig />
+           
+           );
       case 2:
         return (
           <CustomScrollbars>
@@ -745,7 +749,7 @@ class EditCampaign extends Component {
         }
         />
         <div className="stepperContainer">
-        <div style={{ margin: '30px 30px 30px 10px', height: '60vh' }}>
+        <div style={{ margin: '20px 20px 20px 10px', height: '60vh' }}>
         {this.state.loading ? (<div className="divCenter"><Spin size="large" indicator={antIcon} /> </div>)  : 
            <React.Fragment>
             {campaign.loading ? (<div className="divCenter"><Spin size="large" indicator={antIcon} /> </div>) :this.getContainer()} 

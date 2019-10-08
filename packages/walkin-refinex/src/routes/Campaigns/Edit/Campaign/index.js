@@ -48,7 +48,7 @@ const BasicInfo = ({
 }) => {
     return (
 
-        <Fragment >
+        <div >
 
             <div>
                 {" "}
@@ -92,7 +92,7 @@ const BasicInfo = ({
             </div> : null
             }
 
-        </Fragment>
+        </div>
 
     );
 };

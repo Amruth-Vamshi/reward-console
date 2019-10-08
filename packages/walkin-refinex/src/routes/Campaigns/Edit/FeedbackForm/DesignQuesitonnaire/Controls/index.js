@@ -20,7 +20,7 @@ export default class Controls extends React.Component {
     };
     render() {
         return (
-            <Row gutter={16} style={{ backgroundColor: "#EAECEB", borderLeft: "2px solid grey" }}>
+            <Row gutter={16} >
                 <Col span={24}>
                     <Card style={{
                         backgroundColor: "#EAECEB"
