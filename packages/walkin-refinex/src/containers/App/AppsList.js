@@ -131,9 +131,10 @@ class AppsList extends Component {
 
     render() {
         const data = this.state.appsList ? this.state.appsList : []
-        console.log(data)
         return (
-            <div>
+            <div style={{
+                minHeight: "100vh"
+            }}>
                 <Row className="headerRow1">
                     <div style={{ width: "100%" }}>
                         <span style={{ fontSize: 25 }}>Apps</span>
@@ -159,14 +160,13 @@ class AppsList extends Component {
                         <br /> <br /> <br />
                     </div>
                 ) : this.state.appsList.length ? (
-                    <div>
+                    <div style={{
+                        marginTop: "10px"
+                    }}>
                         <Row className="placeTableHeaders">
-                            <Col span={4}>Name</Col>
-                            <Col sm={4} md={4} lg={4} xl={4} xxl={5}>
-                                Industry
-              </Col>
-                            <Col span={5}>Description</Col>
-                            <Col span={5}>Key</Col>
+                            <Col span={6}>Name</Col>
+                            <Col span={6}>Description</Col>
+                            <Col span={6}>Key</Col>
                             <Col span={1} />
                         </Row>
                         {this.state.appsList.map((item, i) => (

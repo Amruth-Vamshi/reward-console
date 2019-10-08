@@ -18,6 +18,11 @@
     color: #848484
 }
 
+.placeTableHeaders{
+    font-size: 17px;
+    margin: 0px 20px 5px 10px
+}
+
 .divCenter {
 	display: flex;
 	justify-content: center;

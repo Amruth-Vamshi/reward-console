@@ -423,6 +423,7 @@ class CreateCampaign extends Component {
             onTestValueChange={this.onTestValueChange}
             onControlValueChange={this.onControlValueChange}
             popupButtonText="apply"
+            showFeedbackFormType={true}
             // campaign={this.props.campaign.campaign}
           />
         );
@@ -494,7 +495,7 @@ class CreateCampaign extends Component {
         }
         />
         <div className="stepperContainer">
-        <div style={{ margin: '20px', height: '60vh' }}>
+        <div style={{ margin: '30px 30px 30px 10px', height: '60vh' }}>
          {this.getContainer()}
         </div>
          

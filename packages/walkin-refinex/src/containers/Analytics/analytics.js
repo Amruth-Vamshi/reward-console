@@ -144,7 +144,11 @@ class analytics extends Component {
         return (
             <div>
                 <Auxiliary>
-                    <div className="gx-main-content-wrapper">
+                    <div
+                        style={{
+                            minHeight: "100vh"
+                        }}
+                        className="gx-main-content-wrapper">
                         <Row>
                             <Col sm={0} md={6} xl={8}>
                                 <span className='gx-d-none gx-d-sm-flex'

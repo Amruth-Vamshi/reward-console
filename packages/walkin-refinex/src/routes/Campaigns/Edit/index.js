@@ -642,6 +642,7 @@ class EditCampaign extends Component {
             popupButtonText="apply"
             campaign={this.props.campaign.campaign}
             edit={true}
+            showFeedbackFormType={false}
           />
         );
       case 1:
@@ -744,7 +745,7 @@ class EditCampaign extends Component {
         }
         />
         <div className="stepperContainer">
-        <div style={{ margin: '40px', height: '60vh' }}>
+        <div style={{ margin: '30px 30px 30px 10px', height: '60vh' }}>
         {this.state.loading ? (<div className="divCenter"><Spin size="large" indicator={antIcon} /> </div>)  : 
            <React.Fragment>
             {campaign.loading ? (<div className="divCenter"><Spin size="large" indicator={antIcon} /> </div>) :this.getContainer()} 
@@ -756,7 +757,8 @@ class EditCampaign extends Component {
        
          
         <div style={{}}>
-        <div className="gx-card campFooter" style={{ position: 'absolute', width: '100%' }}>
+        <div className="campFooter gx-card" style={{
+            position: 'absolute', width: '100%' }}>
         <div className="gx-card-body" style={{ background: "#F6F6F6" }}>
         <CampaignFooter
             loading={this.state.loading}

@@ -6,7 +6,7 @@ import "./app.css"
 export default class AppIndex extends Component {
     render() {
         return (
-            <div>
+            <div className="RefineX-Main">
                 <Switch>
                     <Route exact path={this.props.match.url} component={AppList} />
                     <Route exact path={`${this.props.match.url}/create`} component={AppCreation} />

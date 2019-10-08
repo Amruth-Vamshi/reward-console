@@ -169,8 +169,12 @@ class SegmentList extends Component {
         ];
         return (
             <ErrorBoundary>
-                <Fragment>
-                    <div style={{ margin: '1 32px' }}>
+                <div style={{
+                    minHeight: "100vh"
+                }}>
+                    <div style={{
+                        margin: '1 32px'
+                    }}>
                         <CampaignHeader
                             children={
                                 <Fragment>
@@ -196,7 +200,7 @@ class SegmentList extends Component {
                         </div>
                         <SortableDataTable loading={this.props.loading} data={segmentData} onChange={this.handleChange} columns={columns} />
                     </Card>
-                </Fragment>
+                </div>
             </ErrorBoundary>
 
         );
