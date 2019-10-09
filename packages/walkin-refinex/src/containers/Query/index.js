@@ -251,7 +251,7 @@ mutation createAudience($input:createAudienceInput!){
 
 export const updateAudiencesWithCampaignId = gql`
 mutation updateAudiencesWithCampaignId($campaignId:ID, $segments:[ID]!){
-  updateAudiencesWithCampaignId(campaignId:$campaignId, segments:$segments){
+  createAudienceForCampaign(campaignId:$campaignId, segments:$segments){
     id
     campaign{
       id

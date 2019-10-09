@@ -48,9 +48,9 @@ const BasicInfo = ({
 }) => {
     return (
 
-        <div >
+        <div style={{ minHeight: "100%" }}>
 
-            <div>
+            <div style={{ minHeight: "10%" }}>
                 {" "}
                 <h3 className="gx-text-grey">{subTitle}</h3>
             </div>
