@@ -276,7 +276,10 @@ class CreateCampaign extends Component {
       .catch(err => {
         console.log("Error creating the question", err);
       });
+
   };
+
+  
 
   createCommunicationMutation = (current, values) => {
     console.log("message format..", this.state.communicationSelected)
@@ -327,6 +330,7 @@ class CreateCampaign extends Component {
   };
 
   onFormNext = e => {
+    console.log("e",e)
     e.preventDefault();
   };
 
@@ -510,7 +514,7 @@ class CreateCampaign extends Component {
             nextButtonText={current>=5?"Launch" : 'Save and Next'}
             saveDraftText={current === 0 ? "" : 'Save Draft'}
             saveDraft={this.onPage1SaveDraft}
-            goToPage2={this.onFormNext.bind(this, current + 1)}
+            goToPage2={this.goToNextPage.bind(this, current + 1)}
           />
         </div>
         </div>
