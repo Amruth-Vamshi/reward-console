@@ -42,7 +42,7 @@ import Stepper from './components/atoms/stepper';
 import ErrorBoundary from "./util/ErrorBoundary";
 import IconWithTextCard from "./components/dashboard/CRM/IconWithTextCard"
 import campaignOverview from "./components/molecules/campaignOverview/index"
-
+import WidgetHeader from "./components/WidgetHeader"
 export {
   CircularProgress,
   HorizontalDefault,
@@ -85,5 +85,6 @@ export {
   Stepper,
   ErrorBoundary,
   IconWithTextCard,
-  campaignOverview
+  campaignOverview,
+  WidgetHeader
 };
