@@ -26,7 +26,8 @@ import jwt from "jsonwebtoken";
 import Cylinder3DChart from '@walkinsole/walkin-nearx/src/routes/Dashboard/Cylinder3DChart'
 import PieChartWithAngle from "../Charts/PieChartWithPaddingAngle";
 import PieChartActiveShape from "../Charts/CustomActiveShapePieChart";
-
+import SimpleRadialBarChart from "../Charts/SimpleRadialBarChart";
+import MixBarChart from "../Charts/StackedBarChart";
 export default class analytics extends Component {
     handleChange = e => {
         console.log(e);
@@ -106,7 +107,7 @@ export default class analytics extends Component {
                             marginTop: "4rem"
                         }} lg={8} md={8} sm={12} xs={12}>
                             <div className="ant-row-flex">
-                                <h2 className="gx-mr-2 gx-mb-0 gx-fs-xxxl gx-font-weight-medium">179,626</h2>
+                                <h2 className="gx-mr-2 gx-mb-0 gx-fs-xxxl gx-font-weight-medium">112,221</h2>
 
                             </div>
                             <p style={{
@@ -117,7 +118,7 @@ export default class analytics extends Component {
                             marginTop: "4rem"
                         }} lg={8} md={8} sm={12} xs={12}>
                             <div className="ant-row-flex">
-                                <h2 className="gx-mr-2 gx-mb-0 gx-fs-xxxl gx-font-weight-medium">179,626</h2>
+                                <h2 className="gx-mr-2 gx-mb-0 gx-fs-xxxl gx-font-weight-medium">171,211</h2>
 
                             </div>
                             <p style={{
@@ -128,7 +129,7 @@ export default class analytics extends Component {
                             marginTop: "4rem"
                         }} lg={8} md={8} sm={12} xs={12}>
                             <div className="ant-row-flex">
-                                <h2 className="gx-mr-2 gx-mb-0 gx-fs-xxxl gx-font-weight-medium">179,626</h2>
+                                <h2 className="gx-mr-2 gx-mb-0 gx-fs-xxxl gx-font-weight-medium">70.01%</h2>
 
                             </div>
                             <p style={{
@@ -139,7 +140,7 @@ export default class analytics extends Component {
                             marginTop: "4rem"
                         }} lg={8} md={8} sm={12} xs={12}>
                             <div className="ant-row-flex">
-                                <h2 className="gx-mr-2 gx-mb-0 gx-fs-xxxl gx-font-weight-medium">179,626</h2>
+                                <h2 className="gx-mr-2 gx-mb-0 gx-fs-xxxl gx-font-weight-medium">22%</h2>
 
                             </div>
                             <p style={{
@@ -153,9 +154,37 @@ export default class analytics extends Component {
                     <div style={{
                         marginLeft: "6rem"
                     }}>
-                        <PieChartActiveShape />
+                        <SimpleRadialBarChart />
                     </div>
 
+                </Col>
+            </Row>
+            <Row style={{
+                marginTop: "10px"
+            }}>
+                <Col lg={12} md={13} sm={24} xs={24}>
+                    <Row>
+                        <Col lg={12} md={12} sm={24} xs={24}>
+
+                        </Col>
+                        <Col lg={12} md={12} sm={24} xs={24}>
+
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col lg={20} md={20} sm={24} xs={24}>
+
+                        </Col>
+                    </Row>
+
+                </Col>
+                <Col lg={12} md={11} sm={24} xs={24}>
+                    <div className="gx-mb-2  gx-pt-2" >
+                        <Text style={{
+                            marginBottom: "15px"
+                        }}>Issue Tag Response</Text>
+                    </div>
+                    <MixBarChart />
                 </Col>
             </Row>
 

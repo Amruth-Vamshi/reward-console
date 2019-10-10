@@ -67,7 +67,7 @@ export default class analytics extends Component {
                             marginTop: "4rem"
                         }} lg={8} md={8} sm={12} xs={12}>
                             <div className="ant-row-flex">
-                                <h2 className="gx-mr-2 gx-mb-0 gx-fs-xxxl gx-font-weight-medium">179,626</h2>
+                                <h2 className="gx-mr-2 gx-mb-0 gx-fs-xxxl gx-font-weight-medium">159,626</h2>
 
                             </div>
                             <p style={{
@@ -78,7 +78,7 @@ export default class analytics extends Component {
                             marginTop: "4rem"
                         }} lg={8} md={8} sm={12} xs={12}>
                             <div className="ant-row-flex">
-                                <h2 className="gx-mr-2 gx-mb-0 gx-fs-xxxl gx-font-weight-medium">179,626</h2>
+                                <h2 className="gx-mr-2 gx-mb-0 gx-fs-xxxl gx-font-weight-medium">159,000</h2>
 
                             </div>
                             <p style={{
@@ -89,7 +89,7 @@ export default class analytics extends Component {
                             marginTop: "4rem"
                         }} lg={8} md={8} sm={12} xs={12}>
                             <div className="ant-row-flex">
-                                <h2 className="gx-mr-2 gx-mb-0 gx-fs-xxxl gx-font-weight-medium">179,626</h2>
+                                <h2 className="gx-mr-2 gx-mb-0 gx-fs-xxxl gx-font-weight-medium">50.02%</h2>
 
                             </div>
                             <p style={{
@@ -100,7 +100,7 @@ export default class analytics extends Component {
                             marginTop: "4rem"
                         }} lg={8} md={8} sm={12} xs={12}>
                             <div className="ant-row-flex">
-                                <h2 className="gx-mr-2 gx-mb-0 gx-fs-xxxl gx-font-weight-medium">179,626</h2>
+                                <h2 className="gx-mr-2 gx-mb-0 gx-fs-xxxl gx-font-weight-medium">41.02%</h2>
 
                             </div>
                             <p style={{
@@ -112,7 +112,7 @@ export default class analytics extends Component {
                 </Col>
                 <Col lg={11} md={11} sm={24} xs={24}>
                     <div style={{
-                        marginLeft: "6rem"
+                        marginLeft: "5rem"
                     }}>
                         <PieChartActiveShape />
                     </div>

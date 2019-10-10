@@ -28,6 +28,7 @@ import PieChartWithAngle from "./Charts/PieChartWithPaddingAngle";
 import PieChartActiveShape from "./Charts/CustomActiveShapePieChart";
 import OverallReportWidget from "./Widgets/OverallReport";
 import IndividualReport from "./Widgets/IndividualReport";
+import ScheduleCommunication from "./Widgets/ScheduleComs";
 const data = [
     {
         name: 'How would you rate your experience at CCD today?', uv: 47, pv: 2400, fill: '#8884d8',
@@ -191,12 +192,11 @@ class analytics extends Component {
                         }}>
                             <IndividualReport />
                         </div>
-
-
-
-
-
-
+                        <div style={{
+                            marginTop: "20px"
+                        }}>
+                            <ScheduleCommunication />
+                        </div>
                     </div>
                 </Auxiliary>
             </div >
