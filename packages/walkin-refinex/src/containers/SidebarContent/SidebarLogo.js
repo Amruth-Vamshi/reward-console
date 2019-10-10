@@ -80,7 +80,7 @@ class SidebarLogo extends Component {
               ) : (
                   <img
                     alt=""
-                    src={require("@walkinsole/walkin-components/src/assets/images/logo_refine.png")}
+                    src={require("@walkinsole/walkin-components/src/assets/images/logo_refinex_darkbg.png")}
                   />
                 )}
           </Link>

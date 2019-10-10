@@ -27,6 +27,7 @@ import Cylinder3DChart from '@walkinsole/walkin-nearx/src/routes/Dashboard/Cylin
 import PieChartWithAngle from "./Charts/PieChartWithPaddingAngle";
 import PieChartActiveShape from "./Charts/CustomActiveShapePieChart";
 import OverallReportWidget from "./Widgets/OverallReport";
+import IndividualReport from "./Widgets/IndividualReport";
 const data = [
     {
         name: 'How would you rate your experience at CCD today?', uv: 47, pv: 2400, fill: '#8884d8',
@@ -182,8 +183,15 @@ class analytics extends Component {
                                 <Icon type="down" />
                             </Button>
                         </div>
+                        <div>
+                            <OverallReportWidget />
+                        </div>
+                        <div style={{
+                            marginTop: "20px"
+                        }}>
+                            <IndividualReport />
+                        </div>
 
-                        <OverallReportWidget />
 
 
 
