@@ -17,7 +17,7 @@ import {
     NAV_STYLE_NO_HEADER_MINI_SIDEBAR,
     THEME_TYPE_LITE
 } from "@walkinsole/walkin-components/src/constants/ThemeSetting";
-import SidebarLogo from "@walkinsole/walkin-core/src/containers/SidebarContent/SidebarLogo";
+import SidebarLogo from "./SidebarLogo";
 import { compose, graphql } from "react-apollo";
 import gql from "graphql-tag";
 
