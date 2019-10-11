@@ -165,14 +165,17 @@ export default class analytics extends Component {
                 <Col lg={12} md={13} sm={24} xs={24}>
                     <Row>
                         <Col lg={12} md={12} sm={24} xs={24}>
+                            <Text>Device Split-</Text>
 
                         </Col>
                         <Col lg={12} md={12} sm={24} xs={24}>
+
 
                         </Col>
                     </Row>
                     <Row>
                         <Col lg={20} md={20} sm={24} xs={24}>
+                            <Text>Audience Split-</Text>
 
                         </Col>
                     </Row>
