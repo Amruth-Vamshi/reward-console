@@ -2,10 +2,12 @@ import React, { Component, Fragment } from 'react'
 import { CampaignHeader } from '@walkinsole/walkin-components'
 import { Button, Row, Col, message } from 'antd'
 import Overview from '@walkinsole/walkin-components/src/components/molecules/campaignOverview'
-import { CAMPAIGN_DASHBOARD, GET_CAMPAIGN_DASHBOARD, UPDATE_CAMPAIGN, LAUNCH_CAMPAIGN } from '../../../query/campaign'
+import { CAMPAIGN_DASHBOARD, GET_CAMPAIGN_DASHBOARD, UPDATE_CAMPAIGN, LAUNCH_CAMPAIGN, AUDIENCES, GET_OFFER_FOR_CAMPAIGN } from '../../../query/campaign'
 import { withApollo, graphql, compose, mutate } from 'react-apollo';
 import { withRouter } from 'react-router-dom';
 import moment from 'moment';
+import jwt from "jsonwebtoken";
+
 
 class CampaignDashboard extends Component {
     constructor(props) {
@@ -31,7 +33,12 @@ class CampaignDashboard extends Component {
     }
 
     render() {
-        console.log(this.props)
+        console.log("this.props....", this.props)
+        console.log("this.state....", this.state)
+
+        let audiences = this.props.allAudiences.audiences;
+
+
         let { loading } = this.state
         return (
             <div>
@@ -50,7 +57,7 @@ class CampaignDashboard extends Component {
                             view={true} loading={loading}
                             campaign={this.props.location.state ? this.props.location.state.campaignSelected : ''}
                             launchCampaign={this.launchCampaign}
-                        // audience={this.state.audience}
+                            audience={audiences}
                         // communication={this.state.communication.messageTemplate ?
                         //     `${communicationSelected} - ${this.state.communication.messageTemplate.templateSubjectText}` : ''}
                         />
@@ -74,6 +81,39 @@ export default withRouter(
             }), graphql(LAUNCH_CAMPAIGN, {
                 name: "launchCampaign"
             }),
+            graphql(AUDIENCES, {
+                name: "allAudiences",
+                options: props => ({
+                    variables: {
+                        status: "ACTIVE",
+                        campaign_id: props.match.params.id,
+                        // organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
+                        status: "Active"
+                    },
+                    fetchPolicy: "network-only"
+                })
+            }),
+            // graphql(communications, {
+            //     name: "allCommunications",
+            //     options: props => ({
+            //         variables: {
+            //             entityId: props.match.params.id,
+            //             entityType: "Campaign",
+            //             organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
+            //             status: "Active"
+            //         },
+            //         fetchPolicy: "network-only"
+            //     })
+            // }),
+            // graphql(GET_OFFER_FOR_CAMPAIGN, {
+            //     name: "getOfferForACampaign",
+            //     options: props => ({
+            //         variables: {
+            //             campaignId: props.match.params.id,
+            //             organizationId: jwt.decode(localStorage.getItem("jwt")).org_id,
+            //         }
+            //     })
+            // })
         )(CampaignDashboard)
     )
 );
