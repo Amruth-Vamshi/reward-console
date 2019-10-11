@@ -2,53 +2,13 @@ import gql from 'graphql-tag';
 export const userDetails = gql`
 	query($id: ID!) {
 		user(id: $id) {
-			id
-			firstName
+			id firstName lastName
 			organization {
-				id
-				name
-				addressLine1
-				addressLine2
-				city
-				state
-				pinCode
-				country
-				code
-				status
-				phoneNumber
-				organizationType
-				children {
-					id
-					name
-					addressLine1
-					addressLine2
-					city
-					state
-					pinCode
-					country
-					code
-					status
-					phoneNumber
-					organizationType
-					users {
-						id
-						email
-						firstName
-						lastName
-					}
+				id	name addressLine1 addressLine2 city	state pinCode country code status phoneNumber organizationType
+				children { id	name addressLine1 addressLine2 city	state pinCode country code status phoneNumber organizationType
+					users { id email firstName lastName }
 				}
-				store {
-					id
-					name
-					STATUS
-					addressLine1
-					addressLine2
-					city
-					state
-					pinCode
-					country
-					code
-				}
+				store { id name STATUS addressLine1 addressLine2 city state pinCode country code }
 			}
 		}
 	}
@@ -59,23 +19,14 @@ export const orgId = gql`
 			id
 		}
 	}
-`;
+`
+
 export const orgDetails = gql`
 	query($id: ID!) {
 		organization(id: $id) {
-			id	name addressLine1 addressLine2
-			city state pinCode country code status 
-			phoneNumber	organizationType
-			children {
-				id name organizationType addressLine1
-				addressLine2 city state pinCode country
-				code status phoneNumber organizationType
-			}
-			users {
-				id firstName email
-				lastName
-				lastName
-			}
+			id	name addressLine1 addressLine2 city state pinCode country code status phoneNumber	organizationType
+			children { id name organizationType addressLine1 addressLine2 city state pinCode country code status phoneNumber organizationType }
+			users { id firstName email lastName }
 		}
 	}
 `;

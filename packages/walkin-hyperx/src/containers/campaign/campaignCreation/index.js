@@ -12,8 +12,7 @@ import { GET_ALL_APPS_OF_ORGANIZATION } from "@walkinsole/walkin-core/src/Platfo
 import { Col, Row, message } from 'antd';
 import jwt from "jsonwebtoken";
 import '../styles.css'
-import { CustomScrollbars } from "@walkinsole/walkin-components";
-import ContainerHeader from "@walkinsole/walkin-refinex/src/routes/Campaigns/CampaignHeader";
+import moment from "moment";
 import { CampaignFooter, CampaignHeader, Stepper } from '@walkinsole/walkin-components';
 import { CREATE_CAMPAIGN, UPDATE_CAMPAIGN, CREATE_MESSAGE_TEMPLETE, CREATE_COMMUNICATION, LAUNCH_CAMPAIGN } from '../../../query/campaign';
 
@@ -105,10 +104,10 @@ class CampaignCreation extends Component {
 	};
 
 	saveDraft = current => {
-		this.props.history.push('/hyperx/campaign')
+		this.props.history.push('/hyperx/campaigns')
 		//  this.setState({ current });
 		this.props.history.push({
-			pathname: '/hyperx/campaign',
+			pathname: '/hyperx/campaigns',
 			tabKey: "4",
 			// state: { key: "4" }
 		})
@@ -148,7 +147,9 @@ class CampaignCreation extends Component {
 		}).then(data => {
 			console.log("campaign data..", data);
 			message.success('Campaign Launched')
-			this.props.history.push('/hyperx/campaign')
+			moment().isBetween(this.state.campaign.startTime, this.state.campaign.endTime) ?
+				this.props.history.push('/hyperx/campaigns') :
+				this.props.history.push({ pathname: '/hyperx/campaigns', tabKey: "2" })
 		}).catch(err => {
 			console.log("Error Update campaign", err)
 			this.setState({ loading: false })
@@ -181,6 +182,7 @@ class CampaignCreation extends Component {
 	createCommunicationMutation = (current, values) => {
 		let { communicationSelected, scheduleData, scheduleSaveMark } = this.state;
 		console.log('COMM', communicationSelected, values);
+		this.setState({ loading: true })
 		var input = {
 			name: this.state.campaign.name,
 			description: "",
@@ -208,7 +210,7 @@ class CampaignCreation extends Component {
 			};
 			if (scheduleSaveMark) {
 				console.log(this.state.scheduleData);
-				let repeatRuleConf = { frequency: scheduleData.repeatType, time: scheduleData.time }
+				let repeatRuleConf = { frequency: scheduleData.repeatType, time: moment(scheduleData.time).format('HH:MM:SS') }
 				scheduleData.repeatType == "WEEKLY" ? repeatRuleConf.byWeekDay = scheduleData.days : ''
 				scheduleData.hasOwnProperty('endTime') ? repeatRuleConf.endAfter = scheduleData.endTime : repeatRuleConf.noOfOccurances = scheduleData.noOfOccurances
 				input.repeatRuleConfiguration = repeatRuleConf
@@ -412,12 +414,15 @@ class CampaignCreation extends Component {
 
 	render() {
 		const { formValues, current, showTestAndControl, testValue, controlValue, testControlSelected, rows, values, communicationSelected } = this.state;
-		let attributeData = this.props.allAttributes && this.props.allAttributes.ruleAttributes &&
-			this.props.allAttributes.ruleAttributes.map(el => ({
-				name: el.attributeName,
-				id: el.id,
-				label: el.attributeName,
-			}));
+		let attributeData = []
+		if (this.props.allAttributes)
+			attributeData = this.props.allAttributes && this.props.allAttributes.ruleAttributes &&
+				this.props.allAttributes.ruleAttributes.map(el => ({
+					name: el.attributeName,
+					id: el.id,
+					label: el.attributeName,
+				}));
+		else this.state.errors.rule = 'you dont have any rule attributes'
 		const props = {
 			name: 'file',
 			action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
@@ -427,7 +432,7 @@ class CampaignCreation extends Component {
 		};
 
 		return (
-			<div style={{ margin: '-32px' }}>
+			<div>
 				<CampaignHeader
 					children={
 						<Fragment>
@@ -527,22 +532,26 @@ class CampaignCreation extends Component {
 							/>
 						)}
 						{current === 4 &&
-							<Overview
-								campaign={this.state.formValues}
-								audience={this.state.audience}
-								offer={this.state.offerData}
-								communication={this.state.communication.messageTemplate ?
-									this.state.communication.messageTemplate.templateSubjectText : ''}
-							/>}
+							<div className="gx-card" style={{ margin: -20 }}>
+								<div className="gx-card-body">
+									<Overview
+										campaign={this.state.formValues}
+										audience={this.state.audience}
+										offer={this.state.offerData}
+										communication={this.state.communication.messageTemplate ?
+											`${communicationSelected} - ${this.state.communication.messageTemplate.templateSubjectText}` : ''}
+									/>
+								</div></div>
+						}
 					</div>
 				</div>
 				<div style={{}}>
 					<div className="gx-card campFooter" style={{ position: 'absolute', width: '100%' }}>
-						<div className="gx-card-body" style={{ background: "#e5e5e5" }}>
+						<div className="gx-card-body" style={{ background: "#F6F6F6" }}>
 							<CampaignFooter
 								loading={this.state.loading}
 								nextButtonText={current === 4 ? 'Launch' : 'Save and Next'}
-								saveDraftText={current === 0 ? "Save Draft" : 'Save Draft'}
+								saveDraftText={current === 0 ? "" : 'Save Draft'}
 								saveDraft={() => this.saveDraft(current + 1)}
 								goToPage2={this.goToNextPage.bind(this, current + 1)}
 							/>
@@ -573,6 +582,7 @@ export default withRouter(
 				options: ownProps => ({
 					variables: {
 						input: {
+							entityName: "CustomerSearch",
 							status: "ACTIVE",
 							organizationId: jwt.decode(localStorage.getItem("jwt")).org_id,
 						}

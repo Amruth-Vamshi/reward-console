@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Row, Col, Typography } from "antd";
 const { Title } = Typography;
-import { CustomScrollbars } from "@walkinsole/walkin-components";
 import moment from "moment";
 import './style.css'
 // import Moment from "react-moment";
@@ -25,8 +24,8 @@ export default class Overview extends Component {
     } else {
       value = "Completed";
     }
-    var start = moment(campaign.startTime).format("DD-MM-YYYY HH:mm:ss");
-    var end = moment(campaign.endTime).format("DD-MM-YYYY HH:mm:ss");
+    var start = moment(campaign.startTime).format("DD-MMM-YYYY HH:mm:ss");
+    var end = moment(campaign.endTime).format("DD-MMM-YYYY HH:mm:ss");
     // if (start < end) {
     //   var diff = start.diff(end);
     //   console.log("Diff..", diff);
@@ -34,13 +33,13 @@ export default class Overview extends Component {
     console.log(this.props);
     return (
       <div className="campaignOverview">
-        <Title level={2} className="gx-text-grey"> Overview </Title>
-        <div style={{ margin: 15 }}>
+        <Title level={3} className="gx-text-grey"> Overview </Title>
+        <div style={{ margin: '20px 10px 20px 30px' }}>
 
           <div className="cpName"> {campaign.name} </div>
 
           <div className="cpDec mb-15">{campaign.description != null ? campaign.description : ""}</div>
-          <div className="cpDaysLeft mb-15"> <b style={{ textTransform: "capitalize" }}>{diff ? diff : ''}</b> {value} </div>
+          <div className="cpDaysLeft mb-15"> <b style={{ textTransform: "capitalize" }}>{diff ? diff : ''}</b>  {value} </div>
           <div className="mb-25">
             <Row >
               <Col md={24} lg={8}>  Start date &nbsp; &nbsp;:&nbsp;&nbsp;&nbsp;{start} </Col>

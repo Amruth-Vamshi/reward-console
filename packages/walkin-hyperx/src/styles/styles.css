@@ -19,25 +19,35 @@
   overflow: inherit;
 }
 
-.HyperX-Sidebar .ant-menu-dark {
-  background-color: #455a64;
+.HyperX-Sidebar .ant-menu-item {
+  font-size: 19px;
+  margin-bottom: 20px;
+}
+
+.HyperX-Sidebar .ant-menu {
+  padding-top: 20px;
+}
+
+.HyperX-Sidebar .ant-menu-inline .ant-menu-item:not(:last-child) {
+  margin-bottom: 5px;
 }
 
 .HyperX-Logo {
   background-color: #37474f;
 }
 
-.HyperX-Sidebar .ant-menu-item {
-  font-size: 18px;
-  margin-bottom: 15px;
-}
-
-.HyperX-Sidebar .ant-menu {
-  padding-top: 15px;
+.HyperX-Sidebar .ant-menu-dark {
+  background-color: #37474f;
 }
 
 .HyperX-Topbar {
   background-color: #455a64;
   background-image: linear-gradient(to left, #607d8b, #37474f);
-  /* background-image: linear-gradient(to right, #052c53 , #4cc3c7); */
 }
+
+.HyperX-Sidebar .ant-menu-dark .ant-menu-item-selected > a {
+  /* color: #62ff77 */
+  color: #fcee76;
+}
+
+/* background-image: linear-gradient(to right, #052c53 , #4cc3c7); */

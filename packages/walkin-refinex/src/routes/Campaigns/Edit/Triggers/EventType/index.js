@@ -57,7 +57,9 @@ class EventType extends Component {
                   onChange={this.handleSelectChange}
                 >
                   {
-                    this.getOptions()
+                    this.props.eventType.loading ? (
+                      <Select.Option value="loading" key="999999">loading</Select.Option>
+                    ) : this.getOptions()
                   }
 
                 </Select>

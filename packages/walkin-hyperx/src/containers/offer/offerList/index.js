@@ -31,6 +31,7 @@ class OfferList extends Component {
 	};
 	onDeleteContact = contact => {
 		let { client } = this.props;
+		this.setState({ loading: true })
 		client
 			.mutate({
 				mutation: closeOffer,
@@ -41,10 +42,12 @@ class OfferList extends Component {
 			.then(({ data }) => {
 				console.log('close offer', data);
 				const { refetchOffers } = this.props;
+				this.setState({ loading: false })
 				refetchOffers();
 			})
 			.catch(error => {
 				console.log('err', error);
+				this.setState({ loading: false })
 			});
 	};
 
@@ -65,7 +68,7 @@ class OfferList extends Component {
 	onDuplicateContact = record => {
 		// const { history } = this.props;
 		// history.push({
-		// 	pathname: `/hyperx/segment/newSegment/${record.id}`,
+		// 	pathname: `/hyperx/segments/creste/${record.id}`,
 		// 	state: {
 		// 		segmentSelected: record,
 		// 	},
@@ -95,7 +98,7 @@ class OfferList extends Component {
 	};
 
 	render() {
-		let { sortedInfo, filteredInfo, filtered } = this.state;
+		let { sortedInfo, filteredInfo, filtered, loading } = this.state;
 		const { getOffers } = this.props;
 		sortedInfo = sortedInfo || {};
 		filteredInfo = filteredInfo || {};
@@ -149,7 +152,7 @@ class OfferList extends Component {
 		];
 		return (
 			<Fragment>
-				<div style={{ margin: '-32px -32px 0px' }}>
+				<div>
 					<CampaignHeader
 						children={
 							<Fragment>
@@ -157,24 +160,26 @@ class OfferList extends Component {
 									<h3 className="gx-text-grey paddingLeftStyle campaignHeaderTitleStyle">Offers</h3>
 								</Col>
 								<Col style={{ display: 'flex', justifyContent: 'flex-end' }} span={12}>
-									<Button type="primary" onClick={this.onNewSegment}>
-										New Offer
+									<Button type="primary" style={{ marginBottom: 0 }} onClick={this.onNewSegment}>
+										Create Offer
 									</Button>
 								</Col>
 							</Fragment>
 						}
 					/>
 				</div>
-				<Card style={{ margin: '32px' }}>
-					<div style={{ marginBottom: '24px' }}>
-						<InstantSearch
-							placeHolder="Search offer"
-							data={getOffers}
-							onFilteredList={this.onOfferFilteredList}
-						/>
+				<div className="gx-card" style={{ margin: '32px' }}>
+					<div className="gx-card-body">
+						<div style={{ marginBottom: '24px' }}>
+							<InstantSearch
+								placeHolder="Search offer"
+								data={getOffers}
+								onFilteredList={this.onOfferFilteredList}
+							/>
+						</div>
+						<SortableDataTable loading={this.props.loading} pagination={paginationData} data={offerData} onChange={this.handleChange} columns={columns} />
 					</div>
-					<SortableDataTable pagination={paginationData} data={offerData} onChange={this.handleChange} columns={columns} />
-				</Card>
+				</div>
 			</Fragment>
 		);
 	}
