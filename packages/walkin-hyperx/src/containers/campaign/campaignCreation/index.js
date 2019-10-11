@@ -5,7 +5,7 @@ import Audience from "./audience";
 import Offer from "./offer";
 import Communication from "./communication";
 import { campaignOverview as Overview } from "@walkinsole/walkin-components";
-import { allSegments, RULE_ATTRIBUTES, GET_AUDIENCE, CREATE_AUDIENCE, CREATE_RULE } from "../../../query/audience";
+import { allSegments, RULE_ATTRIBUTES, GET_AUDIENCE, CREATE_AUDIENCE, CREATE_RULE, AUDIENCE_COUNT } from "../../../query/audience";
 import { getOffers, ADD_OFFER_TO_CAMPAIGN } from "../../../query/offer";
 import { withApollo, graphql, compose } from 'react-apollo';
 import { GET_ALL_APPS_OF_ORGANIZATION } from "@walkinsole/walkin-core/src/PlatformQueries";
@@ -59,6 +59,7 @@ class CampaignCreation extends Component {
 			communication: '',
 			communicationSelected: 'SMS',
 			errors: {},
+			audienceCount: 0,
 			loading: false,
 			noOfferRequired: false,
 			offer: '',
@@ -400,8 +401,23 @@ class CampaignCreation extends Component {
 	}
 
 	onValuesSelected = e => {
+		// let { allApplications: { organization } } = this.props;
 		this.setState({ selectedSegments: e })
 		this.state.errors.segment = ''
+		this.props.client.query({
+			query: AUDIENCE_COUNT,
+			variables: { segments: e, organizationId: this.props.allApplications.organization.id },
+			fetchPolicy: 'network-only'
+		}).then(res => {
+			console.log(res.data.audienceCount.count)
+			this.setState({ audienceCount: res.data.audienceCount.count });
+		})
+			.catch(err => {
+				this.setState({ spin: false });
+				message.error("ERROR");
+				console.log("Failed to get Audience Count" + err);
+			});
+
 	}
 
 
@@ -494,6 +510,7 @@ class CampaignCreation extends Component {
 							<Audience
 								audienceTitle="Audience"
 								segmentSubTitle="Segment"
+								audienceCount={this.state.audienceCount}
 								onValuesSelected={this.onValuesSelected}
 								selectedSegments={this.state.selectedSegments}
 								segmentSelectionData={this.props.segmentList.segments}

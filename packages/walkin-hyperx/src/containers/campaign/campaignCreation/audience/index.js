@@ -16,6 +16,7 @@ const Audience = ({
 	logQuery,
 	selectedSegments,
 	ruleQuery,
+	audienceCount,
 	errors
 }) => {
 	return (
@@ -23,8 +24,9 @@ const Audience = ({
 			<div>
 				<h3 className="gx-text-grey">{audienceTitle}</h3>
 				<div>
-					<p style={{ paddingTop: '20px' }} className="gx-text-grey gx-mb-1">
+					<p style={{ paddingTop: '20px', width: '50%' }} className="gx-text-grey gx-mb-1">
 						{segmentSubTitle}
+						<span style={{ float: 'right' }}>  Total Audience : <b>{audienceCount}</b> </span>
 					</p>
 					<AddAndDeleteSelectDynamically
 						onValuesSelected={onValuesSelected}
@@ -42,8 +44,8 @@ const Audience = ({
 					</span>}
 				</div>
 				<div style={{ marginTop: '50px' }}>
-					<Divider orientation="left">
-						<p className="gx-text-grey gx-mb-1">{segmentFilterText}</p>
+					<Divider className='audienceDivider' style={{ color: '#000000' }} orientation="left">
+						<p className="gx-text-grey gx-mb-2">{segmentFilterText}</p>
 					</Divider>
 					<p className="gx-text-grey gx-mb-1">{segmentFilterSubText}</p>
 					<WalkinQueryBuilder fields={attributeData} onQueryChange={logQuery} query={ruleQuery} />

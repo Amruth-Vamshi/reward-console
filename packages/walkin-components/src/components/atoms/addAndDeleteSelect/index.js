@@ -50,6 +50,7 @@ class AddAndDeleteSelectDynamically extends React.Component {
 				{this.state.values.map((el, i) => {
 					return (
 						<div key={i} className="selectSegmentBoxContainer">
+
 							<Select showSearch
 								placeholder="Choose from the list"
 								classname="segmentSelectBoxStyle"
