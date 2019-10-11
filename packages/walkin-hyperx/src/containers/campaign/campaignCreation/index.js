@@ -203,8 +203,9 @@ class CampaignCreation extends Component {
 		}).then(data => {
 			console.log("MessageTemplate data..", data);
 			var input = {
-				entityId: this.state.campaign.id, // campainId
-				entityType: "Campaign",
+				entityId: this.state.offer ? this.state.offer.id : '', // campainId
+				entityType: "Offer",
+				campaign_id: parseInt(this.state.campaign.id),
 				messageTemplateId: data.data.createMessageTemplate.id,
 				isScheduled: scheduleSaveMark,
 				isRepeatable: scheduleSaveMark,

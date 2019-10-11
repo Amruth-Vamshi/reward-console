@@ -82,3 +82,14 @@ query campaign($id:ID!){
       messageTemplate{id name templateBodyText templateSubjectText status}}
   }
 }`
+
+export const CREATE_COMMUNICATION_WITH_MESSAGE_TEMPLETE = gql`
+  mutation createCommunicationWithMessageTempate($communicationInput:CreateCommunicationWithoutMessageTemplateInput! $messageTemplateInput:CreateMessageTemplateInput){
+      createCommunicationWithMessageTempate(communicationInput:$communicationInput, messageTemplateInput:$messageTemplateInput){
+        id entityId entityType isScheduled firstScheduleDateTime commsChannelName status
+        repeatRuleConfiguration{ frequency repeatInterval endAfter byWeekDay time}
+        organization{ id name } application{ id name } lastProcessedDateTime
+        messageTemplate{ id name description messageFormat templateBodyText templateSubjectText
+          templateStyle messageTemplateVariables{id name key status} status}    
+    }
+}`
