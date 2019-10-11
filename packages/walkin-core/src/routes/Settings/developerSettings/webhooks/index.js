@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 import jwt from "jsonwebtoken";
 import { withApollo } from "react-apollo";
-
 import "./style.css";
-import { Redirect, Route } from "react-router-dom";
 import { Button, Switch, Row, Col, Spin, Icon } from "antd";
 import WebhookForm from "./webhookForm";
 import {
@@ -12,10 +10,6 @@ import {
   UPDATE_WEBHOOK,
   LIST_WEBHOOK_EVENTS
 } from "./../../../../PlatformQueries/index";
-
-const WEBHOOK_TYPE = {
-  "create.customer": "Create Customer"
-};
 
 const WEBHOOK_STATUS = {
   ACTIVE: "Active",
@@ -36,7 +30,6 @@ class Webhooks extends Component {
 
   componentWillMount() {
     const { org_id } = jwt.decode(localStorage.getItem("jwt"));
-
     this.props.client
       .query({
         query: GET_WEBHOOKS,
@@ -44,15 +37,13 @@ class Webhooks extends Component {
         fetchPolicy: "network-only"
       })
       .then(webhooksResponse => {
-        console.log(webhooksResponse);
         this.props.client
           .query({
             query: LIST_WEBHOOK_EVENTS,
-            variables: { status: "ACTIVE" },
+            variables: { org_id, status: "ACTIVE" },
             fetchPolicy: "network-only"
           })
           .then(eventsResponse => {
-            console.log(eventsResponse, "event types");
             this.setState({
               org_id,
               webhooks: webhooksResponse.data.webhooks,
@@ -78,6 +69,11 @@ class Webhooks extends Component {
           selectedWebhookIndex: null,
           isLoading: false
         });
+      })
+      .catch(error => {
+        this.setState({
+          isLoading: false
+        });
       });
   };
 
@@ -96,6 +92,11 @@ class Webhooks extends Component {
           webhooks,
           isWebhookFormOpen: false,
           selectedWebhookIndex: null,
+          isLoading: false
+        });
+      })
+      .catch(error => {
+        this.setState({
           isLoading: false
         });
       });
@@ -147,6 +148,10 @@ class Webhooks extends Component {
             isWebhookFormOpen: false,
             selectedWebhookIndex: null,
             isLoading: false
+          }).catch(error => {
+            this.setState({
+              isLoading: false
+            });
           });
         });
     });
@@ -156,7 +161,7 @@ class Webhooks extends Component {
     if (!(this.state.selectedWebhookIndex === null)) {
       this.setState({ isLoading: true }, () => this.updateWebook(input));
     } else {
-      input.organization_id = this.state.org_id;
+      input.organizationId = this.state.org_id;
       this.setState({ isLoading: true }, () => this.createWebook(input));
     }
   };
@@ -177,11 +182,11 @@ class Webhooks extends Component {
           </div>
         );
       return (
-        <div className="webhookListWrapper">
+        <div className={"webhookListWrapper"}>
           {this.state.webhooks.map((webhook, index) => (
             <Row key={index}>
               <Col
-                style={{ display: "flex", alignItems: "center" }}
+                className="webhookUrlWrapper "
                 xl={11}
                 lg={24}
                 md={24}
@@ -197,7 +202,7 @@ class Webhooks extends Component {
                 <Col xl={18} lg={18} md={18} sm={18} xs={18}>
                   <div className="webhookTitle">Integration with Slack</div>
                   <div className="webhookUrl">
-                    https://api.slack.com › incoming-webhooks
+                    {webhook.url} › incoming-webhooks
                   </div>
                 </Col>
               </Col>
@@ -210,9 +215,7 @@ class Webhooks extends Component {
                 xs={24}
               >
                 Type:
-                <span className="webhookType">
-                  {WEBHOOK_TYPE[webhook.event]}
-                </span>
+                <span className="webhookType">{webhook.event}</span>
               </Col>
               <Col
                 className="webhookStatus"
@@ -244,7 +247,12 @@ class Webhooks extends Component {
                 >
                   Edit
                 </Button>
-                <Button className="button" onClick={() => this.onDelete(index)}>
+
+                <Button
+                  className="button"
+                  onClick={() => this.onDelete(index)}
+                  loading={isLoading && selectedWebhookIndex === index}
+                >
                   Delete
                 </Button>
               </Col>
@@ -264,8 +272,6 @@ class Webhooks extends Component {
   };
 
   render() {
-    console.log("render");
-
     let { isWebhookFormOpen } = this.state;
     return (
       <div className="gx-main-content-wrapper">

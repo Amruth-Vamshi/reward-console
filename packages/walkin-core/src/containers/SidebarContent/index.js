@@ -114,6 +114,7 @@ class SidebarContent extends Component {
           key="profile"
           title={
             <span>
+              <i className="icon icon-profile" />
               <span>My Profile</span>
             </span>
           }
@@ -122,6 +123,8 @@ class SidebarContent extends Component {
           key="account"
           title={
             <span>
+              <i className="icon icon-setting" />
+
               <span>Account & Privacy Settings</span>
             </span>
           }
@@ -131,6 +134,7 @@ class SidebarContent extends Component {
           key="developer"
           title={
             <span>
+              <i className="icon icon-setting" />
               <span>Developer Settings</span>
             </span>
           }

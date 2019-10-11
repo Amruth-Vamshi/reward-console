@@ -1,9 +1,9 @@
 /* header styles */
 .headerWrapper {
-  justify-content: space-between;
+  font-family: "Roboto", sans-serif;
   display: flex;
   align-items: center;
-  font-family: "Roboto", sans-serif;
+  justify-content: space-between;
   color: #333333;
   margin-bottom: 20px;
 }
@@ -16,6 +16,7 @@
 .ant-btn {
   margin: 0;
 }
+
 .headerTitle {
   font-size: 30px;
   letter-spacing: 0;
@@ -26,11 +27,13 @@
   color: #333333;
   margin-bottom: 20px;
 }
+
 .headerDesc {
   width: 60%;
   font-size: 14px;
   letter-spacing: 0;
 }
+
 .cursorPointer {
   cursor: pointer;
 }
@@ -64,7 +67,8 @@
 
 .webhookButtonWrapper,
 .webhookTypeWrapper,
-.webhookStatus {
+.webhookStatus,
+.webhookUrlWrapper {
   justify-content: center;
   display: flex;
   align-items: center;
@@ -91,12 +95,13 @@
   background-color: #55dba2;
 }
 
-/* 
-webhook form
-*/
+/* webhook form styles */
 
 .webhookFormContainer {
   font-family: "Roboto", sans-serif;
+  justify-content: center;
+  display: flex;
+  margin-bottom: 30px;
 }
 
 .webhookEditTitle {
@@ -131,4 +136,11 @@ webhook form
 .headerInputFlex {
   background: #e6e6e6 0% 0% no-repeat padding-box;
   padding: 10px;
+}
+
+.requestHeaderrowWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
 }

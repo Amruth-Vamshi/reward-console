@@ -1,11 +1,8 @@
 import React, { Component } from "react";
 import "./style.css";
-import { Redirect, Route } from "react-router-dom";
 import { Select, Input, Button } from "antd";
 
 const { Option } = Select;
-
-const WEBHOOK_METHOD = {};
 
 export default class WebhookForm extends Component {
   constructor(props) {
@@ -13,7 +10,7 @@ export default class WebhookForm extends Component {
     this.state = {
       headerEntries: [[]],
       webhookDetails: {
-        event: "create.customer",
+        event: "",
         url: "",
         headers: {},
         method: "GET",
@@ -24,12 +21,21 @@ export default class WebhookForm extends Component {
   }
 
   componentWillMount() {
-    let { webhookDetails } = this.props;
+    let { webhookDetails, events } = this.props;
+    let defaultEventValue = events[0] ? events[0].event : "";
+
     if (webhookDetails) {
       let headerEntries = Object.entries(webhookDetails.headers);
       this.setState({
         webhookDetails,
         headerEntries
+      });
+    } else {
+      this.setState({
+        webhookDetails: {
+          ...this.state.webhookDetails,
+          event: defaultEventValue
+        }
       });
     }
   }
@@ -68,8 +74,6 @@ export default class WebhookForm extends Component {
   };
 
   render() {
-    console.log(this.props);
-
     let { webhookDetails, headerEntries } = this.state;
     let header = "Edit Webhook Details";
     if (!webhookDetails.id) {
@@ -90,15 +94,9 @@ export default class WebhookForm extends Component {
         <Option value="POST">POST</Option>
       </Select>
     );
+
     return (
-      <div
-        className="webhookFormContainer"
-        style={{
-          justifyContent: "center",
-          display: "flex",
-          marginBottom: 30
-        }}
-      >
+      <div className="webhookFormContainer">
         <div
           style={{
             width: "60%"
@@ -108,7 +106,7 @@ export default class WebhookForm extends Component {
           <div className="webhookTypeInputWrapper">
             <div className="InputLabel">Select Type</div>
             <Select
-              defaultValue="create.customer"
+              defaultValue={webhookDetails.event}
               style={{ width: "100%" }}
               size="large"
               onChange={event => {
@@ -119,7 +117,9 @@ export default class WebhookForm extends Component {
               }}
             >
               {this.props.events.map((item, index) => (
-                <Option value={item.event}>{item.event}</Option>
+                <Option key={index} value={item.event}>
+                  {item.event}
+                </Option>
               ))}
             </Select>
             <div className="inputDesc">
@@ -154,15 +154,7 @@ export default class WebhookForm extends Component {
             <div className="headerInputFlex">
               {headerEntries.map((item, index) => {
                 return (
-                  <div
-                    key={index}
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      marginBottom: 10
-                    }}
-                  >
+                  <div key={index} className="requestHeaderrowWrapper">
                     <Input
                       style={{ width: "40%" }}
                       size="large"

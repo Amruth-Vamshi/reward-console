@@ -94,7 +94,7 @@ export const DELETE_APP = gql`
 
 export const GET_WEBHOOKS = gql`
   query webhooks($org_id: ID!, $event: String, $status: STATUS!) {
-    webhooks(organization_id: $org_id, event: $event, status: $status) {
+    webhooks(organizationId: $org_id, event: $event, status: $status) {
       id
       organization {
         name
@@ -144,8 +144,8 @@ export const UPDATE_WEBHOOK = gql`
 `;
 
 export const LIST_WEBHOOK_EVENTS = gql`
-  query webhookEventTypes {
-    webhookEventTypes(status: ACTIVE) {
+  query webhookEventTypes($org_id: ID!, $status: STATUS!) {
+    webhookEventTypes(organizationId: $org_id, status: $status) {
       event
       id
       status
