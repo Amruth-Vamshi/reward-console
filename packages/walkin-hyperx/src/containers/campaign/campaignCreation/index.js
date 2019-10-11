@@ -189,7 +189,7 @@ class CampaignCreation extends Component {
 		console.log('COMM', communicationSelected, values);
 		this.setState({ loading: true })
 		var input = {
-			name: this.state.campaign.name,
+			name: this.state.campaign.name + "_" + communicationSelected,
 			description: "",
 			messageFormat: communicationSelected,
 			templateBodyText: communicationSelected == "SMS" ? values.smsBody : communicationSelected == "EMAIL" ? values.email_body : values.notificationBody,
@@ -205,7 +205,7 @@ class CampaignCreation extends Component {
 			var input = {
 				entityId: this.state.offer ? this.state.offer.id : '', // campainId
 				entityType: "Offer",
-				campaign_id: parseInt(this.state.campaign.id),
+				campaign_id: this.state.campaign.id,
 				messageTemplateId: data.data.createMessageTemplate.id,
 				isScheduled: scheduleSaveMark,
 				isRepeatable: scheduleSaveMark,
@@ -434,7 +434,7 @@ class CampaignCreation extends Component {
 	}
 
 	render() {
-		console.log(this.props);
+		console.log(this.props, this.state);
 		const { formValues, current, showTestAndControl, testValue, controlValue, testControlSelected, rows, values, communicationSelected } = this.state;
 		let attributeData = []
 		if (this.props.allAttributes)

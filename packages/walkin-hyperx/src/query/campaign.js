@@ -81,7 +81,40 @@ query campaign($id:ID!){
     communication{ id entityId entityType  isScheduled isRepeatable status
       messageTemplate{id name templateBodyText templateSubjectText status}}
   }
-}`
+}`;
+
+export const AUDIENCES = gql`
+query audiences($campaign_id:ID, $organization_id:ID,$segment_id:ID){
+  audiences(campaign_id:$campaign_id, organization_id:$organization_id,segment_id:$segment_id,status:ACTIVE){
+    id
+    segment{
+      id
+      name
+      rule{
+        id
+        name
+        type
+      }
+      status
+    }
+  }
+}
+`;
+
+export const GET_OFFER_FOR_CAMPAIGN = gql`
+query getOffersForACampaign($campaign_id:ID, $organization_id:ID){
+  getOffersForACampaign(campaignId:$campaign_id, organizationId:$organization_id){
+    offer{
+      id
+      offerType
+      name
+      description
+      coupon
+      status
+    }
+  }
+}
+`;
 
 export const CREATE_COMMUNICATION_WITH_MESSAGE_TEMPLETE = gql`
   mutation createCommunicationWithMessageTempate($communicationInput:CreateCommunicationWithoutMessageTemplateInput! $messageTemplateInput:CreateMessageTemplateInput){
