@@ -64,6 +64,7 @@ class Topbar extends Component {
 		switch (appName) {
 			case "nearx": return 'NearX-Topbar';
 			case "hyperx": return 'HyperX-Topbar';
+			case "refinex": return 'RefineX-Topbar';
 			default: return '';
 		}
 	}

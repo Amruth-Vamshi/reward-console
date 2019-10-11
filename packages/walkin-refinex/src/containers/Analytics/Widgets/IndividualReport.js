@@ -2,22 +2,6 @@
 import React, { Component } from 'react'
 import { Col, Row, DatePicker, Button, Icon, Empty, Spin, Table, Card, Select, Radio, Typography, Progress } from "antd";
 import { IconWithTextCard, Widget, ChartCard, Auxiliary, WidgetHeader } from "@walkinsole/walkin-components";
-import {
-    ResponsiveContainer,
-    PieChart,
-    Pie,
-    Sector,
-    Cell,
-    Bar,
-    BarChart,
-    Legend,
-    CartesianGrid,
-    Tooltip,
-    XAxis,
-    YAxis,
-    RadialBarChart,
-    RadialBar
-} from "recharts";
 import { graphql, compose, withApollo } from "react-apollo";
 import { GET_ANALYTICS, ANALYTICS } from "@walkinsole/walkin-core/src/PlatformQueries";
 import moment from 'moment';
