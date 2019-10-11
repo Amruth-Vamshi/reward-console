@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react'
-import { Col, Row, DatePicker, Button, Icon, Empty, Spin, Table, Card, Select, Radio, Typography } from "antd";
+import { Col, Row, DatePicker, Button, Icon, Empty, Spin, Table, Card, Select, Radio, Typography, Progress } from "antd";
 import { IconWithTextCard, Widget, ChartCard, Auxiliary, WidgetHeader } from "@walkinsole/walkin-components";
 import {
     ResponsiveContainer,
@@ -152,9 +152,22 @@ export default class analytics extends Component {
                 </Col>
                 <Col lg={11} md={11} sm={24} xs={24}>
                     <div style={{
-                        marginLeft: "6rem"
+
+                        marginLeft: "10rem"
                     }}>
-                        <SimpleRadialBarChart />
+                        <Progress
+                            type="dashboard"
+                            width={250}
+                            gapDegree={100}
+                            percent={25} format={percent => (
+                                <React.Fragment>
+                                    <p></p>
+                                    <Text style={{ fontSize: "25px" }}>{percent}</Text>
+                                    <br />
+                                    <Text style={{ fontSize: "25px" }} level={3}>NPS rate</Text>
+                                </React.Fragment>
+                            )} />
+                        {/* <SimpleRadialBarChart /> */}
                     </div>
 
                 </Col>

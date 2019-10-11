@@ -276,7 +276,7 @@ export default class analytics extends Component {
                         }} {...this.state} columns={columns} dataSource={state.hasData ? data : null} />
                         <Button
                             onClick={this.handleAdd}
-                            type="primary"
+                            icon="plus"
                             style={{ marginBottom: 16, marginLeft: 150, marginTop: 10 }}>
                             Add
                         </Button>
