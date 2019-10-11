@@ -8,8 +8,10 @@ import {
 	SEGMENT_LIST,
 	OFFER_LIST,
 	NEW_OFFER,
+	CAMPAIGN_DASHBOARD,
 } from '../src/utils/RouterConstants';
 import CampaignList from './containers/campaign/campaignList';
+import CampaignDashboard from './containers/campaign/campaignDashboard';
 import CampaignCreation from './containers/campaign/campaignCreation';
 import SegmentList from './containers/segment/segmentList';
 import NewSegment from './containers/segment/newSegment';
@@ -22,6 +24,7 @@ const App = ({ match }) => {
 			<Switch>
 				<Route exact path={'/hyperx'} render={() => <Redirect from="/hyperx" to={CAMPAIGN_MANAGEMENT} />} />
 				<Route exact path={CAMPAIGN_MANAGEMENT} component={CampaignList} />
+				<Route exact path={`${CAMPAIGN_DASHBOARD}/:id`} component={CampaignDashboard} />
 				<Route path={NEW_CAMPAIGN} component={CampaignCreation} />
 				<Route exact path={SEGMENT_LIST} component={SegmentList} />
 				<Route path={NEW_SEGMENT} component={NewSegment} />

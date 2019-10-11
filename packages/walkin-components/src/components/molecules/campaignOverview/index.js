@@ -4,7 +4,6 @@ import { Row, Col, Typography, Progress, Button } from "antd";
 const { Title } = Typography;
 import moment from "moment";
 import './overViewStyle.css'
-// import Moment from "react-moment";
 
 export default class Overview extends Component {
   changeState = e => {
@@ -14,7 +13,7 @@ export default class Overview extends Component {
   }
 
   render() {
-    const { campaign, audience, offer, communication, view, launchCampaign } = this.props;
+    const { campaign, audience, offer, communication, view } = this.props;
     var now = moment();
     var startDate = moment(campaign.startTime);
     var endDate = moment(campaign.endTime);
@@ -45,7 +44,7 @@ export default class Overview extends Component {
             <Col sm={24} md={8}>
               <div className='divCenterVertical'>
                 {view ? (campaign.campaignStatus == 'DRAFT' || campaign.campaignStatus == 'LIVE') && value != "Completed" ? <Button shape='round' type='primary'
-                  style={{ width: '200px', letterSpacing: 1, height: 40, fontSize: 20 }} onClick={this.changeState} >
+                  style={{ width: '200px', letterSpacing: 1, height: 40, fontSize: 20 }} onClick={this.changeState} loading={this.props.loading} >
                   {campaign.campaignStatus == 'DRAFT' ? 'LAUNCH' : campaign.campaignStatus == 'LIVE' ? 'PAUSE' : ''} </Button> : '' : ''}
               </div>
 

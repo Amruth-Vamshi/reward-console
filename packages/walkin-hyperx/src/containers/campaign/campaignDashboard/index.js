@@ -5,20 +5,25 @@ import Overview from '@walkinsole/walkin-components/src/components/molecules/cam
 import { CAMPAIGN_DASHBOARD, GET_CAMPAIGN_DASHBOARD, UPDATE_CAMPAIGN, LAUNCH_CAMPAIGN } from '../../../query/campaign'
 import { withApollo, graphql, compose, mutate } from 'react-apollo';
 import { withRouter } from 'react-router-dom';
+import moment from 'moment';
 
 class CampaignDashboard extends Component {
-
+    constructor(props) {
+        super(props)
+        this.state = {
+            loading: false
+        }
+    }
     launchCampaign = () => {
-        console.log('>>>>>>Launch');
         this.setState({ loading: true })
         this.props.launchCampaign({
             variables: { id: this.props.location.state.campaignSelected.id }
         }).then(data => {
             console.log("campaign data..", data);
             message.success('Campaign Launched')
-            // moment().isBetween(this.state.campaign.startTime, this.state.campaign.endTime) ?
-            this.props.history.push('/hyperx/campaigns')
-            // :this.props.history.push({ pathname: '/hyperx/campaigns', tabKey: "2" })
+            moment().isBetween(this.props.location.state.campaignSelected.startTime, this.props.location.state.campaignSelected.endTime) ?
+                this.props.history.push('/hyperx/campaigns')
+                : this.props.history.push({ pathname: '/hyperx/campaigns', tabKey: "2" })
         }).catch(err => {
             console.log("Error Update campaign", err)
             this.setState({ loading: false })
@@ -27,6 +32,7 @@ class CampaignDashboard extends Component {
 
     render() {
         console.log(this.props)
+        let { loading } = this.state
         return (
             <div>
 
@@ -41,7 +47,7 @@ class CampaignDashboard extends Component {
                 <div className="gx-card" style={{ margin: 22 }}>
                     <div className="gx-card-body">
                         <Overview
-                            view={true}
+                            view={true} loading={loading}
                             campaign={this.props.location.state ? this.props.location.state.campaignSelected : ''}
                             launchCampaign={this.launchCampaign}
                         // audience={this.state.audience}
