@@ -69,3 +69,16 @@ export const LAUNCH_CAMPAIGN = gql`
     }
   }
 `;
+
+export const GET_CAMPAIGN_DASHBOARD = gql`
+query campaign($id:ID!){
+	campaign( id:$id){
+    id name description status campaignStatus
+    startTime endTime campaignType priority
+    createdBy lastModifiedBy createdTime lastModifiedTime
+    organization{ id name } application{id name}
+    audienceFilterRule{ id name ruleConfiguration ruleExpression }
+    communication{ id entityId entityType  isScheduled isRepeatable status
+      messageTemplate{id name templateBodyText templateSubjectText status}}
+  }
+}`

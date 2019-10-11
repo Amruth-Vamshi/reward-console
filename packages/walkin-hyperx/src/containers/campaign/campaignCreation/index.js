@@ -103,6 +103,10 @@ class CampaignCreation extends Component {
 		e.preventDefault();
 	};
 
+	// updateAudienceCount = () =>{
+	// 	this.props.client.
+	// }
+
 	saveDraft = current => {
 		this.props.history.push('/hyperx/campaigns')
 		//  this.setState({ current });
@@ -413,6 +417,7 @@ class CampaignCreation extends Component {
 	}
 
 	render() {
+		console.log(this.props);
 		const { formValues, current, showTestAndControl, testValue, controlValue, testControlSelected, rows, values, communicationSelected } = this.state;
 		let attributeData = []
 		if (this.props.allAttributes)
