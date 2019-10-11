@@ -15,8 +15,7 @@ export default class WebhookForm extends Component {
         headers: {},
         method: "GET",
         status: "ACTIVE"
-      },
-      isLoading: false
+      }
     };
   }
 
