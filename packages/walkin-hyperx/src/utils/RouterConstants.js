@@ -4,3 +4,4 @@ export const NEW_SEGMENT = '/hyperx/segments/create';
 export const SEGMENT_LIST = '/hyperx/segments';
 export const OFFER_LIST = '/hyperx/offers';
 export const NEW_OFFER = '/hyperx/offers/create';
+export const CAMPAIGN_DASHBOARD = '/hyperx/campaigns/view';

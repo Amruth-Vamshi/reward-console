@@ -60,10 +60,22 @@
     margin-bottom: 5px
   }
 
+  .mb-30{
+    margin-bottom: 30px
+  }
+
   .ml-10{
     margin-left: 10px
   }
 
   .pl-10{
     padding-left: 10px
+  }
+
+  .divCenterVertical {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    float: left;
   }

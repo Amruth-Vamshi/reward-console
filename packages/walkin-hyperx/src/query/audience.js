@@ -136,3 +136,10 @@ export const CREATE_AUDIENCE = gql`
 		}
 	}
 `
+export const AUDIENCE_COUNT = gql`
+	query audienceCount($segments:[ID], $organizationId:ID!){
+		audienceCount(segments:$segments, organizationId:$organizationId){
+			count
+		}
+	}
+`
