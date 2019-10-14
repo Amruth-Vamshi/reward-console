@@ -592,8 +592,9 @@ class EditCampaign extends Component {
           campaignId:campaign.id,
           applicationId
         }
-      })
-      this.success('Successfully linked Campaign from application');
+      });
+     await this.props.campaign.refetch()
+      this.success('Successfully unlinked Campaign from application');
     }catch(err){
       console.log(err);
     }
@@ -602,7 +603,6 @@ class EditCampaign extends Component {
 
   getContainer = () => {
     const { campaign } = this.props.campaign;
-    console.log("campaign",campaign)
     let triggerRule={id:1,combinator: "and", rules: [] }
     let audienceRule={id:1,combinator: "and", rules: [] };
     if(campaign && campaign.triggerRule){
@@ -720,7 +720,8 @@ class EditCampaign extends Component {
       case 3:
         return (
           <Triggers 
-          selectedApplication={campaign.application.id}
+          unlinkCampaignFromApplication={this.unlinkCampaignFromApplication}
+          selectedApplication={campaign.application?campaign.application.id:""}
           linkCampaignToApplication={this.linkCampaignToApplication}
           onEventTypeEdited={this.onEventTypeEdited}
           eventValues={this.state.eventValues}

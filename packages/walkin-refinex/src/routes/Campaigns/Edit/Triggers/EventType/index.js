@@ -11,14 +11,17 @@ import {
   Input,
   Button,
   Spin,
-  Switch
+  Switch,
+  Popconfirm,
+  message
 } from "antd";
 import { EVENT_TYPES } from "../../../../../containers/Query"
 class EventType extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showEvents: false
+      showEvents: false,
+      visible: false,
     }
   }
 
@@ -31,10 +34,32 @@ class EventType extends Component {
     }
   }
 
+  confirm = () => {
+    const { showEvents } = this.state;
+    const { event, selectedApplication } = this.props;
+    this.setState({ visible: false });
+    if (showEvents === true && selectedApplication) {
+      if (selectedApplication) {
+        this.props.unlinkCampaignFromApplication(selectedApplication)
+      }
+
+      this.setState({
+        showEvents: false
+      })
+    } else {
+      this.setState({
+        showEvents: true
+      })
+    }
+
+  };
+
+  cancel = () => {
+    this.setState({ visible: false, showEvents: true });
+  };
+
   onChange = (checked) => {
-    this.setState({
-      showEvents: checked
-    })
+    this.handleVisibleChange(checked);
   }
 
   getApplicationOptions = () => {
@@ -44,6 +69,20 @@ class EventType extends Component {
       )
     })
   }
+
+  handleVisibleChange = (visible) => {
+    const { showEvents } = this.state;
+    const { event, selectedApplication } = this.props;
+    if (!visible) {
+      this.setState({ visible });
+      return;
+    }
+    if (!this.state.showEvents) {
+      this.confirm(); // next step
+    } else {
+      this.setState({ visible }); // show the popconfirm
+    }
+  };
   getOptions = () => {
     return this.props.eventType.eventTypes.map(event => {
       return (
@@ -146,7 +185,18 @@ class EventType extends Component {
     const { showEvents } = this.state;
     return (
       <React.Fragment>
-        <Switch defaultChecked={this.state.showEvents} onChange={this.onChange} />
+        <Popconfirm
+          title="Are you sure you want to unlink this application from campaign?"
+          visible={this.state.visible}
+          onVisibleChange={this.handleVisibleChange}
+          onConfirm={this.confirm}
+          onCancel={this.cancel}
+          okText="Yes"
+          cancelText="No"
+        >
+          <Switch defaultChecked={this.state.showEvents} checked={this.state.showEvents} />
+        </Popconfirm>
+
         <span className="gx-text-grey" style={{
           marginLeft: "1rem"
         }}>Enable Triggers/Events for your App</span>

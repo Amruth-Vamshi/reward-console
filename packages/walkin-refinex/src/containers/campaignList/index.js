@@ -6,7 +6,7 @@ import moment from 'moment';
 import { withApollo, graphql, compose } from 'react-apollo';
 import { SortableDataTable, InstantSearch, CampaignHeader, CircularProgress, Widget } from '@walkinsole/walkin-components';
 import './style.css';
-import { DEFAULT_ACTIVE_STATUS, DEFAULT_REFINEX_CAMPAIGN, NEW_CAMPAIGN } from "../../Utils"
+import { DEFAULT_ACTIVE_STATUS, DEFAULT_REFINEX_CAMPAIGN, NEW_CAMPAIGN, CAMPAIGN_DASHBOARD } from "../../Utils"
 import jwt from "jsonwebtoken";
 
 const { TabPane } = Tabs;
@@ -21,49 +21,35 @@ class CampaignList extends Component {
             data: null,
             loading: false,
             showPopUp: false,
-            popupmessage: ""
+            popupmessage: "",
+            key: this.props.location.tabKey ? this.props.location.tabKey : '1'
         };
     }
-    componentDidMount() {
-        const { campaigns, loading, history } = this.props;
-        if (history.location.state) {
-            if (history.location.state.showPopup && history.location.state.message) {
-                this.setState({ loading: loading, showPopUp: history.location.state.showPopup, popupmessage: history.location.state.message })
-            } else {
-                this.setState({ loading: loading })
-            }
-        } else {
-            this.setState({ loading: loading })
-        }
-    }
+
 
     success = () => {
         message.success(this.state.popupmessage, 5);
         this.setState({ showPopUp: false, popupmessage: "" })
     };
+    componentDidMount() {
+        const { campaigns, loading } = this.props;
+        this.setState({ loading: loading })
+    }
+
+
     componentDidUpdate(preValue) {
-        if (
-            this.props.loading !== preValue.loading
-            || (this.props.campaigns && this.props.campaigns.length !== preValue.campaigns.length)) {
+        if (this.props.loading !== preValue.loading) {
             this.setInitialValues()
-            console.log("PREVvALUE", this.props)
+            console.log(this.props)
         }
     }
 
     setInitialValues = () => {
         const { campaigns, loading } = this.props;
-        console.log()
-        let data = []
-        let allCampaigns = []
-        if (campaigns) {
-            data = campaigns.filter(val => {
-                if (val.status == 'ACTIVE') {
-                    return moment().isBetween(val.startTime, val.endTime);
-                }
-            })
-            allCampaigns = campaigns;
-        }
-        this.setState({ allCampaigns: allCampaigns, data: data, loading: false })
+        this.setState({ allCampaigns: campaigns, loading: false }, () => {
+            this.onTabChange(this.state.key)
+        })
+
     }
     onNewCampaign = () => {
         const { history } = this.props;
@@ -108,6 +94,10 @@ class CampaignList extends Component {
 
     showMatrics = record => {
         console.log("matrics", record)
+        this.props.history.push({
+            pathname: `${CAMPAIGN_DASHBOARD}/${record.id}`,
+            state: { campaignSelected: record },
+        });
     }
     menus = record => (
         <Menu
@@ -139,12 +129,14 @@ class CampaignList extends Component {
     };
 
     onTabChange = key => {
-        console.log(key)
         const { allCampaigns } = this.state
+
+        console.log(key)
+        if (!allCampaigns || allCampaigns.length < 1) return
         if (key == 2) {
             let upcomingCampaigns = allCampaigns.filter(val => {
                 if (val.status == 'ACTIVE') {
-                    return moment(val.startTime).isAfter(moment());
+                    return val.campaignStatus == 'LIVE' && moment(val.startTime).isAfter(moment());
                 }
             });
             this.setState({ data: upcomingCampaigns, filtered: null });
@@ -159,20 +151,21 @@ class CampaignList extends Component {
             this.setState({ data: completedCampaigns, filtered: null });
         }
         if (key == 4) {
-            const { changeStatus } = this.props;
-            //If api works
-            // changeStatus('INACTIVE')
-            // this.setState({ data: this.props.campaigns })
-
             let draftCampaigns = allCampaigns.filter(val => {
-                return val.status == 'INACTIVE';
+                return val.campaignStatus == 'DRAFT';
+            });
+            this.setState({ data: draftCampaigns, filtered: null });
+        }
+        if (key == 5) {
+            let draftCampaigns = allCampaigns.filter(val => {
+                return val.campaignStatus == 'PAUSE';
             });
             this.setState({ data: draftCampaigns, filtered: null });
         }
         if (key == 1) {
             let liveCampaigns = allCampaigns.filter(val => {
                 if (val.status == 'ACTIVE') {
-                    return moment().isBetween(val.startTime, val.endTime);
+                    return val.campaignStatus == 'LIVE' && moment().isBetween(val.startTime, val.endTime);
                 }
             });
             this.setState({ data: liveCampaigns, filtered: null });
@@ -280,6 +273,9 @@ class CampaignList extends Component {
                                 <SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} pagination={paginationData} loading={loading} />
                             </TabPane>
                             <TabPane tab="Draft" key="4">
+                                <SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} pagination={paginationData} loading={loading} />
+                            </TabPane>
+                            <TabPane tab="Paused" key="5">
                                 <SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} pagination={paginationData} loading={loading} />
                             </TabPane>
                         </Tabs>
