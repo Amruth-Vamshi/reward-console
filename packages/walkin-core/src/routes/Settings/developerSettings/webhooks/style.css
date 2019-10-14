@@ -12,10 +12,13 @@
   border: 1px solid #038fde;
   color: #038fde;
 }
-
-.ant-btn {
+.webhookButtonMargin0 {
   margin: 0;
 }
+
+/* .ant-btn {
+  margin: 0;
+} */
 
 .headerTitle {
   font-size: 30px;
@@ -40,12 +43,13 @@
 
 /* webhook list styles */
 
-.ant-row {
+.webhookListRow {
   margin: 0;
   padding: 30px 0;
   border-bottom: 1px solid #cccccc;
 }
-.ant-row:last-child {
+
+.webhookListRow:last-child {
   border-bottom: 0px solid #cccccc;
 }
 
@@ -91,7 +95,7 @@
 .webhookStatus {
   justify-content: space-around;
 }
-.ant-switch-checked {
+.webhookStatusSwitch {
   background-color: #55dba2;
 }
 
@@ -126,12 +130,12 @@
   margin: 20px 0;
 }
 
-.ant-select-selection,
+/* .ant-select-selection,
 .ant-input-group-addon {
   background: transparent linear-gradient(180deg, #ffffff 0%, #e6e6e6 100%) 0%
     0% no-repeat padding-box;
   border: 1px solid #cccccc;
-}
+} */
 
 .headerInputFlex {
   background: #e6e6e6 0% 0% no-repeat padding-box;
