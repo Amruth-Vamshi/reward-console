@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { Button, Radio } from 'antd';
-import { toNumber } from '../../../util/common';
+import { toNumber } from '@walkinsole/walkin-components/src/util/common';
 import './style.css';
 
 const ButtonGroups = ({ selectedPriorityButton = 3, handleChange, maxPriority = 99 }) => {

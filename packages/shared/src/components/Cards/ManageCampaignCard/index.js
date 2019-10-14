@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Avatar, Row, Col, Tag, Button } from "antd";
 import { Area, AreaChart, ResponsiveContainer } from "recharts";
 
-import Widget from "../../Widget";
+import { Widget } from "@walkinsole/walkin-components";
 
 const ManageCampaignCard = ({ campaign, history }) => {
   return (
