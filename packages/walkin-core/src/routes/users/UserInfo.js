@@ -31,13 +31,21 @@ export default class UserInfo extends Component {
           <Col span={3}>Creator</Col>
         </Row>
 
-        {this.props.spin ?
-          <div> <br /> <br /> <div className="divCenter">  <Spin size="large" /> </div> <br /> <br /> <br />  </div>
-          : (this.props.data && this.props.data.length) ?
-            this.props.data.map((user, key) => <UserCard key={key} data={user} />)
-            : <Empty />}
-
-
+        {this.props.spin ? (
+          <div>
+            {" "}
+            <br /> <br />{" "}
+            <div className="divCenter">
+              {" "}
+              <Spin size="large" />{" "}
+            </div>{" "}
+            <br /> <br /> <br />{" "}
+          </div>
+        ) : this.props.data && this.props.data.length ? (
+          this.props.data.map((user, key) => <UserCard key={key} data={user} />)
+        ) : (
+          <Empty />
+        )}
       </div>
     );
   }
