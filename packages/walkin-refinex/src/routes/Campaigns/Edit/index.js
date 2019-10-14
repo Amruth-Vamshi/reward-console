@@ -1,6 +1,6 @@
 import "./Edit.css";
 import React, { Component } from "react";
-import { Row, Col, Button, Spin ,Icon} from "antd";
+import { Row, Col, Button,message, Spin ,Icon} from "antd";
 import CampaignConfig from "./Campaign";
 // import Audience from "./Audience";
 import Audience from "@walkinsole/walkin-hyperx/src/containers/campaign/campaignCreation/audience";
@@ -14,7 +14,7 @@ import FeedbackFormConfig from "./FeedbackForm";
 import ContainerHeader from "../CampaignHeader";
 import gql from "graphql-tag";
 import { compose, graphql } from "react-apollo";
-import GoLive from "./GoLive";
+import Stepper from "../Stepper"
 import isEmpty from "lodash/isEmpty";
 import {
   GET_CAMPAIGN,
@@ -30,7 +30,9 @@ import {
   updateCommunication,
   updateMessageTemplate,
   CREATE_EVENT_SUBSCRIPTION,
-  UPDATE_EVENT_SUBSCRIPTION
+  UPDATE_EVENT_SUBSCRIPTION,
+  LINK_CAMPAIGN_TO_APPLICATION,
+  UNLINK_CAMPAIGN_FROM_APPLICATION
 } from "../../../containers/Query";
 import { CustomScrollbars } from "@walkinsole/walkin-components";
 import jwt from "jsonwebtoken";
@@ -41,7 +43,8 @@ import {
   DEFAULT_INACTIVE_STATUS
 } from '../../../Utils'
 import { async } from "q";
-import { from } from "zen-observable";
+import { GET_ALL_APPS_OF_ORGANIZATION } from "@walkinsole/walkin-core/src/PlatformQueries";
+
 
 
 const communicationData = [
@@ -116,6 +119,17 @@ class EditCampaign extends Component {
     this.setState({eventValues:event})
   }
 
+   success = (text) => {
+    message.success(text);
+  };
+  
+   error = (text) => {
+    message.error(text);
+  };
+  
+   warning = (text) => {
+    message.warning(text);
+  };
 
   componentDidUpdate(preValue) {
     if (this.props.allAudiences.loading !== preValue.allAudiences.loading) {
@@ -187,7 +201,7 @@ class EditCampaign extends Component {
 
   onTestAndControlEdit = () => {
     this.setState({
-      showTestAndControl: true
+      showTestAndControl: false
     });
   };
   onChange = current => {
@@ -552,12 +566,43 @@ class EditCampaign extends Component {
     this.formRef1 = formRef;
   };
 
+  linkCampaignToApplication=async (applicationId)=>{
+    const {campaign}= this.props.campaign;
+    try{
+     const linkedCampaign=  await this.props.linkCampaignToApplication({
+      variables:{
+        campaignId:campaign.id,
+        applicationId:applicationId
+      }
+    })
+    this.success('Successfully linked Campaign to application');
+    console.log(linkedCampaign);
+    }catch(err){
+      console.log(err);
+    }
+   
+  }
+
+
+  unlinkCampaignFromApplication= async (applicationId)=>{
+    const {campaign} = this.props.campaign;
+    try{
+     const unlinkedCampaign=await this.props.unlinkCampaignFromApplication({
+        variables:{
+          campaignId:campaign.id,
+          applicationId
+        }
+      })
+      this.success('Successfully linked Campaign from application');
+    }catch(err){
+      console.log(err);
+    }
+  }
 
 
   getContainer = () => {
-    console.log("This.props is..", this.props)
-    console.log("This.state is..", this.state)
     const { campaign } = this.props.campaign;
+    console.log("campaign",campaign)
     let triggerRule={id:1,combinator: "and", rules: [] }
     let audienceRule={id:1,combinator: "and", rules: [] };
     if(campaign && campaign.triggerRule){
@@ -594,8 +639,6 @@ class EditCampaign extends Component {
         id: el.id,
         label: el.attributeName
       }));
-
-      console.log("triggerRule",triggerRule)
     // let templateData = this.props.messageTemplate;
     const {
       formValues,
@@ -605,7 +648,6 @@ class EditCampaign extends Component {
       controlValue,
       testControlSelected
     } = this.state;
-    
     switch (this.state.current) {
       case 0:
         return (
@@ -645,10 +687,15 @@ class EditCampaign extends Component {
             popupButtonText="apply"
             campaign={this.props.campaign.campaign}
             edit={true}
+            showFeedbackFormType={false}
           />
         );
       case 1:
-        return <FeedbackFormConfig />;
+        return (
+           
+             <FeedbackFormConfig />
+           
+           );
       case 2:
         return (
           <CustomScrollbars>
@@ -673,10 +720,13 @@ class EditCampaign extends Component {
       case 3:
         return (
           <Triggers 
+          selectedApplication={campaign.application.id}
+          linkCampaignToApplication={this.linkCampaignToApplication}
           onEventTypeEdited={this.onEventTypeEdited}
           eventValues={this.state.eventValues}
           query={this.state.oldQueryTriggers?this.state.oldQueryTriggers:triggerRule} 
           attributeData={attributeData} 
+          applications={this.props.allApplications.organization.applications}
           logQuery={this.logQuery} />
         );
       case 4:
@@ -710,6 +760,8 @@ class EditCampaign extends Component {
 
   };
 
+
+
   render() {
     const { current, stepperData } = this.state;
     const {campaign}=this.props
@@ -725,42 +777,69 @@ class EditCampaign extends Component {
       })
     }
     return (
-      <div className="PageContainer" style={{ margin: "-32px" }}>
+        <div>
         <ContainerHeader
-          current={current}
-          onChange={this.goToNextPage.bind(this)}
-          title="Create RefineX Campaign"
-          StepperData={stepperData}
+        children={
+            <React.Fragment>
+                <Col sm={5} md={6} lg={8} xl={8} xxl={13}>
+                    <h3 className="gx-text-grey paddingLeftStyle campaignHeaderTitleStyle">
+                        Create Campaign
+                    </h3>
+                </Col>
+                <Col sm={19} md={18} lg={16} xl={16} xxl={11}>
+                    <Stepper
+                    StepperData={stepperData}
+                        current={current}
+                        onChange={this.goToNextPage.bind(this)}
+                    />
+                </Col>
+            </React.Fragment>
+        }
         />
-        {this.state.loading ? (<div className="divCenter"><Spin size="large" indicator={antIcon} /> </div>)  :<Row>
-          <Col span={24}>
-            <div className="stepperContainer">{campaign.loading ? <CircularProgress /> :this.getContainer()}</div>
-          </Col>
-        </Row>}
-        {/* <Row className="BottomBar">
-          <Col offset={1}>
-            <Button onClick={this.onFormNext} type="primary">Next</Button>
-          </Col>
-
-          <Col offset={1}>
-            <Button>Save as Draft</Button>
-          </Col>
-        </Row> */}
-        <div style={{ margin: "32px" }}>
-          <CampaignFooter
-            nextButtonText={current>=5?"Save" :"Next"}
-            saveDraftText="Save Draft"
+        <div className="stepperContainer">
+        <div style={{ margin: '20px 20px 20px 30px', height: '60vh' }}>
+        {this.state.loading ? (<div className="divCenter"><Spin size="large" indicator={antIcon} /> </div>)  : 
+           <React.Fragment>
+            {campaign.loading ? (<div className="divCenter"><Spin size="large" indicator={antIcon} /> </div>) :this.getContainer()} 
+           </React.Fragment>    
+         }
+        </div>
+         
+        </div>
+       
+         
+        <div style={{}}>
+        <div className="campFooter gx-card" style={{
+            position: 'absolute', width: '100%' }}>
+        <div className="gx-card-body" style={{ background: "#F6F6F6" }}>
+        <CampaignFooter
+            loading={this.state.loading}
+            nextButtonText={current>=5?"Launch" : 'Save and Next'}
+            saveDraftText={current === 0 ? "" : 'Save Draft'}
             saveDraft={this.onPage1SaveDraft}
             goToPage2={this.onFormNext.bind(this, current + 1)}
           />
         </div>
-      </div>
+        </div>
+          </div>
+          </div>
+  
     );
   }
 }
 
 
 export default compose(
+  graphql(GET_ALL_APPS_OF_ORGANIZATION, {
+    name: "allApplications",
+    options: props =>  ({
+        variables: {
+          id: jwt.decode(localStorage.getItem("jwt")).org_id
+        },
+        fetchPolicy: "cache-and-network"
+      })
+    }
+  ),
   graphql(GET_CAMPAIGN, {
     name: "campaign",
     options: props => ({
@@ -795,7 +874,7 @@ export default compose(
     options:props=>{
       const input= {
         status: "ACTIVE", 
-      organizationId: "577bddb7-17df-4884-b16f-8b5db5b00b95"
+      organizationId: jwt.decode(localStorage.getItem("jwt")).org_id
       }
      const a= {
        variables:{
@@ -803,6 +882,12 @@ export default compose(
       }}
       return a;
     }
+  }),
+  graphql(LINK_CAMPAIGN_TO_APPLICATION,{
+    name:"linkCampaignToApplication"
+  }),
+  graphql(UNLINK_CAMPAIGN_FROM_APPLICATION,{
+    name:"unlinkCampaignFromApplication"
   }),
   graphql(createCommunication, {
     name: "communication"

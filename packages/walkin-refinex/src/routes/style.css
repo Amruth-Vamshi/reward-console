@@ -1,0 +1,38 @@
+
+.RefineX-Main{
+    min-height: 100%;
+	background-color: #e6e6e6;
+	overflow: inherit;
+}
+
+.RefineX-Sidebar .ant-menu-item{
+	font-size: 19px;
+	margin-bottom: 20px	
+}
+
+.RefineX-Sidebar .ant-menu{
+	padding-top: 20px
+}
+
+.RefineX-Sidebar .ant-menu-inline .ant-menu-item:not(:last-child){
+	margin-bottom: 5px
+}
+
+.RefineX-Logo{
+	background-color: #37474f;
+}
+
+.RefineX-Sidebar .ant-menu-dark{
+	background-color: #37474f;
+}
+
+.RefineX-Topbar{
+    background-color: #455a64;
+	background-image: linear-gradient(to left, #607d8b ,#37474f);
+}
+
+.RefineX-Sidebar .ant-menu-dark .ant-menu-item-selected > a{
+	/* color: #62ff77 */
+	color: #fcee76
+
+}

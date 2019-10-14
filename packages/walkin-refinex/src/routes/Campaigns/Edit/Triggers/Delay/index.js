@@ -11,9 +11,7 @@ import {
   Button
 } from "antd";
 class Delay extends Component {
-  static propTypes = {
-    prop: PropTypes
-  };
+
 
   constructor(props) {
     super(props);

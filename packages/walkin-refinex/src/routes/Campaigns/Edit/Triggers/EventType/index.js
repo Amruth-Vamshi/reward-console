@@ -10,21 +10,40 @@ import {
   Select,
   Input,
   Button,
-  Spin
+  Spin,
+  Switch
 } from "antd";
 import { EVENT_TYPES } from "../../../../../containers/Query"
 class EventType extends Component {
-
-  componentDidMount() {
-    this.setFieldValues()
+  constructor(props) {
+    super(props);
+    this.state = {
+      showEvents: false
+    }
   }
-  setFieldValues = () => {
-    const { event } = this.props;
-    this.props.form.setFieldsValue({
-      event: event.type
-    });
-  };
 
+  componentWillMount() {
+    const { event, selectedApplication } = this.props;
+    if (selectedApplication) {
+      this.setState({
+        showEvents: true
+      })
+    }
+  }
+
+  onChange = (checked) => {
+    this.setState({
+      showEvents: checked
+    })
+  }
+
+  getApplicationOptions = () => {
+    return this.props.application.map(app => {
+      return (
+        <Select.Option value={app.id} key={app.id}>{app.name}</Select.Option>
+      )
+    })
+  }
   getOptions = () => {
     return this.props.eventType.eventTypes.map(event => {
       return (
@@ -32,42 +51,108 @@ class EventType extends Component {
       )
     })
   }
-  render() {
+  getEvent = () => {
     const { getFieldDecorator } = this.props.form;
-    console.log(this.props.eventType.loading)
     return (
-      <Row style={{ marginTop: "1rem" }}>
-        <Col span={6}>
-          <h2>Event</h2>
-        </Col>
-        <Col span={12}>
-          <Form layout="vertical" onSubmit={this.handleSubmit}>
-            <Form.Item label="Choose an event type">
-              {getFieldDecorator("event", {
-                rules: [
-                  {
-                    required: true,
-                    message: "Please select an event type!"
-                  }
-                ]
-              })(
-                <Select
-                  notFoundContent={this.props.eventType.loading ? <Spin size="small" /> : null}
-                  placeholder="Select a option and change input text above"
-                  onChange={this.handleSelectChange}
-                >
-                  {
-                    this.props.eventType.loading ? (
-                      <Select.Option value="loading" key="999999">loading</Select.Option>
-                    ) : this.getOptions()
-                  }
+      <Row style={{ marginTop: "2rem" }}>
+        <Col span={24}>
+          <Row>
+            <Col span={6}>
+              <h2>App</h2>
+            </Col>
+            <Col span={12}>
+              <Form layout="vertical" onSubmit={this.handleSubmit}>
 
-                </Select>
-              )}
-            </Form.Item>
-          </Form>
+
+                <Form.Item label="Choose an App">
+                  {getFieldDecorator("application", {
+                    rules: [
+                      {
+                        required: true,
+                        message: "Please select an event type!"
+                      }
+                    ]
+                  })(
+                    <Select
+                      style={{
+                        width: 250
+                      }}
+                      notFoundContent={this.props.eventType.loading ? <Spin size="small" /> : null}
+                      placeholder="Select an Application"
+                      onChange={this.handleSelectChange}
+                    >
+                      {
+                        this.props.eventType.loading ? (
+                          <Select.Option value="loading" key="999999">loading</Select.Option>
+                        ) : this.getApplicationOptions()
+                      }
+
+                    </Select>
+                  )}
+                </Form.Item>
+
+              </Form>
+            </Col>
+          </Row>
+
+          <Divider style={{
+            color: "white"
+          }} />
+          <Row>
+            <Col span={6}>
+              <h2>Event</h2>
+            </Col>
+            <Col span={12}>
+              <Form layout="vertical" onSubmit={this.handleSubmit}>
+
+
+                <Form.Item label="Choose an event type">
+                  {getFieldDecorator("event", {
+                    rules: [
+                      {
+                        required: true,
+                        message: "Please select an event type!"
+                      }
+                    ]
+                  })(
+                    <Select
+                      style={{
+                        width: 500
+                      }}
+                      notFoundContent={this.props.eventType.loading ? <Spin size="small" /> : null}
+                      placeholder="Select an Event"
+                      onChange={this.handleSelectChange}
+                    >
+                      {
+                        this.props.eventType.loading ? (
+                          <Select.Option value="loading" key="999999">loading</Select.Option>
+                        ) : this.getOptions()
+                      }
+
+                    </Select>
+                  )}
+                </Form.Item>
+
+              </Form>
+            </Col>
+          </Row>
+
+
         </Col>
       </Row>
+    )
+  }
+  render() {
+    const { showEvents } = this.state;
+    return (
+      <React.Fragment>
+        <Switch defaultChecked={this.state.showEvents} onChange={this.onChange} />
+        <span className="gx-text-grey" style={{
+          marginLeft: "1rem"
+        }}>Enable Triggers/Events for your App</span>
+        {showEvents ?
+          this.getEvent() : null}
+      </React.Fragment>
     );
   }
 }
@@ -75,8 +160,23 @@ class EventType extends Component {
 const EventTypeForm = Form.create({
   name: "EventType",
   onValuesChange(props, values) {
-    console.log("values", values)
-    props.onEventTypeEdited(values);
+    if (values.event) {
+      props.onEventTypeEdited(values);
+    } else if (props.selectedApplication !== values.application) {
+      props.linkCampaignToApplication(values.application)
+    }
+
+  },
+  mapPropsToFields(props) {
+    const { event, selectedApplication } = props;
+    return {
+      event: Form.createFormField({
+        value: event.type
+      }),
+      application: Form.createFormField({
+        value: selectedApplication
+      }),
+    };
   }
 })(EventType);
 

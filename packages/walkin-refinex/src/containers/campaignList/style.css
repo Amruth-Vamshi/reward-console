@@ -2,3 +2,13 @@
 	display: flex;
 	justify-content: flex-end;
 }
+
+.divCenter {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+}
+.HyperX-campaignList .gx-card-tabs .ant-tabs-tab{
+	margin-right: 50px
+}
