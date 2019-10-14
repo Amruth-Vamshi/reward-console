@@ -184,7 +184,7 @@ class Webhooks extends Component {
       return (
         <div className={"webhookListWrapper"}>
           {this.state.webhooks.map((webhook, index) => (
-            <Row key={index}>
+            <Row className="webhookListRow" key={index}>
               <Col
                 className="webhookUrlWrapper "
                 xl={11}
@@ -227,6 +227,7 @@ class Webhooks extends Component {
               >
                 <div>{WEBHOOK_STATUS[webhook.status]}</div>
                 <Switch
+                  className="webhookStatusSwitch"
                   disabled
                   checked={webhook.status === "ACTIVE"}
                   onChange={() => this.onWebhookStatusChange(index)}
@@ -243,13 +244,13 @@ class Webhooks extends Component {
               >
                 <Button
                   onClick={() => this.onAddOrEditWebhooks(index)}
-                  className="buttonBlueBorder"
+                  className="buttonBlueBorder webhookButtonMargin0"
                 >
                   Edit
                 </Button>
 
                 <Button
-                  className="button"
+                  className=" webhookButtonMargin0"
                   onClick={() => this.onDelete(index)}
                   loading={isLoading && selectedWebhookIndex === index}
                 >
@@ -279,7 +280,7 @@ class Webhooks extends Component {
           <label className="headerTitle">Webhooks</label>
           {!isWebhookFormOpen && (
             <Button
-              className="button"
+              className="webhookButtonMargin0"
               type="primary"
               size="large"
               onClick={() => this.onAddOrEditWebhooks()}
