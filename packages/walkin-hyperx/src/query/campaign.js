@@ -70,6 +70,42 @@ export const LAUNCH_CAMPAIGN = gql`
   }
 `;
 
+export const PAUSE_CAMPAIGN = gql`
+  mutation pauseCampaign($id:ID!) {
+    pauseCampaign(id:$id) {
+      id name description
+      startTime endTime
+      status triggerRule { id }
+      campaignType priority
+      campaignStatus
+    }
+  }
+`;
+
+export const UNPAUSE_CAMPAIGN = gql`
+  mutation unpauseCampaign($id:ID!) {
+    unpauseCampaign(id:$id) {
+      id name description
+      startTime endTime
+      status triggerRule { id }
+      campaignType priority
+      campaignStatus
+    }
+  }
+`;
+
+export const ABANDON_CAMPAIGN = gql`
+  mutation abandonCampaign($id:ID!) {
+    abandonCampaign(id:$id) {
+      id name description
+      startTime endTime
+      status triggerRule { id }
+      campaignType priority
+      campaignStatus
+    }
+  }
+`;
+
 export const GET_CAMPAIGN_DASHBOARD = gql`
 query campaign($id:ID!){
 	campaign( id:$id){

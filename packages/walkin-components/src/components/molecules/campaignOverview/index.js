@@ -10,6 +10,10 @@ export default class Overview extends Component {
     console.log(e.target.innerText);
     if (e.target.innerText == "LAUNCH")
       this.props.launchCampaign()
+    if (e.target.innerText == "PAUSE")
+      this.props.pauseCampaign()
+    if (e.target.innerText == "UNPAUSE")
+      this.props.unpauseCampaign()
   }
 
   render() {
@@ -43,9 +47,11 @@ export default class Overview extends Component {
             </Col>
             <Col sm={24} md={8}>
               <div className='divCenterVertical'>
-                {view ? (campaign.campaignStatus == 'DRAFT' || campaign.campaignStatus == 'LIVE') && value != "Completed" ? <Button shape='round' type='primary'
-                  style={{ width: '200px', letterSpacing: 1, height: 40, fontSize: 20 }} onClick={this.changeState} loading={this.props.loading} >
-                  {campaign.campaignStatus == 'DRAFT' ? 'LAUNCH' : campaign.campaignStatus == 'LIVE' ? 'PAUSE' : ''} </Button> : '' : ''}
+                {view ?
+                  // (campaign.campaignStatus == 'DRAFT' || campaign.campaignStatus == 'LIVE') &&
+                  value != "Completed" ? <Button shape='round' type='primary'
+                    style={{ width: '200px', letterSpacing: 1, height: 40, fontSize: 20 }} onClick={this.changeState} loading={this.props.loading} >
+                    {campaign.campaignStatus == 'DRAFT' ? 'LAUNCH' : campaign.campaignStatus == 'LIVE' ? 'PAUSE' : 'UNPAUSE'} </Button> : '' : ''}
               </div>
 
             </Col>

@@ -14,7 +14,7 @@ import jwt from "jsonwebtoken";
 import '../styles.css'
 import moment from "moment";
 import { CampaignFooter, CampaignHeader, Stepper } from '@walkinsole/walkin-components';
-import { CREATE_CAMPAIGN, UPDATE_CAMPAIGN, CREATE_MESSAGE_TEMPLETE, CREATE_COMMUNICATION, LAUNCH_CAMPAIGN } from '../../../query/campaign';
+import { CREATE_CAMPAIGN, UPDATE_CAMPAIGN, CREATE_MESSAGE_TEMPLETE, CREATE_COMMUNICATION, LAUNCH_CAMPAIGN, CREATE_COMMUNICATION_WITH_MESSAGE_TEMPLETE } from '../../../query/campaign';
 
 const stepData = [{
 	id: 1,
@@ -178,10 +178,55 @@ class CampaignCreation extends Component {
 					this.setState({ emailForm: values })
 				else this.setState({ pushForm: values })
 				!createComm ?
-					this.createCommunicationMutation(c, values) : ''
+					// this.createCommunicationMutation(c, values) : ''
+					this.createCommunicationWithMessageTemplate(c, values) : ''
+
 			}
 		})
 
+	}
+	createCommunicationWithMessageTemplate = (current, values) => {
+		let { communicationSelected, scheduleData, scheduleSaveMark } = this.state;
+		console.log('COMM', communicationSelected, values);
+		this.setState({ loading: true })
+		var messageTemplateInput = {
+			name: this.state.campaign.name + "_" + communicationSelected,
+			description: "",
+			messageFormat: communicationSelected,
+			templateBodyText: communicationSelected == "SMS" ? values.smsBody : communicationSelected == "EMAIL" ? values.email_body : values.notificationBody,
+			templateSubjectText: communicationSelected == "SMS" ? values.smsTag : communicationSelected == "EMAIL" ? values.email_subject : values.notificationTag,
+			templateStyle: "MUSTACHE",
+			organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
+			status: "ACTIVE"
+		};
+		var communicationInput = {
+			entityId: this.state.offerData ? this.state.offerData.id : ' ',
+			entityType: "Offer",
+			campaign_id: this.state.campaign.id,
+			isScheduled: scheduleSaveMark,
+			isRepeatable: scheduleSaveMark,
+			organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
+			status: "ACTIVE",
+			firstScheduleDateTime: this.state.campaign.startTime,
+			commsChannelName: "Test"
+		};
+		if (scheduleSaveMark) {
+			console.log(this.state.scheduleData);
+			let repeatRuleConf = { frequency: scheduleData.repeatType, time: moment(scheduleData.time).format('HH:MM:SS') }
+			scheduleData.repeatType == "WEEKLY" ? repeatRuleConf.byWeekDay = scheduleData.days : ''
+			scheduleData.hasOwnProperty('endTime') ? repeatRuleConf.endAfter = scheduleData.endTime : repeatRuleConf.noOfOccurances = scheduleData.noOfOccurances
+			communicationInput.repeatRuleConfiguration = repeatRuleConf
+		}
+
+		this.props.createCommunicationWithMessageTemplate({
+			variables: { communicationInput: communicationInput, messageTemplateInput: messageTemplateInput }
+		}).then(data => {
+			console.log("Communication data..", data)
+			this.setState({ loading: false, current, communication: data.data.createCommunicationWithMessageTempate })
+		}).catch(err => {
+			this.setState({ loading: false })
+			console.log("Error creating for communication", err)
+		})
 	}
 
 	createCommunicationMutation = (current, values) => {
@@ -196,7 +241,7 @@ class CampaignCreation extends Component {
 			templateSubjectText: communicationSelected == "SMS" ? values.smsTag : communicationSelected == "EMAIL" ? values.email_subject : values.notificationTag,
 			templateStyle: "MUSTACHE",
 			organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
-			status: "ACTIVE"
+			status: "ACTIVE",
 		};
 		this.props.messageTemplate({
 			variables: { input: input }
@@ -652,6 +697,9 @@ export default withRouter(
 						}
 					};
 				}
+			}),
+			graphql(CREATE_COMMUNICATION_WITH_MESSAGE_TEMPLETE, {
+				name: "createCommunicationWithMessageTemplate"
 			})
 		)(CampaignCreation)
 	)

@@ -132,9 +132,14 @@ class CampaignList extends Component {
 			this.setState({ data: completedCampaigns, filtered: null });
 		}
 		if (key == 4) {
-			const { changeStatus } = this.props;
 			let draftCampaigns = allCampaigns.filter(val => {
 				return val.campaignStatus == 'DRAFT';
+			});
+			this.setState({ data: draftCampaigns, filtered: null });
+		}
+		if (key == 5) {
+			let draftCampaigns = allCampaigns.filter(val => {
+				return val.campaignStatus == 'PAUSE';
 			});
 			this.setState({ data: draftCampaigns, filtered: null });
 		}
@@ -270,6 +275,9 @@ class CampaignList extends Component {
 									<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} pagination={paginationData} />
 								</TabPane>
 								<TabPane tab="Draft" key="4">
+									<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} pagination={paginationData} />
+								</TabPane>
+								<TabPane tab="Paused" key="5">
 									<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} pagination={paginationData} />
 								</TabPane>
 							</Tabs>

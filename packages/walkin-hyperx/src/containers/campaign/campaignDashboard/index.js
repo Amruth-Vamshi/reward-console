@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react'
 import { CampaignHeader } from '@walkinsole/walkin-components'
 import { Button, Row, Col, message } from 'antd'
 import Overview from '@walkinsole/walkin-components/src/components/molecules/campaignOverview'
-import { CAMPAIGN_DASHBOARD, GET_CAMPAIGN_DASHBOARD, UPDATE_CAMPAIGN, LAUNCH_CAMPAIGN, AUDIENCES, GET_OFFER_FOR_CAMPAIGN } from '../../../query/campaign'
+import { CAMPAIGN_DASHBOARD, GET_CAMPAIGN_DASHBOARD, UPDATE_CAMPAIGN, LAUNCH_CAMPAIGN, PAUSE_CAMPAIGN, UNPAUSE_CAMPAIGN, ABANDON_CAMPAIGN, AUDIENCES, GET_OFFER_FOR_CAMPAIGN } from '../../../query/campaign'
 import { withApollo, graphql, compose, mutate } from 'react-apollo';
 import { withRouter } from 'react-router-dom';
 import moment from 'moment';
@@ -31,6 +31,55 @@ class CampaignDashboard extends Component {
             this.setState({ loading: false })
         });
     }
+    pauseCampaign = () => {
+        console.log("Pause calling")
+        this.setState({ loading: true })
+        this.props.pauseCampaign({
+            variables: { id: this.props.location.state.campaignSelected.id }
+        }).then(data => {
+            console.log("campaign data..", data);
+            message.success('Campaign Paused')
+            moment().isBetween(this.props.location.state.campaignSelected.startTime, this.props.location.state.campaignSelected.endTime) ?
+                this.props.history.push('/hyperx/campaigns')
+                : this.props.history.push({ pathname: '/hyperx/campaigns', tabKey: "2" })
+        }).catch(err => {
+            console.log("Error Update campaign", err)
+            this.setState({ loading: false })
+        });
+    }
+    unpauseCampaign = () => {
+        console.log("Pause calling")
+        this.setState({ loading: true })
+        this.props.unpauseCampaign({
+            variables: { id: this.props.location.state.campaignSelected.id }
+        }).then(data => {
+            console.log("campaign data..", data);
+            message.success('Campaign unPaused')
+            moment().isBetween(this.props.location.state.campaignSelected.startTime, this.props.location.state.campaignSelected.endTime) ?
+                this.props.history.push('/hyperx/campaigns')
+                : this.props.history.push({ pathname: '/hyperx/campaigns', tabKey: "2" })
+        }).catch(err => {
+            console.log("Error Update campaign", err)
+            this.setState({ loading: false })
+        });
+    }
+    abandonCampaign = () => {
+        console.log("Pause calling")
+        this.setState({ loading: true })
+        this.props.abandonCampaign({
+            variables: { id: this.props.location.state.campaignSelected.id }
+        }).then(data => {
+            console.log("campaign data..", data);
+            message.success('Abandon campaign')
+            moment().isBetween(this.props.location.state.campaignSelected.startTime, this.props.location.state.campaignSelected.endTime) ?
+                this.props.history.push('/hyperx/campaigns')
+                : this.props.history.push({ pathname: '/hyperx/campaigns', tabKey: "2" })
+        }).catch(err => {
+            console.log("Error Update campaign", err)
+            this.setState({ loading: false })
+        });
+    }
+
 
     render() {
         console.log("this.props....", this.props)
@@ -57,6 +106,8 @@ class CampaignDashboard extends Component {
                             view={true} loading={loading}
                             campaign={this.props.location.state ? this.props.location.state.campaignSelected : ''}
                             launchCampaign={this.launchCampaign}
+                            pauseCampaign={this.pauseCampaign}
+                            unpauseCampaign={this.unpauseCampaign}
                             audience={audiences}
                         // communication={this.state.communication.messageTemplate ?
                         //     `${communicationSelected} - ${this.state.communication.messageTemplate.templateSubjectText}` : ''}
@@ -80,6 +131,15 @@ export default withRouter(
                 }
             }), graphql(LAUNCH_CAMPAIGN, {
                 name: "launchCampaign"
+            }),
+            graphql(PAUSE_CAMPAIGN, {
+                name: "pauseCampaign"
+            }),
+            graphql(UNPAUSE_CAMPAIGN, {
+                name: "unpauseCampaign"
+            }),
+            graphql(ABANDON_CAMPAIGN, {
+                name: "abandonCampaign"
             }),
             graphql(AUDIENCES, {
                 name: "allAudiences",
