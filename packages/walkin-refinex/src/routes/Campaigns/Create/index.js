@@ -453,7 +453,10 @@ class CreateCampaign extends Component {
           </CustomScrollbars>
         );
       case 3:
-        return <Triggers attributeData={attributeData} logQuery={this.logQuery}/>;
+        return <Triggers 
+        applications={this.props.allApplications.organization.applications}
+        attributeData={attributeData} 
+        logQuery={this.logQuery}/>;
       case 4:
         return <Comm
         subTitle="Communication"

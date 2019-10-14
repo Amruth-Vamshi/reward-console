@@ -3,7 +3,7 @@ import { Col, Row } from "antd";
 import "./style.css";
 
 const CampaignHeader = ({ children }) => {
-    return <Row className="campaignHeaderStyle">{children}</Row>;
+    return <Row className="RefineXCampaignHeaderStyle">{children}</Row>;
 };
 
 

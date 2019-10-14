@@ -1,6 +1,6 @@
 import "./Edit.css";
 import React, { Component } from "react";
-import { Row, Col, Button, Spin ,Icon} from "antd";
+import { Row, Col, Button,message, Spin ,Icon} from "antd";
 import CampaignConfig from "./Campaign";
 // import Audience from "./Audience";
 import Audience from "@walkinsole/walkin-hyperx/src/containers/campaign/campaignCreation/audience";
@@ -30,7 +30,9 @@ import {
   updateCommunication,
   updateMessageTemplate,
   CREATE_EVENT_SUBSCRIPTION,
-  UPDATE_EVENT_SUBSCRIPTION
+  UPDATE_EVENT_SUBSCRIPTION,
+  LINK_CAMPAIGN_TO_APPLICATION,
+  UNLINK_CAMPAIGN_FROM_APPLICATION
 } from "../../../containers/Query";
 import { CustomScrollbars } from "@walkinsole/walkin-components";
 import jwt from "jsonwebtoken";
@@ -41,7 +43,7 @@ import {
   DEFAULT_INACTIVE_STATUS
 } from '../../../Utils'
 import { async } from "q";
-import { from } from "zen-observable";
+import { GET_ALL_APPS_OF_ORGANIZATION } from "@walkinsole/walkin-core/src/PlatformQueries";
 
 
 
@@ -117,6 +119,17 @@ class EditCampaign extends Component {
     this.setState({eventValues:event})
   }
 
+   success = (text) => {
+    message.success(text);
+  };
+  
+   error = (text) => {
+    message.error(text);
+  };
+  
+   warning = (text) => {
+    message.warning(text);
+  };
 
   componentDidUpdate(preValue) {
     if (this.props.allAudiences.loading !== preValue.allAudiences.loading) {
@@ -553,10 +566,43 @@ class EditCampaign extends Component {
     this.formRef1 = formRef;
   };
 
+  linkCampaignToApplication=async (applicationId)=>{
+    const {campaign}= this.props.campaign;
+    try{
+     const linkedCampaign=  await this.props.linkCampaignToApplication({
+      variables:{
+        campaignId:campaign.id,
+        applicationId:applicationId
+      }
+    })
+    this.success('Successfully linked Campaign to application');
+    console.log(linkedCampaign);
+    }catch(err){
+      console.log(err);
+    }
+   
+  }
+
+
+  unlinkCampaignFromApplication= async (applicationId)=>{
+    const {campaign} = this.props.campaign;
+    try{
+     const unlinkedCampaign=await this.props.unlinkCampaignFromApplication({
+        variables:{
+          campaignId:campaign.id,
+          applicationId
+        }
+      })
+      this.success('Successfully linked Campaign from application');
+    }catch(err){
+      console.log(err);
+    }
+  }
 
 
   getContainer = () => {
     const { campaign } = this.props.campaign;
+    console.log("campaign",campaign)
     let triggerRule={id:1,combinator: "and", rules: [] }
     let audienceRule={id:1,combinator: "and", rules: [] };
     if(campaign && campaign.triggerRule){
@@ -602,7 +648,6 @@ class EditCampaign extends Component {
       controlValue,
       testControlSelected
     } = this.state;
-    
     switch (this.state.current) {
       case 0:
         return (
@@ -675,10 +720,13 @@ class EditCampaign extends Component {
       case 3:
         return (
           <Triggers 
+          selectedApplication={campaign.application.id}
+          linkCampaignToApplication={this.linkCampaignToApplication}
           onEventTypeEdited={this.onEventTypeEdited}
           eventValues={this.state.eventValues}
           query={this.state.oldQueryTriggers?this.state.oldQueryTriggers:triggerRule} 
           attributeData={attributeData} 
+          applications={this.props.allApplications.organization.applications}
           logQuery={this.logQuery} />
         );
       case 4:
@@ -782,6 +830,16 @@ class EditCampaign extends Component {
 
 
 export default compose(
+  graphql(GET_ALL_APPS_OF_ORGANIZATION, {
+    name: "allApplications",
+    options: props =>  ({
+        variables: {
+          id: jwt.decode(localStorage.getItem("jwt")).org_id
+        },
+        fetchPolicy: "cache-and-network"
+      })
+    }
+  ),
   graphql(GET_CAMPAIGN, {
     name: "campaign",
     options: props => ({
@@ -816,7 +874,7 @@ export default compose(
     options:props=>{
       const input= {
         status: "ACTIVE", 
-      organizationId: "577bddb7-17df-4884-b16f-8b5db5b00b95"
+      organizationId: jwt.decode(localStorage.getItem("jwt")).org_id
       }
      const a= {
        variables:{
@@ -824,6 +882,12 @@ export default compose(
       }}
       return a;
     }
+  }),
+  graphql(LINK_CAMPAIGN_TO_APPLICATION,{
+    name:"linkCampaignToApplication"
+  }),
+  graphql(UNLINK_CAMPAIGN_FROM_APPLICATION,{
+    name:"unlinkCampaignFromApplication"
   }),
   graphql(createCommunication, {
     name: "communication"
