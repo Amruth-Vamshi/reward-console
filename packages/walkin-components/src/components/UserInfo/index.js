@@ -15,6 +15,7 @@ class UserInfo extends Component {
       user: ""
     };
   }
+
   logout = () => {
     console.log("Logout");
     sessionStorage.clear();
@@ -22,38 +23,58 @@ class UserInfo extends Component {
     // this.props.history.push('/');
     location.reload();
   };
-  org = () => this.props.history.push(`/core/organization/${this.state.org_id}`);
+
+  onUrlHistoryPush = url => {
+    this.props.history.push(url);
+  };
+
   componentWillMount() {
     const { id, org_id } = jwt.decode(localStorage.getItem("jwt"));
     this.setState({ userId: id, org_id });
     id
       ? this.props.client
-        .query({
-          query: USER_DATA,
-          variables: { userId: id },
-          fetchPolicy: "cache-first"
-        })
-        .then(res => {
-          // console.log(res.data.user);
-          this.setState({
-            user: res.data.user,
-            firstName: res.data.user.firstName,
-            lastName: res.data.user.lastName
-          });
-        })
-        .catch(err => {
-          console.log("Failed to get User Details" + err);
-        })
+          .query({
+            query: USER_DATA,
+            variables: { userId: id },
+            fetchPolicy: "cache-first"
+          })
+          .then(res => {
+            // console.log(res.data.user);
+            this.setState({
+              user: res.data.user,
+              firstName: res.data.user.firstName,
+              lastName: res.data.user.lastName
+            });
+          })
+          .catch(err => {
+            console.log("Failed to get User Details" + err);
+          })
       : console.log("Error getting JwtData");
   }
 
   render() {
     let { firstName, lastName, user } = this.state;
+
     const userMenuOptions = (
       <ul className="gx-user-popover">
         {/* <li>My Account</li>*/}
-        <li onClick={() => this.org()}>
-          <Link to={`/core/organization/${this.state.org_id}`}> Organization </Link></li>
+        <li
+          onClick={() =>
+            this.onUrlHistoryPush(`/core/organization/${this.state.org_id}`)
+          }
+        >
+          <Link to={`/core/organization/${this.state.org_id}`}>
+            {" "}
+            Organization{" "}
+          </Link>
+        </li>
+        <li
+          onClick={() =>
+            this.onUrlHistoryPush(`/core/settings/developer/webhooks`)
+          }
+        >
+          <Link to={`/core/settings/developer`}> Developer Settings </Link>
+        </li>
         <li onClick={() => this.logout()}>
           <Link to="/signin"> Logout </Link>
         </li>
@@ -65,11 +86,14 @@ class UserInfo extends Component {
         overlayClassName="gx-popover-horizantal"
         placement="bottomRight"
         content={userMenuOptions}
-      // trigger="click"
+        // trigger="click"
       >
-        {firstName ?
+        {firstName ? (
           <div className="gx-flex-row gx-align-items-center gx-pointer">
-            <p style={{ color: "white" }} className="gx-mb-0 gx-d-none gx-d-sm-flex">
+            <p
+              style={{ color: "white" }}
+              className="gx-mb-0 gx-d-none gx-d-sm-flex"
+            >
               {firstName + "  " + `${lastName ? lastName : " "}`}
             </p>
             &nbsp;
@@ -77,26 +101,30 @@ class UserInfo extends Component {
             {/*&nbsp; <Avatar src='https://via.placeholder.com/100x100'
                 className="gx-avatar gx-pointer" alt="" /> */}
             <div className="gx-ml-2">
-              {user.image === null || user.image === undefined ?
+              {user.image === null || user.image === undefined ? (
                 <Avatar style={{ backgroundColor: "#424e88" }} size="large">
                   <span style={{ fontSize: 22, fontWeight: "" }}>
                     {firstName ? firstName.charAt(0).toUpperCase() : ""}
                   </span>
                 </Avatar>
-                :
+              ) : (
                 <Avatar size="large" alt={firstName} src={user.image} />
-              }
+              )}
             </div>
-          </div> :
+          </div>
+        ) : (
           <Avatar
             src="https://via.placeholder.com/100x100"
             className="gx-avatar gx-pointer"
             alt=""
           />
-        }
+        )}
       </Popover>
     );
   }
 }
 
-export default compose(withRouter, withApollo)(UserInfo);
+export default compose(
+  withRouter,
+  withApollo
+)(UserInfo);
