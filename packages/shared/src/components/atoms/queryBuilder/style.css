@@ -1,0 +1,40 @@
+.rule,
+.ruleGroup .ruleGroup {
+	margin-top: 0.5rem;
+	margin-left: 0.5rem;
+}
+.ruleGroup:nth-child(odd) {
+	background: #faf8ff;
+}
+.ruleGroup {
+	padding: 0.5rem;
+	border: 1px solid #956fe7;
+	border-radius: 4px;
+	background: #e9e1ff;
+}
+.ruleGroup-combinators {
+	background: #956fe7;
+	color: whitesmoke;
+}
+.rule-fields {
+	margin-right: 10px;
+}
+.rule-operators {
+	margin-right: 10px;
+}
+.ruleGroup {
+	padding: 1rem;
+}
+.ruleGroup-addRule {
+	background: #faf8ff;
+	border: 0.1px solid #956fe7;
+	color: #956fe7;
+}
+.ruleGroup-addGroup {
+	background: #faf8ff;
+	border: 0.1px solid #956fe7;
+	color: #956fe7;
+}
+.flex-box-outer > hr {
+	display: none;
+}

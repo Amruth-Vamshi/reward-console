@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
-import { NEW_CAMPAIGN } from '../../../utils/RouterConstants';
+import { NEW_CAMPAIGN, CAMPAIGN_MANAGEMENT, CAMPAIGN_DASHBOARD } from '../../../utils/RouterConstants';
 import { campaigns } from '../../../query/campaign';
 import { Card, Menu, Dropdown, Col, Spin, Button, Progress, Tabs } from 'antd';
 import moment from 'moment';
@@ -59,6 +59,15 @@ class CampaignList extends Component {
 	onDeleteContact = contact => {
 		console.log('delete', contact);
 	};
+
+	onViewCampaign = campaign => {
+		console.log('View', campaign);
+		this.props.history.push({
+			pathname: `${CAMPAIGN_DASHBOARD}/${campaign.id}`,
+			state: { campaignSelected: campaign },
+		});
+	};
+
 	onDuplicateContact = contact => {
 		console.log('dupl', contact);
 		const { history, match } = this.props;
@@ -71,9 +80,6 @@ class CampaignList extends Component {
 		});
 	};
 
-	showMatrics = record => {
-		console.log("matrics", record)
-	}
 	menus = record => (
 		<Menu
 			onClick={e => {
@@ -83,7 +89,7 @@ class CampaignList extends Component {
 					// this.props.history.push(`/refinex/feedback/${record.id}/edit`)
 
 				} else if (e.key === "view") {
-					this.showMatrics(record)
+					this.onViewCampaign(record)
 				} else {
 					this.onDeleteContact(record);
 				}
@@ -126,9 +132,14 @@ class CampaignList extends Component {
 			this.setState({ data: completedCampaigns, filtered: null });
 		}
 		if (key == 4) {
-			const { changeStatus } = this.props;
 			let draftCampaigns = allCampaigns.filter(val => {
 				return val.campaignStatus == 'DRAFT';
+			});
+			this.setState({ data: draftCampaigns, filtered: null });
+		}
+		if (key == 5) {
+			let draftCampaigns = allCampaigns.filter(val => {
+				return val.campaignStatus == 'PAUSE';
 			});
 			this.setState({ data: draftCampaigns, filtered: null });
 		}
@@ -264,6 +275,9 @@ class CampaignList extends Component {
 									<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} pagination={paginationData} />
 								</TabPane>
 								<TabPane tab="Draft" key="4">
+									<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} pagination={paginationData} />
+								</TabPane>
+								<TabPane tab="Paused" key="5">
 									<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} pagination={paginationData} />
 								</TabPane>
 							</Tabs>
