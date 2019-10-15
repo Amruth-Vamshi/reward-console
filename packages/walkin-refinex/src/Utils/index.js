@@ -8,3 +8,4 @@ export const DEFAULT_ACTIVE_STATUS = "ACTIVE"
 export const DEFAULT_INACTIVE_STATUS = "INACTIVE"
 export const DEFAULT_REFINEX_CAMPAIGN = "FEEDBACK"
 export const CAMPAIGN_DASHBOARD = '/refinex/feedback/view'
+export const SHOULD_EDIT = ["DRAFT"]

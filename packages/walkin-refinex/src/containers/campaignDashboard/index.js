@@ -30,9 +30,11 @@ class CampaignDashboard extends Component {
         }).then(data => {
             console.log("campaign data..", data);
             message.success('Campaign Launched')
-            moment().isBetween(this.props.location.state.campaignSelected.startTime, this.props.location.state.campaignSelected.endTime) ?
-                this.props.history.push('/refinex/feedback')
-                : this.props.history.push({ pathname: '/refinex/feedback', tabKey: "2" })
+            moment(this.props.location.state.campaignSelected.startTime).isAfter(moment()) ?
+                this.props.history.push({ pathname: '/refinex/feedback/overview', tabKey: "2" })
+                : moment(this.props.location.state.campaignSelected.endTime).isBefore(moment()) ?
+                    this.props.history.push({ pathname: '/refinex/feedback/overview', tabKey: "3" }) :
+                    this.props.history.push({ pathname: '/refinex/feedback/overview', tabKey: "1" })
         }).catch(err => {
             console.log("Error Update campaign", err)
             this.setState({ loading: false })
@@ -47,8 +49,8 @@ class CampaignDashboard extends Component {
             console.log("campaign data..", data);
             message.success('Campaign Paused')
             moment().isBetween(this.props.location.state.campaignSelected.startTime, this.props.location.state.campaignSelected.endTime) ?
-                this.props.history.push('/refinex/feedback')
-                : this.props.history.push({ pathname: '/refinex/feedback', tabKey: "2" })
+                this.props.history.push({ pathname: '/refinex/feedback/overview', tabKey: "5" })
+                : this.props.history.push({ pathname: '/refinex/feedback/overview', tabKey: "2" })
         }).catch(err => {
             console.log("Error Update campaign", err)
             this.setState({ loading: false })
@@ -63,8 +65,8 @@ class CampaignDashboard extends Component {
             console.log("campaign data..", data);
             message.success('Campaign unPaused')
             moment().isBetween(this.props.location.state.campaignSelected.startTime, this.props.location.state.campaignSelected.endTime) ?
-                this.props.history.push('/refinex/feedback')
-                : this.props.history.push({ pathname: '/refinex/feedback', tabKey: "2" })
+                this.props.history.push('/refinex/feedback/overview')
+                : this.props.history.push({ pathname: '/refinex/feedback/overview', tabKey: "2" })
         }).catch(err => {
             console.log("Error Update campaign", err)
             this.setState({ loading: false })
@@ -79,8 +81,8 @@ class CampaignDashboard extends Component {
             console.log("campaign data..", data);
             message.success('Abandon campaign')
             moment().isBetween(this.props.location.state.campaignSelected.startTime, this.props.location.state.campaignSelected.endTime) ?
-                this.props.history.push('/refinex/feedback')
-                : this.props.history.push({ pathname: '/refinex/feedback', tabKey: "2" })
+                this.props.history.push('/refinex/feedback/overview')
+                : this.props.history.push({ pathname: '/refinex/feedback/overview', tabKey: "2" })
         }).catch(err => {
             console.log("Error Update campaign", err)
             this.setState({ loading: false })

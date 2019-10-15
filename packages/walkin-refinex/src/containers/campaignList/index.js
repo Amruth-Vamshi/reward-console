@@ -6,9 +6,10 @@ import moment from 'moment';
 import { withApollo, graphql, compose } from 'react-apollo';
 import { SortableDataTable, InstantSearch, CampaignHeader, CircularProgress, Widget } from '@walkinsole/walkin-components';
 import './style.css';
-import { DEFAULT_ACTIVE_STATUS, DEFAULT_REFINEX_CAMPAIGN, NEW_CAMPAIGN, CAMPAIGN_DASHBOARD } from "../../Utils"
+import { DEFAULT_ACTIVE_STATUS, DEFAULT_REFINEX_CAMPAIGN, NEW_CAMPAIGN, CAMPAIGN_DASHBOARD, SHOULD_EDIT } from "../../Utils"
 import jwt from "jsonwebtoken";
-
+import includes from "lodash/includes"
+import { shouldInclude } from 'apollo-utilities';
 const { TabPane } = Tabs;
 
 class CampaignList extends Component {
@@ -32,6 +33,7 @@ class CampaignList extends Component {
         this.setState({ showPopUp: false, popupmessage: "" })
     };
     componentDidMount() {
+
         const { campaigns, loading } = this.props;
         this.setState({ loading: loading })
     }
@@ -99,27 +101,30 @@ class CampaignList extends Component {
             state: { campaignSelected: record },
         });
     }
-    menus = record => (
-        <Menu
-            onClick={e => {
-                if (e.key === 'duplicate') {
-                    this.onDuplicateContact(record);
-                } else if (e.key === 'edit') {
-                    this.props.history.push(`/refinex/feedback/${record.id}/edit`)
+    menus = record => {
+        console.log("record", record)
+        return (
+            <Menu
+                onClick={e => {
+                    if (e.key === 'duplicate') {
+                        this.onDuplicateContact(record);
+                    } else if (e.key === 'edit') {
+                        this.props.history.push(`/refinex/feedback/${record.id}/edit`)
 
-                } else if (e.key === "view") {
-                    this.showMatrics(record)
-                } else {
-                    this.onDeleteContact(record);
-                }
-            }}
-        >
-            <Menu.Item key="view">View</Menu.Item>
-            <Menu.Item key="edit">Edit</Menu.Item>
-            <Menu.Item key="duplicate">Duplicate</Menu.Item>
-            <Menu.Item key="delete">Delete</Menu.Item>
-        </Menu>
-    );
+                    } else if (e.key === "view") {
+                        this.showMatrics(record)
+                    } else {
+                        this.onDeleteContact(record);
+                    }
+                }}
+            >
+                <Menu.Item key="view">View</Menu.Item>
+                {includes(record.campaignStatus, SHOULD_EDIT) ? <Menu.Item key="edit">Edit</Menu.Item> : null}
+                <Menu.Item key="duplicate">Duplicate</Menu.Item>
+                <Menu.Item key="delete">Delete</Menu.Item>
+            </Menu>
+        );
+    }
 
     onCampaignFilteredList = newList => {
         console.log("new list", newList)
@@ -262,7 +267,7 @@ class CampaignList extends Component {
                             />}
                     >
 
-                        <Tabs defaultActiveKey="1" onChange={this.onTabChange}>
+                        <Tabs defaultActiveKey={this.state.key ? this.state.key : "1"} onChange={this.onTabChange}>
                             <TabPane tab="Live" key="1">
                                 <SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} pagination={paginationData} loading={loading} />
                             </TabPane>

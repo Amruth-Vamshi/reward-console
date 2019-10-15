@@ -16,6 +16,7 @@ import gql from "graphql-tag";
 import { compose, graphql } from "react-apollo";
 import Stepper from "../Stepper"
 import isEmpty from "lodash/isEmpty";
+import moment from "moment";
 import {
   GET_CAMPAIGN,
   allSegments,
@@ -388,7 +389,8 @@ class EditCampaign extends Component {
             status: "ACTIVE",
             firstScheduleDateTime: this.props.campaign.campaign.startTime,
             // repeatRuleId: "",
-            commsChannelName: "Test"
+            commsChannelName: "Test",
+            campaign_id:this.props.campaign.campaign.id
           };
        const createdCommunication=  await this.props
             .communication({
@@ -400,12 +402,7 @@ class EditCampaign extends Component {
             const cummunicationCreationInput={
               communication_id: parseInt(createdCommunication.data.createCommunication.id) 
             }
-          this.props.updateCampaign({
-            variables: {
-              id: this.props.campaign.campaign.id,
-              input: cummunicationCreationInput
-            }
-          })
+         
            
         }).catch(err => {
           console.log("Error creating for message template", err);
@@ -575,6 +572,7 @@ class EditCampaign extends Component {
         applicationId:applicationId
       }
     })
+    await this.props.campaign.refetch()
     this.success('Successfully linked Campaign to application');
     console.log(linkedCampaign);
     }catch(err){
@@ -769,8 +767,15 @@ class EditCampaign extends Component {
     const antIcon = <Icon type="loading" style={{ fontSize: 50 }} spin />;
     //exit to all campaign screen if all the steppers are completed
     if(current >5){
+      let tabKey="4";
+      moment(this.props.campaign.campaign.startTime).isAfter(moment()) ?
+                tabKey="2"
+                : moment(this.props.campaign.campaign.endTime).isBefore(moment()) ?
+                    tabKey="3" :
+                    tabKey="4"
       this.props.history.push({
        pathname: "/refinex/feedback/overview",
+       tabKey: tabKey,
         state:{
           showPopup:true,
           message:"Feedback form successfully created"

@@ -94,29 +94,6 @@ class CreateCampaign extends Component {
     this.setState({ current });
   };
 
-  createDefaultApplication=async ()=>{
-    //ADD_APPLICATION if no application exists
-    console.log(this.props)
-    const {
-      allApplications: { organization }
-    } = this.props;
-    const { location, match } = this.props;
-    if(!organization.applications || (organization.applications && organization.applications.length===0)){
-      this.props.addApplication({
-        variables: {
-          organizationId: organization.id,
-          input: { name: "RefineX demo application", platform: "Prod" }
-        }
-      })
-      .then(async data=>{
-        console.log(data)
-       await this.props.allApplications.refetch()
-      })
-      .catch(err=>{
-        console.log(err)
-      })
-    }
-  }
 
   componentDidMount(){
     
@@ -155,15 +132,11 @@ class CreateCampaign extends Component {
   createCampaign = async values => {
     const { client } = this.props;
     const { priorityChosen, controlValue } = this.state;
-    const {
-      allApplications: { organization }
-    } = this.props;
     const input = {
       ...values,
       priority: parseInt(priorityChosen),
       campaignControlPercent: parseInt(controlValue),
-      organization_id: organization.id,
-      application_id: organization.applications[0].id,
+      organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
       campaignType: CAMPAIGN_TYPE
     };
     this.setState({ loading: true });
@@ -478,9 +451,6 @@ class CreateCampaign extends Component {
 
   render() {
     const { current, stepperData, loading } = this.state;
-    if(!this.props.allApplications.loading){
-      this.createDefaultApplication()
-    }
     return (
         <div>
         <ContainerHeader
