@@ -50,7 +50,7 @@ import { GET_ALL_APPS_OF_ORGANIZATION } from "@walkinsole/walkin-core/src/Platfo
 
 const communicationData = [
   { value: "SMS", title: "SMS" },
-  // { value: 'push', title: 'Push Notification' },
+  { value: 'push', title: 'Push Notification' },
   { value: "EMAIL", title: "Email" }
 ];
 //Math.random().toString(36).substring(7);
@@ -316,7 +316,7 @@ class EditCampaign extends Component {
      segment_id:segmentId,
      organization_id:jwt.decode(localStorage.getItem("jwt")).org_id,
      application_id:this.props.campaign.campaign.application.id,
-     status:"ACTIVE"
+     status:DEFAULT_ACTIVE_STATUS
     };
     this.props.audience({
       variables:{
@@ -369,7 +369,7 @@ class EditCampaign extends Component {
         templateSubjectText: this.state.communicationSelected == "SMS"?values.smsTag:values.email_subject,
         templateStyle: TEMPLATE_STYLE,
         organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
-        status:"ACTIVE"
+        status:DEFAULT_ACTIVE_STATUS
       };
       this.props
         .messageTemplate({
@@ -386,7 +386,7 @@ class EditCampaign extends Component {
             isScheduled: true,
             isRepeatable: false,
             organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
-            status: "ACTIVE",
+            status: DEFAULT_ACTIVE_STATUS,
             firstScheduleDateTime: this.props.campaign.campaign.startTime,
             // repeatRuleId: "",
             commsChannelName: "Test",
@@ -451,7 +451,7 @@ class EditCampaign extends Component {
       description: "",
       type: "SIMPLE",
       organizationId: jwt.decode(localStorage.getItem("jwt")).org_id,
-      status: "ACTIVE",
+      status: DEFAULT_ACTIVE_STATUS,
       ruleConfiguration: this.state.query
     };
     this.props
@@ -861,7 +861,7 @@ export default compose(
     options: ownProps => ({
       variables: {
         org_id: jwt.decode(localStorage.getItem("jwt")).org_id,
-        status: "ACTIVE"
+        status: DEFAULT_ACTIVE_STATUS
       },
       fetchPolicy: "cache-and-network"
     })
@@ -879,7 +879,7 @@ export default compose(
     name: "allAttributes",
     options:props=>{
       const input= {
-        status: "ACTIVE", 
+        status: DEFAULT_ACTIVE_STATUS, 
       organizationId: jwt.decode(localStorage.getItem("jwt")).org_id
       }
      const a= {
@@ -926,7 +926,7 @@ export default compose(
       entityId:props.match.params.id,
       entityType:"Campaign",
       organization_id:jwt.decode(localStorage.getItem("jwt")).org_id,
-      status:"Active"
+      status:DEFAULT_ACTIVE_STATUS
       },
       fetchPolicy:"network-only"
     })
@@ -934,10 +934,10 @@ export default compose(
     name:"allAudiences",
     options:props =>({
       variables:{
-        status:"ACTIVE",
+        status:DEFAULT_ACTIVE_STATUS,
         campaign_id:props.match.params.id,
         organization_id:jwt.decode(localStorage.getItem("jwt")).org_id,
-        status:"Active"
+        status:DEFAULT_ACTIVE_STATUS
       },
       fetchPolicy:"network-only"
     })
