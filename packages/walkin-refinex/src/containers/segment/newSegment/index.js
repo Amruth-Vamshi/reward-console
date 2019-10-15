@@ -6,7 +6,8 @@ import { attributes, createRule, createSegment } from '../../Query';
 import './style.css';
 import { SEGMENT_LIST, DEFAULT_ACTIVE_STATUS } from '../../../Utils';
 import get from 'lodash/get';
-import { WalkinQueryBuilder, CampaignHeader, ErrorBoundary } from '@walkinsole/walkin-components';
+import { WalkinQueryBuilder, CampaignHeader } from '@walkinsole/shared';
+import { ErrorBoundary } from '@walkinsole/walkin-components';
 import jwt from "jsonwebtoken";
 import { GET_ALL_APPS_OF_ORGANIZATION } from "@walkinsole/walkin-core/src/PlatformQueries";
 class NewSegment extends Component {

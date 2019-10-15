@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { CampaignHeader } from '@walkinsole/walkin-components'
 import { Button, Row, Col, message } from 'antd'
-import Overview from '@walkinsole/walkin-components/src/components/molecules/campaignOverview'
+import { campaignOverview as Overview } from "@walkinsole/shared";
 import { CAMPAIGN_DASHBOARD, GET_CAMPAIGN_DASHBOARD, UPDATE_CAMPAIGN, LAUNCH_CAMPAIGN, PAUSE_CAMPAIGN, UNPAUSE_CAMPAIGN, ABANDON_CAMPAIGN, AUDIENCES, GET_OFFER_FOR_CAMPAIGN } from '../../../query/campaign'
 import { withApollo, graphql, compose, mutate } from 'react-apollo';
 import { withRouter } from 'react-router-dom';
@@ -80,7 +80,6 @@ class CampaignDashboard extends Component {
         });
     }
 
-
     render() {
         console.log("this.props....", this.props)
         console.log("this.state....", this.state)
@@ -108,6 +107,7 @@ class CampaignDashboard extends Component {
                             launchCampaign={this.launchCampaign}
                             pauseCampaign={this.pauseCampaign}
                             unpauseCampaign={this.unpauseCampaign}
+                            disableCampaign={this.disableCampaign}
                             audience={audiences}
                         // communication={this.state.communication.messageTemplate ?
                         //     `${communicationSelected} - ${this.state.communication.messageTemplate.templateSubjectText}` : ''}
