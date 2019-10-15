@@ -80,7 +80,6 @@ class CampaignDashboard extends Component {
         });
     }
 
-
     render() {
         console.log("this.props....", this.props)
         console.log("this.state....", this.state)
@@ -108,6 +107,7 @@ class CampaignDashboard extends Component {
                             launchCampaign={this.launchCampaign}
                             pauseCampaign={this.pauseCampaign}
                             unpauseCampaign={this.unpauseCampaign}
+                            disableCampaign={this.disableCampaign}
                             audience={audiences}
                         // communication={this.state.communication.messageTemplate ?
                         //     `${communicationSelected} - ${this.state.communication.messageTemplate.templateSubjectText}` : ''}
