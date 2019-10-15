@@ -1,11 +1,13 @@
 import React, { Component, Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
 import { NEW_CAMPAIGN, CAMPAIGN_MANAGEMENT, CAMPAIGN_DASHBOARD } from '../../../utils/RouterConstants';
-import { campaigns } from '../../../query/campaign';
+import { campaigns, DISABLE_CAMPAIGN } from '../../../query/campaign';
 import { Card, Menu, Dropdown, Col, Spin, Button, Progress, Tabs } from 'antd';
 import moment from 'moment';
-import { withApollo, graphql } from 'react-apollo';
-import { SortableDataTable, InstantSearch, CampaignHeader, CircularProgress, Widget } from '@walkinsole/walkin-components';
+import { withApollo, graphql, compose } from 'react-apollo';
+import { SortableDataTable, InstantSearch, CampaignHeader } from '@walkinsole/shared';
+import { CircularProgress, Widget } from '@walkinsole/walkin-components';
+
 import './style.css';
 import jwt from 'jsonwebtoken'
 
@@ -67,6 +69,23 @@ class CampaignList extends Component {
 			state: { campaignSelected: campaign },
 		});
 	};
+	disableCampaign = campaign => {
+		this.setState({ loading: true })
+		this.props.disableCampaign({
+			variables: {
+				id: campaign.id
+			}
+		}).then(({ data }) => {
+			console.log("Data..", data)
+			console.log("Disabled");
+			this.props.changeStatus('ACTIVE')
+			this.setState({ loading: false })
+		}).catch(err => {
+
+			console.log("ERR", err);
+			this.setState({ loading: false })
+		})
+	}
 
 	onDuplicateContact = contact => {
 		console.log('dupl', contact);
@@ -90,6 +109,9 @@ class CampaignList extends Component {
 
 				} else if (e.key === "view") {
 					this.onViewCampaign(record)
+				} else if (e.key === "delete") {
+					console.log("DELETE...")
+					this.disableCampaign(record)
 				} else {
 					this.onDeleteContact(record);
 				}
@@ -293,23 +315,28 @@ class CampaignList extends Component {
 
 export default withRouter(
 	withApollo(
-		graphql(campaigns, {
-			options: () => ({
-				variables: {
-					organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
-					status: DEFAULT_STATUS,
-					campaignType: DEFAULT_TYPE
-				}, fetchPolicy: "network-only"
+		compose(
+			graphql(campaigns, {
+				options: () => ({
+					variables: {
+						organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
+						status: DEFAULT_STATUS,
+						campaignType: DEFAULT_TYPE
+					}, fetchPolicy: "network-only"
+				}),
+				props: ({ data: { loading, error, campaigns, refetch } }) => ({
+					loading,
+					campaigns,
+					error,
+					changeStatus: status => {
+						const variables = { status };
+						refetch(variables);
+					},
+				}),
 			}),
-			props: ({ data: { loading, error, campaigns, refetch } }) => ({
-				loading,
-				campaigns,
-				error,
-				changeStatus: status => {
-					const variables = { status };
-					refetch(variables);
-				},
+			graphql(DISABLE_CAMPAIGN, {
+				name: "disableCampaign"
 			}),
-		})(CampaignList)
+		)(CampaignList)
 	)
 );

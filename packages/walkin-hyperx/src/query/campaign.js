@@ -36,6 +36,18 @@ export const UPDATE_CAMPAIGN = gql`
   }
 `;
 
+export const DISABLE_CAMPAIGN = gql`
+  mutation disableCampaign($id:ID!) {
+    disableCampaign(id:$id) {
+      id name description
+      startTime endTime
+      status triggerRule { id }
+      campaignType priority
+      campaignStatus
+    }
+  }
+`;
+
 export const CREATE_MESSAGE_TEMPLETE = gql`
   mutation createMessageTemplate($input: CreateMessageTemplateInput!) {
     createMessageTemplate(input: $input) {

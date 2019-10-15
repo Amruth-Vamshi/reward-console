@@ -4,7 +4,7 @@ import BasicInfo from "./basicInfo";
 import Audience from "./audience";
 import Offer from "./offer";
 import Communication from "./communication";
-import { campaignOverview as Overview } from "@walkinsole/walkin-components";
+import { campaignOverview as Overview } from "@walkinsole/shared";
 import { allSegments, RULE_ATTRIBUTES, GET_AUDIENCE, CREATE_AUDIENCE, CREATE_RULE, AUDIENCE_COUNT } from "../../../query/audience";
 import { getOffers, ADD_OFFER_TO_CAMPAIGN } from "../../../query/offer";
 import { withApollo, graphql, compose } from 'react-apollo';
@@ -13,7 +13,7 @@ import { Col, Row, message } from 'antd';
 import jwt from "jsonwebtoken";
 import '../styles.css'
 import moment from "moment";
-import { CampaignFooter, CampaignHeader, Stepper } from '@walkinsole/walkin-components';
+import { CampaignFooter, CampaignHeader, Stepper } from '@walkinsole/shared';
 import { CREATE_CAMPAIGN, UPDATE_CAMPAIGN, CREATE_MESSAGE_TEMPLETE, CREATE_COMMUNICATION, LAUNCH_CAMPAIGN, CREATE_COMMUNICATION_WITH_MESSAGE_TEMPLETE } from '../../../query/campaign';
 
 const stepData = [{
