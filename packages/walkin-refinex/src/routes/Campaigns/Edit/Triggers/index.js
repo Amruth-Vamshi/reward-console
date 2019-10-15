@@ -25,6 +25,7 @@ class Triggers extends Component {
 
 
   render() {
+    console.log(this.props)
     return (
       <Row
         style={{
@@ -43,7 +44,12 @@ class Triggers extends Component {
         </Row>
         <Divider />
         <Col span={24}>
-          <EventType event={this.props.eventValues} onEventTypeEdited={this.props.onEventTypeEdited} />
+          <EventType
+            selectedApplication={this.props.selectedApplication}
+            linkCampaignToApplication={this.props.linkCampaignToApplication}
+            application={this.props.applications}
+            event={this.props.eventValues}
+            onEventTypeEdited={this.props.onEventTypeEdited} />
         </Col>
 
         <Divider />

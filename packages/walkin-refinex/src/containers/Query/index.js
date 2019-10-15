@@ -36,6 +36,36 @@ export const disableSegment = gql`
   }
 `;
 
+export const LINK_CAMPAIGN_TO_APPLICATION = gql`
+  mutation linkCampaignToApplication($campaignId:ID!,$applicationId:ID!){
+    linkCampaignToApplication(
+      campaignId:$campaignId,
+      applicationId:$applicationId
+    ){
+      id
+      name
+      description
+      startTime
+      endTime
+    }
+  }
+`
+
+export const UNLINK_CAMPAIGN_FROM_APPLICATION = gql`
+mutation unlinkCampaignFromApplication($campaignId:ID!,$applicationId:ID!){
+  unlinkCampaignFromApplication(
+      campaignId:$campaignId,
+      applicationId:$applicationId
+    ){
+      id
+      name
+      description
+      startTime
+      endTime
+    }
+  }
+`
+
 export const CREATE_APP = gql`
 mutation createApplication($organizationId:ID!,$input:ApplicationInput!) {
   createApplication(organizationId:$organizationId  input: $input){
@@ -251,7 +281,7 @@ mutation createAudience($input:createAudienceInput!){
 
 export const updateAudiencesWithCampaignId = gql`
 mutation updateAudiencesWithCampaignId($campaignId:ID, $segments:[ID]!){
-  updateAudiencesWithCampaignId(campaignId:$campaignId, segments:$segments){
+  createAudienceForCampaign(campaignId:$campaignId, segments:$segments){
     id
     campaign{
       id

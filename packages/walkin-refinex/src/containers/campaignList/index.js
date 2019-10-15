@@ -5,6 +5,7 @@ import { Card, Menu, Dropdown, Col, Button, Progress, Tabs, message } from 'antd
 import moment from 'moment';
 import { withApollo, graphql, compose } from 'react-apollo';
 import { SortableDataTable, InstantSearch, CampaignHeader } from '@walkinsole/shared';
+import { CircularProgress, Widget } from '@walkinsole/walkin-components';
 import './style.css';
 import { DEFAULT_ACTIVE_STATUS, DEFAULT_REFINEX_CAMPAIGN, NEW_CAMPAIGN } from "../../Utils"
 import jwt from "jsonwebtoken";
@@ -241,7 +242,10 @@ class CampaignList extends Component {
 		];
 		return (
 
-			<div style={{ margin: '-32px' }}>
+			<div style={{
+				minHeight: "100vh",
+				margin: '1 32px'
+			}}>
 				<CampaignHeader
 					children={
 						<Fragment>
@@ -256,15 +260,16 @@ class CampaignList extends Component {
 						</Fragment>
 					}
 				/>
-				<Card>
-					<div style={{ marginBottom: '24px' }}>
-						<div className="searchInputStyle">
+				<div className="RefineX-campaignList">
+					<Widget title="Campaign List" style={{ margin: '32px' }} styleName="gx-card-tabs"
+						extra={
 							<InstantSearch
 								placeHolder="Search campaign"
 								data={data}
 								onFilteredList={this.onCampaignFilteredList}
-							/>
-						</div>
+							/>}
+					>
+
 						<Tabs defaultActiveKey="1" onChange={this.onTabChange}>
 							<TabPane tab="Live" key="1">
 								<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} pagination={paginationData} loading={loading} />
@@ -279,8 +284,10 @@ class CampaignList extends Component {
 								<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} pagination={paginationData} loading={loading} />
 							</TabPane>
 						</Tabs>
-					</div>
-				</Card>
+
+					</Widget>
+				</div>
+
 			</div>
 		);
 	}

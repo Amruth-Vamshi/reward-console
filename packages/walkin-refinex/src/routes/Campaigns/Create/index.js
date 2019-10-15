@@ -18,7 +18,7 @@ import FeedbackFormConfig from "../Edit/FeedbackForm";
 import ContainerHeader from "../CampaignHeader";
 import gql from "graphql-tag";
 import { compose, graphql, withApollo } from "react-apollo";
-import GoLive from "../Edit/GoLive";
+import Stepper from "../Stepper"
 import isEmpty from "lodash/isEmpty";
 import {
   CREATE_FEEDBACK_FORM,
@@ -276,7 +276,10 @@ class CreateCampaign extends Component {
       .catch(err => {
         console.log("Error creating the question", err);
       });
+
   };
+
+  
 
   createCommunicationMutation = (current, values) => {
     console.log("message format..", this.state.communicationSelected)
@@ -327,6 +330,7 @@ class CreateCampaign extends Component {
   };
 
   onFormNext = e => {
+    console.log("e",e)
     e.preventDefault();
   };
 
@@ -423,6 +427,7 @@ class CreateCampaign extends Component {
             onTestValueChange={this.onTestValueChange}
             onControlValueChange={this.onControlValueChange}
             popupButtonText="apply"
+            showFeedbackFormType={true}
             // campaign={this.props.campaign.campaign}
           />
         );
@@ -448,7 +453,10 @@ class CreateCampaign extends Component {
           </CustomScrollbars>
         );
       case 3:
-        return <Triggers attributeData={attributeData} logQuery={this.logQuery}/>;
+        return <Triggers 
+        applications={this.props.allApplications.organization.applications}
+        attributeData={attributeData} 
+        logQuery={this.logQuery}/>;
       case 4:
         return <Comm
         subTitle="Communication"
@@ -474,31 +482,47 @@ class CreateCampaign extends Component {
       this.createDefaultApplication()
     }
     return (
-      <div className="PageContainer" style={{ margin: "-32px" }}>
+        <div>
         <ContainerHeader
-          current={current}
-          onChange={this.goToNextPage.bind(this)}
-          title="Create RefineX Campaign"
-          StepperData={stepperData}
+        children={
+            <React.Fragment>
+                <Col sm={5} md={6} lg={8} xl={8} xxl={13}>
+                    <h3 className="gx-text-grey paddingLeftStyle campaignHeaderTitleStyle">
+                        Create Campaign
+                    </h3>
+                </Col>
+                <Col sm={19} md={18} lg={16} xl={16} xxl={11}>
+                    <Stepper
+                    StepperData={stepperData}
+                        current={current}
+                        onChange={this.goToNextPage.bind(this)}
+                    />
+                </Col>
+            </React.Fragment>
+        }
         />
-        {loading ? (
-          <CircularProgress />
-        ) : (
-          <Row>
-            <Col span={24}>
-              <div className="stepperContainer">{this.getContainer()}</div>
-            </Col>
-          </Row>
-        )}
-        <div style={{ margin: "32px" }}>
-          <CampaignFooter
-            nextButtonText="Next"
-            saveDraftText="Save Draft"
+        <div className="stepperContainer">
+        <div style={{ margin: '30px 30px 30px 10px', height: '60vh' }}>
+         {this.getContainer()}
+        </div>
+         
+        </div>
+       
+         
+        <div style={{}}>
+        <div className="gx-card campFooter" style={{ position: 'absolute', width: '100%' }}>
+        <div className="gx-card-body" style={{ background: "#F6F6F6" }}>
+        <CampaignFooter
+            loading={this.state.loading}
+            nextButtonText={current>=5?"Launch" : 'Save and Next'}
+            saveDraftText={current === 0 ? "" : 'Save Draft'}
             saveDraft={this.onPage1SaveDraft}
             goToPage2={this.goToNextPage.bind(this, current + 1)}
           />
         </div>
-      </div>
+        </div>
+          </div>
+          </div>
     );
   }
 }

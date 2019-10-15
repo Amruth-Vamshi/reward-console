@@ -5,7 +5,7 @@
 }
 
 .appHeader{
-    margin: 25px 10px 20px 40px;
+    margin: 1 32px;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow'
 }
 
@@ -18,6 +18,11 @@
     color: #848484
 }
 
+.placeTableHeaders{
+    font-size: 17px;
+    margin: 0px 20px 5px 10px
+}
+
 .divCenter {
 	display: flex;
 	justify-content: center;
@@ -25,12 +30,53 @@
 	height: 100%;
 }
 
+.headerRow1 {
+	padding:13px 20px;
+	margin: 0;
+    background-color:#abd6a2;
+    box-shadow: 0 6px 7px 0px rgba(0,0,0,0.2);
+    /* border: #e9e9e9 solid 1px */
+}
 .divCenterVertical {
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	height: 100%;
 	float: left;
+}
+
+.placesListCard{
+    margin: 0px 10px 10px 10px;
+    color: #757575;
+
+    box-shadow: 0 3px 6px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+}
+
+.card-shadow{
+    box-shadow: 0 3px 6px 0 rgba(0,0,0,0.2);
+}
+
+.placesListCard .ant-card-body{
+   padding: 15px 0px
+
+}
+
+.placesListCard .ant-row {
+    margin: 0
+}
+
+/* .placeCardLocation{
+} */
+
+.placeCardLocation span{
+    color: #1f1f1f;
+    padding-left: 7px
+    
+}
+  
+.placesListCard:hover {
+box-shadow: -1px 6px 12px 6px rgba(0, 0, 0, 0.384);
 }
 
 .headerCard .ant-card-body{
