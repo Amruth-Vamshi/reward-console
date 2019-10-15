@@ -379,6 +379,31 @@ export const DISABLE_CAMPAIGN = gql`
   }
 `
 
+
+export const EVENT_SUBSCRIPTION = gql`
+  query eventSubscriptions(
+$event_type: String
+$organization_id: ID
+$application_id: ID
+$status: STATUS
+){
+ eventSubscriptions(
+    event_type:$event_type
+    organization_id:$organization_id
+    application_id:$application_id
+    status:$status
+){
+  id
+  name
+  event_type{
+    id
+    type
+    status
+  }
+}
+}
+`
+
 export const campaigns = gql`
   query campaigns($status: STATUS!,$campaignType:String,$organization_id:ID) {
     campaigns(status: $status,campaignType:$campaignType,organization_id:$organization_id) {

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { graphql } from "react-apollo"
+import { graphql, compose } from "react-apollo"
 import {
   Col,
   Row,
@@ -13,9 +13,11 @@ import {
   Spin,
   Switch,
   Popconfirm,
-  message
+  message,
+  Icon
 } from "antd";
-import { EVENT_TYPES } from "../../../../../containers/Query"
+import jwt from "jsonwebtoken";
+import { EVENT_TYPES, EVENT_SUBSCRIPTION } from "../../../../../containers/Query"
 class EventType extends Component {
   constructor(props) {
     super(props);
@@ -23,6 +25,10 @@ class EventType extends Component {
       showEvents: false,
       visible: false,
     }
+  }
+
+  componentDidMount() {
+    console.log(this.props)
   }
 
   componentWillMount() {
@@ -65,7 +71,7 @@ class EventType extends Component {
   getApplicationOptions = () => {
     return this.props.application.map(app => {
       return (
-        <Select.Option value={app.id} key={app.id}>{app.name}</Select.Option>
+        <Select.Option style={{ margin: "13px" }} value={app.id} key={app.id}>{app.name}</Select.Option>
       )
     })
   }
@@ -120,6 +126,12 @@ class EventType extends Component {
                       placeholder="Select an Application"
                       onChange={this.handleSelectChange}
                     >
+                      <Select.Option key="addnewApplication">
+                        <div style={{ padding: '8px', cursor: 'pointer' }}>
+                          <Button style={{ margin: "auto", left: "15%" }} > <Icon type="plus" /> Add new App </Button>
+                        </div>
+                        <Divider style={{ margin: '4px 0' }} />
+                      </Select.Option>
                       {
                         this.props.eventType.loading ? (
                           <Select.Option value="loading" key="999999">loading</Select.Option>
@@ -231,12 +243,25 @@ const EventTypeForm = Form.create({
   }
 })(EventType);
 
-export default graphql(EVENT_TYPES, {
-  name: "eventType",
-  options: {
-    fetchPolicy: "cache-first",
-    variables: {
-      status: "ACTIVE"
+export default compose(
+  graphql(EVENT_TYPES, {
+    name: "eventType",
+    options: {
+      fetchPolicy: "cache-first",
+      variables: {
+        status: "ACTIVE"
+      }
     }
-  }
-})(EventTypeForm);
+  }),
+  graphql(EVENT_SUBSCRIPTION, {
+    name: "eventSubscription",
+    options: props => ({
+      fetchPolicy: "cache-first",
+      variables: {
+        status: "ACTIVE",
+        organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
+        application_id: props.selectedApplication
+      }
+    })
+  })
+)(EventTypeForm);
