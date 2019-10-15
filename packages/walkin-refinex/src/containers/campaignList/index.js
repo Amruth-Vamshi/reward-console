@@ -4,7 +4,7 @@ import { campaigns, DISABLE_CAMPAIGN } from '../Query/index';
 import { Card, Menu, Dropdown, Col, Button, Progress, Tabs, message } from 'antd';
 import moment from 'moment';
 import { withApollo, graphql, compose } from 'react-apollo';
-import { SortableDataTable, InstantSearch, CampaignHeader, CircularProgress } from '@walkinsole/walkin-components';
+import { SortableDataTable, InstantSearch, CampaignHeader } from '@walkinsole/shared';
 import './style.css';
 import { DEFAULT_ACTIVE_STATUS, DEFAULT_REFINEX_CAMPAIGN, NEW_CAMPAIGN } from "../../Utils"
 import jwt from "jsonwebtoken";

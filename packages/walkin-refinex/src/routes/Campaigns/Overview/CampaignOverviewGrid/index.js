@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 import { Row, Col } from "antd";
-import { ManageCampaignCard } from "@walkinsole/walkin-components";
+import { ManageCampaignCard } from "@walkinsole/shared";
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
 import { GET_CAMPAIGNS } from "../../../../containers/Query";

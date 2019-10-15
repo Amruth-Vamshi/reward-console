@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { Divider, Button, Upload } from 'antd';
 import './style.css';
-import { AddAndDeleteSelectDynamically, WalkinQueryBuilder } from '@walkinsole/walkin-components';
+import { AddAndDeleteSelectDynamically, WalkinQueryBuilder } from '@walkinsole/shared';
 
 const Audience = ({
 	audienceTitle,

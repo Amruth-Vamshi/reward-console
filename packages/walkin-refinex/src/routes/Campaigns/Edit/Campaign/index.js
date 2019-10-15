@@ -5,7 +5,7 @@ import {
   BasicInfoForm,
   Popup,
   BasicSlider
-} from "@walkinsole/walkin-components";
+} from "@walkinsole/shared";
 const { Text } = Typography;
 import CreateCampaignRow from "../../Overview/CreateCampaignRow"
 import gql from "graphql-tag";

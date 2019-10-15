@@ -6,7 +6,7 @@ import { attributes, createRule, createSegment } from '../../Query';
 import './style.css';
 import { SEGMENT_LIST } from '../../../Utils';
 import get from 'lodash/get';
-import { WalkinQueryBuilder, CampaignHeader } from '@walkinsole/walkin-components';
+import { WalkinQueryBuilder, CampaignHeader } from '@walkinsole/shared';
 import jwt from "jsonwebtoken";
 import { GET_ALL_APPS_OF_ORGANIZATION } from "@walkinsole/walkin-core/src/PlatformQueries";
 

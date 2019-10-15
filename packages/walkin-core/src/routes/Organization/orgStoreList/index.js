@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { InstantSearch, SortableDataTable } from '@walkinsole/walkin-components';
+import { InstantSearch, SortableDataTable } from '@walkinsole/shared';
 import PropTypes from 'prop-types';
 import { Dropdown, Menu } from 'antd';
 
@@ -96,18 +96,18 @@ class OrgStoreList extends Component {
 						{text != null
 							? text
 							: '' + ', ' + row.addressLine1 != null
-							? row.addressLine1
-							: '' + ', ' + row.addressLine2 != null
-							? ow.addressLine2
-							: '' + ', ' + row.city != null
-							? row.city
-							: '' + ', ' + row.state != null
-							? row.state
-							: '' + ', ' + row.pinCode != null
-							? row.pinCode
-							: '' + ', ' + row.country != null
-							? row.country
-							: ''}
+								? row.addressLine1
+								: '' + ', ' + row.addressLine2 != null
+									? ow.addressLine2
+									: '' + ', ' + row.city != null
+										? row.city
+										: '' + ', ' + row.state != null
+											? row.state
+											: '' + ', ' + row.pinCode != null
+												? row.pinCode
+												: '' + ', ' + row.country != null
+													? row.country
+													: ''}
 					</div>
 				),
 			},

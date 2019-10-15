@@ -5,7 +5,9 @@ import { campaigns } from '../../../query/campaign';
 import { Card, Menu, Dropdown, Col, Spin, Button, Progress, Tabs } from 'antd';
 import moment from 'moment';
 import { withApollo, graphql } from 'react-apollo';
-import { SortableDataTable, InstantSearch, CampaignHeader, CircularProgress, Widget } from '@walkinsole/walkin-components';
+import { SortableDataTable, InstantSearch, CampaignHeader } from '@walkinsole/shared';
+import { CircularProgress, Widget } from '@walkinsole/walkin-components';
+
 import './style.css';
 import jwt from 'jsonwebtoken'
 

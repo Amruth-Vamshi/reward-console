@@ -13,7 +13,7 @@ import "@walkinsole/walkin-hyperx/src/containers/campaign/campaignCreation/audie
 import Comm from "@walkinsole/walkin-hyperx/src/containers/campaign/campaignCreation/communication";
 // import Communication from "../Edit/Communication";
 import Triggers from "../Edit/Triggers";
-import { campaignOverview as Overview} from "@walkinsole/walkin-components";
+import { campaignOverview as Overview} from "@walkinsole/shared";
 import FeedbackFormConfig from "../Edit/FeedbackForm";
 import ContainerHeader from "../CampaignHeader";
 import gql from "graphql-tag";

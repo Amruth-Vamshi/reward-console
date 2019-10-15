@@ -5,7 +5,7 @@ import { withApollo, graphql, compose, mutate } from 'react-apollo';
 import { createRule } from '../../../query/audience';
 import { OFFER_LIST } from '../../../utils/RouterConstants';
 import get from 'lodash/get';
-import { Stepper, CampaignHeader, CampaignFooter } from '@walkinsole/walkin-components';
+import { Stepper, CampaignHeader, CampaignFooter } from '@walkinsole/shared';
 import OfferBasicInfoForm from '../../../components/atoms/offerForm/basicInfo';
 import isEmpty from 'lodash/isEmpty';
 import './style.css';

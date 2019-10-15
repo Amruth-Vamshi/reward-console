@@ -4,7 +4,7 @@ import { Col, Row, Form, Select, Input, Button, Icon } from "antd";
 import {
   AddAndDeleteSelectDynamically,
   WalkinQueryBuilder
-} from "@walkinsole/walkin-components";
+} from "@walkinsole/shared";
 
 let id = 0;
 class Filter extends Component {

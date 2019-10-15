@@ -5,7 +5,7 @@ import { withApollo, graphql } from 'react-apollo';
 import { NEW_SEGMENT } from '../../../Utils';
 import { Card, Menu, Dropdown, Button, Col, Spin } from 'antd';
 import moment from 'moment';
-import { SortableDataTable, InstantSearch, CampaignHeader } from '@walkinsole/walkin-components';
+import { SortableDataTable, InstantSearch, CampaignHeader } from '@walkinsole/shared';
 import jwt from "jsonwebtoken";
 
 class SegmentList extends Component {

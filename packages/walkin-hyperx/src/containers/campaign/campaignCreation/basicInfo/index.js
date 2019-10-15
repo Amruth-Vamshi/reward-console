@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { Row, Col, Typography } from 'antd';
-import { BasicInfoForm, Popup, BasicSlider } from '@walkinsole/walkin-components';
-import { CampaignPriority } from '@walkinsole/shared';
+import { CampaignPriority, BasicInfoForm, Popup, BasicSlider } from '@walkinsole/shared';
 const { Text } = Typography;
 
 const BasicInfo = ({

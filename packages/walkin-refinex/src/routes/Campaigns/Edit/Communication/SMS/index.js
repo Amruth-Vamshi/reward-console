@@ -4,7 +4,7 @@ import { Form, Input, Icon } from "antd";
 import {
   AddAndDeleteSelectDynamically,
   WalkinQueryBuilder
-} from "@walkinsole/walkin-components";
+} from "@walkinsole/shared";
 class SMS extends Component {
   static propTypes = {
     prop: PropTypes

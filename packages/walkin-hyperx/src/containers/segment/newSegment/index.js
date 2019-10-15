@@ -5,7 +5,7 @@ import { withApollo, graphql, compose, mutate } from 'react-apollo';
 import { RULE_ATTRIBUTES, CREATE_RULE, createRule, createSegment } from '../../../query/audience';
 import './style.css';
 import { SEGMENT_LIST } from '../../../utils/RouterConstants';
-import { WalkinQueryBuilder, CampaignHeader } from '@walkinsole/walkin-components';
+import { WalkinQueryBuilder, CampaignHeader } from '@walkinsole/shared';
 import jwt from "jsonwebtoken";
 import { GET_ALL_APPS_OF_ORGANIZATION } from "@walkinsole/walkin-core/src/PlatformQueries";
 
