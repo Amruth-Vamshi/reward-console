@@ -13,7 +13,8 @@ class CampaignDashboard extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            loading: false
+            loading: false,
+            loading1:false
         }
     }
     launchCampaign = () => {
@@ -39,9 +40,7 @@ class CampaignDashboard extends Component {
         }).then(data => {
             console.log("campaign data..", data);
             message.success('Campaign Paused')
-            moment().isBetween(this.props.location.state.campaignSelected.startTime, this.props.location.state.campaignSelected.endTime) ?
-                this.props.history.push('/hyperx/campaigns')
-                : this.props.history.push({ pathname: '/hyperx/campaigns', tabKey: "2" })
+            this.props.history.push({ pathname: '/hyperx/campaigns', tabKey: "5" })
         }).catch(err => {
             console.log("Error Update campaign", err)
             this.setState({ loading: false })
@@ -64,19 +63,17 @@ class CampaignDashboard extends Component {
         });
     }
     abandonCampaign = () => {
-        console.log("Pause calling")
-        this.setState({ loading: true })
+        console.log("Abandon calling")
+        this.setState({ loading1: true })
         this.props.abandonCampaign({
             variables: { id: this.props.location.state.campaignSelected.id }
         }).then(data => {
             console.log("campaign data..", data);
             message.success('Abandon campaign')
-            moment().isBetween(this.props.location.state.campaignSelected.startTime, this.props.location.state.campaignSelected.endTime) ?
-                this.props.history.push('/hyperx/campaigns')
-                : this.props.history.push({ pathname: '/hyperx/campaigns', tabKey: "2" })
+            this.props.history.push({ pathname: '/hyperx/campaigns', tabKey: "6" })
         }).catch(err => {
             console.log("Error Update campaign", err)
-            this.setState({ loading: false })
+            this.setState({ loading1: false })
         });
     }
 
@@ -87,7 +84,7 @@ class CampaignDashboard extends Component {
         let audiences = this.props.allAudiences.audiences;
 
 
-        let { loading } = this.state
+        let { loading,loading1 } = this.state
         return (
             <div>
 
@@ -102,12 +99,13 @@ class CampaignDashboard extends Component {
                 <div className="gx-card" style={{ margin: 22 }}>
                     <div className="gx-card-body">
                         <Overview
-                            view={true} loading={loading}
+                            view={true} loading={loading} loading1={loading1}
                             campaign={this.props.location.state ? this.props.location.state.campaignSelected : ''}
                             launchCampaign={this.launchCampaign}
                             pauseCampaign={this.pauseCampaign}
                             unpauseCampaign={this.unpauseCampaign}
                             disableCampaign={this.disableCampaign}
+                            abandonCampaign={this.abandonCampaign}
                             audience={audiences}
                         // communication={this.state.communication.messageTemplate ?
                         //     `${communicationSelected} - ${this.state.communication.messageTemplate.templateSubjectText}` : ''}
