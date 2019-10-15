@@ -18,7 +18,8 @@ export default function ShowQuestion({
   isChoiceLoading,
   questionnaire,
   onLinkChoiceToQuestion,
-  showButton
+  showButton,
+  onQuestionTypeEdit
 }) {
   console.log(
     "new question addition",
@@ -28,6 +29,7 @@ export default function ShowQuestion({
     <React.Fragment>
       <Col span={24}>
         <FormHeader
+          onQuestionTypeEdit={() => onQuestionTypeEdit}
           onQuestionEdited={() => onQuestionEdited}
           questionToEdit={questionToEdit}
           questionType={questionType}

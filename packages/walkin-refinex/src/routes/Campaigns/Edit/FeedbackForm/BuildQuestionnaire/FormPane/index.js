@@ -40,6 +40,26 @@ class QuestionnaireFormPane extends Component {
     });
   };
 
+  onQuestionTypeEdit = (value) => {
+    console.log("this.state.questionToEdit", this.state.questionToEdit)
+    const values = {
+      ...this.props.questionToEdit,
+      type: value
+    }
+    if (questionWithSlider[values.type]) {
+      values.rangeMin = 0;
+      values.rangeMax = 10;
+    } else {
+      delete values.range;
+    }
+
+    this.setState({
+      questionToEdit: values,
+      showButton: true
+    });
+    this.props.onQuestionSubmitted(values);
+  };
+
   onQuestionEdited = (values) => {
     console.log("values", values);
     if (questionWithSlider[values.type]) {
@@ -90,6 +110,7 @@ class QuestionnaireFormPane extends Component {
         <Col span={24}>
           {questionType != null && choiceToAddQuestion != null ? (
             <CreateQuestion
+              onQuestionTypeEdit={this.onQuestionTypeEdit}
               showButton={this.state.showButton}
               questionnaire={questionnaire}
               onQuestionEdited={this.onQuestionEdited}
@@ -109,6 +130,7 @@ class QuestionnaireFormPane extends Component {
             />
           ) : (
               <ShowQuestion
+                onQuestionTypeEdit={this.onQuestionTypeEdit}
                 showButton={this.state.showButton}
                 questionnaire={questionnaire}
                 onQuestionEdited={this.onQuestionEdited}
