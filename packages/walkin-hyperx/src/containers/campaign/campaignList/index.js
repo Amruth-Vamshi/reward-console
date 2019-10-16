@@ -116,8 +116,8 @@ class CampaignList extends Component {
 			}}
 		>
 			<Menu.Item key="view">View</Menu.Item>
-			{/* <Menu.Item key="edit">Edit</Menu.Item>
-			<Menu.Item key="duplicate">Duplicate</Menu.Item> */}
+			<Menu.Item key="edit">Edit</Menu.Item>
+			{/* <Menu.Item key="duplicate">Duplicate</Menu.Item> */}
 			<Menu.Item key="delete">Delete</Menu.Item>
 		</Menu>
 	);
