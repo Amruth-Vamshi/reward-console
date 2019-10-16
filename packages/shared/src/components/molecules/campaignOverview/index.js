@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Row, Col, Typography, Progress, Button } from "antd";
+import { Row, Col, Icon, Typography, Progress, Button } from "antd";
 const { Title } = Typography;
 import moment from "moment";
 import './overViewStyle.css'
@@ -8,12 +8,14 @@ import './overViewStyle.css'
 export default class Overview extends Component {
   changeState = e => {
     console.log(e.target.innerText);
-    if (e.target.innerText == "LAUNCH")
+    if (e.target.innerText.trim() == "LAUNCH")
       this.props.launchCampaign()
-    if (e.target.innerText == "PAUSE")
+    if (e.target.innerText.trim() == "PAUSE")
       this.props.pauseCampaign()
-    if (e.target.innerText == "UNPAUSE")
+    if (e.target.innerText.trim() == "UNPAUSE")
       this.props.unpauseCampaign()
+    if (e.target.innerText.trim() == "FORCE STOP")
+      this.props.abandonCampaign()
   }
 
   render() {
@@ -43,15 +45,23 @@ export default class Overview extends Component {
             <Col style={{ paddingLeft: 0 }} sm={24} md={16}>
               <div className="cpName"> {campaign.name} </div>
               <div className="cpDec mb-15">{campaign.description != null ? campaign.description : ""}</div>
-              <div className="cpDaysLeft mb-15"> <b style={{ textTransform: "capitalize" }}>{diff ? diff : ''}</b>  {value} </div>
+              <div className="cpDaysLeft mb-30"> <b style={{ textTransform: "capitalize" }}>{diff ? diff : ''}</b>
+                {value == "Completed" ? <div><Icon style={{ color: '#00b707' }} type="check-circle" theme="filled" /> {value}</div> : value} </div>
             </Col>
             <Col sm={24} md={8}>
               <div className='divCenterVertical'>
-                {view ?
-                  // (campaign.campaignStatus == 'DRAFT' || campaign.campaignStatus == 'LIVE') &&
-                  value != "Completed" ? <Button shape='round' type='primary'
-                    style={{ width: '200px', letterSpacing: 1, height: 40, fontSize: 20 }} onClick={this.changeState} loading={this.props.loading} >
-                    {campaign.campaignStatus == 'DRAFT' ? 'LAUNCH' : campaign.campaignStatus == 'LIVE' ? 'PAUSE' : 'UNPAUSE'} </Button> : '' : ''}
+                {view && value != "Completed" ?
+                  campaign.campaignStatus == 'DRAFT' ?
+                    <Button shape='round' type='primary'
+                      style={{ width: '200px', letterSpacing: 1, height: 40, fontSize: 20 }} onClick={this.changeState} loading={this.props.loading} > LAUNCH </Button> :
+                    // (campaign.campaignStatus == 'LIVE') ?
+                    <div>  <Button type='primary' style={{ width: '140px', letterSpacing: 0, height: 40, fontSize: 17 }} shape='round'
+                      onClick={this.changeState} loading={this.props.loading} >
+                      {campaign.campaignStatus == 'LIVE' ? 'PAUSE' : 'UNPAUSE'} </Button>
+                      <Button type='primary' style={{ width: '145px', letterSpacing: 0, height: 40, fontSize: 16 }} shape='round'
+                        onClick={this.changeState} loading={this.props.loading1} >
+                        FORCE STOP </Button></div> //: ''
+                  : ''}
               </div>
 
             </Col>

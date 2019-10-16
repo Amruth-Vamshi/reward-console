@@ -24,7 +24,7 @@ class CampaignList extends Component {
 			filtered: null,
 			allCampaigns: null,
 			data: null,
-			loading: null,
+			loading: false,
 			key: this.props.location.tabKey ? this.props.location.tabKey : '1'
 		};
 	}
@@ -41,6 +41,10 @@ class CampaignList extends Component {
 		}
 	}
 
+	// componentWillReceiveProps = p => {
+	// 	this.setInitialValues()
+	// }
+
 	setInitialValues = () => {
 		const { campaigns, loading } = this.props;
 		this.setState({ allCampaigns: campaigns, loading: false }, () => {
@@ -54,7 +58,8 @@ class CampaignList extends Component {
 			pathname: NEW_CAMPAIGN,
 		});
 	};
-	handleChange = (pagination, filters, sorter) => {
+	handleChange = (pagination, filters, sorter, key, e) => {
+		console.log(pagination, filters, sorter, key, e);
 		this.setState({ sortedInfo: sorter });
 	};
 
@@ -78,7 +83,10 @@ class CampaignList extends Component {
 		}).then(({ data }) => {
 			console.log("Data..", data)
 			console.log("Disabled");
-			this.props.changeStatus('ACTIVE')
+			this.props.changeStatus()
+			this.setState({ allCampaigns: this.props.campaigns, loading: false }, () => {
+				this.onTabChange(this.state.key)
+			})
 			this.setState({ loading: false })
 		}).catch(err => {
 
@@ -118,8 +126,8 @@ class CampaignList extends Component {
 			}}
 		>
 			<Menu.Item key="view">View</Menu.Item>
-			{/* <Menu.Item key="edit">Edit</Menu.Item>
-			<Menu.Item key="duplicate">Duplicate</Menu.Item> */}
+			<Menu.Item key="edit">Edit</Menu.Item>
+			{/* <Menu.Item key="duplicate">Duplicate</Menu.Item> */}
 			<Menu.Item key="delete">Delete</Menu.Item>
 		</Menu>
 	);
@@ -132,9 +140,8 @@ class CampaignList extends Component {
 	};
 
 	onTabChange = key => {
+		this.setState({ key })
 		const { allCampaigns } = this.state
-
-		console.log(key)
 		if (!allCampaigns || allCampaigns.length < 1) return
 		if (key == 2) {
 			let upcomingCampaigns = allCampaigns.filter(val => {
@@ -191,8 +198,6 @@ class CampaignList extends Component {
 			defaultPageSize: 6,
 			showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`
 		}
-
-		console.log(this.state.key);
 
 		const columns = [
 			{
@@ -259,16 +264,7 @@ class CampaignList extends Component {
 						</Fragment>
 					}
 				/>
-				{loading ?
-					<div>
-						<br /> <br /> <br /> <br /><br /> <br />
-						<div className="divCenter">
-							<Spin size="large" />
-						</div>
-						<br /> <br /> <br />
-					</div>
-					:
-					// <div className="gx-card" style={{ margin: '32px' }}>
+				{/* // <div className="gx-card" style={{ margin: '32px' }}>
 					// 	<div className="gx-card-body">
 					// 		<div className="searchInputStyle">
 					// 			<InstantSearch
@@ -276,38 +272,38 @@ class CampaignList extends Component {
 					// 				data={data}
 					// 				onFilteredList={this.onCampaignFilteredList}
 					// 			/>
-					// 		</div>
-					<div className="HyperX-campaignList">
-						<Widget title="Campaign List" style={{ margin: '32px' }} styleName="gx-card-tabs"
-							extra={
-								<InstantSearch
-									placeHolder="Search campaign"
-									data={data}
-									onFilteredList={this.onCampaignFilteredList}
-								/>}
-						>
-							<Tabs defaultActiveKey={key ? key : "1"} onChange={this.onTabChange}>
-								<TabPane tab="Live" key="1">
-									<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} pagination={paginationData} />
-								</TabPane>
-								<TabPane tab="Upcoming" key="2">
-									<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} pagination={paginationData} />
-								</TabPane>
-								<TabPane tab="Completed" key="3">
-									<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} pagination={paginationData} />
-								</TabPane>
-								<TabPane tab="Draft" key="4">
-									<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} pagination={paginationData} />
-								</TabPane>
-								<TabPane tab="Paused" key="5">
-									<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} pagination={paginationData} />
-								</TabPane>
-							</Tabs>
-						</Widget>
-					</div>
-					// 	</div>
-					// </div>
-				}
+					// 		</div> */}
+				<div className="HyperX-campaignList">
+					<Widget title="Campaign List" style={{ margin: '32px' }} styleName="gx-card-tabs"
+						extra={
+							<InstantSearch
+								placeHolder="Search campaign"
+								data={data}
+								onFilteredList={this.onCampaignFilteredList}
+							/>}
+					>
+						<Tabs defaultActiveKey={key ? key : "1"} onChange={this.onTabChange}>
+							<TabPane tab="Live" key="1">
+								<SortableDataTable loading={loading} data={campaignData} onChange={this.handleChange} columns={columns} pagination={paginationData} />
+							</TabPane>
+							<TabPane tab="Upcoming" key="2">
+								<SortableDataTable loading={loading} data={campaignData} onChange={this.handleChange} columns={columns} pagination={paginationData} />
+							</TabPane>
+							<TabPane tab="Completed" key="3">
+								<SortableDataTable loading={loading} data={campaignData} onChange={this.handleChange} columns={columns} pagination={paginationData} />
+							</TabPane>
+							<TabPane tab="Draft" key="4">
+								<SortableDataTable loading={loading} data={campaignData} onChange={this.handleChange} columns={columns} pagination={paginationData} />
+							</TabPane>
+							<TabPane tab="Paused" key="5">
+								<SortableDataTable loading={loading} data={campaignData} onChange={this.handleChange} columns={columns} pagination={paginationData} />
+							</TabPane>
+						</Tabs>
+					</Widget>
+				</div>
+				{/* // 	</div>
+					// </div> */}
+
 			</div>
 		);
 	}
@@ -322,15 +318,19 @@ export default withRouter(
 						organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
 						status: DEFAULT_STATUS,
 						campaignType: DEFAULT_TYPE
-					}, fetchPolicy: "network-only"
+					}, fetchPolicy: "network-only",
+					forceFetch: true
 				}),
 				props: ({ data: { loading, error, campaigns, refetch } }) => ({
-					loading,
-					campaigns,
-					error,
+					loading, campaigns, error,
 					changeStatus: status => {
-						const variables = { status };
-						refetch(variables);
+						refetch({
+							variables: {
+								organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
+								status: DEFAULT_STATUS,
+								campaignType: DEFAULT_TYPE
+							}, fetchPolicy: "network-only"
+						});
 					},
 				}),
 			}),
