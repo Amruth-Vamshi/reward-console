@@ -4,7 +4,8 @@ import React, { Component } from "react";
 import { Col, Row, Spin } from 'antd';
 import Preview from "./Preview"
 import Controls from "./Controls"
-
+import { graphql } from "react-apollo";
+import { UPDATE_FEEDBACK_UI_CONFIG } from "../../../../../containers/Query";
 class FormDesign extends Component {
     constructor(props) {
         super(props)
@@ -12,7 +13,14 @@ class FormDesign extends Component {
             counter: 0,
             isLastQuestion: false,
             isFirstQuestion: false,
-            color: "#891732"
+            backgroundColor: "#891732",
+            accentColor: "#891732",
+            transition: "",
+            formStructure: "",
+            headerText: "",
+            exitMessage: "",
+            buttonText: "Next",
+            layoutCode: ""
         }
     }
 
@@ -27,8 +35,33 @@ class FormDesign extends Component {
 
     }
 
+    onTransitionChange = code => {
+        this.setState({
+            transition: code
+        })
+    }
+
+    onLayoutChange = code => {
+        this.setState({
+            layoutCode: code
+        })
+    }
+    onFormStructureChange = (code) => {
+        this.setState({
+            formStructure: code
+        })
+    }
+
     onColorUpdate = (hex) => {
-        this.setState({ color: hex })
+        this.setState({
+            backgroundColor: hex
+        })
+    }
+
+    onAccentColorUpdate = hex => {
+        this.setState({
+            accentColor: hex
+        })
     }
 
     nextQuestion = () => {
@@ -46,14 +79,32 @@ class FormDesign extends Component {
     }
     render() {
         const { questionnaire } = this.props;
-        const { counter, isLastQuestion, isFirstQuestion, color } = this.state;
+        const { counter,
+            isLastQuestion,
+            isFirstQuestion,
+            backgroundColor,
+            accentColor,
+            buttonText,
+            exitMessage,
+            formStructure,
+            headerText,
+            layoutCode,
+            transition
+        } = this.state;
         return (
 
             questionnaire && questionnaire[counter] ? (
                 <Row >
                     <Col span={17}>
                         <Preview
-                            color={color}
+                            accentColor={accentColor}
+                            buttonText={buttonText}
+                            exitMessage={exitMessage}
+                            formStructure={formStructure}
+                            headerText={headerText}
+                            layoutCode={layoutCode}
+                            transition={transition}
+                            color={backgroundColor}
                             isFirstQuestion={isFirstQuestion}
                             question={questionnaire[counter]}
                             nextQuestion={this.nextQuestion}
@@ -62,6 +113,10 @@ class FormDesign extends Component {
                     </Col>
                     <Col span={7} style={{ height: "inherit", overflow: "scroll" }} >
                         <Controls
+                            onAccentColorUpdate={this.onAccentColorUpdate}
+                            onFormStructureChange={this.onFormStructureChange}
+                            onLayoutChange={this.onLayoutChange}
+                            onTransitionChange={() => { }}
                             onCOlorUpdate={this.onColorUpdate} />
                     </Col>
 
@@ -71,4 +126,8 @@ class FormDesign extends Component {
         )
     }
 }
-export default FormDesign;
+export default graphql(
+    UPDATE_FEEDBACK_UI_CONFIG, {
+    name: "updateFeedbackUiConfig"
+}
+)(FormDesign);

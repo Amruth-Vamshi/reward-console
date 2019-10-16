@@ -3,80 +3,71 @@ import PropTypes from "prop-types";
 import { Col, Row, Typography, Tabs, Radio, Form, Input, Upload, Button, Icon } from "antd";
 import SMSForm from "./SMS";
 import EmailForm from "./Email";
+import PushNotification from "./Push";
 const { TabPane } = Tabs;
 const { Title } = Typography;
 
-class Communication extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      mode: "sms"
-    };
-  }
+const Communication = ({
+  subTitle,
+  onChange,
+  communicationData,
+  defaultValue,
+  value,
+  OnCommunicationFormNext,
+  commWrappedComponentRef,
+  communicationFormValues,
+  pushFormData,
+  pushFormRef,
+  emailFormRef,
+  emailFormData,
+  onFormNext,
+  schedule,
+  campaign,
+  scheduleSaveMark,
+  saveSchedule,
+  form
+}) => {
+  return (
+    <div>
+      <h3 className="gx-text-grey gx-mb-1">{subTitle}</h3>
 
-  static propTypes = {
-    prop: PropTypes
-  };
-
-  handleModeChange = e => {
-    const mode = e.target.value;
-    this.setState({ mode });
-  };
-
-  render() {
-    // const { onFormNext, saveFormRef communicationFormValues } = this.props;
-    console.log("render", this.state.mode);
-    return (
-      <Row style={{ margin: "1rem" }}>
-        <Col span={24}>
-          {" "}
-          <Title level={3} className="gx-text-grey">
-            {" "}
-            Communication{" "}
-          </Title>{" "}
-        </Col>
-        <Col span={24}>
-          <Row
-            style={{
-              margin: "1rem",
-              height: "-webkit-fill-available",
-              paddingBottom: "5rem",
-              overflowX: "scroll"
-            }}
+      <Row>
+        <Col sm={24} md={13} lg={13} xl={13} xxl={14}>
+          {console.log(value)}
+          <Radio.Group
+            buttonStyle="solid"
+            defaultValue={defaultValue}
+            onChange={onChange}
+            style={{ paddingTop: "20px" }}
+            value={value}
           >
-            <Col span={24}>
-              <Radio.Group
-                onChange={this.handleModeChange}
-                defaultValue={this.state.mode}
-                buttonStyle="solid"
-              >
-                <Radio.Button value="sms">SMS</Radio.Button>
-                <Radio.Button value="email">Email</Radio.Button>
-              </Radio.Group>
-              <Row style={{ marginTop: "1rem" }}>
-                <Col span={14}>
-                  <div>
-                    {this.state.mode === "sms" ? (
-                      <SMSForm
-                        saveFormRef={this.props.saveFormRef}
-                        onFormNext={this.props.onFormNext}
-                        formValues={this.props.communicationFormValues}
-                      />
-                    ) : (
-                        <EmailForm
-                          saveFormRef={this.props.saveFormRef}
-                          onFormNext={this.props.onFormNext}
-                          formValues={this.props.communicationFormValues} />
-                      )}
-                  </div>
-                </Col>
-              </Row>
-            </Col>
-          </Row>
+            {communicationData &&
+              communicationData.map((el, index) => (
+                <Radio.Button key={index} value={el.value}>
+                  {el.title}
+                </Radio.Button>
+              ))}
+          </Radio.Group>
+          <div style={{ marginTop: '20px' }} >
+            {value == "SMS" && <SMSForm
+              wrappedComponentRef={commWrappedComponentRef}
+              formValues={communicationFormValues}
+              onFormNext={onFormNext} />}
+            {value == "PUSH" && <PushNotification
+              wrappedComponentRef={pushFormRef}
+              formValues={pushFormData}
+              onFormNext={onFormNext} />}
+            {value == "EMAIL" && (<EmailForm
+              wrappedComponentRef={emailFormRef}
+              formValues={emailFormData}
+              onFormNext={onFormNext} />)}
+
+          </div>
+
         </Col>
       </Row>
-    );
-  }
-}
+    </div>
+  );
+};
 
 export default Communication;

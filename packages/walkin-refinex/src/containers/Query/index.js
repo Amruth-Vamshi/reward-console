@@ -416,6 +416,29 @@ export const campaigns = gql`
   }
 `;
 
+export const UPDATE_FEEDBACK_UI_CONFIG = gql`
+  mutation updateFeedbackUIConfig(
+  $feedbackFormId: ID!
+  $feedbackUIConfig: FeedbackUIConfigUpdateInput
+){
+  updateFeedbackUIConfig(
+    feedbackFormId: $feedbackFormId
+    feedbackUIConfig: $feedbackUIConfig
+){
+  id
+  layoutCode
+  backgroundColor
+  accentColor
+  transition
+  logoUrl
+  formStructure
+  headerText
+  exitMessage
+  buttonText
+}
+}
+`
+
 export const CREATE_CAMPAIGN = gql`
   mutation createCampaign($input: CampaingAddInput) {
     createCampaign(input: $input) {
