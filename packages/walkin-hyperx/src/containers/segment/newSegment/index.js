@@ -155,23 +155,20 @@ class NewSegment extends Component {
 			if (location.state.segmentSelected) {
 				let str = location.state.segmentSelected.rule.ruleConfiguration;
 				var mapObj = {
-					ruleAttributeId: 'field',
+					// ruleAttributeId: 'field',
+					attributeName: 'field',
 					attributeValue: 'value',
 					expressionType: 'operator',
 				};
-				str = str.replace(/ruleAttributeId|attributeValue|expressionType/gi, function (matched) {
+				str = str.replace(/attributeName|attributeValue|expressionType/gi, function (matched) {
 					return mapObj[matched];
 				});
 				this.setState({ query: JSON.parse(str) });
-				if (location.state.segmentSelected.name !== '') {
-					if (location.state.segmentSelected.name.includes('copy')) {
-						this.setState({ value: segmentNameCopy, isDuplicateSegment: true });
-					} else {
-						this.setState({
-							value: location.state.segmentSelected.name + ' ' + 'copy 1',
-							isDuplicateSegment: true,
-						});
-					}
+				if (!location.state.update) {
+					this.setState({
+						value: location.state.segmentSelected.name + ' ' + 'copy',
+						isDuplicateSegment: true,
+					});
 				}
 			}
 		}
