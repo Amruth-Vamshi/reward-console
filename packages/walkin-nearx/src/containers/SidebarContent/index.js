@@ -51,7 +51,7 @@ class SidebarContent extends Component {
                 <span>Home</span>
               </Link>
             </Menu.Item> */}
-            <Menu.Item key="nearx/dashboard/landing">
+            <Menu.Item key="nearx/dashboard">
               <Link to="/nearx/dashboard">
                 <i className="icon icon-dasbhoard" />
                 <span>Dashboard</span>
