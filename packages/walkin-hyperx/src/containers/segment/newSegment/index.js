@@ -160,6 +160,10 @@ class NewSegment extends Component {
 					attributeValue: 'value',
 					expressionType: 'operator',
 				};
+				console.log(str);
+				if (typeof str != 'string') {
+					str = JSON.stringify(str);
+				}
 				str = str.replace(/attributeName|attributeValue|expressionType/gi, function (matched) {
 					return mapObj[matched];
 				});
