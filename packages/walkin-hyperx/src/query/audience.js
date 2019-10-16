@@ -73,6 +73,18 @@ export const CREATE_RULE = gql`
   }
 `;
 
+export const UPDATE_RULE = gql`
+  mutation updateRule($id:ID! ,$input: UpdateRuleInput!) {
+    updateRule(id:$id, input:$input) {
+      id
+    name
+    description
+    status
+    type
+    }
+  }
+`;
+
 export const createSegment = gql`
 	mutation createSegment(
 		$name: String!
