@@ -169,6 +169,8 @@ class NewSegment extends Component {
 						value: location.state.segmentSelected.name + ' ' + 'copy',
 						isDuplicateSegment: true,
 					});
+				} else {
+					this.setState({ value: location.state.segmentSelected.name, isDuplicateSegment: true });
 				}
 			}
 		}
@@ -222,8 +224,9 @@ class NewSegment extends Component {
 				</div>
 				{newSegmentError && <Alert style={{ margin: '0px 35px' }} message="Not a valid Segment" type="error" />}
 				<div className="segmentFooterButton">
-					<Button type="primary" loading={loading1} className="campaignFooterStyle" onClick={this.onNewSegment}>
-						Create segment
+					<Button type="primary" //loading={loading1}
+						className="campaignFooterStyle" onClick={this.onNewSegment}>
+						{this.state.update ? 'Update Segment' : 'Create Segment'}
 					</Button>
 				</div>
 			</Fragment>
