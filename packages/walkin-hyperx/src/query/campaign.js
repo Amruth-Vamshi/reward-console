@@ -126,8 +126,8 @@ query campaign($id:ID!){
     createdBy lastModifiedBy createdTime lastModifiedTime
     organization{ id name } application{id name}
     audienceFilterRule{ id name ruleConfiguration ruleExpression }
-    communication{ id entityId entityType  isScheduled isRepeatable status
-      messageTemplate{id name templateBodyText templateSubjectText status}}
+    # communication{ id entityId entityType  isScheduled isRepeatable status
+    #   messageTemplate{id name templateBodyText templateSubjectText status}}
   }
 }`;
 

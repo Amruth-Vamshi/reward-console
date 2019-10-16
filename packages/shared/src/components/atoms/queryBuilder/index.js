@@ -31,7 +31,8 @@ class WalkinQueryBuilder extends React.Component {
 
 		let str = JSON.stringify(query);
 		var mapObj = {
-			field: 'ruleAttributeId',
+			// field: 'ruleAttributeId',
+			field: 'attributeName',
 			value: 'attributeValue',
 			operator: 'expressionType',
 		};
