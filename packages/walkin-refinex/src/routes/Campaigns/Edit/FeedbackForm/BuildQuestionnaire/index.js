@@ -147,7 +147,9 @@ class Questionnaire extends Component {
           feedbackFormId: feedbackForm.id,
           questionnaireInput: {
             questionText: "Click here to edit",
-            type: questionType
+            type: questionType,
+            rangeMax: 10,
+            rangeMin: 1
           }
         }
       });
@@ -175,8 +177,8 @@ class Questionnaire extends Component {
         input: {
           questionText: "  ",
           type: questionType,
-          rangeMax: "",
-          rangeMin: "",
+          rangeMax: 10,
+          rangeMin: 1,
           choices: []
         }
       }

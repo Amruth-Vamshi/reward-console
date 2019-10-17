@@ -17,7 +17,8 @@ export default function ShowQuestion({
   isChoiceLoading,
   questionnaire,
   onLinkChoiceToQuestion,
-  showButton
+  showButton,
+  onQuestionTypeEdit
 }) {
   console.log(questionnaire)
   return (
@@ -25,6 +26,7 @@ export default function ShowQuestion({
       <Row>
         <Col span={24}>
           <FormHeader
+            onQuestionTypeEdit={onQuestionTypeEdit}
             onQuestionEdited={onQuestionEdited}
             questionToEdit={questionToEdit}
             questionType={questionToEdit.type}
