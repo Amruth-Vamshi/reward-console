@@ -26,7 +26,7 @@ const Audience = ({
 				<div>
 					<p style={{ paddingTop: '20px', width: '50%' }} className="gx-text-grey gx-mb-1">
 						{segmentSubTitle}
-						<span style={{ float: 'right' }}>  Total Audience : <b>{audienceCount}</b> </span>
+						<span style={{ float: 'right' }}>  Potential Reach : <b>{audienceCount}</b> </span>
 					</p>
 					<AddAndDeleteSelectDynamically
 						onValuesSelected={onValuesSelected}

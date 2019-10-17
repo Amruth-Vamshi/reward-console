@@ -305,6 +305,9 @@ class CampaignList extends Component {
 							<TabPane tab="Paused" key="5">
 								<SortableDataTable loading={loading} data={campaignData} onChange={this.handleChange} columns={columns} pagination={paginationData} />
 							</TabPane>
+							{/* <TabPane tab="closed" key="6">
+								<SortableDataTable loading={loading} data={campaignData} onChange={this.handleChange} columns={columns} pagination={paginationData} />
+							</TabPane> */}
 						</Tabs>
 					</Widget>
 				</div>
