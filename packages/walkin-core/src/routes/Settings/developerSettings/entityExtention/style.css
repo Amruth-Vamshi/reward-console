@@ -1,0 +1,80 @@
+/* entity Extention  */
+
+.headerWrapper {
+  font-family: "Roboto", sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #333333;
+  margin-bottom: 20px;
+}
+.headerTitle {
+  font-size: 30px;
+  letter-spacing: 0;
+}
+
+.headerDescWrapper {
+  font-family: "Roboto", sans-serif;
+  color: #333333;
+  margin-bottom: 20px;
+}
+
+.headerDesc {
+  width: 60%;
+  font-size: 14px;
+  letter-spacing: 0;
+}
+
+.entityVariablesListWrapper {
+  /* border: 1px solid #cccccc; */
+  font-family: "Roboto", sans-serif;
+  min-height: 100px;
+  margin: 50px 0;
+  /* display: flex;
+  justify-content: center;
+  flex-direction: column; */
+}
+
+.buttonMargin0 {
+  margin: 0;
+}
+.boxborder1 {
+  border: 1px solid #cccccc;
+}
+
+/* Entity variable form */
+
+.width75percent {
+  width: 75%;
+}
+.width45percent {
+  width: 45%;
+}
+.width15percent {
+  width: 15%;
+}
+
+.entityVariablesFormContainer {
+  font-family: "Roboto", sans-serif;
+  justify-content: center;
+  display: flex;
+  margin-bottom: 30px;
+}
+.entityVariableFormTitle {
+  display: flex;
+  justify-content: center;
+  font-size: 22px;
+  color: #333333;
+}
+.entityVariableFlexWrapper {
+  /* border: 1px solid; */
+  display: flex;
+  justify-content: space-between;
+}
+.entityVariableInputWrapper {
+  margin: 20px 0;
+  /* display: flex;
+  justify-content: center;
+  flex-direction: column; */
+  /* border: 1px solid red; */
+}
