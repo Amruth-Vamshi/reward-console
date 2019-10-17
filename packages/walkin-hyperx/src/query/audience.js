@@ -148,23 +148,15 @@ export const CREATE_AUDIENCE = gql`
 		}
 	}
 `
-export const AUDIENCES = gql`
-	query audiences($campaign_id:ID, $organization_id:ID,$segment_id:ID){
-	audiences(campaign_id:$campaign_id, organization_id:$organization_id,segment_id:$segment_id,status:ACTIVE){
-		id
-		segment{
-		id
-		name
-		rule{
-			id
-			name
-			type
-		}
-		status
+export const GET_AUDIENCES = gql`
+	query audiences($campaign_id:ID, $organization_id:ID,$segment_id:ID,$status:STATUS){
+	audiences(campaign_id:$campaign_id, organization_id:$organization_id,segment_id:$segment_id,status:$status){
+      id status
+      segment{ id name status
+      rule{ id name	type }
 		}
 	}
-}
-`;
+}`
 
 export const UPDATE_AUDIENCES_WITH_CAMPAIGNID = gql`
 mutation updateAudiencesWithCampaignId($campaignId:ID, $segments:[ID]!){

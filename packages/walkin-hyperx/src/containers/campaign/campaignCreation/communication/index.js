@@ -49,8 +49,8 @@ const Communication = ({
             formValues={communicationFormValues}
             onFormNext={onFormNext} />}
           {value == "PUSH" && <PushNotificationForm
-            wrappedComponentRef={pushFormData}
-            formValues={pushFormRef}
+            wrappedComponentRef={pushFormRef}
+            formValues={pushFormData}
             onFormNext={onFormNext} />}
           {value == "EMAIL" && (<Email
             wrappedComponentRef={emailFormRef}

@@ -32,7 +32,7 @@ const BasicInfo = ({
 	onTestValueChange,
 	onControlValueChange,
 	popupButtonText,
-	testValue,
+	testValue, edit,
 	priorityChosen
 }) => {
 	return (
@@ -42,7 +42,7 @@ const BasicInfo = ({
 			</div>
 			<Row style={{ marginTop: 34 }}>
 				<Col sd={24} md={14} style={{ marginBottom: 15 }}>
-					<BasicInfoForm errors={errors} onFormNext={onFormNext} wrappedComponentRef={saveFormRef} formValues={formValues} />
+					<BasicInfoForm errors={errors} onFormNext={onFormNext} edit={edit} wrappedComponentRef={saveFormRef} formValues={formValues} />
 				</Col>
 				<Col sd={24} md={10}>
 					<CampaignPriority
