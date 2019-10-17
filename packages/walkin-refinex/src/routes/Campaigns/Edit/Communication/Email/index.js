@@ -2,35 +2,32 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Form, Upload, Icon, Button, Input, Row, Col } from "antd";
 class EmailForm extends Component {
-  static propTypes = {
-    prop: PropTypes
-  };
+
   constructor(props) {
     super(props);
     this.state = {
-      email_subject: "",
-      email_body: ""
+      // email_subject: "",
+      // email_body: ""
     };
   }
 
-  componentDidMount() {
-    const { email_subject, email_body } = this.state;
+  // componentDidMount() {
+  //   const { email_subject, email_body } = this.state;
 
-    this.props.form.setFieldsValue({
-      email_subject,
-      email_body
-    });
-  }
+  //   this.props.form.setFieldsValue({
+  //     email_subject,
+  //     email_body
+  //   });
+  // }
 
   render() {
+    const { form, onFormNext, wrappedComponentRef, formValues, text } = this.props;
     const { getFieldDecorator } = this.props.form;
-    const { formValues, saveFormRef, onFormNext } = this.props;
-    console.log("This.Email..", this.props.form)
     return (
-      <Form layout="vertical" ref={saveFormRef}
-        onSubmit={onFormNext}>
+      <Form style={{ paddingTop: '20px' }} layout="vertical" ref={wrappedComponentRef} onSubmit={onFormNext}>
         <Form.Item label="Subject">
           {getFieldDecorator("email_subject", {
+            initialValue: `${Object.keys(formValues).length != 0 ? formValues.email_subject ? formValues.email_subject : "" : ""}`,
             rules: [{ required: true, message: "Please enter Email Subject!" }]
           })(
             <Input
@@ -41,6 +38,7 @@ class EmailForm extends Component {
         </Form.Item>
         <Form.Item label="Compose">
           {getFieldDecorator("email_body", {
+            initialValue: `${Object.keys(formValues).length != 0 ? formValues.email_body ? formValues.email_body : "" : ""}`,
             rules: [{ required: true, message: "Please enter Email body!" }]
           })(
             <Input.TextArea

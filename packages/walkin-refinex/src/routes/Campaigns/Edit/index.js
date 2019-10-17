@@ -16,6 +16,7 @@ import gql from "graphql-tag";
 import { compose, graphql } from "react-apollo";
 import Stepper from "../Stepper"
 import isEmpty from "lodash/isEmpty";
+import moment from "moment";
 import {
   GET_CAMPAIGN,
   allSegments,
@@ -44,12 +45,12 @@ import {
 } from '../../../Utils'
 import { async } from "q";
 import { GET_ALL_APPS_OF_ORGANIZATION } from "@walkinsole/walkin-core/src/PlatformQueries";
-
+import pick from "lodash/pick";
 
 
 const communicationData = [
   { value: "SMS", title: "SMS" },
-  // { value: 'push', title: 'Push Notification' },
+  { value: 'PUSH', title: 'Push Notification' },
   { value: "EMAIL", title: "Email" }
 ];
 //Math.random().toString(36).substring(7);
@@ -69,6 +70,8 @@ class EditCampaign extends Component {
       testControlSelected: "",
       communicationSelected: "SMS",
       communicationFormValues: {},
+      emailForm:{},
+      pushForm:{},
       formValues: {},
       campaign: {},
       segmentList: {},
@@ -148,10 +151,14 @@ class EditCampaign extends Component {
           communicationId.smsid = item.messageTemplate.id
         communicationFormValues.smsTag = item.messageTemplate.templateSubjectText 
         communicationFormValues.smsBody = item.messageTemplate.templateBodyText
-        }else if(item.messageTemplate.messageFormat == "EMAIL"){
+        }else if(item.messageTemplate.messageFormat == "PUSH"){
           communicationId.emailid = item.messageTemplate.id
-        communicationFormValues.email_subject = item.messageTemplate.templateSubjectText 
-        communicationFormValues.email_body = item.messageTemplate.templateBodyText
+        communicationFormValues.notificationTitle = item.messageTemplate.templateSubjectText 
+        communicationFormValues.notificationBody = item.messageTemplate.templateBodyText
+        }else{
+          communicationId.pushid = item.messageTemplate.id
+          communicationFormValues.email_subject = item.messageTemplate.templateSubjectText 
+          communicationFormValues.email_body = item.messageTemplate.templateBodyText
         }
       })
     }
@@ -252,20 +259,37 @@ class EditCampaign extends Component {
     }
     //Communication module
     if (this.state.current == 4) {
-      let {communicationFormValues} = this.state;
-      const comForm = this.formRef1 && this.formRef1.props && this.formRef1.props.form;
+      this.setState({loading:true})
+      let {communicationFormValues,communicationSelected} = this.state;
+      let comForm;
+      console.log("saveEmailFormRef",this.pushFormRef,this.formRef1,this.emailFormRef)
+        
+      if(communicationSelected==="PUSH"){
+        comForm = this.pushFormRef && this.pushFormRef.props && this.pushFormRef.props.form;
+      }else if(communicationSelected==="SMS"){
+         comForm = this.formRef1 && this.formRef1.props && this.formRef1.props.form;
+      }else{
+        comForm= this.emailFormRef && this.emailFormRef.props && this.emailFormRef.props.form;
+      }
+     
       comForm.validateFields((err, values) => {
-        if (err)  return
+        if (err) {
+          this.setState({loading:false})
+           return
+          }
         else {
           if(this.state.communicationSelected == "SMS"){
-            communicationFormValues.smsTag = values.smsTag 
-            communicationFormValues.smsBody = values.smsBody
-          }else{
-            communicationFormValues.email_subject = values.email_subject 
-          communicationFormValues.email_body = values.email_body
+            communicationFormValues.templateSubjectText = values.smsTag 
+            communicationFormValues.templateBodyText = values.smsBody
+          }else if(this.state.communicationSelected == "EMAIL"){
+            communicationFormValues.templateSubjectText = values.email_subject 
+          communicationFormValues.templateBodyText = values.email_body
+          } else {
+            communicationFormValues.templateSubjectText = values.notificationTitle 
+            communicationFormValues.templateBodyText = values.notificationBody
           }
           this.setState({communicationFormValues})
-          this.createCommunicationMutation(this.state.current, values);
+          this.createCommunicationMutation(this.state.current, communicationFormValues);
         }
       })
 
@@ -315,7 +339,7 @@ class EditCampaign extends Component {
      segment_id:segmentId,
      organization_id:jwt.decode(localStorage.getItem("jwt")).org_id,
      application_id:this.props.campaign.campaign.application.id,
-     status:"ACTIVE"
+     status:DEFAULT_ACTIVE_STATUS
     };
     this.props.audience({
       variables:{
@@ -331,44 +355,44 @@ class EditCampaign extends Component {
   createCommunicationMutation = (current, values) => {
     //Update
     let update = false
-    var input = {
-        templateBodyText: this.state.communicationSelected == "SMS"?values.smsBody:values.email_body,
-        templateSubjectText: this.state.communicationSelected == "SMS"?values.smsTag:values.email_subject,
+    let input = {
+       ...values,
         organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
     }
-    if(this.state.communicationSelected == "SMS"){
+    input= pick(input,['organization_id','templateBodyText','templateSubjectText']);
+    
       if(this.state.communicationId.smsid){
         update = true
         input.id=this.state.communicationId.smsid
       }
-    }else{
+      if(this.state.communicationId.pushid){
+      update = true;
+      input.id = this.state.communicationId.pushid;
+    }
       if(this.state.communicationId.emailid){
         update = true
         input.id=this.state.communicationId.emailid
       }
-    }
     if(update){
       this.props.updateMessageTemplate({
         variables:{
           input:input
         }
       }).then(async data =>{
-      
         console.log("UpdateMessageTemplateData...", updateMessageTemplate)
       }).catch(err =>{
         console.log("Error while updating messageTemptae for communication", err)
       })
     }else{
       //Create
-      var input = {
+      let input = {
         name: this.props.campaign.campaign.name +"_"+ Math.random().toString(36).substring(2),
         description: "",
         messageFormat: this.state.communicationSelected,
-        templateBodyText: this.state.communicationSelected == "SMS"?values.smsBody:values.email_body,
-        templateSubjectText: this.state.communicationSelected == "SMS"?values.smsTag:values.email_subject,
+        ...values,
         templateStyle: TEMPLATE_STYLE,
         organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
-        status:"ACTIVE"
+        status:DEFAULT_ACTIVE_STATUS
       };
       this.props
         .messageTemplate({
@@ -379,16 +403,16 @@ class EditCampaign extends Component {
         .then(async data => {
           console.log("MessageTemplate data..", data);
           var input = {
-            entityId: this.props.campaign.campaign.id, // campainId
+            entityId: this.props.campaign.campaign.id, 
             entityType: "Campaign",
             messageTemplateId: data.data.createMessageTemplate.id,
             isScheduled: true,
             isRepeatable: false,
             organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
-            status: "ACTIVE",
+            status: DEFAULT_ACTIVE_STATUS,
             firstScheduleDateTime: this.props.campaign.campaign.startTime,
-            // repeatRuleId: "",
-            commsChannelName: "Test"
+            commsChannelName: "Test",
+            campaign_id:this.props.campaign.campaign.id
           };
        const createdCommunication=  await this.props
             .communication({
@@ -400,17 +424,13 @@ class EditCampaign extends Component {
             const cummunicationCreationInput={
               communication_id: parseInt(createdCommunication.data.createCommunication.id) 
             }
-          this.props.updateCampaign({
-            variables: {
-              id: this.props.campaign.campaign.id,
-              input: cummunicationCreationInput
-            }
-          })
+         
            
         }).catch(err => {
           console.log("Error creating for message template", err);
         });
     }
+    this.setState({loading:false})
    
   };
 
@@ -454,7 +474,7 @@ class EditCampaign extends Component {
       description: "",
       type: "SIMPLE",
       organizationId: jwt.decode(localStorage.getItem("jwt")).org_id,
-      status: "ACTIVE",
+      status: DEFAULT_ACTIVE_STATUS,
       ruleConfiguration: this.state.query
     };
     this.props
@@ -563,8 +583,19 @@ class EditCampaign extends Component {
   };
 
   commWrappedComponentRef = formRef => {
+    console.log("commWrappedComponentRef",formRef)
     this.formRef1 = formRef;
   };
+
+  saveEmailFormRef= formRef =>{
+    console.log("saveEmailFormRef",formRef)
+    this.emailFormRef= formRef;
+  }
+
+  savePushFormRef= formRef =>{
+    console.log("savePushFormRef",formRef)
+    this.pushFormRef= formRef;
+  }
 
   linkCampaignToApplication=async (applicationId)=>{
     const {campaign}= this.props.campaign;
@@ -575,6 +606,7 @@ class EditCampaign extends Component {
         applicationId:applicationId
       }
     })
+    await this.props.campaign.refetch()
     this.success('Successfully linked Campaign to application');
     console.log(linkedCampaign);
     }catch(err){
@@ -592,8 +624,9 @@ class EditCampaign extends Component {
           campaignId:campaign.id,
           applicationId
         }
-      })
-      this.success('Successfully linked Campaign from application');
+      });
+     await this.props.campaign.refetch()
+      this.success('Successfully unlinked Campaign from application');
     }catch(err){
       console.log(err);
     }
@@ -602,7 +635,6 @@ class EditCampaign extends Component {
 
   getContainer = () => {
     const { campaign } = this.props.campaign;
-    console.log("campaign",campaign)
     let triggerRule={id:1,combinator: "and", rules: [] }
     let audienceRule={id:1,combinator: "and", rules: [] };
     if(campaign && campaign.triggerRule){
@@ -720,7 +752,8 @@ class EditCampaign extends Component {
       case 3:
         return (
           <Triggers 
-          selectedApplication={campaign.application.id}
+          unlinkCampaignFromApplication={this.unlinkCampaignFromApplication}
+          selectedApplication={campaign.application?campaign.application.id:""}
           linkCampaignToApplication={this.linkCampaignToApplication}
           onEventTypeEdited={this.onEventTypeEdited}
           eventValues={this.state.eventValues}
@@ -732,7 +765,7 @@ class EditCampaign extends Component {
       case 4:
         return (
           <CustomScrollbars>
-          <Comm
+          <Communication
             subTitle="Communication"
             onChange={this.onCommunicationChange}
             communicationData={communicationData}
@@ -740,22 +773,25 @@ class EditCampaign extends Component {
             value={this.state.communicationSelected}
             commWrappedComponentRef={this.commWrappedComponentRef}
             communicationFormValues={this.state.communicationFormValues}
-            emailFormRef={this.commWrappedComponentRef}
-            emailFormData={this.state.communicationFormValues}
-            // saveFormRef={this.saveComFormRef}
+            subTitle="Communication"
+            campaign={this.state.formValues}
+            OnCommunicationFormNext={this.onFormNext}
+            emailFormRef={this.saveEmailFormRef}
+            emailFormData={this.state.emailForm}
+            pushFormRef={this.savePushFormRef}
+            pushFormData={this.state.pushForm}
             onFormNext={this.onFormNext}
-          /></CustomScrollbars>
-          // <Communication
-          //   // campaign={this.props.campaign.campaign}
-          //   saveFormRef={this.saveComFormRef}
-          //   onFormNext={this.onFormNext}
-          //   communicationFormValues={this.communicationFormValues}
-          // />
+          />
+          </CustomScrollbars>
+
         );
       default:
-        return <CustomScrollbars> <Overview campaign={this.props.campaign.campaign} 
-        communication={this.props.allCommunications.communications && this.props.allCommunications.communications.length >0 ?
-          this.props.allCommunications.communications[0].messageTemplate.messageFormat : this.state.communicationSelected}/></CustomScrollbars>
+        return <CustomScrollbars> 
+          <Overview 
+          campaign={this.props.campaign.campaign} 
+          communication={this.props.allCommunications.communications && this.props.allCommunications.communications.length >0 ?
+          this.props.allCommunications.communications[0].messageTemplate.messageFormat : this.state.communicationSelected}/>
+          </CustomScrollbars>
     }
 
   };
@@ -768,8 +804,15 @@ class EditCampaign extends Component {
     const antIcon = <Icon type="loading" style={{ fontSize: 50 }} spin />;
     //exit to all campaign screen if all the steppers are completed
     if(current >5){
+      let tabKey="4";
+      moment(this.props.campaign.campaign.startTime).isAfter(moment()) ?
+                tabKey="2"
+                : moment(this.props.campaign.campaign.endTime).isBefore(moment()) ?
+                    tabKey="3" :
+                    tabKey="4"
       this.props.history.push({
        pathname: "/refinex/feedback/overview",
+       tabKey: tabKey,
         state:{
           showPopup:true,
           message:"Feedback form successfully created"
@@ -855,7 +898,7 @@ export default compose(
     options: ownProps => ({
       variables: {
         org_id: jwt.decode(localStorage.getItem("jwt")).org_id,
-        status: "ACTIVE"
+        status: DEFAULT_ACTIVE_STATUS
       },
       fetchPolicy: "cache-and-network"
     })
@@ -873,7 +916,7 @@ export default compose(
     name: "allAttributes",
     options:props=>{
       const input= {
-        status: "ACTIVE", 
+        status: DEFAULT_ACTIVE_STATUS, 
       organizationId: jwt.decode(localStorage.getItem("jwt")).org_id
       }
      const a= {
@@ -920,7 +963,7 @@ export default compose(
       entityId:props.match.params.id,
       entityType:"Campaign",
       organization_id:jwt.decode(localStorage.getItem("jwt")).org_id,
-      status:"Active"
+      status:DEFAULT_ACTIVE_STATUS
       },
       fetchPolicy:"network-only"
     })
@@ -928,10 +971,10 @@ export default compose(
     name:"allAudiences",
     options:props =>({
       variables:{
-        status:"ACTIVE",
+        status:DEFAULT_ACTIVE_STATUS,
         campaign_id:props.match.params.id,
         organization_id:jwt.decode(localStorage.getItem("jwt")).org_id,
-        status:"Active"
+        status:DEFAULT_ACTIVE_STATUS
       },
       fetchPolicy:"network-only"
     })
