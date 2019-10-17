@@ -5,7 +5,7 @@ import Audience from "./audience";
 import Offer from "./offer";
 import Communication from "./communication";
 import { campaignOverview as Overview } from "@walkinsole/shared";
-import { allSegments, RULE_ATTRIBUTES, GET_AUDIENCE, CREATE_AUDIENCE, CREATE_RULE, AUDIENCE_COUNT } from "../../../query/audience";
+import { allSegments, RULE_ATTRIBUTES, GET_AUDIENCE, CREATE_AUDIENCE, CREATE_RULE, AUDIENCE_COUNT, ATTRIBUTES, UPDATE_RULE, AUDIENCES, UPDATE_AUDIENCES_WITH_CAMPAIGNID } from "../../../query/audience";
 import { getOffers, ADD_OFFER_TO_CAMPAIGN } from "../../../query/offer";
 import { withApollo, graphql, compose } from 'react-apollo';
 import { GET_ALL_APPS_OF_ORGANIZATION } from "@walkinsole/walkin-core/src/PlatformQueries";
@@ -14,7 +14,7 @@ import jwt from "jsonwebtoken";
 import '../styles.css'
 import moment from "moment";
 import { CampaignFooter, CampaignHeader, Stepper } from '@walkinsole/shared';
-import { CREATE_CAMPAIGN, UPDATE_CAMPAIGN, CREATE_MESSAGE_TEMPLETE, CREATE_COMMUNICATION, LAUNCH_CAMPAIGN, CREATE_COMMUNICATION_WITH_MESSAGE_TEMPLETE } from '../../../query/campaign';
+import { GET_CAMPAIGN, CREATE_CAMPAIGN, UPDATE_CAMPAIGN, CREATE_MESSAGE_TEMPLETE, CREATE_COMMUNICATION, LAUNCH_CAMPAIGN, CREATE_COMMUNICATION_WITH_MESSAGE_TEMPLETE, COMMUNICATIONS } from '../../../query/campaign';
 
 const stepData = [{
 	id: 1,
@@ -79,6 +79,45 @@ class CampaignCreation extends Component {
 			audienceChange: { audience: false, rule: false }
 		};
 	}
+
+	componentWillMount = () => {
+		const { location, match } = this.props;
+		if (location && location.state) {
+			console.log("this...", location.state)
+			if (location.state.update)
+				this.setState({ campaign: location.state.campaignSelected, formValues: location.state.campaignSelected, update: true });
+		}
+	}
+	// componentDidUpdate(preValue) {
+	// 	if (this.props.allAudiences.loading !== preValue.allAudiences.loading) {
+	// 		if (this.props.allAudiences.audiences) {
+	// 			let selectedSegments = []
+	// 			this.props.allAudiences.audiences.map(item => selectedSegments.push(item.segment.id))
+	// 			this.setState({ selectedSegments: selectedSegments })
+	// 		}
+	// 	}
+	// 	if (this.props.allCommunications.loading !== preValue.allCommunications.loading) {
+	// 		let { communicationFormValues } = this.state
+	// 		let communicationId = {}
+	// 		if (this.props.allCommunications.communications) {
+	// 			this.props.allCommunications.communications.map(item => {
+	// 				if (item.messageTemplate.messageFormat == "SMS") {
+	// 					communicationId.smsid = item.messageTemplate.id
+	// 					communicationFormValues.smsTag = item.messageTemplate.templateSubjectText
+	// 					communicationFormValues.smsBody = item.messageTemplate.templateBodyText
+	// 				} else if (item.messageTemplate.messageFormat == "EMAIL") {
+	// 					communicationId.emailid = item.messageTemplate.id
+	// 					communicationFormValues.email_subject = item.messageTemplate.templateSubjectText
+	// 					communicationFormValues.email_body = item.messageTemplate.templateBodyText
+	// 				}
+	// 			})
+	// 		}
+
+	// 		this.setState({ communicationFormValues, communicationId })
+	// 	}
+	// }
+
+
 	saveFormRef = formRef => {
 		this.formRef = formRef;
 	};
@@ -479,7 +518,9 @@ class CampaignCreation extends Component {
 	}
 
 	render() {
+		console.log("Edit")
 		console.log(this.props, this.state);
+		console.log('>>', this.props.linkedAudiences)
 		const { formValues, current, showTestAndControl, testValue, controlValue, testControlSelected, rows, values, communicationSelected } = this.state;
 		let attributeData = []
 		if (this.props.allAttributes)
@@ -666,6 +707,15 @@ export default withRouter(
 					},
 					fetchPolicy: 'network-only',
 				})
+			}), graphql(AUDIENCES, {
+				name: 'linkedAudiences',
+				options: ownProps => ({
+					variables: {
+						organizationId: jwt.decode(localStorage.getItem("jwt")).org_id,
+						campaign_id: ownProps.match.params.id,
+					},
+					fetchPolicy: 'network-only',
+				})
 			}),
 			graphql(CREATE_RULE, {
 				name: "createRule"
@@ -700,7 +750,53 @@ export default withRouter(
 			}),
 			graphql(CREATE_COMMUNICATION_WITH_MESSAGE_TEMPLETE, {
 				name: "createCommunicationWithMessageTemplate"
-			})
+			}),
+			graphql(GET_CAMPAIGN, {
+				name: "getcampaign",
+				options: props => ({
+					variables: {
+						id: props.match.params.id,
+
+					},
+					fetchPolicy: "network-only"
+				})
+			}),
+			graphql(UPDATE_CAMPAIGN, {
+				name: "updateCampaign"
+			}),
+			graphql(COMMUNICATIONS, {
+				name: "allCommunications",
+				options: props => ({
+					variables: {
+						entityId: props.match.params.id,
+						entityType: "Campaign",
+						organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
+						status: "Active"
+					},
+					fetchPolicy: "network-only"
+				})
+			}),
+			graphql(UPDATE_AUDIENCES_WITH_CAMPAIGNID, {
+				name: "updateAudiencesWithCampaignIdWithSegments"
+			}),
+			graphql(ATTRIBUTES, {
+				name: "allAttributes",
+				options: props => {
+					const input = {
+						status: "ACTIVE",
+						organizationId: jwt.decode(localStorage.getItem("jwt")).org_id
+					}
+					const a = {
+						variables: {
+							input: input
+						}
+					}
+					return a;
+				}
+			}),
+			graphql(UPDATE_RULE, {
+				name: "updateRule"
+			}),
 		)(CampaignCreation)
 	)
 );

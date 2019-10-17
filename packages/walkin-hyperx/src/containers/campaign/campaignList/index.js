@@ -111,7 +111,7 @@ class CampaignList extends Component {
 		const { history, match } = this.props;
 		history.push({
 			pathname: `${NEW_CAMPAIGN}/${campaign.id}`,
-			state: { campaignSelected: campaign },
+			state: { campaignSelected: campaign, update: true }
 		});
 	};
 

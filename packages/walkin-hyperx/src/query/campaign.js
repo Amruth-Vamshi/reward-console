@@ -12,6 +12,42 @@ export const campaigns = gql`
 	}
 `;
 
+export const GET_CAMPAIGN = gql`
+  query campaign($id: ID!) {
+    campaign(id: $id) {
+      id
+      name
+      description
+      startTime
+      endTime
+      status
+      triggerRule{
+        id
+        name
+        status
+        ruleConfiguration
+      }
+      application{
+        id
+        name
+        
+      }
+      audienceFilterRule{
+        id
+        name
+        status
+        ruleConfiguration
+      }
+      campaignType
+      status
+      feedbackForm {
+        id
+        title
+      }
+    }
+  }
+`;
+
 export const CREATE_CAMPAIGN = gql`
   mutation createCampaign($input: CampaingAddInput) {
     createCampaign(input: $input) {
@@ -58,6 +94,22 @@ export const CREATE_MESSAGE_TEMPLETE = gql`
       templateStyle
     }
   }
+`;
+export const COMMUNICATIONS = gql`
+  query communications($entityId: ID!,$entityType:COMMUNICATION_ENTITY_TYPE,$organization_id: ID!) {
+      communications(entityId: $entityId, entityType:$entityType, organization_id:$organization_id, status: ACTIVE) {
+        id
+        entityId
+        entityType
+        messageTemplate{
+          id
+          name
+          messageFormat
+          templateBodyText
+          templateSubjectText
+        }
+      }
+    }
 `;
 
 export const CREATE_COMMUNICATION = gql`
@@ -132,22 +184,23 @@ query campaign($id:ID!){
 }`;
 
 export const AUDIENCES = gql`
-query audiences($campaign_id:ID, $organization_id:ID,$segment_id:ID){
-  audiences(campaign_id:$campaign_id, organization_id:$organization_id,segment_id:$segment_id,status:ACTIVE){
-    id
-    segment{
-      id
-      name
-      rule{
-        id
-        name
-        type
-      }
-      status
-    }
-  }
+	query audiences($campaign_id:ID, $organization_id:ID,$segment_id:ID){
+	audiences(campaign_id:$campaign_id, organization_id:$organization_id,segment_id:$segment_id,status:ACTIVE){
+		id
+		segment{
+		id
+		name
+		rule{
+			id
+			name
+			type
+		}
+		status
+		}
+	}
 }
 `;
+
 
 export const GET_OFFER_FOR_CAMPAIGN = gql`
 query getOffersForACampaign($campaign_id:ID, $organization_id:ID){
