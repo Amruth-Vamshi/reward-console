@@ -63,8 +63,8 @@ class CampaignList extends Component {
 		this.setState({ sortedInfo: sorter });
 	};
 
-	onDeleteContact = contact => {
-		console.log('delete', contact);
+	onDeleteCampaign = campaign => {
+		console.log('delete', campaign);
 	};
 
 	onViewCampaign = campaign => {
@@ -95,15 +95,23 @@ class CampaignList extends Component {
 		})
 	}
 
-	onDuplicateContact = contact => {
-		console.log('dupl', contact);
+	onDuplicateCampaign = campaign => {
+		console.log('dupl', campaign);
 		const { history, match } = this.props;
-		console.log(this.props)
 		history.push({
-			pathname: `${NEW_CAMPAIGN}/${contact.id}`,
+			pathname: `${NEW_CAMPAIGN}/${campaign.id}`,
 			state: {
-				campaignSelected: contact,
+				campaignSelected: campaign,
 			},
+		});
+	};
+
+	onEditCampaign = campaign => {
+		console.log('edit', campaign);
+		const { history, match } = this.props;
+		history.push({
+			pathname: `${NEW_CAMPAIGN}/${campaign.id}`,
+			state: { campaignSelected: campaign },
 		});
 	};
 
@@ -111,17 +119,16 @@ class CampaignList extends Component {
 		<Menu
 			onClick={e => {
 				if (e.key === 'duplicate') {
-					this.onDuplicateContact(record);
+					this.onDuplicateCampaign(record);
 				} else if (e.key === 'edit') {
-					// this.props.history.push(`/refinex/feedback/${record.id}/edit`)
-
+					this.onEditCampaign(record);
 				} else if (e.key === "view") {
 					this.onViewCampaign(record)
 				} else if (e.key === "delete") {
 					console.log("DELETE...")
 					this.disableCampaign(record)
 				} else {
-					this.onDeleteContact(record);
+					this.onDeleteCampaign(record);
 				}
 			}}
 		>
@@ -240,7 +247,7 @@ class CampaignList extends Component {
 				key: 'action',
 				width: 10,
 				render: (text, record) => (
-					<div className="gx-module-contact-right">
+					<div className="gx-module-campaign-right">
 						<Dropdown overlay={this.menus(record)} placement="bottomRight" trigger={['click']}>
 							<i className="gx-icon-btn icon icon-ellipse-v" />
 						</Dropdown>
