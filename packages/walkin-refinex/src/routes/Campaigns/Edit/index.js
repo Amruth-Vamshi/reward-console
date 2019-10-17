@@ -45,7 +45,7 @@ import {
 } from '../../../Utils'
 import { async } from "q";
 import { GET_ALL_APPS_OF_ORGANIZATION } from "@walkinsole/walkin-core/src/PlatformQueries";
-
+import pick from "lodash/pick";
 
 
 const communicationData = [
@@ -151,10 +151,14 @@ class EditCampaign extends Component {
           communicationId.smsid = item.messageTemplate.id
         communicationFormValues.smsTag = item.messageTemplate.templateSubjectText 
         communicationFormValues.smsBody = item.messageTemplate.templateBodyText
-        }else if(item.messageTemplate.messageFormat == "EMAIL"){
+        }else if(item.messageTemplate.messageFormat == "PUSH"){
           communicationId.emailid = item.messageTemplate.id
-        communicationFormValues.email_subject = item.messageTemplate.templateSubjectText 
-        communicationFormValues.email_body = item.messageTemplate.templateBodyText
+        communicationFormValues.notificationTitle = item.messageTemplate.templateSubjectText 
+        communicationFormValues.notificationBody = item.messageTemplate.templateBodyText
+        }else{
+          communicationId.pushid = item.messageTemplate.id
+          communicationFormValues.email_subject = item.messageTemplate.templateSubjectText 
+          communicationFormValues.email_body = item.messageTemplate.templateBodyText
         }
       })
     }
@@ -255,6 +259,7 @@ class EditCampaign extends Component {
     }
     //Communication module
     if (this.state.current == 4) {
+      this.setState({loading:true})
       let {communicationFormValues,communicationSelected} = this.state;
       let comForm;
       console.log("saveEmailFormRef",this.pushFormRef,this.formRef1,this.emailFormRef)
@@ -268,7 +273,10 @@ class EditCampaign extends Component {
       }
      
       comForm.validateFields((err, values) => {
-        if (err)  return
+        if (err) {
+          this.setState({loading:false})
+           return
+          }
         else {
           if(this.state.communicationSelected == "SMS"){
             communicationFormValues.templateSubjectText = values.smsTag 
@@ -347,35 +355,37 @@ class EditCampaign extends Component {
   createCommunicationMutation = (current, values) => {
     //Update
     let update = false
-    var input = {
+    let input = {
        ...values,
         organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
     }
-    if(this.state.communicationSelected == "SMS"){
+    input= pick(input,['organization_id','templateBodyText','templateSubjectText']);
+    
       if(this.state.communicationId.smsid){
         update = true
         input.id=this.state.communicationId.smsid
       }
-    }else{
+      if(this.state.communicationId.pushid){
+      update = true;
+      input.id = this.state.communicationId.pushid;
+    }
       if(this.state.communicationId.emailid){
         update = true
         input.id=this.state.communicationId.emailid
       }
-    }
     if(update){
       this.props.updateMessageTemplate({
         variables:{
           input:input
         }
       }).then(async data =>{
-      
         console.log("UpdateMessageTemplateData...", updateMessageTemplate)
       }).catch(err =>{
         console.log("Error while updating messageTemptae for communication", err)
       })
     }else{
       //Create
-      var input = {
+      let input = {
         name: this.props.campaign.campaign.name +"_"+ Math.random().toString(36).substring(2),
         description: "",
         messageFormat: this.state.communicationSelected,
@@ -420,6 +430,7 @@ class EditCampaign extends Component {
           console.log("Error creating for message template", err);
         });
     }
+    this.setState({loading:false})
    
   };
 
@@ -754,7 +765,7 @@ class EditCampaign extends Component {
       case 4:
         return (
           <CustomScrollbars>
-          <Comm
+          <Communication
             subTitle="Communication"
             onChange={this.onCommunicationChange}
             communicationData={communicationData}

@@ -45,11 +45,6 @@ const PushNotificationForm = Form.create({ name: 'form_in_modal' })(
                             <Button>Attach image</Button>
                         </Upload>
                     </Form.Item>
-                    <Form.Item size={'large'} label="Deep linking path" {...formItemLayout}>
-                        {getFieldDecorator('deepLinking', {
-                            initialValue: '',
-                        })(<Input />)}
-                    </Form.Item>
                 </Form>
             );
         }

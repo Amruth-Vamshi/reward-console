@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
 import { campaigns, DISABLE_CAMPAIGN } from '../Query/index';
-import { Card, Menu, Dropdown, Col, Button, Progress, Tabs, message } from 'antd';
+import { Card, Menu, Dropdown, Col, Button, Progress, Tabs, message, Icon } from 'antd';
 import moment from 'moment';
 import { withApollo, graphql, compose } from 'react-apollo';
 import { SortableDataTable, InstantSearch, CampaignHeader } from '@walkinsole/shared';
@@ -119,10 +119,10 @@ class CampaignList extends Component {
                     }
                 }}
             >
-                <Menu.Item key="view">View</Menu.Item>
-                {includes(record.campaignStatus, SHOULD_EDIT) ? <Menu.Item key="edit">Edit</Menu.Item> : null}
-                <Menu.Item key="duplicate">Duplicate</Menu.Item>
-                <Menu.Item key="delete">Delete</Menu.Item>
+                <Menu.Item key="view" icon="eye"><Icon type="eye" /> View</Menu.Item>
+                {includes(record.campaignStatus, SHOULD_EDIT) ? <Menu.Item key="edit" icon="edit"><Icon type="edit" /> Edit</Menu.Item> : null}
+                <Menu.Item key="duplicate" icon="copy"><Icon type="copy" /> Duplicate</Menu.Item>
+                <Menu.Item key="delete" icon="delete"><Icon type="delete" /> Delete</Menu.Item>
             </Menu>
         );
     }
@@ -226,6 +226,50 @@ class CampaignList extends Component {
                     </div>
                 ),
             },
+            // {
+            //     title: 'Views/Visits',
+            //     key: 'Views',
+            //     render: (text, record) => (
+            //         <div className="gx-module-contact-right">
+            //             <Dropdown overlay={this.menus(record)} placement="bottomRight" trigger={['click']}>
+            //                 <i className="gx-icon-btn icon icon-ellipse-v" />
+            //             </Dropdown>
+            //         </div>
+            //     ),
+            // },
+            // {
+            //     title: 'Response',
+            //     key: 'response',
+            //     render: (text, record) => (
+            //         <div className="gx-module-contact-right">
+            //             <Dropdown overlay={this.menus(record)} placement="bottomRight" trigger={['click']}>
+            //                 <i className="gx-icon-btn icon icon-ellipse-v" />
+            //             </Dropdown>
+            //         </div>
+            //     ),
+            // },
+            // {
+            //     title: 'Complition Rate',
+            //     key: 'complition',
+            //     render: (text, record) => (
+            //         <div className="gx-module-contact-right">
+            //             <Dropdown overlay={this.menus(record)} placement="bottomRight" trigger={['click']}>
+            //                 <i className="gx-icon-btn icon icon-ellipse-v" />
+            //             </Dropdown>
+            //         </div>
+            //     ),
+            // },
+            // {
+            //     title: 'Avg. Time to Complete',
+            //     key: 'avg_time',
+            //     render: (text, record) => (
+            //         <div className="gx-module-contact-right">
+            //             <Dropdown overlay={this.menus(record)} placement="bottomRight" trigger={['click']}>
+            //                 <i className="gx-icon-btn icon icon-ellipse-v" />
+            //             </Dropdown>
+            //         </div>
+            //     ),
+            // },
             {
                 title: '',
                 key: 'action',
@@ -242,7 +286,7 @@ class CampaignList extends Component {
 
             <div style={{
                 minHeight: "100vh",
-                margin: '1 32px'
+                margin: '1 2px'
             }}>
                 <CampaignHeader
                     children={
@@ -259,7 +303,7 @@ class CampaignList extends Component {
                     }
                 />
                 <div className="RefineX-campaignList">
-                    <Widget title="Campaign List" style={{ margin: '32px' }} styleName="gx-card-tabs"
+                    <Widget title="Campaign List" style={{ margin: '22px' }} styleName="gx-card-tabs"
                         extra={
                             <InstantSearch
                                 placeHolder="Search campaign"
