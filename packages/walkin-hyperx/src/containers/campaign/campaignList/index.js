@@ -2,17 +2,16 @@ import React, { Component, Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
 import { NEW_CAMPAIGN, CAMPAIGN_MANAGEMENT, CAMPAIGN_DASHBOARD } from '../../../utils/RouterConstants';
 import { campaigns, DISABLE_CAMPAIGN } from '../../../query/campaign';
-import { Card, Menu, Dropdown, Col, Spin, Button, Progress, Tabs } from 'antd';
+import { Card, Menu, Dropdown, Col, Spin, Button, Progress, Tabs, Icon } from 'antd';
 import moment from 'moment';
 import { withApollo, graphql, compose } from 'react-apollo';
+import { DEFAULT_ACTIVE_STATUS, DEFAULT_HYPERX_CAMPAIGN, SHOULD_EDIT } from "../../../utils"
 import { SortableDataTable, InstantSearch, CampaignHeader } from '@walkinsole/shared';
 import { CircularProgress, Widget } from '@walkinsole/walkin-components';
+import includes from "lodash/includes"
 
 import './style.css';
 import jwt from 'jsonwebtoken'
-
-const DEFAULT_STATUS = 'ACTIVE';
-const DEFAULT_TYPE = 'OFFER';
 
 const { TabPane } = Tabs;
 
@@ -132,10 +131,10 @@ class CampaignList extends Component {
 				}
 			}}
 		>
-			<Menu.Item key="view">View</Menu.Item>
-			<Menu.Item key="edit">Edit</Menu.Item>
-			{/* <Menu.Item key="duplicate">Duplicate</Menu.Item> */}
-			<Menu.Item key="delete">Delete</Menu.Item>
+			<Menu.Item key="view" icon="eye"><Icon type="eye" /> View</Menu.Item>
+			{includes(record.campaignStatus, SHOULD_EDIT) ? <Menu.Item key="edit" icon="edit"><Icon type="edit" /> Edit</Menu.Item> : null}
+			{/* <Menu.Item key="duplicate" icon="copy"><Icon type="copy" /> Duplicate</Menu.Item> */}
+			<Menu.Item key="delete" icon="delete"><Icon type="delete" /> Delete</Menu.Item>
 		</Menu>
 	);
 
@@ -326,8 +325,8 @@ export default withRouter(
 				options: () => ({
 					variables: {
 						organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
-						status: DEFAULT_STATUS,
-						campaignType: DEFAULT_TYPE
+						status: DEFAULT_ACTIVE_STATUS,
+						campaignType: DEFAULT_HYPERX_CAMPAIGN
 					}, fetchPolicy: "network-only",
 					forceFetch: true
 				}),
@@ -337,8 +336,8 @@ export default withRouter(
 						refetch({
 							variables: {
 								organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
-								status: DEFAULT_STATUS,
-								campaignType: DEFAULT_TYPE
+								status: DEFAULT_ACTIVE_STATUS,
+								campaignType: DEFAULT_HYPERX_CAMPAIGN
 							}, fetchPolicy: "network-only"
 						});
 					},
