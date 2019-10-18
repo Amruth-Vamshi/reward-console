@@ -129,13 +129,12 @@ export const UPDATE_SEGMENT = gql`
 	}
 `;
 
-export const GET_AUDIENCE = gql`
+export const GET_AUDIENCES = gql`
 	query audiences($organization_id: ID,$application_id:ID,$campaign_id: ID,$segment_id: ID,$status: STATUS ) {
 		audiences(organization_id: $organization_id,application_id: $application_id,
-			campaign_id: $campaign_id,segment_id: $segment_id,status: $status) 
-			{
+			campaign_id: $campaign_id,segment_id: $segment_id,status: $status) {
 				id status campaign{ id name status }
-    			segment{ id name segmentType status }
+    			segment{ id name segmentType status rule{ id name	type } }
 		}
 	}
 `;
@@ -148,15 +147,7 @@ export const CREATE_AUDIENCE = gql`
 		}
 	}
 `
-export const GET_AUDIENCES = gql`
-	query audiences($campaign_id:ID, $organization_id:ID,$segment_id:ID,$status:STATUS){
-	audiences(campaign_id:$campaign_id, organization_id:$organization_id,segment_id:$segment_id,status:$status){
-      id status
-      segment{ id name status
-      rule{ id name	type }
-		}
-	}
-}`
+
 
 export const UPDATE_AUDIENCES_WITH_CAMPAIGNID = gql`
 mutation updateAudiencesWithCampaignId($campaignId:ID, $segments:[ID]!){

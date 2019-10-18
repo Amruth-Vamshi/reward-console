@@ -5,8 +5,8 @@ import Audience from "./audience";
 import Offer from "./offer";
 import Communication from "./communication";
 import { campaignOverview as Overview } from "@walkinsole/shared";
-import { allSegments, RULE_ATTRIBUTES, GET_AUDIENCE, CREATE_AUDIENCE, CREATE_RULE, AUDIENCE_COUNT, UPDATE_RULE, UPDATE_AUDIENCES_WITH_CAMPAIGNID } from "../../../query/audience";
-import { getOffers, ADD_OFFER_TO_CAMPAIGN } from "../../../query/offer";
+import { allSegments, RULE_ATTRIBUTES, GET_AUDIENCES, CREATE_AUDIENCE, CREATE_RULE, AUDIENCE_COUNT, UPDATE_RULE, UPDATE_AUDIENCES_WITH_CAMPAIGNID } from "../../../query/audience";
+import { getOffers, ADD_OFFER_TO_CAMPAIGN, GET_OFFER_FOR_CAMPAIGN } from "../../../query/offer";
 import { withApollo, graphql, compose } from 'react-apollo';
 import { GET_ALL_APPS_OF_ORGANIZATION } from "@walkinsole/walkin-core/src/PlatformQueries";
 import { Col, Row, message } from 'antd';
@@ -82,41 +82,53 @@ class CampaignCreation extends Component {
 	}
 
 	componentWillMount = () => {
-		const { location, match } = this.props;
+		const { location, match, client } = this.props;
+		const { id, org_id } = jwt.decode(localStorage.getItem("jwt"))
 		if (location && location.state) {
 			console.log("this...", location.state)
 			if (location.state.update)
 				this.setState({ campaign: location.state.campaignSelected, formValues: location.state.campaignSelected, update: true });
+			client.query({
+				query: GET_OFFER_FOR_CAMPAIGN,
+				fetchPolicy: 'network-only',
+				variables: { campaign_id: match.params.id, organization_id: org_id }
+			}).then(res => {
+				console.log(res);
+			}).catch(err => {
+				console.log("Error Update campaign", err)
+			});
 		}
 	}
 	componentDidUpdate(preValue) {
-		console.log('>>>', this.props);
-		// 	if (this.props.allAudiences.loading !== preValue.allAudiences.loading) {
-		// 		if (this.props.allAudiences.audiences) {
-		// 			let selectedSegments = []
-		// 			this.props.allAudiences.audiences.map(item => selectedSegments.push(item.segment.id))
-		// 			this.setState({ selectedSegments: selectedSegments })
-		// 		}
-		// 	}
-		// 	if (this.props.allCommunications.loading !== preValue.allCommunications.loading) {
-		// 		let { communicationFormValues } = this.state
-		// 		let communicationId = {}
-		// 		if (this.props.allCommunications.communications) {
-		// 			this.props.allCommunications.communications.map(item => {
-		// 				if (item.messageTemplate.messageFormat == "SMS") {
-		// 					communicationId.smsid = item.messageTemplate.id
-		// 					communicationFormValues.smsTag = item.messageTemplate.templateSubjectText
-		// 					communicationFormValues.smsBody = item.messageTemplate.templateBodyText
-		// 				} else if (item.messageTemplate.messageFormat == "EMAIL") {
-		// 					communicationId.emailid = item.messageTemplate.id
-		// 					communicationFormValues.email_subject = item.messageTemplate.templateSubjectText
-		// 					communicationFormValues.email_body = item.messageTemplate.templateBodyText
-		// 				}
-		// 			})
-		// 		}
+		// console.log('>>>', this.props.offerForCampaign);
+		if (this.state.update) {
+			if (this.props.linkedAudiences.loading !== preValue.linkedAudiences.loading) {
+				if (this.props.linkedAudiences.audiences) {
+					let selectedSegments = []
+					this.props.linkedAudiences.audiences.map(item => selectedSegments.push(item.segment.id))
+					this.setState({ selectedSegments: selectedSegments })
+				}
+			}
+			// 	if (this.props.allCommunications.loading !== preValue.allCommunications.loading) {
+			// 		let { communicationFormValues } = this.state
+			// 		let communicationId = {}
+			// 		if (this.props.allCommunications.communications) {
+			// 			this.props.allCommunications.communications.map(item => {
+			// 				if (item.messageTemplate.messageFormat == "SMS") {
+			// 					communicationId.smsid = item.messageTemplate.id
+			// 					communicationFormValues.smsTag = item.messageTemplate.templateSubjectText
+			// 					communicationFormValues.smsBody = item.messageTemplate.templateBodyText
+			// 				} else if (item.messageTemplate.messageFormat == "EMAIL") {
+			// 					communicationId.emailid = item.messageTemplate.id
+			// 					communicationFormValues.email_subject = item.messageTemplate.templateSubjectText
+			// 					communicationFormValues.email_body = item.messageTemplate.templateBodyText
+			// 				}
+			// 			})
+			// 		}
 
-		// 		this.setState({ communicationFormValues, communicationId })
-		// 	}
+			// 		this.setState({ communicationFormValues, communicationId })
+			// 	}
+		}
 	}
 
 
@@ -527,7 +539,6 @@ class CampaignCreation extends Component {
 	render() {
 		console.log("Edit")
 		console.log(this.props, this.state);
-		console.log('>>', this.props.linkedAudiences)
 		const { formValues, current, showTestAndControl, testValue, controlValue, testControlSelected, update, rows, values, communicationSelected } = this.state;
 		let attributeData = []
 		if (this.props.allAttributes)
@@ -717,7 +728,7 @@ export default withRouter(
 					fetchPolicy: 'network-only',
 				})
 			}),
-			graphql(GET_AUDIENCE, {
+			graphql(GET_AUDIENCES, {
 				name: 'linkedAudiences',
 				options: ownProps => ({
 					variables: {
@@ -738,17 +749,6 @@ export default withRouter(
 					};
 				}
 			}),
-			// graphql(GET_CAMPAIGN, {
-			// 	name: "getcampaign",
-			// 	options: props => ({
-			// 		variables: {
-			// 			id: props.match.params.id,
-
-			// 		},
-			// 		fetchPolicy: "network-only"
-			// 	})
-			// }),
-
 			graphql(COMMUNICATIONS, {
 				name: "allCommunications",
 				options: props => ({

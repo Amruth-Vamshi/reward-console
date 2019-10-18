@@ -122,5 +122,11 @@ mutation addOfferToCampaign($input:CampaignOfferInput){
 	addOfferToCampaign(input:$input){
 	  id offer{id name }
 	}
+}`
+
+export const GET_OFFER_FOR_CAMPAIGN = gql`
+query getOffersForACampaign($campaign_id:ID!, $organization_id:ID!){
+  getOffersForACampaign(campaignId:$campaign_id, organizationId:$organization_id){
+    offer{ id offerType  name  description coupon  status  }
   }
-`
+}`

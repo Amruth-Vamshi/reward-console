@@ -2,11 +2,12 @@ import React, { Component, Fragment } from 'react'
 import { CampaignHeader } from '@walkinsole/walkin-components'
 import { Button, Row, Col, message } from 'antd'
 import { campaignOverview as Overview } from "@walkinsole/shared";
-import { CAMPAIGN_DASHBOARD, GET_CAMPAIGN_DASHBOARD, UPDATE_CAMPAIGN, LAUNCH_CAMPAIGN, PAUSE_CAMPAIGN, UNPAUSE_CAMPAIGN, ABANDON_CAMPAIGN, AUDIENCES, GET_OFFER_FOR_CAMPAIGN } from '../../../query/campaign'
+import { CAMPAIGN_DASHBOARD, GET_CAMPAIGN_DASHBOARD, UPDATE_CAMPAIGN, LAUNCH_CAMPAIGN, PAUSE_CAMPAIGN, UNPAUSE_CAMPAIGN, ABANDON_CAMPAIGN } from '../../../query/campaign'
 import { withApollo, graphql, compose, mutate } from 'react-apollo';
 import { withRouter } from 'react-router-dom';
 import moment from 'moment';
 import jwt from "jsonwebtoken";
+import { GET_AUDIENCES } from '../../../query/audience';
 
 
 class CampaignDashboard extends Component {
@@ -14,7 +15,7 @@ class CampaignDashboard extends Component {
         super(props)
         this.state = {
             loading: false,
-            loading1:false
+            loading1: false
         }
     }
     launchCampaign = () => {
@@ -84,7 +85,7 @@ class CampaignDashboard extends Component {
         let audiences = this.props.allAudiences.audiences;
 
 
-        let { loading,loading1 } = this.state
+        let { loading, loading1 } = this.state
         return (
             <div>
 
@@ -139,7 +140,7 @@ export default withRouter(
             graphql(ABANDON_CAMPAIGN, {
                 name: "abandonCampaign"
             }),
-            graphql(AUDIENCES, {
+            graphql(GET_AUDIENCES, {
                 name: "allAudiences",
                 options: props => ({
                     variables: {
