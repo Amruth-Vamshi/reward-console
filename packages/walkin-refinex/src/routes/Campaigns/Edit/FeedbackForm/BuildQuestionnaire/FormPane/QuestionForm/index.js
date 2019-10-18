@@ -136,7 +136,7 @@ class QuestionForm extends Component {
     const { getFieldDecorator, isFieldsTouched } = form;
     const { Item } = Form;
     let props = {}
-    if (isFieldsTouched(["questionText"])) {
+    if (isFieldsTouched(["questionText"]) || isFieldsTouched(["range"])) {
       props = {
         suffix: (<Tooltip title="Update Question">
           <Button
@@ -202,7 +202,7 @@ class QuestionForm extends Component {
                 }
               >
                 {getFieldDecorator("range", {
-                  initialValue: [0, 10]
+                  initialValue: [this.props.questionToEdit.rangeMin, this.props.questionToEdit.rangeMax]
                 })(<Slider range />)}
               </Item>
               <Item wrapperCol={{ offset: 18 }}>
