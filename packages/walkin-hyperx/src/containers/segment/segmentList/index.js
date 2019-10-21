@@ -5,7 +5,7 @@ import { withApollo, graphql } from 'react-apollo';
 import { NEW_SEGMENT } from '../../../utils/RouterConstants';
 import { Card, Menu, Dropdown, Button, Col } from 'antd';
 import moment from 'moment';
-import { SortableDataTable, InstantSearch, CampaignHeader } from '@walkinsole/walkin-components';
+import { SortableDataTable, InstantSearch, CampaignHeader } from '@walkinsole/shared';
 import jwt from "jsonwebtoken";
 
 class SegmentList extends Component {
@@ -76,6 +76,17 @@ class SegmentList extends Component {
 			},
 		});
 	};
+
+	onUpdateSegment = record => {
+		const { history } = this.props;
+		history.push({
+			pathname: `/hyperx/segments/create/${record.id}`,
+			state: {
+				segmentSelected: record, update: true
+			},
+		});
+	}
+
 	menus = record => (
 		<Menu
 			onClick={e => {
@@ -83,10 +94,11 @@ class SegmentList extends Component {
 					this.onDuplicateContact(record);
 				} else if (e.key === 'delete') {
 					this.onDeleteContact(record);
-				} else this.onUpdateStatusContact(record, e.key)
+				} else this.onUpdateSegment(record, e.key)
 			}}
 		>
 			{/* {record.status != "ACTIVE" ? <Menu.Item key="ACTIVE">Make Active</Menu.Item> : <Menu.Item key="INACTIVE">Make Inactive</Menu.Item>} */}
+			<Menu.Item key="edit">Edit</Menu.Item>
 			<Menu.Item key="duplicate">Duplicate</Menu.Item>
 			<Menu.Item key="delete">Delete</Menu.Item>
 		</Menu>

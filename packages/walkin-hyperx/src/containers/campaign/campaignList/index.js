@@ -1,11 +1,13 @@
 import React, { Component, Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
-import { NEW_CAMPAIGN } from '../../../utils/RouterConstants';
-import { campaigns } from '../../../query/campaign';
+import { NEW_CAMPAIGN, CAMPAIGN_MANAGEMENT, CAMPAIGN_DASHBOARD } from '../../../utils/RouterConstants';
+import { campaigns, DISABLE_CAMPAIGN } from '../../../query/campaign';
 import { Card, Menu, Dropdown, Col, Spin, Button, Progress, Tabs } from 'antd';
 import moment from 'moment';
-import { withApollo, graphql } from 'react-apollo';
-import { SortableDataTable, InstantSearch, CampaignHeader, CircularProgress, Widget } from '@walkinsole/walkin-components';
+import { withApollo, graphql, compose } from 'react-apollo';
+import { SortableDataTable, InstantSearch, CampaignHeader } from '@walkinsole/shared';
+import { CircularProgress, Widget } from '@walkinsole/walkin-components';
+
 import './style.css';
 import jwt from 'jsonwebtoken'
 
@@ -22,7 +24,7 @@ class CampaignList extends Component {
 			filtered: null,
 			allCampaigns: null,
 			data: null,
-			loading: null,
+			loading: false,
 			key: this.props.location.tabKey ? this.props.location.tabKey : '1'
 		};
 	}
@@ -39,6 +41,10 @@ class CampaignList extends Component {
 		}
 	}
 
+	// componentWillReceiveProps = p => {
+	// 	this.setInitialValues()
+	// }
+
 	setInitialValues = () => {
 		const { campaigns, loading } = this.props;
 		this.setState({ allCampaigns: campaigns, loading: false }, () => {
@@ -52,13 +58,43 @@ class CampaignList extends Component {
 			pathname: NEW_CAMPAIGN,
 		});
 	};
-	handleChange = (pagination, filters, sorter) => {
+	handleChange = (pagination, filters, sorter, key, e) => {
+		console.log(pagination, filters, sorter, key, e);
 		this.setState({ sortedInfo: sorter });
 	};
 
 	onDeleteContact = contact => {
 		console.log('delete', contact);
 	};
+
+	onViewCampaign = campaign => {
+		console.log('View', campaign);
+		this.props.history.push({
+			pathname: `${CAMPAIGN_DASHBOARD}/${campaign.id}`,
+			state: { campaignSelected: campaign },
+		});
+	};
+	disableCampaign = campaign => {
+		this.setState({ loading: true })
+		this.props.disableCampaign({
+			variables: {
+				id: campaign.id
+			}
+		}).then(({ data }) => {
+			console.log("Data..", data)
+			console.log("Disabled");
+			this.props.changeStatus()
+			this.setState({ allCampaigns: this.props.campaigns, loading: false }, () => {
+				this.onTabChange(this.state.key)
+			})
+			this.setState({ loading: false })
+		}).catch(err => {
+
+			console.log("ERR", err);
+			this.setState({ loading: false })
+		})
+	}
+
 	onDuplicateContact = contact => {
 		console.log('dupl', contact);
 		const { history, match } = this.props;
@@ -71,9 +107,6 @@ class CampaignList extends Component {
 		});
 	};
 
-	showMatrics = record => {
-		console.log("matrics", record)
-	}
 	menus = record => (
 		<Menu
 			onClick={e => {
@@ -83,15 +116,18 @@ class CampaignList extends Component {
 					// this.props.history.push(`/refinex/feedback/${record.id}/edit`)
 
 				} else if (e.key === "view") {
-					this.showMatrics(record)
+					this.onViewCampaign(record)
+				} else if (e.key === "delete") {
+					console.log("DELETE...")
+					this.disableCampaign(record)
 				} else {
 					this.onDeleteContact(record);
 				}
 			}}
 		>
 			<Menu.Item key="view">View</Menu.Item>
-			{/* <Menu.Item key="edit">Edit</Menu.Item>
-			<Menu.Item key="duplicate">Duplicate</Menu.Item> */}
+			<Menu.Item key="edit">Edit</Menu.Item>
+			{/* <Menu.Item key="duplicate">Duplicate</Menu.Item> */}
 			<Menu.Item key="delete">Delete</Menu.Item>
 		</Menu>
 	);
@@ -104,9 +140,8 @@ class CampaignList extends Component {
 	};
 
 	onTabChange = key => {
+		this.setState({ key })
 		const { allCampaigns } = this.state
-
-		console.log(key)
 		if (!allCampaigns || allCampaigns.length < 1) return
 		if (key == 2) {
 			let upcomingCampaigns = allCampaigns.filter(val => {
@@ -126,9 +161,14 @@ class CampaignList extends Component {
 			this.setState({ data: completedCampaigns, filtered: null });
 		}
 		if (key == 4) {
-			const { changeStatus } = this.props;
 			let draftCampaigns = allCampaigns.filter(val => {
 				return val.campaignStatus == 'DRAFT';
+			});
+			this.setState({ data: draftCampaigns, filtered: null });
+		}
+		if (key == 5) {
+			let draftCampaigns = allCampaigns.filter(val => {
+				return val.campaignStatus == 'PAUSE';
 			});
 			this.setState({ data: draftCampaigns, filtered: null });
 		}
@@ -158,8 +198,6 @@ class CampaignList extends Component {
 			defaultPageSize: 6,
 			showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`
 		}
-
-		console.log(this.state.key);
 
 		const columns = [
 			{
@@ -226,16 +264,7 @@ class CampaignList extends Component {
 						</Fragment>
 					}
 				/>
-				{loading ?
-					<div>
-						<br /> <br /> <br /> <br /><br /> <br />
-						<div className="divCenter">
-							<Spin size="large" />
-						</div>
-						<br /> <br /> <br />
-					</div>
-					:
-					// <div className="gx-card" style={{ margin: '32px' }}>
+				{/* // <div className="gx-card" style={{ margin: '32px' }}>
 					// 	<div className="gx-card-body">
 					// 		<div className="searchInputStyle">
 					// 			<InstantSearch
@@ -243,35 +272,38 @@ class CampaignList extends Component {
 					// 				data={data}
 					// 				onFilteredList={this.onCampaignFilteredList}
 					// 			/>
-					// 		</div>
-					<div className="HyperX-campaignList">
-						<Widget title="Campaign List" style={{ margin: '32px' }} styleName="gx-card-tabs"
-							extra={
-								<InstantSearch
-									placeHolder="Search campaign"
-									data={data}
-									onFilteredList={this.onCampaignFilteredList}
-								/>}
-						>
-							<Tabs defaultActiveKey={key ? key : "1"} onChange={this.onTabChange}>
-								<TabPane tab="Live" key="1">
-									<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} pagination={paginationData} />
-								</TabPane>
-								<TabPane tab="Upcoming" key="2">
-									<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} pagination={paginationData} />
-								</TabPane>
-								<TabPane tab="Completed" key="3">
-									<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} pagination={paginationData} />
-								</TabPane>
-								<TabPane tab="Draft" key="4">
-									<SortableDataTable data={campaignData} onChange={this.handleChange} columns={columns} pagination={paginationData} />
-								</TabPane>
-							</Tabs>
-						</Widget>
-					</div>
-					// 	</div>
-					// </div>
-				}
+					// 		</div> */}
+				<div className="HyperX-campaignList">
+					<Widget title="Campaign List" style={{ margin: '32px' }} styleName="gx-card-tabs"
+						extra={
+							<InstantSearch
+								placeHolder="Search campaign"
+								data={data}
+								onFilteredList={this.onCampaignFilteredList}
+							/>}
+					>
+						<Tabs defaultActiveKey={key ? key : "1"} onChange={this.onTabChange}>
+							<TabPane tab="Live" key="1">
+								<SortableDataTable loading={loading} data={campaignData} onChange={this.handleChange} columns={columns} pagination={paginationData} />
+							</TabPane>
+							<TabPane tab="Upcoming" key="2">
+								<SortableDataTable loading={loading} data={campaignData} onChange={this.handleChange} columns={columns} pagination={paginationData} />
+							</TabPane>
+							<TabPane tab="Completed" key="3">
+								<SortableDataTable loading={loading} data={campaignData} onChange={this.handleChange} columns={columns} pagination={paginationData} />
+							</TabPane>
+							<TabPane tab="Draft" key="4">
+								<SortableDataTable loading={loading} data={campaignData} onChange={this.handleChange} columns={columns} pagination={paginationData} />
+							</TabPane>
+							<TabPane tab="Paused" key="5">
+								<SortableDataTable loading={loading} data={campaignData} onChange={this.handleChange} columns={columns} pagination={paginationData} />
+							</TabPane>
+						</Tabs>
+					</Widget>
+				</div>
+				{/* // 	</div>
+					// </div> */}
+
 			</div>
 		);
 	}
@@ -279,23 +311,32 @@ class CampaignList extends Component {
 
 export default withRouter(
 	withApollo(
-		graphql(campaigns, {
-			options: () => ({
-				variables: {
-					organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
-					status: DEFAULT_STATUS,
-					campaignType: DEFAULT_TYPE
-				}, fetchPolicy: "network-only"
+		compose(
+			graphql(campaigns, {
+				options: () => ({
+					variables: {
+						organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
+						status: DEFAULT_STATUS,
+						campaignType: DEFAULT_TYPE
+					}, fetchPolicy: "network-only",
+					forceFetch: true
+				}),
+				props: ({ data: { loading, error, campaigns, refetch } }) => ({
+					loading, campaigns, error,
+					changeStatus: status => {
+						refetch({
+							variables: {
+								organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
+								status: DEFAULT_STATUS,
+								campaignType: DEFAULT_TYPE
+							}, fetchPolicy: "network-only"
+						});
+					},
+				}),
 			}),
-			props: ({ data: { loading, error, campaigns, refetch } }) => ({
-				loading,
-				campaigns,
-				error,
-				changeStatus: status => {
-					const variables = { status };
-					refetch(variables);
-				},
+			graphql(DISABLE_CAMPAIGN, {
+				name: "disableCampaign"
 			}),
-		})(CampaignList)
+		)(CampaignList)
 	)
 );

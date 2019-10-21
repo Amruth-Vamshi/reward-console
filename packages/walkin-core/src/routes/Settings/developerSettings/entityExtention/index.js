@@ -95,7 +95,6 @@ class EntityExtention extends Component {
     this.props.client
       .query({
         query: GET_ENTITIES,
-        // variables: { org_id, status: "ACTIVE" },
         fetchPolicy: "network-only"
       })
       .then(entitiessResponse => {

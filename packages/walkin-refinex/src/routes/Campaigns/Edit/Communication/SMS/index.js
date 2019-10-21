@@ -1,64 +1,58 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Form, Input, Icon } from "antd";
-import {
-  AddAndDeleteSelectDynamically,
-  WalkinQueryBuilder
-} from "@walkinsole/walkin-components";
-class SMS extends Component {
-  static propTypes = {
-    prop: PropTypes
-  };
-  constructor(props) {
-    super(props);
-    this.state = {
-      sms_tag: "",
-      sms_body: ""
-    };
-  }
+import React, { Fragment } from 'react';
+import { Form, Input, Upload, Button, message } from 'antd';
+import moment from 'moment';
+const { TextArea } = Input;
 
-  render() {
-    const {
-      getFieldDecorator,
-      getFieldsError,
-      getFieldError,
-      isFieldTouched
-    } = this.props.form;
-    console.log("SMS...", this.props.form);
-    const { formValues, saveFormRef, onFormNext } = this.props;
-    // const { getFieldDecorator } = form;
+const props = {
+	name: 'file',
+	action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+	headers: {
+		authorization: 'authorization-text',
+	},
+	onChange(info) {
+		if (info.file.status !== 'uploading') {
+			console.log(info.file, info.fileList);
+		}
+		if (info.file.status === 'done') {
+			message.success(`${info.file.name} file uploaded successfully`);
+		} else if (info.file.status === 'error') {
+			message.error(`${info.file.name} file upload failed.`);
+		}
+	},
+};
 
-    return (
-      <Form
-        layout="vertical"
-        //onSubmit={this.handleSubmit}
-        ref={saveFormRef}
-        onSubmit={onFormNext}
-      >
-        <Form.Item label="SMS Tag">
-          {getFieldDecorator("sms_tag", {
-            rules: [{ required: true, message: "Please enter SMS tag!" }]
-          })(
-            <Input
-              prefix={
-                <Icon type="message" style={{ color: "rgba(0,0,0,.25)" }} />
-              }
-              placeholder="Enter SMS Tag"
-            />
-          )}
-        </Form.Item>
-        <Form.Item label="SMS Body">
-          {getFieldDecorator("sms_body", {
-            rules: [{ required: true, message: "Please enter SMS body!" }]
-          })(<Input.TextArea rows={6} placeholder="Enter SMS body" />)}
-          {/* <Input.TextArea rows={6} placeholder="Enter SMS body" size="large" /> */}
-        </Form.Item>
-        {/* <WalkinQueryBuilder onQueryChange={this.props.logCommunication} /> */}
-      </Form>
-    );
-  }
-}
-
-const SMSFORM = Form.create({ name: "SMS" })(SMS);
-
-export default SMSFORM;
+const SMSForm = Form.create({ name: 'form_in_modal' })(
+	// eslint-disable-next-line
+	class SMSForm extends React.Component {
+		render() {
+			const { form, onFormNext, wrappedComponentRef, formValues, text } = this.props;
+			const { getFieldDecorator } = form;
+			const formItemLayout = {
+				labelCol: { span: 24 },
+				wrapperCol: { span: 24 },
+			};
+			return (
+				<Form style={{ paddingTop: '20px' }} layout="vertical" ref={wrappedComponentRef} onSubmit={onFormNext}>
+					<Form.Item size={'large'} label="SMS tag" {...formItemLayout}>
+						{getFieldDecorator('smsTag', {
+							initialValue: `${Object.keys(formValues).length != 0 ? formValues.smsTag ? formValues.smsTag : "" : ""}`,
+							rules: [{ required: true, message: 'SMS tag is required' }],
+						})(<Input />)}
+					</Form.Item>
+					<Form.Item label="SMS body" {...formItemLayout}>
+						{getFieldDecorator('smsBody', {
+							initialValue: `${Object.keys(formValues).length != 0 ? formValues.smsBody ? formValues.smsBody : "" : ""}`,
+							rules: [{ required: true, message: 'SMS body is required' }],
+						})(<TextArea rows={3} />)}
+					</Form.Item>
+					<Form.Item style={{ paddingLeft: '16px' }}>
+						<Upload {...props}>
+							<Button>Upload and link file</Button>
+						</Upload>
+					</Form.Item>
+				</Form>
+			);
+		}
+	}
+);
+export default SMSForm;

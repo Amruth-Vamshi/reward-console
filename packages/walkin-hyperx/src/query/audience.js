@@ -73,6 +73,18 @@ export const CREATE_RULE = gql`
   }
 `;
 
+export const UPDATE_RULE = gql`
+  mutation updateRule($id:ID! ,$input: UpdateRuleInput!) {
+    updateRule(id:$id, input:$input) {
+      id
+    name
+    description
+    status
+    type
+    }
+  }
+`;
+
 export const createSegment = gql`
 	mutation createSegment(
 		$name: String!
@@ -133,6 +145,13 @@ export const CREATE_AUDIENCE = gql`
 		createAudience(input:$input){
 			id status campaign{ id name  }
 			segment{ id name segmentType }
+		}
+	}
+`
+export const AUDIENCE_COUNT = gql`
+	query audienceCount($segments:[ID], $organizationId:ID!){
+		audienceCount(segments:$segments, organizationId:$organizationId){
+			count
 		}
 	}
 `

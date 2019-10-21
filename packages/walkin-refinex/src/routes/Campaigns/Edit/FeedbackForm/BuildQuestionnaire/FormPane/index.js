@@ -40,13 +40,31 @@ class QuestionnaireFormPane extends Component {
     });
   };
 
-  onQuestionEdited = (values) => {
-    console.log("values", values);
-    if (questionWithSlider[values.type]) {
-      values.rangeMin = values.rangeMin;
-      values.rangeMax = values.rangeMax;
+  onQuestionTypeEdit = (value) => {
+    console.log("this.state.questionToEdit", this.state.questionToEdit)
+    const values = {
+      ...this.props.questionToEdit,
+      type: value
     }
-    delete values.range;
+    if (questionWithSlider[values.type]) {
+      values.rangeMin = 1;
+      values.rangeMax = 10;
+    } else {
+      delete values.range;
+    }
+
+    this.setState({
+      questionToEdit: values,
+      showButton: true
+    });
+    this.props.onQuestionSubmitted(values);
+  };
+
+  onQuestionEdited = (values) => {
+    if (values.range) {
+      values.rangeMin = values.range[0];
+      values.rangeMax = values.range[1];
+    }
     this.setState({
       questionToEdit: Object.assign(this.state.questionToEdit, values),
       showButton: true
@@ -79,7 +97,6 @@ class QuestionnaireFormPane extends Component {
       questionnaire,
       onLinkChoiceToQuestion
     } = this.props;
-    console.log("questionToEdit", questionnaire)
     return (
       <Row
         style={{
@@ -90,6 +107,7 @@ class QuestionnaireFormPane extends Component {
         <Col span={24}>
           {questionType != null && choiceToAddQuestion != null ? (
             <CreateQuestion
+              onQuestionTypeEdit={this.onQuestionTypeEdit}
               showButton={this.state.showButton}
               questionnaire={questionnaire}
               onQuestionEdited={this.onQuestionEdited}
@@ -109,6 +127,7 @@ class QuestionnaireFormPane extends Component {
             />
           ) : (
               <ShowQuestion
+                onQuestionTypeEdit={this.onQuestionTypeEdit}
                 showButton={this.state.showButton}
                 questionnaire={questionnaire}
                 onQuestionEdited={this.onQuestionEdited}

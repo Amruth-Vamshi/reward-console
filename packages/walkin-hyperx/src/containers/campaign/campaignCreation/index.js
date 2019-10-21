@@ -4,8 +4,8 @@ import BasicInfo from "./basicInfo";
 import Audience from "./audience";
 import Offer from "./offer";
 import Communication from "./communication";
-import { campaignOverview as Overview } from "@walkinsole/walkin-components";
-import { allSegments, RULE_ATTRIBUTES, GET_AUDIENCE, CREATE_AUDIENCE, CREATE_RULE } from "../../../query/audience";
+import { campaignOverview as Overview } from "@walkinsole/shared";
+import { allSegments, RULE_ATTRIBUTES, GET_AUDIENCE, CREATE_AUDIENCE, CREATE_RULE, AUDIENCE_COUNT } from "../../../query/audience";
 import { getOffers, ADD_OFFER_TO_CAMPAIGN } from "../../../query/offer";
 import { withApollo, graphql, compose } from 'react-apollo';
 import { GET_ALL_APPS_OF_ORGANIZATION } from "@walkinsole/walkin-core/src/PlatformQueries";
@@ -13,8 +13,8 @@ import { Col, Row, message } from 'antd';
 import jwt from "jsonwebtoken";
 import '../styles.css'
 import moment from "moment";
-import { CampaignFooter, CampaignHeader, Stepper } from '@walkinsole/walkin-components';
-import { CREATE_CAMPAIGN, UPDATE_CAMPAIGN, CREATE_MESSAGE_TEMPLETE, CREATE_COMMUNICATION, LAUNCH_CAMPAIGN } from '../../../query/campaign';
+import { CampaignFooter, CampaignHeader, Stepper } from '@walkinsole/shared';
+import { CREATE_CAMPAIGN, UPDATE_CAMPAIGN, CREATE_MESSAGE_TEMPLETE, CREATE_COMMUNICATION, LAUNCH_CAMPAIGN, CREATE_COMMUNICATION_WITH_MESSAGE_TEMPLETE } from '../../../query/campaign';
 
 const stepData = [{
 	id: 1,
@@ -59,6 +59,7 @@ class CampaignCreation extends Component {
 			communication: '',
 			communicationSelected: 'SMS',
 			errors: {},
+			audienceCount: 0,
 			loading: false,
 			noOfferRequired: false,
 			offer: '',
@@ -102,6 +103,10 @@ class CampaignCreation extends Component {
 	onFormNext = e => {
 		e.preventDefault();
 	};
+
+	// updateAudienceCount = () =>{
+	// 	this.props.client.
+	// }
 
 	saveDraft = current => {
 		this.props.history.push('/hyperx/campaigns')
@@ -173,18 +178,19 @@ class CampaignCreation extends Component {
 					this.setState({ emailForm: values })
 				else this.setState({ pushForm: values })
 				!createComm ?
-					this.createCommunicationMutation(c, values) : ''
+					// this.createCommunicationMutation(c, values) : ''
+					this.createCommunicationWithMessageTemplate(c, values) : ''
+
 			}
 		})
 
 	}
-
-	createCommunicationMutation = (current, values) => {
+	createCommunicationWithMessageTemplate = (current, values) => {
 		let { communicationSelected, scheduleData, scheduleSaveMark } = this.state;
 		console.log('COMM', communicationSelected, values);
 		this.setState({ loading: true })
-		var input = {
-			name: this.state.campaign.name,
+		var messageTemplateInput = {
+			name: this.state.campaign.name + "_" + communicationSelected,
 			description: "",
 			messageFormat: communicationSelected,
 			templateBodyText: communicationSelected == "SMS" ? values.smsBody : communicationSelected == "EMAIL" ? values.email_body : values.notificationBody,
@@ -193,13 +199,58 @@ class CampaignCreation extends Component {
 			organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
 			status: "ACTIVE"
 		};
+		var communicationInput = {
+			entityId: this.state.offerData ? this.state.offerData.id : ' ',
+			entityType: "Offer",
+			campaign_id: this.state.campaign.id,
+			isScheduled: scheduleSaveMark,
+			isRepeatable: scheduleSaveMark,
+			organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
+			status: "ACTIVE",
+			firstScheduleDateTime: this.state.campaign.startTime,
+			commsChannelName: "Test"
+		};
+		if (scheduleSaveMark) {
+			console.log(this.state.scheduleData);
+			let repeatRuleConf = { frequency: scheduleData.repeatType, time: moment(scheduleData.time).format('HH:MM:SS') }
+			scheduleData.repeatType == "WEEKLY" ? repeatRuleConf.byWeekDay = scheduleData.days : ''
+			scheduleData.hasOwnProperty('endTime') ? repeatRuleConf.endAfter = scheduleData.endTime : repeatRuleConf.noOfOccurances = scheduleData.noOfOccurances
+			communicationInput.repeatRuleConfiguration = repeatRuleConf
+		}
+
+		this.props.createCommunicationWithMessageTemplate({
+			variables: { communicationInput: communicationInput, messageTemplateInput: messageTemplateInput }
+		}).then(data => {
+			console.log("Communication data..", data)
+			this.setState({ loading: false, current, communication: data.data.createCommunicationWithMessageTempate })
+		}).catch(err => {
+			this.setState({ loading: false })
+			console.log("Error creating for communication", err)
+		})
+	}
+
+	createCommunicationMutation = (current, values) => {
+		let { communicationSelected, scheduleData, scheduleSaveMark } = this.state;
+		console.log('COMM', communicationSelected, values);
+		this.setState({ loading: true })
+		var input = {
+			name: this.state.campaign.name + "_" + communicationSelected,
+			description: "",
+			messageFormat: communicationSelected,
+			templateBodyText: communicationSelected == "SMS" ? values.smsBody : communicationSelected == "EMAIL" ? values.email_body : values.notificationBody,
+			templateSubjectText: communicationSelected == "SMS" ? values.smsTag : communicationSelected == "EMAIL" ? values.email_subject : values.notificationTag,
+			templateStyle: "MUSTACHE",
+			organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
+			status: "ACTIVE",
+		};
 		this.props.messageTemplate({
 			variables: { input: input }
 		}).then(data => {
 			console.log("MessageTemplate data..", data);
 			var input = {
-				entityId: this.state.campaign.id, // campainId
-				entityType: "Campaign",
+				entityId: this.state.offer ? this.state.offer.id : '', // campainId
+				entityType: "Offer",
+				campaign_id: this.state.campaign.id,
 				messageTemplateId: data.data.createMessageTemplate.id,
 				isScheduled: scheduleSaveMark,
 				isRepeatable: scheduleSaveMark,
@@ -396,8 +447,23 @@ class CampaignCreation extends Component {
 	}
 
 	onValuesSelected = e => {
+		// let { allApplications: { organization } } = this.props;
 		this.setState({ selectedSegments: e })
 		this.state.errors.segment = ''
+		this.props.client.query({
+			query: AUDIENCE_COUNT,
+			variables: { segments: e, organizationId: this.props.allApplications.organization.id },
+			fetchPolicy: 'network-only'
+		}).then(res => {
+			console.log(res.data.audienceCount.count)
+			this.setState({ audienceCount: res.data.audienceCount.count });
+		})
+			.catch(err => {
+				this.setState({ spin: false });
+				message.error("ERROR");
+				console.log("Failed to get Audience Count" + err);
+			});
+
 	}
 
 
@@ -413,6 +479,7 @@ class CampaignCreation extends Component {
 	}
 
 	render() {
+		console.log(this.props, this.state);
 		const { formValues, current, showTestAndControl, testValue, controlValue, testControlSelected, rows, values, communicationSelected } = this.state;
 		let attributeData = []
 		if (this.props.allAttributes)
@@ -489,6 +556,7 @@ class CampaignCreation extends Component {
 							<Audience
 								audienceTitle="Audience"
 								segmentSubTitle="Segment"
+								audienceCount={this.state.audienceCount}
 								onValuesSelected={this.onValuesSelected}
 								selectedSegments={this.state.selectedSegments}
 								segmentSelectionData={this.props.segmentList.segments}
@@ -629,6 +697,9 @@ export default withRouter(
 						}
 					};
 				}
+			}),
+			graphql(CREATE_COMMUNICATION_WITH_MESSAGE_TEMPLETE, {
+				name: "createCommunicationWithMessageTemplate"
 			})
 		)(CampaignCreation)
 	)

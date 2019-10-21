@@ -4,8 +4,8 @@ import "./style.css";
 import { Col, Row, Typography, Upload, Divider, Button } from "antd";
 import { withApollo, graphql, compose } from "react-apollo";
 import { allSegments, attributes } from "../../../../containers/Query";
-import AddAndDeleteSelectDynamically from "../../../../containers/addAndDeleteSelect";
-import WalkinQueryBuilder from "../../../../containers/queryBuilder";
+import { AddAndDeleteSelectDynamically } from "@walkinsole/shared";
+import { WalkinQueryBuilder } from "@walkinsole/shared";
 const { Title } = Typography;
 
 class Audience extends Component {

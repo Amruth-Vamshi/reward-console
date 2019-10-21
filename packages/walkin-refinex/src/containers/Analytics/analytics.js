@@ -1,16 +1,34 @@
 
 import React, { Component } from 'react'
-import { Col, Row, DatePicker, Button, Icon, Empty, Spin, Table } from "antd";
-import { IconWithTextCard, Widget, ChartCard, Auxiliary } from "@walkinsole/walkin-components";
-import { Bar, BarChart, Legend, CartesianGrid, Tooltip, XAxis, YAxis, RadialBarChart, RadialBar } from "recharts";
+import { Col, Row, DatePicker, Button, Icon, Empty, Spin, Table, Card, Select, Radio } from "antd";
+import { IconWithTextCard, Widget, ChartCard, Auxiliary, WidgetHeader } from "@walkinsole/walkin-components";
+import {
+    ResponsiveContainer,
+    PieChart,
+    Pie,
+    Sector,
+    Cell,
+    Bar,
+    BarChart,
+    Legend,
+    CartesianGrid,
+    Tooltip,
+    XAxis,
+    YAxis,
+    RadialBarChart,
+    RadialBar
+} from "recharts";
 import { graphql, compose, withApollo } from "react-apollo";
 import { GET_ANALYTICS, ANALYTICS } from "@walkinsole/walkin-core/src/PlatformQueries";
 import moment from 'moment';
 const dateFormat = 'YYYY/MM/DD';
 import jwt from "jsonwebtoken";
 import Cylinder3DChart from '@walkinsole/walkin-nearx/src/routes/Dashboard/Cylinder3DChart'
-
-
+import PieChartWithAngle from "./Charts/PieChartWithPaddingAngle";
+import PieChartActiveShape from "./Charts/CustomActiveShapePieChart";
+import OverallReportWidget from "./Widgets/OverallReport";
+import IndividualReport from "./Widgets/IndividualReport";
+import ScheduleCommunication from "./Widgets/ScheduleComs";
 const data = [
     {
         name: 'How would you rate your experience at CCD today?', uv: 47, pv: 2400, fill: '#8884d8',
@@ -133,8 +151,14 @@ class analytics extends Component {
         this.setState({ HOUR_OF_DAY_VS_EVENT_COUNT, DAY_OF_WEEK_VS_EVENT_COUNT, TOP_QUESTION, spin: false })
     }
 
+    handleChange = (value) => {
+        console.log(`selected ${value}`);
+    }
+
+
     render() {
         console.log("Analytics..", this.state)
+        const { Option } = Select;
         let hoursOfTheWeek = []
         let dayOfTheWeek = []
         let topQuestions = []
@@ -142,80 +166,37 @@ class analytics extends Component {
         dayOfTheWeek = this.state.DAY_OF_WEEK_VS_EVENT_COUNT;
         topQuestions = this.state.TOP_QUESTION;
         return (
-            <div>
+            <div style={{
+                backgroundColor: "white",
+                minHeight: "100vh"
+            }}>
                 <Auxiliary>
-                    <div className="gx-main-content-wrapper">
-                        <Row>
-                            <Col sm={0} md={6} xl={8}>
-                                <span className='gx-d-none gx-d-sm-flex'
-                                    style={{ width: '100%', fontSize: 24, color: '#5B5B5B' }}>
-                                    <Icon style={{ fontSize: 26, marginRight: 14, color: '#D5003A' }} type="alert" theme="filled" />
-                                    Analytics
-                                </span>
-                            </Col>
-                            <Col sm={24} md={18} xl={16}>
-                                <Row gutter={20} type="flex" justify="end" style={{ marginBottom: 15 }} >
-                                    <Col>
-                                        {/* <div>From Date</div> */}
-                                        <DatePicker getCalendarContainer={triggerNode => triggerNode.parentNode}
-                                            onChange={this.handleChange2}
-                                            value={this.state.startDate ? moment(this.state.startDate, dateFormat) : ''}
-                                            format={dateFormat} disabledDate={this.disabledDate} name="startDate" placeholder="Select Start Date" />
-                                        <p>{this.state.errors.startDate}</p>
-                                    </Col>
-                                    <Col>
-                                        {/* <div>To Date</div> */}
-                                        <DatePicker getCalendarContainer={triggerNode => triggerNode.parentNode}
-                                            onChange={this.handleChange3}
-                                            value={this.state.endDate ? moment(this.state.endDate, dateFormat) : ''} format={dateFormat} disabledDate={this.disableEndDate} name="endDate" placeholder="Select End Date" />
-                                        <p>{this.state.errors.endDate}</p>
-                                    </Col>
-                                </Row>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col span={10}>
-                                <BarChart width={500} height={250} data={hoursOfTheWeek}>
-                                    <CartesianGrid strokeDasharray="3 3" />
-                                    <XAxis dataKey="name" />
-                                    <YAxis />
-                                    <Tooltip />
-                                    <Legend />
-                                    <Bar dataKey="hours_of_day" fill="#8884d8" />
-                                    <Bar dataKey="count" fill="#82ca9d" />
-                                </BarChart>
-                            </Col>
-                            <Col span={2}></Col>
-                            <Col span={10}>
-                                <BarChart width={500} height={250} data={dayOfTheWeek}>
-                                    <CartesianGrid strokeDasharray="3 3" />
-                                    <XAxis dataKey="name" />
-                                    <YAxis />
-                                    <Tooltip />
-                                    <Legend />
-                                    <Bar dataKey="day_of_week" fill="#8884d8" />
-                                    <Bar dataKey="count" fill="#82ca9d" />
-                                </BarChart>
+                    <div className="gx-main-content">
+                        <div
+                            style={{
+                                margin: "20px"
+                            }}
+                            className="ant-row-flex gx-justify-content-between gx-mb-1 gx-mb-sm-4 gx-dash-search">
+                            <h2 className="h2 gx-mb-3 gx-mb-sm-1 gx-mr-2">Analytics</h2>
 
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col span={22}>
-                                {/* <BarChart width={500} height={250} layout={"vertical"} data={topQuestions}>
-                                    <CartesianGrid strokeDasharray="3 3" />
-                                    <XAxis dataKey="name" />
-                                    <YAxis />
-                                    <Tooltip />
-                                    <Legend />
-                                    <Bar dataKey="question_text" fill="#8884d8" />
-                                    <Bar dataKey="count" fill="#82ca9d" />
-                                </BarChart> */}
-                                <RadialBarChart width={600} height={300} cx={150} cy={150} innerRadius={20} outerRadius={140} barSize={10} data={data}>
-                                    <RadialBar minAngle={15} label={{ position: 'insideStart', fill: '#fff' }} background clockWise dataKey="uv" />
-                                    <Legend iconSize={10} width={420} height={140} layout="vertical" verticalAlign="middle" wrapperStyle={style} />
-                                </RadialBarChart>
-                            </Col>
-                        </Row>
+                            <Button type="primary" size={"large"}>
+                                Download
+                                <Icon type="down" />
+                            </Button>
+                        </div>
+                        <div>
+                            <OverallReportWidget />
+                        </div>
+                        <div style={{
+                            marginTop: "20px"
+                        }}>
+                            <IndividualReport />
+                        </div>
+                        <div style={{
+                            marginTop: "20px"
+                        }}>
+                            <ScheduleCommunication />
+                        </div>
                     </div>
                 </Auxiliary>
             </div >

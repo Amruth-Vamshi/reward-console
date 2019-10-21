@@ -2,10 +2,10 @@ import React, { Component, Fragment } from 'react';
 import { Input, Button, Alert, Col } from 'antd';
 import { withRouter } from 'react-router-dom';
 import { withApollo, graphql, compose, mutate } from 'react-apollo';
-import { RULE_ATTRIBUTES, CREATE_RULE, createRule, createSegment } from '../../../query/audience';
+import { RULE_ATTRIBUTES, CREATE_RULE, createRule, createSegment, UPDATE_RULE, UPDATE_SEGMENT } from '../../../query/audience';
 import './style.css';
 import { SEGMENT_LIST } from '../../../utils/RouterConstants';
-import { WalkinQueryBuilder, CampaignHeader } from '@walkinsole/walkin-components';
+import { WalkinQueryBuilder, CampaignHeader } from '@walkinsole/shared';
 import jwt from "jsonwebtoken";
 import { GET_ALL_APPS_OF_ORGANIZATION } from "@walkinsole/walkin-core/src/PlatformQueries";
 
@@ -53,82 +53,128 @@ class NewSegment extends Component {
 			this.setState({ errors });
 			return
 		}
-
-
 		console.log(this.props.allApplications.organization.applications[0])
 		let org_id = jwt.decode(localStorage.getItem("jwt")).org_id;
 		this.setState({ loading1: true })
-		client
-			.mutate({
-				mutation: createRule,
-				variables: {
-					name: Math.random()
-						.toString(36)
-						.substring(7),
-					description: '',
-					type: 'SIMPLE',
-					organizationId: org_id,
-					status: 'ACTIVE',
-					ruleConfiguration: JSON.stringify(query),
-				},
-			})
-			.then(({ data }) => {
-				console.log('rule', data);
-				client
-					.mutate({
-						mutation: createSegment,
-						variables: {
-							name: this.state.value,
-							segmentType: 'CUSTOM',
-							organization_id: org_id,
-							application_id: this.props.allApplications.organization.applications[0].id, // remove Hardcoding get it from context
-							rule_id: data.createRule.id,
-							status: 'ACTIVE',
-						},
-					})
-					.then(({ data }) => {
-						const { history } = this.props;
-						this.setState({ loading1: false })
+		if (this.state.update) {
+			console.log("update segment/rule...")
+			let id = this.props.location.state.segmentSelected.rule.id;
+			let input = {
+				ruleConfiguration: JSON.stringify(query)
+			};
+			console.log("input..", input)
+			console.log("input id..", id)
 
-						history.push({
-							pathname: SEGMENT_LIST,
-						});
+			client.mutate({
+				mutation: UPDATE_RULE,
+				variables: {
+					id: id,
+					input: input
+				}
+			}).then(data => {
+				console.log("Updating rule..", data)
+				console.log("name..", this.state.value)
+				let input = {
+					id: this.props.location.state.segmentSelected.id,
+					name: this.state.value
+				}
+				client.mutate({
+					mutation: UPDATE_SEGMENT,
+					variables: {
+						input: input
+					}
+				}).then(data => {
+					console.log("Updating segment..", data)
+					const { history } = this.props;
+					this.setState({ loading1: false })
+					history.push({
+						pathname: SEGMENT_LIST
 					})
-					.catch(error => {
-						this.displayError('newSegmentError');
-						this.setState({ loading1: false })
-					});
+
+				}).catch(err => {
+					console.log("Error while segment updating..", err)
+				})
+			}).catch(err => {
+				console.log("Error whilw updating..", err)
 			})
-			.catch(error => {
-				console.log('error', error);
-				this.displayError('newSegmentError');
-				this.setState({ loading1: false })
-			});
+		} else {
+			client
+				.mutate({
+					mutation: createRule,
+					variables: {
+						name: Math.random()
+							.toString(36)
+							.substring(7),
+						description: '',
+						type: 'SIMPLE',
+						organizationId: org_id,
+						status: 'ACTIVE',
+						ruleConfiguration: JSON.stringify(query),
+					},
+				})
+				.then(({ data }) => {
+					console.log('rule', data);
+					client
+						.mutate({
+							mutation: createSegment,
+							variables: {
+								name: this.state.value,
+								segmentType: 'CUSTOM',
+								organization_id: org_id,
+								application_id: this.props.allApplications.organization.applications[0].id, // remove Hardcoding get it from context
+								rule_id: data.createRule.id,
+								status: 'ACTIVE',
+							},
+						})
+						.then(({ data }) => {
+							const { history } = this.props;
+							this.setState({ loading1: false })
+
+							history.push({
+								pathname: SEGMENT_LIST,
+							});
+						})
+						.catch(error => {
+							this.displayError('newSegmentError');
+							this.setState({ loading1: false })
+						});
+				})
+				.catch(error => {
+					console.log('error', error);
+					this.displayError('newSegmentError');
+					this.setState({ loading1: false })
+				});
+		}
 	};
 
 	componentWillMount = () => {
 		const { location, match } = this.props;
 		if (location && location.state) {
+			console.log("this...", location.state)
+			if (location.state.update) this.setState({ update: true });
 			if (location.state.segmentSelected) {
 				let str = location.state.segmentSelected.rule.ruleConfiguration;
 				var mapObj = {
-					ruleAttributeId: 'field',
+					// ruleAttributeId: 'field',
+					attributeName: 'field',
 					attributeValue: 'value',
 					expressionType: 'operator',
 				};
-				str = str.replace(/ruleAttributeId|attributeValue|expressionType/gi, function (matched) {
+				console.log(str);
+				if (typeof str != 'string') {
+					str = JSON.stringify(str);
+				}
+				str = str.replace(/attributeName|attributeValue|expressionType/gi, function (matched) {
 					return mapObj[matched];
 				});
 				this.setState({ query: JSON.parse(str) });
-				if (location.state.segmentSelected.name !== '') {
-					if (location.state.segmentSelected.name.includes('copy')) {
-						this.setState({ value: segmentNameCopy, isDuplicateSegment: true });
-					} else {
-						this.setState({
-							value: location.state.segmentSelected.name + ' ' + 'copy 1',
-							isDuplicateSegment: true,
-						});
-					}
+				if (!location.state.update) {
+					this.setState({
+						value: location.state.segmentSelected.name + ' ' + 'copy',
+						isDuplicateSegment: true,
+					});
+				} else {
+					this.setState({ value: location.state.segmentSelected.name, isDuplicateSegment: true });
 				}
 			}
 		}
@@ -182,8 +228,9 @@ class NewSegment extends Component {
 				</div>
 				{newSegmentError && <Alert style={{ margin: '0px 35px' }} message="Not a valid Segment" type="error" />}
 				<div className="segmentFooterButton">
-					<Button type="primary" loading={loading1} className="campaignFooterStyle" onClick={this.onNewSegment}>
-						Create segment
+					<Button type="primary" //loading={loading1}
+						className="campaignFooterStyle" onClick={this.onNewSegment}>
+						{this.state.update ? 'Update Segment' : 'Create Segment'}
 					</Button>
 				</div>
 			</Fragment>
@@ -223,8 +270,7 @@ export default withRouter(
 						fetchPolicy: "cache-and-network"
 					};
 				}
-			})
-
+			}),
 		)(NewSegment)
 	)
 );

@@ -5,7 +5,8 @@ import { withApollo, graphql } from 'react-apollo';
 import { NEW_SEGMENT } from '../../../Utils';
 import { Card, Menu, Dropdown, Button, Col, Spin } from 'antd';
 import moment from 'moment';
-import { SortableDataTable, InstantSearch, CampaignHeader } from '@walkinsole/walkin-components';
+import { SortableDataTable, InstantSearch, CampaignHeader } from '@walkinsole/shared';
+import { ErrorBoundary } from '@walkinsole/walkin-components';
 import jwt from "jsonwebtoken";
 
 class SegmentList extends Component {
@@ -168,34 +169,40 @@ class SegmentList extends Component {
 			},
 		];
 		return (
-			<Fragment>
-				<div style={{ margin: '-32px -32px 0px' }}>
-					<CampaignHeader
-						children={
-							<Fragment>
-								<Col span={12}>
-									<h3 className="gx-text-grey paddingLeftStyle campaignHeaderTitleStyle">Segments</h3>
-								</Col>
-								<Col style={{ display: 'flex', justifyContent: 'flex-end' }} span={12}>
-									<Button type="primary" onClick={this.onNewSegment}>
-										New Segment
+			<ErrorBoundary>
+				<div style={{
+					minHeight: "100vh"
+				}}>
+					<div style={{
+						margin: '1 32px'
+					}}>
+						<CampaignHeader
+							children={
+								<Fragment>
+									<Col span={12}>
+										<h3 className="gx-text-grey paddingLeftStyle campaignHeaderTitleStyle">Segments</h3>
+									</Col>
+									<Col style={{ display: 'flex', justifyContent: 'flex-end' }} span={12}>
+										<Button type="primary" onClick={this.onNewSegment}>
+											New Segment
 									</Button>
-								</Col>
-							</Fragment>
-						}
-					/>
-				</div>
-				<Card style={{ margin: '32px' }}>
-					<div style={{ marginBottom: '24px' }}>
-						<InstantSearch
-							placeHolder="Search segment"
-							data={segments}
-							onFilteredList={this.onSegmentFilteredList}
+									</Col>
+								</Fragment>
+							}
 						/>
 					</div>
-					<SortableDataTable loading={this.props.loading} data={segmentData} onChange={this.handleChange} columns={columns} />
-				</Card>
-			</Fragment>
+					<Card style={{ margin: '32px' }}>
+						<div style={{ marginBottom: '24px' }}>
+							<InstantSearch
+								placeHolder="Search segment"
+								data={segments}
+								onFilteredList={this.onSegmentFilteredList}
+							/>
+						</div>
+						<SortableDataTable loading={this.props.loading} data={segmentData} onChange={this.handleChange} columns={columns} />
+					</Card>
+				</div>
+			</ErrorBoundary>
 
 		);
 	}

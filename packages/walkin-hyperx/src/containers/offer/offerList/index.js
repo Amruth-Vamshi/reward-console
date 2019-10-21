@@ -6,7 +6,7 @@ import { NEW_SEGMENT, NEW_OFFER } from '../../../utils/RouterConstants';
 import { Card, Menu, Dropdown, Button, Col } from 'antd';
 import moment from 'moment';
 import jwt from "jsonwebtoken";
-import { SortableDataTable, InstantSearch, CampaignHeader } from '@walkinsole/walkin-components';
+import { SortableDataTable, InstantSearch, CampaignHeader } from '@walkinsole/shared';
 
 class OfferList extends Component {
 	constructor(props) {
