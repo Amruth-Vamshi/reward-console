@@ -45,7 +45,7 @@ export default class Overview extends Component {
             <Col style={{ paddingLeft: 0 }} sm={24} md={16}>
               <div className="cpName"> {campaign.name} </div>
               <div className="cpDec mb-15">{campaign.description != null ? campaign.description : ""}</div>
-              <div className="cpDaysLeft mb-30"> <b style={{ textTransform: "capitalize" }}>{diff ? diff : ''}</b>
+              <div className="cpDaysLeft mb-30"> <b style={{ textTransform: "capitalize" }}> {diff ? diff : ''}</b> &nbsp;
                 {value == "Completed" ? <div><Icon style={{ color: '#00b707' }} type="check-circle" theme="filled" /> {value}</div> : value} </div>
             </Col>
             <Col sm={24} md={8}>
