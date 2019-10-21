@@ -2,10 +2,17 @@ import React from "react";
 import { Form, Icon, Input, Button, Checkbox } from "antd";
 import { compose, graphql, Mutation } from "react-apollo";
 import gql from "graphql-tag";
+import sample from "lodash/sample"
 import { Link } from "react-router-dom";
 import IntlMessages from "@walkinsole/walkin-components/src/util/IntlMessages";
 
 class NormalLoginForm extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      background: sample(['linear-gradient(45deg, black, transparent)', 'radial-gradient(black, transparent)'])
+    }
+  }
   componentWillMount() {
     if (localStorage.getItem("jwt")) this.props.history.push("/");
   }
@@ -18,7 +25,7 @@ class NormalLoginForm extends React.Component {
       }
     `;
     return (
-      <div className="gx-app-login-wrap">
+      <div style={{ background: this.state.background }} className="gx-app-login-wrap">
         <div className="gx-app-login-container">
           <div className="gx-app-login-main-content">
             <div className="gx-app-logo-content">
