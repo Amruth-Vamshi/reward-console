@@ -55,11 +55,11 @@ const Communication = ({
               onFormNext={onFormNext} />}
             {value == "PUSH" && <PushNotification
               wrappedComponentRef={pushFormRef}
-              formValues={pushFormData}
+              formValues={communicationFormValues}
               onFormNext={onFormNext} />}
             {value == "EMAIL" && (<EmailForm
               wrappedComponentRef={emailFormRef}
-              formValues={emailFormData}
+              formValues={communicationFormValues}
               onFormNext={onFormNext} />)}
 
           </div>

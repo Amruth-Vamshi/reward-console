@@ -152,11 +152,11 @@ class EditCampaign extends Component {
         communicationFormValues.smsTag = item.messageTemplate.templateSubjectText 
         communicationFormValues.smsBody = item.messageTemplate.templateBodyText
         }else if(item.messageTemplate.messageFormat == "PUSH"){
-          communicationId.emailid = item.messageTemplate.id
+          communicationId.pushid = item.messageTemplate.id
         communicationFormValues.notificationTitle = item.messageTemplate.templateSubjectText 
         communicationFormValues.notificationBody = item.messageTemplate.templateBodyText
         }else{
-          communicationId.pushid = item.messageTemplate.id
+          communicationId.emailid = item.messageTemplate.id
           communicationFormValues.email_subject = item.messageTemplate.templateSubjectText 
           communicationFormValues.email_body = item.messageTemplate.templateBodyText
         }
@@ -360,16 +360,17 @@ class EditCampaign extends Component {
         organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
     }
     input= pick(input,['organization_id','templateBodyText','templateSubjectText']);
-    
-      if(this.state.communicationId.smsid){
+    console.log("input", input)
+    console.log("this.state.communicationSelected",this.state.communicationSelected,this.state.communicationId)
+      if(this.state.communicationId.smsid && this.state.communicationSelected==="SMS"){
         update = true
         input.id=this.state.communicationId.smsid
       }
-      if(this.state.communicationId.pushid){
+      if(this.state.communicationId.pushid && this.state.communicationSelected==="PUSH"){
       update = true;
       input.id = this.state.communicationId.pushid;
     }
-      if(this.state.communicationId.emailid){
+      if(this.state.communicationId.emailid && this.state.communicationSelected==="EMAIL"){
         update = true
         input.id=this.state.communicationId.emailid
       }
@@ -385,19 +386,18 @@ class EditCampaign extends Component {
       })
     }else{
       //Create
-      let input = {
+      let inputCreate = {
         name: this.props.campaign.campaign.name +"_"+ Math.random().toString(36).substring(2),
         description: "",
         messageFormat: this.state.communicationSelected,
-        ...values,
+        ...input,
         templateStyle: TEMPLATE_STYLE,
-        organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
         status:DEFAULT_ACTIVE_STATUS
       };
       this.props
         .messageTemplate({
           variables: {
-            input: input
+            input: inputCreate
           }
         })
         .then(async data => {
