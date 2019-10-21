@@ -96,6 +96,7 @@ export const GET_WEBHOOKS = gql`
   query webhooks($org_id: ID!, $event: String, $status: STATUS!) {
     webhooks(organizationId: $org_id, event: $event, status: $status) {
       id
+      name
       organization {
         name
         website
@@ -105,6 +106,7 @@ export const GET_WEBHOOKS = gql`
       headers
       method
       status
+      enabled
     }
   }
 `;
@@ -113,6 +115,7 @@ export const CREATE_WEBHOOK = gql`
   mutation createWebhook($input: WebhookAddInput) {
     createWebhook(input: $input) {
       id
+      name
       organization {
         name
         website
@@ -122,6 +125,7 @@ export const CREATE_WEBHOOK = gql`
       headers
       method
       status
+      enabled
     }
   }
 `;
@@ -130,6 +134,7 @@ export const UPDATE_WEBHOOK = gql`
   mutation updateWebhook($input: WebhookUpdateInput!) {
     updateWebhook(input: $input) {
       id
+      name
       organization {
         name
         website
@@ -139,6 +144,7 @@ export const UPDATE_WEBHOOK = gql`
       headers
       method
       status
+      enabled
     }
   }
 `;
@@ -149,6 +155,7 @@ export const LIST_WEBHOOK_EVENTS = gql`
       event
       id
       status
+      description
     }
   }
 `;
@@ -156,6 +163,12 @@ export const LIST_WEBHOOK_EVENTS = gql`
 export const DELETE_WEBHOOK = gql`
   mutation deleteWebhook($input: WebhookDeleteInput) {
     deleteWebhook(input: $input)
+  }
+`;
+
+export const GET_ENTITIES = gql`
+  query getEntities {
+    entities
   }
 `;
 

@@ -35,6 +35,10 @@
   flex-direction: column; */
 }
 
+.inputDesc {
+  margin: 10px 0;
+}
+
 .buttonMargin0 {
   margin: 0;
 }
@@ -67,14 +71,9 @@
   color: #333333;
 }
 .entityVariableFlexWrapper {
-  /* border: 1px solid; */
   display: flex;
   justify-content: space-between;
 }
 .entityVariableInputWrapper {
   margin: 20px 0;
-  /* display: flex;
-  justify-content: center;
-  flex-direction: column; */
-  /* border: 1px solid red; */
 }

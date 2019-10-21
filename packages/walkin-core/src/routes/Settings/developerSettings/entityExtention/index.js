@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import jwt from "jsonwebtoken";
 import { withApollo } from "react-apollo";
 import EntityVariablesForm from "./entityVariablesForm";
+import { GET_ENTITIES } from "./../../../../PlatformQueries";
 import "./style.css";
 import {
   Button,
@@ -87,6 +88,24 @@ class EntityExtention extends Component {
     };
   }
 
+  componentWillMount() {
+    const { org_id } = jwt.decode(localStorage.getItem("jwt"));
+    console.log(org_id);
+
+    this.props.client
+      .query({
+        query: GET_ENTITIES,
+        // variables: { org_id, status: "ACTIVE" },
+        fetchPolicy: "network-only"
+      })
+      .then(entitiessResponse => {
+        console.log(entitiessResponse);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
   onAddOrEditVariables = () => {
     this.setState({
       isEntityVariablesFormOpen: !this.state.isEntityVariablesFormOpen
@@ -101,7 +120,7 @@ class EntityExtention extends Component {
             <Select
               size="large"
               defaultValue="lucy"
-              style={{ width: "70%" }}
+              style={{ width: "50%" }}
               // onChange={thishandleChange}
             >
               <Option value="jack">Jack</Option>
@@ -114,7 +133,6 @@ class EntityExtention extends Component {
           </div>
           <div className="entityVariableInputWrapper ">
             <Table
-              style={{ borderCollapse: "inherit" }}
               bordered
               title={() => (
                 <div
@@ -126,10 +144,7 @@ class EntityExtention extends Component {
                   }}
                 >
                   <label style={{ fontSize: 18 }}>Basic Details</label>
-
-                  <Button className="buttonMargin0" type="link">
-                    x
-                  </Button>
+                  <Icon type="caret-down" />
                 </div>
               )}
               columns={columns}
