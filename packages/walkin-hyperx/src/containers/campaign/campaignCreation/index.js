@@ -448,7 +448,7 @@ class CampaignCreation extends Component {
 			campaignControlPercent: parseInt(controlValue),
 			organization_id: organization.id,
 			application_id: organization.applications[0].id,
-			campaignType: "OFFER"
+			campaignType: DEFAULT_HYPERX_CAMPAIGN
 		};
 		this.setState({ loading: true });
 		client.mutate({
@@ -518,7 +518,6 @@ class CampaignCreation extends Component {
 		})
 			.catch(err => {
 				this.setState({ spin: false });
-				message.error("ERROR");
 				console.log("Failed to get Audience Count" + err);
 			});
 
@@ -608,7 +607,7 @@ class CampaignCreation extends Component {
 								maxValueAllowed={75}
 								onTestValueChange={this.onTestValueChange}
 								onControlValueChange={this.onControlValueChange}
-								popupButtonText="apply"
+								popupButtonText="Apply"
 								edit={update}
 							/>
 						)}
