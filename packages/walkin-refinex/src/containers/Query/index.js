@@ -489,8 +489,8 @@ export const GET_CAMPAIGN = gql`
 `;
 
 export const feedbackForm = gql`
-  query getFeedbackForm {
-    getFeedbackForm(feedbackFormId: "1") {
+  query getFeedbackForm ($feedbackFormId:ID!){
+    getFeedbackForm(feedbackFormId: $feedbackFormId) {
       id
       title
       campaign {
