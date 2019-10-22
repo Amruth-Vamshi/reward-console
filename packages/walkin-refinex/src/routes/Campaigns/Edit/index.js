@@ -321,6 +321,24 @@ class EditCampaign extends Component {
     }
   };
 
+
+   a =()=>{
+     let a= this.state.current;
+     let c;
+    const b={
+      someMethod:()=>{
+        if(!c){
+          console.log(c); 
+        }
+       
+      }
+    }
+    return ()=>{
+      a=a+1;
+      return a;
+    }
+  }
+
   updateAudiencesWithCampaignId = (current, segmentId ) =>{
     this.props.updateAudiencesWithCampaignIdWithSegments({
       variables:{
@@ -360,8 +378,6 @@ class EditCampaign extends Component {
         organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
     }
     input= pick(input,['organization_id','templateBodyText','templateSubjectText']);
-    console.log("input", input)
-    console.log("this.state.communicationSelected",this.state.communicationSelected,this.state.communicationId)
       if(this.state.communicationId.smsid && this.state.communicationSelected==="SMS"){
         update = true
         input.id=this.state.communicationId.smsid
