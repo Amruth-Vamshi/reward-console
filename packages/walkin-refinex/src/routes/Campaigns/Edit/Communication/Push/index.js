@@ -30,13 +30,13 @@ const PushNotificationForm = Form.create({ name: 'form_in_modal' })(
                     </Form.Item>
                     <Form.Item size={'large'} label="Title for notification" {...formItemLayout}>
                         {getFieldDecorator('notificationTitle', {
-                            initialValue: '',
+                            initialValue: `${Object.keys(formValues).length != 0 ? formValues.notificationBody : ""}`,
                             rules: [{ required: true, message: 'Notification title is required' }],
                         })(<Input />)}
                     </Form.Item>
                     <Form.Item label="Notification body" {...formItemLayout}>
                         {getFieldDecorator('notificationBody', {
-                            initialValue: '',
+                            initialValue: `${Object.keys(formValues).length != 0 ? formValues.notificationBody : ""}`,
                             rules: [{ required: true, message: 'Notification body is required' }],
                         })(<TextArea rows={3} />)}
                     </Form.Item>

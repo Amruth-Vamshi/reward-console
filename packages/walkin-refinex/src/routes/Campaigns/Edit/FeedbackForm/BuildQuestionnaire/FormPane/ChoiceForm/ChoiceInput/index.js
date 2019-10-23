@@ -66,7 +66,9 @@ class ChoiceInput extends Component {
         defaultValue: toQuestion.id
       }
     }
-    let propsInput = {}
+    let propsInput = {
+      suffix: <span />
+    }
     if (isFieldsTouched(["choiceText"])) {
       propsInput = {
         suffix: (

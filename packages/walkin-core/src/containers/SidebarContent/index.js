@@ -136,13 +136,15 @@ class SidebarContent extends Component {
           }
         >
           <Menu.Item style={{ backgroundColor: "#F3F3F3" }} key="webhooks">
-            Webhooks
+            <Link to="/core/settings/developer/webhooks">Webhooks</Link>
           </Menu.Item>
           <Menu.Item
             style={{ backgroundColor: "#F3F3F3" }}
             key="entity-extentions"
           >
-            Entity Extention
+            <Link to="/core/settings/developer/entity-extention">
+              Entity Management
+            </Link>
           </Menu.Item>
         </Menu.SubMenu>
       </Menu>

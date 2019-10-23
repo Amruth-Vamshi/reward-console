@@ -47,7 +47,7 @@ class QuestionnaireFormPane extends Component {
       type: value
     }
     if (questionWithSlider[values.type]) {
-      values.rangeMin = 0;
+      values.rangeMin = 1;
       values.rangeMax = 10;
     } else {
       delete values.range;
@@ -61,12 +61,10 @@ class QuestionnaireFormPane extends Component {
   };
 
   onQuestionEdited = (values) => {
-    console.log("values", values);
-    if (questionWithSlider[values.type]) {
-      values.rangeMin = values.rangeMin;
-      values.rangeMax = values.rangeMax;
+    if (values.range) {
+      values.rangeMin = values.range[0];
+      values.rangeMax = values.range[1];
     }
-    delete values.range;
     this.setState({
       questionToEdit: Object.assign(this.state.questionToEdit, values),
       showButton: true
@@ -99,7 +97,6 @@ class QuestionnaireFormPane extends Component {
       questionnaire,
       onLinkChoiceToQuestion
     } = this.props;
-    console.log("questionToEdit", questionnaire)
     return (
       <Row
         style={{

@@ -12,6 +12,7 @@ export default class WebhookForm extends Component {
       webhookDetails: {
         event: "",
         url: "",
+        name: "",
         headers: {},
         method: "GET",
         status: "ACTIVE"
@@ -58,7 +59,8 @@ export default class WebhookForm extends Component {
     let input = {
       headers,
       method: webhookDetails.method,
-      url: webhookDetails.url
+      url: webhookDetails.url,
+      name: webhookDetails.name
     };
     //for update webhooks
     if (webhookDetails.id) {
@@ -74,6 +76,7 @@ export default class WebhookForm extends Component {
 
   render() {
     let { webhookDetails, headerEntries } = this.state;
+    let { events } = this.props;
     let header = "Edit Webhook Details";
     if (!webhookDetails.id) {
       header = "Create New Webhook";
@@ -115,23 +118,34 @@ export default class WebhookForm extends Component {
                 });
               }}
             >
-              {this.props.events.map((item, index) => (
+              {events.map((item, index) => (
                 <Option key={index} value={item.event}>
                   {item.event}
                 </Option>
               ))}
             </Select>
             <div className="inputDesc">
-              This description is about create customer. Lorem ipsum dolor sit
-              amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
-              invidunt ut labore et dolore magna aliquyam erat, sed diam
-              voluptua.
+              {
+                events.filter((item, index) => {
+                  return item.event === webhookDetails.event;
+                })[0].description
+              }
             </div>
           </div>
           <div className="webhookLabelInputWrapper">
             <div className="InputLabel">Label</div>
 
-            <Input size="large" placeholder="Integration with slack" />
+            <Input
+              size="large"
+              placeholder="Integration with slack"
+              defaultValue={webhookDetails.name}
+              onChange={e =>
+                this.onChange("webhookDetails", {
+                  ...webhookDetails,
+                  name: e.target.value
+                })
+              }
+            />
           </div>
           <div className="webhookURLInputWrapper">
             <div className="InputLabel">URL</div>

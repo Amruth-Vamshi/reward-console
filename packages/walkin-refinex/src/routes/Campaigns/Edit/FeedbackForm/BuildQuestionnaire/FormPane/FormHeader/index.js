@@ -4,22 +4,11 @@ import { ErrorBoundary } from "@walkinsole/walkin-components";
 import gql from "graphql-tag";
 import { graphql } from "react-apollo";
 import {
-  Menu,
-  Dropdown,
-  Icon,
-  Card,
   Form,
-  Slider,
-  Button,
-  Input,
   TreeSelect,
   Row,
   Col,
-  Popconfirm,
-  message,
-  Switch,
-  Item,
-  Radio
+  Popconfirm
 } from "antd";
 import { QUESTION_TYPES } from "../../../../../../../containers/Query";
 
