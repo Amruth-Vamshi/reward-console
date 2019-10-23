@@ -53,7 +53,7 @@ const AppList = ({ apps }) => {
                         <i
                           style={{ color: "#b9b5b5" }}
                           className={`${app.inactiveIcon} gx-fs-icon-lg appInactiveIconStyle `}
-                        ><img src={app.activeIcon} style={{ clip: 'rect(110px)' }} /></i>
+                        ><img src={app.inactiveIcon} style={{ clip: 'rect(110px)' }} /></i>
                       </Fragment>
                     }
                     className="gx-product-vertical coreAppsCard"
