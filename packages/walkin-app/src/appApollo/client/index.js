@@ -8,6 +8,8 @@ import defaults from "../defaults";
 import { message } from "antd";
 import env from "../../../config";
 import { async } from "q";
+import includes from "lodash/includes"
+import { ERROR_EXCEPTIONS } from "@walkinsole/shared/src/Constants/constants"
 
 message.config({
   maxCount: 2,
@@ -36,18 +38,23 @@ export const configureClient = async () => {
 
       if (graphQLErrors) {
         console.log(graphQLErrors);
-        if (
-          graphQLErrors[0].extensions &&
-          graphQLErrors[0].extensions.code == "UNTH"
-        ) {
-          localStorage.clear();
-          sessionStorage.clear();
-          location.reload();
+
+        if (!includes(graphQLErrors[0].message, ERROR_EXCEPTIONS)) {
+          if (
+            graphQLErrors[0].extensions &&
+            graphQLErrors[0].extensions.code == "UNTH"
+          ) {
+            localStorage.clear();
+            sessionStorage.clear();
+            location.reload();
+          }
+
+          if (graphQLErrors[0].message) {
+            message.warn(graphQLErrors[0].message)
+          }
         }
 
-        if (graphQLErrors[0].message) {
-          message.warn(graphQLErrors[0].message)
-        }
+
       } else if (networkError) {
         message.error("Hey! Regret to inform that we are experiencing some issues. Please check your internet connection or try again after sometime");
         console.log(networkError);
