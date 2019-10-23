@@ -14,6 +14,8 @@ const apps = [
 		id: 1,
 		title: 'NearX',
 		icon: 'icon icon-geo-location',
+		activeIcon: require("@walkinsole/shared/src/Product Icons/nearX.png"),
+		inactiveIcon: require("@walkinsole/shared/src/Product Icons/nearX_grey.png"),
 		description: 'Proximity direction with beacons and geofencing',
 		route: '/nearx',
 		isProductAccessible: false
@@ -21,6 +23,8 @@ const apps = [
 		id: 2,
 		title: 'HyperX',
 		icon: 'icon icon-alert',
+		activeIcon: require("@walkinsole/shared/src/Product Icons/hyperx.png"),
+		inactiveIcon: require("@walkinsole/shared/src/Product Icons/hyperx_grey.png"),
 		description: 'Personalization and 1:1 campaigns',
 		route: '/hyperx',
 		isProductAccessible: false
@@ -29,6 +33,8 @@ const apps = [
 		id: 3,
 		title: 'RefineX',
 		icon: 'icon icon-feedback',
+		activeIcon: require("@walkinsole/shared/src/Product Icons/refinex.png"),
+		inactiveIcon: require("@walkinsole/shared/src/Product Icons/refinex_grey.png"),
 		description: 'Feedback engine for custoner experience management',
 		route: '/refinex',
 		isProductAccessible: false
@@ -37,6 +43,8 @@ const apps = [
 		id: 4,
 		title: 'Uptyme',
 		icon: 'icon icon-timepicker',
+		activeIcon: require("@walkinsole/shared/src/Product Icons/uptyme.png"),
+		inactiveIcon: require("@walkinsole/shared/src/Product Icons/uptyme_grey.png"),
 		description: 'Field face management and work order automation',
 		isProductAccessible: false
 	},
@@ -44,6 +52,8 @@ const apps = [
 		id: 5,
 		title: 'OrderX',
 		icon: 'icon icon-orders',
+		activeIcon: require("@walkinsole/shared/src/Product Icons/orderx.png"),
+		inactiveIcon: require("@walkinsole/shared/src/Product Icons/orderx_grey.png"),
 		description: 'Ordering and payments. Omni channel order management',
 		isProductAccessible: false
 	},
@@ -51,6 +61,8 @@ const apps = [
 		id: 6,
 		title: 'RewardX',
 		icon: 'icon icon-inbuilt-apps',
+		activeIcon: require("@walkinsole/shared/src/Product Icons/rewardx.png"),
+		inactiveIcon: require("@walkinsole/shared/src/Product Icons/rewardx_grey.png"),
 		description: 'Loyalty relationship management',
 		isProductAccessible: false
 	},
@@ -58,6 +70,8 @@ const apps = [
 		id: 7,
 		title: 'You Id',
 		icon: 'icon icon-profile',
+		activeIcon: require("@walkinsole/shared/src/Product Icons/youid.png"),
+		inactiveIcon: require("@walkinsole/shared/src/Product Icons/youid_grey.png"),
 		description: 'Field face management and work order automation',
 		isProductAccessible: false
 	},
@@ -65,6 +79,8 @@ const apps = [
 		id: 8,
 		title: 'FrontX',
 		icon: 'icon icon-data-display',
+		activeIcon: require("@walkinsole/shared/src/Product Icons/frontx.png"),
+		inactiveIcon: require("@walkinsole/shared/src/Product Icons/frontx_grey.png"),
 		description: 'Channel management - modular app development platform',
 		isProductAccessible: false
 	},
@@ -72,6 +88,8 @@ const apps = [
 		id: 9,
 		title: 'ReportX',
 		icon: 'icon icon-select',
+		activeIcon: require("@walkinsole/shared/src/Product Icons/footprint.png"),
+		inactiveIcon: require("@walkinsole/shared/src/Product Icons/footprint_grey.png"),
 		description: 'Actionable insights, dashboards and reporting',
 		isProductAccessible: false
 	},
