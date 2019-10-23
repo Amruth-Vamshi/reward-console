@@ -55,7 +55,6 @@ class SidebarContent extends Component {
 
     const selectedKeys = pathname.substr(1);
     const defaultOpenKeys = selectedKeys.split("/");
-    console.log(defaultOpenKeys, selectedKeys);
     let isSettingsSideBar = defaultOpenKeys[1] === "settings";
 
     let sidebarTheme = "dark";

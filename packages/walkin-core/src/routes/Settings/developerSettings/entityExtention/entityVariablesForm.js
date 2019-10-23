@@ -48,7 +48,6 @@ export default class EntityVariablesForm extends Component {
   };
 
   render() {
-    console.log(this.props);
     let { entityExtendField } = this.state;
 
     let header = "Edit Variable Details";
