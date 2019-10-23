@@ -229,9 +229,9 @@ class EntityExtention extends Component {
       if (basicEntityFields.length) {
         basicEntityFields.map((basicEntity, index) => {
           if (basicEntity.required) {
-            modifiedBasicEntityFields[index].required = "Yes";
+            basicEntityFields[index].required = "Yes";
           } else {
-            modifiedBasicEntityFields[index].required = "No";
+            basicEntityFields[index].required = "No";
           }
           if (basicEntity.searchable) {
             basicEntityFields[index].searchable = "Yes";
