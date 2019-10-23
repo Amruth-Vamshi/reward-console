@@ -1,8 +1,8 @@
 import React, { Component, Fragment } from 'react'
 import { CampaignHeader } from '@walkinsole/walkin-components'
-import { Button, Row, Col, message } from 'antd'
+import { Button, Row, Col, Spin, message } from 'antd'
 import { campaignOverview as Overview } from "@walkinsole/shared";
-import { CAMPAIGN_DASHBOARD, GET_CAMPAIGN_DASHBOARD, UPDATE_CAMPAIGN, LAUNCH_CAMPAIGN, PAUSE_CAMPAIGN, UNPAUSE_CAMPAIGN, ABANDON_CAMPAIGN } from '../../../query/campaign'
+import { CAMPAIGN_DASHBOARD, GET_CAMPAIGN_DASHBOARD, UPDATE_CAMPAIGN, LAUNCH_CAMPAIGN, PAUSE_CAMPAIGN, UNPAUSE_CAMPAIGN, ABANDON_CAMPAIGN, VIEW_CAMPAIGN } from '../../../query/campaign'
 import { withApollo, graphql, compose, mutate } from 'react-apollo';
 import { withRouter } from 'react-router-dom';
 import moment from 'moment';
@@ -15,9 +15,29 @@ class CampaignDashboard extends Component {
         super(props)
         this.state = {
             loading: false,
-            loading1: false
+            loading1: false,
+            spin: false,
+            campaign: {}
         }
     }
+
+    componentWillMount() {
+        this.setState({ spin: true })
+        this.props.client.query({
+            query: VIEW_CAMPAIGN,
+            variables: { campaignId: this.props.match.params.id },
+            // fetchPolicy: 'network-only'
+        }).then(res => {
+            console.log('res', res.data.viewCampaignForHyperX);
+            let { campaign, audiences, offers, communications } = res.data.viewCampaignForHyperX
+            this.setState({ spin: false, campaign, audiences, offers, communications });
+        }).catch(err => {
+            this.setState({ spin: false });
+            console.log("Failed to get Campaign Details" + err);
+        });
+
+    }
+
     launchCampaign = () => {
         this.setState({ loading: true })
         this.props.launchCampaign({
@@ -82,10 +102,10 @@ class CampaignDashboard extends Component {
         console.log("this.props....", this.props)
         console.log("this.state....", this.state)
 
-        let audiences = this.props.allAudiences.audiences;
-
+        // let audiences = this.props.allAudiences.audiences;
 
         let { loading, loading1 } = this.state
+        let { campaign, audiences, offers, communications } = this.state
         return (
             <div>
 
@@ -96,22 +116,32 @@ class CampaignDashboard extends Component {
                         </Col>
                     }
                 />
-
-                <div className="gx-card" style={{ margin: 22 }}>
-                    <div className="gx-card-body">
-                        <Overview
-                            view={true} loading={loading} loading1={loading1}
-                            campaign={this.props.location.state ? this.props.location.state.campaignSelected : ''}
-                            launchCampaign={this.launchCampaign}
-                            pauseCampaign={this.pauseCampaign}
-                            unpauseCampaign={this.unpauseCampaign}
-                            disableCampaign={this.disableCampaign}
-                            abandonCampaign={this.abandonCampaign}
-                            audience={audiences}
-                        // communication={this.state.communication.messageTemplate ?
-                        //     `${communicationSelected} - ${this.state.communication.messageTemplate.templateSubjectText}` : ''}
-                        />
-                    </div></div>
+                {console.log('>>', this.props.campaign)}
+                {
+                    this.state.spin ?
+                        <div>
+                            <br /> <br /> <br /> <br />
+                            <div className="divCenter">
+                                <Spin size="large" />
+                            </div> <br /> <br /> <br />
+                        </div> :
+                        <div className="gx-card" style={{ margin: 22 }}>
+                            <div className="gx-card-body">
+                                <Overview
+                                    view={true} loading={loading} loading1={loading1}
+                                    campaign={campaign}
+                                    audience={audiences}
+                                    offer={offers[0]}
+                                    launchCampaign={this.launchCampaign}
+                                    pauseCampaign={this.pauseCampaign}
+                                    unpauseCampaign={this.unpauseCampaign}
+                                    disableCampaign={this.disableCampaign}
+                                    abandonCampaign={this.abandonCampaign}
+                                    communication={communications[0] ? communications[0].messageTemplate ?
+                                        `${communications[0].messageTemplate.messageFormat} - ${communications[0].messageTemplate.templateSubjectText}` : '' : ''}
+                                />
+                            </div></div>
+                }
 
             </div>
         )
@@ -120,15 +150,23 @@ class CampaignDashboard extends Component {
 export default withRouter(
     withApollo(
         compose(
-            graphql(GET_CAMPAIGN_DASHBOARD, {
-                name: "campaign",
-                options: props => {
-                    return {
-                        variables: { id: props.match.params.id },
-                        fetchPolicy: "cache-and-network"
-                    };
-                }
-            }), graphql(LAUNCH_CAMPAIGN, {
+            // graphql(VIEW_CAMPAIGN, {
+            //     name: "campaign",
+            //     options: props => ({
+            //         variables: { campaignId: props.match.params.id },
+            //         fetchPolicy: "network-only"
+            //     })
+            // }),
+            // graphql(GET_CAMPAIGN_DASHBOARD, {
+            //     name: "campaign",
+            //     options: props => {
+            //         return {
+            //             variables: { id: props.match.params.id },
+            //             fetchPolicy: "cache-and-network"
+            //         };
+            //     }
+            // }), 
+            graphql(LAUNCH_CAMPAIGN, {
                 name: "launchCampaign"
             }),
             graphql(PAUSE_CAMPAIGN, {
@@ -140,25 +178,13 @@ export default withRouter(
             graphql(ABANDON_CAMPAIGN, {
                 name: "abandonCampaign"
             }),
-            graphql(GET_AUDIENCES, {
-                name: "allAudiences",
-                options: props => ({
-                    variables: {
-                        status: "ACTIVE",
-                        campaign_id: props.match.params.id,
-                        // organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
-                        status: "Active"
-                    },
-                    fetchPolicy: "network-only"
-                })
-            }),
-            // graphql(communications, {
-            //     name: "allCommunications",
+            // graphql(GET_AUDIENCES, {
+            //     name: "allAudiences",
             //     options: props => ({
             //         variables: {
-            //             entityId: props.match.params.id,
-            //             entityType: "Campaign",
-            //             organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
+            //             status: "ACTIVE",
+            //             campaign_id: props.match.params.id,
+            //             // organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
             //             status: "Active"
             //         },
             //         fetchPolicy: "network-only"
