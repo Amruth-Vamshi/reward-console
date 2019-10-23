@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { CardBox, ErrorBoundary } from "@walkinsole/walkin-components";
+import throttle from "lodash.throttle"
 import gql from "graphql-tag";
 import { graphql } from "react-apollo";
 import {
@@ -31,6 +32,7 @@ class QuestionForm extends Component {
       validationStatus: "success",
       showButton: false
     };
+    this.handleClickThrottled= throttle(this.submitQuestion,1000)
   }
 
   setCurrentQuestion = () => {
@@ -49,6 +51,9 @@ class QuestionForm extends Component {
   };
   componentDidMount() {
     this.setCurrentQuestion();
+  }
+  componentWillUnmount(){
+    this.handleClickThrottled.cancel()
   }
 
   componentDidUpdate(preValue) {
