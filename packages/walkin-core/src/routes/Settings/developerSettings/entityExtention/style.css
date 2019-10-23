@@ -17,6 +17,7 @@
   font-family: "Roboto", sans-serif;
   color: #333333;
   margin-bottom: 20px;
+  display: flex;
 }
 
 .headerDesc {
@@ -76,4 +77,46 @@
 }
 .entityVariableInputWrapper {
   margin: 20px 0;
+}
+
+.alignCenter {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+.entityVariableFlexWrapper .ant-switch-checked {
+  background-color: #55dba2;
+}
+
+.entityFieldTableHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 50px;
+}
+
+.nohoverTableWrapper
+  .ant-table-tbody
+  > tr:hover:not(.ant-table-expanded-row)
+  > td {
+  background: unset;
+}
+
+.noHeightTable .ant-table-content {
+  height: 0;
+}
+.entityExtendcolumn {
+  text-align: left;
+  font: Regular 14px/17px Roboto;
+  letter-spacing: 0;
+  color: #333333;
+  opacity: 1;
+}
+.entityExtendcolumnTitle {
+  text-align: left;
+  font: Medium 11px/39px Roboto;
+  letter-spacing: 0;
+  color: #999999;
+  text-transform: uppercase;
+  opacity: 1;
 }

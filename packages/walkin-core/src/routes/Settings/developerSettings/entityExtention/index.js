@@ -2,7 +2,13 @@ import React, { Component } from "react";
 import jwt from "jsonwebtoken";
 import { withApollo } from "react-apollo";
 import EntityVariablesForm from "./entityVariablesForm";
-import { GET_ENTITIES } from "./../../../../PlatformQueries";
+import {
+  GET_ENTITIES,
+  GET_BASIC_ENTITY_FIELDS,
+  GET_ENTITY_EXTEND_FIELDS_BY_NAME,
+  ADD_ENTITY_EXTEND,
+  ADD_ENTITY_EXTEND_FIELD
+} from "./../../../../PlatformQueries";
 import "./style.css";
 import {
   Button,
@@ -18,64 +24,59 @@ import {
 
 const columns = [
   {
-    title: "LABEL",
-    dataIndex: "label"
+    title: <div className="entityExtendcolumnTitle">LABEL</div>,
+    dataIndex: "label",
+    className: "entityExtendcolumn"
   },
   {
-    title: "DESCRIPTION",
-    dataIndex: "description"
+    title: <div className="entityExtendcolumnTitle">DESCRIPTION</div>,
+    dataIndex: "description",
+    className: "entityExtendcolumn"
   },
   {
-    title: "SLUG",
-    dataIndex: "slug"
+    title: <div className="entityExtendcolumnTitle">SLUG</div>,
+    dataIndex: "slug",
+    className: "entityExtendcolumn"
   },
   {
-    title: "TYPE",
-    dataIndex: "type"
+    title: <div className="entityExtendcolumnTitle">TYPE</div>,
+    dataIndex: "type",
+    className: "entityExtendcolumn"
   },
   {
-    title: "DEFAULT VALUE",
-    dataIndex: "default value"
+    title: <div className="entityExtendcolumnTitle">DEFAULT VALUE</div>,
+    dataIndex: "defaultValue",
+    className: "entityExtendcolumn"
   },
   {
-    title: "REQUIRED",
-    dataIndex: "required"
+    title: <div className="entityExtendcolumnTitle">REQUIRED</div>,
+    dataIndex: "required",
+    render: (text, record) => {
+      if (record.__typename === "BasicField") {
+        return text ? "Yes" : "No";
+      }
+      return text ? (
+        <div style={{ color: "#46CB92" }}>Yes</div>
+      ) : (
+        <div style={{ color: "#E96B81" }}>No</div>
+      );
+    },
+    className: "entityExtendcolumn"
   },
   {
-    title: "SEARCHABLE",
-    dataIndex: "searchable"
-  }
-];
-const data = [
-  {
-    key: "1",
-    label: "John Brown",
-    description: 32,
-    slug: "New York No. 1 Lake Park",
-    type: "New York No. 1 Lake Park",
-    "default value": "New York No. 1 Lake Park",
-    required: "New York No. 1 Lake Park",
-    searchable: "New York No. 1 Lake Park"
-  },
-  {
-    key: "2",
-    label: "John Brown",
-    description: 32,
-    slug: "New York No. 1 Lake Park",
-    type: "New York No. 1 Lake Park",
-    "default value": "New York No. 1 Lake Park",
-    required: "New York No. 1 Lake Park",
-    searchable: "New York No. 1 Lake Park"
-  },
-  {
-    key: "3",
-    label: "John Brown",
-    description: 32,
-    slug: "New York No. 1 Lake Park",
-    type: "New York No. 1 Lake Park",
-    "default value": "New York No. 1 Lake Park",
-    required: "New York No. 1 Lake Park",
-    searchable: "New York No. 1 Lake Park"
+    title: <div className="entityExtendcolumnTitle">SEARCHABLE</div>,
+    dataIndex: "searchable",
+    render: (text, record) => {
+      if (record.__typename === "BasicField") {
+        return text ? "Yes" : "No";
+      }
+      return text ? (
+        <div style={{ color: "#46CB92" }}>Yes</div>
+      ) : (
+        <div style={{ color: "#E96B81" }}>No</div>
+      );
+    },
+    className: "entityExtendcolumn"
   }
 ];
 
@@ -84,95 +85,291 @@ class EntityExtention extends Component {
     super(props);
     this.state = {
       isLoading: true,
-      isEntityVariablesFormOpen: false
+      isBasicEntityTableLoading: true,
+      isEntityExtendTableLoading: true,
+
+      isEntityVariablesFormOpen: false,
+      entities: [],
+      selectedEntity: null,
+      basicEntityFields: [],
+      entityExtendFields: {
+        fields: []
+      },
+      selectedRowIndex: null,
+      hideBasicDetailsTable: false
     };
   }
 
   componentWillMount() {
-    const { org_id } = jwt.decode(localStorage.getItem("jwt"));
-    console.log(org_id);
+    this.getEntities();
+  }
 
+  getEntities = () => {
+    const { org_id } = jwt.decode(localStorage.getItem("jwt"));
     this.props.client
       .query({
         query: GET_ENTITIES,
         fetchPolicy: "network-only"
       })
-      .then(entitiessResponse => {
-        console.log(entitiessResponse);
+      .then(entitiesResponse => {
+        this.setState(
+          {
+            org_id,
+            entities: entitiesResponse.data.entities,
+            selectedEntity: entitiesResponse.data.entities[0],
+            isLoading: false
+          },
+          () => {
+            this.getBasicEntityFields();
+            this.getExtendedEntityFields();
+          }
+        );
       })
       .catch(error => {
         console.log(error);
       });
-  }
+  };
+
+  addEntityExtendField = input => {
+    this.props.client
+      .mutate({
+        mutation: ADD_ENTITY_EXTEND_FIELD,
+        variables: {
+          input
+        }
+      })
+      .then(entityFieldResponse => {
+        let fields = [
+          ...this.state.entityExtendFields.fields,
+          entityFieldResponse.data.addEntityExtendField
+        ];
+        this.setState({
+          entityExtendFields: { ...this.state.entityExtendFields, fields },
+          isEntityVariablesFormOpen: !this.state.isEntityVariablesFormOpen,
+          selectedRowIndex: null,
+          isEntityExtendTableLoading: false
+        });
+      })
+      .catch(error => {
+        console.log(error);
+        this.setState({
+          isEntityExtendTableLoading: false
+        });
+      });
+  };
+
+  getBasicEntityFields = () => {
+    this.props.client
+      .query({
+        query: GET_BASIC_ENTITY_FIELDS,
+        variables: { entityName: this.state.selectedEntity },
+        fetchPolicy: "network-only"
+      })
+      .then(basicEntityResponse => {
+        this.setState({
+          basicEntityFields: basicEntityResponse.data.basicFields,
+          isBasicEntityTableLoading: false
+        });
+      })
+      .catch(error => {
+        console.log(error);
+        this.setState({
+          isBasicEntityTableLoading: false
+        });
+      });
+  };
+  getExtendedEntityFields = () => {
+    this.props.client
+      .query({
+        query: GET_ENTITY_EXTEND_FIELDS_BY_NAME,
+        variables: { entityName: this.state.selectedEntity },
+        fetchPolicy: "network-only"
+      })
+      .then(entityExtendResponse => {
+        if (
+          !entityExtendResponse.data.entityExtendByName ||
+          !entityExtendResponse.data.entityExtendByName.id
+        ) {
+          return this.addEntityExtend();
+        }
+
+        this.setState({
+          entityExtendFields: entityExtendResponse.data.entityExtendByName,
+          isEntityExtendTableLoading: false
+        });
+      })
+      .catch(error => {
+        console.log(error);
+        this.setState({
+          isEntityExtendTableLoading: false
+        });
+      });
+  };
+
+  addEntityExtend = () => {
+    this.props.client
+      .mutate({
+        mutation: ADD_ENTITY_EXTEND,
+        variables: {
+          input: {
+            organization_id: this.state.org_id,
+            entity_name: this.state.selectedEntity,
+            description: this.state.selectedEntity
+          }
+        }
+      })
+      .then(addEntityExtendResponse => {
+        this.setState({
+          entityExtendFields: addEntityExtendResponse.data.addEntityExtend,
+          isEntityExtendTableLoading: false
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
 
   onAddOrEditVariables = () => {
     this.setState({
-      isEntityVariablesFormOpen: !this.state.isEntityVariablesFormOpen
+      isEntityVariablesFormOpen: !this.state.isEntityVariablesFormOpen,
+      selectedRowIndex: null
     });
   };
+
+  onSave = entityExtendField => {
+    let input = entityExtendField;
+    input.entityExtendId = this.state.entityExtendFields.id;
+    this.addEntityExtendField(input);
+  };
+
   renderEntityExtentionList = () => {
-    if (!this.state.isEntityVariablesFormOpen)
+    let {
+      entities,
+      isLoading,
+      selectedEntity,
+      basicEntityFields,
+      entityExtendFields,
+      selectedRowIndex,
+      hideBasicDetailsTable
+    } = this.state;
+    if (isLoading && !entities.length) {
+      return (
+        <div className="entityVariablesListWrapper alignCenter">
+          <Spin size="large" />
+        </div>
+      );
+    }
+
+    if (!this.state.isEntityVariablesFormOpen) {
+      if (basicEntityFields.length) {
+        basicEntityFields.map((basicEntity, index) => {
+          basicEntity.key = index;
+        });
+      }
+
+      if (entityExtendFields.fields.length) {
+        entityExtendFields.fields.map((entityExtendField, index) => {
+          entityExtendField.key = index;
+        });
+      }
       return (
         <div className="entityVariablesListWrapper">
           <div className="entityVariableInputWrapper">
             <div className="InputLabel">Label</div>
             <Select
               size="large"
-              defaultValue="lucy"
+              defaultValue={selectedEntity}
               style={{ width: "50%" }}
-              // onChange={thishandleChange}
+              onChange={selectedEntity => {
+                this.setState(
+                  {
+                    isBasicEntityTableLoading: true,
+                    isEntityExtendTableLoading: true,
+
+                    isEntityVariablesFormOpen: false,
+                    selectedEntity,
+                    basicEntityFields: [],
+                    entityExtendFields: {
+                      fields: []
+                    },
+                    selectedRowIndex: null,
+                    hideBasicDetailsTable: false
+                  },
+                  () => {
+                    this.getBasicEntityFields();
+                    this.getExtendedEntityFields();
+                  }
+                );
+              }}
             >
-              <Option value="jack">Jack</Option>
-              <Option value="lucy">Lucy</Option>
-              <Option value="disabled" disabled>
-                Disabled
-              </Option>
-              <Option value="Yiminghe">yiminghe</Option>
+              {entities.map((entity, index) => {
+                return (
+                  <Option key={index} value={entity}>
+                    {entity}
+                  </Option>
+                );
+              })}
             </Select>
           </div>
-          <div className="entityVariableInputWrapper ">
+          <div
+            className={
+              hideBasicDetailsTable
+                ? "entityVariableInputWrapper nohoverTableWrapper noHeightTable"
+                : "entityVariableInputWrapper nohoverTableWrapper"
+            }
+          >
             <Table
+              loading={this.state.isBasicEntityTableLoading}
               bordered
               title={() => (
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    height: 50
-                  }}
-                >
+                <div className={"entityFieldTableHeader"}>
                   <label style={{ fontSize: 18 }}>Basic Details</label>
-                  <Icon type="caret-down" />
+                  {hideBasicDetailsTable ? (
+                    <Icon
+                      type="caret-down"
+                      onClick={() => {
+                        this.setState({ hideBasicDetailsTable: false });
+                      }}
+                    />
+                  ) : (
+                    <Icon
+                      type="caret-up"
+                      onClick={() => {
+                        this.setState({ hideBasicDetailsTable: true });
+                      }}
+                    />
+                  )}
                 </div>
               )}
               columns={columns}
-              dataSource={data}
+              dataSource={basicEntityFields}
               size="middle"
-              pagination={false}
+              pagination={hideBasicDetailsTable ? false : true}
             />
           </div>
           <div className="entityVariableInputWrapper ">
             <Table
-              className="table-disable-hover"
+              loading={this.state.isEntityExtendTableLoading}
+              onRow={(record, rowIndex) => {
+                return {
+                  onClick: event => {
+                    this.setState({
+                      selectedRowIndex: rowIndex,
+                      isEntityVariablesFormOpen: true
+                    });
+                  }
+                };
+              }}
               bordered
               title={() => (
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    height: 50
-                  }}
-                >
+                <div className={"entityFieldTableHeader"}>
                   <label style={{ fontSize: 18 }}>Extended Details</label>
-                  {/* <Button type="link">X</Button> */}
                 </div>
               )}
               columns={columns}
-              dataSource={data}
+              dataSource={entityExtendFields.fields}
               size="middle"
-              pagination={false}
+              // pagination={false}
             />
           </div>
 
@@ -186,8 +383,14 @@ class EntityExtention extends Component {
           </Button>
         </div>
       );
+    }
 
-    return <EntityVariablesForm onSave={this.onAddOrEditVariables} />;
+    return (
+      <EntityVariablesForm
+        entityExtendField={entityExtendFields.fields[selectedRowIndex]}
+        onSave={this.onSave}
+      />
+    );
   };
 
   render() {
@@ -209,7 +412,7 @@ class EntityExtention extends Component {
           <div className="headerDescWrapper">
             <div
               onClick={() => this.onAddOrEditVariables()}
-              className="cursorPointer"
+              className="cursorPointer entityExtendBackButton"
             >
               <Icon type="arrow-left" />
               Back

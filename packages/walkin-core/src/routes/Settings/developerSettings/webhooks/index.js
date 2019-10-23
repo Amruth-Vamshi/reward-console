@@ -203,7 +203,7 @@ class Webhooks extends Component {
               >
                 <div>{webhook.enabled ? "Active" : "Inactive"}</div>
                 <Switch
-                  className={webhook.enabled && "webhookStatusSwitch"}
+                  className={webhook.enabled ? "webhookStatusSwitch" : null}
                   checked={webhook.enabled}
                   onChange={() => this.onEnableOrDisableWebhook(index)}
                   loading={isLoading && selectedWebhookIndex === index}
@@ -276,7 +276,7 @@ class Webhooks extends Component {
           <div className="headerDescWrapper">
             <div
               onClick={() => this.onAddOrEditWebhooks()}
-              className="cursorPointer"
+              className="cursorPointer webhookBackButton"
             >
               <Icon type="arrow-left" />
               Back
