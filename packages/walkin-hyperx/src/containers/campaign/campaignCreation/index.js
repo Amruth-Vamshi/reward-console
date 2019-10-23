@@ -15,7 +15,7 @@ import '../styles.css'
 import { DEFAULT_ACTIVE_STATUS, DEFAULT_HYPERX_CAMPAIGN } from "../../../utils"
 import moment from "moment";
 import { CampaignFooter, CampaignHeader, Stepper } from '@walkinsole/shared';
-import { GET_CAMPAIGN, CREATE_CAMPAIGN, UPDATE_CAMPAIGN, CREATE_MESSAGE_TEMPLETE, CREATE_COMMUNICATION, LAUNCH_CAMPAIGN, CREATE_COMMUNICATION_WITH_MESSAGE_TEMPLETE, COMMUNICATIONS } from '../../../query/campaign';
+import { GET_CAMPAIGN, CREATE_CAMPAIGN, UPDATE_CAMPAIGN, CREATE_MESSAGE_TEMPLETE, CREATE_COMMUNICATION, LAUNCH_CAMPAIGN, CREATE_COMMUNICATION_WITH_MESSAGE_TEMPLETE, COMMUNICATIONS, VIEW_CAMPAIGN } from '../../../query/campaign';
 
 const stepData = [{
 	id: 1,
@@ -62,7 +62,7 @@ class CampaignCreation extends Component {
 			errors: {},
 			audienceCount: 0,
 			loading: false,
-			noOfferRequired: false,
+			noOfferRequired: true,
 			offer: '',
 			scheduleData: {},
 			smsForm: {},
@@ -77,6 +77,7 @@ class CampaignCreation extends Component {
 			offerCreated: false,
 			createComm: false,
 			audience: [],
+			update: false,
 			audienceChange: { audience: false, rule: false }
 		};
 	}
@@ -87,49 +88,84 @@ class CampaignCreation extends Component {
 		if (location && location.state) {
 			console.log("this...", location.state)
 			if (location.state.update)
-				this.setState({ campaign: location.state.campaignSelected, formValues: location.state.campaignSelected, update: true });
+				this.setState({ update: true });
+
+
+			this.setState({ spin: true })
 			client.query({
-				query: GET_OFFER_FOR_CAMPAIGN,
-				fetchPolicy: 'network-only',
-				variables: { campaign_id: match.params.id, organization_id: org_id }
+				query: VIEW_CAMPAIGN,
+				variables: { campaignId: this.props.match.params.id },
+				// fetchPolicy: 'network-only'
 			}).then(res => {
-				console.log(res);
-			}).catch(err => {
-				console.log("Error Update campaign", err)
-			});
-		}
-	}
-	componentDidUpdate(preValue) {
-		// console.log('>>>', this.props.offerForCampaign);
-		if (this.state.update) {
-			if (this.props.linkedAudiences.loading !== preValue.linkedAudiences.loading) {
-				if (this.props.linkedAudiences.audiences) {
+				console.log('res', res.data.viewCampaignForHyperX);
+				let { campaign, audiences, offers, communications } = res.data.viewCampaignForHyperX
+
+				this.setState({ spin: false, campaign: campaign, formValues: campaign, communications: communications, campaignCreated: true });
+
+				if (audiences) {
 					let selectedSegments = []
-					this.props.linkedAudiences.audiences.map(item => selectedSegments.push(item.segment.id))
+					audiences.map(item => selectedSegments.push(item.segment.id))
+					selectedSegments = selectedSegments.length ? selectedSegments : ['']
 					this.setState({ selectedSegments: selectedSegments })
 				}
-			}
-			// 	if (this.props.allCommunications.loading !== preValue.allCommunications.loading) {
-			// 		let { communicationFormValues } = this.state
-			// 		let communicationId = {}
-			// 		if (this.props.allCommunications.communications) {
-			// 			this.props.allCommunications.communications.map(item => {
-			// 				if (item.messageTemplate.messageFormat == "SMS") {
-			// 					communicationId.smsid = item.messageTemplate.id
-			// 					communicationFormValues.smsTag = item.messageTemplate.templateSubjectText
-			// 					communicationFormValues.smsBody = item.messageTemplate.templateBodyText
-			// 				} else if (item.messageTemplate.messageFormat == "EMAIL") {
-			// 					communicationId.emailid = item.messageTemplate.id
-			// 					communicationFormValues.email_subject = item.messageTemplate.templateSubjectText
-			// 					communicationFormValues.email_body = item.messageTemplate.templateBodyText
-			// 				}
-			// 			})
-			// 		}
 
-			// 		this.setState({ communicationFormValues, communicationId })
-			// 	}
+				if (campaign.audienceFilterRule) {
+					let str = campaign.audienceFilterRule.ruleConfiguration;
+					var mapObj = {
+						// ruleAttributeId: 'field',
+						attributeName: 'field',
+						attributeValue: 'value',
+						expressionType: 'operator',
+					};
+					if (typeof str != 'string') str = JSON.stringify(str)
+					str = str.replace(/attributeName|attributeValue|expressionType/gi, function (matched) {
+						return mapObj[matched];
+					});
+					this.setState({ ruleQuery: JSON.parse(str), audienceFilterRule: campaign.audienceFilterRule.ruleConfiguration });
+				}
+
+				if (offers[0] && offers[0].offer) this.setState({ offer: offers[0].name, offerData: offers[0].offer })
+				else this.setState({ noOfferRequired: true })
+
+
+			}).catch(err => {
+				this.setState({ spin: false });
+				console.log("Failed to get Campaign Details" + err);
+			});
+
 		}
 	}
+	// componentDidUpdate(preValue) {
+	// 	// console.log('>>>', this.props.offerForCampaign);
+	// 	if (this.state.update) {
+	// 		if (this.props.linkedAudiences.loading !== preValue.linkedAudiences.loading) {
+	// 			if (this.props.linkedAudiences.audiences) {
+	// 				let selectedSegments = []
+	// 				this.props.linkedAudiences.audiences.map(item => selectedSegments.push(item.segment.id))
+	// 				this.setState({ selectedSegments: selectedSegments })
+	// 			}
+	// 		}
+	// 		// 	if (this.props.allCommunications.loading !== preValue.allCommunications.loading) {
+	// 		// 		let { communicationFormValues } = this.state
+	// 		// 		let communicationId = {}
+	// 		// 		if (this.props.allCommunications.communications) {
+	// 		// 			this.props.allCommunications.communications.map(item => {
+	// 		// 				if (item.messageTemplate.messageFormat == "SMS") {
+	// 		// 					communicationId.smsid = item.messageTemplate.id
+	// 		// 					communicationFormValues.smsTag = item.messageTemplate.templateSubjectText
+	// 		// 					communicationFormValues.smsBody = item.messageTemplate.templateBodyText
+	// 		// 				} else if (item.messageTemplate.messageFormat == "EMAIL") {
+	// 		// 					communicationId.emailid = item.messageTemplate.id
+	// 		// 					communicationFormValues.email_subject = item.messageTemplate.templateSubjectText
+	// 		// 					communicationFormValues.email_body = item.messageTemplate.templateBodyText
+	// 		// 				}
+	// 		// 			})
+	// 		// 		}
+
+	// 		// 		this.setState({ communicationFormValues, communicationId })
+	// 		// 	}
+	// 	}
+	// }
 
 
 	saveFormRef = formRef => {
@@ -177,24 +213,24 @@ class CampaignCreation extends Component {
 		let segments = this.state.selectedSegments
 		let current1 = this.state.current
 
-		if (current1 == 0) {
-			this.createOrUpdateBasicCampaign(current)
-		} else if (current1 == 1) {
-			if (segments[0] && segments[0] != "") {
-				this.createAudience(current)
-				this.ruleQuery(current)
-			} else {
-				errors.segment = "* this field is mandatory"
-				this.setState({ errors })
-			}
-		} else if (current1 == 2) {
-			this.linkOffer(current)
-		} else if (current1 == 3) {
-			this.createComm(current)
-		} else if (e && e.target.innerText === 'Launch') {
-			this.launchCampaign()
-		} else
-			this.setState({ current });
+		// if (current1 == 0) {
+		// 	this.createOrUpdateBasicCampaign(current)
+		// } else if (current1 == 1) {
+		// 	if (segments[0] && segments[0] != "") {
+		// 		this.createAudience(current)
+		// 		this.ruleQuery(current)
+		// 	} else {
+		// 		errors.segment = "* this field is mandatory"
+		// 		this.setState({ errors })
+		// 	}
+		// } else if (current1 == 2) {
+		// 	this.linkOffer(current)
+		// } else if (current1 == 3) {
+		// 	this.createComm(current)
+		// } else if (e && e.target.innerText === 'Launch') {
+		// 	this.launchCampaign()
+		// } else
+		this.setState({ current });
 
 	}
 
@@ -424,7 +460,7 @@ class CampaignCreation extends Component {
 				if (err) return
 				else {
 					console.log('values', values);
-					(!this.state.campaignCreated || this.state.update) ?
+					(!this.state.campaignCreated && !this.state.update) ?
 						this.createCampaign(values, current) : this.updateCampaign(values, current);
 					this.setState({ formValues: values });
 				}
@@ -433,7 +469,29 @@ class CampaignCreation extends Component {
 	}
 
 	updateCampaign = (values, current) => {
+		const { client } = this.props;
+		const { priorityChosen, controlValue } = this.state;
 
+		const input = {
+			...values,
+			priority: parseInt(priorityChosen),
+			campaignControlPercent: parseInt(controlValue),
+			// campaignType: DEFAULT_HYPERX_CAMPAIGN
+		};
+		console.log('campInput', input);
+		this.setState({ loading: true });
+		client.mutate({
+			mutation: UPDATE_CAMPAIGN,
+			variables: { input: input, id: this.state.campaign.id ? this.state.campaign.id : this.props.match.params.id }
+		}).then(res =>
+			this.setState({
+				current, loading: false,
+				campaign: res.data.updateCampaign
+			})
+		).catch(err => {
+			console.log(err)
+			this.setState({ loading: false })
+		})
 	}
 
 	createCampaign = (values, current) => {
@@ -494,7 +552,7 @@ class CampaignCreation extends Component {
 		this.setState({ communicationSelected: e.target.value });
 	};
 
-	noOfferRequired = e => this.setState({ noOfferRequired: e })
+	offerChecked = e => this.setState({ noOfferRequired: e })
 
 	handleOnOfferChange = e => {
 		this.setState({ offer: e });
@@ -536,8 +594,6 @@ class CampaignCreation extends Component {
 	}
 
 	render() {
-		console.log("Edit")
-		console.log(this.props, this.state);
 		const { formValues, current, showTestAndControl, testValue, controlValue, testControlSelected, update, rows, values, communicationSelected } = this.state;
 		let attributeData = []
 		if (this.props.allAttributes)
@@ -563,7 +619,7 @@ class CampaignCreation extends Component {
 						<Fragment>
 							<Col sm={5} md={8} lg={10} xl={12} xxl={15}>
 								<h3 className="gx-text-grey paddingLeftStyle campaignHeaderTitleStyle">
-									Create Campaign
+									{update ? "Update Campaign" : "Create Campaign"}
 								</h3>
 							</Col>
 							<Col sm={19} md={16} lg={14} xl={12} xxl={9}>
@@ -635,7 +691,8 @@ class CampaignCreation extends Component {
 								offersList={this.props.allOffers.getOffers}
 								errors={this.state.errors}
 								offer={this.state.offer}
-								noOfferRequired={this.noOfferRequired}
+								offerChecked={this.offerChecked}
+								noOfferRequired={this.state.noOfferRequired}
 								handleOnOfferChange={this.handleOnOfferChange}
 								subTitle="Offer" />}
 						{current === 3 && (
@@ -727,17 +784,17 @@ export default withRouter(
 					fetchPolicy: 'network-only',
 				})
 			}),
-			graphql(GET_AUDIENCES, {
-				name: 'linkedAudiences',
-				options: ownProps => ({
-					variables: {
-						organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
-						campaign_id: ownProps.match.params.id,
-						status: DEFAULT_ACTIVE_STATUS
-					},
-					fetchPolicy: 'network-only',
-				})
-			}),
+			// graphql(GET_AUDIENCES, {
+			// 	name: 'linkedAudiences',
+			// 	options: ownProps => ({
+			// 		variables: {
+			// 			organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
+			// 			campaign_id: ownProps.match.params.id,
+			// 			status: DEFAULT_ACTIVE_STATUS
+			// 		},
+			// 		fetchPolicy: 'network-only',
+			// 	})
+			// }),
 			graphql(GET_ALL_APPS_OF_ORGANIZATION, {
 				name: "allApplications",
 				options: props => {
@@ -763,6 +820,8 @@ export default withRouter(
 
 			graphql(CREATE_RULE, {
 				name: "createRule"
+			}), graphql(ADD_OFFER_TO_CAMPAIGN, {
+				name: "addOfferToCampaign"
 			}), graphql(UPDATE_RULE, {
 				name: "updateRule"
 			}), graphql(UPDATE_CAMPAIGN, {

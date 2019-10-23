@@ -194,3 +194,18 @@ export const CREATE_COMMUNICATION_WITH_MESSAGE_TEMPLETE = gql`
           templateStyle messageTemplateVariables{id name key status} status}    
     }
 }`
+
+export const VIEW_CAMPAIGN = gql`
+  query viewCampaignForHyperX($campaignId:ID!) {
+  viewCampaignForHyperX(campaignId:$campaignId){
+    campaign{id name description startTime endTime campaignType status priority
+      audienceFilterRule{id name status type ruleConfiguration ruleExpression }
+      createdBy lastModifiedBy createdTime lastModifiedTime campaignStatus }
+    audiences{id segment{id name segmentType rule{id type ruleConfiguration ruleExpression}}}
+    offers{id name offerType offerCategory coupon status}
+    communications{id entityId entityType isScheduled isRepeatable commsChannelName lastProcessedDateTime
+    	messageTemplate{id name templateBodyText templateSubjectText status messageFormat} firstScheduleDateTime
+      repeatRuleConfiguration{frequency repeatInterval endAfter byWeekDay byMonthDate time }}
+  
+  }
+}`
