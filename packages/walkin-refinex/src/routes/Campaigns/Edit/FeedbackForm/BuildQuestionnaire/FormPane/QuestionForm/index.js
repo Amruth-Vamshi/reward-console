@@ -135,7 +135,9 @@ class QuestionForm extends Component {
     const { questionToEdit, form, style } = this.props;
     const { getFieldDecorator, isFieldsTouched } = form;
     const { Item } = Form;
-    let props = {}
+    let props = {
+      suffix: <span />
+    }
     if (isFieldsTouched(["questionText"]) || isFieldsTouched(["range"])) {
       props = {
         suffix: (<Tooltip title="Update Question">
