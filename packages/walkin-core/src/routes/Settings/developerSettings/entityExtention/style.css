@@ -77,3 +77,22 @@
 .entityVariableInputWrapper {
   margin: 20px 0;
 }
+.entityVariableFlexWrapper .ant-switch-checked {
+  background-color: #55dba2;
+}
+/* .entityVariableInputWrapper
+  .ant-table-tbody
+  > tr.ant-table-row-level-1:hover
+  > td {
+  background: unset;
+} */
+
+.entityVariableBasicInputWrapper
+  .ant-table-thead
+  > tr.ant-table-row-hover:not(.ant-table-expanded-row)
+  > td,
+.ant-table-tbody > tr.ant-table-row-hover:not(.ant-table-expanded-row) > td,
+.ant-table-thead > tr:hover:not(.ant-table-expanded-row) > td,
+.ant-table-tbody > tr:hover:not(.ant-table-expanded-row) > td {
+  background: unset;
+}

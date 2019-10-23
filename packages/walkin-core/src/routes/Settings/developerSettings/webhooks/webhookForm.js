@@ -169,7 +169,7 @@ export default class WebhookForm extends Component {
                 return (
                   <div key={index} className="requestHeaderrowWrapper">
                     <Input
-                      style={{ width: "40%" }}
+                      style={{ width: "45%" }}
                       size="large"
                       defaultValue={headerEntries[index][0]}
                       onChange={e =>
@@ -177,7 +177,7 @@ export default class WebhookForm extends Component {
                       }
                     />
                     <Input
-                      style={{ width: "40%" }}
+                      style={{ width: "45%" }}
                       size="large"
                       defaultValue={headerEntries[index][1]}
                       onChange={e =>
@@ -186,7 +186,7 @@ export default class WebhookForm extends Component {
                     />
                     <div
                       style={{
-                        width: "8%"
+                        marginRight: "2%"
                       }}
                       onClick={() => {
                         headerEntries.pop();
@@ -195,7 +195,9 @@ export default class WebhookForm extends Component {
                         });
                       }}
                     >
-                      X
+                      <label style={{ fontSize: 20, cursor: "pointer" }}>
+                        X
+                      </label>
                     </div>
                   </div>
                 );

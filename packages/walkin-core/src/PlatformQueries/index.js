@@ -172,6 +172,90 @@ export const GET_ENTITIES = gql`
   }
 `;
 
+export const GET_BASIC_ENTITY_FIELDS = gql`
+  query getBasicEntityFields($entityName: EXTEND_ENTITIES!) {
+    basicFields(entityName: $entityName) {
+      slug
+      label
+      type
+      required
+      defaultValue
+      searchable
+      description
+    }
+  }
+`;
+
+export const GET_ENTITY_EXTEND_FIELDS_BY_NAME = gql`
+  query getEntityExtendFieldsByName($entityName: EXTEND_ENTITIES!) {
+    entityExtendByName(entityName: $entityName) {
+      id
+      entityName
+      description
+      organization {
+        id
+      }
+      fields {
+        id
+        slug
+        help
+        label
+        type
+        choices
+        required
+        defaultValue
+        validator
+        searchable
+        description
+      }
+    }
+  }
+`;
+
+export const ADD_ENTITY_EXTEND = gql`
+  mutation addEntityExtend($input: AddEntityExtend!) {
+    addEntityExtend(input: $input) {
+      id
+      entityName
+      description
+      organization {
+        id
+      }
+      fields {
+        id
+        slug
+        help
+        label
+        type
+        choices
+        required
+        defaultValue
+        validator
+        searchable
+        description
+      }
+    }
+  }
+`;
+
+export const ADD_ENTITY_EXTEND_FIELD = gql`
+  mutation addEntityExtendField($input: AddEntityExtendField!) {
+    addEntityExtendField(input: $input) {
+      id
+      slug
+      help
+      label
+      type
+      choices
+      required
+      defaultValue
+      validator
+      searchable
+      description
+    }
+  }
+`;
+
 export const GENERATE_API_KEY = gql`
   mutation generateAPIKey($id: ID!, $env: String) {
     generateAPIKey(id: $id, environment: $env) {

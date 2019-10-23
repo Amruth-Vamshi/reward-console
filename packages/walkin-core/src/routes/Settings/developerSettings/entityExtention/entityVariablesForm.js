@@ -8,31 +8,38 @@ export default class EntityVariablesForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      headerEntries: [[]],
-      webhookDetails: {
-        event: "",
-        url: "",
-        headers: {},
-        method: "GET",
-        status: "ACTIVE"
+      entityExtendField: {
+        slug: "",
+        help: "",
+        label: "",
+        type: "DATE",
+        required: true,
+        defaultValue: ""
       }
     };
   }
 
-  componentWillMount() {}
+  componentWillMount() {
+    let { entityExtendField } = this.props;
+    if (entityExtendField) {
+      this.setState({ entityExtendField });
+    }
+  }
 
   onChange = (type, value) => {
     this.setState({ [type]: value });
   };
 
   onSave = () => {
-    this.props.onSave();
+    this.props.onSave(this.state.entityExtendField);
   };
 
   render() {
-    let { webhookDetails, headerEntries } = this.state;
+    console.log(this.props);
+    let { entityExtendField } = this.state;
+
     let header = "Edit Variable Details";
-    if (!webhookDetails.id) {
+    if (!entityExtendField.id) {
       header = "Add New Variable";
     }
 
@@ -48,13 +55,12 @@ export default class EntityVariablesForm extends Component {
             <div className="InputLabel">Label</div>
             <Input
               size="large"
-              //   addonBefore={selectBefore}
               placeholder="Label"
-              defaultValue={webhookDetails.url}
+              defaultValue={entityExtendField.label}
               onChange={e =>
-                this.onChange("webhookDetails", {
-                  ...webhookDetails,
-                  url: e.target.value
+                this.onChange("entityExtendField", {
+                  ...entityExtendField,
+                  label: e.target.value
                 })
               }
             />
@@ -67,7 +73,17 @@ export default class EntityVariablesForm extends Component {
             <div className="entityVariableInputWrapper width45percent">
               <div className="InputLabel">Slug</div>
 
-              <Input size="large" placeholder="Slug" />
+              <Input
+                size="large"
+                placeholder="Slug"
+                defaultValue={entityExtendField.slug}
+                onChange={e =>
+                  this.onChange("entityExtendField", {
+                    ...entityExtendField,
+                    slug: e.target.value
+                  })
+                }
+              />
               <div className="inputDesc">
                 Short description about above field.
               </div>
@@ -76,16 +92,25 @@ export default class EntityVariablesForm extends Component {
               <div className="InputLabel">Type</div>
 
               <Select
-                defaultValue="lucy"
                 style={{ width: "100%" }}
-                // onChange={thishandleChange}
+                defaultValue={entityExtendField.type}
+                size="large"
+                onChange={event => {
+                  this.onChange("entityExtendField", {
+                    ...entityExtendField,
+                    type: event
+                  });
+                }}
               >
-                <Option value="jack">Jack</Option>
-                <Option value="lucy">Lucy</Option>
-                <Option value="disabled" disabled>
-                  Disabled
-                </Option>
-                <Option value="Yiminghe">yiminghe</Option>
+                <Option value="DATE">DATE</Option>
+                <Option value="TIMESTAMP">TIMESTAMP</Option>
+                <Option value="TIME">TIME</Option>
+                <Option value="SHORT_TEXT">SHORT TEXT</Option>
+                <Option value="LONG_TEXT">LONG TEXT</Option>
+                <Option value="NUMBER">NUMBER</Option>
+                <Option value="CHOICES">CHOICES</Option>
+                <Option value="BOOLEAN">BOOLEAN</Option>
+                <Option value="JSON">JSON</Option>
               </Select>
               <div className="inputDesc">
                 Short description about above field.
@@ -93,52 +118,43 @@ export default class EntityVariablesForm extends Component {
             </div>
           </div>
 
-          <div className="entityVariableInputWrapper">
-            <div className="InputLabel">Label</div>
-            <Select
-              mode="multiple"
-              style={{ width: "100%" }}
-              placeholder="select one country"
-              defaultValue={["china"]}
-              //   onChange={handleChange}
-              optionLabelProp="label"
-            >
-              <Option value="china" label="China">
-                <span role="img" aria-label="China">
-                  🇨🇳
-                </span>
-                China (中国)
-              </Option>
-              <Option value="usa" label="USA">
-                <span role="img" aria-label="USA">
-                  🇺🇸
-                </span>
-                USA (美国)
-              </Option>
-              <Option value="japan" label="Japan">
-                <span role="img" aria-label="Japan">
-                  🇯🇵
-                </span>
-                Japan (日本)
-              </Option>
-              <Option value="korea" label="Korea">
-                <span role="img" aria-label="Korea">
-                  🇰🇷
-                </span>
-                Korea (韩国)
-              </Option>
-            </Select>
-            ,
-            <div className="inputDesc">
-              Short description about above field.
+          {entityExtendField.type === "CHOICES" && (
+            <div className="entityVariableInputWrapper">
+              <div className="InputLabel">Label</div>
+              <Select
+                size="large"
+                mode="tags"
+                style={{ width: "100%" }}
+                placeholder="choices"
+                defaultValue={entityExtendField.choices}
+                onChange={event => {
+                  this.onChange("entityExtendField", {
+                    ...entityExtendField,
+                    choices: event
+                  });
+                }}
+              />
+              <div className="inputDesc">
+                Short description about above field.
+              </div>
             </div>
-          </div>
+          )}
 
           <div className="entityVariableFlexWrapper">
             <div className="entityVariableInputWrapper width45percent">
               <div className="InputLabel">Default Value</div>
 
-              <Input size="large" placeholder="Default Value" />
+              <Input
+                size="large"
+                placeholder="Default Value"
+                defaultValue={entityExtendField.defaultValue}
+                onChange={e =>
+                  this.onChange("entityExtendField", {
+                    ...entityExtendField,
+                    defaultValue: e.target.value
+                  })
+                }
+              />
               <div className="inputDesc">
                 Short description about above field.
               </div>
@@ -146,7 +162,17 @@ export default class EntityVariablesForm extends Component {
             <div className="entityVariableInputWrapper width45percent">
               <div className="InputLabel">Description</div>
 
-              <Input size="large" placeholder="Description" />
+              <Input
+                size="large"
+                placeholder="Description"
+                defaultValue={entityExtendField.description}
+                onChange={e =>
+                  this.onChange("entityExtendField", {
+                    ...entityExtendField,
+                    description: e.target.value
+                  })
+                }
+              />
               <div className="inputDesc">
                 Short description about above field.
               </div>
@@ -158,7 +184,7 @@ export default class EntityVariablesForm extends Component {
               <Switch />
             </div>
             <div className="entityVariableInputWrapper width75percent">
-              Short description about above field.
+              Required
               <div className="inputDesc">
                 Short description about above field.
               </div>
@@ -169,7 +195,7 @@ export default class EntityVariablesForm extends Component {
               <Switch />
             </div>
             <div className="entityVariableInputWrapper width75percent ">
-              Short description about above field.
+              Searchable
               <div className="inputDesc">
                 Short description about above field.
               </div>

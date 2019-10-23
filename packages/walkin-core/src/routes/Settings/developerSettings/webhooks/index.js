@@ -203,7 +203,7 @@ class Webhooks extends Component {
               >
                 <div>{webhook.enabled ? "Active" : "Inactive"}</div>
                 <Switch
-                  className={webhook.enabled && "webhookStatusSwitch"}
+                  className={webhook.enabled ? "webhookStatusSwitch" : null}
                   checked={webhook.enabled}
                   onChange={() => this.onEnableOrDisableWebhook(index)}
                   loading={isLoading && selectedWebhookIndex === index}
