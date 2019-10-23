@@ -4,6 +4,18 @@ import { Select, Input, Button, Switch } from "antd";
 
 const { Option } = Select;
 
+const SLUG_TYPE = [
+  "DATE",
+  "TIMESTAMP",
+  "TIME",
+  "SHORT_TEXT",
+  "LONG_TEXT",
+  "NUMBER",
+  "CHOICES",
+  "BOOLEAN",
+  "JSON"
+];
+
 export default class EntityVariablesForm extends Component {
   constructor(props) {
     super(props);
@@ -13,8 +25,9 @@ export default class EntityVariablesForm extends Component {
         help: "",
         label: "",
         type: "DATE",
-        required: true,
-        defaultValue: ""
+        required: false,
+        defaultValue: "",
+        searchable: false
       }
     };
   }
@@ -102,15 +115,9 @@ export default class EntityVariablesForm extends Component {
                   });
                 }}
               >
-                <Option value="DATE">DATE</Option>
-                <Option value="TIMESTAMP">TIMESTAMP</Option>
-                <Option value="TIME">TIME</Option>
-                <Option value="SHORT_TEXT">SHORT TEXT</Option>
-                <Option value="LONG_TEXT">LONG TEXT</Option>
-                <Option value="NUMBER">NUMBER</Option>
-                <Option value="CHOICES">CHOICES</Option>
-                <Option value="BOOLEAN">BOOLEAN</Option>
-                <Option value="JSON">JSON</Option>
+                {SLUG_TYPE.map((type, index) => (
+                  <Option value={type}>{type}</Option>
+                ))}
               </Select>
               <div className="inputDesc">
                 Short description about above field.
@@ -181,7 +188,15 @@ export default class EntityVariablesForm extends Component {
 
           <div className="entityVariableFlexWrapper">
             <div className="entityVariableInputWrapper width15percent ">
-              <Switch />
+              <Switch
+                checked={entityExtendField.required}
+                onChange={value =>
+                  this.onChange("entityExtendField", {
+                    ...entityExtendField,
+                    required: value
+                  })
+                }
+              />
             </div>
             <div className="entityVariableInputWrapper width75percent">
               Required
@@ -192,7 +207,15 @@ export default class EntityVariablesForm extends Component {
           </div>
           <div className="entityVariableFlexWrapper">
             <div className="entityVariableInputWrapper width15percent ">
-              <Switch />
+              <Switch
+                checked={entityExtendField.searchable}
+                onChange={value =>
+                  this.onChange("entityExtendField", {
+                    ...entityExtendField,
+                    searchable: value
+                  })
+                }
+              />
             </div>
             <div className="entityVariableInputWrapper width75percent ">
               Searchable

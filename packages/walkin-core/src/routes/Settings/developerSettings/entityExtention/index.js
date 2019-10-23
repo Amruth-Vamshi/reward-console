@@ -24,32 +24,59 @@ import {
 
 const columns = [
   {
-    title: "LABEL",
-    dataIndex: "label"
+    title: <div className="entityExtendcolumnTitle">LABEL</div>,
+    dataIndex: "label",
+    className: "entityExtendcolumn"
   },
   {
-    title: "DESCRIPTION",
-    dataIndex: "description"
+    title: <div className="entityExtendcolumnTitle">DESCRIPTION</div>,
+    dataIndex: "description",
+    className: "entityExtendcolumn"
   },
   {
-    title: "SLUG",
-    dataIndex: "slug"
+    title: <div className="entityExtendcolumnTitle">SLUG</div>,
+    dataIndex: "slug",
+    className: "entityExtendcolumn"
   },
   {
-    title: "TYPE",
-    dataIndex: "type"
+    title: <div className="entityExtendcolumnTitle">TYPE</div>,
+    dataIndex: "type",
+    className: "entityExtendcolumn"
   },
   {
-    title: "DEFAULT VALUE",
-    dataIndex: "defaultValue"
+    title: <div className="entityExtendcolumnTitle">DEFAULT VALUE</div>,
+    dataIndex: "defaultValue",
+    className: "entityExtendcolumn"
   },
   {
-    title: "REQUIRED",
-    dataIndex: "required"
+    title: <div className="entityExtendcolumnTitle">REQUIRED</div>,
+    dataIndex: "required",
+    render: (text, record) => {
+      if (record.__typename === "BasicField") {
+        return text ? "Yes" : "No";
+      }
+      return text ? (
+        <div style={{ color: "#46CB92" }}>Yes</div>
+      ) : (
+        <div style={{ color: "#E96B81" }}>No</div>
+      );
+    },
+    className: "entityExtendcolumn"
   },
   {
-    title: "SEARCHABLE",
-    dataIndex: "searchable"
+    title: <div className="entityExtendcolumnTitle">SEARCHABLE</div>,
+    dataIndex: "searchable",
+    render: (text, record) => {
+      if (record.__typename === "BasicField") {
+        return text ? "Yes" : "No";
+      }
+      return text ? (
+        <div style={{ color: "#46CB92" }}>Yes</div>
+      ) : (
+        <div style={{ color: "#E96B81" }}>No</div>
+      );
+    },
+    className: "entityExtendcolumn"
   }
 ];
 
@@ -68,7 +95,8 @@ class EntityExtention extends Component {
       entityExtendFields: {
         fields: []
       },
-      selectedRowIndex: null
+      selectedRowIndex: null,
+      hideBasicDetailsTable: false
     };
   }
 
@@ -118,11 +146,15 @@ class EntityExtention extends Component {
         this.setState({
           entityExtendFields: { ...this.state.entityExtendFields, fields },
           isEntityVariablesFormOpen: !this.state.isEntityVariablesFormOpen,
-          selectedRowIndex: null
+          selectedRowIndex: null,
+          isEntityExtendTableLoading: false
         });
       })
       .catch(error => {
         console.log(error);
+        this.setState({
+          isEntityExtendTableLoading: false
+        });
       });
   };
 
@@ -168,6 +200,9 @@ class EntityExtention extends Component {
       })
       .catch(error => {
         console.log(error);
+        this.setState({
+          isEntityExtendTableLoading: false
+        });
       });
   };
 
@@ -214,12 +249,12 @@ class EntityExtention extends Component {
       selectedEntity,
       basicEntityFields,
       entityExtendFields,
-      selectedRowIndex
+      selectedRowIndex,
+      hideBasicDetailsTable
     } = this.state;
-
     if (isLoading && !entities.length) {
       return (
-        <div className="entityVariablesListWrapper">
+        <div className="entityVariablesListWrapper alignCenter">
           <Spin size="large" />
         </div>
       );
@@ -228,45 +263,13 @@ class EntityExtention extends Component {
     if (!this.state.isEntityVariablesFormOpen) {
       if (basicEntityFields.length) {
         basicEntityFields.map((basicEntity, index) => {
-          if (basicEntity.required) {
-            basicEntityFields[index].required = "Yes";
-          } else {
-            basicEntityFields[index].required = "No";
-          }
-          if (basicEntity.searchable) {
-            basicEntityFields[index].searchable = "Yes";
-          } else {
-            basicEntityFields[index].searchable = "No";
-          }
-          basicEntityFields[index].key = index;
+          basicEntity.key = index;
         });
       }
 
-      // console.log(basicEntityFields, this.state.basicEntityFields);
-
       if (entityExtendFields.fields.length) {
         entityExtendFields.fields.map((entityExtendField, index) => {
-          console.log(entityExtendField, index, "map");
-
-          if (entityExtendField.required) {
-            entityExtendFields.fields[index].required = (
-              <div style={{ color: "green" }}>Yes</div>
-            );
-          } else {
-            entityExtendFields.fields[index].required = (
-              <div style={{ color: "red" }}>No</div>
-            );
-          }
-          if (entityExtendField.searchable) {
-            entityExtendFields.fields[index].searchable = (
-              <div style={{ color: "green" }}>Yes</div>
-            );
-          } else {
-            entityExtendFields.fields[index].searchable = (
-              <div style={{ color: "red" }}>No</div>
-            );
-          }
-          entityExtendFields.fields[index].key = index;
+          entityExtendField.key = index;
         });
       }
       return (
@@ -289,7 +292,8 @@ class EntityExtention extends Component {
                     entityExtendFields: {
                       fields: []
                     },
-                    selectedRowIndex: null
+                    selectedRowIndex: null,
+                    hideBasicDetailsTable: false
                   },
                   () => {
                     this.getBasicEntityFields();
@@ -307,28 +311,40 @@ class EntityExtention extends Component {
               })}
             </Select>
           </div>
-          <div className="entityVariableInputWrapper ">
+          <div
+            className={
+              hideBasicDetailsTable
+                ? "entityVariableInputWrapper nohoverTableWrapper noHeightTable"
+                : "entityVariableInputWrapper nohoverTableWrapper"
+            }
+          >
             <Table
-              className="entityVariableBasicInputWrapper"
               loading={this.state.isBasicEntityTableLoading}
               bordered
               title={() => (
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    height: 50
-                  }}
-                >
+                <div className={"entityFieldTableHeader"}>
                   <label style={{ fontSize: 18 }}>Basic Details</label>
-                  <Icon type="caret-down" />
+                  {hideBasicDetailsTable ? (
+                    <Icon
+                      type="caret-down"
+                      onClick={() => {
+                        this.setState({ hideBasicDetailsTable: false });
+                      }}
+                    />
+                  ) : (
+                    <Icon
+                      type="caret-up"
+                      onClick={() => {
+                        this.setState({ hideBasicDetailsTable: true });
+                      }}
+                    />
+                  )}
                 </div>
               )}
               columns={columns}
               dataSource={basicEntityFields}
               size="middle"
-              pagination={false}
+              pagination={hideBasicDetailsTable ? false : true}
             />
           </div>
           <div className="entityVariableInputWrapper ">
@@ -346,22 +362,14 @@ class EntityExtention extends Component {
               }}
               bordered
               title={() => (
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    height: 50
-                  }}
-                >
+                <div className={"entityFieldTableHeader"}>
                   <label style={{ fontSize: 18 }}>Extended Details</label>
-                  {/* <Button type="link">X</Button> */}
                 </div>
               )}
               columns={columns}
               dataSource={entityExtendFields.fields}
               size="middle"
-              pagination={false}
+              // pagination={false}
             />
           </div>
 
@@ -386,8 +394,6 @@ class EntityExtention extends Component {
   };
 
   render() {
-    console.log(this.state, "this.state");
-
     let { isEntityVariablesFormOpen } = this.state;
     return (
       <div className="gx-main-content-wrapper">
@@ -406,7 +412,7 @@ class EntityExtention extends Component {
           <div className="headerDescWrapper">
             <div
               onClick={() => this.onAddOrEditVariables()}
-              className="cursorPointer"
+              className="cursorPointer entityExtendBackButton"
             >
               <Icon type="arrow-left" />
               Back

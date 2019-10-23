@@ -49,9 +49,14 @@ class SidebarContent extends Component {
     return "";
   };
 
-  sidebarContentSwitcher = isSettingsSideBar => {
+  sidebarContentSwitcher = () => {
     const { themeType, navStyle, pathname } = this.props;
     const { orgId, userId } = this.state;
+
+    const selectedKeys = pathname.substr(1);
+    const defaultOpenKeys = selectedKeys.split("/");
+    console.log(defaultOpenKeys, selectedKeys);
+    let isSettingsSideBar = defaultOpenKeys[1] === "settings";
 
     let sidebarTheme = "dark";
     if (themeType === THEME_TYPE_LITE || isSettingsSideBar)
@@ -101,8 +106,8 @@ class SidebarContent extends Component {
           height: "100%",
           backgroundColor: "#F3F3F3"
         }}
-        defaultOpenKeys={["developer"]}
-        selectedKeys={["webhooks"]}
+        defaultOpenKeys={[defaultOpenKeys[2]]}
+        selectedKeys={[defaultOpenKeys[3]]}
         theme={sidebarTheme}
         mode="inline"
       >
@@ -140,7 +145,7 @@ class SidebarContent extends Component {
           </Menu.Item>
           <Menu.Item
             style={{ backgroundColor: "#F3F3F3" }}
-            key="entity-extentions"
+            key="entity-extention"
           >
             <Link to="/core/settings/developer/entity-extention">
               Entity Management
@@ -152,16 +157,11 @@ class SidebarContent extends Component {
   };
 
   render() {
-    const { pathname } = this.props;
-    const selectedKeys = pathname.substr(1);
-    const defaultOpenKeys = selectedKeys.split("/")[1];
-    let isSettingsSideBar = defaultOpenKeys === "settings";
-
     return (
       <Auxiliary>
         <SidebarLogo />
         <div style={{ height: "100%" }} className="gx-sidebar-content">
-          {this.sidebarContentSwitcher(isSettingsSideBar)}
+          {this.sidebarContentSwitcher()}
         </div>
       </Auxiliary>
     );

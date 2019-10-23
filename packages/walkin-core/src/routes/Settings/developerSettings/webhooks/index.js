@@ -276,7 +276,7 @@ class Webhooks extends Component {
           <div className="headerDescWrapper">
             <div
               onClick={() => this.onAddOrEditWebhooks()}
-              className="cursorPointer"
+              className="cursorPointer webhookBackButton"
             >
               <Icon type="arrow-left" />
               Back

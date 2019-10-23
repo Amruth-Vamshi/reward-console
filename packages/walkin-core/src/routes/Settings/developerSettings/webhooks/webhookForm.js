@@ -97,6 +97,8 @@ export default class WebhookForm extends Component {
       </Select>
     );
 
+    console.log(headerEntries, "webhook header render");
+
     return (
       <div className="webhookFormContainer">
         <div
@@ -189,7 +191,10 @@ export default class WebhookForm extends Component {
                         marginRight: "2%"
                       }}
                       onClick={() => {
-                        headerEntries.pop();
+                        // headerEntries.pop();
+                        headerEntries.splice(index, 1);
+                        console.log(headerEntries, "webhook header");
+
                         this.setState({
                           headerEntries
                         });
