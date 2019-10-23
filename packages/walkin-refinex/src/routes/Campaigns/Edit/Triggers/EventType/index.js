@@ -231,10 +231,16 @@ const EventTypeForm = Form.create({
   },
   mapPropsToFields(props) {
     const { event, selectedApplication } = props;
-    console.log("eventValues", event, selectedApplication)
+    if (selectedApplication) {
+      props.eventSubscription.refetch()
+    }
+    let eventValue = event.event;
+    if (props.eventSubscription && props.eventSubscription.eventSubscriptions) {
+      eventValue = props.eventSubscription.eventSubscriptions[0].event_type.type
+    }
     return {
       event: Form.createFormField({
-        value: event.event
+        value: eventValue
       }),
       application: Form.createFormField({
         value: selectedApplication
