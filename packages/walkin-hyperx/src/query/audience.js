@@ -76,11 +76,7 @@ export const CREATE_RULE = gql`
 export const UPDATE_RULE = gql`
   mutation updateRule($id:ID! ,$input: UpdateRuleInput!) {
     updateRule(id:$id, input:$input) {
-      id
-    name
-    description
-    status
-    type
+      id name description status type
     }
   }
 `;
@@ -149,18 +145,11 @@ export const CREATE_AUDIENCE = gql`
 `
 
 
-export const UPDATE_AUDIENCES_WITH_CAMPAIGNID = gql`
+export const UPDATE_AUDIENCES = gql`
 mutation updateAudiencesWithCampaignId($campaignId:ID, $segments:[ID]!){
   createAudienceForCampaign(campaignId:$campaignId, segments:$segments){
-    id
-    campaign{
-      id
-    }
-    segment{
-      id
-      name
-      segmentType
-    }
+    id campaign{ id name }
+    segment{ id name segmentType rule{ id } }
   }
 }`;
 export const AUDIENCE_COUNT = gql`

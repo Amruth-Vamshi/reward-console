@@ -5,7 +5,7 @@ import Audience from "./audience";
 import Offer from "./offer";
 import Communication from "./communication";
 import { campaignOverview as Overview } from "@walkinsole/shared";
-import { allSegments, RULE_ATTRIBUTES, GET_AUDIENCES, CREATE_AUDIENCE, CREATE_RULE, AUDIENCE_COUNT, UPDATE_RULE, UPDATE_AUDIENCES_WITH_CAMPAIGNID } from "../../../query/audience";
+import { allSegments, RULE_ATTRIBUTES, GET_AUDIENCES, CREATE_AUDIENCE, CREATE_RULE, AUDIENCE_COUNT, UPDATE_RULE, UPDATE_AUDIENCES } from "../../../query/audience";
 import { getOffers, ADD_OFFER_TO_CAMPAIGN, GET_OFFER_FOR_CAMPAIGN } from "../../../query/offer";
 import { withApollo, graphql, compose } from 'react-apollo';
 import { GET_ALL_APPS_OF_ORGANIZATION } from "@walkinsole/walkin-core/src/PlatformQueries";
@@ -64,6 +64,7 @@ class CampaignCreation extends Component {
 			loading: false,
 			noOfferRequired: false,
 			offer: '',
+			audienceFilterRuleId: '',
 			scheduleData: {},
 			smsForm: {},
 			emailForm: {},
@@ -106,7 +107,7 @@ class CampaignCreation extends Component {
 					let selectedSegments = []
 					audiences.map(item => selectedSegments.push(item.segment.id))
 					selectedSegments = selectedSegments.length ? selectedSegments : ['']
-					this.setState({ selectedSegments: selectedSegments, audiences })
+					this.setState({ selectedSegments: selectedSegments, audiences, audienceCreated: true })
 				}
 
 				if (campaign.audienceFilterRule) {
@@ -121,7 +122,10 @@ class CampaignCreation extends Component {
 					str = str.replace(/attributeName|attributeValue|expressionType/gi, function (matched) {
 						return mapObj[matched];
 					});
-					this.setState({ ruleQuery: JSON.parse(str), audienceFilterRule: campaign.audienceFilterRule.ruleConfiguration });
+					this.setState({
+						ruleQuery: JSON.parse(str), audienceFilterRule: campaign.audienceFilterRule.ruleConfiguration,
+						audienceFilterRuleCreated: true, audienceFilterRuleId: campaign.audienceFilterRule.id
+					});
 				}
 
 				if (offers && offers.length) this.setState({ offer: offers[0].name, offerData: offers[0] })
@@ -240,22 +244,23 @@ class CampaignCreation extends Component {
 
 		// if (current1 == 0) {
 		// 	this.createOrUpdateBasicCampaign(current)
-		// } else if (current1 == 1) {
-		// 	if (segments[0] && segments[0] != "") {
-		// 		this.createAudience(current)
-		// 		this.ruleQuery(current)
-		// 	} else {
-		// 		errors.segment = "* this field is mandatory"
-		// 		this.setState({ errors })
-		// 	}
-		// } else if (current1 == 2) {
-		// 	this.linkOffer(current)
-		// } else if (current1 == 3) {
-		// 	this.createComm(current)
-		// } else if (e && e.target.innerText === 'Launch') {
-		// 	this.launchCampaign()
-		// } else
-		this.setState({ current });
+		// } else 
+		if (current1 == 1) {
+			if (segments[0] && segments[0] != "") {
+				this.createAudience(current)
+				this.ruleQuery(current)
+			} else {
+				errors.segment = "* this field is mandatory"
+				this.setState({ errors })
+			}
+		} else if (current1 == 2) {
+			this.linkOffer(current)
+		} else if (current1 == 3) {
+			this.createComm(current)
+		} else if (e && e.target.innerText === 'Launch') {
+			this.launchCampaign()
+		} else
+			this.setState({ current });
 
 	}
 
@@ -420,34 +425,50 @@ class CampaignCreation extends Component {
 	}
 
 	ruleQuery = current => {
-		if (this.state.audienceFilterRule.rules.length && !this.state.audienceFilterRuleCreated) {
-			let { allApplications: { organization } } = this.props;
-			const input = {
-				name: Math.random().toString(36).substring(7),
-				description: "",
-				type: "SIMPLE",
-				organizationId: organization.id,
-				status: DEFAULT_ACTIVE_STATUS,
-				ruleConfiguration: JSON.stringify(this.state.audienceFilterRule)
-			};
-			this.props.createRule({ variables: { input: input } })
-				.then(data => {
-					console.log("Trigger Rule data...", data);
-					var campaignInput = { audienceFilterRule: data.data.createRule.id };
-					this.props.updateCampaign({
-						variables: {
-							id: this.state.campaign.id,
-							input: campaignInput
-						}
-					}).then(data => {
-						console.log("Update campaign data..", data);
-						this.audienceChange(current, "rule")
+		if (this.state.audienceFilterRule.rules.length)
+			if (!this.state.audienceFilterRuleCreated) {
+				let { allApplications: { organization } } = this.props;
+				const input = {
+					name: Math.random().toString(36).substring(7),
+					description: "",
+					type: "SIMPLE",
+					organizationId: organization.id,
+					status: DEFAULT_ACTIVE_STATUS,
+					ruleConfiguration: JSON.stringify(this.state.audienceFilterRule)
+				};
+				this.props.createRule({ variables: { input: input } })
+					.then(data => {
+						console.log("Rule data...", data);
+						var campaignInput = { audienceFilterRule: data.data.createRule.id };
+						this.props.updateCampaign({
+							variables: {
+								id: this.state.campaign.id,
+								input: campaignInput
+							}
+						}).then(data => {
+							console.log("Update campaign data..", data);
+							this.audienceChange(current, "rule")
+						}).catch(err => {
+							console.log("Error Update campaign", err)
+							this.setState({ loading: false })
+						});
 					}).catch(err => {
-						console.log("Error Update campaign", err)
+						console.log("Error while creating the Rule", err)
 						this.setState({ loading: false })
 					});
+			} else this.ruleUpdate(current)
+		else this.audienceChange(current, "rule")
+	};
+
+	ruleUpdate = current => {
+		if (this.state.audienceFilterRule.rules.length) {
+			const input = { ruleConfiguration: JSON.stringify(this.state.audienceFilterRule) };
+			this.props.updateRule({ variables: { id: this.state.audienceFilterRuleId, input: input } })
+				.then(data => {
+					console.log("Rule data...", data);
+					this.audienceChange(current, "rule")
 				}).catch(err => {
-					console.log("Error creating the question", err)
+					console.log("Error while update the rule", err)
 					this.setState({ loading: false })
 				});
 		} else this.audienceChange(current, "rule")
@@ -455,27 +476,45 @@ class CampaignCreation extends Component {
 
 	createAudience = current => {
 		let segments = this.state.selectedSegments
-		if (segments[0] && segments[0] != "" && !this.state.audienceCreated) {
-			let { allApplications: { organization } } = this.props;
-			this.setState({ loading: true });
-			var input = {
-				campaign_id: this.state.campaign.id,
-				segment_id: segments,
-				organization_id: organization.id,
-				application_id: organization.applications[0].id,
-				status: DEFAULT_ACTIVE_STATUS
-			};
-			this.props.createAudience({
-				variables: { input: input }
-			}).then(data => {
-				console.log("Create Audience..", data)
-				this.audienceChange(current, "audience")
-				this.setState({ audiences: data.data.createAudience });
-			}).catch(err => {
-				this.setState({ loading: false });
-				console.log("Error while creating audience..", err)
-			});
-		} else this.audienceChange(current, "audience")
+		if (segments[0] && segments[0] != "")
+			if (!this.state.audienceCreated) {
+				let { allApplications: { organization } } = this.props;
+				this.setState({ loading: true });
+				var input = {
+					campaign_id: this.state.campaign.id,
+					segment_id: segments,
+					organization_id: organization.id,
+					application_id: organization.applications[0].id,
+					status: DEFAULT_ACTIVE_STATUS
+				};
+				this.props.createAudience({
+					variables: { input: input }
+				}).then(data => {
+					console.log("Create Audience..", data)
+					this.audienceChange(current, "audience")
+					this.setState({ audiences: data.data.createAudience });
+				}).catch(err => {
+					this.setState({ loading: false });
+					console.log("Error while creating audience..", err)
+				});
+			} else this.updateAudiences(current)
+		else this.audienceChange(current, "audience")
+	}
+
+	updateAudiences = current => {
+		this.props.updateAudiences({
+			variables: {
+				campaignId: this.props.campaign.campaign.id,
+				segments: this.state.selectedSegments
+			}
+		}).then(data => {
+			console.log("updated Audiences", data)
+			this.audienceChange(current, "audience")
+			this.setState({ audiences: data.data.updateAudiencesWithCampaignId });
+		}).catch(err => {
+			this.setState({ loading: false });
+			console.log("Error while update Audiences", err)
+		})
 	}
 
 	createOrUpdateBasicCampaign = current => {
@@ -484,7 +523,6 @@ class CampaignCreation extends Component {
 			form.validateFields((err, values) => {
 				if (err) return
 				else {
-					console.log('values', values);
 					(!this.state.campaignCreated && !this.state.update) ?
 						this.createCampaign(values, current) : this.updateCampaign(values, current);
 					this.setState({ formValues: values });
@@ -760,8 +798,8 @@ class CampaignCreation extends Component {
 						<div className="gx-card-body" style={{ background: "#F6F6F6" }}>
 							<CampaignFooter
 								loading={this.state.loading}
-								nextButtonText={current === 4 ? update ? 'Done' : 'Launch' : 'Save and Next'}
-								saveDraftText={update ? '' : current === 0 ? "" : 'Save Draft'}
+								nextButtonText={current === 4 ? 'Launch' : 'Save and Next'}
+								saveDraftText={(update || current === 0) ? current === 4 ? 'Save Draft' : '' : 'Save Draft'}
 								saveDraft={() => this.saveDraft(current + 1)}
 								goToPage2={this.goToNextPage.bind(this, current + 1)}
 							/>
@@ -846,6 +884,8 @@ export default withRouter(
 
 			graphql(CREATE_RULE, {
 				name: "createRule"
+			}), graphql(UPDATE_RULE, {
+				name: "updateRule"
 			}), graphql(ADD_OFFER_TO_CAMPAIGN, {
 				name: "addOfferToCampaign"
 			}), graphql(UPDATE_RULE, {
@@ -862,8 +902,8 @@ export default withRouter(
 				name: "createCommunication"
 			}), graphql(CREATE_COMMUNICATION_WITH_MESSAGE_TEMPLETE, {
 				name: "createCommunicationWithMessageTemplate"
-			}), graphql(UPDATE_AUDIENCES_WITH_CAMPAIGNID, {
-				name: "updateAudiencesWithCampaignIdWithSegments"
+			}), graphql(UPDATE_AUDIENCES, {
+				name: "updateAudiences"
 			}),
 
 		)(CampaignCreation)
