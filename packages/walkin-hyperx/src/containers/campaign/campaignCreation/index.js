@@ -62,7 +62,7 @@ class CampaignCreation extends Component {
 			errors: {},
 			audienceCount: 0,
 			loading: false,
-			noOfferRequired: true,
+			noOfferRequired: false,
 			offer: '',
 			scheduleData: {},
 			smsForm: {},
@@ -100,13 +100,13 @@ class CampaignCreation extends Component {
 				console.log('res', res.data.viewCampaignForHyperX);
 				let { campaign, audiences, offers, communications } = res.data.viewCampaignForHyperX
 
-				this.setState({ spin: false, campaign: campaign, formValues: campaign, communications: communications, campaignCreated: true });
+				this.setState({ spin: false, campaign, formValues: campaign, communications, campaignCreated: true });
 
-				if (audiences) {
+				if (audiences && audiences.length) {
 					let selectedSegments = []
 					audiences.map(item => selectedSegments.push(item.segment.id))
 					selectedSegments = selectedSegments.length ? selectedSegments : ['']
-					this.setState({ selectedSegments: selectedSegments })
+					this.setState({ selectedSegments: selectedSegments, audiences })
 				}
 
 				if (campaign.audienceFilterRule) {
@@ -124,9 +124,34 @@ class CampaignCreation extends Component {
 					this.setState({ ruleQuery: JSON.parse(str), audienceFilterRule: campaign.audienceFilterRule.ruleConfiguration });
 				}
 
-				if (offers[0] && offers[0].offer) this.setState({ offer: offers[0].name, offerData: offers[0].offer })
+				if (offers && offers.length) this.setState({ offer: offers[0].name, offerData: offers[0] })
 				else this.setState({ noOfferRequired: true })
 
+				if (communications && communications.length) {
+					let { smsForm, emailForm, pushForm, scheduleData } = this.state
+					let communicationSelected = communications[0].messageTemplate.messageFormat
+					if (communicationSelected == "SMS") {
+						smsForm.smsTag = communications[0].messageTemplate.templateSubjectText
+						smsForm.smsBody = communications[0].messageTemplate.templateBodyText
+					} else if (communicationSelected == "EMAIL") {
+						emailForm.email_subject = communications[0].messageTemplate.templateSubjectText
+						emailForm.email_body = communications[0].messageTemplate.templateBodyText
+					} else {
+						pushForm.notificationTag = communications[0].messageTemplate.templateSubjectText
+						pushForm.notificationBody = communications[0].messageTemplate.templateBodyText
+					}
+
+					if (communications[0].repeatRuleConfiguration) {
+						let { byMonthDate, byWeekDay, endAfter, frequency, repeatInterval, noOfOccurances, time } = communications[0].repeatRuleConfiguration
+						scheduleData.repeatType = frequency
+						scheduleData.time = moment(time, 'HH:mm a')
+						scheduleData.days = byWeekDay
+						if (endAfter && endAfter != '') scheduleData.endTime = moment(endAfter)
+						else scheduleData.noOfOccurances = noOfOccurances
+					}
+
+					this.setState({ communication: communications[0], communicationSelected, smsForm, emailForm, pushForm, scheduleData, createComm: true })
+				}
 
 			}).catch(err => {
 				this.setState({ spin: false });
@@ -445,7 +470,7 @@ class CampaignCreation extends Component {
 			}).then(data => {
 				console.log("Create Audience..", data)
 				this.audienceChange(current, "audience")
-				this.setState({ audience: data.data.createAudience });
+				this.setState({ audiences: data.data.createAudience });
 			}).catch(err => {
 				this.setState({ loading: false });
 				console.log("Error while creating audience..", err)
@@ -594,7 +619,7 @@ class CampaignCreation extends Component {
 	}
 
 	render() {
-		const { formValues, current, showTestAndControl, testValue, controlValue, testControlSelected, update, rows, values, communicationSelected } = this.state;
+		const { formValues, current, showTestAndControl, testValue, controlValue, testControlSelected, update, rows, values, scheduleData, communicationSelected } = this.state;
 		let attributeData = []
 		if (this.props.allAttributes)
 			attributeData = this.props.allAttributes && this.props.allAttributes.ruleAttributes &&
@@ -626,7 +651,7 @@ class CampaignCreation extends Component {
 								<Stepper
 									stepData={stepData}
 									current={current}
-								// onChange={this.goToNextPage.bind(this)}
+									onChange={this.goToNextPage.bind(this)}
 								/>
 							</Col>
 						</Fragment>
@@ -698,7 +723,8 @@ class CampaignCreation extends Component {
 						{current === 3 && (
 							<Communication
 								subTitle="Communication"
-								schedule={[]}
+								schedule={true}
+								scheduleData={scheduleData}
 								campaign={this.state.formValues}
 								saveSchedule={this.saveSchedule}
 								scheduleSaveMark={this.state.scheduleSaveMark}
@@ -720,7 +746,7 @@ class CampaignCreation extends Component {
 								<div className="gx-card-body">
 									<Overview
 										campaign={this.state.formValues}
-										audience={this.state.audience}
+										audience={this.state.audiences}
 										offer={this.state.offerData}
 										communication={this.state.communication.messageTemplate ?
 											`${communicationSelected} - ${this.state.communication.messageTemplate.templateSubjectText}` : ''}
@@ -734,8 +760,8 @@ class CampaignCreation extends Component {
 						<div className="gx-card-body" style={{ background: "#F6F6F6" }}>
 							<CampaignFooter
 								loading={this.state.loading}
-								nextButtonText={current === 4 ? 'Launch' : 'Save and Next'}
-								saveDraftText={current === 0 ? "" : 'Save Draft'}
+								nextButtonText={current === 4 ? update ? 'Done' : 'Launch' : 'Save and Next'}
+								saveDraftText={update ? '' : current === 0 ? "" : 'Save Draft'}
 								saveDraft={() => this.saveDraft(current + 1)}
 								goToPage2={this.goToNextPage.bind(this, current + 1)}
 							/>

@@ -29,7 +29,7 @@ const AppList = ({ apps }) => {
                     <Card
                       cover={
                         <i
-                          style={{ color: `${random_bg_color()}` }}
+                          // style={{ color: `${random_bg_color()}` }}
 
                           className={`${app.activeIcon} gx-fs-icon-lg appActiveIconStyle `}
                         >

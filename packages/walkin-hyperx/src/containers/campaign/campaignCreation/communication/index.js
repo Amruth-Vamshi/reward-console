@@ -17,7 +17,7 @@ const Communication = ({
   pushFormRef,
   emailFormRef,
   emailFormData,
-  onFormNext,
+  onFormNext, scheduleData,
   schedule, campaign,
   scheduleSaveMark,
   saveSchedule,
@@ -61,7 +61,7 @@ const Communication = ({
         {schedule && (
           <Col sm={24} md={11} lg={11} xl={11} xxl={10}>
             <div style={{ padding: 10 }}>
-              <Schedule saved={scheduleSaveMark} saveSchedule={saveSchedule} campaign={campaign} getScheduleData={getScheduleData} />
+              <Schedule saved={scheduleSaveMark} scheduleData={scheduleData} saveSchedule={saveSchedule} campaign={campaign} getScheduleData={getScheduleData} />
             </div>
           </Col>
         )}

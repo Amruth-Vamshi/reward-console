@@ -205,7 +205,7 @@ export const VIEW_CAMPAIGN = gql`
     offers{id name offerType offerCategory coupon status}
     communications{id entityId entityType isScheduled isRepeatable commsChannelName lastProcessedDateTime
     	messageTemplate{id name templateBodyText templateSubjectText status messageFormat} firstScheduleDateTime
-      repeatRuleConfiguration{frequency repeatInterval endAfter byWeekDay byMonthDate time }}
+      repeatRuleConfiguration{frequency repeatInterval endAfter byWeekDay byMonthDate time noOfOccurances}}
   
   }
 }`

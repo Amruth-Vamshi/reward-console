@@ -60,7 +60,7 @@ const BasicInfoForm = Form.create({ name: "form_in_modal" })(
             {getFieldDecorator('name', {
               initialValue: `${Object.keys(formValues).length != 0 ? formValues.name ? formValues.name : '' : ''}`,
               rules: [{ required: true, message: 'Name is required' }],
-            })(<Input value={formValues.name} size='large' />)}
+            })(<Input value={formValues.name} maxLength={80} size='large' />)}
           </Form.Item>
           <Form.Item label="Description" {...formItemLayout}>
             {getFieldDecorator('description', {

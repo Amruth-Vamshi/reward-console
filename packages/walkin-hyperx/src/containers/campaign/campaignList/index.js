@@ -210,6 +210,7 @@ class CampaignList extends Component {
 				title: 'Name',
 				dataIndex: 'name',
 				key: 'name',
+				width: '30%',
 				render: (text, row) => <div style={{ color: '#292929' }}> {text} </div>,
 				sorter: (a, b) => (a.name !== b.name ? (a.name < b.name ? -1 : 1) : 0),
 				sortOrder: sortedInfo.columnKey === 'name' && sortedInfo.order,
