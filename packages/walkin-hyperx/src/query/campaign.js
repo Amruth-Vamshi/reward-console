@@ -195,6 +195,17 @@ export const CREATE_COMMUNICATION_WITH_MESSAGE_TEMPLETE = gql`
     }
 }`
 
+export const UPDATE_COMMUNICATION_WITH_MESSAGE_TEMPLETE = gql`
+  mutation updateCommunicationWithMessageTempate($communicationInput:UpdateCommunicationInput! $messageTemplateInput:UpdateMessageTemplateInput ){
+    updateCommunicationWithMessageTempate(communicationInput:$communicationInput, messageTemplateInput:$messageTemplateInput ){
+        id entityId entityType isScheduled firstScheduleDateTime commsChannelName status
+        repeatRuleConfiguration{ frequency repeatInterval endAfter byWeekDay time}
+        organization{ id name } application{ id name } lastProcessedDateTime
+        messageTemplate{ id name description messageFormat templateBodyText templateSubjectText
+          templateStyle messageTemplateVariables{id name key status} status}    
+  }
+}`
+
 export const VIEW_CAMPAIGN = gql`
   query viewCampaignForHyperX($campaignId:ID!) {
   viewCampaignForHyperX(campaignId:$campaignId){

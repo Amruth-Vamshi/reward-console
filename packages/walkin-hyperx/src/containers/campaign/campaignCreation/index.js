@@ -15,7 +15,7 @@ import '../styles.css'
 import { DEFAULT_ACTIVE_STATUS, DEFAULT_HYPERX_CAMPAIGN } from "../../../utils"
 import moment from "moment";
 import { CampaignFooter, CampaignHeader, Stepper } from '@walkinsole/shared';
-import { GET_CAMPAIGN, CREATE_CAMPAIGN, UPDATE_CAMPAIGN, CREATE_MESSAGE_TEMPLETE, CREATE_COMMUNICATION, LAUNCH_CAMPAIGN, CREATE_COMMUNICATION_WITH_MESSAGE_TEMPLETE, COMMUNICATIONS, VIEW_CAMPAIGN } from '../../../query/campaign';
+import { GET_CAMPAIGN, CREATE_CAMPAIGN, UPDATE_CAMPAIGN, CREATE_MESSAGE_TEMPLETE, CREATE_COMMUNICATION, LAUNCH_CAMPAIGN, CREATE_COMMUNICATION_WITH_MESSAGE_TEMPLETE, COMMUNICATIONS, VIEW_CAMPAIGN, UPDATE_COMMUNICATION_WITH_MESSAGE_TEMPLETE } from '../../../query/campaign';
 
 const stepData = [{
 	id: 1,
@@ -128,7 +128,7 @@ class CampaignCreation extends Component {
 					});
 				}
 
-				if (offers && offers.length) this.setState({ offer: offers[0].name, offerData: offers[0] })
+				if (offers && offers.length) this.setState({ offer: offers[0].id, offerData: offers[0] })
 				else this.setState({ noOfferRequired: true })
 
 				if (communications && communications.length) {
@@ -247,14 +247,14 @@ class CampaignCreation extends Component {
 		// } else 
 		if (current1 == 1) {
 			if (segments[0] && segments[0] != "") {
-				this.createAudience(current)
+				this.createOrUpdateAudience(current)
 				this.ruleQuery(current)
 			} else {
 				errors.segment = "* this field is mandatory"
 				this.setState({ errors })
 			}
-		} else if (current1 == 2) {
-			this.linkOffer(current)
+			// } else if (current1 == 2) {
+			// 	this.linkOffer(current)
 		} else if (current1 == 3) {
 			this.createComm(current)
 		} else if (e && e.target.innerText === 'Launch') {
@@ -296,14 +296,58 @@ class CampaignCreation extends Component {
 				else if (communicationSelected == "EMAIL")
 					this.setState({ emailForm: values })
 				else this.setState({ pushForm: values })
+				console.log('COMM', formRef, createComm);
 				!createComm ?
-					// this.createCommunicationMutation(c, values) : ''
-					this.createCommunicationWithMessageTemplate(c, values) : ''
-
+					this.createCommunicationWithMessageTemplate(c, values) :
+					this.updateCommunicationWithMessageTemplate(c, values)
 			}
 		})
 
 	}
+
+	updateCommunicationWithMessageTemplate = (current, values) => {
+		let { communicationSelected, scheduleData, scheduleSaveMark, communication } = this.state;
+		console.log('COMM', communicationSelected, values);
+		this.setState({ loading: true })
+		var messageTemplateInput = {
+			id: communication.messageTemplate.id,
+			name: this.state.campaign.name + "_" + communicationSelected,
+			description: "",
+			messageFormat: communicationSelected,
+			templateBodyText: communicationSelected == "SMS" ? values.smsBody : communicationSelected == "EMAIL" ? values.email_body : values.notificationBody,
+			templateSubjectText: communicationSelected == "SMS" ? values.smsTag : communicationSelected == "EMAIL" ? values.email_subject : values.notificationTag,
+			templateStyle: "MUSTACHE",
+			organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
+			status: DEFAULT_ACTIVE_STATUS
+		};
+		var communicationInput = {
+			id: communication.id,
+			entityId: this.state.offerData ? this.state.offerData.id : ' ',
+			entityType: "Offer",
+			isScheduled: scheduleSaveMark,
+			isRepeatable: scheduleSaveMark,
+			organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
+			status: DEFAULT_ACTIVE_STATUS,
+			firstScheduleDateTime: this.state.campaign.startTime
+		};
+		if (scheduleSaveMark) {
+			let repeatRuleConf = { frequency: scheduleData.repeatType, time: moment(scheduleData.time).format('HH:MM:SS') }
+			scheduleData.repeatType == "WEEKLY" ? repeatRuleConf.byWeekDay = scheduleData.days : ''
+			scheduleData.hasOwnProperty('endTime') ? repeatRuleConf.endAfter = scheduleData.endTime : repeatRuleConf.noOfOccurances = scheduleData.noOfOccurances
+			communicationInput.repeatRuleConfiguration = repeatRuleConf
+		}
+
+		this.props.updateCommunicationWithMessageTemplate({
+			variables: { communicationInput: communicationInput, messageTemplateInput: messageTemplateInput }
+		}).then(data => {
+			console.log("Communication data..", data)
+			this.setState({ loading: false, current, communication: data.data.createCommunicationWithMessageTempate })
+		}).catch(err => {
+			this.setState({ loading: false })
+			console.log("Error Updating communication", err)
+		})
+	}
+
 	createCommunicationWithMessageTemplate = (current, values) => {
 		let { communicationSelected, scheduleData, scheduleSaveMark } = this.state;
 		console.log('COMM', communicationSelected, values);
@@ -344,7 +388,7 @@ class CampaignCreation extends Component {
 			this.setState({ loading: false, current, communication: data.data.createCommunicationWithMessageTempate })
 		}).catch(err => {
 			this.setState({ loading: false })
-			console.log("Error creating for communication", err)
+			console.log("Error creating communication", err)
 		})
 	}
 
@@ -474,43 +518,42 @@ class CampaignCreation extends Component {
 		} else this.audienceChange(current, "rule")
 	};
 
-	createAudience = current => {
-		let segments = this.state.selectedSegments
-		if (segments[0] && segments[0] != "")
-			if (!this.state.audienceCreated) {
-				let { allApplications: { organization } } = this.props;
-				this.setState({ loading: true });
-				var input = {
-					campaign_id: this.state.campaign.id,
-					segment_id: segments,
-					organization_id: organization.id,
-					application_id: organization.applications[0].id,
-					status: DEFAULT_ACTIVE_STATUS
-				};
-				this.props.createAudience({
-					variables: { input: input }
-				}).then(data => {
-					console.log("Create Audience..", data)
-					this.audienceChange(current, "audience")
-					this.setState({ audiences: data.data.createAudience });
-				}).catch(err => {
-					this.setState({ loading: false });
-					console.log("Error while creating audience..", err)
-				});
-			} else this.updateAudiences(current)
-		else this.audienceChange(current, "audience")
-	}
+	// createAudience = current => {
+	// 	let segments = this.state.selectedSegments
+	// 	if (!this.state.audienceCreated) {
+	// 		let { allApplications: { organization } } = this.props;
+	// 		this.setState({ loading: true });
+	// 		var input = {
+	// 			campaign_id: this.state.campaign.id,
+	// 			segment_id: segments,
+	// 			organization_id: organization.id,
+	// 			application_id: organization.applications[0].id,
+	// 			status: DEFAULT_ACTIVE_STATUS
+	// 		};
+	// 		this.props.createAudience({
+	// 			variables: { input: input }
+	// 		}).then(data => {
+	// 			console.log("Create Audience..", data)
+	// 			this.audienceChange(current, "audience")
+	// 			this.setState({ audiences: data.data.createAudience });
+	// 		}).catch(err => {
+	// 			this.setState({ loading: false });
+	// 			console.log("Error while creating audience..", err)
+	// 		});
+	// 	} else this.updateAudiences(current)
+	// }
 
-	updateAudiences = current => {
+	createOrUpdateAudience = current => {
+		this.setState({ loading: true });
 		this.props.updateAudiences({
 			variables: {
-				campaignId: this.props.campaign.campaign.id,
+				campaignId: this.state.campaign.id,
 				segments: this.state.selectedSegments
 			}
 		}).then(data => {
 			console.log("updated Audiences", data)
 			this.audienceChange(current, "audience")
-			this.setState({ audiences: data.data.updateAudiencesWithCampaignId });
+			this.setState({ audiences: data.data.createAudienceForCampaign });
 		}).catch(err => {
 			this.setState({ loading: false });
 			console.log("Error while update Audiences", err)
@@ -799,7 +842,7 @@ class CampaignCreation extends Component {
 							<CampaignFooter
 								loading={this.state.loading}
 								nextButtonText={current === 4 ? 'Launch' : 'Save and Next'}
-								saveDraftText={(update || current === 0) ? current === 4 ? 'Save Draft' : '' : 'Save Draft'}
+								saveDraftText={update ? 'Save Draft' : current === 0 ? '' : 'Save Draft'}
 								saveDraft={() => this.saveDraft(current + 1)}
 								goToPage2={this.goToNextPage.bind(this, current + 1)}
 							/>
@@ -902,6 +945,8 @@ export default withRouter(
 				name: "createCommunication"
 			}), graphql(CREATE_COMMUNICATION_WITH_MESSAGE_TEMPLETE, {
 				name: "createCommunicationWithMessageTemplate"
+			}), graphql(UPDATE_COMMUNICATION_WITH_MESSAGE_TEMPLETE, {
+				name: "updateCommunicationWithMessageTemplate"
 			}), graphql(UPDATE_AUDIENCES, {
 				name: "updateAudiences"
 			}),

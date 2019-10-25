@@ -146,12 +146,12 @@ export const CREATE_AUDIENCE = gql`
 
 
 export const UPDATE_AUDIENCES = gql`
-mutation updateAudiencesWithCampaignId($campaignId:ID, $segments:[ID]!){
-  createAudienceForCampaign(campaignId:$campaignId, segments:$segments){
-    id campaign{ id name }
-    segment{ id name segmentType rule{ id } }
-  }
-}`;
+	mutation createAudienceForCampaign($campaignId:ID, $segments:[ID]!){
+		createAudienceForCampaign(campaignId:$campaignId, segments:$segments){
+			id campaign{ id name }
+			segment{ id name segmentType rule{ id } }
+	}
+}`
 export const AUDIENCE_COUNT = gql`
 	query audienceCount($segments:[ID], $organizationId:ID!){
 		audienceCount(segments:$segments, organizationId:$organizationId){
