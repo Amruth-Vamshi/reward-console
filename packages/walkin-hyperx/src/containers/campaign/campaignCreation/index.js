@@ -242,10 +242,9 @@ class CampaignCreation extends Component {
 		let segments = this.state.selectedSegments
 		let current1 = this.state.current
 
-		// if (current1 == 0) {
-		// 	this.createOrUpdateBasicCampaign(current)
-		// } else 
-		if (current1 == 1) {
+		if (current1 == 0) {
+			this.createOrUpdateBasicCampaign(current)
+		} else if (current1 == 1) {
 			if (segments[0] && segments[0] != "") {
 				this.createOrUpdateAudience(current)
 				this.ruleQuery(current)
