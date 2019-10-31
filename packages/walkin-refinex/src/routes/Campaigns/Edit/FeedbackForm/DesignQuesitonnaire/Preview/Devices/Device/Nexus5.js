@@ -7,12 +7,12 @@ class Nexus5 extends Component {
     }
     render() {
         return (
-            <div class="marvel-device nexus5">
-                <div class="top-bar"></div>
-                <div class="sleep"></div>
-                <div class="volume"></div>
-                <div class="camera"></div>
-                <div class="screen">
+            <div className="marvel-device nexus5">
+                <div className="top-bar"></div>
+                <div className="sleep"></div>
+                <div className="volume"></div>
+                <div className="camera"></div>
+                <div className="screen">
                     {this.props.children}
                 </div>
             </div>

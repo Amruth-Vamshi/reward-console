@@ -23,7 +23,8 @@ export default class Controls extends React.Component {
             <Row gutter={16} >
                 <Col span={24}>
                     <Card style={{
-                        backgroundColor: "#EAECEB"
+                        backgroundColor: "#EAECEB",
+                        minHeight: "100vh"
                     }}>
                         <Row>
                             <Col span={24}>

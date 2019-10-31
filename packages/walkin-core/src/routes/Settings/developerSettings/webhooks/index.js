@@ -11,11 +11,6 @@ import {
   LIST_WEBHOOK_EVENTS
 } from "./../../../../PlatformQueries/index";
 
-const WEBHOOK_STATUS = {
-  ACTIVE: "Active",
-  INACTIVE: "Inactive"
-};
-
 class Webhooks extends Component {
   constructor(props) {
     super(props);
@@ -77,8 +72,8 @@ class Webhooks extends Component {
       });
   };
 
-  updateWebook = input => {
-    let { webhooks } = this.state;
+  updateWebook = (input, type) => {
+    let { webhooks, selectedWebhookIndex } = this.state;
     this.props.client
       .mutate({
         mutation: UPDATE_WEBHOOK,
@@ -87,7 +82,11 @@ class Webhooks extends Component {
         }
       })
       .then(res => {
-        webhooks[this.state.selectedWebhookIndex] = res.data.updateWebhook;
+        if (type === "delete") {
+          webhooks.splice(selectedWebhookIndex, 1);
+        } else {
+          webhooks[selectedWebhookIndex] = res.data.updateWebhook;
+        }
         this.setState({
           webhooks,
           isWebhookFormOpen: false,
@@ -109,17 +108,13 @@ class Webhooks extends Component {
     });
   };
 
-  onWebhookStatusChange = selectedWebhookIndex => {
+  onEnableOrDisableWebhook = selectedWebhookIndex => {
     let { webhooks } = this.state;
-    const webhookStatus = {
-      ACTIVE: "INACTIVE",
-      INACTIVE: "ACTIVE"
-    };
-    webhooks[selectedWebhookIndex].status =
-      webhookStatus[webhooks[selectedWebhookIndex].status];
+    webhooks[selectedWebhookIndex].enabled = !webhooks[selectedWebhookIndex]
+      .enabled;
     let input = {
       id: webhooks[selectedWebhookIndex].id,
-      status: webhooks[selectedWebhookIndex].status
+      enabled: webhooks[selectedWebhookIndex].enabled
     };
     this.setState({ isLoading: true, selectedWebhookIndex }, () => {
       this.updateWebook(input);
@@ -134,26 +129,7 @@ class Webhooks extends Component {
       status: "INACTIVE"
     };
     this.setState({ isLoading: true, selectedWebhookIndex }, () => {
-      this.props.client
-        .mutate({
-          mutation: UPDATE_WEBHOOK,
-          variables: {
-            input
-          }
-        })
-        .then(res => {
-          webhooks.splice(selectedWebhookIndex, 1);
-          this.setState({
-            webhooks,
-            isWebhookFormOpen: false,
-            selectedWebhookIndex: null,
-            isLoading: false
-          }).catch(error => {
-            this.setState({
-              isLoading: false
-            });
-          });
-        });
+      this.updateWebook(input, "delete");
     });
   };
 
@@ -200,7 +176,7 @@ class Webhooks extends Component {
                   />
                 </Col>
                 <Col xl={18} lg={18} md={18} sm={18} xs={18}>
-                  <div className="webhookTitle">Integration with Slack</div>
+                  <div className="webhookTitle">{webhook.name}</div>
                   <div className="webhookUrl">
                     {webhook.url} › incoming-webhooks
                   </div>
@@ -225,12 +201,11 @@ class Webhooks extends Component {
                 sm={8}
                 xs={24}
               >
-                <div>{WEBHOOK_STATUS[webhook.status]}</div>
+                <div>{webhook.enabled ? "Active" : "Inactive"}</div>
                 <Switch
-                  className="webhookStatusSwitch"
-                  disabled
-                  checked={webhook.status === "ACTIVE"}
-                  onChange={() => this.onWebhookStatusChange(index)}
+                  className={webhook.enabled ? "webhookStatusSwitch" : null}
+                  checked={webhook.enabled}
+                  onChange={() => this.onEnableOrDisableWebhook(index)}
                   loading={isLoading && selectedWebhookIndex === index}
                 />
               </Col>
@@ -265,7 +240,7 @@ class Webhooks extends Component {
     return (
       <WebhookForm
         onSave={this.onSave}
-        webhookDetails={webhooks[this.state.selectedWebhookIndex]}
+        webhookDetails={webhooks[selectedWebhookIndex]}
         events={this.state.events}
         isLoading={isLoading}
       />
@@ -301,7 +276,7 @@ class Webhooks extends Component {
           <div className="headerDescWrapper">
             <div
               onClick={() => this.onAddOrEditWebhooks()}
-              className="cursorPointer"
+              className="cursorPointer webhookBackButton"
             >
               <Icon type="arrow-left" />
               Back

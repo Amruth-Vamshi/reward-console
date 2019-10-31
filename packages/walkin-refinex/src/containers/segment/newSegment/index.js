@@ -10,6 +10,7 @@ import { WalkinQueryBuilder, CampaignHeader } from '@walkinsole/shared';
 import { ErrorBoundary } from '@walkinsole/walkin-components';
 import jwt from "jsonwebtoken";
 import { GET_ALL_APPS_OF_ORGANIZATION } from "@walkinsole/walkin-core/src/PlatformQueries";
+import { toNumber } from '@walkinsole/walkin-components/src/util/common';
 class NewSegment extends Component {
     constructor(props) {
         super(props);
@@ -109,10 +110,13 @@ class NewSegment extends Component {
                 this.setState({ query: JSON.parse(str) });
                 if (location.state.segmentSelected.name !== '') {
                     if (location.state.segmentSelected.name.includes('copy')) {
+                        const segmentNew = location.state.segmentSelected.name.split('-', 2);
+                        console.log(Number(segmentNew[1]) + 1)
+                        const segmentNameCopy = segmentNew[0] + ' ' + (Number(segmentNew[1]) + 1)
                         this.setState({ value: segmentNameCopy, isDuplicateSegment: true });
                     } else {
                         this.setState({
-                            value: location.state.segmentSelected.name + ' ' + 'copy 1',
+                            value: location.state.segmentSelected.name + ' ' + 'copy-1',
                             isDuplicateSegment: true,
                         });
                     }
@@ -127,7 +131,7 @@ class NewSegment extends Component {
         const { loading, error, ruleAttributes } = this.props.attributes;
         const antIcon = <Icon type="loading" style={{ fontSize: 100 }} spin />;
         if (loading) {
-            return (<div> <br /> <br /> <br /> <br />
+            return (<div style={{ minHeight: "100vh" }}> <br /> <br /> <br /> <br />
                 <div className="divCenter">
                     <Spin size="large" indicator={antIcon} />
                 </div> <br /> <br /> <br />
@@ -145,7 +149,7 @@ class NewSegment extends Component {
             }));
         return (
             <ErrorBoundary>
-                <Fragment>
+                <div style={{ minHeight: "100vh" }}>
                     <div style={{ margin: '1 32px' }}>
                         <CampaignHeader
                             children={
@@ -173,8 +177,8 @@ class NewSegment extends Component {
                             Create segment
 					</Button>
                     </div>
-                </Fragment>
-            </ErrorBoundary>
+                </div >
+            </ErrorBoundary >
         );
     }
 }

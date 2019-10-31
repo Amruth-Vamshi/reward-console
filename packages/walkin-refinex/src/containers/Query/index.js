@@ -379,26 +379,65 @@ export const DISABLE_CAMPAIGN = gql`
   }
 `
 
+
+export const EVENT_SUBSCRIPTION = gql`
+  query eventSubscriptions(
+$event_type: String
+$organization_id: ID
+$application_id: ID
+$status: STATUS
+){
+ eventSubscriptions(
+    event_type:$event_type
+    organization_id:$organization_id
+    application_id:$application_id
+    status:$status
+){
+  id
+  name
+  event_type{
+    id
+    type
+    status
+  }
+}
+}
+`
+
 export const campaigns = gql`
   query campaigns($status: STATUS!,$campaignType:String,$organization_id:ID) {
     campaigns(status: $status,campaignType:$campaignType,organization_id:$organization_id) {
-      id
-      name
-      description
-      startTime
-      endTime
-      status
-      application{
-        id
-        name
-        organization{
-          id
-          name
-        }
-      }
+      id name description status campaignStatus
+    startTime endTime campaignType priority
+    createdBy lastModifiedBy createdTime lastModifiedTime
+    organization{ id name } application{id name}
+    audienceFilterRule{ id name ruleConfiguration ruleExpression }
     }
   }
 `;
+
+export const UPDATE_FEEDBACK_UI_CONFIG = gql`
+  mutation updateFeedbackUIConfig(
+  $feedbackFormId: ID!
+  $feedbackUIConfig: FeedbackUIConfigUpdateInput
+){
+  updateFeedbackUIConfig(
+    feedbackFormId: $feedbackFormId
+    feedbackUIConfig: $feedbackUIConfig
+){
+  id
+  layoutCode
+  backgroundColor
+  accentColor
+  transition
+  logoUrl
+  formStructure
+  headerText
+  exitMessage
+  buttonText
+}
+}
+`
 
 export const CREATE_CAMPAIGN = gql`
   mutation createCampaign($input: CampaingAddInput) {
@@ -450,8 +489,8 @@ export const GET_CAMPAIGN = gql`
 `;
 
 export const feedbackForm = gql`
-  query getFeedbackForm {
-    getFeedbackForm(feedbackFormId: "1") {
+  query getFeedbackForm ($feedbackFormId:ID!){
+    getFeedbackForm(feedbackFormId: $feedbackFormId) {
       id
       title
       campaign {
@@ -703,4 +742,82 @@ export const GET_APPLICATIONS = gql`
       }
     }
   }
+`;
+
+
+export const LAUNCH_CAMPAIGN = gql`
+  mutation launchCampaign($id:ID!) {
+    launchCampaign(id:$id) {
+      id name description
+      startTime endTime
+      status triggerRule { id }
+      campaignType priority
+      campaignStatus
+    }
+  }
+`;
+
+export const PAUSE_CAMPAIGN = gql`
+  mutation pauseCampaign($id:ID!) {
+    pauseCampaign(id:$id) {
+      id name description
+      startTime endTime
+      status triggerRule { id }
+      campaignType priority
+      campaignStatus
+    }
+  }
+`;
+
+export const UNPAUSE_CAMPAIGN = gql`
+  mutation unpauseCampaign($id:ID!) {
+    unpauseCampaign(id:$id) {
+      id name description
+      startTime endTime
+      status triggerRule { id }
+      campaignType priority
+      campaignStatus
+    }
+  }
+`;
+
+export const ABANDON_CAMPAIGN = gql`
+  mutation abandonCampaign($id:ID!) {
+    abandonCampaign(id:$id) {
+      id name description
+      startTime endTime
+      status triggerRule { id }
+      campaignType priority
+      campaignStatus
+    }
+  }
+`;
+
+export const GET_CAMPAIGN_DASHBOARD = gql`
+query campaign($id:ID!){
+	campaign( id:$id){
+    id name description status campaignStatus
+    startTime endTime campaignType priority
+    createdBy lastModifiedBy createdTime lastModifiedTime
+    organization{ id name } application{id name}
+    audienceFilterRule{ id name ruleConfiguration ruleExpression }
+  }
+}`;
+
+export const AUDIENCES = gql`
+query audiences($campaign_id:ID, $organization_id:ID,$segment_id:ID){
+  audiences(campaign_id:$campaign_id, organization_id:$organization_id,segment_id:$segment_id,status:ACTIVE){
+    id
+    segment{
+      id
+      name
+      rule{
+        id
+        name
+        type
+      }
+      status
+    }
+  }
+}
 `;

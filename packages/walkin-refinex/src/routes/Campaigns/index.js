@@ -3,6 +3,7 @@ import { Redirect, Route, Switch } from "react-router-dom";
 import Edit from "./Edit"
 import Create from "./Create"
 import CampaignLIst from "../../containers/campaignList"
+import CampaignView from "../../containers/campaignDashboard"
 export default ({ match }) => {
     return (
         <div className="RefineX-Main">
@@ -20,6 +21,11 @@ export default ({ match }) => {
                     path={`${match.url}/overview`}
                     exact
                     component={CampaignLIst}
+                />
+                <Route
+                    path={`${match.url}/view/:id`}
+                    exact
+                    component={CampaignView}
                 />
             </Switch>
         </div>

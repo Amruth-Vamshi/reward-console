@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Route, Switch } from "react-router-dom";
-import WebhooksSettings from "./../../routes/Settings/developerSettings/webhooks";
+import WebhooksSettings from "./developerSettings/webhooks";
+import EntityExtentionSettings from "./developerSettings/entityExtention";
 
 export default class extends Component {
   render() {
@@ -11,6 +12,10 @@ export default class extends Component {
         <Route
           path={"/core/settings/developer/webhooks"}
           component={WebhooksSettings}
+        />
+        <Route
+          path={"/core/settings/developer/entity-extention"}
+          component={EntityExtentionSettings}
         />
       </Switch>
     );

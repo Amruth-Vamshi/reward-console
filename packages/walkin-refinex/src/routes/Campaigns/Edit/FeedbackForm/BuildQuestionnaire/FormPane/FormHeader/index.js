@@ -4,22 +4,11 @@ import { ErrorBoundary } from "@walkinsole/walkin-components";
 import gql from "graphql-tag";
 import { graphql } from "react-apollo";
 import {
-  Menu,
-  Dropdown,
-  Icon,
-  Card,
   Form,
-  Slider,
-  Button,
-  Input,
   TreeSelect,
   Row,
   Col,
-  Popconfirm,
-  message,
-  Switch,
-  Item,
-  Radio
+  Popconfirm
 } from "antd";
 import { QUESTION_TYPES } from "../../../../../../../containers/Query";
 
@@ -99,7 +88,7 @@ class FormHeader extends Component {
     if (preValue && preValue.value !== triggerValue) {
       this.setState({
         popUpVisible: true,
-        newTypeValue: triggerValue
+        newTypeValue: triggerValue ? triggerValue : this.state.newTypeValue
         // validationStatus: "validating"
       });
     }
@@ -108,15 +97,22 @@ class FormHeader extends Component {
   confirmTypeChange = () => {
     const { newTypeValue } = this.state;
     this.props.form.setFieldsValue({
-      type: newTypeValue
+      type: newTypeValue,
     });
-    this.closeTypeChange();
+    this.setState({
+      popUpVisible: false,
+      validationStatus: "success"
+    });
+    this.props.onQuestionTypeEdit(newTypeValue);
+    //this.closeTypeChange();
   };
 
   closeTypeChange = () => {
+    this.props.form.setFieldsValue({
+      type: this.props.questionToEdit.type,
+    });
     this.setState({
       popUpVisible: false,
-      newTypeValue: null,
       validationStatus: "success"
     });
   };
@@ -295,11 +291,11 @@ class FormHeader extends Component {
 
 
 
-const onValuesChange = ({ onQuestionEdited }, __, formValue) => {
-  onQuestionEdited(formValue);
-};
+// const onValuesChange = ({ onQuestionEdited }, __, formValue) => {
+//   onQuestionEdited(formValue);
+// };
 
-const FormPane = Form.create({ name: "FormHeader", onValuesChange })(
+const FormPane = Form.create({ name: "FormHeader" })(
   FormHeader
 );
 

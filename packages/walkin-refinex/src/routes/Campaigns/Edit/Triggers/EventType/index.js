@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { graphql } from "react-apollo"
+import { graphql, compose } from "react-apollo"
 import {
   Col,
   Row,
@@ -11,15 +11,24 @@ import {
   Input,
   Button,
   Spin,
-  Switch
+  Switch,
+  Popconfirm,
+  message,
+  Icon
 } from "antd";
-import { EVENT_TYPES } from "../../../../../containers/Query"
+import jwt from "jsonwebtoken";
+import { EVENT_TYPES, EVENT_SUBSCRIPTION } from "../../../../../containers/Query"
 class EventType extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showEvents: false
+      showEvents: false,
+      visible: false,
     }
+  }
+
+  componentDidMount() {
+    console.log(this.props)
   }
 
   componentWillMount() {
@@ -31,19 +40,55 @@ class EventType extends Component {
     }
   }
 
+  confirm = () => {
+    const { showEvents } = this.state;
+    const { event, selectedApplication } = this.props;
+    this.setState({ visible: false });
+    if (showEvents === true && selectedApplication) {
+      if (selectedApplication) {
+        this.props.unlinkCampaignFromApplication(selectedApplication)
+      }
+
+      this.setState({
+        showEvents: false
+      })
+    } else {
+      this.setState({
+        showEvents: true
+      })
+    }
+
+  };
+
+  cancel = () => {
+    this.setState({ visible: false, showEvents: true });
+  };
+
   onChange = (checked) => {
-    this.setState({
-      showEvents: checked
-    })
+    this.handleVisibleChange(checked);
   }
 
   getApplicationOptions = () => {
     return this.props.application.map(app => {
       return (
-        <Select.Option value={app.id} key={app.id}>{app.name}</Select.Option>
+        <Select.Option style={{ margin: "13px" }} value={app.id} key={app.id}>{app.name}</Select.Option>
       )
     })
   }
+
+  handleVisibleChange = (visible) => {
+    const { showEvents } = this.state;
+    const { event, selectedApplication } = this.props;
+    if (!visible) {
+      this.setState({ visible });
+      return;
+    }
+    if (!this.state.showEvents) {
+      this.confirm(); // next step
+    } else {
+      this.setState({ visible }); // show the popconfirm
+    }
+  };
   getOptions = () => {
     return this.props.eventType.eventTypes.map(event => {
       return (
@@ -81,6 +126,12 @@ class EventType extends Component {
                       placeholder="Select an Application"
                       onChange={this.handleSelectChange}
                     >
+                      <Select.Option key="addnewApplication">
+                        <div style={{ padding: '8px', cursor: 'pointer' }}>
+                          <Button style={{ margin: "auto", left: "15%" }} > <Icon type="plus" /> Add new App </Button>
+                        </div>
+                        <Divider style={{ margin: '4px 0' }} />
+                      </Select.Option>
                       {
                         this.props.eventType.loading ? (
                           <Select.Option value="loading" key="999999">loading</Select.Option>
@@ -146,7 +197,18 @@ class EventType extends Component {
     const { showEvents } = this.state;
     return (
       <React.Fragment>
-        <Switch defaultChecked={this.state.showEvents} onChange={this.onChange} />
+        <Popconfirm
+          title="Are you sure you want to unlink this application from campaign?"
+          visible={this.state.visible}
+          onVisibleChange={this.handleVisibleChange}
+          onConfirm={this.confirm}
+          onCancel={this.cancel}
+          okText="Yes"
+          cancelText="No"
+        >
+          <Switch defaultChecked={this.state.showEvents} checked={this.state.showEvents} />
+        </Popconfirm>
+
         <span className="gx-text-grey" style={{
           marginLeft: "1rem"
         }}>Enable Triggers/Events for your App</span>
@@ -169,9 +231,16 @@ const EventTypeForm = Form.create({
   },
   mapPropsToFields(props) {
     const { event, selectedApplication } = props;
+    if (selectedApplication) {
+      props.eventSubscription.refetch()
+    }
+    let eventValue = event.event;
+    if (props.eventSubscription && props.eventSubscription.eventSubscriptions) {
+      eventValue = props.eventSubscription.eventSubscriptions[0].event_type.type
+    }
     return {
       event: Form.createFormField({
-        value: event.type
+        value: eventValue
       }),
       application: Form.createFormField({
         value: selectedApplication
@@ -180,12 +249,25 @@ const EventTypeForm = Form.create({
   }
 })(EventType);
 
-export default graphql(EVENT_TYPES, {
-  name: "eventType",
-  options: {
-    fetchPolicy: "cache-first",
-    variables: {
-      status: "ACTIVE"
+export default compose(
+  graphql(EVENT_TYPES, {
+    name: "eventType",
+    options: {
+      fetchPolicy: "cache-first",
+      variables: {
+        status: "ACTIVE"
+      }
     }
-  }
-})(EventTypeForm);
+  }),
+  graphql(EVENT_SUBSCRIPTION, {
+    name: "eventSubscription",
+    options: props => ({
+      fetchPolicy: "cache-first",
+      variables: {
+        status: "ACTIVE",
+        organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
+        application_id: props.selectedApplication
+      }
+    })
+  })
+)(EventTypeForm);
