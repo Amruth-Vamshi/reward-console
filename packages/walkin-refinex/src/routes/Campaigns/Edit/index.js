@@ -4,7 +4,7 @@ import { Row, Col, Button,message, Spin ,Icon} from "antd";
 import CampaignConfig from "./Campaign";
 // import Audience from "./Audience";
 import Audience from "@walkinsole/walkin-hyperx/src/containers/campaign/campaignCreation/audience";
-import { CampaignFooter, CampaignHeader ,CircularProgress} from "@walkinsole/walkin-components";
+import { CampaignFooter} from "@walkinsole/shared";
 import "@walkinsole/walkin-hyperx/src/containers/campaign/campaignCreation/audience/style.css";
 import Comm from "@walkinsole/walkin-hyperx/src/containers/campaign/campaignCreation/communication";
 import Communication from "./Communication";
@@ -229,7 +229,9 @@ class EditCampaign extends Component {
 
   onFormNext = current => {
     const { formValues, selectedSegments} = this.state;
-    this.setState({loading:true})
+    this.setState({
+      loading : true
+    })
     //Audience module
     if (this.state.current == 2) {
       //Audience Rule
@@ -259,7 +261,6 @@ class EditCampaign extends Component {
     }
     //Communication module
     if (this.state.current == 4) {
-      this.setState({loading:true})
       let {communicationFormValues,communicationSelected} = this.state;
       let comForm;
       console.log("saveEmailFormRef",this.pushFormRef,this.formRef1,this.emailFormRef)
@@ -298,14 +299,14 @@ class EditCampaign extends Component {
         this.formRef && this.formRef.props && this.formRef.props.form;
       if (form) {
         form.validateFields((err, values) => {
+          console.log("value",values)
           if (err) {
             return;
           } else {
             // this.ruleQuery();
            this.setState({
               formValues: values,
-              current: current,
-              loading:false
+              current: current
             });
             switch(current){
               case 1:
@@ -449,6 +450,15 @@ class EditCampaign extends Component {
     this.setState({loading:false})
    
   };
+
+  saveDraft = current => {
+		this.props.history.push('/refinex/feedback')
+		this.props.history.push({
+			pathname: '/refinex/feedback',
+			tabKey: "4",
+	
+		})
+	}
 
   onPage1SaveDraft=()=>{
     this.props.history.push({
@@ -855,8 +865,8 @@ class EditCampaign extends Component {
             </React.Fragment>
         }
         />
-        <div className="stepperContainer">
-        <div style={{ margin: '20px 20px 20px 30px', height: '60vh' }}>
+        <div className="stepperContainerRefineX">
+        <div style={{ margin: '20px 20px 20px 30px', height: '70vh' }}>
         {this.state.loading ? (<div className="divCenter"><Spin size="large" indicator={antIcon} /> </div>)  : 
            <React.Fragment>
             {campaign.loading ? (<div className="divCenter"><Spin size="large" indicator={antIcon} /> </div>) :this.getContainer()} 
@@ -867,20 +877,18 @@ class EditCampaign extends Component {
         </div>
        
          
-        <div style={{}}>
-        <div className="campFooter gx-card" style={{
-            position: 'absolute', width: '100%' }}>
-        <div className="gx-card-body" style={{ background: "#F6F6F6" }}>
-        <CampaignFooter
-            loading={this.state.loading}
-            nextButtonText={current>=5?"Launch" : 'Save and Next'}
-            saveDraftText={current === 0 ? "" : 'Save Draft'}
-            saveDraft={this.onPage1SaveDraft}
-            goToPage2={this.onFormNext.bind(this, current + 1)}
-          />
-        </div>
-        </div>
-          </div>
+        
+					<div className="campFooterRefinex" style={{ position: 'absolute', width: '100%' }}>
+						<div className="gx-card-body" style={{ background: "#F6F6F6" }}>
+							<CampaignFooter
+								loading={this.state.loading}
+								nextButtonText={current === 4 ? 'Launch' : 'Save and Next'}
+								saveDraftText={current === 0 ? "" : 'Save Draft'}
+								saveDraft={() => this.saveDraft(current + 1)}
+								goToPage2={this.onFormNext.bind(this, current + 1)}
+							/>
+						</div>
+					</div>
           </div>
   
     );
