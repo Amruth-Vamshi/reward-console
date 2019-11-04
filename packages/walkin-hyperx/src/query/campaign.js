@@ -134,6 +134,18 @@ export const LAUNCH_CAMPAIGN = gql`
   }
 `;
 
+export const PREPROCESS_LAUNCH_CAMPAIGN = gql`
+  mutation preprocessLaunchCampaign($id:ID!) {
+    preprocessLaunchCampaign(id:$id) {
+      id name description
+      startTime endTime
+      status triggerRule { id }
+      campaignType priority
+      campaignStatus
+    }
+  }
+`;
+
 export const PAUSE_CAMPAIGN = gql`
   mutation pauseCampaign($id:ID!) {
     pauseCampaign(id:$id) {
@@ -186,20 +198,9 @@ query campaign($id:ID!){
 export const AUDIENCES = gql`
 	query audiences($campaign_id:ID, $organization_id:ID,$segment_id:ID){
 	audiences(campaign_id:$campaign_id, organization_id:$organization_id,segment_id:$segment_id,status:ACTIVE){
-		id
-		segment{
-		id
-		name
-		rule{
-			id
-			name
-			type
-		}
-		status
-		}
+		id segment{ id name status rule{ id	name type } }
 	}
-}
-`;
+}`;
 
 
 export const GET_OFFER_FOR_CAMPAIGN = gql`

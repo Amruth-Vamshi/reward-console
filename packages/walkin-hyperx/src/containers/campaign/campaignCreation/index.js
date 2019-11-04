@@ -14,7 +14,7 @@ import jwt from "jsonwebtoken";
 import '../styles.css'
 import moment from "moment";
 import { CampaignFooter, CampaignHeader, Stepper } from '@walkinsole/shared';
-import { GET_CAMPAIGN, CREATE_CAMPAIGN, UPDATE_CAMPAIGN, CREATE_MESSAGE_TEMPLETE, CREATE_COMMUNICATION, LAUNCH_CAMPAIGN, CREATE_COMMUNICATION_WITH_MESSAGE_TEMPLETE, COMMUNICATIONS } from '../../../query/campaign';
+import { GET_CAMPAIGN, CREATE_CAMPAIGN, UPDATE_CAMPAIGN, CREATE_MESSAGE_TEMPLETE, CREATE_COMMUNICATION, LAUNCH_CAMPAIGN, CREATE_COMMUNICATION_WITH_MESSAGE_TEMPLETE, COMMUNICATIONS, PREPROCESS_LAUNCH_CAMPAIGN } from '../../../query/campaign';
 
 const stepData = [{
 	id: 1,
@@ -418,8 +418,10 @@ class CampaignCreation extends Component {
 	}
 
 	createCampaign = (values, current) => {
+		console.log('Create Campaign');
 		const { client } = this.props;
 		const { priorityChosen, controlValue } = this.state;
+		if (!this.props.allApplications.organization) return console.log('No Applications for your organization');
 		const { allApplications: { organization } } = this.props;
 
 		console.log(organization.applications);
@@ -726,7 +728,7 @@ export default withRouter(
 			graphql(UPDATE_CAMPAIGN, {
 				name: "updateCampaign"
 			}),
-			graphql(LAUNCH_CAMPAIGN, {
+			graphql(PREPROCESS_LAUNCH_CAMPAIGN, {
 				name: "launchCampaign"
 			}),
 			graphql(CREATE_AUDIENCE, {

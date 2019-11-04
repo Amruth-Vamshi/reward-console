@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react'
 import { CampaignHeader } from '@walkinsole/walkin-components'
 import { Button, Row, Col, message } from 'antd'
 import { campaignOverview as Overview } from "@walkinsole/shared";
-import { CAMPAIGN_DASHBOARD, GET_CAMPAIGN_DASHBOARD, UPDATE_CAMPAIGN, LAUNCH_CAMPAIGN, PAUSE_CAMPAIGN, UNPAUSE_CAMPAIGN, ABANDON_CAMPAIGN, AUDIENCES, GET_OFFER_FOR_CAMPAIGN } from '../../../query/campaign'
+import { CAMPAIGN_DASHBOARD, GET_CAMPAIGN_DASHBOARD, UPDATE_CAMPAIGN, LAUNCH_CAMPAIGN, PAUSE_CAMPAIGN, UNPAUSE_CAMPAIGN, ABANDON_CAMPAIGN, AUDIENCES, GET_OFFER_FOR_CAMPAIGN, PREPROCESS_LAUNCH_CAMPAIGN } from '../../../query/campaign'
 import { withApollo, graphql, compose, mutate } from 'react-apollo';
 import { withRouter } from 'react-router-dom';
 import moment from 'moment';
@@ -14,7 +14,7 @@ class CampaignDashboard extends Component {
         super(props)
         this.state = {
             loading: false,
-            loading1:false
+            loading1: false
         }
     }
     launchCampaign = () => {
@@ -84,7 +84,7 @@ class CampaignDashboard extends Component {
         let audiences = this.props.allAudiences.audiences;
 
 
-        let { loading,loading1 } = this.state
+        let { loading, loading1 } = this.state
         return (
             <div>
 
@@ -127,7 +127,7 @@ export default withRouter(
                         fetchPolicy: "cache-and-network"
                     };
                 }
-            }), graphql(LAUNCH_CAMPAIGN, {
+            }), graphql(PREPROCESS_LAUNCH_CAMPAIGN, {
                 name: "launchCampaign"
             }),
             graphql(PAUSE_CAMPAIGN, {
