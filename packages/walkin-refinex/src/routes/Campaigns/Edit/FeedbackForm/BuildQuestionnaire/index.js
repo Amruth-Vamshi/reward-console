@@ -33,6 +33,7 @@ class Questionnaire extends Component {
       isChoiceLoading: false,
       isQuestionLoading: false
     };
+    this.listRef = React.createRef();
   }
 
   success = (message1) => {
@@ -252,6 +253,7 @@ class Questionnaire extends Component {
       })
       .then(async data => {
         await this.props.refetchQuestionnaire();
+        this.listRef.current.resetAfterIndex(this.state.questionIndex, true);
         this.setState({ isQuestionLoading: false })
       })
       .catch(err => {
@@ -335,6 +337,7 @@ class Questionnaire extends Component {
             onQuestionSelected={this.onQuestionSelected}
             addNewQuestion={this.addNewQuestion}
             isQuestionLoading={isQuestionLoading}
+            reference={this.listRef}
           />}
         </Col>
         <Col span={16}>

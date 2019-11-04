@@ -32,7 +32,7 @@ class QuestionForm extends Component {
       validationStatus: "success",
       showButton: false
     };
-    this.handleClickThrottled= throttle(this.submitQuestion,1000)
+    this.handleClickThrottled = throttle(this.submitQuestion, 1000)
   }
 
   setCurrentQuestion = () => {
@@ -52,7 +52,7 @@ class QuestionForm extends Component {
   componentDidMount() {
     this.setCurrentQuestion();
   }
-  componentWillUnmount(){
+  componentWillUnmount() {
     this.handleClickThrottled.cancel()
   }
 
@@ -140,6 +140,7 @@ class QuestionForm extends Component {
     const { questionToEdit, form, style } = this.props;
     const { getFieldDecorator, isFieldsTouched } = form;
     const { Item } = Form;
+    const { TextArea } = Input;
     let props = {
       suffix: <span />
     }
@@ -172,7 +173,7 @@ class QuestionForm extends Component {
                       required: true
                     }
                   ]
-                })(<Input {...props} />)}
+                })(<Input {...props} autosize={{ minRows: 3, maxRows: 6 }} />)}
               </Item>
               {/* <Popconfirm
                 title="Changin question type will delete the existing choices, continue?"
