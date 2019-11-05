@@ -46,7 +46,7 @@ class SidebarContent extends Component {
         return (
             <Auxiliary>
                 <SidebarLogo />
-                <div style={{ height: '100%' }} className="RefineX-Sidebar gx-sidebar-content">
+                <div style={{ height: '100%', backgroundColor: "" }} className="RefineX-Sidebar gx-sidebar-content">
                     <Menu
                         style={{ height: '100%' }}
                         defaultOpenKeys={[defaultOpenKeys]}
@@ -63,7 +63,7 @@ class SidebarContent extends Component {
                         <Menu.Item key="feedback">
                             <Link to="/refinex/feedback">
                                 <i className="icon icon-feedback" />
-                                <IntlMessages id="sidebar.refinex.feedbacks" />
+                                <span>Surveys</span>
                             </Link>
                         </Menu.Item>
                         <Menu.Item key="segment">
@@ -87,23 +87,23 @@ class SidebarContent extends Component {
                             </Link>
                         </Menu.Item>
                         {/* <Menu.Item key="settings">
-              <Link to="/refinex/settings">
-                <i className="icon icon-setting" />
-                <IntlMessages id="sidebar.refinex.settings" />
-              </Link>
-            </Menu.Item>{" "}
-            <Menu.Item key="analytics">
-              <Link to="/refinex/analytics">
-                <i className="icon icon-chart" />
-                <IntlMessages id="sidebar.refinex.analytics" />
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="help">
-              <Link to="/refinex/help">
-                <i className="icon icon-geo-location" />
-                <IntlMessages id="sidebar.refinex.help" />
-              </Link>
-            </Menu.Item> */}
+                            <Link to="/refinex/settings">
+                                <i className="icon icon-setting" />
+                                <IntlMessages id="sidebar.refinex.settings" />
+                            </Link>
+                        </Menu.Item>{" "}
+                        <Menu.Item key="analytics">
+                            <Link to="/refinex/analytics">
+                                <i className="icon icon-chart" />
+                                <IntlMessages id="sidebar.refinex.analytics" />
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item key="help">
+                            <Link to="/refinex/help">
+                                <i className="icon icon-geo-location" />
+                                <IntlMessages id="sidebar.refinex.help" />
+                            </Link>
+                        </Menu.Item> */}
                     </Menu>
                 </div>
             </Auxiliary>

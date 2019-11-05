@@ -12,9 +12,9 @@ export default class QuestionsList extends Component {
 
   getStyle(oElm, strCssRule) {
     var strValue = "";
+    console.log("oElm", document.defaultView.getComputedStyle(oElm))
     if (document.defaultView && document.defaultView.getComputedStyle) {
       strValue = document.defaultView.getComputedStyle(oElm).getPropertyValue(strCssRule);
-      console.log("str", strValue)
     }
     else if (oElm.currentStyle) {
       strCssRule = strCssRule.replace(/\-(\w)/g, function (strMatch, p1) {
@@ -27,13 +27,13 @@ export default class QuestionsList extends Component {
 
 
   getTextHeightWidth = (text, height, width, index) => {
-    console.log("widtrh", width)
     const canvas = document.createElement("div");
     const creatediv = document.createElement("div");
     creatediv.innerHTML = text;
     creatediv.setAttribute("style", `width:${width}px`)
     creatediv.id = `${index}-randomDiv`
     canvas.style.width = width;
+    canvas.style.opacity = -1;
     canvas.append(creatediv)
     document.body.append(canvas);
     const createdDiv = document.getElementById(`${index}-randomDiv`);
@@ -46,7 +46,7 @@ export default class QuestionsList extends Component {
   getItemSize = (height, width, index) => {
     const { questionnaire } = this.props;
     let itemSize = this.getTextHeightWidth(questionnaire[index].questionText, height, width, index);
-    itemSize < 50 ? itemSize = 100 : itemSize = itemSize + 100;
+    itemSize < 50 ? itemSize = 80 : itemSize = itemSize + 80;
     return itemSize;
   }
 
@@ -57,10 +57,8 @@ export default class QuestionsList extends Component {
 
   getRow = (index, style) => {
     const { questionnaire } = this.props;
-    console.log("style", style)
     return (
       <div style={{ ...style }}>
-
         <CardBox>
           <div
             onClick={() => {
