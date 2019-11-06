@@ -89,15 +89,15 @@ export class Sidebar extends Component {
       <Sider
         className={`gx-app-sidebar ${drawerStyle} ${
           themeType !== THEME_TYPE_LITE ? "gx-layout-sider-dark" : null
-        }`}
+          }`}
         trigger={null}
         collapsed={
           width > TAB_SIZE_MAX
             ? navStyle === NAV_STYLE_MINI_SIDEBAR ||
-              navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR
+            navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR
             : width < TAB_SIZE
-            ? false
-            : true
+              ? false
+              : true
         }
         // theme={themeType === THEME_TYPE_LITE ? "lite" : "dark"}
         collapsible
@@ -106,7 +106,7 @@ export class Sidebar extends Component {
           <Drawer
             className={`gx-drawer-sidebar ${
               themeType !== THEME_TYPE_LITE ? "gx-drawer-sidebar-dark" : null
-            }`}
+              }`}
             placement="left"
             closable={false}
             onClose={this.onToggleCollapsedNav.bind(this)}
@@ -115,8 +115,8 @@ export class Sidebar extends Component {
             {this.getSideBar1()}
           </Drawer>
         ) : (
-          this.getSideBar1()
-        )}
+            this.getSideBar1()
+          )}
       </Sider>
     );
   }

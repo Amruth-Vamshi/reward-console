@@ -46,7 +46,7 @@ class SidebarContent extends Component {
         return (
             <Auxiliary>
                 <SidebarLogo />
-                <div style={{ height: '100%', backgroundColor: "" }} className="RefineX-Sidebar gx-sidebar-content">
+                <div style={{ height: '100%' }} className="RefineX-Sidebar gx-sidebar-content">
                     <Menu
                         style={{ height: '100%' }}
                         defaultOpenKeys={[defaultOpenKeys]}
@@ -57,7 +57,7 @@ class SidebarContent extends Component {
                         <Menu.Item key="dashboard">
                             <Link to="/refinex/dashboard">
                                 <Icon type="dashboard" style={{ fontSize: '18px' }} />
-                                <IntlMessages id="sidebar.refinex.dashboard" />
+                                <span >Dashboard</span>
                             </Link>
                         </Menu.Item>
                         <Menu.Item key="feedback">
@@ -83,7 +83,7 @@ class SidebarContent extends Component {
                         <Menu.Item key="analytics">
                             <Link to="/refinex/analytics">
                                 <i className="icon icon-chart" />
-                                <IntlMessages id="sidebar.refinex.analytics" />
+                                <span>Analytics</span>
                             </Link>
                         </Menu.Item>
                         {/* <Menu.Item key="settings">

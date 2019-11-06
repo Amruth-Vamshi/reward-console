@@ -18,8 +18,15 @@
 	margin-bottom: 5px
 }
 
+
+
 .RefineX-Logo{
-	background-color: #191958;
+	background-color: #FCFCFC;
+	
+}
+
+.RefineX-Logo .gx-layout-sider-header{
+	background-color: #FCFCFC;
 }
 
 .RefineX-Sidebar .ant-menu-dark{
@@ -27,8 +34,8 @@
 }
 
 .RefineX-Topbar{
-    background-color: #455a64;
-	background-image: linear-gradient(to left, #607d8b ,#37474f);
+    background-color: #FFFFFF;
+
 }
 
 .RefineX-Sidebar .ant-menu-dark .ant-menu-item-selected > a{
