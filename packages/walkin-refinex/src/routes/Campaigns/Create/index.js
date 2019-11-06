@@ -3,14 +3,14 @@ import React, { Component } from "react";
 import { Row, Col, Button } from "antd";
 import CampaignConfig from "../Edit/Campaign";
 // import Audience from "./Audience";
-import Audience from "@walkinsole/walkin-hyperx/src/containers/campaign/campaignCreation/audience";
+import Audience from "@walkinsole/shared/src/components/campaignCreation/audience";
 import {
   CampaignFooter,
   CampaignHeader,
   CircularProgress
 } from "@walkinsole/walkin-components";
-import "@walkinsole/walkin-hyperx/src/containers/campaign/campaignCreation/audience/style.css";
-import Comm from "@walkinsole/walkin-hyperx/src/containers/campaign/campaignCreation/communication";
+import "@walkinsole/shared/src/components/campaignCreation/audience/style.css";
+import Comm from "@walkinsole/shared/src/components/campaignCreation/communication";
 // import Communication from "../Edit/Communication";
 import Triggers from "../Edit/Triggers";
 import { campaignOverview as Overview} from "@walkinsole/shared";

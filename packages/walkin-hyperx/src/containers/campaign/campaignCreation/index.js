@@ -1,9 +1,10 @@
 import React, { Component, Fragment } from "react";
 import { withRouter } from "react-router-dom";
-import BasicInfo from "./basicInfo";
-import Audience from "./audience";
-import Offer from "./offer";
-import Communication from "./communication";
+// import BasicInfo from "./basicInfo";
+// import Audience from "./audience";
+// import Offer from "./offer";
+// import Communication from "./communication";
+import { BasicInfo, Audience, Offer, Communication } from "@walkinsole/shared/src/components/campaignCreation";
 import { campaignOverview as Overview } from "@walkinsole/shared";
 import { allSegments, RULE_ATTRIBUTES, GET_AUDIENCES, CREATE_AUDIENCE, CREATE_RULE, AUDIENCE_COUNT, UPDATE_RULE, UPDATE_AUDIENCES } from "../../../query/audience";
 import { getOffers, ADD_OFFER_TO_CAMPAIGN, GET_OFFER_FOR_CAMPAIGN } from "../../../query/offer";
@@ -252,8 +253,8 @@ class CampaignCreation extends Component {
 				errors.segment = "* this field is mandatory"
 				this.setState({ errors })
 			}
-			// } else if (current1 == 2) {
-			// 	this.linkOffer(current)
+		} else if (current1 == 2) {
+			this.linkOffer(current)
 		} else if (current1 == 3) {
 			this.createComm(current)
 		} else if (e && e.target.innerText === 'Launch') {
@@ -733,7 +734,7 @@ class CampaignCreation extends Component {
 								<Stepper
 									stepData={stepData}
 									current={current}
-									onChange={this.goToNextPage.bind(this)}
+								// onChange={this.goToNextPage.bind(this)}
 								/>
 							</Col>
 						</Fragment>
