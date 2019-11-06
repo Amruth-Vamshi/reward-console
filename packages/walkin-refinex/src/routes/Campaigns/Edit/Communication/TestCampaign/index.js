@@ -6,6 +6,7 @@ export default class TestComponent extends Component {
     render() {
         return (
             <Widget
+                style={{ backgroundColor: "#FAFAFA" }}
                 title={<h1 className="gx-text-primary gx-text-capitalize gx-mb-0">
 
                     {this.props.text}</h1>

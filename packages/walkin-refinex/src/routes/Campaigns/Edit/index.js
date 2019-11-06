@@ -852,7 +852,7 @@ class EditCampaign extends Component {
             <React.Fragment>
                 <Col sm={5} md={6} lg={8} xl={8} xxl={13}>
                     <h3 className="gx-text-grey paddingLeftStyle campaignHeaderTitleStyle">
-                        Create Campaign
+                    Create Survey
                     </h3>
                 </Col>
                 <Col sm={19} md={18} lg={16} xl={16} xxl={11}>
