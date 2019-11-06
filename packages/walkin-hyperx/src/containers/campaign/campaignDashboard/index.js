@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react'
 import { CampaignHeader } from '@walkinsole/walkin-components'
 import { Button, Row, Col, Spin, message } from 'antd'
 import { campaignOverview as Overview } from "@walkinsole/shared";
-import { CAMPAIGN_DASHBOARD, GET_CAMPAIGN_DASHBOARD, UPDATE_CAMPAIGN, LAUNCH_CAMPAIGN, PAUSE_CAMPAIGN, UNPAUSE_CAMPAIGN, ABANDON_CAMPAIGN, VIEW_CAMPAIGN } from '../../../query/campaign'
+import { CAMPAIGN_DASHBOARD, GET_CAMPAIGN_DASHBOARD, UPDATE_CAMPAIGN, LAUNCH_CAMPAIGN, PAUSE_CAMPAIGN, UNPAUSE_CAMPAIGN, ABANDON_CAMPAIGN, VIEW_CAMPAIGN, PREPROCESS_LAUNCH_CAMPAIGN } from '../../../query/campaign'
 import { withApollo, graphql, compose, mutate } from 'react-apollo';
 import { withRouter } from 'react-router-dom';
 import moment from 'moment';
@@ -166,7 +166,7 @@ export default withRouter(
             //         };
             //     }
             // }), 
-            graphql(LAUNCH_CAMPAIGN, {
+            graphql(PREPROCESS_LAUNCH_CAMPAIGN, {
                 name: "launchCampaign"
             }),
             graphql(PAUSE_CAMPAIGN, {

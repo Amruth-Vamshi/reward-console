@@ -134,6 +134,18 @@ export const LAUNCH_CAMPAIGN = gql`
   }
 `;
 
+export const PREPROCESS_LAUNCH_CAMPAIGN = gql`
+  mutation preprocessLaunchCampaign($id:ID!) {
+    preprocessLaunchCampaign(id:$id) {
+      id name description
+      startTime endTime
+      status triggerRule { id }
+      campaignType priority
+      campaignStatus
+    }
+  }
+`;
+
 export const PAUSE_CAMPAIGN = gql`
   mutation pauseCampaign($id:ID!) {
     pauseCampaign(id:$id) {
