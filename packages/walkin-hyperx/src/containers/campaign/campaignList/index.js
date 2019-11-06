@@ -132,7 +132,7 @@ class CampaignList extends Component {
 			}}
 		>
 			<Menu.Item key="view"><Icon type="eye" /> View</Menu.Item>
-			{includes(record.campaignStatus, SHOULD_EDIT) ? <Menu.Item key="edit"><Icon type="edit" /> Edit</Menu.Item> : null}
+			{/* {includes(record.campaignStatus, SHOULD_EDIT) ? <Menu.Item key="edit"><Icon type="edit" /> Edit</Menu.Item> : null} */}
 			{/* <Menu.Item key="duplicate"><Icon type="copy" /> Duplicate</Menu.Item> */}
 			<Menu.Item key="delete"><Icon type="delete" /> Delete</Menu.Item>
 		</Menu>
