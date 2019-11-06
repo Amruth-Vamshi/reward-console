@@ -879,7 +879,7 @@ class EditCampaign extends Component {
          
         
 					<div className="campFooterRefinex" style={{ position: 'absolute', width: '100%' }}>
-						<div className="gx-card-body" style={{ background: "#F6F6F6" }}>
+						<div className="gx-card-body" style={{ background: "#FFFFFF" }}>
 							<CampaignFooter
 								loading={this.state.loading}
 								nextButtonText={current === 4 ? 'Launch' : 'Save and Next'}
