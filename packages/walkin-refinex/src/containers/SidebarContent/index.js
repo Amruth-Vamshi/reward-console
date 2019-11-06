@@ -15,12 +15,16 @@ import { withRouter } from "react-router-dom";
 import {
     NAV_STYLE_NO_HEADER_EXPANDED_SIDEBAR,
     NAV_STYLE_NO_HEADER_MINI_SIDEBAR,
-    THEME_TYPE_LITE
+    THEME_TYPE_LITE,
+    NAV_STYLE_MINI_SIDEBAR
 } from "@walkinsole/walkin-components/src/constants/ThemeSetting";
 import SidebarLogo from "./SidebarLogo";
 import { compose, graphql } from "react-apollo";
 import gql from "graphql-tag";
-
+import Dashboard from "../../Icons/IconComponents/dashboard"
+import Survey from "../../Icons/IconComponents/survey";
+import Segments from "../../Icons/IconComponents/segemnts";
+import Analytics from "../../Icons/IconComponents/analytics"
 class SidebarContent extends Component {
     getNoHeaderClass = navStyle => {
         if (
@@ -56,19 +60,19 @@ class SidebarContent extends Component {
                     >
                         <Menu.Item key="dashboard">
                             <Link to="/refinex/dashboard">
-                                <Icon type="dashboard" style={{ fontSize: '18px' }} />
+                                <Icon component={Dashboard} style={{ fontSize: '18px' }} />
                                 <span >Dashboard</span>
                             </Link>
                         </Menu.Item>
                         <Menu.Item key="feedback">
                             <Link to="/refinex/feedback">
-                                <i className="icon icon-feedback" />
+                                <Icon component={Survey} style={{ fontSize: '18px' }} />
                                 <span>Surveys</span>
                             </Link>
                         </Menu.Item>
                         <Menu.Item key="segment">
                             <Link to="/refinex/segment/segmentList">
-                                <i className="icon icon-select" />
+                                <Icon component={Segments} style={{ fontSize: '18px' }} />
                                 {/* <IntlMessages id="sidebar.samplePage" /> */}
                                 <span>Segments</span>
                             </Link>
@@ -82,7 +86,7 @@ class SidebarContent extends Component {
                         </Menu.Item>
                         <Menu.Item key="analytics">
                             <Link to="/refinex/analytics">
-                                <i className="icon icon-chart" />
+                                <Icon component={Analytics} style={{ fontSize: '18px' }} />
                                 <span>Analytics</span>
                             </Link>
                         </Menu.Item>
@@ -105,6 +109,43 @@ class SidebarContent extends Component {
                             </Link>
                         </Menu.Item> */}
                     </Menu>
+
+                    {/* <div className="gx-linebar">
+                        <i
+                            className={`gx-icon-btn icon icon-${
+                                navStyle === NAV_STYLE_MINI_SIDEBAR
+                                    ? "menu-unfold"
+                                    : "menu-fold"
+                                } ${themeType !== THEME_TYPE_LITE ? "gx-text-white" : ""}`}
+                            onClick={() => {
+                                if (navStyle === NAV_STYLE_DRAWER) {
+                                    this.props.toggleCollapsedSideNav({
+                                        variables: {
+                                            navCollapsed: !navCollapsed
+                                        }
+                                    });
+                                } else if (navStyle === NAV_STYLE_FIXED) {
+                                    this.props.onNavStyleChange({
+                                        variables: {
+                                            navStyle: NAV_STYLE_MINI_SIDEBAR
+                                        }
+                                    });
+                                } else if (navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR) {
+                                    this.props.toggleCollapsedSideNav({
+                                        variables: {
+                                            navCollapsed: !navCollapsed
+                                        }
+                                    });
+                                } else {
+                                    this.props.onNavStyleChange({
+                                        variables: {
+                                            navStyle: NAV_STYLE_FIXED
+                                        }
+                                    });
+                                }
+                            }}
+                        />
+                    </div> */}
                 </div>
             </Auxiliary>
         );

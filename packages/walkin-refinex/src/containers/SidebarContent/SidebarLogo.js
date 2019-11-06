@@ -28,42 +28,6 @@ class SidebarLogo extends Component {
             <Link to="/refinex/dashboard" className="gx-pointer">
               <img alt="fgd" src={require("@walkinsole/walkin-components/src/assets/images/logo_refine.png")} style={{ maxWidth: 35 }} />
             </Link> : navStyle === NAV_STYLE_FIXED || navStyle === NAV_STYLE_MINI_SIDEBAR ? (
-              // <div className="gx-linebar">
-              //     <i
-              //       className={`gx-icon-btn icon icon-${
-              //         navStyle === NAV_STYLE_MINI_SIDEBAR
-              //           ? "menu-unfold"
-              //           : "menu-fold"
-              //         } ${themeType !== THEME_TYPE_LITE ? "gx-text-white" : ""}`}
-              //       onClick={() => {
-              //         if (navStyle === NAV_STYLE_DRAWER) {
-              //           this.props.toggleCollapsedSideNav({
-              //             variables: {
-              //               navCollapsed: !navCollapsed
-              //             }
-              //           });
-              //         } else if (navStyle === NAV_STYLE_FIXED) {
-              //           this.props.onNavStyleChange({
-              //             variables: {
-              //               navStyle: NAV_STYLE_MINI_SIDEBAR
-              //             }
-              //           });
-              //         } else if (navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR) {
-              //           this.props.toggleCollapsedSideNav({
-              //             variables: {
-              //               navCollapsed: !navCollapsed
-              //             }
-              //           });
-              //         } else {
-              //           this.props.onNavStyleChange({
-              //             variables: {
-              //               navStyle: NAV_STYLE_FIXED
-              //             }
-              //           });
-              //         }
-              //       }}
-              //     />
-              //     </div> 
               <div className="gx-linebar refinex-header-home">
                 <Link to="/">
                   <Icon type="home" className="gx-icon-btn" style={{ padding: "10px", backgroundColor: "#FCFCFC" }} />
