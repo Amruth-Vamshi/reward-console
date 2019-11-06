@@ -6,7 +6,7 @@ import EmailForm from "./Email";
 import PushNotification from "./Push";
 const { TabPane } = Tabs;
 const { Title } = Typography;
-
+import TestComponent from "./TestCampaign/index"
 const Communication = ({
   subTitle,
   onChange,
@@ -64,6 +64,15 @@ const Communication = ({
 
           </div>
 
+        </Col>
+        <Col sm={24} md={9} lg={9} xl={9} xxl={8}>
+          <div style={{ padding: 30 }}>
+            <TestComponent
+              text={`Test ${value.toLowerCase()} notification`}
+              label={`Enter your ${value == "SMS" ? "phone number" : value == "EMAIL" ? "email" : "fcm token"}`}
+              placeholder={value == "SMS" ? "phone number" : value == "EMAIL" ? "email" : "FCM token"}
+            />
+          </div>
         </Col>
       </Row>
     </div>
