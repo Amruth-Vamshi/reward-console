@@ -1,9 +1,9 @@
-import React, { Fragment } from 'react';
+import * as  React from 'react';
 import { Card, Avatar, Row, Col } from 'antd';
-import org from "@walkinsole/walkin-components/src/assets/images/org.png";
+const org = require("@walkinsole/walkin-components/src/assets/images/org.png");
 import './style.css';
 
-const OrgCardDetails = ({ orgDetails }) => {
+const OrgCardDetails = ({ orgDetails }: any) => {
 	return (
 		<Card className="gx-product-item " style={{ marginTop: '10px' }}>
 			<Row>
