@@ -36,8 +36,8 @@ const { Content, Footer } = Layout;
 interface IState {}
 
 interface IProps {
-  navStyle: string;
-  updateWindowWidth: any;
+  navStyle?: string;
+  updateWindowWidth?: any;
 }
 export class MainApp extends React.Component<IProps, IState> {
   getContainerClass = (navStyle: string) => {

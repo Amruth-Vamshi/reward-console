@@ -9,8 +9,8 @@ import { History } from "history";
 import { FormComponentProps } from "antd/lib/form";
 
 interface IProps extends FormComponentProps {
-  history: History;
-  routeQuery: any;
+  history?: History;
+  routeQuery?: any;
 }
 
 interface IState {}
@@ -22,6 +22,9 @@ class NormalLoginForm extends React.Component<IProps, IState> {
       "radial-gradient(black, transparent)"
     ])
   };
+  constructor(props: IProps) {
+    super(props);
+  }
   componentWillMount() {
     if (localStorage.getItem("jwt")) this.props.history.push("/");
   }

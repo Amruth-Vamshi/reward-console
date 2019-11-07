@@ -8,7 +8,7 @@ import { FormComponentProps } from "antd/lib/form";
 import { History } from "history";
 
 interface IProps extends FormComponentProps {
-  history: History;
+  history?: History;
 }
 
 interface IState {}

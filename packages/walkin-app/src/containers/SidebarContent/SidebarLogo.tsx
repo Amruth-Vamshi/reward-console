@@ -14,12 +14,12 @@ import { compose, graphql } from "react-apollo";
 import gql from "graphql-tag";
 
 interface IProps {
-  width: number;
-  themeType: string;
-  navCollapsed: string;
-  navStyle: string;
-  toggleCollapsedSideNav: any;
-  onNavStyleChange: any;
+  width?: number;
+  themeType?: string;
+  navCollapsed?: string;
+  navStyle?: string;
+  toggleCollapsedSideNav?: any;
+  onNavStyleChange?: any;
 }
 
 interface IState {}

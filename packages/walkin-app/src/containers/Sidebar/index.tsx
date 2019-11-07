@@ -28,12 +28,12 @@ const { Sider } = Layout;
 interface IState {}
 
 interface IProps {
-  toggleCollapsedSideNav: any;
-  navCollapsed: boolean;
-  location: Location;
-  themeType: string;
-  width: number;
-  navStyle: string;
+  toggleCollapsedSideNav?: any;
+  navCollapsed?: boolean;
+  location?: Location;
+  themeType?: string;
+  width?: number;
+  navStyle?: string;
 }
 export class Sidebar extends React.Component<IProps, IState> {
   onToggleCollapsedNav = () => {

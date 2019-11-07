@@ -61,17 +61,17 @@ const RestrictedRoute = ({
 );
 
 interface IProps {
-  location: Location;
-  setThemeType: any;
-  onNavStyleChange: any;
-  onLayoutTypeChange: any;
-  locale: {
+  location?: Location;
+  setThemeType?: any;
+  onNavStyleChange?: any;
+  onLayoutTypeChange?: any;
+  locale?: {
     locale: any;
   };
-  navStyle: string;
-  themeType: string;
-  layoutType: string;
-  userId: string;
+  navStyle?: string;
+  themeType?: string;
+  layoutType?: string;
+  userId?: string;
 }
 
 interface IState {}

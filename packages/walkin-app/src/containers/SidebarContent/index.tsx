@@ -22,9 +22,9 @@ import { compose, graphql } from "react-apollo";
 import gql from "graphql-tag";
 
 interface IProps {
-  themeType: string;
-  navStyle: string;
-  pathname: string;
+  themeType?: string;
+  navStyle?: string;
+  pathname?: string;
 }
 
 interface IState {}
