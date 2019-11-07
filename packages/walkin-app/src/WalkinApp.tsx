@@ -1,17 +1,20 @@
-import React, { Component } from "react";
+import * as React from "react";
 import { Route, Switch, BrowserRouter } from "react-router-dom";
 
 import "@walkinsole/walkin-components/src/assets/vendors/style";
 import "./styles/wieldy.less";
-import App from "./containers/App";
-import { configureClient } from "./appApollo/client";
+import App from "./containers/App/index";
+import { configureClient } from "./appApollo/client/index";
 import { ApolloProvider, Query, Mutation } from "react-apollo";
 import { ErrorBoundary, CircularProgress } from "@walkinsole/walkin-components";
-import gql from "graphql-tag";
+import { ApolloClient } from "apollo-boost";
 
-class WalkinApp extends Component {
-  constructor() {
-    super();
+
+export class WalkinApp extends React.Component<{}, {
+  client: ApolloClient<any>
+}>{
+  constructor(...props: []) {
+    super(props)
     this.state = {
       client: null
     };
@@ -37,7 +40,7 @@ class WalkinApp extends Component {
         </ApolloProvider>
       </ErrorBoundary>
     ) : (
-        <CircularProgress />
+        <CircularProgress className="circular" />
       );
   }
 }

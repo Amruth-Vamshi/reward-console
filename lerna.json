@@ -1,12 +1,6 @@
 {
   "packages": [
-    "packages/walkin-components",
-    "packages/walkin-core",
-    "packages/walkin-hyperx",
-    "packages/walkin-nearx",
-    "packages/walkin-refinex",
-    "packages/walkin-app",
-    "packages/walkin-feedback-form"
+    "packages/*"
   ],
   "version": "independent",
   "npmClient": "yarn",

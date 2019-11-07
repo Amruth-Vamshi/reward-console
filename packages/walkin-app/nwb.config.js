@@ -26,18 +26,16 @@ module.exports = {
           }
         ]
       });
-
-
-      config.entry = {
-        main: ["./src/index.tsx"]
-      }
-      config.resolve = {
-        extensions: [".ts", "tsx"]
-      }
       config.module.rules.push({
-        "test": /\.tsx?$/,
-        "loader": "awesome-typescript-loader"
+        test: /\.tsx?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
       });
+
+      config.resolve = {
+        extensions: ['.tsx', '.ts', '.js']
+      };
+      config.entry = './src/index.tsx';
       return config;
     }
   }
