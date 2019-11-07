@@ -36,6 +36,9 @@ class Questionnaire extends Component {
     this.listRef = React.createRef();
   }
 
+  componentDidUpdate(prevProps) {
+    console.log("prevProps", prevProps, this.props);
+  }
   success = (message1) => {
     message.success(message1, 5);
   };
@@ -43,6 +46,7 @@ class Questionnaire extends Component {
   error = (message1) => {
     message.error(message1, 5);
   };
+
 
   onQuestionSelected = questionIndex => {
     console.log("this.props.questionnaire", this.props.questionnaire)

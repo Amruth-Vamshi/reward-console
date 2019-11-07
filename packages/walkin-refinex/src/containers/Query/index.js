@@ -26,6 +26,10 @@ export const EVENT_TYPES_FOR_APPLICATION = gql`
         id
 
       }
+      events{
+          id
+          
+        }
       eventSubscriptions{
         id
         triggerAction
@@ -34,10 +38,6 @@ export const EVENT_TYPES_FOR_APPLICATION = gql`
           request
           response
           status
-        }
-        events{
-          id
-          
         }
       }
     }
