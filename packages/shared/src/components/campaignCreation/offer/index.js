@@ -16,11 +16,11 @@ export default class Offers extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			check: false
+			check: this.props.noOfferRequired ? this.props.noOfferRequired : false
 		}
 	}
 	onChange = e => {
-		this.props.noOfferRequired(e.target.checked)
+		this.props.offerChecked(e.target.checked)
 		this.setState({ check: e.target.checked })
 	}
 	render() {

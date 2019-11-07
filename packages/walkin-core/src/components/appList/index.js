@@ -19,55 +19,56 @@ const AppList = ({ apps }) => {
 
   return (
     <div className="gutter-example">
-      <Row gutter={16}>
+      <Row gutter={25}>
         {apps &&
           apps.map((app, index) => (
             <Fragment key={index}>
               <Col className="gutter-row" xs={24} sm={12} md={12} lg={8} xl={6}>
-                {app.isProductAccessible == true ? (
+                {app.isProductAccessible == true ?
                   <Link to={app.route}>
                     <Card
                       cover={
                         <i
-                          style={{ color: `${random_bg_color()}` }}
-                          className={`${app.icon} gx-fs-icon-lg appIconStyle `}
-                        />
+                          // style={{ color: `${random_bg_color()}` }}
+
+                          className={`${app.activeIcon} gx-fs-icon-lg appActiveIconStyle `}
+                        >
+                          <img src={app.activeIcon} /></i>
                       }
-                      className="gx-product-item gx-product-vertical"
+                      className="gx-product-vertical coreAppsCard"
                     >
-                      <div className="h4 gx-text-capitalize gx-mb-0">
+                      <div className="h1 gx-font-weight-semi-bold gx-text-capitalize gx-mb-10">
                         {app.title}
                       </div>
-                      <p className="gx-text-grey gx-fs-sm gx-mb-3 gx-mb-lg-4">
+                      <p className="gx-text-grey gx-fs-lg gx-mb-2 gx-mb-lg-2">
                         {app.description}
                       </p>
                     </Card>
-                  </Link>
-                ) : (
+                  </Link> :
                   <Card
                     style={{ backgroundColor: "#dedede" }}
                     cover={
                       <Fragment>
-                        <Button type="primary">Purchase</Button>
+                        <Button style={{ marginBottom: 0 }} type="primary">Purchase</Button>
                         <i
                           style={{ color: "#b9b5b5" }}
-                          className={`${app.icon} gx-fs-icon-lg appIconStyle `}
-                        />
+                          className={`${app.inactiveIcon} gx-fs-icon-lg appInactiveIconStyle `}
+                        ><img src={app.inactiveIcon} style={{ clip: 'rect(110px)' }} /></i>
                       </Fragment>
                     }
-                    className="gx-product-item gx-product-vertical"
+                    className="gx-product-vertical coreAppsCard"
                   >
                     <div
                       style={{ color: "#b9b5b5" }}
-                      className="h4 gx-text-capitalize gx-mb-0"
+                      className="h1 gx-font-weight-semi-bold gx-text-capitalize gx-mb-10"
                     >
                       {app.title}
                     </div>
-                    <p className="gx-text-grey gx-fs-sm gx-mb-3 gx-mb-lg-4">
+                    <p className="gx-text-grey gx-fs-lg gx-mb-2 gx-mb-lg-2">
                       {app.description}
                     </p>
                   </Card>
-                )}
+                }
               </Col>
             </Fragment>
           ))}

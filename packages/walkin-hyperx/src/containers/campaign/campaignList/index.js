@@ -2,17 +2,16 @@ import React, { Component, Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
 import { NEW_CAMPAIGN, CAMPAIGN_MANAGEMENT, CAMPAIGN_DASHBOARD } from '../../../utils/RouterConstants';
 import { campaigns, DISABLE_CAMPAIGN } from '../../../query/campaign';
-import { Card, Menu, Dropdown, Col, Spin, Button, Progress, Tabs } from 'antd';
+import { Card, Menu, Dropdown, Col, Spin, Button, Progress, Tabs, Icon } from 'antd';
 import moment from 'moment';
 import { withApollo, graphql, compose } from 'react-apollo';
+import { DEFAULT_ACTIVE_STATUS, DEFAULT_HYPERX_CAMPAIGN, SHOULD_EDIT } from "../../../utils"
 import { SortableDataTable, InstantSearch, CampaignHeader } from '@walkinsole/shared';
 import { CircularProgress, Widget } from '@walkinsole/walkin-components';
+import includes from "lodash/includes"
 
 import './style.css';
 import jwt from 'jsonwebtoken'
-
-const DEFAULT_STATUS = 'ACTIVE';
-const DEFAULT_TYPE = 'OFFER';
 
 const { TabPane } = Tabs;
 
@@ -63,8 +62,8 @@ class CampaignList extends Component {
 		this.setState({ sortedInfo: sorter });
 	};
 
-	onDeleteContact = contact => {
-		console.log('delete', contact);
+	onDeleteCampaign = campaign => {
+		console.log('delete', campaign);
 	};
 
 	onViewCampaign = campaign => {
@@ -95,15 +94,23 @@ class CampaignList extends Component {
 		})
 	}
 
-	onDuplicateContact = contact => {
-		console.log('dupl', contact);
+	onDuplicateCampaign = campaign => {
+		console.log('dupl', campaign);
 		const { history, match } = this.props;
-		console.log(this.props)
 		history.push({
-			pathname: `${NEW_CAMPAIGN}/${contact.id}`,
+			pathname: `${NEW_CAMPAIGN}/${campaign.id}`,
 			state: {
-				campaignSelected: contact,
+				campaignSelected: campaign,
 			},
+		});
+	};
+
+	onEditCampaign = campaign => {
+		console.log('edit', campaign);
+		const { history, match } = this.props;
+		history.push({
+			pathname: `${NEW_CAMPAIGN}/${campaign.id}`,
+			state: { campaignSelected: campaign, update: true }
 		});
 	};
 
@@ -111,24 +118,23 @@ class CampaignList extends Component {
 		<Menu
 			onClick={e => {
 				if (e.key === 'duplicate') {
-					this.onDuplicateContact(record);
+					this.onDuplicateCampaign(record);
 				} else if (e.key === 'edit') {
-					// this.props.history.push(`/refinex/feedback/${record.id}/edit`)
-
+					this.onEditCampaign(record);
 				} else if (e.key === "view") {
 					this.onViewCampaign(record)
 				} else if (e.key === "delete") {
 					console.log("DELETE...")
 					this.disableCampaign(record)
 				} else {
-					this.onDeleteContact(record);
+					this.onDeleteCampaign(record);
 				}
 			}}
 		>
-			<Menu.Item key="view">View</Menu.Item>
-			<Menu.Item key="edit">Edit</Menu.Item>
-			{/* <Menu.Item key="duplicate">Duplicate</Menu.Item> */}
-			<Menu.Item key="delete">Delete</Menu.Item>
+			<Menu.Item key="view"><Icon type="eye" /> View</Menu.Item>
+			{/* {includes(record.campaignStatus, SHOULD_EDIT) ? <Menu.Item key="edit"><Icon type="edit" /> Edit</Menu.Item> : null} */}
+			{/* <Menu.Item key="duplicate"><Icon type="copy" /> Duplicate</Menu.Item> */}
+			<Menu.Item key="delete"><Icon type="delete" /> Delete</Menu.Item>
 		</Menu>
 	);
 
@@ -204,6 +210,7 @@ class CampaignList extends Component {
 				title: 'Name',
 				dataIndex: 'name',
 				key: 'name',
+				width: '30%',
 				render: (text, row) => <div style={{ color: '#292929' }}> {text} </div>,
 				sorter: (a, b) => (a.name !== b.name ? (a.name < b.name ? -1 : 1) : 0),
 				sortOrder: sortedInfo.columnKey === 'name' && sortedInfo.order,
@@ -240,7 +247,7 @@ class CampaignList extends Component {
 				key: 'action',
 				width: 10,
 				render: (text, record) => (
-					<div className="gx-module-contact-right">
+					<div className="gx-module-campaign-right">
 						<Dropdown overlay={this.menus(record)} placement="bottomRight" trigger={['click']}>
 							<i className="gx-icon-btn icon icon-ellipse-v" />
 						</Dropdown>
@@ -298,6 +305,9 @@ class CampaignList extends Component {
 							<TabPane tab="Paused" key="5">
 								<SortableDataTable loading={loading} data={campaignData} onChange={this.handleChange} columns={columns} pagination={paginationData} />
 							</TabPane>
+							{/* <TabPane tab="closed" key="6">
+								<SortableDataTable loading={loading} data={campaignData} onChange={this.handleChange} columns={columns} pagination={paginationData} />
+							</TabPane> */}
 						</Tabs>
 					</Widget>
 				</div>
@@ -316,8 +326,8 @@ export default withRouter(
 				options: () => ({
 					variables: {
 						organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
-						status: DEFAULT_STATUS,
-						campaignType: DEFAULT_TYPE
+						status: DEFAULT_ACTIVE_STATUS,
+						campaignType: DEFAULT_HYPERX_CAMPAIGN
 					}, fetchPolicy: "network-only",
 					forceFetch: true
 				}),
@@ -327,8 +337,8 @@ export default withRouter(
 						refetch({
 							variables: {
 								organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
-								status: DEFAULT_STATUS,
-								campaignType: DEFAULT_TYPE
+								status: DEFAULT_ACTIVE_STATUS,
+								campaignType: DEFAULT_HYPERX_CAMPAIGN
 							}, fetchPolicy: "network-only"
 						});
 					},

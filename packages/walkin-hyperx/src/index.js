@@ -25,6 +25,7 @@ const App = ({ match }) => {
 				<Route exact path={'/hyperx'} render={() => <Redirect from="/hyperx" to={CAMPAIGN_MANAGEMENT} />} />
 				<Route exact path={CAMPAIGN_MANAGEMENT} component={CampaignList} />
 				<Route exact path={`${CAMPAIGN_DASHBOARD}/:id`} component={CampaignDashboard} />
+				<Route path={`${NEW_CAMPAIGN}/:id`} component={CampaignCreation} />
 				<Route path={NEW_CAMPAIGN} component={CampaignCreation} />
 				<Route exact path={SEGMENT_LIST} component={SegmentList} />
 				<Route path={NEW_SEGMENT} component={NewSegment} />

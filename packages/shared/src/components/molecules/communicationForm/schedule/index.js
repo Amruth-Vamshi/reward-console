@@ -8,7 +8,7 @@ import moment from "moment";
 //     wrapperCol: { span: 18, offset: 6 },
 // };
 
-const weekDays = ["SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SUNDAY"]
+const weekDays = ["SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"]
 
 const formItemLayout = {
     labelCol: {
@@ -55,7 +55,6 @@ class Schedule extends React.Component {
     }
 
     handleChange = e => {
-        console.log(e);
         this.setState({ noOfOccurances: e, saved: false })
     }
 
@@ -63,12 +62,9 @@ class Schedule extends React.Component {
         let errors = {};
 
         if (this.state.repeatType == "WEEKLY") {
-            console.log(this.state.repeatOn.find(i => i));
             !this.state.repeatOn.find(i => i) ?
                 errors.repeatOn = "select atleast one day" : ''
         }
-
-        console.log(this.state.time);
 
         if (!this.state.time || this.state.time == '') errors.time = "* this field is mandatory";
 
@@ -85,6 +81,19 @@ class Schedule extends React.Component {
             }
             end == "afterOccurrences" ? ScheduleData.noOfOccurances = noOfOccurances : ScheduleData.endTime = this.props.campaign.endTime
             this.props.saveSchedule(ScheduleData)
+        }
+    }
+
+    componentDidMount() {
+        console.log(this.props.scheduleData)
+
+        if (this.props.scheduleData) {
+            let { repeatOn, end } = this.state
+            let { repeatType, time, noOfOccurances, days } = this.props.scheduleData
+            if (repeatType == "WEEKLY" && days) repeatOn = weekDays.map(day => days.includes(day))
+            end = noOfOccurances ? "afterOccurrences" : "onEndDate"
+            noOfOccurances = noOfOccurances ? noOfOccurances : 10
+            this.setState({ repeatType, time, repeatOn, end, noOfOccurances })
         }
     }
 
@@ -146,7 +155,7 @@ class Schedule extends React.Component {
 
 
                         <Form.Item label="@ Time" {...formItemLayout}>
-                            <TimePicker className="scheduleTime" use12Hours format="h:mm a" onChange={this.onChangeTime} />
+                            <TimePicker className="scheduleTime" value={this.state.time} use12Hours format="h:mm a" onChange={this.onChangeTime} />
                             <div style={{ color: 'Red' }}>{this.state.errors.time}</div>
                         </Form.Item>
 

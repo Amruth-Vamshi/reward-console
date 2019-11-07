@@ -10,7 +10,6 @@ import './style.css';
 import { DEFAULT_ACTIVE_STATUS, DEFAULT_REFINEX_CAMPAIGN, NEW_CAMPAIGN, CAMPAIGN_DASHBOARD, SHOULD_EDIT } from "../../Utils"
 import jwt from "jsonwebtoken";
 import includes from "lodash/includes"
-import { shouldInclude } from 'apollo-utilities';
 const { TabPane } = Tabs;
 
 class CampaignList extends Component {

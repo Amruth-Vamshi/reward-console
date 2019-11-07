@@ -1,9 +1,10 @@
 import React, { Component, Fragment } from "react";
 import { Radio, Form, Row, Col } from "antd";
-import SMSForm from "../../../../components/atoms/communicationForm/sms";
-import PushNotificationForm from "../../../../components/atoms/communicationForm/pushNotification";
-import Email from "../../../../components/atoms/communicationForm/Email";
-import Schedule from "../../../../components/atoms/communicationForm/schedule";
+// import SMSForm from "../../../../components/atoms/communicationForm/sms";
+// import PushNotificationForm from "../../../../components/atoms/communicationForm/pushNotification";
+// import Email from "../../../../components/atoms/communicationForm/Email";
+// import Schedule from "../../../../components/atoms/communicationForm/schedule";
+import { SMSForm, PushNotificationForm, Email, Schedule } from "../../molecules/communicationForm"
 
 const Communication = ({
   subTitle, onChange,
@@ -17,7 +18,7 @@ const Communication = ({
   pushFormRef,
   emailFormRef,
   emailFormData,
-  onFormNext,
+  onFormNext, scheduleData,
   schedule, campaign,
   scheduleSaveMark,
   saveSchedule,
@@ -49,8 +50,8 @@ const Communication = ({
             formValues={communicationFormValues}
             onFormNext={onFormNext} />}
           {value == "PUSH" && <PushNotificationForm
-            wrappedComponentRef={pushFormData}
-            formValues={pushFormRef}
+            wrappedComponentRef={pushFormRef}
+            formValues={pushFormData}
             onFormNext={onFormNext} />}
           {value == "EMAIL" && (<Email
             wrappedComponentRef={emailFormRef}
@@ -61,7 +62,7 @@ const Communication = ({
         {schedule && (
           <Col sm={24} md={11} lg={11} xl={11} xxl={10}>
             <div style={{ padding: 10 }}>
-              <Schedule saved={scheduleSaveMark} saveSchedule={saveSchedule} campaign={campaign} getScheduleData={getScheduleData} />
+              <Schedule saved={scheduleSaveMark} scheduleData={scheduleData} saveSchedule={saveSchedule} campaign={campaign} getScheduleData={getScheduleData} />
             </div>
           </Col>
         )}

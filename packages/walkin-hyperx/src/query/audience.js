@@ -11,7 +11,7 @@ export const allSegments = gql`
 		}
 	}
 `;
-export const attributes = gql`
+export const ATTRIBUTES = gql`
 	query ruleAttributes($input:SearchRuleAttributeInput!) {
 		ruleAttributes(input:$input) {
 			id status
@@ -76,11 +76,7 @@ export const CREATE_RULE = gql`
 export const UPDATE_RULE = gql`
   mutation updateRule($id:ID! ,$input: UpdateRuleInput!) {
     updateRule(id:$id, input:$input) {
-      id
-    name
-    description
-    status
-    type
+      id name description status type
     }
   }
 `;
@@ -129,13 +125,12 @@ export const UPDATE_SEGMENT = gql`
 	}
 `;
 
-export const GET_AUDIENCE = gql`
+export const GET_AUDIENCES = gql`
 	query audiences($organization_id: ID,$application_id:ID,$campaign_id: ID,$segment_id: ID,$status: STATUS ) {
 		audiences(organization_id: $organization_id,application_id: $application_id,
-			campaign_id: $campaign_id,segment_id: $segment_id,status: $status) 
-			{
+			campaign_id: $campaign_id,segment_id: $segment_id,status: $status) {
 				id status campaign{ id name status }
-    			segment{ id name segmentType status }
+    			segment{ id name segmentType status rule{ id name	type } }
 		}
 	}
 `;
@@ -148,6 +143,15 @@ export const CREATE_AUDIENCE = gql`
 		}
 	}
 `
+
+
+export const UPDATE_AUDIENCES = gql`
+	mutation createAudienceForCampaign($campaignId:ID, $segments:[ID]!){
+		createAudienceForCampaign(campaignId:$campaignId, segments:$segments){
+			id campaign{ id name }
+			segment{ id name segmentType rule{ id } }
+	}
+}`
 export const AUDIENCE_COUNT = gql`
 	query audienceCount($segments:[ID], $organizationId:ID!){
 		audienceCount(segments:$segments, organizationId:$organizationId){

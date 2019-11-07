@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { allSegments, disableSegment, UPDATE_SEGMENT } from '../../../query/audience';
 import { withApollo, graphql } from 'react-apollo';
 import { NEW_SEGMENT } from '../../../utils/RouterConstants';
-import { Card, Menu, Dropdown, Button, Col } from 'antd';
+import { Card, Menu, Dropdown, Button, Col, Icon } from 'antd';
 import moment from 'moment';
 import { SortableDataTable, InstantSearch, CampaignHeader } from '@walkinsole/shared';
 import jwt from "jsonwebtoken";
@@ -98,9 +98,11 @@ class SegmentList extends Component {
 			}}
 		>
 			{/* {record.status != "ACTIVE" ? <Menu.Item key="ACTIVE">Make Active</Menu.Item> : <Menu.Item key="INACTIVE">Make Inactive</Menu.Item>} */}
-			<Menu.Item key="edit">Edit</Menu.Item>
-			<Menu.Item key="duplicate">Duplicate</Menu.Item>
-			<Menu.Item key="delete">Delete</Menu.Item>
+
+			{/* <Menu.Item key="view"><Icon type="eye" /> View</Menu.Item> */}
+			<Menu.Item key="edit"><Icon type="edit" /> Edit</Menu.Item>
+			<Menu.Item key="delete"><Icon type="delete" /> Delete</Menu.Item>
+			<Menu.Item key="duplicate"><Icon type="copy" /> Duplicate</Menu.Item>
 		</Menu>
 	);
 
