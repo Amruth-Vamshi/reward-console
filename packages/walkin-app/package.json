@@ -33,6 +33,8 @@
 		"url-search-params": "^1.1.0"
 	},
 	"devDependencies": {
+		"@types/jsonwebtoken": "^8.3.5",
+		"@types/lodash": "^4.14.145",
 		"@types/react": "^16.9.11",
 		"@types/react-dom": "^16.9.4",
 		"awesome-typescript-loader": "^5.2.1",

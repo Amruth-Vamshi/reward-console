@@ -3,11 +3,15 @@ import Organization from "./routes/Organization";
 import OrgStoreList from "./routes/Organization/orgStoreList";
 import Settings from "./routes/Settings";
 
-import React, { Component } from "react";
-import { Redirect, Route, Switch } from "react-router-dom";
+import * as React from "react";
+import { Route, Switch, RouteComponentProps } from "react-router-dom";
 import Users from "./routes/users";
 
-export default class extends Component {
+interface HomeProps extends RouteComponentProps {
+
+}
+
+export default class extends React.Component<HomeProps, {}> {
   render() {
     return (
       <div className="gx-main-content-wrapper">
