@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 
 function NewsItem({data}) {
   const {image, description} = data;

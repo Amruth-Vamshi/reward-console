@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import { Card, Col, Row, Radio, Upload, Button, Icon, Divider } from 'antd';
 import ColorControl from "./ColorControl/index"
 export default class Controls extends React.Component {

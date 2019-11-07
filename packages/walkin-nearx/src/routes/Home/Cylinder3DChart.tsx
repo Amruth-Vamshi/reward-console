@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import AmCharts from "@amcharts/amcharts3-react";
 
 const Cylinder3DChart = () => {

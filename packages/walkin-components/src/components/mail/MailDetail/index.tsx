@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import {Avatar, Dropdown, Menu} from "antd";
 import CustomScrollbars from 'util/CustomScrollbars'
 

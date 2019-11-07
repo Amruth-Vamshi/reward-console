@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis } from "recharts";
 import { Select } from "antd";
 

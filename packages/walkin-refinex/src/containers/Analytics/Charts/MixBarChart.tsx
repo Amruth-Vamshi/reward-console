@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
 import { data05 } from "./data";

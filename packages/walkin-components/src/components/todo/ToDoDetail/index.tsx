@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import {Avatar, Badge, Col, DatePicker, Input, Menu, Row} from "antd";
 import Moment from "moment";
 import CustomScrollbars from "util/CustomScrollbars";

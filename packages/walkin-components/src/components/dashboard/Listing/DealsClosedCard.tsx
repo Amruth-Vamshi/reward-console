@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import {Bar, BarChart, ResponsiveContainer, Tooltip, XAxis} from "recharts";
 import Widget from "components/Widget/index";
 import {Badge} from "antd";

@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import { Steps } from "antd";
 const { Step } = Steps;
 function Stepper({ current, onChange, StepperData }) {

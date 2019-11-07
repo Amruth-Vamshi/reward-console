@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import {Tabs} from "antd";
 import Widget from "components/Widget";
 import TaskItem from "./TaskItem";

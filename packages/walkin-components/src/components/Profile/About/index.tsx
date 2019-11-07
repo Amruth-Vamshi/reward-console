@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import {Col, Row, Tabs} from "antd";
 import Widget from "components/Widget";
 import {aboutList} from '../../../pages/socialApps/Profile/data'

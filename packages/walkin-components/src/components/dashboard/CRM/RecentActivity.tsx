@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import {Avatar, Timeline} from "antd";
 import WidgetHeader from "components/WidgetHeader/index";
 import ActivityItem from "./ActivityItem";

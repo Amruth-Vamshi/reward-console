@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import {Area, AreaChart, ResponsiveContainer, Tooltip} from "recharts";
 
 import Widget from "components/Widget/index";

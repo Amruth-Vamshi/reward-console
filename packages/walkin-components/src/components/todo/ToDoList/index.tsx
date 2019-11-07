@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import CustomScrollbars from 'util/CustomScrollbars'
 
 import ToDoItem from "./ToDoItem";

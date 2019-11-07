@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 
 import ReceivedMessageCell from "./ReceivedMessageCell/index";
 import SentMessageCell from "./SentMessageCell/index";
