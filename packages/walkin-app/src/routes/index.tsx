@@ -15,10 +15,10 @@ const App = () => (
 	<Suspense fallback={<div>Loading...</div>}>
 		<Switch>
 			<Route path="/home" component={Home} />
-			<Route path="/core" component={Core} />
+			{/* <Route path="/core" component={Core} />
 			<Route path="/hyperx" component={HyperX} />
 			<Route path="/nearx" component={NearX} />
-			<Route path="/refinex" component={RefineX} />
+			<Route path="/refinex" component={RefineX} /> */}
 			<Route component={ErrorPage} />
 		</Switch>
 	</Suspense>
