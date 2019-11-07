@@ -282,7 +282,6 @@ const SWITCH_LANGUAGE = gql`
     switchLanguage(locale: $locale) @client
   }
 `;
-
 export default compose(
   graphql(GET_SETTINGS, { name: "settings", props: mapStateToProps }),
   graphql(TOGGLE_COLLAPSED_SIDENAV, { name: "toggleCollapsedSideNav" }),

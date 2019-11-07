@@ -221,7 +221,7 @@ const SET_THEME_TYPE = gql`
     setThemeType(themeType: $themeType)
   }
 `;
-export default compose(
+export const SignUpModule = compose(
   // Write mutations for all of these
   // userSignUp,
   // hideMessage,

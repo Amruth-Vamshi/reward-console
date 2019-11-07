@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 const { Option } = Select;
 
-class AddAndDeleteSelectDynamically extends React.Component {
+export class AddAndDeleteSelectDynamically extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -84,4 +84,3 @@ AddAndDeleteSelectDynamically.defaultProps = {
 	segmentSelectionData: [],
 };
 
-export default AddAndDeleteSelectDynamically;

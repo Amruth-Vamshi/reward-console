@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Row, Col, Typography, Progress, Button } from "antd";
-const { Title } = Typography;
-import moment from "moment";
-import './overViewStyle.css'
+import './overViewStyle.css';
 
-export default class Overview extends Component {
+import { Button, Col, Progress, Row, Typography } from 'antd';
+import moment from 'moment';
+import * as React from 'react';
+
+const { Title } = Typography;
+export class Overview extends React.Component {
   changeState = e => {
     console.log(e.target.innerText);
     if (e.target.innerText == "LAUNCH")

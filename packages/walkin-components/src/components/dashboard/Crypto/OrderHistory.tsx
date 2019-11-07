@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Table } from "antd";
-import Widget from "../../Widget";
+import { Widget } from "../../Widget";
 
 const columns = [
   {
@@ -62,7 +62,7 @@ const data = [
   }
 ];
 
-const OrderHistory = () => {
+export const OrderHistory = () => {
   return (
     <Widget
       styleName="gx-order-history"

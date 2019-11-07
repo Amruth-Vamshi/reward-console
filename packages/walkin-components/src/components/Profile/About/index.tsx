@@ -1,7 +1,7 @@
 import * as React from "react";
-import {Col, Row, Tabs} from "antd";
-import Widget from "components/Widget";
-import {aboutList} from '../../../pages/socialApps/Profile/data'
+import { Col, Row, Tabs } from "antd";
+import { Widget } from "components/Widget";
+import { aboutList } from '../../../pages/socialApps/Profile/data'
 import AboutItem from "./AboutItem";
 
 
@@ -18,7 +18,7 @@ class About extends React.Component {
               <Row>
                 {aboutList.map((about, index) =>
                   <Col key={index} xl={8} lg={12} md={12} sm={12} xs={24}>
-                    <AboutItem data={about}/>
+                    <AboutItem data={about} />
                   </Col>
                 )}
               </Row>
@@ -28,7 +28,7 @@ class About extends React.Component {
             <div className="gx-mb-2">
               <Row>{aboutList.map((about, index) =>
                 <Col key={index} xl={8} lg={12} md={12} sm={12} xs={24}>
-                  <AboutItem data={about}/>
+                  <AboutItem data={about} />
                 </Col>
               )}
               </Row>
@@ -40,7 +40,7 @@ class About extends React.Component {
                 {aboutList.map((about, index) =>
 
                   <Col key={index} xl={8} lg={12} md={12} sm={12} xs={24}>
-                    <AboutItem data={about}/>
+                    <AboutItem data={about} />
                   </Col>
                 )}
               </Row>

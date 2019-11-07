@@ -1,10 +1,9 @@
-import React, { Component } from "react";
-import { Avatar, Row, Col, Tag, Button } from "antd";
-import { Area, AreaChart, ResponsiveContainer } from "recharts";
+import { Button, Col, Row, Tag } from 'antd';
+import React, { Component } from 'react';
 
-import Widget from "../../Widget";
+import { Widget } from '../../Widget';
 
-const ManageCampaignCard = ({ campaign, history }) => {
+export const ManageCampaignCard = ({ campaign, history }) => {
   return (
     <Widget
       styleName="gx-card-full"
@@ -60,4 +59,3 @@ const ManageCampaignCard = ({ campaign, history }) => {
   );
 };
 
-export default ManageCampaignCard;

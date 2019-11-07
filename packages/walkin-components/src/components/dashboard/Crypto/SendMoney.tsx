@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Table } from "antd";
-import Widget from "../../Widget";
+import { Widget } from "../../Widget";
 
 const columns = [
   {
@@ -71,7 +71,7 @@ const data = [
   }
 ];
 
-const SendMoney = () => {
+export const SendMoney = () => {
   return (
     <Widget
       title={<h2 className="h4 gx-text-capitalize gx-mb-0">Send Money to</h2>}
@@ -98,5 +98,3 @@ const SendMoney = () => {
     </Widget>
   );
 };
-
-export default SendMoney;

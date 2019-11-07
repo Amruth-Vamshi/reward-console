@@ -1,8 +1,8 @@
 import * as React from "react";
-import Widget from "../../Widget";
+import { Widget } from "../../Widget";
 import { Button } from "antd";
 
-const RewardCard = () => {
+export const RewardCard = () => {
   return (
     <Widget styleName="gx-bg-dark-primary">
       <div className="gx-flex-row gx-justify-content-center gx-mb-3 gx-mb-md-4">
@@ -21,4 +21,3 @@ const RewardCard = () => {
   );
 };
 
-export default RewardCard;

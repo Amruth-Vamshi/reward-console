@@ -1,8 +1,8 @@
 import * as React from "react";
 
-import Widget from "../../Widget";
+import { Widget } from "../../Widget";
 
-const ChartCard = ({ prize, title, children, styleName, desc, icon }) => {
+export const ChartCard = ({ prize, title, children, styleName, desc, icon }) => {
   return (
     <Widget styleName="gx-card-full">
       <div className="gx-actchart gx-px-3 gx-pt-3">
@@ -25,5 +25,3 @@ const ChartCard = ({ prize, title, children, styleName, desc, icon }) => {
     </Widget>
   );
 };
-
-export default ChartCard;

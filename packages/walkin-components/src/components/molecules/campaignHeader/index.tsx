@@ -1,9 +1,9 @@
-import React, { Fragment } from 'react';
+import * as React from 'react';
 import { Row, Col, Button } from 'antd';
 import './style.css';
 import PropTypes from 'prop-types';
 
-const CampaignHeader = ({ children }) => {
+export const CampaignHeader = ({ children }) => {
 	return <Row className="campaignHeaderStyle">{children}</Row>;
 };
 
@@ -16,4 +16,3 @@ CampaignHeader.defaultProps = {
 	isOnlyTitle: false,
 	children: {},
 };
-export default CampaignHeader;

@@ -1,5 +1,5 @@
 import QueryBuilder from '@walkin-frontend/walkin-react-querybuilder';
-import React from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import './style.css';
 import { Select } from 'antd';
@@ -11,7 +11,7 @@ for (let i = 10; i < 36; i++) {
 	children.push(<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
 }
 
-class WalkinQueryBuilder extends React.Component {
+export class WalkinQueryBuilder extends React.Component {
 	removeProp = (obj, propToDelete) => {
 		for (var property in obj) {
 			if (typeof obj[property] == 'object') {
@@ -118,4 +118,3 @@ WalkinQueryBuilder.defaultProps = {
 	],
 };
 
-export default WalkinQueryBuilder;
