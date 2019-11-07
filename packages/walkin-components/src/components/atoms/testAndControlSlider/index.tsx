@@ -3,7 +3,7 @@ import { Slider } from 'antd';
 import './style.css';
 import PropTypes from 'prop-types';
 
-class BasicSlider extends React.Component {
+export class BasicSlider extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {};
@@ -48,4 +48,3 @@ BasicSlider.defaultProps = {
 	maxValueAllowed: 75,
 };
 
-export default BasicSlider;

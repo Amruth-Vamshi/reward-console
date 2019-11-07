@@ -181,7 +181,7 @@ const GET_AUTH_DETAILS = gql`
   }
 `;
 
-export default compose(
+export const SignInModule = compose(
   // Create resolvers and add as graphql mutation here
   // userSignIn,
   // hideMessage,

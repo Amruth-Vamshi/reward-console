@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import { Modal, Button } from 'antd';
 import './style.css';
 
-const Popup = ({ title, visible, handleCancel, loading, handleOk, popupContent, buttonText, handleOnClick }) => {
+export const Popup = ({ title, visible, handleCancel, loading, handleOk, popupContent, buttonText, handleOnClick }) => {
 	return (
 		<Modal
 			visible={visible}
@@ -21,5 +21,3 @@ const Popup = ({ title, visible, handleCancel, loading, handleOk, popupContent, 
 		</Modal>
 	);
 };
-
-export default Popup;

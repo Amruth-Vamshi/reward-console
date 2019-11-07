@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import Widget from "components/Widget";
+import { Widget }  from  "components/Widget";
 import {ticketList} from "../../../routes/main/dashboard/CRM/data";
 import TicketItem from "./TicketItem";
 

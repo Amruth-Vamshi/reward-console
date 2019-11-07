@@ -1,7 +1,7 @@
 import * as React from "react";
 import PropTypes from "prop-types";
 
-const CardBox = ({ heading, children, styleName, childrenStyle, style }) => {
+export const CardBox = ({ heading, children, styleName, childrenStyle, style }) => {
 
   return (
     <div style={style} className={`gx-card ${styleName}`}>
@@ -15,8 +15,6 @@ const CardBox = ({ heading, children, styleName, childrenStyle, style }) => {
     </div>
   )
 };
-
-export default CardBox;
 
 CardBox.propTypes = {
   children: PropTypes.node.isRequired

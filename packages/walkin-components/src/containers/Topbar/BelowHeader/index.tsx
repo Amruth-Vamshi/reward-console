@@ -258,7 +258,7 @@ const SWITCH_LANGUAGE = gql`
 	}
 `;
 
-export default compose(
+export const BelowHeaderModule = compose(
 	graphql(TOGGLE_COLLAPSED_SIDE_NAV, { name: 'toggleCollapsedSideNav' }),
 	graphql(SWITCH_LANGUAGE, { name: 'switchLanguage' }),
 	graphql(GET_SETTINGS, {

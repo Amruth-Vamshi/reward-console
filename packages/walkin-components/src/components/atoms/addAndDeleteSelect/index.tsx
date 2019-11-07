@@ -104,5 +104,3 @@ class AddAndDeleteSelectDynamically extends React.Component<IProps, IState> {
     );
   }
 }
-
-export default AddAndDeleteSelectDynamically;

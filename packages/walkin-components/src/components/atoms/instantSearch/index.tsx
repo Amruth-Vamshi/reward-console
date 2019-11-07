@@ -53,5 +53,3 @@ class InstantSearch extends React.Component<IProps, IState> {
     );
   }
 }
-
-export default InstantSearch;
