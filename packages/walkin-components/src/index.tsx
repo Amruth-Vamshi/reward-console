@@ -1,6 +1,6 @@
 // export all components here
 
-import HorizontalDefault from './containers/Topbar/HorizontalDefault';
+import { HorizontalDefaultModule as HorizontalDefault } from './containers/Topbar/HorizontalDefault';
 import { HorizontalDarkModule as HorizontalDark } from './containers/Topbar/HorizontalDark';
 import { SignInModule as SignIn } from './containers/SignIn';
 import { SignUpModule as SignUp } from './containers/SignUp';
