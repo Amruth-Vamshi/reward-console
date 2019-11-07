@@ -4,7 +4,7 @@ import TestAndControl from '../../molecules/testAndControl';
 import './style.css';
 import { Card } from "antd";
 
-const CampaignPriority = ({
+export const CampaignPriority = ({
     buttons,
     promptText,
     tootTipText,
@@ -44,5 +44,3 @@ const CampaignPriority = ({
         </Fragment>
     );
 };
-
-export default CampaignPriority;

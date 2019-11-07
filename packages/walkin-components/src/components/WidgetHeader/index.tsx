@@ -1,7 +1,7 @@
 import * as React from "react";
 import PropTypes from "prop-types";
 
-const WidgetHeader = ({title, extra, styleName}) => {
+export const WidgetHeader = ({ title, extra, styleName }) => {
 
   return (
     <h2 className={`gx-entry-title ${styleName}`}>
@@ -19,5 +19,3 @@ WidgetHeader.propTypes = {
   title: PropTypes.node,
   extra: PropTypes.node,
 };
-
-export default WidgetHeader;

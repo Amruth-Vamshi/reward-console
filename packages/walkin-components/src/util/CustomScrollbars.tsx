@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Scrollbars } from "react-custom-scrollbars";
 
-const CustomScrollbars = props => (
+export const CustomScrollbars = props => (
   <Scrollbars
     {...props}
     autoHide
@@ -15,4 +15,3 @@ const CustomScrollbars = props => (
   />
 );
 
-export default CustomScrollbars;

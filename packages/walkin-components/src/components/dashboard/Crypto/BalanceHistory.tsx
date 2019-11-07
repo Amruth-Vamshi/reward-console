@@ -2,7 +2,7 @@ import * as React from "react";
 import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis } from "recharts";
 import { Select } from "antd";
 
-import Widget from "../../Widget";
+import { Widget } from "../../Widget";
 
 const data = [
   { name: "", balance: 200 },
@@ -23,7 +23,7 @@ const data = [
 
 const Option = Select.Option;
 
-const BalanceHistory = () => {
+export const BalanceHistory = () => {
   function handleChange(value) {
     console.log(`selected ${value}`);
   }
@@ -72,4 +72,3 @@ const BalanceHistory = () => {
   );
 };
 
-export default BalanceHistory;

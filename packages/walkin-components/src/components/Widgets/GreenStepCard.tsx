@@ -1,12 +1,12 @@
-import React, {Component} from "react";
-import {Col, Row} from "antd";
+import React, { Component } from "react";
+import { Col, Row } from "antd";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-import {greenStepList} from "../../routes/main/Widgets/data"
+import { greenStepList } from "../../routes/main/Widgets/data"
 import GreenStepItem from "./GreenStepItem";
-import Widget from "components/Widget/index";
+import { Widget } from "components/Widget/index";
 
 class GreenStepCard extends Component {
 
@@ -33,20 +33,20 @@ class GreenStepCard extends Component {
           <Col xl={12} lg={12} md={12} sm={12} xs={24}>
             <div className="gx-slick-slider-lt-thumb"><img
               className={this.state.loading ? 'fadeout gx-img-fluid' : 'fadein gx-img-fluid'} src={this.state.image}
-              alt="..."/></div>
+              alt="..." /></div>
           </Col>
           <Col xl={12} lg={12} md={12} sm={12} xs={24}>
             <Slider className="gx-slick-slider gx-slick-slider-dot-top" {...settings}
-                    afterChange={(index) => {
-                      this.setState({loading: false, image: greenStepList[index].image,})
-                    }}
-                    beforeChange={(oldIndex, newIndex) => {
-                      this.setState({
-                        loading: true
-                      });
-                    }}>
+              afterChange={(index) => {
+                this.setState({ loading: false, image: greenStepList[index].image, })
+              }}
+              beforeChange={(oldIndex, newIndex) => {
+                this.setState({
+                  loading: true
+                });
+              }}>
               {greenStepList.map((data, index) =>
-                <GreenStepItem key={index} data={data}/>)
+                <GreenStepItem key={index} data={data} />)
               }
             </Slider>
           </Col>

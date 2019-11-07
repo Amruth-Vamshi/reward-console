@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import Widget from "components/Widget/index";
+import { Widget } from "components/Widget/index";
 import { THEME_TYPE_DARK } from "../../constants/ThemeSetting";
 import gql from "graphql-tag";
 

@@ -1,10 +1,10 @@
 import * as React from "react";
 import { Button, Form, Input, Select } from "antd";
-import Widget from "../../Widget";
+import { Widget } from "../../Widget";
 
 const Option = Select.Option;
 const FormItem = Form.Item;
-const CurrencyCalculator = () => {
+export const CurrencyCalculator = () => {
   function handleChange(value) {
     console.log(`selected ${value}`);
   }
@@ -50,5 +50,3 @@ const CurrencyCalculator = () => {
     </Widget>
   );
 };
-
-export default CurrencyCalculator;

@@ -1,9 +1,9 @@
 import * as React from "react";
-import Widget from "../../Widget";
+import { Widget } from "../../Widget";
 import { Button, Col, Row } from "antd";
 import LineIndicator from "./LineIndicator";
 
-const Portfolio = () => {
+export const Portfolio = () => {
   return (
     <Widget>
       <h2 className="h4 gx-mb-3">Your Portfolio Balance</h2>
@@ -73,4 +73,3 @@ const Portfolio = () => {
   );
 };
 
-export default Portfolio;

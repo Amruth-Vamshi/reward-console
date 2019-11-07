@@ -3,7 +3,7 @@ import { Icon } from 'antd'
 
 import { Widget } from "../../../index";
 
-const IconWithTextCard = ({ cardColor, icon, title, antIcon, subTitle, iconColor }) => {
+export const IconWithTextCard = ({ cardColor, icon, title, antIcon, subTitle, iconColor }) => {
   return (
     <Widget styleName={`gx-card-full gx-p-3 gx-bg-${cardColor} gx-text-white`}>
       <div className="gx-media gx-align-items-center gx-flex-nowrap">
@@ -20,4 +20,3 @@ const IconWithTextCard = ({ cardColor, icon, title, antIcon, subTitle, iconColor
   );
 };
 
-export default IconWithTextCard;

@@ -1,8 +1,8 @@
-import React, { Component, Fragment } from 'react';
+import * as React from 'react';
 import { Input } from 'antd';
 
 const Search = Input.Search;
-class InstantSearch extends React.Component {
+export class InstantSearch extends React.Component {
 	onChange(data, e) {
 		let currentList = [];
 		let newList = [];
@@ -44,5 +44,3 @@ class InstantSearch extends React.Component {
 		);
 	}
 }
-
-export default InstantSearch;

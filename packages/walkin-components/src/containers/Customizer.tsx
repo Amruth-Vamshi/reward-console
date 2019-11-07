@@ -180,8 +180,8 @@ class Customizer extends Component {
               </Button>
             </div>
           ) : (
-            this.getPresetColors()
-          )}
+              this.getPresetColors()
+            )}
         </div>
 
         <h6 className="gx-mb-3 gx-text-uppercase">Nav Style</h6>
@@ -671,7 +671,7 @@ const mapQueryToProps = ({ settings }) => {
   return { locale, navStyle, themeType, layoutType };
 };
 
-export default compose(
+export const CustomizerModule = compose(
   graphql(SET_THEME_TYPE, { name: "setThemeType" }),
   graphql(ON_NAV_STYLE_CHANGE, { name: "onNavStyleChange" }),
   graphql(ON_LAYOUT_TYPE_CHANGE, { name: "onLayoutTypeChange" }),
