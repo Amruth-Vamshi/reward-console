@@ -1,23 +1,12 @@
 {
     "compilerOptions": {
-        "module": "esnext",
-        "target": "es5",
-        "lib": [
-            "es6",
-            "dom"
-        ],
-        "sourceMap": true,
-        "allowJs": true,
-        "jsx": "react",
-        "moduleResolution": "node",
-        "forceConsistentCasingInFileNames": true,
-        "noImplicitReturns": true,
-        "noImplicitThis": true,
+        "outDir": "./dist/",
         "noImplicitAny": true,
-        "strictNullChecks": true,
-        "suppressImplicitAnyIndexErrors": true,
-        "noUnusedLocals": true,
-        "allowSyntheticDefaultImports": true
+        "module": "es2015",
+        "target": "es5",
+        "moduleResolution": "node",
+        "jsx": "react",
+        "allowJs": true,
     },
     "exclude": [
         "node_modules",

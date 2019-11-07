@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 
 import Aux from "util/Auxiliary.js"
 import WidgetHeader from "components/WidgetHeader/index";

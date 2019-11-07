@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import loader from "../../assets/images/loader.svg";
 
 const CircularProgress = ({ className }) => (

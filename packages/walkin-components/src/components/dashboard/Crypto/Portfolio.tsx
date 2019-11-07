@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import Widget from "../../Widget";
 import { Button, Col, Row } from "antd";
 import LineIndicator from "./LineIndicator";

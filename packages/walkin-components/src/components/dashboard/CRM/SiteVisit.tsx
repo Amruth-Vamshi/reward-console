@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import {Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip} from "recharts";
 import {siteVisit} from "../../../routes/main/dashboard/CRM/data";
 

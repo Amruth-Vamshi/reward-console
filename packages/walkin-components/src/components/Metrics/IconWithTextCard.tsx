@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 
 import Widget from "components/Widget/index";
 import { THEME_TYPE_DARK } from "../../constants/ThemeSetting";

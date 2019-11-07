@@ -1,10 +1,10 @@
-import React, { Fragment } from "react";
+import * as React from "react";
 import { Col, Row, Card, Button } from "antd";
 import { Link } from "react-router-dom";
 
 import "./style.css";
 
-const AppList = ({ apps }) => {
+const AppList = ({ apps }: any) => {
   function random_bg_color() {
     return (
       "rgb(" +
@@ -21,8 +21,8 @@ const AppList = ({ apps }) => {
     <div className="gutter-example">
       <Row gutter={25}>
         {apps &&
-          apps.map((app, index) => (
-            <Fragment key={index}>
+          apps.map((app: any, index: string) => (
+            <React.Fragment key={index}>
               <Col className="gutter-row" xs={24} sm={12} md={12} lg={8} xl={6}>
                 {app.isProductAccessible == true ?
                   <Link to={app.route}>
@@ -48,13 +48,13 @@ const AppList = ({ apps }) => {
                   <Card
                     style={{ backgroundColor: "#dedede" }}
                     cover={
-                      <Fragment>
+                      <React.Fragment>
                         <Button style={{ marginBottom: 0 }} type="primary">Purchase</Button>
                         <i
                           style={{ color: "#b9b5b5" }}
                           className={`${app.inactiveIcon} gx-fs-icon-lg appInactiveIconStyle `}
                         ><img src={app.inactiveIcon} style={{ clip: 'rect(110px)' }} /></i>
-                      </Fragment>
+                      </React.Fragment>
                     }
                     className="gx-product-vertical coreAppsCard"
                   >
@@ -70,7 +70,7 @@ const AppList = ({ apps }) => {
                   </Card>
                 }
               </Col>
-            </Fragment>
+            </React.Fragment>
           ))}
       </Row>
     </div>

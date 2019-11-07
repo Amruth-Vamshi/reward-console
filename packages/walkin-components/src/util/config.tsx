@@ -1,3 +1,1 @@
-module.exports = {
-  footerText: 'Copyright Company Name © 2018',
-}
+export const footerText = 'Copyright Company Name © 2018';

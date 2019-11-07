@@ -1,12 +1,12 @@
-import React, { Fragment } from 'react';
+import * as React from 'react';
 import { Button, List, Row, Avatar, Col, Card, Empty, Icon } from 'antd';
-import { Link } from 'react-router-dom';
 import './style.css';
-import org from '@walkinsole/walkin-components/src/assets/images/org.png';
+import { object } from 'prop-types';
+const org = require('@walkinsole/walkin-components/src/assets/images/org.png');
 
-const SubOrgDetails = ({ subOrgDetails, onNewSubOrg, onSubOrgCardClick, onSubOrgDelete }) => {
+const SubOrgDetails = ({ subOrgDetails, onNewSubOrg, onSubOrgCardClick, onSubOrgDelete }: any) => {
 	return (
-		<Fragment>
+		<React.Fragment>
 			<div className="subOrgButtonContainer">
 				<Button onClick={onNewSubOrg} type="primary">
 					New Sub Organization
@@ -16,7 +16,7 @@ const SubOrgDetails = ({ subOrgDetails, onNewSubOrg, onSubOrgCardClick, onSubOrg
 				<List
 					grid={{ gutter: 16, column: 2 }}
 					dataSource={subOrgDetails}
-					renderItem={val => (
+					renderItem={(val: any) => (
 						<List.Item
 							onClick={e => {
 								e.preventDefault();
@@ -48,9 +48,9 @@ const SubOrgDetails = ({ subOrgDetails, onNewSubOrg, onSubOrgCardClick, onSubOrg
 					)}
 				/>
 			) : (
-				<Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
-			)}
-		</Fragment>
+					<Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+				)}
+		</React.Fragment>
 	);
 };
 export default SubOrgDetails;

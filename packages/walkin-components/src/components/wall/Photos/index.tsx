@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import WidgetHeader from "components/WidgetHeader/index";
 
 const Photos = ({photoList, title}) => {

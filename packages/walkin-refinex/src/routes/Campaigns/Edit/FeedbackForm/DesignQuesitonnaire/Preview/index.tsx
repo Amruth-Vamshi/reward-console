@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import { Card, Col, Row, message } from 'antd';
 import Home from "../feedback-form/index";
 import Device from "./Devices/index";

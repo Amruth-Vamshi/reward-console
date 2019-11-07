@@ -1,5 +1,5 @@
 import {Col, Row} from "antd";
-import React from "react";
+import * as React from "react";
 import {Bar, BarChart, ResponsiveContainer, Tooltip} from "recharts";
 
 import Widget from "components/Widget/index";

@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import {Badge} from "antd";
 import {Area, AreaChart, ResponsiveContainer, Tooltip} from "recharts";
 

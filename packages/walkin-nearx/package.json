@@ -6,7 +6,7 @@
   "homepage": "",
   "repository": "",
   "version": "1.0.0",
-  "main": "src/index.js",
+  "main": "src/index.tsx",
   "files": [
     "css",
     "es",

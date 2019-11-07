@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import {Avatar, Checkbox} from "antd";
 
 import labels from "routes/inBuiltApps/Mail/data/labels";

@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import {Avatar, Checkbox, Dropdown, Menu} from "antd";
 
 import AddContact from "../../AddContact/index";

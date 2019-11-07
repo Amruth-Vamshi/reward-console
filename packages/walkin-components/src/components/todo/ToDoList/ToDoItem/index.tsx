@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import {Avatar, Badge, Checkbox} from "antd";
 
 import labels from "routes/inBuiltApps/Todo/data/labels";
