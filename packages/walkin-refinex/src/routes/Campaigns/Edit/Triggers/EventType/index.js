@@ -17,7 +17,7 @@ import {
   Icon
 } from "antd";
 import jwt from "jsonwebtoken";
-import { EVENT_TYPES, EVENT_SUBSCRIPTION } from "../../../../../containers/Query"
+import { EVENT_TYPES_FOR_APPLICATION, EVENT_SUBSCRIPTION } from "../../../../../containers/Query"
 class EventType extends Component {
   constructor(props) {
     super(props);
@@ -90,7 +90,7 @@ class EventType extends Component {
     }
   };
   getOptions = () => {
-    return this.props.eventType.eventTypes.map(event => {
+    return this.props.eventType.eventTypesForApplication.map(event => {
       return (
         <Select.Option value={event.id} key={event.id}>{event.type}</Select.Option>
       )
@@ -231,42 +231,31 @@ const EventTypeForm = Form.create({
   },
   mapPropsToFields(props) {
     const { event, selectedApplication } = props;
-    if (selectedApplication) {
-      props.eventSubscription.refetch()
-    }
-    let eventValue = event.event;
-    if (props.eventSubscription && props.eventSubscription.eventSubscriptions) {
-      eventValue = props.eventSubscription.eventSubscriptions[0].event_type.type
-    }
-    return {
-      event: Form.createFormField({
-        value: eventValue
-      }),
-      application: Form.createFormField({
-        value: selectedApplication
-      }),
-    };
+    // if (selectedApplication) {
+    //   props.eventSubscription.refetch()
+    // }
+    // let eventValue = event.event;
+    // if (props.eventSubscription && props.eventSubscription.eventSubscriptions) {
+    //   eventValue = props.eventSubscription.eventSubscriptions[0].event_type.type
+    // }
+    // return {
+    //   event: Form.createFormField({
+    //     value: eventValue
+    //   }),
+    //   application: Form.createFormField({
+    //     value: selectedApplication
+    //   }),
+    // };
   }
 })(EventType);
 
 export default compose(
-  graphql(EVENT_TYPES, {
+  graphql(EVENT_TYPES_FOR_APPLICATION, {
     name: "eventType",
-    options: {
-      fetchPolicy: "cache-first",
-      variables: {
-        status: "ACTIVE"
-      }
-    }
-  }),
-  graphql(EVENT_SUBSCRIPTION, {
-    name: "eventSubscription",
     options: props => ({
       fetchPolicy: "cache-first",
       variables: {
-        status: "ACTIVE",
-        organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
-        application_id: props.selectedApplication
+        appId: props.selectedApplication
       }
     })
   })

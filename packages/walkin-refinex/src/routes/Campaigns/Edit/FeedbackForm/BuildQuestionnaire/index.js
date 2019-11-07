@@ -33,8 +33,12 @@ class Questionnaire extends Component {
       isChoiceLoading: false,
       isQuestionLoading: false
     };
+    this.listRef = React.createRef();
   }
 
+  componentDidUpdate(prevProps) {
+    console.log("prevProps", prevProps, this.props);
+  }
   success = (message1) => {
     message.success(message1, 5);
   };
@@ -42,6 +46,7 @@ class Questionnaire extends Component {
   error = (message1) => {
     message.error(message1, 5);
   };
+
 
   onQuestionSelected = questionIndex => {
     console.log("this.props.questionnaire", this.props.questionnaire)
@@ -252,6 +257,7 @@ class Questionnaire extends Component {
       })
       .then(async data => {
         await this.props.refetchQuestionnaire();
+        this.listRef.current.resetAfterIndex(this.state.questionIndex, true);
         this.setState({ isQuestionLoading: false })
       })
       .catch(err => {
@@ -335,6 +341,7 @@ class Questionnaire extends Component {
             onQuestionSelected={this.onQuestionSelected}
             addNewQuestion={this.addNewQuestion}
             isQuestionLoading={isQuestionLoading}
+            reference={this.listRef}
           />}
         </Col>
         <Col span={16}>

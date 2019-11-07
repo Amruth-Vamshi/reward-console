@@ -12,6 +12,7 @@ import {
 } from "@walkinsole/walkin-components/src/constants/ThemeSetting";
 import { compose, graphql } from "react-apollo";
 import gql from "graphql-tag";
+import { Icon, Row, Col } from "antd";
 
 class SidebarLogo extends Component {
   render() {
@@ -24,48 +25,18 @@ class SidebarLogo extends Component {
       <div className="RefineX-Logo">
         <div className="gx-layout-sider-header">
           {width < TAB_SIZE_MAX && width > TAB_SIZE ?
-            <Link to="/" className="gx-pointer">
+            <Link to="/refinex/dashboard" className="gx-pointer">
               <img alt="fgd" src={require("@walkinsole/walkin-components/src/assets/images/logo_refine.png")} style={{ maxWidth: 35 }} />
             </Link> : navStyle === NAV_STYLE_FIXED || navStyle === NAV_STYLE_MINI_SIDEBAR ? (
-              <div className="gx-linebar">
-                <i
-                  className={`gx-icon-btn icon icon-${
-                    navStyle === NAV_STYLE_MINI_SIDEBAR
-                      ? "menu-unfold"
-                      : "menu-fold"
-                    } ${themeType !== THEME_TYPE_LITE ? "gx-text-white" : ""}`}
-                  onClick={() => {
-                    if (navStyle === NAV_STYLE_DRAWER) {
-                      this.props.toggleCollapsedSideNav({
-                        variables: {
-                          navCollapsed: !navCollapsed
-                        }
-                      });
-                    } else if (navStyle === NAV_STYLE_FIXED) {
-                      this.props.onNavStyleChange({
-                        variables: {
-                          navStyle: NAV_STYLE_MINI_SIDEBAR
-                        }
-                      });
-                    } else if (navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR) {
-                      this.props.toggleCollapsedSideNav({
-                        variables: {
-                          navCollapsed: !navCollapsed
-                        }
-                      });
-                    } else {
-                      this.props.onNavStyleChange({
-                        variables: {
-                          navStyle: NAV_STYLE_FIXED
-                        }
-                      });
-                    }
-                  }}
-                />
+              <div className="gx-linebar refinex-header-home">
+                <Link to="/">
+                  <Icon type="home" className="gx-icon-btn" style={{ padding: "10px", backgroundColor: "#FCFCFC" }} />
+                </Link>
+
               </div>
             ) : null}
 
-          <Link to="/" className="gx-site-logo">
+          <Link to="/refinex/dashboard" className="gx-site-logo">
             {navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR &&
               width >= TAB_SIZE ? (
                 <img
@@ -80,7 +51,7 @@ class SidebarLogo extends Component {
               ) : (
                   <img
                     alt=""
-                    src={require("@walkinsole/walkin-components/src/assets/images/logo_refinex_darkbg.png")}
+                    src={require("@walkinsole/walkin-components/src/assets/images/logo_refine.png")}
                   />
                 )}
           </Link>

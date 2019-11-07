@@ -15,6 +15,109 @@ export const allSegments = gql`
   }
 `;
 
+
+export const EVENT_TYPES_FOR_APPLICATION = gql`
+  query eventTypesForApplication($appId:ID!){
+    eventTypesForApplication(appId:$appId){
+      id
+      code 
+      status
+      application{
+        id
+
+      }
+      events{
+          id
+          
+        }
+      eventSubscriptions{
+        id
+        triggerAction
+        customAction{
+          id
+          request
+          response
+          status
+        }
+      }
+    }
+  }
+`
+
+export const ACTION_DEFINATIONS = gql`
+      query actionDefinitions(
+        $organizationId:ID
+       $name:String
+        $type: String
+        $status:String
+      ){
+        actionDefinitions(
+        organizationId:$organizationId
+        name:$name
+        type: $type
+        status:$status
+        ){
+          id
+          name
+          type
+          status
+        }
+      }
+`
+
+
+export const ACTIONS = gql`
+    query actions(
+      $organizationId:ID
+      $actionDefinationName: String
+      $status: String
+    ) {
+      actions(
+        organizationId:$organizationId
+        actionDefinationName:$actionDefinationName
+        status:$status
+      ){
+        id
+        request
+        response
+        status
+        actionDefination{
+          id
+          name
+          type
+          status
+        }
+        organization{
+          id
+          name
+        }
+      }
+    }
+`
+
+export const CREATE_EVENT_SUBSCRIPTION_ = gql`
+   mutation createEventSubscription(
+      $eventTypeId:ID!
+      $triggerAction:TriggerActionEnum!
+      $customActionId: ID
+    ){
+      createEventSubscription(
+        eventTypeId:$eventTypeId
+        triggerAction:$triggerAction
+        customActionId:$customActionId
+      ){
+        id
+        status
+        sync
+        eventType{
+          id
+          code
+          status
+        }   
+      }
+    }
+`
+
 export const EVENT_TYPES = gql`
   query eventTypes($status:STATUS!){
     eventTypes(status:$status){
