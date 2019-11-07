@@ -1,7 +1,7 @@
-import React, { Component, Fragment } from 'react';
+import * as React from "react";
 import { Table } from 'antd';
 
-const SortableDataTable = ({ columns, data, onChange, pagination, loading }) => {
+export const SortableDataTable = ({ columns, data, onChange, pagination, loading }) => {
 	return (
 		<Table
 			className="gx-table-responsive"
@@ -13,5 +13,3 @@ const SortableDataTable = ({ columns, data, onChange, pagination, loading }) => 
 		/>
 	);
 };
-
-export default SortableDataTable;

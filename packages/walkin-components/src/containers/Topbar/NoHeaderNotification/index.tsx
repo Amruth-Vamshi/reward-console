@@ -53,7 +53,7 @@ const TOGGLE_COLLAPSED_SIDE_NAV = gql`
   }
 `;
 
-export default compose(
+export const NoHeaderNotificationModule = compose(
   graphql(TOGGLE_COLLAPSED_SIDE_NAV, { name: "toggleCollapsedSideNav" }),
   graphql(GET_SETTINGS, {
     props: mapStateToProps,

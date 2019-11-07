@@ -1,11 +1,7 @@
-import React, { Component } from 'react'
+import * as React from "react";
 
-export default class Home extends Component {
-    render() {
-        return (
-            <div className="gx-main-content-wrapper">
-                Walkin Home
-            </div>
-        )
-    }
+export default class Home extends React.Component {
+  render() {
+    return <div className="gx-main-content-wrapper">Walkin Home</div>;
+  }
 }

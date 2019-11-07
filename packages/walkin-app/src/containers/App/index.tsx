@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import * as React from "react";
 import URLSearchParams from "url-search-params";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { LocaleProvider } from "antd";
@@ -22,49 +22,62 @@ import {
 } from "@walkinsole/walkin-components/src/constants/ThemeSetting";
 
 import gql from "graphql-tag";
-import { graphql, compose } from "react-apollo";
+import { graphql, compose, MutationFunc } from "react-apollo";
 import ForgotPassword from "../../routes/ForgotPassword";
 import ChangePassword from "../../routes/ForgotPassword/ChangePassword";
+import { Location } from "history";
 
 const RestrictedRoute = ({
   setRedirectRoute,
   component: Component,
   // userId,
   ...rest
-}) => (
-    <Route
-      {...rest}
-      render={props => {
-        if (localStorage.getItem("jwt")) {
-          // console.log("Authenticated!");
+}: any) => (
+  <Route
+    {...rest}
+    render={props => {
+      if (localStorage.getItem("jwt")) {
+        // console.log("Authenticated!");
 
-          return <Component {...props} />;
-        } else {
-          // console.log("Redirecting!");
-          setRedirectRoute({
-            variables: {
-              route: props.location.pathname
-            }
-          });
-          return (
-            <Redirect
-              to={{
-                pathname: "/signin",
-                state: { from: props.location }
-              }}
-            />
-          );
-        }
-      }}
-    />
-  );
+        return <Component {...props} />;
+      } else {
+        // console.log("Redirecting!");
+        setRedirectRoute({
+          variables: {
+            route: props.location.pathname
+          }
+        });
+        return (
+          <Redirect
+            to={{
+              pathname: "/signin",
+              state: { from: props.location }
+            }}
+          />
+        );
+      }
+    }}
+  />
+);
 
-class App extends Component {
-  constructor() {
-    super();
-  }
+interface IProps {
+  location?: Location;
+  setThemeType?: any;
+  onNavStyleChange?: any;
+  onLayoutTypeChange?: any;
+  locale?: {
+    locale: any;
+  };
+  navStyle?: string;
+  themeType?: string;
+  layoutType?: string;
+  userId?: string;
+}
 
-  setLayoutType(layoutType) {
+interface IState {}
+
+class App extends React.Component<IProps, IState> {
+  setLayoutType(layoutType: string) {
     if (layoutType === LAYOUT_TYPE_FULL) {
       document.body.classList.remove("boxed-layout");
       document.body.classList.remove("framed-layout");
@@ -80,7 +93,7 @@ class App extends Component {
     }
   }
 
-  setNavStyle(navStyle) {
+  setNavStyle(navStyle: string) {
     if (
       navStyle === NAV_STYLE_DEFAULT_HORIZONTAL ||
       navStyle === NAV_STYLE_DARK_HORIZONTAL ||
@@ -116,7 +129,6 @@ class App extends Component {
 
   render() {
     const {
-      match,
       location,
       themeType,
       layoutType,
@@ -136,8 +148,8 @@ class App extends Component {
     this.setLayoutType(layoutType);
 
     this.setNavStyle(navStyle);
-
-    const currentAppLocale = AppLocale[locale.locale];
+    //TODO: Handle location
+    const currentAppLocale = AppLocale.en;
     return (
       <LocaleProvider locale={currentAppLocale.antd}>
         <IntlProvider
@@ -148,33 +160,24 @@ class App extends Component {
             <Route
               exact
               path="/signin"
-              render={props => (
-                <SignIn
-                  {...props}
-                  resetApolloClient={this.props.resetApolloClient}
-                />
-              )}
+              render={props => <SignIn {...props} />}
             />
             <Route
               exact
               path="/signup"
-              render={props => (
-                <SignUp
-                  {...props}
-                  resetApolloClient={this.props.resetApolloClient}
-                />
-              )}
+              render={props => <SignUp {...props} />}
             />
-            <Route exact path="/changepassword"
-              render={props => <ChangePassword  {...props} resetApolloClient={this.props.resetApolloClient} />}
+            <Route
+              exact
+              path="/changepassword"
+              render={props => <ChangePassword {...props} />}
             />
             <Route exact path="/forgotpassword" component={ForgotPassword} />
-            <RestrictedRoute
+            {/* <RestrictedRoute
               path={`${match.url}`}
               // userId={userId}
               component={MainApp}
-              setRedirectRoute={this.props.setRedirectRoute}
-            />
+            /> */}
           </Switch>
         </IntlProvider>
       </LocaleProvider>
@@ -229,7 +232,7 @@ const ON_LAYOUT_TYPE_CHANGE = gql`
   }
 `;
 
-const mapStateToProps = ({ localData }) => {
+const mapStateToProps = ({ localData }: any) => {
   const { locale, navStyle, themeType, layoutType } = localData.settings;
   const { userId } = localData.auth;
   return { locale, navStyle, themeType, layoutType, userId };

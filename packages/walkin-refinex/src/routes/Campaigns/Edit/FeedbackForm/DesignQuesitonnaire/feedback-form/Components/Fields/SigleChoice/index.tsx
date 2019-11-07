@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from "react";
 import { Radio } from "antd"
 
 const SingleAnswer = ({ question, value, radioStyle, onChange }) => {

@@ -2,7 +2,7 @@ import React, { Fragment } from "react";
 import { Form, Input, DatePicker } from "antd";
 import moment from "moment";
 
-const BasicInfoForm = Form.create({ name: "form_in_modal" })(
+export const BasicInfoForm = Form.create({ name: "form_in_modal" })(
   // eslint-disable-next-line
   class BasicInfoForm extends React.Component {
     checkStart = (rule, value, callback) => {
@@ -93,4 +93,3 @@ const BasicInfoForm = Form.create({ name: "form_in_modal" })(
   }
 );
 
-export default BasicInfoForm;

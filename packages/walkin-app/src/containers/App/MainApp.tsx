@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import * as React from "react";
 import { Layout } from "antd";
 
 import {
@@ -33,8 +33,14 @@ import { compose, graphql } from "react-apollo";
 
 const { Content, Footer } = Layout;
 
-export class MainApp extends Component {
-  getContainerClass = navStyle => {
+interface IState {}
+
+interface IProps {
+  navStyle?: string;
+  updateWindowWidth?: any;
+}
+export class MainApp extends React.Component<IProps, IState> {
+  getContainerClass = (navStyle: string) => {
     switch (navStyle) {
       case NAV_STYLE_DARK_HORIZONTAL:
         return "gx-container-wrap";
@@ -50,7 +56,7 @@ export class MainApp extends Component {
         return "";
     }
   };
-  getNavStyles = navStyle => {
+  getNavStyles = (navStyle: string) => {
     switch (navStyle) {
       case NAV_STYLE_DEFAULT_HORIZONTAL:
         return <HorizontalDefault />;
@@ -77,7 +83,7 @@ export class MainApp extends Component {
     }
   };
 
-  getSidebar = (navStyle, width) => {
+  getSidebar = (navStyle: string, width: number) => {
     if (width < TAB_SIZE) {
       return <Sidebar />;
     }
@@ -99,19 +105,19 @@ export class MainApp extends Component {
 
   componentDidMount() {
     window.addEventListener("resize", () => {
-      this.props.updateWindowWidth({ variables: { width: window.innerWidth } })
+      this.props.updateWindowWidth({ variables: { width: window.innerWidth } });
     });
   }
 
   render() {
-    const { match, navStyle, location } = this.props;
+    const { navStyle } = this.props;
     // console.log(location)
-    let width = window.innerWidth
+    let width = window.innerWidth;
     return (
       <Layout className="gx-app-layout">
         {this.getSidebar(navStyle, width)}
         <Layout>
-          {this.getNavStyles(navStyle, location)}
+          {this.getNavStyles(navStyle)}
           <Content
             className={`gx-layout-content ${this.getContainerClass(navStyle)} `}
           >
@@ -131,7 +137,7 @@ const UPDATE_WINDOW_WIDTH = gql`
   }
 `;
 
-const mapStateToProps = ({ settings }) => {
+const mapStateToProps = ({ settings }: any) => {
   const { width, navStyle } = settings.settings;
   return { width, navStyle };
 };

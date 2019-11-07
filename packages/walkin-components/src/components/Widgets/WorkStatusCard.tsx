@@ -2,7 +2,7 @@ import * as React from "react";
 import {Badge} from "antd";
 import {Area, AreaChart, ResponsiveContainer, Tooltip} from "recharts";
 
-import Widget from "components/Widget/index";
+import { Widget }  from  "components/Widget/index";
 
 const data = [
   {name: 'Page A', lastWeek: 1900, thisWeek: 3200},

@@ -4,7 +4,7 @@ import arLang from "./entries/ar_SA";
 import itLang from "./entries/it_IT";
 import esLang from "./entries/es_ES";
 import frLang from "./entries/fr_FR";
-import {addLocaleData} from "react-intl";
+import { addLocaleData } from "react-intl";
 
 const AppLocale = {
   en: enLang,

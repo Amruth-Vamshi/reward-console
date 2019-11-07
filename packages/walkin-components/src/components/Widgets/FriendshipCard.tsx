@@ -1,7 +1,7 @@
 import * as React from "react";
 import {Col, Row} from 'antd';
 
-import Widget from "components/Widget/index";
+import { Widget }  from  "components/Widget/index";
 
 function FriendshipCard() {
 

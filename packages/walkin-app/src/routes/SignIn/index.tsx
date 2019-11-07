@@ -1,17 +1,29 @@
 import * as React from "react";
 import { Form, Icon, Input, Button, Checkbox } from "antd";
-import { compose, graphql, Mutation } from "react-apollo";
+import { compose, graphql, Mutation, MutationFunc } from "react-apollo";
 import gql from "graphql-tag";
-import sample from "lodash/sample"
+import { sample } from "lodash";
 import { Link } from "react-router-dom";
 import IntlMessages from "@walkinsole/walkin-components/src/util/IntlMessages";
+import { History } from "history";
+import { FormComponentProps } from "antd/lib/form";
 
-class NormalLoginForm extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      background: sample(['linear-gradient(45deg, black, transparent)', 'radial-gradient(black, transparent)'])
-    }
+interface IProps extends FormComponentProps {
+  history?: History;
+  routeQuery?: any;
+}
+
+interface IState {}
+
+class NormalLoginForm extends React.Component<IProps, IState> {
+  readonly state = {
+    background: sample([
+      "linear-gradient(45deg, black, transparent)",
+      "radial-gradient(black, transparent)"
+    ])
+  };
+  constructor(props: IProps) {
+    super(props);
   }
   componentWillMount() {
     if (localStorage.getItem("jwt")) this.props.history.push("/");
@@ -25,7 +37,10 @@ class NormalLoginForm extends React.Component {
       }
     `;
     return (
-      <div style={{ background: this.state.background }} className="gx-app-login-wrap">
+      <div
+        style={{ background: this.state.background }}
+        className="gx-app-login-wrap"
+      >
         <div className="gx-app-login-container">
           <div className="gx-app-login-main-content">
             <div className="gx-app-logo-content">
@@ -57,7 +72,7 @@ class NormalLoginForm extends React.Component {
             </div>
             <div className="gx-app-login-content">
               <Mutation mutation={SIGN_IN} fetchPolicy="no-cache">
-                {(signIn, { loading, error, data }) => (
+                {(signIn: MutationFunc, { loading, error, data }: any) => (
                   <Form
                     onSubmit={async e => {
                       e.preventDefault();

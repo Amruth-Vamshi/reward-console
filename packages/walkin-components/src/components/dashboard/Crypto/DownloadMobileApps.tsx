@@ -1,8 +1,8 @@
 import * as React from "react";
-import Widget from "../../Widget";
+import { Widget } from "../../Widget";
 import { Col, Row } from "antd";
 
-const DownloadMobileApps = () => {
+export const DownloadMobileApps = () => {
   return (
     <Widget styleName="gx-pink-purple-gradient-reverse gx-text-white">
       <Row>

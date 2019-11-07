@@ -215,7 +215,7 @@ const SWITCH_LANGUAGE = gql`
 	}
 `;
 
-export default compose(
+export const TopbarModule = compose(
 	withRouter,
 	graphql(TOGGLE_COLLAPSED_SIDE_NAV, { name: "toggleCollapsedSideNav" }),
 	graphql(SWITCH_LANGUAGE, { name: "switchLanguage" }),

@@ -1,6 +1,6 @@
 import * as React from "react";
 import {Badge} from "antd";
-import Widget from "../../Widget/index";
+import { Widget }  from  "../../Widget/index";
 
 
 function Status(props) {

@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import Widget from "components/Widget/index";
+import { Widget } from "components/Widget/index";
 
 class ChartCard extends React.Component {
 
@@ -32,8 +32,8 @@ class ChartCard extends React.Component {
   }
 
   render() {
-    const {chartProperties, isHide, children} = this.state;
-    const {prize, title, styleName, desc, bgColor, percent} = chartProperties;
+    const { chartProperties, isHide, children } = this.state;
+    const { prize, title, styleName, desc, bgColor, percent } = chartProperties;
     return (
       <Widget styleName={`gx-card-full`}>
         <div
@@ -47,12 +47,12 @@ class ChartCard extends React.Component {
             {percent > 0}
             <p className="gx-mb-0 gx-fs-sm"><span
               className={`gx-font-weight-medium gx-fs-md gx-chart-${styleName}`}>{percent}
-              {percent > 0 ? <i className="icon icon-menu-up gx-fs-sm"/> : null}</span>{desc}</p>
+              {percent > 0 ? <i className="icon icon-menu-up gx-fs-sm" /> : null}</span>{desc}</p>
           </div>
           <div className="gx-fillchart-btn-close" onClick={this.handleToggle.bind(this)}><i
-            className="icon icon-close"/></div>
+            className="icon icon-close" /></div>
           <div className="gx-fillchart-btn" onClick={this.handleToggle.bind(this)}><i
-            className={`icon icon-stats gx-fs-xxxl`}/>
+            className={`icon icon-stats gx-fs-xxxl`} />
           </div>
         </div>
       </Widget>
