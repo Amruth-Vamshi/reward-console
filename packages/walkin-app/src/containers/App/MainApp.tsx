@@ -33,7 +33,13 @@ import { compose, graphql } from "react-apollo";
 
 const { Content, Footer } = Layout;
 
-export class MainApp extends React.Component {
+interface IState {}
+
+interface IProps {
+  navStyle: string;
+  updateWindowWidth: any;
+}
+export class MainApp extends React.Component<IProps, IState> {
   getContainerClass = (navStyle: string) => {
     switch (navStyle) {
       case NAV_STYLE_DARK_HORIZONTAL:
@@ -77,7 +83,7 @@ export class MainApp extends React.Component {
     }
   };
 
-  getSidebar = (navStyle, width) => {
+  getSidebar = (navStyle: string, width: number) => {
     if (width < TAB_SIZE) {
       return <Sidebar />;
     }
@@ -104,14 +110,14 @@ export class MainApp extends React.Component {
   }
 
   render() {
-    const { match, navStyle, location } = this.props;
+    const { navStyle } = this.props;
     // console.log(location)
     let width = window.innerWidth;
     return (
       <Layout className="gx-app-layout">
         {this.getSidebar(navStyle, width)}
         <Layout>
-          {this.getNavStyles(navStyle, location)}
+          {this.getNavStyles(navStyle)}
           <Content
             className={`gx-layout-content ${this.getContainerClass(navStyle)} `}
           >
@@ -131,7 +137,7 @@ const UPDATE_WINDOW_WIDTH = gql`
   }
 `;
 
-const mapStateToProps = ({ settings }) => {
+const mapStateToProps = ({ settings }: any) => {
   const { width, navStyle } = settings.settings;
   return { width, navStyle };
 };

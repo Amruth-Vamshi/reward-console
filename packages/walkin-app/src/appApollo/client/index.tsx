@@ -8,11 +8,11 @@ import defaults from "../defaults";
 import { message } from "antd";
 import env from "../../../config";
 import { async } from "q";
-import includes from "lodash/includes"
-import { ERROR_EXCEPTIONS } from "@walkinsole/shared/src/Constants/constants"
+import { includes } from "lodash";
+import { ERROR_EXCEPTIONS } from "@walkinsole/shared/src/Constants/constants";
 
 message.config({
-  maxCount: 2,
+  maxCount: 2
 });
 
 export const configureClient = async () => {
@@ -35,7 +35,6 @@ export const configureClient = async () => {
       typeDefs
     },
     onError: ({ graphQLErrors, networkError }) => {
-
       if (graphQLErrors) {
         console.log(graphQLErrors);
 
@@ -50,15 +49,14 @@ export const configureClient = async () => {
           }
 
           if (graphQLErrors[0].message) {
-            message.warn(graphQLErrors[0].message)
+            message.warn(graphQLErrors[0].message);
           }
         }
-
-
       } else if (networkError) {
-        message.error("Hey! Regret to inform that we are experiencing some issues. Please check your internet connection or try again after sometime");
+        message.error(
+          "Hey! Regret to inform that we are experiencing some issues. Please check your internet connection or try again after sometime"
+        );
         console.log(networkError);
-
       }
     }
   });

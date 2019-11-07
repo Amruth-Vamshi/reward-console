@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import * as React from "react";
 import { Drawer, Layout } from "antd";
 
 import CoreSidebarContent from "@walkinsole/walkin-core/src/containers/SidebarContent";
@@ -21,10 +21,21 @@ import {
 } from "@walkinsole/walkin-components/src/constants/ThemeSetting";
 import { Query, compose, graphql } from "react-apollo";
 import gql from "graphql-tag";
+import { Location } from "history";
 
 const { Sider } = Layout;
 
-export class Sidebar extends Component {
+interface IState {}
+
+interface IProps {
+  toggleCollapsedSideNav: any;
+  navCollapsed: boolean;
+  location: Location;
+  themeType: string;
+  width: number;
+  navStyle: string;
+}
+export class Sidebar extends React.Component<IProps, IState> {
   onToggleCollapsedNav = () => {
     this.props.toggleCollapsedSideNav({
       variables: { navCollapsed: !this.props.navCollapsed }
@@ -89,15 +100,15 @@ export class Sidebar extends Component {
       <Sider
         className={`gx-app-sidebar ${drawerStyle} ${
           themeType !== THEME_TYPE_LITE ? "gx-layout-sider-dark" : null
-          }`}
+        }`}
         trigger={null}
         collapsed={
           width > TAB_SIZE_MAX
             ? navStyle === NAV_STYLE_MINI_SIDEBAR ||
-            navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR
+              navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR
             : width < TAB_SIZE
-              ? false
-              : true
+            ? false
+            : true
         }
         // theme={themeType === THEME_TYPE_LITE ? "lite" : "dark"}
         collapsible
@@ -106,7 +117,7 @@ export class Sidebar extends Component {
           <Drawer
             className={`gx-drawer-sidebar ${
               themeType !== THEME_TYPE_LITE ? "gx-drawer-sidebar-dark" : null
-              }`}
+            }`}
             placement="left"
             closable={false}
             onClose={this.onToggleCollapsedNav.bind(this)}
@@ -115,8 +126,8 @@ export class Sidebar extends Component {
             {this.getSideBar1()}
           </Drawer>
         ) : (
-            this.getSideBar1()
-          )}
+          this.getSideBar1()
+        )}
       </Sider>
     );
   }
@@ -144,7 +155,7 @@ const TOGGLE_COLLAPSED_SIDENAV = gql`
   }
 `;
 
-const mapStateToProps = ({ settings }) => {
+const mapStateToProps = ({ settings }: any) => {
   const { themeType, navCollapsed, width, navStyle } = settings.settings;
   return { themeType, navCollapsed, width, navStyle };
 };
