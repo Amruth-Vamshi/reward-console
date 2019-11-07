@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from "react";
 import { Button, Checkbox, Form, Icon, Input } from 'antd';
 import { Link } from 'react-router-dom';
 
@@ -8,27 +8,43 @@ import IntlMessages from '@walkinsole/walkin-components/src/util/IntlMessages';
 import { CircularProgress } from '@walkinsole/walkin-components';
 import gql from 'graphql-tag';
 import { compose, graphql } from 'react-apollo';
+import { FormWrappedProps } from "antd/lib/form/interface";
+import { FormComponentProps } from "antd/lib/form";
+import { History } from "history";
 
 const { create, Item: FormItem } = Form;
-class SignUp extends React.Component {
-	handleSubmit = e => {
+
+interface IProps extends FormComponentProps {
+	showAuthLoader: any;
+	hideMessage: any;
+	userSignIn: any;
+	localData: any;
+	loader: any;
+	alertMessage: any;
+	showMessage: any;
+	userId: any;
+	history: History
+}
+interface IState {
+
+}
+
+class SignUp extends React.Component<IProps, IState> {
+	readonly state = {
+		email: 'demo@example.com',
+		password: 'demo#123',
+	};
+
+	handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
 		this.props.form.validateFields((err, values) => {
 			// console.log('signupvalues', values);
 			if (!err) {
 				this.props.showAuthLoader();
-				this.props.userSignUp(values);
+				// this.props.userSignUp(values);
 			}
 		});
 	};
-
-	constructor() {
-		super();
-		this.state = {
-			email: 'demo@example.com',
-			password: 'demo#123',
-		};
-	}
 
 	componentDidUpdate() {
 		if (this.props.showMessage) {
@@ -127,7 +143,7 @@ class SignUp extends React.Component {
 												type="google"
 												onClick={() => {
 													this.props.showAuthLoader();
-													this.props.userGoogleSignIn();
+													// this.props.userGoogleSignIn();
 												}}
 											/>
 										</li>
@@ -136,7 +152,7 @@ class SignUp extends React.Component {
 												type="facebook"
 												onClick={() => {
 													this.props.showAuthLoader();
-													this.props.userFacebookSignIn();
+													// this.props.userFacebookSignIn();
 												}}
 											/>
 										</li>
@@ -145,7 +161,7 @@ class SignUp extends React.Component {
 												type="github"
 												onClick={() => {
 													this.props.showAuthLoader();
-													this.props.userGithubSignIn();
+													// this.props.userGithubSignIn();
 												}}
 											/>
 										</li>
@@ -154,7 +170,7 @@ class SignUp extends React.Component {
 												type="twitter"
 												onClick={() => {
 													this.props.showAuthLoader();
-													this.props.userTwitterSignIn();
+													// this.props.userTwitterSignIn();
 												}}
 											/>
 										</li>
@@ -175,23 +191,11 @@ class SignUp extends React.Component {
 	}
 }
 
-const mapStateToProps = ({ localData }) => {
-	const { loader, alertMessage, showMessage, userId } = localData.auth;
+const mapStateToProps = (props: any) => {
+	const { loader, alertMessage, showMessage, userId } = props.localData.auth;
 	return { loader, alertMessage, showMessage, userId };
 };
 
-// export default connect(
-//   mapStateToProps,
-//   {
-//     userSignUp,
-//     hideMessage,
-//     showAuthLoader,
-//     userFacebookSignIn,
-//     userGoogleSignIn,
-//     userGithubSignIn,
-//     userTwitterSignIn
-//   }
-// )(WrappedSignUpForm);
 
 const USER_SIGN_IN = gql`
 	mutation userSignIn {
@@ -211,14 +215,7 @@ const SHOW_AUTH_LOADER = gql`
 	}
 `;
 
-// export default connect(
-//   mapStateToProps,
-//   {
-//     userSignIn,
-//     hideMessage,
-//     showAuthLoader
-//   }
-// )(WrappedNormalLoginForm);
+
 const GET_AUTH = gql`
 	query auth {
 		auth @client {

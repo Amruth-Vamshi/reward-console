@@ -1,15 +1,14 @@
-import React, { Suspense, lazy } from 'react';
+import * as React from 'react';
 import { Route, Switch } from 'react-router-dom';
-
-
 import ErrorPage from './errorPages/404';
-import Home from './Home'
+import Home from './Home';
+
+const { Suspense } = React
 
 // const RefineX = lazy(() => import('@walkinsole/walkin-refinex'));
 // const HyperX = lazy(() => import('@walkinsole/walkin-hyperx'));
 // const Core = lazy(() => import('@walkinsole/walkin-core'));
 // const NearX = lazy(() => import('@walkinsole/walkin-nearx'));
-
 const App = () => (
 	// <div className="gx-main-content-wrapper">
 	<Suspense fallback={<div>Loading...</div>}>

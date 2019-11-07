@@ -1,7 +1,7 @@
 import * as React from "react";
 import loader from "../../assets/images/loader.svg";
 
-const CircularProgress = ({ className }) => (
+const CircularProgress = ({ className }: { className?: string }) => (
   <div className={`loader ${className}`}>
     <img src={loader} alt="loader" />
   </div>

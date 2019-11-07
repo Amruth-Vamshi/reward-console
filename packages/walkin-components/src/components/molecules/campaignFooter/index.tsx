@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from "react";
 import { Row, Col, Button } from 'antd';
 import './foo.css';
 

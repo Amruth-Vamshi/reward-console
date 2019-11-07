@@ -1,7 +1,7 @@
 import appLocaleData from "react-intl/locale-data/zh";
 import zhMessages from "../locales/zh-Hans.json";
 
-const ZhLan = {
+const ZhLan: any = {
   messages: {
     ...zhMessages
   },

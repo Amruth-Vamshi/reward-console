@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import * as React from "react";
 import { Layout } from "antd";
 
 import {
@@ -33,8 +33,8 @@ import { compose, graphql } from "react-apollo";
 
 const { Content, Footer } = Layout;
 
-export class MainApp extends Component {
-  getContainerClass = navStyle => {
+export class MainApp extends React.Component {
+  getContainerClass = (navStyle: string) => {
     switch (navStyle) {
       case NAV_STYLE_DARK_HORIZONTAL:
         return "gx-container-wrap";
@@ -50,7 +50,7 @@ export class MainApp extends Component {
         return "";
     }
   };
-  getNavStyles = navStyle => {
+  getNavStyles = (navStyle: string) => {
     switch (navStyle) {
       case NAV_STYLE_DEFAULT_HORIZONTAL:
         return <HorizontalDefault />;
@@ -99,14 +99,14 @@ export class MainApp extends Component {
 
   componentDidMount() {
     window.addEventListener("resize", () => {
-      this.props.updateWindowWidth({ variables: { width: window.innerWidth } })
+      this.props.updateWindowWidth({ variables: { width: window.innerWidth } });
     });
   }
 
   render() {
     const { match, navStyle, location } = this.props;
     // console.log(location)
-    let width = window.innerWidth
+    let width = window.innerWidth;
     return (
       <Layout className="gx-app-layout">
         {this.getSidebar(navStyle, width)}
