@@ -292,11 +292,11 @@ class CampaignList extends Component {
                     children={
                         <Fragment>
                             <Col span={12}>
-                                <h3 className="gx-text-grey paddingLeftStyle campaignHeaderTitleStyle">Campaigns</h3>
+                                <h3 className="gx-text-grey paddingLeftStyle campaignHeaderTitleStyle">Surveys</h3>
                             </Col>
                             <Col className="searchInputStyle" span={12}>
                                 <Button type="primary" onClick={this.onNewCampaign}>
-                                    CREATE CAMPAIGN
+                                    CREATE SURVEYS
 								</Button>
                             </Col>
                         </Fragment>
