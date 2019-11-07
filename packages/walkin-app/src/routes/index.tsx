@@ -5,10 +5,10 @@ import { Route, Switch } from 'react-router-dom';
 import ErrorPage from './errorPages/404';
 import Home from './Home'
 
-const RefineX = lazy(() => import('@walkinsole/walkin-refinex'));
-const HyperX = lazy(() => import('@walkinsole/walkin-hyperx'));
-const Core = lazy(() => import('@walkinsole/walkin-core'));
-const NearX = lazy(() => import('@walkinsole/walkin-nearx'));
+// const RefineX = lazy(() => import('@walkinsole/walkin-refinex'));
+// const HyperX = lazy(() => import('@walkinsole/walkin-hyperx'));
+// const Core = lazy(() => import('@walkinsole/walkin-core'));
+// const NearX = lazy(() => import('@walkinsole/walkin-nearx'));
 
 const App = () => (
 	// <div className="gx-main-content-wrapper">
