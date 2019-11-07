@@ -1,15 +1,35 @@
-import React, { Component } from "react";
+import * as React from "react";
 import "./style.css";
 import { Select, Input, Button } from "antd";
 
 const { Option } = Select;
 
-export default class WebhookForm extends Component {
-  constructor(props) {
+interface WebhookFormProps {
+  webhookDetails: any,
+  events: any,
+  isLoading: boolean,
+  onSave: (a: any) => void
+}
+
+interface WebhookFormState {
+  headerEntries: any,
+  webhookDetails: {
+    id: string,
+    event: string,
+    url: string,
+    name: string,
+    headers: any,
+    method: string,
+    status: string
+  }
+}
+export default class WebhookForm extends React.Component<WebhookFormProps, WebhookFormState> {
+  constructor(props: WebhookFormProps) {
     super(props);
     this.state = {
       headerEntries: [[]],
       webhookDetails: {
+        id: '',
         event: "",
         url: "",
         name: "",
@@ -40,11 +60,16 @@ export default class WebhookForm extends Component {
     }
   }
 
-  onChange = (type, value) => {
-    this.setState({ [type]: value });
+  onChange = (type: string, value: any) => {
+    this.setState((prevState: Readonly<WebhookFormState>, props: Readonly<WebhookFormProps>) => {
+      return {
+        ...prevState,
+        [type]: value
+      }
+    });
   };
 
-  onChangeHeadersHandler = (value, index, subIndex) => {
+  onChangeHeadersHandler = (value: any, index: number, subIndex: number) => {
     let { headerEntries } = this.state;
     headerEntries[index][subIndex] = value;
     this.setState({ headerEntries });
@@ -52,11 +77,11 @@ export default class WebhookForm extends Component {
 
   onSave = () => {
     let { headerEntries, webhookDetails } = this.state;
-    let filteredHeaderEntries = headerEntries.filter((headerEntry, index) => {
+    let filteredHeaderEntries = headerEntries.filter((headerEntry: Array<any>, index: number) => {
       return headerEntry.length === 2;
     });
-    let headers = JSON.stringify(Object.fromEntries(filteredHeaderEntries));
-    let input = {
+    let headers = JSON.stringify(filteredHeaderEntries);
+    let input: any = {
       headers,
       method: webhookDetails.method,
       url: webhookDetails.url,
@@ -83,7 +108,7 @@ export default class WebhookForm extends Component {
     }
     const selectBefore = (
       <Select
-        onChange={method => {
+        onChange={(method: any) => {
           this.onChange("webhookDetails", {
             ...webhookDetails,
             method
@@ -113,14 +138,14 @@ export default class WebhookForm extends Component {
               defaultValue={webhookDetails.event}
               style={{ width: "100%" }}
               size="large"
-              onChange={event => {
+              onChange={(event: any) => {
                 this.onChange("webhookDetails", {
                   ...webhookDetails,
                   event
                 });
               }}
             >
-              {events.map((item, index) => (
+              {events.map((item: any, index: number) => (
                 <Option key={index} value={item.event}>
                   {item.event}
                 </Option>
@@ -128,7 +153,7 @@ export default class WebhookForm extends Component {
             </Select>
             <div className="inputDesc">
               {
-                events.filter((item, index) => {
+                events.filter((item: any, index: number) => {
                   return item.event === webhookDetails.event;
                 })[0].description
               }
@@ -167,7 +192,7 @@ export default class WebhookForm extends Component {
           <div className="webhookHeaderInputWrapper">
             <div className="InputLabel">Request Header</div>
             <div className="headerInputFlex">
-              {headerEntries.map((item, index) => {
+              {headerEntries.map((item: any, index: number) => {
                 return (
                   <div key={index} className="requestHeaderrowWrapper">
                     <Input

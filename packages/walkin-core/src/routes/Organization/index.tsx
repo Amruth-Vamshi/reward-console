@@ -93,8 +93,7 @@ class OrganizationInfo extends React.Component<OrganizationInfoProps, Organizati
 									mutation: addSubOrganization,
 									variables: {
 										parentId:
-											match.params.id ||
-											client.cache.data.data['$ROOT_QUERY.auth'].organizationId,
+											match.params.id,
 										name: values.name,
 										code: values.code,
 										addressLine1: values.address,
@@ -189,12 +188,13 @@ class OrganizationInfo extends React.Component<OrganizationInfoProps, Organizati
 			errorMessage,
 
 		} = this.state;
+		const { Item } = Breadcrumb;
 		const antIcon = <Icon type="loading" style={{ fontSize: 100 }} spin />;
 		return (
 			<div style={{ margin: '-32px -16px 0px -16px' }}>
 				<React.Fragment>
 					<Query query={orgDetails}
-						variables={{ id: match.params.id || client.cache.data.data['$ROOT_QUERY.auth'].organizationId }}
+						variables={{ id: match.params.id }}
 					>
 						{({ data, loading, error, refetch }) => {
 							if (loading) return (<div> <br /> <br /> <br /> <br />
@@ -236,12 +236,11 @@ class OrganizationInfo extends React.Component<OrganizationInfoProps, Organizati
 												<Breadcrumb>
 													{orgHeirarchy &&
 														orgHeirarchy.map((orgName, index) => (
-															<Breadcrumb.Item
-																className="gx-text-grey gx-mb-1"
+															<Item
 																key={index}
 															>
 																{orgName}
-															</Breadcrumb.Item>
+															</Item>
 														))}
 												</Breadcrumb>
 											</Col>

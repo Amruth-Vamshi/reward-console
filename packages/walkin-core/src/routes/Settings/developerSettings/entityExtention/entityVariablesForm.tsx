@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import * as React from "react";
 import "./style.css";
 import { Select, Input, Button, Switch } from "antd";
 
@@ -16,18 +16,43 @@ const SLUG_TYPE = [
   "JSON"
 ];
 
-export default class EntityVariablesForm extends Component {
-  constructor(props) {
+
+interface EntityVariablesFormProps {
+  entityExtendField: any,
+  onSave: (input: any) => void,
+  isLoading?: boolean
+}
+
+interface EntityVariablesFormState {
+  entityExtendField: {
+    id?: string,
+    slug?: string,
+    help?: string,
+    label?: string,
+    type?: string,
+    required?: boolean,
+    defaultValue?: string,
+    searchable?: boolean,
+    choices?: any,
+    description?: any
+  }
+}
+
+export default class EntityVariablesForm extends React.Component<EntityVariablesFormProps, EntityVariablesFormState> {
+  constructor(props: EntityVariablesFormProps) {
     super(props);
     this.state = {
       entityExtendField: {
+        id: '',
         slug: "",
         help: "",
         label: "",
         type: "DATE",
         required: false,
         defaultValue: "",
-        searchable: false
+        searchable: false,
+        choices: '',
+        description: ''
       }
     };
   }
@@ -39,8 +64,13 @@ export default class EntityVariablesForm extends Component {
     }
   }
 
-  onChange = (type, value) => {
-    this.setState({ [type]: value });
+  onChange = (type: string, value: any) => {
+    this.setState((prevState: Readonly<EntityVariablesFormState>, props: Readonly<EntityVariablesFormProps>) => {
+      return {
+        ...prevState,
+        [type]: value
+      }
+    });
   };
 
   onSave = () => {
@@ -69,7 +99,7 @@ export default class EntityVariablesForm extends Component {
               size="large"
               placeholder="Label"
               defaultValue={entityExtendField.label}
-              onChange={e =>
+              onChange={(e: any) =>
                 this.onChange("entityExtendField", {
                   ...entityExtendField,
                   label: e.target.value
@@ -107,7 +137,7 @@ export default class EntityVariablesForm extends Component {
                 style={{ width: "100%" }}
                 defaultValue={entityExtendField.type}
                 size="large"
-                onChange={event => {
+                onChange={(event: any) => {
                   this.onChange("entityExtendField", {
                     ...entityExtendField,
                     type: event
@@ -133,7 +163,7 @@ export default class EntityVariablesForm extends Component {
                 style={{ width: "100%" }}
                 placeholder="choices"
                 defaultValue={entityExtendField.choices}
-                onChange={event => {
+                onChange={(event: any) => {
                   this.onChange("entityExtendField", {
                     ...entityExtendField,
                     choices: event
@@ -172,7 +202,7 @@ export default class EntityVariablesForm extends Component {
                 size="large"
                 placeholder="Description"
                 defaultValue={entityExtendField.description}
-                onChange={e =>
+                onChange={(e: any) =>
                   this.onChange("entityExtendField", {
                     ...entityExtendField,
                     description: e.target.value
@@ -189,7 +219,7 @@ export default class EntityVariablesForm extends Component {
             <div className="entityVariableInputWrapper width15percent ">
               <Switch
                 checked={entityExtendField.required}
-                onChange={value =>
+                onChange={(value: any) =>
                   this.onChange("entityExtendField", {
                     ...entityExtendField,
                     required: value
@@ -208,7 +238,7 @@ export default class EntityVariablesForm extends Component {
             <div className="entityVariableInputWrapper width15percent ">
               <Switch
                 checked={entityExtendField.searchable}
-                onChange={value =>
+                onChange={(value: any) =>
                   this.onChange("entityExtendField", {
                     ...entityExtendField,
                     searchable: value

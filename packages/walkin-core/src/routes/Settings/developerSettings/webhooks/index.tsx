@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import jwt from "jsonwebtoken";
-import { withApollo } from "react-apollo";
+import * as React from "react";
+import * as jwt from "jsonwebtoken";
+import { withApollo, ApolloProviderProps } from "react-apollo";
 import "./style.css";
 import { Button, Switch, Row, Col, Spin, Icon } from "antd";
 import WebhookForm from "./webhookForm";
@@ -11,20 +11,36 @@ import {
   LIST_WEBHOOK_EVENTS
 } from "./../../../../PlatformQueries/index";
 
-class Webhooks extends Component {
-  constructor(props) {
+
+interface WebhooksProps extends ApolloProviderProps<any> {
+
+}
+
+interface WebhooksState {
+  isWebhookFormOpen: boolean,
+  webhooks: any,
+  events: any,
+  selectedWebhookIndex: any,
+  isLoading: boolean,
+  org_id: string
+}
+
+class Webhooks extends React.Component<WebhooksProps, WebhooksState> {
+  constructor(props: WebhooksProps) {
     super(props);
     this.state = {
       isWebhookFormOpen: false,
       webhooks: [],
       events: [],
       selectedWebhookIndex: null,
-      isLoading: true
+      isLoading: true,
+      org_id: ''
     };
   }
 
   componentWillMount() {
-    const { org_id } = jwt.decode(localStorage.getItem("jwt"));
+    const jwtToken: any = localStorage.getItem("jwt")
+    const { org_id }: any = jwt.decode(jwtToken);
     this.props.client
       .query({
         query: GET_WEBHOOKS,
@@ -49,7 +65,7 @@ class Webhooks extends Component {
       });
   }
 
-  createWebook = input => {
+  createWebook = (input: any) => {
     this.props.client
       .mutate({
         mutation: CREATE_WEBHOOK,
@@ -72,7 +88,7 @@ class Webhooks extends Component {
       });
   };
 
-  updateWebook = (input, type) => {
+  updateWebook = (input: any, type?: string) => {
     let { webhooks, selectedWebhookIndex } = this.state;
     this.props.client
       .mutate({
@@ -101,14 +117,14 @@ class Webhooks extends Component {
       });
   };
 
-  onAddOrEditWebhooks = (selectedWebhookIndex = null) => {
+  onAddOrEditWebhooks = (selectedWebhookIndex: any = null) => {
     this.setState({
       isWebhookFormOpen: !this.state.isWebhookFormOpen,
       selectedWebhookIndex
     });
   };
 
-  onEnableOrDisableWebhook = selectedWebhookIndex => {
+  onEnableOrDisableWebhook = (selectedWebhookIndex: number) => {
     let { webhooks } = this.state;
     webhooks[selectedWebhookIndex].enabled = !webhooks[selectedWebhookIndex]
       .enabled;
@@ -122,7 +138,7 @@ class Webhooks extends Component {
   };
 
   // once delete webhook api is availble, onDelete will change
-  onDelete = selectedWebhookIndex => {
+  onDelete = (selectedWebhookIndex: number) => {
     let { webhooks } = this.state;
     let input = {
       id: webhooks[selectedWebhookIndex].id,
@@ -133,7 +149,7 @@ class Webhooks extends Component {
     });
   };
 
-  onSave = input => {
+  onSave = (input: any) => {
     if (!(this.state.selectedWebhookIndex === null)) {
       this.setState({ isLoading: true }, () => this.updateWebook(input));
     } else {
@@ -159,7 +175,7 @@ class Webhooks extends Component {
         );
       return (
         <div className={"webhookListWrapper"}>
-          {this.state.webhooks.map((webhook, index) => (
+          {this.state.webhooks.map((webhook: any, index: number) => (
             <Row className="webhookListRow" key={index}>
               <Col
                 className="webhookUrlWrapper "
@@ -203,7 +219,7 @@ class Webhooks extends Component {
               >
                 <div>{webhook.enabled ? "Active" : "Inactive"}</div>
                 <Switch
-                  className={webhook.enabled ? "webhookStatusSwitch" : null}
+                  className={webhook.enabled ? "webhookStatusSwitch" : ''}
                   checked={webhook.enabled}
                   onChange={() => this.onEnableOrDisableWebhook(index)}
                   loading={isLoading && selectedWebhookIndex === index}
@@ -273,16 +289,16 @@ class Webhooks extends Component {
             </div>
           </div>
         ) : (
-          <div className="headerDescWrapper">
-            <div
-              onClick={() => this.onAddOrEditWebhooks()}
-              className="cursorPointer webhookBackButton"
-            >
-              <Icon type="arrow-left" />
-              Back
+            <div className="headerDescWrapper">
+              <div
+                onClick={() => this.onAddOrEditWebhooks()}
+                className="cursorPointer webhookBackButton"
+              >
+                <Icon type="arrow-left" />
+                Back
             </div>
-          </div>
-        )}
+            </div>
+          )}
         {this.renderWebhookList()}
       </div>
     );

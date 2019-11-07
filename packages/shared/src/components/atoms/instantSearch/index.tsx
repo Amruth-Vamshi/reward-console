@@ -1,8 +1,15 @@
-import React, { Component, Fragment } from 'react';
+import * as React from 'react';
 import { Input } from 'antd';
 
+interface InstantSearchProps {
+	placeHolder: any
+	data: any
+	onFilteredList: any
+}
+
 const Search = Input.Search;
-class InstantSearch extends React.Component {
+class InstantSearch extends React.Component<InstantSearchProps, {}> {
+
 	onChange(data, e) {
 		let currentList = [];
 		let newList = [];

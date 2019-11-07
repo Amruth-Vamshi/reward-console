@@ -1,9 +1,9 @@
 import * as  React from 'react';
 import { InstantSearch, SortableDataTable } from '@walkinsole/shared';
-import * as PropTypes from 'prop-types';
 import { Dropdown, Menu } from 'antd';
 import { ApolloProviderProps } from 'react-apollo';
 import { RouteComponentProps } from 'react-router';
+import { PaginationConfig, SorterResult } from 'antd/lib/table';
 
 interface OrgStoreListState {
 	sortedInfo: any,
@@ -12,7 +12,7 @@ interface OrgStoreListState {
 
 interface OrgStoreListProps extends ApolloProviderProps<any>, RouteComponentProps {
 	data: any,
-	pagination: string,
+	pagination: PaginationConfig,
 	showStoreFilter: string,
 	placeholder: string,
 	filterData: object
@@ -25,7 +25,7 @@ class OrgStoreList extends React.Component<OrgStoreListProps, OrgStoreListState>
 			filtered: {},
 		};
 	}
-	handleChange = (pagination: string, filters: object, sorter: object) => {
+	handleChange = (pagination: PaginationConfig, filters: Record<string | number | symbol, string[]>, sorter: SorterResult<any>) => {
 		this.setState({
 			sortedInfo: sorter,
 		});
@@ -69,7 +69,7 @@ class OrgStoreList extends React.Component<OrgStoreListProps, OrgStoreListState>
 		const { location } = this.props;
 		let storeData;
 		let orgStoreData = [];
-		const { data, pagination, showStoreFilter, placeholder, filterData } = this.props;
+		const { data, pagination, showStoreFilter } = this.props;
 		const { sortedInfo, filtered } = this.state;
 		// TODO get it from context
 		if (location && location.state) {
@@ -89,23 +89,23 @@ class OrgStoreList extends React.Component<OrgStoreListProps, OrgStoreListState>
 				title: 'Store code',
 				dataIndex: 'code',
 				key: 'code',
-				sorter: (a, b) => (a.code !== b.code ? (a.code < b.code ? -1 : 1) : 0),
+				sorter: (a: any, b: any) => (a.code !== b.code ? (a.code < b.code ? -1 : 1) : 0),
 				sortOrder: newSortedInfo.columnKey === 'code' && newSortedInfo.order,
 			},
 			{
 				title: 'Name',
 				dataIndex: 'name',
 				key: 'name',
-				sorter: (a, b) => (a.name !== b.name ? (a.name < b.name ? -1 : 1) : 0),
+				sorter: (a: any, b: any) => (a.name !== b.name ? (a.name < b.name ? -1 : 1) : 0),
 				sortOrder: newSortedInfo.columnKey === 'name' && newSortedInfo.order,
 			},
 			{
 				title: 'Address',
 				dataIndex: 'addressLine1',
 				key: 'addressLine1',
-				sorter: (a, b) => a.addressLine1 - b.addressLine1,
+				sorter: (a: any, b: any) => a.addressLine1 - b.addressLine1,
 				sortOrder: newSortedInfo.columnKey === 'addressLine1' && newSortedInfo.order,
-				render: (text, row) => (
+				render: (text: any, row: any) => (
 					<div>
 						{text != null
 							? text
@@ -129,13 +129,13 @@ class OrgStoreList extends React.Component<OrgStoreListProps, OrgStoreListState>
 				title: 'Status',
 				dataIndex: 'status',
 				key: 'status',
-				sorter: (a, b) => (a.status !== b.status ? (a.status < b.status ? -1 : 1) : 0),
+				sorter: (a: any, b: any) => (a.status !== b.status ? (a.status < b.status ? -1 : 1) : 0),
 				sortOrder: newSortedInfo.columnKey === 'status' && newSortedInfo.order,
 			},
 			{
 				title: '',
 				key: 'action',
-				render: (text, record) => (
+				render: (text: any, record: any) => (
 					<div className="gx-module-contact-right">
 						<Dropdown overlay={this.menus(record)} placement="bottomRight" trigger={['click']}>
 							<i className="gx-icon-btn icon icon-ellipse-v" />
@@ -166,12 +166,6 @@ class OrgStoreList extends React.Component<OrgStoreListProps, OrgStoreListState>
 		);
 	}
 }
-OrgStoreList.propTypes = {
-	showStoreFilter: PropTypes.bool,
-};
 
-OrgStoreList.defaultProps = {
-	showStoreFilter: true,
-};
 
 export default OrgStoreList;

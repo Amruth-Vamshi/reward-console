@@ -1,9 +1,9 @@
-import React, { Component } from "react";
+import * as React from "react";
 import { Route, Switch } from "react-router-dom";
 import WebhooksSettings from "./developerSettings/webhooks";
 import EntityExtentionSettings from "./developerSettings/entityExtention";
 
-export default class extends Component {
+export default class extends React.Component {
   render() {
     return (
       <Switch>

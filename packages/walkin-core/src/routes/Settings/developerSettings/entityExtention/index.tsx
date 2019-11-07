@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import jwt from "jsonwebtoken";
-import { withApollo } from "react-apollo";
+import * as React from "react";
+import * as jwt from "jsonwebtoken";
+import { withApollo, ApolloProviderProps } from "react-apollo";
 import EntityVariablesForm from "./entityVariablesForm";
 import {
   GET_ENTITIES,
@@ -12,15 +12,35 @@ import {
 import "./style.css";
 import {
   Button,
-  Switch,
-  Row,
-  Col,
   Spin,
   Icon,
   Select,
-  Input,
   Table
 } from "antd";
+
+
+interface EntityExtentionState {
+  isLoading: boolean,
+  isBasicEntityTableLoading: boolean,
+  isEntityExtendTableLoading: boolean,
+
+  isEntityVariablesFormOpen: boolean,
+  entities: any,
+  selectedEntity: any,
+  basicEntityFields: any,
+  entityExtendFields: {
+    id?: string,
+    fields: any
+  },
+  selectedRowIndex: any,
+  hideBasicDetailsTable: boolean,
+  org_id: string
+}
+
+interface EntityExtentionProps extends ApolloProviderProps<any> {
+
+}
+
 
 const columns = [
   {
@@ -51,39 +71,41 @@ const columns = [
   {
     title: <div className="entityExtendcolumnTitle">REQUIRED</div>,
     dataIndex: "required",
-    render: (text, record) => {
+    render: (text: any, record: any) => {
       if (record.__typename === "BasicField") {
         return text ? "Yes" : "No";
       }
       return text ? (
         <div style={{ color: "#46CB92" }}>Yes</div>
       ) : (
-        <div style={{ color: "#E96B81" }}>No</div>
-      );
+          <div style={{ color: "#E96B81" }}>No</div>
+        );
     },
     className: "entityExtendcolumn"
   },
   {
     title: <div className="entityExtendcolumnTitle">SEARCHABLE</div>,
     dataIndex: "searchable",
-    render: (text, record) => {
+    render: (text: any, record: any) => {
       if (record.__typename === "BasicField") {
         return text ? "Yes" : "No";
       }
       return text ? (
         <div style={{ color: "#46CB92" }}>Yes</div>
       ) : (
-        <div style={{ color: "#E96B81" }}>No</div>
-      );
+          <div style={{ color: "#E96B81" }}>No</div>
+        );
     },
     className: "entityExtendcolumn"
   }
 ];
 
-class EntityExtention extends Component {
-  constructor(props) {
+
+class EntityExtention extends React.Component<EntityExtentionProps, EntityExtentionState> {
+  constructor(props: EntityExtentionProps) {
     super(props);
     this.state = {
+      org_id: '',
       isLoading: true,
       isBasicEntityTableLoading: true,
       isEntityExtendTableLoading: true,
@@ -93,6 +115,7 @@ class EntityExtention extends Component {
       selectedEntity: null,
       basicEntityFields: [],
       entityExtendFields: {
+        id: '',
         fields: []
       },
       selectedRowIndex: null,
@@ -105,7 +128,8 @@ class EntityExtention extends Component {
   }
 
   getEntities = () => {
-    const { org_id } = jwt.decode(localStorage.getItem("jwt"));
+    const jwtToken: any = localStorage.getItem("jwt")
+    const { org_id }: any = jwt.decode(jwtToken);
     this.props.client
       .query({
         query: GET_ENTITIES,
@@ -130,7 +154,7 @@ class EntityExtention extends Component {
       });
   };
 
-  addEntityExtendField = input => {
+  addEntityExtendField = (input: any) => {
     this.props.client
       .mutate({
         mutation: ADD_ENTITY_EXTEND_FIELD,
@@ -236,7 +260,7 @@ class EntityExtention extends Component {
     });
   };
 
-  onSave = entityExtendField => {
+  onSave = (entityExtendField: any) => {
     let input = entityExtendField;
     input.entityExtendId = this.state.entityExtendFields.id;
     this.addEntityExtendField(input);
@@ -262,16 +286,17 @@ class EntityExtention extends Component {
 
     if (!this.state.isEntityVariablesFormOpen) {
       if (basicEntityFields.length) {
-        basicEntityFields.map((basicEntity, index) => {
+        basicEntityFields.map((basicEntity: any, index: any) => {
           basicEntity.key = index;
         });
       }
 
       if (entityExtendFields.fields.length) {
-        entityExtendFields.fields.map((entityExtendField, index) => {
+        entityExtendFields.fields.map((entityExtendField: any, index: any) => {
           entityExtendField.key = index;
         });
       }
+      const { Option } = Select;
       return (
         <div className="entityVariablesListWrapper">
           <div className="entityVariableInputWrapper">
@@ -280,7 +305,7 @@ class EntityExtention extends Component {
               size="large"
               defaultValue={selectedEntity}
               style={{ width: "50%" }}
-              onChange={selectedEntity => {
+              onChange={(selectedEntity: any) => {
                 this.setState(
                   {
                     isBasicEntityTableLoading: true,
@@ -302,7 +327,7 @@ class EntityExtention extends Component {
                 );
               }}
             >
-              {entities.map((entity, index) => {
+              {entities.map((entity: string, index: any) => {
                 return (
                   <Option key={index} value={entity}>
                     {entity}
@@ -332,27 +357,27 @@ class EntityExtention extends Component {
                       }}
                     />
                   ) : (
-                    <Icon
-                      type="caret-up"
-                      onClick={() => {
-                        this.setState({ hideBasicDetailsTable: true });
-                      }}
-                    />
-                  )}
+                      <Icon
+                        type="caret-up"
+                        onClick={() => {
+                          this.setState({ hideBasicDetailsTable: true });
+                        }}
+                      />
+                    )}
                 </div>
               )}
               columns={columns}
               dataSource={basicEntityFields}
               size="middle"
-              pagination={hideBasicDetailsTable ? false : true}
+              pagination={hideBasicDetailsTable ? false : undefined}
             />
           </div>
           <div className="entityVariableInputWrapper ">
             <Table
               loading={this.state.isEntityExtendTableLoading}
-              onRow={(record, rowIndex) => {
+              onRow={(record: any, rowIndex: number) => {
                 return {
-                  onClick: event => {
+                  onClick: (event: any) => {
                     this.setState({
                       selectedRowIndex: rowIndex,
                       isEntityVariablesFormOpen: true
@@ -369,7 +394,7 @@ class EntityExtention extends Component {
               columns={columns}
               dataSource={entityExtendFields.fields}
               size="middle"
-              // pagination={false}
+            // pagination={false}
             />
           </div>
 
@@ -409,16 +434,16 @@ class EntityExtention extends Component {
             </div>
           </div>
         ) : (
-          <div className="headerDescWrapper">
-            <div
-              onClick={() => this.onAddOrEditVariables()}
-              className="cursorPointer entityExtendBackButton"
-            >
-              <Icon type="arrow-left" />
-              Back
+            <div className="headerDescWrapper">
+              <div
+                onClick={() => this.onAddOrEditVariables()}
+                className="cursorPointer entityExtendBackButton"
+              >
+                <Icon type="arrow-left" />
+                Back
             </div>
-          </div>
-        )}
+            </div>
+          )}
 
         {this.renderEntityExtentionList()}
       </div>
