@@ -17,7 +17,12 @@
     "react-dom": "^16.9.0"
   },
   "devDependencies": {
-    "nwb": "0.23.x"
+    "nwb": "0.23.x",
+    "ts-loader": "^6.2.1",
+    "typescript": "^3.7.2",
+    "@types/react": "^16.9.11",
+    "@types/react-dom": "^16.9.4",
+    "html-loader": "^0.5.5"
   },
   "author": "",
   "license": "MIT",

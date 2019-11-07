@@ -2,7 +2,6 @@ module.exports = {
   type: "react-app",
   webpack: {
     config: config => {
-      console.log(config);
       config.plugins.concat([
         "import",
         [
@@ -28,27 +27,15 @@ module.exports = {
         ]
       });
 
-      // config.module.rules.push({
-      //   test: /\.md$/,
-      //   use: [
-      //     "html-loader",
-      //     {
-      //       loader: "markdown-loader",
-      //       options: {
-      //         highlight: (code, lang) => {
-      //           if (
-      //             !lang ||
-      //             ["text", "literal", "nohighlight"].includes(lang)
-      //           ) {
-      //             return `<pre class="hljs">${code}</pre>`;
-      //           }
-      //           const html = highlight.highlight(lang, code).value;
-      //           return `<span class="hljs">${html}</span>`;
-      //         }
-      //       }
-      //     }
-      //   ]
-      // });
+
+      config.entry = {
+        main: ["./src/index.tsx"]
+      }
+      config.resolve.extensions.push(".ts", ".tsx");
+      config.module.rules.push({
+        "test": /\.tsx?$/,
+        "loader": "awesome-typescript-loader"
+      });
 
       return config;
     }
