@@ -44,6 +44,8 @@
     "react": "16.x"
   },
   "devDependencies": {
+    "@types/jsonwebtoken": "^8.3.5",
+    "@types/lodash": "^4.14.145",
     "@types/react": "^16.9.11",
     "@types/react-dom": "^16.9.4",
     "css-loader": "^2.1.1",

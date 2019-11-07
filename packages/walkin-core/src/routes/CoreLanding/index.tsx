@@ -1,13 +1,21 @@
-import React, { Component } from 'react';
+import * as  React from 'react';
 import AppList from '../../components/appList';
-import findIndex from 'lodash/findIndex';
-import forEach from 'lodash/forEach';
-import map from 'lodash/map';
+import * as  _ from 'lodash';
 import { Spin } from "antd";
-import { withApollo } from "react-apollo";
-import jwt from "jsonwebtoken";
+import { withApollo, ApolloProviderProps } from "react-apollo";
+import * as jwt from "jsonwebtoken";
 
 import { GET_PRODUCTS } from "@walkinsole/walkin-core/src/PlatformQueries";
+
+interface CoreLandingPageProps extends ApolloProviderProps<any> {
+
+}
+
+interface CoreLandingPageState {
+	apps: any,
+	spin: boolean
+
+}
 
 const apps = [
 	{
@@ -95,18 +103,18 @@ const apps = [
 	},
 ];
 
-class CoreLandingPage extends Component {
-	constructor(props) {
+class CoreLandingPage extends React.Component<CoreLandingPageProps, CoreLandingPageState> {
+	constructor(props: CoreLandingPageProps) {
 		super(props);
-
-
 		this.state = {
 			apps: [],
+			spin: false
 		};
 	}
 
 	componentWillMount() {
-		const { id, org_id } = jwt.decode(localStorage.getItem("jwt"));
+		const jwtToken: any = localStorage.getItem("jwt")
+		const { org_id }: any = jwt.decode(jwtToken);
 		let formattedApps = apps
 
 		if (org_id) {
@@ -120,9 +128,9 @@ class CoreLandingPage extends Component {
 				.then(res => {
 
 					console.log('>>>', res.data.organization.walkinProducts);
-					forEach(res.data.organization.walkinProducts, service => {
+					_.forEach(res.data.organization.walkinProducts, service => {
 
-						const appIndex = findIndex(formattedApps, app => {
+						const appIndex = _.findIndex(formattedApps, app => {
 							return app.title.toLowerCase() === service.name.toLowerCase();
 						});
 

@@ -1,18 +1,44 @@
-import React, { Component, Fragment } from 'react';
-import { CampaignHeader, Popup, SortableDataTable } from '@walkinsole/walkin-components';
-import { Row, Col, Avatar, Button, Dropdown, Alert, Breadcrumb, Modal, Spin, Icon } from 'antd';
+import * as React from 'react';
+import { CampaignHeader, Popup } from '@walkinsole/walkin-components';
+import { Col, Button, Alert, Breadcrumb, Modal, Spin, Icon } from 'antd';
 import OrgCardDetails from '../../components/orgCardDetails';
-import { Query, withApollo, graphql } from 'react-apollo';
-import { userDetails, orgDetails, addSubOrganization, deleteSubOrganization } from '../../query/organization';
+import { Query, withApollo, ApolloProviderProps } from 'react-apollo';
+import { orgDetails, addSubOrganization } from '../../query/organization';
 import SubOrgList from '../../components/subOrgList';
 import SubOrgForm from './subOrgForm';
 import OrgStoreForm from './orgStoreForm';
 import OrgStoreList from './orgStoreList';
 import "./style.css"
+import { RouteComponentProps } from 'react-router';
+
+
 const { confirm } = Modal;
 
-class OrganizationInfo extends Component {
-	constructor(props) {
+interface OrganizationRouterProps {
+	id: string;
+}
+
+interface OrganizationCacheProps {
+	data: object
+}
+
+interface OrganizationInfoProps extends ApolloProviderProps<OrganizationCacheProps>, RouteComponentProps<OrganizationRouterProps> {
+	organization: object,
+	loading: boolean,
+	error: string
+}
+
+interface OrganizationInfoState {
+	showSubOrgForm: boolean,
+	formValues: object,
+	showOrgStoreForm: boolean,
+	storeFormValues: object,
+	errorMessage: string,
+	deleteOrgErrorMessage: object,
+	orgId: string
+}
+class OrganizationInfo extends React.Component<OrganizationInfoProps, OrganizationInfoState> {
+	constructor(props: OrganizationInfoProps) {
 		super(props);
 		this.state = {
 			showSubOrgForm: false,
@@ -40,7 +66,7 @@ class OrganizationInfo extends Component {
 	handleStoreCancel = () => {
 		this.setState({ showOrgStoreForm: false });
 	};
-	displayError = (state, message) => {
+	displayError = (state: string, message: string) => {
 		console.log('>>', state, message);
 		this.setState({ [state]: message }, () => {
 			setTimeout(() => {
@@ -104,8 +130,8 @@ class OrganizationInfo extends Component {
 		this.formRef = formRef;
 	};
 
-	onSubOrgCardClick = id => {
-		const { history, match } = this.props;
+	onSubOrgCardClick = (id: string) => {
+		const { history } = this.props;
 		history.push({
 			pathname: `/core/organization/${id}`,
 		});
@@ -123,7 +149,7 @@ class OrganizationInfo extends Component {
 		});
 	}
 	onSubOrgDelete(refetch, id) {
-		const { deleteOrgErrorMessage } = this.state;
+		//const { deleteOrgErrorMessage } = this.state;
 		confirm({
 			title: 'Are you sure you want to delete?',
 			// content: (
@@ -157,16 +183,16 @@ class OrganizationInfo extends Component {
 		});
 	}
 	render() {
-		const { client, organization, loading, error, match } = this.props;
-		const { showSubOrgForm, formValues, sortedInfo, storeFormValues,
+		const { client, match } = this.props;
+		const { showSubOrgForm, formValues, storeFormValues,
 			showOrgStoreForm,
 			errorMessage,
-			orgId,
+
 		} = this.state;
 		const antIcon = <Icon type="loading" style={{ fontSize: 100 }} spin />;
 		return (
 			<div style={{ margin: '-32px -16px 0px -16px' }}>
-				<Fragment>
+				<React.Fragment>
 					<Query query={orgDetails}
 						variables={{ id: match.params.id || client.cache.data.data['$ROOT_QUERY.auth'].organizationId }}
 					>
@@ -202,7 +228,7 @@ class OrganizationInfo extends Component {
 								orgHeirarchy.push(organization.name);
 							}
 							return (
-								<Fragment>
+								<React.Fragment>
 									<CampaignHeader
 										children={
 											<Col span={12}>
@@ -241,7 +267,7 @@ class OrganizationInfo extends Component {
 											refetch
 										)}
 										popupContent={
-											<Fragment>
+											<React.Fragment>
 												<SubOrgForm
 													onFormSubmit={this.onCreateNewOrg.bind(
 														this,
@@ -253,12 +279,12 @@ class OrganizationInfo extends Component {
 													formValues={formValues}
 												/>
 												{errorMessage !== '' && <Alert message={errorMessage} type="error" />}
-											</Fragment>
+											</React.Fragment>
 										}
 										buttonText="Done"
 									/>
 									<p className="gx-text-grey gx-mb-1">Stores</p>
-									<Fragment>
+									<React.Fragment>
 										<div className="subOrgButtonContainer">
 											<Button type="primary" onClick={this.onNewStore}>
 												New Store
@@ -276,7 +302,7 @@ class OrganizationInfo extends Component {
 												</Button>
 											</div>
 										)}
-									</Fragment>
+									</React.Fragment>
 									<Popup
 										visible={showOrgStoreForm}
 										title="Create Store"
@@ -289,7 +315,7 @@ class OrganizationInfo extends Component {
 											refetch
 										)}
 										popupContent={
-											<Fragment>
+											<React.Fragment>
 												<OrgStoreForm
 													onOrgStoreFormSubmit={this.onCreateNewOrg.bind(
 														this,
@@ -301,15 +327,15 @@ class OrganizationInfo extends Component {
 													storeFormValues={storeFormValues}
 												/>
 												{errorMessage && <Alert message={errorMessage} type="error" />}
-											</Fragment>
+											</React.Fragment>
 										}
 										buttonText="Done"
 									/>
-								</Fragment>
+								</React.Fragment>
 							);
 						}}
 					</Query>
-				</Fragment>
+				</React.Fragment>
 			</div>
 		);
 	}

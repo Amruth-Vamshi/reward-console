@@ -1,31 +1,45 @@
-import React, { Component, Fragment } from 'react';
+import * as  React from 'react';
 import { InstantSearch, SortableDataTable } from '@walkinsole/shared';
-import PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types';
 import { Dropdown, Menu } from 'antd';
+import { ApolloProviderProps } from 'react-apollo';
+import { RouteComponentProps } from 'react-router';
 
-class OrgStoreList extends Component {
-	constructor(props) {
+interface OrgStoreListState {
+	sortedInfo: any,
+	filtered: any,
+}
+
+interface OrgStoreListProps extends ApolloProviderProps<any>, RouteComponentProps {
+	data: any,
+	pagination: string,
+	showStoreFilter: string,
+	placeholder: string,
+	filterData: object
+}
+class OrgStoreList extends React.Component<OrgStoreListProps, OrgStoreListState> {
+	constructor(props: OrgStoreListProps) {
 		super(props);
 		this.state = {
-			sortedInfo: null,
-			filtered: null,
+			sortedInfo: {},
+			filtered: {},
 		};
 	}
-	handleChange = (pagination, filters, sorter) => {
+	handleChange = (pagination: string, filters: object, sorter: object) => {
 		this.setState({
 			sortedInfo: sorter,
 		});
 	};
-	onOrgFilteredList = newList => {
+	onOrgFilteredList = (newList: Array<any>) => {
 		this.setState({
 			filtered: newList,
 		});
 	};
-	menus = record => (
+	menus = (record: object) => (
 		<Menu
 			onClick={e => {
 				if (e.key === 'duplicate') {
-					this.onDuplicateContact(record);
+					//this.onDuplicateContact(record);
 				} else {
 					this.onDeleteContact(record);
 				}
@@ -34,25 +48,25 @@ class OrgStoreList extends Component {
 			<Menu.Item key="delete">Delete</Menu.Item>
 		</Menu>
 	);
-	onDeleteContact = contact => {
-		let { client } = this.props;
-		client
-			.mutate({
-				mutation: disableSegment,
-				variables: {
-					id: contact.id,
-				},
-			})
-			.then(({ data }) => {
-				const { refetchSegments } = this.props;
-				refetchSegments();
-			})
-			.catch(error => {
-				console.log('err', error);
-			});
+	onDeleteContact = (contact: any) => {
+		// let { client } = this.props;
+		// client
+		// 	.mutate({
+		// 		mutation: disableSegment,
+		// 		variables: {
+		// 			id: contact.id,
+		// 		},
+		// 	})
+		// 	.then(({ data }) => {
+		// 		const { refetchSegments } = this.props;
+		// 		refetchSegments();
+		// 	})
+		// 	.catch(error => {
+		// 		console.log('err', error);
+		// 	});
 	};
 	render() {
-		const { location, match } = this.props;
+		const { location } = this.props;
 		let storeData;
 		let orgStoreData = [];
 		const { data, pagination, showStoreFilter, placeholder, filterData } = this.props;
@@ -98,7 +112,7 @@ class OrgStoreList extends Component {
 							: '' + ', ' + row.addressLine1 != null
 								? row.addressLine1
 								: '' + ', ' + row.addressLine2 != null
-									? ow.addressLine2
+									? row.addressLine2
 									: '' + ', ' + row.city != null
 										? row.city
 										: '' + ', ' + row.state != null
@@ -132,7 +146,7 @@ class OrgStoreList extends Component {
 		];
 
 		return (
-			<Fragment>
+			<React.Fragment>
 				{showStoreFilter && (
 					<div style={{ paddingBottom: '20px' }} className="searchInputStyle">
 						<InstantSearch
@@ -148,7 +162,7 @@ class OrgStoreList extends Component {
 					columns={orgColumns}
 					pagination={pagination}
 				/>
-			</Fragment>
+			</React.Fragment>
 		);
 	}
 }
