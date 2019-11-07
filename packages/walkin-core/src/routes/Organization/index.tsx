@@ -196,7 +196,7 @@ class OrganizationInfo extends React.Component<OrganizationInfoProps, Organizati
 					<Query query={orgDetails}
 						variables={{ id: match.params.id }}
 					>
-						{({ data, loading, error, refetch }) => {
+						{({ data, loading, error, refetch }: any) => {
 							if (loading) return (<div> <br /> <br /> <br /> <br />
 								<div className="divCenter">
 									<Spin size="large" indicator={antIcon} />
@@ -213,13 +213,13 @@ class OrganizationInfo extends React.Component<OrganizationInfoProps, Organizati
 							let subOrgDetails =
 								organization &&
 								organization.children &&
-								organization.children.filter(val => {
+								organization.children.filter((val: any) => {
 									return val.organizationType == 'ORGANIZATION';
 								});
 							let storeDetails =
 								organization &&
 								organization.children &&
-								organization.children.filter(val => {
+								organization.children.filter((val: any) => {
 									return val.organizationType == 'STORE';
 								});
 
