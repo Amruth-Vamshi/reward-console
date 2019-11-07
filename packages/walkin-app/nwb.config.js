@@ -31,12 +31,13 @@ module.exports = {
       config.entry = {
         main: ["./src/index.tsx"]
       }
-      config.resolve.extensions.push(".ts", ".tsx");
+      config.resolve = {
+        extensions: [".ts", "tsx"]
+      }
       config.module.rules.push({
         "test": /\.tsx?$/,
         "loader": "awesome-typescript-loader"
       });
-
       return config;
     }
   }
