@@ -4,11 +4,16 @@ import { Row, Col, Typography } from "antd";
 const { Title } = Typography;
 import { CustomScrollbars } from "@walkinsole/walkin-components";
 import moment from "moment";
-import './style.css'
+import "./style.css";
 import { identifier } from "@babel/types";
 // import Moment from "react-moment";
 
-export default class Overview extends Component {
+interface IProps {
+  campaign: any;
+}
+
+interface IState {}
+export default class Overview extends Component<IProps, IState> {
   render() {
     console.log("Overview page");
     const { campaign } = this.props;
@@ -32,15 +37,17 @@ export default class Overview extends Component {
     // }
 
     return (
-      // <CustomScrollbars> 
+      // <CustomScrollbars>
       <div style={{ margin: 5 }}>
         <Title level={2} className="gx-text-grey">
           Overview
-            </Title>
-        <div style={{ fontWeight: "bold", }} className="overviewRowmargin1">
+        </Title>
+        <div style={{ fontWeight: "bold" }} className="overviewRowmargin1">
           {campaign.name}
         </div>
-        <div className="overviewRowmargin">{campaign.description != null ? campaign.description : ""}</div>
+        <div className="overviewRowmargin">
+          {campaign.description != null ? campaign.description : ""}
+        </div>
         <div className="overviewRowmargin">
           <b>{diff}</b> days {value}
         </div>
@@ -49,9 +56,7 @@ export default class Overview extends Component {
             Start date &nbsp; &nbsp;:&nbsp;&nbsp;&nbsp;{start}
           </Col>
           {/* <Col span={5}>{start}</Col> */}
-          <Col span={8}>
-            End date &nbsp; &nbsp;:&nbsp;&nbsp;&nbsp;{end}
-          </Col>
+          <Col span={8}>End date &nbsp; &nbsp;:&nbsp;&nbsp;&nbsp;{end}</Col>
           {/* <Col span={5}></Col> */}
         </Row>
         <Row className="overviewTitlemargin">
@@ -71,18 +76,18 @@ export default class Overview extends Component {
         <Row className="overviewRowmargin">
           <Col span={6} className="overViewBackground">
             HLVR(Modified)
-              </Col>
+          </Col>
           <Col span={4} className="overViewBackground">
             users 3422
-              </Col>
+          </Col>
         </Row>
         <Row className="overviewRowmargin">
           <Col span={6} className="overViewBackground">
             Gold Members
-              </Col>
+          </Col>
           <Col span={4} className="overViewBackground">
             users 2990
-              </Col>
+          </Col>
         </Row>
         <Row className="overviewTitlemargin">
           <h4>Communication</h4>
@@ -90,7 +95,7 @@ export default class Overview extends Component {
         <Row className="overviewRowmargin">
           <Col span={10} className="overViewBackground">
             SMS - Store Experience
-              </Col>
+          </Col>
         </Row>
         {/* <div>Start date 01 jan 2020-12:00 AM to 31 jan 2020-11:59 PM </div> */}
       </div>
