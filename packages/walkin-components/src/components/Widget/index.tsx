@@ -15,7 +15,7 @@ export const Widget = ({
   title?: any;
   children?: any;
   styleName?: string;
-  cover?: string;
+  cover?: any;
   style?: any;
   extra?: any;
   actions?: any;

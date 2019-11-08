@@ -1,30 +1,42 @@
-import React, {Component} from "react";
-import {Modal} from "antd";
+import React, { Component } from "react";
+import { Modal } from "antd";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 import GreedImage from "./GridImage";
-import Auxiliary from "util/Auxiliary";
+import { Auxiliary } from "../../../util/Auxiliary";
 
-class MediaList extends Component {
-
+interface IProps {
+  mediaList: any[];
+}
+interface IState {
+  previewVisible: boolean;
+}
+class MediaList extends Component<IProps, IState> {
   state = {
-    previewVisible: false,
-  }
+    previewVisible: false
+  };
 
   handleToggle() {
-    this.setState((previousState) => ({
-      previewVisible: !previousState.previewVisible,
+    this.setState(previousState => ({
+      previewVisible: !previousState.previewVisible
     }));
   }
 
   render() {
     return (
       <Auxiliary>
-        <GreedImage mediaList={this.props.mediaList} handleToggle={this.handleToggle.bind(this)}/>
-        <Modal visible={this.state.previewVisible} footer={null} onCancel={this.handleToggle.bind(this)}>
-          <Carousel mediaList={this.props.mediaList}/>
+        <GreedImage
+          mediaList={this.props.mediaList}
+          handleToggle={this.handleToggle.bind(this)}
+        />
+        <Modal
+          visible={this.state.previewVisible}
+          footer={null}
+          onCancel={this.handleToggle.bind(this)}
+        >
+          <Carousel mediaList={this.props.mediaList} />
         </Modal>
       </Auxiliary>
     );
@@ -39,18 +51,17 @@ function Carousel(props) {
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
-    className: 'slides'
+    className: "slides"
   };
   return (
     <Auxiliary>
       <h4>Slide Show</h4>
       <Slider {...settings}>
-        {props.mediaList.map((media, index) =>
+        {props.mediaList.map((media, index) => (
           <div key={index}>
-            <img alt="example" style={{width: '100%'}} src={media.image}/>
+            <img alt="example" style={{ width: "100%" }} src={media.image} />
           </div>
-        )
-        }
+        ))}
       </Slider>
     </Auxiliary>
   );

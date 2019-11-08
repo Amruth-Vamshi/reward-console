@@ -5,14 +5,16 @@ import DisplayDate from "../DisplayDate/index";
 
 interface IProps {
   commentData: {
-    id: number;
-    user: any;
-    isLike: boolean;
-    likeCount: number;
-    date: any;
-    commentList: any[];
-    comment: string;
+    id?: number;
+    user?: any;
+    isLike?: boolean;
+    likeCount?: number;
+    date?: any;
+    commentList?: any[];
+    comment?: string;
   };
+  key?: any;
+  index?: any;
 }
 interface IState {
   isComment: boolean;

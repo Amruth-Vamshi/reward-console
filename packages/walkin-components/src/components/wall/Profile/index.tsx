@@ -1,10 +1,18 @@
 import React, { Component } from "react";
 import { Button } from "antd";
-import Auxiliary from "util/Auxiliary";
 import gql from "graphql-tag";
 import { graphql } from "react-apollo";
+import { Auxiliary } from "../../../util/Auxiliary";
 
-class Profile extends Component {
+interface IProps {
+  user: any;
+  userInfo: any;
+  authUser: any;
+}
+interface IState {
+  isFollow: boolean;
+}
+class Profile extends Component<IProps, IState> {
   state = {
     isFollow: false
   };
@@ -64,7 +72,7 @@ class Profile extends Component {
   }
 }
 
-const mapStateToProps = ({ auth }) => {
+const mapStateToProps = ({ auth }: any) => {
   const { authUser } = auth;
   return { authUser };
 };

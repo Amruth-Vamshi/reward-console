@@ -1,19 +1,29 @@
 import * as React from "react";
 import PropTypes from "prop-types";
 
-export const CardBox = ({ heading, children, styleName, childrenStyle, style }) => {
-
+export const CardBox = ({
+  heading,
+  children,
+  styleName,
+  childrenStyle,
+  style
+}: {
+  heading?;
+  children?;
+  styleName?;
+  childrenStyle?;
+  style?;
+}) => {
   return (
     <div style={style} className={`gx-card ${styleName}`}>
-      {heading &&
+      {heading && (
         <div className="gx-card-head">
           <h3 className="gx-card-title">{heading}</h3>
-        </div>}
-      <div className={`gx-card-body ${childrenStyle}`}>
-        {children}
-      </div>
+        </div>
+      )}
+      <div className={`gx-card-body ${childrenStyle}`}>{children}</div>
     </div>
-  )
+  );
 };
 
 CardBox.propTypes = {
@@ -21,6 +31,6 @@ CardBox.propTypes = {
 };
 
 CardBox.defaultProps = {
-  styleName: '',
-  childrenStyle: ''
+  styleName: "",
+  childrenStyle: ""
 };
