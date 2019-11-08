@@ -3,7 +3,15 @@ import { Slider } from "antd";
 import "./style.css";
 import PropTypes from "prop-types";
 
-export class BasicSlider extends React.Component {
+interface IProps {
+  testValue?;
+  controlValue?;
+  maxValueAllowed?;
+  onTestValueChange?;
+  onControlValueChange?;
+}
+interface IState {}
+export class BasicSlider extends React.Component<IProps, IState> {
   static propTypes: any;
   static defaultProps: any;
   constructor(props) {

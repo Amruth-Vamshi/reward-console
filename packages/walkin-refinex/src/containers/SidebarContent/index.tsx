@@ -60,7 +60,7 @@ class SidebarContent extends Component {
             style={{ height: "100%" }}
             defaultOpenKeys={[defaultOpenKeys]}
             selectedKeys={[defaultOpenKeys]}
-            theme={themeType === THEME_TYPE_LITE ? "lite" : "dark"}
+            theme={themeType === THEME_TYPE_LITE ? "light" : "dark"}
             mode="inline"
           >
             <Menu.Item key="dashboard">

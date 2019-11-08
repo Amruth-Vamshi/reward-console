@@ -118,7 +118,7 @@ class UserInfo extends Component<IProps, IState> {
             <div className="gx-ml-2">
               {user.image === null || user.image === undefined ? (
                 <Avatar style={{ backgroundColor: "#424e88" }} size="large">
-                  <span style={{ fontSize: 22, fontWeight: "" }}>
+                  <span style={{ fontSize: 22, fontWeight: "normal" }}>
                     {firstName ? firstName.charAt(0).toUpperCase() : ""}
                   </span>
                 </Avatar>

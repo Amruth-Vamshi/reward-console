@@ -3,7 +3,7 @@ import { Button, Checkbox, Form, Icon, Input, message } from "antd";
 import { Link } from "react-router-dom";
 
 import IntlMessages from "../util/IntlMessages";
-import CircularProgress from "../components/CircularProgress/index";
+import { CircularProgress } from "../components/CircularProgress/index";
 import { compose, graphql } from "react-apollo";
 import gql from "graphql-tag";
 import { History } from "history";
@@ -11,25 +11,22 @@ import { History } from "history";
 const FormItem = Form.Item;
 
 interface iProps {
-  showAuthLoader?: any,
-  userSignIn?: any
-  form?: any,
-  showMessage?: any,
-  hideMessage?: any,
-  authUser?: any,
-  history: History,
-  alertMessage?: string,
-  loader?: Boolean,
-  userGithubSignIn?: any,
-  userGoogleSignIn?: any,
-  userTwitterSignIn?: any,
-  userFacebookSignIn?: any
-
+  showAuthLoader?: any;
+  userSignIn?: any;
+  form?: any;
+  showMessage?: any;
+  hideMessage?: any;
+  authUser?: any;
+  history: History;
+  alertMessage?: string;
+  loader?: Boolean;
+  userGithubSignIn?: any;
+  userGoogleSignIn?: any;
+  userTwitterSignIn?: any;
+  userFacebookSignIn?: any;
 }
 
-interface iState {
-
-}
+interface iState {}
 
 class SignIn extends React.Component<iProps, iState> {
   handleSubmit = (e: any) => {
@@ -77,7 +74,10 @@ class SignIn extends React.Component<iProps, iState> {
                 </p>
               </div>
               <div className="gx-app-logo">
-                <img alt="example" src={require("../assets/images/walkin_logo_white.png")} />
+                <img
+                  alt="example"
+                  src={require("../assets/images/walkin_logo_white.png")}
+                />
               </div>
             </div>
             <div className="gx-app-login-content">

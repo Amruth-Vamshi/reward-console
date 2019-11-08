@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 import IntlMessages from "../util/IntlMessages";
 import { message } from "antd/lib/index";
-import CircularProgress from "../components/CircularProgress/index";
+import { CircularProgress } from "../components/CircularProgress/index";
 import gql from "graphql-tag";
 import { compose, graphql } from "react-apollo";
 import { History } from "history";
@@ -12,24 +12,24 @@ import { History } from "history";
 const FormItem = Form.Item;
 
 interface iProps {
-  form?: any,
-  showAuthLoader?: any,
-  userSignUp?: any,
-  showMessage?: Boolean,
-  hideMessage?: any,
-  authUser?: any,
-  history: History,
-  loader?: Boolean,
-  alertMessage?: string,
-  userGithubSignIn?: any,
-  userGoogleSignIn?: any,
-  userTwitterSignIn?: any,
-  userFacebookSignIn?: any
+  form?: any;
+  showAuthLoader?: any;
+  userSignUp?: any;
+  showMessage?: Boolean;
+  hideMessage?: any;
+  authUser?: any;
+  history: History;
+  loader?: Boolean;
+  alertMessage?: string;
+  userGithubSignIn?: any;
+  userGoogleSignIn?: any;
+  userTwitterSignIn?: any;
+  userFacebookSignIn?: any;
 }
 
 interface iState {
-  email: string,
-  password: string
+  email: string;
+  password: string;
 }
 
 class SignUp extends React.Component<iProps, iState> {
