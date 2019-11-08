@@ -1,5 +1,6 @@
-import React, { Component } from 'react'
+import * as React from 'react'
 import { Col, Row, Dropdown, Menu, Card, Icon, Tooltip, Button, Input } from "antd";
+import { History } from "history"
 
 const options = [
   // 'Activate',
@@ -7,7 +8,21 @@ const options = [
   'Delete',
 ];
 
-export default class AppListCard extends Component {
+interface iProps {
+  deleteApp?: any,
+  data?: any,
+  history?: History,
+  genereteToken?: any,
+  index?: any,
+  text?: any,
+  test?: any
+}
+
+interface iState {
+
+}
+
+export default class AppListCard extends React.Component<iProps, iState> {
 
   menus = () => (<Menu onClick={(e) => {
     if (e.key === 'Delete') {
@@ -26,7 +41,7 @@ export default class AppListCard extends Component {
 
 
   copy = () => {
-    var copyText = document.getElementById(this.props.data.appKey);
+    var copyText: any = document.getElementById(this.props.data.appKey);
     copyText.select();
     document.execCommand("copy");
     console.log("Copied Key: " + copyText.value)
@@ -63,7 +78,7 @@ export default class AppListCard extends Component {
           </Col>
           <Col lg={3} xl={3} xxl={2}>
             <div className='divCenterVertical'>
-              <Button style={{ margin: 0 }} onClick={() => this.props.test()} type=''> Test App</Button></div>
+              <Button style={{ margin: 0 }} onClick={() => this.props.test()}> Test App</Button></div>
           </Col>
           <Col style={{ paddingLeft: 0 }} span={1}>
             <div className="gx-module-contact-right divCenter">

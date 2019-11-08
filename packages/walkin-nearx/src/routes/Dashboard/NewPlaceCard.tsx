@@ -1,7 +1,11 @@
-import React, { Component } from 'react'
+import * as React from 'react'
 import { Row, Col } from "antd";
 
-export default class NewPlaceCard extends Component {
+interface iProps {
+    place?: any
+}
+
+export default class NewPlaceCard extends React.Component<iProps, {}> {
     render() {
         let { geofence_name, hotspots, entry_count, exit_count, dwell_count } = this.props.place
         return (

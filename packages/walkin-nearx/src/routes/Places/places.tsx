@@ -1,17 +1,32 @@
-import React, { Component } from "react";
-import { Col, Row, Spin, Pagination, Card, message, Input, Icon, Button } from "antd";
+import * as React from "react";
+import { Col, Row, Spin, Pagination, message, Input, Button } from "antd";
 import { Link } from "react-router-dom";
-import { Auxiliary, CustomScrollbars } from "@walkinsole/walkin-components";
+import { Auxiliary } from "@walkinsole/walkin-components";
 import "../../styles/places.css";
 import { nearXClient as client } from "../../nearXApollo";
 import PlaceCard from "../../components/Places/placeCard";
 // import { getAllPlaces } from './data'
 // import { Query } from "react-apollo";
 import { GET_ALL_AND_SEARCH_PLACES, DISABLE_PLACES } from "../../queries";
+import { History } from 'history'
+import { any } from "prop-types";
 
 const Search = Input.Search;
 
-export default class Places extends Component {
+interface iProps {
+  history: History
+}
+
+interface iState {
+  places?: Array<any>,
+  offset?: number,
+  totalPlaces?: number,
+  search?: string,
+  errors?: any,
+  spin?: boolean
+}
+
+export default class Places extends React.Component<iProps, iState> {
   constructor(props) {
     super(props);
     this.state = {
@@ -24,9 +39,9 @@ export default class Places extends Component {
     };
   }
 
-  getPlacesData = (offset, limit, search, fetchPolicy) => {
+  getPlacesData = (offset: number, limit: number, search: string, fetchPolicy?: any) => {
     this.setState({ spin: true });
-    let input = { limit: limit, offset: offset };
+    let input: any = { limit: limit, offset: offset };
     if (search && search.trim() !== "") input.search = search.trim();
     client
       .query({

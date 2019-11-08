@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import * as  React from "react";
 import { Link } from "react-router-dom";
 
 import {
@@ -13,7 +13,21 @@ import {
 import { compose, graphql } from "react-apollo";
 import gql from "graphql-tag";
 
-class SidebarLogo extends Component {
+interface iProps {
+  width?: any,
+  themeType?: any,
+  navCollapsed?: any,
+  navStyle?: any,
+  toggleCollapsedSideNav?: any,
+  onNavStyleChange?: any,
+
+}
+
+interface iState {
+
+}
+
+class SidebarLogo extends React.Component<iProps, iState> {
   render() {
     const { width, themeType, navCollapsed } = this.props;
     let { navStyle } = this.props;

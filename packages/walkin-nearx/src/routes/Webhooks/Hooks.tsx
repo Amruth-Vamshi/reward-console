@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import * as React from "react";
 import { Col, Row, Pagination, Card, Select, Timeline, Form, Modal, Spin, Tooltip, Input, Icon, Button } from "antd";
 // import AppListCard from "./AppListCard";
 import {
@@ -33,7 +33,27 @@ const formItemLayout = {
   }
 };
 
-class Hooks extends Component {
+interface iProps {
+  client?: any
+}
+
+interface iState {
+  visible?: boolean,
+  hooksList?: Array<any>,
+  update?: boolean,
+  spin?: boolean,
+  loading?: boolean,
+  eventTypes?: Array<any>,
+  hookName?: string,
+  headers?: string,
+  event?: string,
+  method?: string,
+  url?: string,
+  errors?: any,
+  id?: string
+}
+
+class Hooks extends React.Component<iProps, iState> {
   constructor(props) {
     super(props);
     this.state = {
@@ -48,6 +68,7 @@ class Hooks extends Component {
       event: "",
       method: "",
       url: "",
+      id: "",
       errors: {}
     };
   }
@@ -91,7 +112,7 @@ class Hooks extends Component {
   getWebhooks = () => {
     this.setState({ spin: true });
 
-    const jwtData = jwt.decode(localStorage.getItem("jwt"));
+    const jwtData: any = jwt.decode(localStorage.getItem("jwt"));
 
     jwtData
       ? this.props.client
@@ -122,7 +143,7 @@ class Hooks extends Component {
     this.setState({ method: e, errors });
   };
 
-  handleOnChange = (e, n) => {
+  handleOnChange = (e) => {
     let { errors } = this.state;
     errors[e.target.name] = "";
     this.setState({ [e.target.name]: e.target.value, errors });
@@ -146,7 +167,7 @@ class Hooks extends Component {
 
   createHook = () => {
     this.setState({ loading: true });
-    let errors = {};
+    let errors: any = {};
     // if (this.state.hookName.trim() == "")
     //   errors.hookName = "* this field is mandatory";
     if (this.state.event == "") errors.event = "* this field is mandatory";
@@ -157,7 +178,7 @@ class Hooks extends Component {
       this.setState({ errors, loading: false });
       console.log("Errors in submition" + Object.keys(errors).length);
     } else {
-      const { org_id } = jwt.decode(localStorage.getItem("jwt"));
+      const { org_id }: string = jwt.decode(localStorage.getItem("jwt"));
 
       if (this.state.update) {
         this.props.client

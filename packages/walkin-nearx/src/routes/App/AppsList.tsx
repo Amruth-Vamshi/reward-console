@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { Col, Row, message, Timeline, Empty, Modal, Spin, Tooltip, Input, Icon, Button } from "antd";
+import * as React from "react";
+import { Col, Row, Timeline, Modal, Spin, Tooltip, Input, Icon, Button } from "antd";
 import AppListCard from "./AppListCard";
 import {
   GET_ALL_APPS_OF_ORGANIZATION,
@@ -9,13 +9,26 @@ import {
 import jwt from "jsonwebtoken";
 import { withApollo } from "react-apollo";
 import conf from 'walkin-app/config'
+import { History } from "history"
 // import { nearXClient as client } from "../../nearXApollo";
 const { TextArea } = Input;
 
 // const text = <code></code>
 
-class AppsList extends Component {
-  constructor(props) {
+interface iProps {
+  history: History,
+  client?: any
+}
+
+interface iState {
+  appsList?: Array<any>,
+  visible?: any,
+  spin?: boolean,
+  loading?: boolean
+}
+
+class AppsList extends React.Component<iProps, iState> {
+  constructor(props: iProps) {
     super(props);
     this.state = {
       visible: false,

@@ -1,24 +1,34 @@
-import React, { Component } from "react";
+import * as React from "react";
 import {
-  Row,
-  Col,
   Upload,
-  Card,
   Modal,
   Tabs,
   Icon,
-  Input,
-  Form,
-  message,
   Button
 } from "antd";
 import { Widget } from "@walkinsole/walkin-components";
 import GooglePlaces from "../../../components/Places/CreatePlaces/GooglePlaces";
 import MalnualCreate from "../../../components/Places/CreatePlaces/CreatePlaceManually";
+import { History } from "history"
 
 const TabPane = Tabs.TabPane;
 
-export default class CreatePlaces extends Component {
+interface iProps {
+  tab?: string,
+  history: History
+}
+
+interface iState {
+  tab?: string,
+  visible?: boolean,
+  visible1?: boolean,
+  fileList?: Array<any>,
+  googleAPIkey?: string,
+  loading?: boolean,
+  errors?: any
+}
+
+export default class CreatePlaces extends React.Component<iProps, iState> {
   constructor(props) {
     super(props);
     this.state = {

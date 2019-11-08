@@ -1,8 +1,8 @@
-import React, { Component } from "react";
+import * as React from "react";
 import { Menu } from "antd";
 import { Link } from "react-router-dom";
 import '../../styles/sidebar.css'
-import { CustomScrollbars, Auxiliary, IntlMessages } from "@walkinsole/walkin-components";
+import { Auxiliary } from "@walkinsole/walkin-components";
 import SidebarLogo from "./SidebarLogo";
 import { withRouter } from "react-router-dom";
 
@@ -14,7 +14,17 @@ import {
 import { compose, graphql } from "react-apollo";
 import gql from "graphql-tag";
 
-class SidebarContent extends Component {
+interface iProps {
+  themeType?: any,
+  navStyle?: any,
+  pathname?: any
+}
+
+interface iState {
+  propTypes?: any
+}
+
+class SidebarContent extends React.Component<iProps, iState> {
   getNoHeaderClass = navStyle => {
     if (
       navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR ||
