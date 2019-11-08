@@ -1,19 +1,27 @@
 // import QueryBuilder from 'react-querybuilder';
 import * as React from "react";
-import PropTypes from "prop-types";
+import * as PropTypes from "prop-types";
 import "./style.css";
 
-class WalkinQueryBuilder extends React.Component {
+interface WalkinQueryBuilderProps {
+  onQueryChange?: (a: any) => void
+  translations?: any,
+  operators?: any,
+  fields?: any,
+  handleQueryChange?: any
+}
+
+class WalkinQueryBuilder extends React.Component<WalkinQueryBuilderProps, {}> {
   static propTypes: any;
   static defaultProps: any;
-  renameQueryProperties = query => {
+  renameQueryProperties = (query: any) => {
     let str = JSON.stringify(query);
-    var mapObj = {
+    let mapObj: any = {
       field: "attributeName",
       value: "attributeValue",
       operator: "expressionType"
     };
-    str = str.replace(/field|value|operator/gi, function(matched) {
+    str = str.replace(/field|value|operator/gi, function (matched) {
       return mapObj[matched];
     });
     query = JSON.parse(str);
@@ -58,7 +66,7 @@ WalkinQueryBuilder.propTypes = {
 
 WalkinQueryBuilder.defaultProps = {
   fields: [{ name: "", label: "" }],
-  onQueryChange: () => {},
+  onQueryChange: () => { },
   operators: [
     { name: "EQUALS", label: "Equal to" },
     { name: "NOT_EQUALS", label: "Not equal to" },

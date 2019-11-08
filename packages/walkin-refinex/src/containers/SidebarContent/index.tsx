@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import * as React from "react";
 import { Menu, Icon } from "antd";
 import { Link } from "react-router-dom";
 
@@ -25,10 +25,23 @@ import Dashboard from "../../Icons/IconComponents/dashboard";
 import Survey from "../../Icons/IconComponents/survey";
 import Segments from "../../Icons/IconComponents/segemnts";
 import Analytics from "../../Icons/IconComponents/analytics";
-class SidebarContent extends Component {
+import { RouteChildrenProps } from "react-router";
+
+
+interface SidebarContentProps extends RouteChildrenProps {
+  themeType: any,
+  navStyle: any,
+  pathname: any
+}
+
+interface SidebarContentState {
+  orgId?: any,
+  userId?: any
+}
+class SidebarContent extends React.Component<SidebarContentProps, SidebarContentState> {
   static propTypes: any;
   static defaultProps: any;
-  getNoHeaderClass = navStyle => {
+  getNoHeaderClass = (navStyle: any) => {
     if (
       navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR ||
       navStyle === NAV_STYLE_NO_HEADER_EXPANDED_SIDEBAR
@@ -37,7 +50,7 @@ class SidebarContent extends Component {
     }
     return "";
   };
-  getNavStyleSubMenuClass = navStyle => {
+  getNavStyleSubMenuClass = (navStyle: any) => {
     if (navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR) {
       return "gx-no-header-submenu-popup";
     }
@@ -159,7 +172,7 @@ class SidebarContent extends Component {
 
 SidebarContent.propTypes = {};
 
-const mapStateToProps = ({ settings, ownProps }) => {
+const mapStateToProps = ({ settings, ownProps }: any) => {
   const { navStyle, themeType, locale } = settings.settings;
   const { pathname } = ownProps.location;
   return { navStyle, themeType, locale, pathname };

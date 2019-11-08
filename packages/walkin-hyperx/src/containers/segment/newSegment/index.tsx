@@ -259,39 +259,38 @@ class NewSegment extends Component<IProps, Partial<IState>> {
 }
 
 export default withRouter(
-	withApollo(
-		compose(
-			graphql(RULE_ATTRIBUTES, {
-				options: props => {
-					return {
-						variables: {
-							input: {
-								entityName: "CustomerSearch",
-								status: "ACTIVE",
-								organizationId: org_id
-							}
+	compose(
+		graphql(RULE_ATTRIBUTES, {
+			options: props => {
+				return {
+					variables: {
+						input: {
+							entityName: "CustomerSearch",
+							status: "ACTIVE",
+							organizationId: org_id
 						}
 					}
-				},
-				props: ({ data: { loading, error, ruleAttributes } }: any) => ({
-					loading,
-					ruleAttributes,
-					error,
-				}),
-
-			}),
-			graphql(GET_ALL_APPS_OF_ORGANIZATION, {
-				name: "allApplications",
-				options: props => {
-					return {
-						variables: {
-							id: org_id
-						},
-						fetchPolicy: "cache-and-network"
-					};
 				}
+			},
+			props: ({ data: { loading, error, ruleAttributes } }: any) => ({
+				loading,
+				ruleAttributes,
+				error,
 			}),
-		)
-	)(NewSegment)
+
+		}),
+		graphql(GET_ALL_APPS_OF_ORGANIZATION, {
+			name: "allApplications",
+			options: props => {
+				return {
+					variables: {
+						id: org_id
+					},
+					fetchPolicy: "cache-and-network"
+				};
+			}
+		}),
+
+	)(withApollo(NewSegment))
 
 );
