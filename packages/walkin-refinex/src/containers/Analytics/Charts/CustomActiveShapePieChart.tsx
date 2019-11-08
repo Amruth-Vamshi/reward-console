@@ -1,9 +1,9 @@
-import React, { Component } from "react";
+import * as React from "react";
 import { Pie, PieChart, ResponsiveContainer, Sector } from "recharts";
 
 import data from "./data";
 
-const renderActiveShape = (props) => {
+const renderActiveShape = (props: any) => {
   const RADIAN = Math.PI / 180;
   const {
     cx, cy, midAngle, innerRadius, outerRadius, startAngle, endAngle,
@@ -50,13 +50,21 @@ const renderActiveShape = (props) => {
   );
 };
 
-class CustomActiveShapePieChart extends Component {
-  constructor() {
-    super();
+interface CustomActiveShapePieChartProps {
+
+}
+
+interface CustomActiveShapePieChartState {
+  activeIndex?: number
+}
+
+class CustomActiveShapePieChart extends React.Component<CustomActiveShapePieChartProps, CustomActiveShapePieChartState> {
+  constructor(props: CustomActiveShapePieChartProps) {
+    super(props);
     this.state = { activeIndex: 0 };
   }
 
-  onPieEnter(data, index) {
+  onPieEnter(data: any, index: any) {
     this.setState({
       activeIndex: index,
     });
