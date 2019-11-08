@@ -2,6 +2,7 @@ import QueryBuilder from "@walkin-frontend/walkin-react-querybuilder";
 import * as React from "react";
 import "./style.css";
 import { Select } from "antd";
+import PropTypes from "prop-types";
 
 const Option = Select.Option;
 
@@ -10,7 +11,19 @@ for (let i = 10; i < 36; i++) {
   children.push(<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
 }
 
-export class WalkinQueryBuilder extends React.Component {
+interface IProps {
+  onQueryChange: any;
+  operators?;
+  fields?;
+  query?;
+}
+
+interface IState {}
+
+export class WalkinQueryBuilder extends React.Component<IProps, IState> {
+  static propTypes: any;
+  static defaultProps: any;
+
   removeProp = (obj: any, propToDelete: any) => {
     for (var property in obj) {
       if (typeof obj[property] == "object") {

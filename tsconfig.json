@@ -19,5 +19,8 @@
     "jest",
     "src/setupTests.ts"
   ],
-  "include": ["packages/*/*/assets"]
+  "include": [
+    "packages/walkin-components/src/assets",
+    "packages/walkin-app/typings/index.d.ts"
+  ]
 }

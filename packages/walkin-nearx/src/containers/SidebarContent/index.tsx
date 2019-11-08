@@ -1,8 +1,12 @@
 import React, { Component } from "react";
 import { Menu } from "antd";
 import { Link } from "react-router-dom";
-import '../../styles/sidebar.css'
-import { CustomScrollbars, Auxiliary, IntlMessages } from "@walkinsole/walkin-components";
+import "../../styles/sidebar.css";
+import {
+  CustomScrollbars,
+  Auxiliary,
+  IntlMessages
+} from "@walkinsole/walkin-components";
 import SidebarLogo from "./SidebarLogo";
 import { withRouter } from "react-router-dom";
 
@@ -15,6 +19,8 @@ import { compose, graphql } from "react-apollo";
 import gql from "graphql-tag";
 
 class SidebarContent extends Component {
+  static propTypes: any;
+  static defaultProps: any;
   getNoHeaderClass = navStyle => {
     if (
       navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR ||
@@ -79,7 +85,10 @@ class SidebarContent extends Component {
               </Link>
             </Menu.Item>
             <Menu.Item key="nearx/documentation">
-              <a target="_blank" href="https://distracted-easley-4dc5d1.netlify.com/docs/overview"  >
+              <a
+                target="_blank"
+                href="https://distracted-easley-4dc5d1.netlify.com/docs/overview"
+              >
                 <i className="icon icon-timeline-left-align" />
                 {/* <IntlMessages id="sidebar.samplePage" /> */}
                 <span>Documentation</span>
