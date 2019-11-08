@@ -272,29 +272,27 @@ class SegmentList extends Component<IProps, IState> {
 }
 
 export default withRouter(
-	withApollo(
-		graphql(allSegments, {
-			options: (ownProps: IProps) => ({
-				variables: {
-					organization_id: org_id,
-					status: 'ACTIVE',
-				},
-				forceFetch: true,
-				fetchPolicy: 'network-only',
-			}),
-			props: ({ data: { loading, error, segments, refetch } }) => ({
-				loading,
-				segments,
-				error,
-				refetchSegments: ownProps => {
-					refetch({
-						variables: {
-							organization_id: org_id
-							status: 'ACTIVE',
-						},
-					});
-				},
-			}),
-		})(SegmentList)
-	)
+	graphql(allSegments, {
+		options: (ownProps: IProps) => ({
+			variables: {
+				organization_id: org_id,
+				status: 'ACTIVE',
+			},
+			forceFetch: true,
+			fetchPolicy: 'network-only',
+		}),
+		props: ({ data: { loading, error, segments, refetch } }: any) => ({
+			loading,
+			segments,
+			error,
+			refetchSegments: (ownProps: IProps) => {
+				refetch({
+					variables: {
+						organization_id: org_id,
+						status: 'ACTIVE',
+					},
+				});
+			},
+		}),
+	})(withApollo(SegmentList))
 );

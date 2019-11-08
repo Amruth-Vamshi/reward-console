@@ -7,22 +7,22 @@ import React, { Fragment } from "react";
 const { Option } = Select;
 
 function logProps(InputComponent: any) {
-  InputComponent.prototype.componentWillReceiveProps = function(
+  InputComponent.prototype.componentWillReceiveProps = function (
     nextProps: any
-  ) {};
-  InputComponent.prototype.componentDidMount = function() {};
+  ) { };
+  InputComponent.prototype.componentDidMount = function () { };
   return InputComponent;
 }
 
 interface IProps {
-  data_1?;
-  data_2?;
-  defaultSelectOneValue?;
-  defaultSelectTwoValue?;
-  onSelectOneValuesSelected?;
-  onSelectTwoValuesSelected?;
-  productValues?;
-  locationValues?;
+  data_1?: any;
+  data_2?: any;
+  defaultSelectOneValue?: any;
+  defaultSelectTwoValue?: any;
+  onSelectOneValuesSelected?: any;
+  onSelectTwoValuesSelected?: any;
+  productValues?: any;
+  locationValues?: any;
 }
 
 interface IState {
@@ -33,7 +33,7 @@ interface IState {
 class AddAndDeleteComponentsDynamically extends React.Component<
   IProps,
   IState
-> {
+  > {
   static propTypes: any;
   static defaultProps: any;
   constructor(props: IProps) {
@@ -237,7 +237,7 @@ AddAndDeleteComponentsDynamically.propTypes = {
 };
 
 AddAndDeleteComponentsDynamically.defaultProps = {
-  onValuesSelected: () => {},
+  onValuesSelected: () => { },
   data_1: [],
   data_2: [],
   prop1: "prop1",
