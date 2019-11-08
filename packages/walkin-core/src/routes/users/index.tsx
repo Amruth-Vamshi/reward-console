@@ -1,18 +1,33 @@
-import React, { Component } from 'react';
+import * as React from 'react';
 import { Widget } from '@walkinsole/walkin-components';
-import { Tabs, Modal, Form, Input, Button, Select } from 'antd';
+import { Tabs, Modal, Form, Input, Button, Select, message } from 'antd';
 import { data, data1 } from './data';
 import UserInfo from './UserInfo';
-import jwt from 'jsonwebtoken';
-import { withApollo } from 'react-apollo';
+import * as jwt from 'jsonwebtoken';
+import { withApollo, ApolloProviderProps } from 'react-apollo';
 import './users.css';
 import { GET_ALL_USERS_OF_ORGANIZATION } from '../../PlatformQueries';
 import CreateUser from './CreateUser';
 
 const TabPane = Tabs.TabPane;
 
-class Users extends Component {
-	constructor(props) {
+interface UsersProps extends ApolloProviderProps<any> {
+	spin?: any
+	userList?: any
+}
+
+interface UsersState {
+	visible?: boolean,
+	spin?: boolean,
+	loading?: boolean,
+	errors?: any,
+	userList?: Array<any>,
+	userId: any,
+	org_id: any
+}
+
+class Users extends React.Component<UsersProps, UsersState> {
+	constructor(props: UsersProps) {
 		super(props);
 		this.state = {
 			visible: false,
@@ -20,6 +35,8 @@ class Users extends Component {
 			loading: false,
 			errors: {},
 			userList: [],
+			userId: '',
+			org_id: ''
 		};
 	}
 
@@ -28,7 +45,8 @@ class Users extends Component {
 	}
 
 	getUsers = () => {
-		const { id, org_id } = jwt.decode(localStorage.getItem('jwt'));
+		const jwtToken = localStorage.getItem('jwt')
+		const { id, org_id }: any = jwt.decode(jwtToken);
 		this.setState({ spin: true, userId: id, org_id });
 
 		if (org_id) {
@@ -39,13 +57,13 @@ class Users extends Component {
 					fetchPolicy: 'network-only',
 				})
 				.then(res => {
-					var users = [];
+					let users: Array<any> = [];
 					let org = res.data.organization;
 
-					function recOrg(org, users) {
+					function recOrg(org: any, users: Array<any>) {
 						if (org && org.users)
-							org.users.map(user =>
-								users.push({
+							org.users.map((user: any) => {
+								const userObject: any = {
 									id: user.id,
 									org_id: org.id,
 									firstName: user.firstName,
@@ -56,9 +74,11 @@ class Users extends Component {
 									email: user.email,
 									Assign: false,
 									creator: 'ADMIN',
-								})
+								}
+								users.push(userObject)
+							}
 							);
-						if (org && org.children) org.children.map(ch => recOrg(ch, users));
+						if (org && org.children) org.children.map((ch: any) => recOrg(ch, users));
 					}
 
 					recOrg(org, users);

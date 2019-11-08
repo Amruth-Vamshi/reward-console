@@ -1,8 +1,12 @@
 import * as React from "react";
 import { Card } from "antd";
-import PropTypes from "prop-types";
+import * as PropTypes from "prop-types";
+import { CardGridProps, CardProps } from "antd/lib/card";
 
-export const Widget = ({ title, children, styleName, cover, style, extra, actions }) => {
+interface WidgetProps extends CardProps {
+  styleName?: any
+}
+export const Widget = ({ title, children, styleName, cover, style, extra, actions }: WidgetProps) => {
 
   return (
     <Card title={title} style={style} actions={actions} cover={cover} className={`gx-card-widget ${styleName}`} extra={extra}>
