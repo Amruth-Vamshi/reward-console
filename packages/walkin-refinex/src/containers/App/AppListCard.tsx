@@ -1,13 +1,27 @@
-import React, { Component } from 'react'
+import * as  React from 'react'
 import { Col, Row, Dropdown, Menu, Card, Icon, Tooltip, Button, Input } from "antd";
 import "./app.css"
+import { RouteChildrenProps } from 'react-router';
 const options = [
     // 'Activate',
     'Edit',
     'Delete',
 ];
 
-export default class AppListCard extends Component {
+interface AppListCardProps extends Partial<RouteChildrenProps> {
+    data?: any,
+    deleteApp?: (a: any) => void
+    genereteToken?: (i: any, appId: any) => void
+    test?: any
+    key?: any
+    index?: any
+
+}
+
+export default class AppListCard extends React.Component<AppListCardProps, {}> {
+    constructor(props: AppListCardProps) {
+        super(props)
+    }
 
     menus = () => (<Menu onClick={(e) => {
         if (e.key === 'Delete') {
@@ -26,7 +40,7 @@ export default class AppListCard extends Component {
 
 
     copy = () => {
-        var copyText = document.getElementById(this.props.data.appKey);
+        let copyText: any = document.getElementById(this.props.data.appKey);
         copyText.select();
         document.execCommand("copy");
         console.log("Copied Key: " + copyText.value)

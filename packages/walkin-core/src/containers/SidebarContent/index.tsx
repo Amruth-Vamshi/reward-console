@@ -14,7 +14,7 @@ import {
   NAV_STYLE_NO_HEADER_MINI_SIDEBAR,
   THEME_TYPE_LITE
 } from "@walkinsole/walkin-components/src/constants/ThemeSetting";
-import { compose, graphql, withApollo } from "react-apollo";
+import { compose, graphql } from "react-apollo";
 import gql from "graphql-tag";
 import * as jwt from "jsonwebtoken";
 import { MenuTheme } from "antd/lib/menu";

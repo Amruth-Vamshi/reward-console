@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import * as React from "react";
 import { Col, Row, message, Timeline, Empty, Modal, Spin, Tooltip, Input, Icon, Button } from "antd";
 import AppListCard from "./AppListCard";
 import {
@@ -6,17 +6,27 @@ import {
     GENERATE_API_KEY,
     DELETE_APP
 } from "@walkinsole/walkin-core/src/PlatformQueries";
-import jwt from "jsonwebtoken";
+import * as jwt from "jsonwebtoken";
 import "./app.css"
-import { withApollo } from "react-apollo";
-import conf from 'walkin-app/config'
+import { withApollo, ApolloProviderProps } from "react-apollo";
+import { RouteChildrenProps } from "react-router";
 // import { nearXClient as client } from "../../nearXApollo";
 const { TextArea } = Input;
 
 // const text = <code></code>
 
-class AppsList extends Component {
-    constructor(props) {
+interface ApplistProps extends RouteChildrenProps, ApolloProviderProps<any> {
+
+}
+
+interface ApplistState {
+    visible?: boolean,
+    appsList?: Array<any>,
+    spin?: boolean
+}
+
+class AppsList extends React.Component<ApplistProps, ApplistState> {
+    constructor(props: ApplistProps) {
         super(props);
         this.state = {
             visible: false,
@@ -63,7 +73,7 @@ class AppsList extends Component {
         }
     }
 
-    getAppsList = (jwtData) => {
+    getAppsList = (jwtData: any) => {
         this.props.client
             .query({
                 query: GET_ALL_APPS_OF_ORGANIZATION,
@@ -71,12 +81,12 @@ class AppsList extends Component {
                 fetchPolicy: "no-cache"
             })
             .then(res => {
-                var apps = [];
+                let apps: any = [];
                 let org = res.data.organization;
 
-                function recOrg(org, apps) {
+                function recOrg(org: any, apps: any) {
                     if (org && org.applications)
-                        org.applications.map(app =>
+                        org.applications.map((app: any) =>
                             apps.push({
                                 id: app.id,
                                 org_id: org.id,
@@ -86,7 +96,7 @@ class AppsList extends Component {
                                 discription: app.description
                             })
                         );
-                    if (org && org.children) org.children.map(ch => recOrg(ch, apps));
+                    if (org && org.children) org.children.map((ch: any) => recOrg(ch, apps));
                 }
 
                 recOrg(org, apps);
@@ -98,7 +108,7 @@ class AppsList extends Component {
             });
     }
 
-    deleteApp = id => {
+    deleteApp = (id: any) => {
         this.props.client
             .mutate({
                 mutation: DELETE_APP,
@@ -113,11 +123,11 @@ class AppsList extends Component {
             });
     }
 
-    genereteToken = (i, appId) => {
+    genereteToken = (i: any, appId: any) => {
         this.props.client
             .mutate({
                 mutation: GENERATE_API_KEY,
-                variables: { id: appId, env: conf.env }
+                variables: { id: appId, env: 'PROD' }
             })
             .then(res => {
                 let { appsList } = this.state;
