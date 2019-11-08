@@ -1,16 +1,25 @@
-import React, { Component } from "react";
+import * as React from "react";
 
 import { Row, Col } from "antd";
 import { ManageCampaignCard } from "@walkinsole/shared";
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
 import { GET_CAMPAIGNS } from "../../../../containers/Query";
-class CampaignOverviewGrid extends Component {
-  campaignList = campaigns => {
+import { RouteChildrenProps } from "react-router";
+
+interface CampaignOverviewGridProps extends RouteChildrenProps {
+  campaigns?: any,
+  auth?: any
+}
+class CampaignOverviewGrid extends React.Component<Partial<CampaignOverviewGridProps>, {}> {
+  constructor(props: CampaignOverviewGridProps) {
+    super(props)
+  }
+  campaignList = (campaigns: any) => {
     const { history } = this.props;
 
     return campaigns ? (
-      campaigns.map(campaign => {
+      campaigns.map((campaign: any) => {
 
         return (
           <Col span={6} key={campaign.id}>
@@ -44,7 +53,7 @@ class CampaignOverviewGrid extends Component {
           }}
           fetchPolicy="cache-and-network"
         >
-          {({ loading, error, data }) => {
+          {({ loading, error, data }: any) => {
             console.log(data)
             if (loading) {
               return <span>Loading</span>;

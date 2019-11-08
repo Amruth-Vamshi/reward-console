@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import * as React from "react";
 import { Row, Col, Button, Card, Empty } from "antd";
 import { CardBox, ErrorBoundary } from "@walkinsole/walkin-components";
 import SelectApplicationModal from "../SelectApplicationModal";
@@ -6,8 +6,20 @@ import { compose, graphql } from "react-apollo";
 import { CREATE_FEEDBACK_FORM } from "../../../../containers/Query";
 import "./index.css"
 import gql from "graphql-tag";
-class CreateCampaignRow extends Component {
-    constructor(props) {
+
+interface CreateCampaignRowProps {
+    setFeedbackForm?: (a: any) => void
+    formName?: any
+    auth?: any
+}
+
+interface CreateCampaignRowState {
+    showModal?: boolean,
+    formName?: string
+}
+
+class CreateCampaignRow extends React.Component<CreateCampaignRowProps, CreateCampaignRowState> {
+    constructor(props: CreateCampaignRowProps) {
         super(props);
         this.state = {
             showModal: false,
@@ -21,7 +33,7 @@ class CreateCampaignRow extends Component {
     //   });
     // };
 
-    createFeedbackCampaign = (formName, e) => {
+    createFeedbackCampaign = (formName: any, e: any) => {
         this.setState({ formName: formName })
         this.props.setFeedbackForm(formName);
     };

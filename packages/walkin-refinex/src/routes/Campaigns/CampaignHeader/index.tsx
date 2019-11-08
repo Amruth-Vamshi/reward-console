@@ -2,7 +2,7 @@ import * as React from "react";
 import { Col, Row } from "antd";
 import "./style.css";
 
-const CampaignHeader = ({ children }) => {
+const CampaignHeader = ({ children }: { children: React.ReactChildren }) => {
     return <Row className="RefineXCampaignHeaderStyle">{children}</Row>;
 };
 

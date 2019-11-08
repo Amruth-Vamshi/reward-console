@@ -1,18 +1,20 @@
 import * as React from "react";
-import PropTypes from "prop-types";
+import * as PropTypes from "prop-types";
 
-export const CardBox = ({
+interface CardBoxProps {
+  heading?: any;
+  children?: any;
+  styleName?: any;
+  childrenStyle?: any;
+  style?: any;
+}
+
+export const CardBox: React.FunctionComponent<CardBoxProps> = ({
   heading,
   children,
   styleName,
   childrenStyle,
   style
-}: {
-  heading?;
-  children?;
-  styleName?;
-  childrenStyle?;
-  style?;
 }) => {
   return (
     <div style={style} className={`gx-card ${styleName}`}>

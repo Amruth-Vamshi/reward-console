@@ -4,7 +4,13 @@ import Edit from "./Edit"
 import Create from "./Create"
 import CampaignLIst from "../../containers/campaignList"
 import CampaignView from "../../containers/campaignDashboard"
-export default ({ match }) => {
+import { RouteChildrenProps } from "react-router";
+
+interface RefineXProps extends RouteChildrenProps {
+
+}
+
+const RefineXApp: React.FunctionComponent<RefineXProps> = ({ match }) => {
     return (
         <div className="RefineX-Main">
             <Switch>
@@ -32,3 +38,5 @@ export default ({ match }) => {
 
     );
 };
+
+export default RefineXApp;

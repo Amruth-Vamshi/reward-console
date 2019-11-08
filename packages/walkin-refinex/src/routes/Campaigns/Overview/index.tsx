@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import * as React from "react";
 import { Col, Row, Button, Select, Modal } from "antd";
 import { withRouter, Redirect } from "react-router-dom";
 import {
@@ -28,7 +28,13 @@ import gql from "graphql-tag";
 import { compose, withApollo, Mutation, graphql } from "react-apollo";
 import CreateCampaignRow from "./CreateCampaignRow";
 import CampaignOverviewGrid from "./CampaignOverviewGrid";
-class CampaignOverview extends Component {
+import { RouteChildrenProps } from "react-router";
+
+interface CampaignOverviewProps extends RouteChildrenProps {
+  auth?: string
+}
+
+class CampaignOverview extends React.Component<CampaignOverviewProps, {}> {
   render() {
     const { history, match, auth } = this.props;
 
