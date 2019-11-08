@@ -2366,6 +2366,11 @@
     "@svgr/plugin-svgo" "^4.2.0"
     loader-utils "^1.2.3"
 
+"@types/amcharts@^3.21.5":
+  version "3.21.5"
+  resolved "https://registry.yarnpkg.com/@types/amcharts/-/amcharts-3.21.5.tgz#ed181bf62c5c819c35988429ca98091a40f92998"
+  integrity sha512-gQDAPTedJAFwNq/YugmXR+/s6yIWFMoaFwsd0Z7jNFI3wlmctVbWpCLvE84kwPUTSLAHTSyDJc8mIl9Qz06nhw==
+
 "@types/babel__core@^7.1.0":
   version "7.1.1"
   resolved "https://registry.yarnpkg.com/@types/babel__core/-/babel__core-7.1.1.tgz#ce9a9e5d92b7031421e1d0d74ae59f572ba48be6"

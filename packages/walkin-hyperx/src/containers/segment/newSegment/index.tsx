@@ -10,11 +10,13 @@ import * as jwt from "jsonwebtoken";
 import { GET_ALL_APPS_OF_ORGANIZATION } from "@walkinsole/walkin-core/src/PlatformQueries";
 import { RouteChildrenProps } from "react-router";
 
+const { org_id, id }: any = jwt.decode(localStorage.getItem("jwt"));
 
 interface IProps extends RouteChildrenProps, ApolloProviderProps<any> {
-
-
-
+	allApplications: any
+	ruleAttributes: any
+	loading: any,
+	error: any
 
 }
 
@@ -73,7 +75,6 @@ class NewSegment extends Component<IProps, Partial<IState>> {
 			return
 		}
 		console.log(this.props.allApplications.organization.applications[0])
-		let org_id = jwt.decode(localStorage.getItem("jwt")).org_id;
 		this.setState({ loading1: true })
 		if (this.state.update) {
 			console.log("update segment/rule...")
@@ -267,12 +268,12 @@ export default withRouter(
 							input: {
 								entityName: "CustomerSearch",
 								status: "ACTIVE",
-								organizationId: jwt.decode(localStorage.getItem("jwt")).org_id,
+								organizationId: org_id
 							}
 						}
 					}
 				},
-				props: ({ data: { loading, error, ruleAttributes } }) => ({
+				props: ({ data: { loading, error, ruleAttributes } }: any) => ({
 					loading,
 					ruleAttributes,
 					error,
@@ -284,12 +285,13 @@ export default withRouter(
 				options: props => {
 					return {
 						variables: {
-							id: jwt.decode(localStorage.getItem("jwt")).org_id
+							id: org_id
 						},
 						fetchPolicy: "cache-and-network"
 					};
 				}
 			}),
-		)(NewSegment)
-	)
+		)
+	)(NewSegment)
+
 );

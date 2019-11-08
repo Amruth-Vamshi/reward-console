@@ -1,21 +1,51 @@
-import React, { Component } from "react";
+import * as React from "react";
 import { Col, Row, DatePicker, Button, Icon, Empty, Spin, Table } from "antd";
 import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis } from "recharts";
 import { IconWithTextCard, Widget, ChartCard, Auxiliary } from "@walkinsole/walkin-components";
-import moment from 'moment';
-import Cylinder3DChart from "./Cylinder3DChart";
-import ComplainCard from "./ComplainCard";
-import jwt from "jsonwebtoken";
+import * as moment from 'moment';
+import * as jwt from "jsonwebtoken";
 import "./style.css"
-import { withApollo } from "react-apollo";
-import { Link } from "react-router-dom";
+import { withApollo, ApolloProviderProps } from "react-apollo";
 import { GET_ANALYTICS } from "@walkinsole/walkin-core/src/PlatformQueries";
-import { AnyNear } from "./data";
+import { ColumnProps } from "antd/lib/table";
+
 
 const dateFormat = 'YYYY/MM/DD';
 
-class Landing extends Component {
-    constructor(props) {
+interface LandingProps extends ApolloProviderProps<any> {
+
+}
+
+interface TColumnProps {
+
+    title: string,
+    dataIndex: string,
+    key: number,
+    width: number,
+    fixed: string,
+
+}
+
+interface LandingState {
+    totalCampaigns: number,
+    totalFeedbacks: number,
+    totalForms: number,
+    totalQuestions: number,
+    totalChoices: number,
+    totalRefinexEvents: Array<any>,
+    customers: Array<any>,
+    popularPlaces: Array<any>,
+    complains: Array<any>,
+    customerCount: number,
+    org_id: string,
+    startDate: moment.Moment | string,
+    endDate: moment.Moment | string,
+    errors: any,
+    spin: boolean
+}
+
+class Landing extends React.Component<LandingProps, Partial<LandingState>> {
+    constructor(props: LandingProps) {
         super(props)
         this.state = {
             totalCampaigns: 0,
@@ -31,21 +61,22 @@ class Landing extends Component {
             org_id: '',
             startDate: moment().subtract(30, 'months'),
             endDate: moment(),
-            errors: {}
+            errors: {},
+            spin: false
         }
     }
 
 
     componentWillMount() {
         console.log("This.state...", this.state)
-        const { id, org_id } = jwt.decode(localStorage.getItem("jwt"));
+        const { id, org_id }: any = jwt.decode(localStorage.getItem("jwt"));
         if (org_id && id) {
             this.setState({ org_id })
             this.getMetrics(org_id, this.state.endDate)
         } else console.log("Error getting JwtData");
     }
 
-    getMetrics = (org_id, endDate) => {
+    getMetrics = (org_id: any, endDate: any) => {
         this.setState({ spin: true });
         this.props.client
             .query({
@@ -61,17 +92,17 @@ class Landing extends Component {
             .catch(err => {
                 this.setState({ spin: false });
                 console.log("Failed to get User Details" + err);
-                this.formatData()
+
             });
     }
 
-    formatData = data => {
+    formatData = (data: any) => {
         let { totalCampaigns, totalFeedbacks, totalForms, totalQuestions, totalChoices, customerCount, customers, totalRefinexEvents, complains } = this.state
         // if (!data) {
         //   data = AnyNear
         // }
         console.log("Service analytics data..", data.data.analytics);
-        data.data.analytics.map(i => {
+        data.data.analytics.map((i: any) => {
             if (i.name === "TOTAL_CAMPAIGNS") totalCampaigns = i.total
             else if (i.name === "TOTAL_FEEDBACKS") totalFeedbacks = i.total
             else if (i.name === "TOTAL_FORMS") totalForms = i.total
@@ -84,21 +115,21 @@ class Landing extends Component {
         this.setState({ totalCampaigns, totalFeedbacks, totalForms, totalQuestions, totalChoices, customerCount, customers, totalRefinexEvents, complains, spin: false })
     }
 
-    disabledDate = current => {
+    disabledDate = (current: any) => {
         if (!current) return false;
         const date = moment();
         date.hour(0); date.minute(0); date.second(0);
         return current.valueOf() > date.valueOf();
     }
 
-    disableEndDate = current => {
+    disableEndDate = (current: any) => {
         if (!current) return false;
         const date = moment(this.state.startDate).add(1, 'day');
         date.hour(0); date.minute(0); date.second(0);
         return (current.valueOf() <= date.valueOf() || moment() < current);
     }
 
-    handleChange2 = (value) => {
+    handleChange2 = (value: any) => {
         var time = "5:30:00"
         var value1 = moment(value).format('YYYY-MM-DD');
         var d = value1 + " " + time;
@@ -107,7 +138,7 @@ class Landing extends Component {
         this.setState({ startDate: newdate1, endDate: '' });
         if (newdate1 !== '') this.state.errors.startDate = '';
     }
-    handleChange3 = (value) => {
+    handleChange3 = (value: any) => {
         var time = "5:30:00"
         var value1 = moment(value).format('YYYY-MM-DD');
         var d = value1 + " " + time;
@@ -118,7 +149,7 @@ class Landing extends Component {
         if (newdate2 !== '') this.state.errors.endDate = '';
     }
 
-    customPopup = c => {
+    customPopup = (c: any) => {
         if (c.payload[0])
             return <div className='recharts-default-tooltip tooltipPopup'>
                 <div>{c.payload[0].payload.Date ? c.payload[0].payload.Date : ''}</div>
@@ -129,7 +160,7 @@ class Landing extends Component {
 
     render() {
 
-        const columns = [
+        const columns: ColumnProps<TColumnProps>[] = [
             {
                 title: 'REFINEX_EVENT_ID',
                 dataIndex: 'id',
@@ -296,8 +327,8 @@ class Landing extends Component {
                 width: 150
             }
         ]
-
-        let nRows = parseInt(window.innerWidth / 300)
+        const width: any = window.innerWidth;
+        let nRows: any = width / 300
         let demoData = []
         const antIcon = <Icon type="loading" style={{ fontSize: 100 }} spin />;
         demoData = this.state.totalRefinexEvents
@@ -321,17 +352,26 @@ class Landing extends Component {
                             <Row gutter={20} type="flex" justify="end" style={{ marginBottom: 15 }} >
                                 <Col>
                                     {/* <div>From Date</div> */}
-                                    <DatePicker getCalendarContainer={triggerNode => triggerNode.parentNode}
+                                    <DatePicker
+                                        getCalendarContainer={(triggerNode: any) => triggerNode.parentNode}
                                         onChange={this.handleChange2}
-                                        value={this.state.startDate ? moment(this.state.startDate, dateFormat) : ''}
-                                        format={dateFormat} disabledDate={this.disabledDate} name="startDate" placeholder="Select Start Date" />
+                                        value={this.state.startDate ? moment(this.state.startDate, dateFormat) : moment()}
+                                        format={dateFormat}
+                                        disabledDate={this.disabledDate}
+                                        name="startDate"
+                                        placeholder="Select Start Date" />
                                     <p>{this.state.errors.startDate}</p>
                                 </Col>
                                 <Col>
                                     {/* <div>To Date</div> */}
-                                    <DatePicker getCalendarContainer={triggerNode => triggerNode.parentNode}
+                                    <DatePicker
+                                        getCalendarContainer={(triggerNode: any) => triggerNode.parentNode}
                                         onChange={this.handleChange3}
-                                        value={this.state.endDate ? moment(this.state.endDate, dateFormat) : ''} format={dateFormat} disabledDate={this.disableEndDate} name="endDate" placeholder="Select End Date" />
+                                        value={this.state.endDate ? moment(this.state.endDate, dateFormat) : moment()}
+                                        format={dateFormat}
+                                        disabledDate={this.disableEndDate}
+                                        name="endDate"
+                                        placeholder="Select End Date" />
                                     <p>{this.state.errors.endDate}</p>
                                 </Col>
                             </Row>
@@ -376,7 +416,7 @@ class Landing extends Component {
                                                 <ResponsiveContainer width="100%" height={130}>
                                                     <AreaChart data={this.state.customers}
                                                         margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
-                                                        <Tooltip content={c => this.customPopup(c)} />
+                                                        <Tooltip content={(c: any) => this.customPopup(c)} />
                                                         {/* <Tooltip /> */}
                                                         {/* <XAxis dataKey="name" /> */}
                                                         <defs>

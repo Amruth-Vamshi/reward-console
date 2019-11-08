@@ -1,7 +1,10 @@
 import * as React from "react";
-import AmCharts from "@amcharts/amcharts3-react";
+const AmCharts = require("@amcharts/amcharts3-react")
+interface Cylinder3DChartProps {
+  data?: any
+}
 
-const Cylinder3DChart = (props) => {
+const Cylinder3DChart: React.FunctionComponent<Cylinder3DChartProps> = (props) => {
 
   var dataProvider = [], colors = ["#FF0F00", "#F8FF01", "#04D215", "#0D52D1", "#CD0D74", "#0D8ECF", "#8A0CCF", "#B0DE09", "#DDDDDD", "#333333"]
 
@@ -45,7 +48,7 @@ const Cylinder3DChart = (props) => {
       "gridPosition": "start",
       "axisAlpha": 0,
       "gridAlpha": 0,
-      "labelFunction": function (valueText, serialDataItem, categoryAxis) {
+      "labelFunction": function (valueText: any, serialDataItem: any, categoryAxis: any) {
         if (valueText.length > 15)
           return valueText.substring(0, 15) + '...';
         else
