@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { Col, Card, Row, Select, Form, Input, Button, Icon } from "antd";
+import * as React from "react";
+import { Col, Card, Row, Select, Form, Input, Button, Icon, message } from "antd";
 import "./app.css";
 import {
   GET_ALL_APPS_OF_ORGANIZATION,
@@ -8,9 +8,10 @@ import {
 } from "@walkinsole/walkin-core/src/PlatformQueries";
 
 import { CREATE_APP } from "../Query";
-import jwt from "jsonwebtoken";
-import { withApollo, compose, graphql } from "react-apollo";
+import * as jwt from "jsonwebtoken";
+import { withApollo, compose, graphql, ApolloProviderProps } from "react-apollo";
 import gql from "graphql-tag";
+import { RouteChildrenProps } from "react-router";
 
 const Option = Select.Option;
 
@@ -29,8 +30,28 @@ const formItemLayout = {
   }
 };
 
-class AppCreation extends Component {
-  constructor(props) {
+interface AppCreationProps extends RouteChildrenProps, ApolloProviderProps<any> {
+
+}
+
+interface AppCreationState {
+  organizations: Array<any>,
+  update: boolean,
+  id: string,
+  errors: any,
+  loading: boolean,
+  firstName: string,
+  lastName: string,
+  appName: string,
+  description: string,
+  platform: string,
+  organizationId: string,
+  userId: string,
+  org_id: string
+}
+
+class AppCreation extends React.Component<AppCreationProps, Partial<AppCreationState>> {
+  constructor(props: AppCreationProps) {
     super(props);
     this.state = {
       organizations: [],
@@ -43,16 +64,18 @@ class AppCreation extends Component {
       appName: "",
       description: "",
       platform: "",
-      organizationId: ""
+      organizationId: "",
+      userId: "",
+      org_id: ""
     };
   }
 
-  choosePlatform = (e, n) => {
+  choosePlatform = (e: any, n: any) => {
     // console.log(e.target.name, n)
     this.setState({ platform: e.target.name });
   };
 
-  getAppDetails = appData => {
+  getAppDetails = (appData: any) => {
     console.log("APPDATA>>>", appData);
     this.setState({
       id: appData.id,
@@ -67,7 +90,8 @@ class AppCreation extends Component {
   componentDidMount() { }
 
   componentWillMount() {
-    const { id, org_id } = jwt.decode(localStorage.getItem("jwt"));
+    const jwtToken = localStorage.getItem("jwt");
+    const { id, org_id }: any = jwt.decode(jwtToken);
     this.setState({ userId: id, org_id });
 
     sessionStorage.getItem("AppData")
@@ -101,12 +125,12 @@ class AppCreation extends Component {
         })
         .then(res => {
           console.log(res.data);
-          var orgs = [];
+          let orgs: Array<any> = [];
           let org = res.data.organization;
 
-          function recOrg(org, orgs) {
+          function recOrg(org: any, orgs: Array<any>) {
             orgs.push({ name: org.name, id: org.id });
-            if (org && org.children) org.children.map(ch => recOrg(ch, orgs));
+            if (org && org.children) org.children.map((ch: any) => recOrg(ch, orgs));
           }
           recOrg(org, orgs);
           this.setState({ organizations: orgs });
@@ -117,18 +141,18 @@ class AppCreation extends Component {
       : console.log("Error getting JwtData");
   }
 
-  handleOnChange = (e, n) => {
+  handleOnChange = (e: any) => {
     this.setState({ [e.target.name]: e.target.value });
     // console.log(e, n)
   };
 
-  onChange = (e, n) => {
+  onChange = (e: any, n: any) => {
     // console.log(e, n)
     this.setState({ organizationId: e });
   };
 
-  handleSubmit = orgId => {
-    let errors = {};
+  handleSubmit = () => {
+    let errors: any = {};
     if (this.state.appName.trim() == "") {
       errors.appName = "* this field is mandatory";
     }
@@ -150,7 +174,8 @@ class AppCreation extends Component {
               input: {
                 id: this.state.id,
                 name: this.state.appName,
-                description: this.state.description
+                description: this.state.description,
+                platform: this.state.platform
               }
             }
           })
@@ -184,15 +209,9 @@ class AppCreation extends Component {
             // this.setState({ organizations:res.data.organizationHierarchies })
           })
           .catch(err => {
-            console.log("Failed to get Places Details" + err.graphQLErrors);
-
-            console.log(err && err.graphQLErrors
-              ? error.graphQLErrors[0].errorCode
-              : 'Error in submitting the form');
-
             if (err.graphQLErrors[0].message) {
               this.setState({ loading: false });
-              message.warn(graphQLErrors[0].message)
+              message.warn(err.graphQLErrors[0].message)
             }
             this.setState({ loading: false });
           });
@@ -298,7 +317,7 @@ class AppCreation extends Component {
                           optionFilterProp="children"
                           onChange={this.onChange}
                           // onSearch={onSearch}
-                          filterOption={(input, option) =>
+                          filterOption={(input: any, option: any) =>
                             option.props.children
                               .toLowerCase()
                               .indexOf(input.toLowerCase()) >= 0
@@ -336,7 +355,6 @@ class AppCreation extends Component {
                       style={{
                         textAlign: "center",
                         width: "200px",
-                        float: "center",
                         margin: "25px 30px 20px 0"
                       }}
                     >

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
-import IntlMessages from "@walkinsole/walkin-components/src/util/IntlMessages";
+import { IntlMessages } from "@walkinsole/walkin-components";;
 
 const Error404 = () => (
   <div className="gx-page-error-container">

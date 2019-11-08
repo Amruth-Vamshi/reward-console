@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Card } from "antd";
-import PropTypes from "prop-types";
+import * as PropTypes from "prop-types";
+import { CardGridProps, CardProps } from "antd/lib/card";
 
 export const Widget = ({
   title,

@@ -1,4 +1,4 @@
-import React, { lazy } from "react";
+import * as React from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import NewSegment from '../containers/segment/newSegment';
 import { NEW_SEGMENT, SEGMENT_LIST } from "../Utils"
@@ -9,7 +9,13 @@ import SegementLIst from '../containers/segment/segmentList'
 import NewSegement from '../containers/segment/newSegment'
 import analytics from '../containers/Analytics'
 import "./style.css"
-const RefineXRoutes = ({ match }) => {
+import { RouteChildrenProps } from "react-router";
+
+interface RefineXRoutesProps extends RouteChildrenProps {
+
+}
+
+const RefineXRoutes: React.FunctionComponent<RefineXRoutesProps> = ({ match }) => {
     return (
         <div className="RefineX-Main">
             <Switch>

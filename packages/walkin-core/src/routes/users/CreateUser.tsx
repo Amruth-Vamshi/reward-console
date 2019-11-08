@@ -1,7 +1,7 @@
-import React, { Component } from 'react'
+import * as React from 'react'
 import { CREATE_USER, GET_ALL_APPS_OF_ORGANIZATION, ROLES_LIST } from "../../PlatformQueries";
 import { Form, Input, Button, Select } from "antd";
-import { withApollo, compose, graphql } from "react-apollo";
+import { withApollo, compose, graphql, ApolloProviderProps } from "react-apollo";
 
 const Option = Select.Option;
 
@@ -14,8 +14,24 @@ const formItemLayout = {
     }
 };
 
-class CreateUser extends Component {
-    constructor(props) {
+interface CreateUserProps extends ApolloProviderProps<any> {
+    org_id: any
+    userCreated: () => void
+}
+
+interface CreateUserState {
+    loading?: boolean,
+    visible?: boolean,
+    errors?: any,
+    organizations?: Array<any>,
+    rolesList?: Array<any>,
+    user?: any,
+    roleId?: any,
+    orgId?: any
+}
+
+class CreateUser extends React.Component<CreateUserProps, CreateUserState> {
+    constructor(props: CreateUserProps) {
         super(props);
         this.state = {
             loading: false,
@@ -40,12 +56,12 @@ class CreateUser extends Component {
                 })
                 .then(res => {
                     console.log(res.data);
-                    var orgs = [];
+                    let orgs: Array<any> = [];
                     let org = res.data.organization;
 
-                    function recOrg(org, orgs) {
+                    function recOrg(org: any, orgs: Array<any>) {
                         orgs.push({ name: org.name, id: org.id });
-                        if (org && org.children) org.children.map(ch => recOrg(ch, orgs));
+                        if (org && org.children) org.children.map((ch: any) => recOrg(ch, orgs));
                     }
                     recOrg(org, orgs);
                     this.setState({ organizations: orgs });
@@ -70,7 +86,7 @@ class CreateUser extends Component {
     createUser = () => {
 
         this.setState({ loading: true });
-        let errors = {};
+        let errors: any = {};
         if (!this.state.user.firstName || this.state.user.firstName.trim() == "") errors.firstName = "* this field is mandatory";
         if (!this.state.user.lastName || this.state.user.lastName.trim() == "") errors.lastName = "* this field is mandatory";
         if (!this.state.user.password || this.state.user.password.trim() == "") errors.password = "* this field is mandatory";
@@ -99,19 +115,19 @@ class CreateUser extends Component {
         }
     }
 
-    onChangeRole = e => {
+    onChangeRole = (e: any) => {
         let { errors } = this.state;
         errors.roleId = "";
         this.setState({ roleId: e, errors });
     }
 
-    onChangeOrg = e => {
+    onChangeOrg = (e: any) => {
         let { errors } = this.state;
         errors.orgId = "";
         this.setState({ orgId: e, errors });
     }
 
-    handleOnChange = e => {
+    handleOnChange = (e: any) => {
         let { user, errors } = this.state
         user[e.target.name] = e.target.value
         if (e.target.value != "") errors[e.target.name] = ''
@@ -243,7 +259,6 @@ class CreateUser extends Component {
                             style={{
                                 textAlign: "center",
                                 width: "110px",
-                                float: "center",
                                 margin: "10px 30px 20px 0"
                             }}
                         >
