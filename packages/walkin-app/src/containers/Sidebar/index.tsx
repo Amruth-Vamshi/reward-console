@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Drawer, Layout } from "antd";
 
-// import CoreSidebarContent from "@walkinsole/walkin-core/src/containers/SidebarContent";
+import CoreSidebarContent from "@walkinsole/walkin-core/src/containers/SidebarContent";
 // import HyperXSidebarContent from "@walkinsole/walkin-hyperx/src/containers/SidebarContent";
 // import NearXSidebarContent from "@walkinsole/walkin-nearx/src/containers/SidebarContent";
 // import RefineXSidebarContent from "@walkinsole/walkin-refinex/src/containers/SidebarContent";
@@ -59,8 +59,8 @@ export class Sidebar extends React.Component<IProps, IState> {
     switch (appName) {
       case "home":
         return <HomeSidebarContent />;
-      // case "core":
-      //   return <CoreSidebarContent />;
+      case "core":
+        return <CoreSidebarContent />;
       // case "refinex":
       //   return <RefineXSidebarContent />;
       // case "hyperx":
