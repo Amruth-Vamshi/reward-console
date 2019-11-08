@@ -2,17 +2,39 @@ import * as React from "react";
 import { Card } from "antd";
 import PropTypes from "prop-types";
 
-export const Widget = ({ title, children, styleName, cover, style, extra, actions }) => {
-
+export const Widget = ({
+  title,
+  children,
+  styleName,
+  cover,
+  style,
+  extra,
+  actions
+}: {
+  title?: any;
+  children?: any;
+  styleName?: string;
+  cover?: string;
+  style?: any;
+  extra?: any;
+  actions?: any;
+}) => {
   return (
-    <Card title={title} style={style} actions={actions} cover={cover} className={`gx-card-widget ${styleName}`} extra={extra}>
+    <Card
+      title={title}
+      style={style}
+      actions={actions}
+      cover={cover}
+      className={`gx-card-widget ${styleName}`}
+      extra={extra}
+    >
       {children}
     </Card>
-  )
+  );
 };
 
 Widget.defaultProps = {
-  styleName: '',
+  styleName: ""
 };
 
 Widget.propTypes = {

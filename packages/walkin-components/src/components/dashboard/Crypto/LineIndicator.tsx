@@ -1,11 +1,10 @@
 import * as React from "react";
 import PropTypes from "prop-types";
-
-import Aux from "../../../util/Auxiliary";
+import { Auxiliary } from "../../../util/Auxiliary";
 
 const LineIndicator = ({ title, title2, width, value, color }) => {
   return (
-    <Aux>
+    <Auxiliary>
       <div className="ant-row-flex">
         <p className="gx-mr-1">{title}</p>
         <p className="gx-text-grey">| {title2}</p>
@@ -19,7 +18,7 @@ const LineIndicator = ({ title, title2, width, value, color }) => {
         />
         <span className="gx-line-indi-count gx-ml-2">{value}</span>
       </div>
-    </Aux>
+    </Auxiliary>
   );
 };
 

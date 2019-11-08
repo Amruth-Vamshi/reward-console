@@ -1,9 +1,9 @@
 import * as React from "react";
 import { Bar, BarChart, ResponsiveContainer, Tooltip } from "recharts";
 import { Col, Row } from "antd";
-
-import Metrics from "components/Metrics";
+import Metrics from "../../Metrics/index";
 import gql from "graphql-tag";
+import { graphql } from "react-apollo";
 
 const data = [
   { name: "JAN", lastYear: 200, thisYear: 600 },
@@ -52,7 +52,7 @@ const TotalRevenueCard = ({ width }) => {
   );
 };
 
-const mapStateToProps = ({ settings }) => {
+const mapStateToProps = ({ settings }: any) => {
   const { width } = settings.settings;
   return { width };
 };
