@@ -1,7 +1,7 @@
 import "./SelectApplicationModal.css";
-import React, { Component } from "react";
+import * as React from "react";
 import { Modal, Select, Table, Button, Row, Col, TreeSelect } from "antd";
-import { compose, graphql, withApollo } from "react-apollo";
+import { compose, graphql, withApollo, ApolloProviderProps } from "react-apollo";
 import { Link } from "react-router-dom";
 import {
   GET_CHILD_ORGANIZATIONS,
@@ -10,7 +10,7 @@ import {
 
 const TreeNode = TreeSelect.TreeNode;
 
-const ApplicationList = ({ applications, onSelect }) => {
+const ApplicationList = ({ applications, onSelect }: any) => {
   const columns = [
     {
       title: "ID",
@@ -46,14 +46,32 @@ const ApplicationList = ({ applications, onSelect }) => {
   );
 };
 
-class SelectApplicationModal extends Component {
-  state = {
-    selectedQuestion: null,
-    selectedOrganization: null,
-    applications: []
-  };
+interface SelectApplicationModalProps extends ApolloProviderProps<any> {
+  onConfirm?: (a: any) => void
+  visible?: any,
+  onCancel?: any,
+  getApplications?: any,
+  organizationHierarchy?: any
+}
 
-  onSelect = selectedQuestion => {
+interface SelectApplicationModalState {
+  selectedQuestion?: any,
+  selectedOrganization?: any,
+  applications?: Array<any>
+}
+
+class SelectApplicationModal extends React.Component<SelectApplicationModalProps, SelectApplicationModalState> {
+  constructor(props: SelectApplicationModalProps) {
+    super(props)
+    this.state = {
+      selectedQuestion: null,
+      selectedOrganization: null,
+      applications: []
+    };
+  }
+
+
+  onSelect = (selectedQuestion: any) => {
     this.setState({
       selectedQuestion: selectedQuestion
     });
@@ -63,7 +81,7 @@ class SelectApplicationModal extends Component {
     this.props.onConfirm(this.state.selectedQuestion);
   };
 
-  onOrganizationChanges = async organizationId => {
+  onOrganizationChanges = async (organizationId: any) => {
     this.setState({
       selectedOrganization: organizationId
     });
@@ -82,16 +100,16 @@ class SelectApplicationModal extends Component {
     });
   };
 
-  addKeys = org => {
+  addKeys = (org: any) => {
     return {
       title: org.name,
       value: org.id,
       key: org.id,
-      children: org.children.map(child => this.addKeys(child))
+      children: org.children.map((child: any) => this.addKeys(child))
     };
   };
 
-  createOrganizationTree = organization => {
+  createOrganizationTree = (organization: any) => {
     const org = this.addKeys(organization);
     return [org];
   };
