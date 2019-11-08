@@ -1,16 +1,37 @@
 import React, { Component, Fragment } from 'react';
 import { Input, Button, Alert, Col } from 'antd';
 import { withRouter } from 'react-router-dom';
-import { withApollo, graphql, compose, mutate } from 'react-apollo';
+import { withApollo, graphql, compose, ApolloProviderProps } from 'react-apollo';
 import { RULE_ATTRIBUTES, CREATE_RULE, createRule, createSegment, UPDATE_RULE, UPDATE_SEGMENT } from '../../../query/audience';
 import './style.css';
 import { SEGMENT_LIST } from '../../../utils/RouterConstants';
 import { WalkinQueryBuilder, CampaignHeader } from '@walkinsole/shared';
-import jwt from "jsonwebtoken";
+import * as jwt from "jsonwebtoken";
 import { GET_ALL_APPS_OF_ORGANIZATION } from "@walkinsole/walkin-core/src/PlatformQueries";
+import { RouteChildrenProps } from "react-router";
 
-class NewSegment extends Component {
-	constructor(props) {
+const { org_id, id }: any = jwt.decode(localStorage.getItem("jwt"));
+
+interface IProps extends RouteChildrenProps, ApolloProviderProps<any> {
+	allApplications: any
+	ruleAttributes: any
+	loading: any,
+	error: any
+
+}
+
+interface IState {
+	value: any
+	query: any
+	newSegmentError: any
+	isDuplicateSegment: boolean
+	errors: any
+	loading: boolean
+	loading1: boolean
+	update: boolean
+}
+class NewSegment extends Component<IProps, Partial<IState>> {
+	constructor(props: IProps) {
 		super(props);
 		this.state = {
 			value: '',
@@ -21,19 +42,19 @@ class NewSegment extends Component {
 			loading: false
 		};
 	}
-	logQuery = query => {
+	logQuery = (query: any) => {
 		this.state.errors.rule = ''
 		this.setState({
 			query: query,
 			newSegmentError: false,
 		});
 	};
-	onChange = e => {
+	onChange = (e: any) => {
 		this.state.errors.name = ''
 		this.setState({ value: e.target.value });
 	};
 
-	displayError = state => {
+	displayError = (state: any) => {
 		this.setState({ [state]: true }, () => {
 			setTimeout(() => {
 				this.setState({ [state]: false });
@@ -42,7 +63,7 @@ class NewSegment extends Component {
 	};
 
 	onNewSegment = () => {
-		let errors = {}
+		let errors: any = {}
 		const { value, query } = this.state;
 		let { client } = this.props;
 		if (!this.state.value || this.state.value.trim() == '') errors.name = "* this field is mandatory"
@@ -54,7 +75,6 @@ class NewSegment extends Component {
 			return
 		}
 		console.log(this.props.allApplications.organization.applications[0])
-		let org_id = jwt.decode(localStorage.getItem("jwt")).org_id;
 		this.setState({ loading1: true })
 		if (this.state.update) {
 			console.log("update segment/rule...")
@@ -154,7 +174,7 @@ class NewSegment extends Component {
 			if (location.state.update) this.setState({ update: true });
 			if (location.state.segmentSelected) {
 				let str = location.state.segmentSelected.rule.ruleConfiguration;
-				var mapObj = {
+				var mapObj: any = {
 					// ruleAttributeId: 'field',
 					attributeName: 'field',
 					attributeValue: 'value',
@@ -193,7 +213,7 @@ class NewSegment extends Component {
 		if (ruleAttributes)
 			attributeData = ruleAttributes &&
 				ruleAttributes.length > 0 &&
-				ruleAttributes.map(el => ({
+				ruleAttributes.map((el: any) => ({
 					name: el.attributeName,
 					key: el.id,
 					label: el.attributeName,
@@ -248,12 +268,12 @@ export default withRouter(
 							input: {
 								entityName: "CustomerSearch",
 								status: "ACTIVE",
-								organizationId: jwt.decode(localStorage.getItem("jwt")).org_id,
+								organizationId: org_id
 							}
 						}
 					}
 				},
-				props: ({ data: { loading, error, ruleAttributes } }) => ({
+				props: ({ data: { loading, error, ruleAttributes } }: any) => ({
 					loading,
 					ruleAttributes,
 					error,
@@ -265,12 +285,13 @@ export default withRouter(
 				options: props => {
 					return {
 						variables: {
-							id: jwt.decode(localStorage.getItem("jwt")).org_id
+							id: org_id
 						},
 						fetchPolicy: "cache-and-network"
 					};
 				}
 			}),
-		)(NewSegment)
-	)
+		)
+	)(NewSegment)
+
 );

@@ -1,9 +1,9 @@
-import React, { Fragment } from 'react';
-import { Row, Col, Button } from 'antd';
+import * as React from 'react';
+import { Row } from 'antd';
 import './style.css';
-import PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types';
 
-const CampaignHeader = ({ children }) => {
+const CampaignHeader = ({ children }: any) => {
 	return <Row className="campaignHeaderStyle">{children}</Row>;
 };
 

@@ -1,9 +1,12 @@
-import React, { Component } from 'react'
+import * as React from 'react'
 import { Upload, Button, Icon } from 'antd';
 import { Mutation } from 'react-apollo'
 
-class FileUpload extends Component {
-    constructor(props) {
+interface iProps {
+
+}
+class FileUpload extends React.Component<iProps, {}> {
+    constructor(props: iProps) {
         super(props);
     }
     render() {

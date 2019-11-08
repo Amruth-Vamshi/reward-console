@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import * as React from 'react'
 import './style.css'
 import { Card, Row, Col, Button, TimePicker, DatePicker, InputNumber, Input, Icon, Select, Form } from "antd";
 import moment from "moment";
@@ -31,8 +31,27 @@ const formItemLayout = {
 
 const Option = Select.Option;
 
-class Schedule extends React.Component {
-    constructor(props) {
+interface iProps {
+    saved?: boolean,
+    campaign?: any,
+    saveSchedule?: any,
+    scheduleData?: any,
+    wrappedComponentRef?: any,
+    submit?: any
+}
+
+interface iState {
+    repeatOn?: Array<any>
+    errors?: any,
+    repeatType?: string,
+    time?: string,
+    end?: string,
+    noOfOccurances?: number,
+    saved?: boolean
+}
+
+class Schedule extends React.Component<iProps, iState> {
+    constructor(props: iProps) {
         super(props);
         this.state = {
             errors: {},
@@ -45,21 +64,21 @@ class Schedule extends React.Component {
         };
     }
 
-    daySelected = e => this.state.repeatOn[e] ? "primary" : "default"
+    daySelected = (e: number) => this.state.repeatOn[e] ? "primary" : "default"
 
-    dClick = e => {
+    dClick = (e: number) => {
         let { repeatOn, errors } = this.state
         errors.repeatOn = ''
         repeatOn[e] = !repeatOn[e]
         this.setState({ repeatOn, errors, saved: false })
     }
 
-    handleChange = e => {
+    handleChange = (e: number) => {
         this.setState({ noOfOccurances: e, saved: false })
     }
 
     saveSchedule = () => {
-        let errors = {};
+        let errors: any = {};
 
         if (this.state.repeatType == "WEEKLY") {
             !this.state.repeatOn.find(i => i) ?
@@ -73,8 +92,8 @@ class Schedule extends React.Component {
         if (Object.keys(errors).length !== 0) {
             this.setState({ errors });
         } else {
-            let { repeatType, time, repeatOn, end, noOfOccurances } = this.state, days = []
-            let ScheduleData = { repeatType, time }
+            let { repeatType, time, repeatOn, end, noOfOccurances } = this.state, days: Array<any> = []
+            let ScheduleData: any = { repeatType, time }
             if (repeatType == "WEEKLY") {
                 repeatOn.map((day, i) => day && days.push(weekDays[i]))
                 ScheduleData.days = days
@@ -97,19 +116,19 @@ class Schedule extends React.Component {
         }
     }
 
-    componentWillReceiveProps = p => {
+    componentWillReceiveProps = (p: any) => {
         this.setState({ saved: p.saved })
     }
 
-    onChangeTime = (e, n) => {
+    onChangeTime = (e: string, n: any) => {
         this.state.errors.time = "";
         this.setState({ time: e, saved: false })
     }
-    handleOnEndChange = e => {
+    handleOnEndChange = (e: string) => {
         this.setState({ end: e, saved: false })
     }
 
-    handleTypeChange = e => {
+    handleTypeChange = (e: string) => {
         this.setState({ repeatType: e, saved: false })
     }
     render() {
@@ -130,7 +149,7 @@ class Schedule extends React.Component {
                                 value={this.state.repeatType} name="type" className="scheduleType"
                                 placeholder="Select Type" optionFilterProp="children"
                                 onChange={e => this.handleTypeChange(e)}
-                                filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                                filterOption={(input: any, option: any) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                             >
                                 <Option value="DAILY">Daily</Option>
                                 <Option value="WEEKLY">Weekly</Option>
@@ -165,7 +184,7 @@ class Schedule extends React.Component {
                                 value={this.state.end} name="type" className="scheduleEnd"
                                 placeholder="Select Type" optionFilterProp="children"
                                 onChange={e => this.handleOnEndChange(e)}
-                                filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                                filterOption={(input: any, option: any) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                             >
                                 <Option value="onEndDate">On End Date</Option>
                                 <Option value="afterOccurrences">After Occurrences</Option>

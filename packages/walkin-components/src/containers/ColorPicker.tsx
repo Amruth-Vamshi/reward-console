@@ -1,34 +1,32 @@
 import * as React from "react";
 import { ChromePicker, SketchPicker } from "react-color";
 import { ApolloProviderProps } from "react-apollo";
-const noop = () => {
-};
+const noop = () => {};
 
 const pickers: any = {
   chrome: ChromePicker,
-  sketch: SketchPicker,
+  sketch: SketchPicker
 };
 
 interface iProps extends ApolloProviderProps<any> {
-  color: string,
-  small: Boolean,
-  type: number,
-  position: string,
-  onChangeComplete?: any
-  onChange?: any
+  color: string;
+  small: Boolean;
+  type: number;
+  position: string;
+  onChangeComplete?: any;
+  onChange?: any;
 }
 
 interface iState {
-  displayColorPicker: Boolean,
-  color: String,
+  displayColorPicker: Boolean;
+  color: String;
 }
-
 
 export default class ColorPicker extends React.Component<iProps, iState> {
   static defaultProps = {
     onChange: noop,
     onChangeComplete: noop,
-    position: 'bottom',
+    position: "bottom"
   };
   handleClick = () => {
     this.setState({ displayColorPicker: !this.state.displayColorPicker });
@@ -49,7 +47,7 @@ export default class ColorPicker extends React.Component<iProps, iState> {
     super(props);
     this.state = {
       displayColorPicker: false,
-      color: props.color,
+      color: props.color
     };
   }
 
@@ -64,47 +62,47 @@ export default class ColorPicker extends React.Component<iProps, iState> {
 
     const styles: any = {
       color: {
-        display: 'inline-block',
-        width: small ? '16px' : '120px',
-        height: small ? '16px' : '24px',
-        verticalAlign: 'middle',
-        marginRight: '8px',
-        borderRadius: '2px',
-        padding: '2px',
-        boxShadow: '0 0 0 1px rgba(0,0,0,.1)',
-        background: this.state.color,
+        display: "inline-block",
+        width: small ? "16px" : "120px",
+        height: small ? "16px" : "24px",
+        verticalAlign: "middle",
+        marginRight: "8px",
+        borderRadius: "2px",
+        padding: "2px",
+        boxShadow: "0 0 0 1px rgba(0,0,0,.1)",
+        background: this.state.color
       },
       swatch: {
-        padding: '4px',
-        display: 'inline-block',
-        cursor: 'pointer',
+        padding: "4px",
+        display: "inline-block",
+        cursor: "pointer"
       },
       popover: {
-        position: 'absolute',
-        zIndex: '2',
+        position: "absolute",
+        zIndex: "2"
       },
       cover: {
-        position: 'fixed',
-        top: '0px',
-        right: '0px',
-        bottom: '0px',
-        left: '0px',
+        position: "fixed",
+        top: "0px",
+        right: "0px",
+        bottom: "0px",
+        left: "0px"
       },
       wrapper: {
-        position: 'inherit',
-        zIndex: '100',
-      },
+        position: "inherit",
+        zIndex: "100"
+      }
     };
 
-    if (position === 'top') {
-      styles.wrapper.transform = 'translateY(-100%)';
+    if (position === "top") {
+      styles.wrapper.transform = "translateY(-100%)";
       styles.wrapper.paddingBottom = 8;
     }
 
     const swatch = (
       <div style={styles.swatch} onClick={this.handleClick}>
         <span style={styles.color} />
-        <span>        {this.props.children}</span>
+        <span> {this.props.children}</span>
       </div>
     );
     const picker = this.state.displayColorPicker ? (
@@ -121,9 +119,19 @@ export default class ColorPicker extends React.Component<iProps, iState> {
       </div>
     ) : null;
 
-    if (position === 'top') {
-      return <div>{picker}{swatch}</div>;
+    if (position === "top") {
+      return (
+        <div>
+          {picker}
+          {swatch}
+        </div>
+      );
     }
-    return <div>{swatch}{picker}</div>;
+    return (
+      <div>
+        {swatch}
+        {picker}
+      </div>
+    );
   }
 }

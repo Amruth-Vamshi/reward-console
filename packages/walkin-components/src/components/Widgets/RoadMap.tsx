@@ -1,16 +1,17 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 import RoadMapItem from "./RoadMapItem";
-import {mediaList} from "../../routes/main/Widgets/data"
-import CardBox from "components/CardBox/index";
+import { CardBox } from "../CardBox";
 
-class RoadMap extends Component {
-
+interface IProps {
+  mediaList: any[];
+}
+interface IState {}
+class RoadMap extends Component<IProps, IState> {
   render() {
-
     const settings = {
       arrows: false,
       dots: true,
@@ -22,12 +23,11 @@ class RoadMap extends Component {
       slidesToScroll: 1
     };
     return (
-      <CardBox styleName="gx-card-full" heading={''}>
+      <CardBox styleName="gx-card-full" heading={""}>
         <Slider className="gx-slick-slider" {...settings}>
-          {mediaList.map((media, index) =>
-            <RoadMapItem key={index} data={media}/>
-          )
-          }
+          {this.props.mediaList.map((media, index) => (
+            <RoadMapItem key={index} data={media} />
+          ))}
         </Slider>
       </CardBox>
     );

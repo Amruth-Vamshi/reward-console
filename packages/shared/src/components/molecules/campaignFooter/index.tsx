@@ -1,8 +1,18 @@
 import * as React from "react";
-import { Row, Col, Button } from 'antd';
+import { Button } from 'antd';
 import './foo.css';
 
-const CampaignFooter = ({ nextButtonText, loading, saveDraftText, saveDraftButtonClass, nextButtonClass, saveDraft, goToPage2 }) => {
+interface iProps {
+	nextButtonText?: String,
+	loading?: any,
+	saveDraftText?: String,
+	saveDraftButtonClass?: any,
+	nextButtonClass?: any,
+	saveDraft?: any,
+	goToPage2?: any
+}
+
+const CampaignFooter = ({ nextButtonText, loading, saveDraftText, saveDraftButtonClass, nextButtonClass, saveDraft, goToPage2 }: iProps) => {
 	console.log("loading", loading)
 	return (
 		<div className="">

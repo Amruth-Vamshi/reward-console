@@ -1,6 +1,5 @@
 import * as React from "react";
-
-import { Widget }  from  "components/Widget/index";
+import { Widget } from "../Widget";
 
 const PhotosCard = () => {
   return (

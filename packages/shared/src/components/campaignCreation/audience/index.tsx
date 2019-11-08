@@ -1,7 +1,24 @@
-import React, { Component, Fragment } from 'react';
+import *  as React from 'react';
 import { Divider, Button, Upload } from 'antd';
 import './style.css';
 import { AddAndDeleteSelectDynamically, WalkinQueryBuilder } from '@walkinsole/shared';
+
+interface iProps {
+	audienceTitle?: string,
+	segmentSubTitle?: string,
+	onValuesSelected?: any,
+	segmentSelectionData?: any,
+	uploadCsvText?: string,
+	uploadProps?: any,
+	segmentFilterText?: string,
+	segmentFilterSubText?: string,
+	attributeData?: any,
+	logQuery?: any,
+	selectedSegments?: any,
+	ruleQuery?: any,
+	audienceCount?: any,
+	errors?: any
+}
 
 const Audience = ({
 	audienceTitle,
@@ -18,7 +35,7 @@ const Audience = ({
 	ruleQuery,
 	audienceCount,
 	errors
-}) => {
+}: iProps) => {
 	return (
 		<div>
 			<div>

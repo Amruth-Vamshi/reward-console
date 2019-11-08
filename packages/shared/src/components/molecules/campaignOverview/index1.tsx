@@ -1,14 +1,16 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import * as React from "react";
 import { Row, Col, Typography } from "antd";
-const { Title } = Typography;
-import { CustomScrollbars } from "@walkinsole/walkin-components";
 import moment from "moment";
 import './style.css'
-import { identifier } from "@babel/types";
 // import Moment from "react-moment";
 
-export default class Overview extends Component {
+const { Title } = Typography;
+
+interface iProps {
+  campaign?: any
+}
+
+export default class Overview extends React.Component<iProps, {}> {
   render() {
     console.log("Overview page");
     const { campaign } = this.props;

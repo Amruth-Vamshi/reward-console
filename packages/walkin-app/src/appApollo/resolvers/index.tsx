@@ -172,7 +172,7 @@ const signIn = async (_, { input }, { client }) => {
       return false;
     }
     const jwt = data.data.login.jwt;
-    const { id, org_id } = decode(jwt);
+    const { id, org_id } = decode(jwt) as any;
     const query = gql`
       query auth {
         auth {
@@ -202,9 +202,9 @@ const signIn = async (_, { input }, { client }) => {
   }
 };
 
-const hideMessage = (_, input, { client }) => { };
+const hideMessage = (_, input, { client }) => {};
 
-const showAuthLoader = (_, input, { client }) => { };
+const showAuthLoader = (_, input, { client }) => {};
 
 const setRedirectRoute = async (_, { route }, { client }) => {
   await client.writeQuery({

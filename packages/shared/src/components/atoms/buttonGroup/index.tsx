@@ -1,11 +1,11 @@
-import React, { Fragment } from 'react';
-import { Button, Radio } from 'antd';
+import * as React from 'react';
+import { Radio } from 'antd';
 import { toNumber } from '@walkinsole/walkin-components/src/util/common';
 import './style.css';
 
-const ButtonGroups = ({ selectedPriorityButton = 3, handleChange, maxPriority = 99 }) => {
+const ButtonGroups = ({ selectedPriorityButton = 3, handleChange, maxPriority = 99 }: any) => {
 	var selectedOption = toNumber(selectedPriorityButton);
-	const noop = e => {
+	const noop = (e: any) => {
 		console.log(e);
 	};
 	if (!selectedOption) selectedOption = 1

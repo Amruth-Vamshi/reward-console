@@ -14,6 +14,9 @@ import { compose, graphql } from "react-apollo";
 const SubMenu = Menu.SubMenu;
 
 class HorizontalNav extends Component {
+  static propTypes: any;
+  static defaultProps: any;
+
   getNavStyleSubMenuClass = navStyle => {
     switch (navStyle) {
       case NAV_STYLE_DEFAULT_HORIZONTAL:

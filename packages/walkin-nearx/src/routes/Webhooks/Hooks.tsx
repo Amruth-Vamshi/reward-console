@@ -8,7 +8,7 @@ import {
   UPDATE_WEBHOOK,
   DELETE_WEBHOOK
 } from "@walkinsole/walkin-core/src/PlatformQueries";
-import jwt from "jsonwebtoken";
+import * as jwt from "jsonwebtoken";
 import { withApollo } from "react-apollo";
 // import { nearXClient as client } from "../../nearXApollo";
 const { TextArea } = Input;

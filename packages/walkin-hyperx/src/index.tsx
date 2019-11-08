@@ -17,8 +17,13 @@ import SegmentList from './containers/segment/segmentList';
 import NewSegment from './containers/segment/newSegment';
 import OfferList from './containers/offer/offerList';
 import NewOffer from './containers/offer/newoffer';
+import { RouteChildrenProps } from "react-router";
 
-const App = ({ match }) => {
+interface HyperXRoutesProps extends RouteChildrenProps {
+
+}
+
+const HyperXRoutes: React.FunctionComponent<HyperXRoutesProps> = ({ match }) => {
 	return (
 		<div className="NearX-Main">
 			<Switch>
@@ -38,4 +43,4 @@ const App = ({ match }) => {
 	);
 };
 
-export default App;
+export default HyperXRoutes;

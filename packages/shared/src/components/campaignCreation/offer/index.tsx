@@ -1,5 +1,5 @@
-import React, { Component, Fragment } from 'react';
-import { Col, Row, Form, Input, Checkbox, Select } from "antd";
+import * as React from 'react';
+import { Form, Checkbox, Select } from "antd";
 
 const formItemLayout = {
 	labelCol: { span: 6 },
@@ -12,14 +12,28 @@ const dateItemLayout = {
 
 const Option = Select.Option;
 
-export default class Offers extends Component {
-	constructor(props) {
+interface iProps {
+	noOfferRequired?: Boolean,
+	offerChecked?: any,
+	offersList?: Array<any>,
+	subTitle?: any,
+	offer?: any,
+	handleOnOfferChange?: any,
+	errors?: any
+}
+
+interface iState {
+	check?: Boolean
+}
+
+export default class Offers extends React.Component<iProps, iState> {
+	constructor(props: iProps) {
 		super(props)
 		this.state = {
 			check: this.props.noOfferRequired ? this.props.noOfferRequired : false
 		}
 	}
-	onChange = e => {
+	onChange = (e: any) => {
 		this.props.offerChecked(e.target.checked)
 		this.setState({ check: e.target.checked })
 	}
@@ -47,7 +61,7 @@ export default class Offers extends Component {
 								value={this.props.offer} name="type" style={{ width: '100%' }}
 								placeholder="Select Type" optionFilterProp="children"
 								onChange={e => this.props.handleOnOfferChange(e)} size='large'
-								filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+								filterOption={(input: any, option: any) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
 							>
 								{options}
 							</Select>

@@ -11,7 +11,7 @@ interface IProps {
 
 interface IState {}
 
-class InstantSearch extends React.Component<IProps, IState> {
+export class InstantSearch extends React.Component<IProps, IState> {
   onChange(data: any, e: any) {
     let currentList = [];
     let newList = [];

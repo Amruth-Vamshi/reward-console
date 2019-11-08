@@ -1,8 +1,22 @@
-import React, { Fragment } from 'react';
+import * as React from 'react';
 import PrioritySelection from '../../molecules/prioritySelection';
 import TestAndControl from '../../molecules/testAndControl';
 import './style.css';
-import { Card } from "antd";
+
+interface iProps {
+	buttons?: any,
+	promptText?: string,
+	tootTipText?: any,
+	prioritySelectionTitle?: any,
+	priorityButtonText?: string,
+	testControlTitle?: any,
+	testControlPercentage?: any,
+	testControlPercentageEditText?: any,
+	priorityNumberInvalidErrorMessage?: any,
+	onTestAndControlEdit?: any,
+	handleChange?: any,
+	priorityChosen?: any
+}
 
 const CampaignPriority = ({
 	buttons,
@@ -17,9 +31,9 @@ const CampaignPriority = ({
 	onTestAndControlEdit,
 	handleChange,
 	priorityChosen
-}) => {
+}: iProps) => {
 	return (
-		<Fragment>
+		<React.Fragment>
 			<div className="campaignPriorityContainerStyle prioritySection">
 				<PrioritySelection
 					buttons={buttons}
@@ -40,7 +54,7 @@ const CampaignPriority = ({
 					onTestAndControlEdit={onTestAndControlEdit}
 				/>
 			</div>
-		</Fragment>
+		</React.Fragment>
 	);
 };
 
