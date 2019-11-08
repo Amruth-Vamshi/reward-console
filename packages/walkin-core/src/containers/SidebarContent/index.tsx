@@ -1,6 +1,6 @@
-import React, { Component } from "react";
+import * as React from "react";
 import { Menu } from "antd";
-import { Link } from "react-router-dom";
+import { Link, RouteComponentProps } from "react-router-dom";
 import {
   CustomScrollbars,
   Auxiliary,
@@ -14,12 +14,25 @@ import {
   NAV_STYLE_NO_HEADER_MINI_SIDEBAR,
   THEME_TYPE_LITE
 } from "@walkinsole/walkin-components/src/constants/ThemeSetting";
-import { compose, graphql, withApollo } from "react-apollo";
+import { compose, graphql } from "react-apollo";
 import gql from "graphql-tag";
-import jwt from "jsonwebtoken";
+import * as jwt from "jsonwebtoken";
+import { MenuTheme } from "antd/lib/menu";
 
-class SidebarContent extends Component {
-  constructor(props) {
+
+interface SidebarContentProps extends RouteComponentProps {
+  themeType: any,
+  navStyle: any,
+  pathname: any
+}
+
+interface SidebarContentState {
+  orgId?: any,
+  userId?: any
+}
+
+class SidebarContent extends React.Component<SidebarContentProps, SidebarContentState> {
+  constructor(props: SidebarContentProps) {
     super(props);
     this.state = {
       orgId: "",
@@ -28,11 +41,12 @@ class SidebarContent extends Component {
   }
 
   componentWillMount() {
-    const { id, org_id } = jwt.decode(localStorage.getItem("jwt"));
+    const jwtToken = localStorage.getItem("jwt")
+    const { id, org_id }: any = jwt.decode(jwtToken);
     this.setState({ userId: id, orgId: org_id });
   }
 
-  getNoHeaderClass = navStyle => {
+  getNoHeaderClass = (navStyle: any) => {
     if (
       navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR ||
       navStyle === NAV_STYLE_NO_HEADER_EXPANDED_SIDEBAR
@@ -42,7 +56,7 @@ class SidebarContent extends Component {
     return "";
   };
 
-  getNavStyleSubMenuClass = navStyle => {
+  getNavStyleSubMenuClass = (navStyle: any) => {
     if (navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR) {
       return "gx-no-header-submenu-popup";
     }
@@ -57,9 +71,9 @@ class SidebarContent extends Component {
     const defaultOpenKeys = selectedKeys.split("/");
     let isSettingsSideBar = defaultOpenKeys[1] === "settings";
 
-    let sidebarTheme = "dark";
+    let sidebarTheme: MenuTheme = "dark";
     if (themeType === THEME_TYPE_LITE || isSettingsSideBar)
-      sidebarTheme = "lite";
+      sidebarTheme = "light";
 
     if (!isSettingsSideBar) {
       return (
@@ -88,7 +102,7 @@ class SidebarContent extends Component {
           <Menu.Item key="organizationInfo">
             <Link
               to={`/core/organization/${orgId ? orgId : ""}`}
-              // to="core/organization"
+            // to="core/organization"
             >
               <i className="icon icon-inbox" />
               {/* <IntlMessages id="sidebar.nearx" /> */}
@@ -167,9 +181,9 @@ class SidebarContent extends Component {
   }
 }
 
-SidebarContent.propTypes = {};
 
-const mapStateToProps = ({ settings, ownProps }) => {
+
+const mapStateToProps = ({ settings, ownProps }: any) => {
   const { navStyle, themeType, locale } = settings.settings;
   const { pathname } = ownProps.location;
   return { navStyle, themeType, locale, pathname };
@@ -191,12 +205,10 @@ const GET_SETTINGS = gql`
 `;
 
 export default withRouter(
-  withApollo(
-    compose(
-      graphql(GET_SETTINGS, {
-        props: mapStateToProps,
-        name: "settings"
-      })
-    )(SidebarContent)
-  )
+  compose(
+    graphql(GET_SETTINGS, {
+      props: mapStateToProps,
+      name: "settings"
+    })
+  )(SidebarContent)
 );

@@ -1,10 +1,15 @@
-import React, { Component } from "react";
+import * as React from "react";
 import { Row, Col, Input, Empty, Spin, Icon, Button } from "antd";
 import UserCard from "./UserCard";
 
 const Search = Input.Search;
 
-export default class UserInfo extends Component {
+interface UserInfoProps {
+  data: any
+  spin?: any
+}
+
+export default class UserInfo extends React.Component<UserInfoProps, {}> {
   render() {
     return (
       <div>
@@ -42,10 +47,10 @@ export default class UserInfo extends Component {
             <br /> <br /> <br />{" "}
           </div>
         ) : this.props.data && this.props.data.length ? (
-          this.props.data.map((user, key) => <UserCard key={key} data={user} />)
+          this.props.data.map((user: any, key: any) => <UserCard key={key} data={user} />)
         ) : (
-          <Empty />
-        )}
+              <Empty />
+            )}
       </div>
     );
   }

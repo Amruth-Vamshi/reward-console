@@ -2,20 +2,21 @@ import * as React from "react";
 import PropTypes from "prop-types";
 
 export const WidgetHeader = ({ title, extra, styleName }) => {
-
   return (
     <h2 className={`gx-entry-title ${styleName}`}>
       {title}
-      <span className="gx-text-primary gx-fs-md gx-pointer gx-ml-auto gx-d-none gx-d-sm-block">{extra}</span>
+      <span className="gx-text-primary gx-fs-md gx-pointer gx-ml-auto gx-d-none gx-d-sm-block">
+        {extra}
+      </span>
     </h2>
-  )
+  );
 };
 
 WidgetHeader.defaultProps = {
-  styleName: '',
+  styleName: ""
 };
 
 WidgetHeader.propTypes = {
   title: PropTypes.node,
-  extra: PropTypes.node,
+  extra: PropTypes.node
 };

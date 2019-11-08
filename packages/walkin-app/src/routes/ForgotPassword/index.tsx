@@ -3,7 +3,7 @@ import { Form, Icon, Input, Button, Checkbox } from "antd";
 import { compose, graphql, Mutation, MutationFunc } from "react-apollo";
 import gql from "graphql-tag";
 import { Link } from "react-router-dom";
-import IntlMessages from "@walkinsole/walkin-components/src/util/IntlMessages";
+import { IntlMessages } from "@walkinsole/walkin-components";
 import { History } from "history";
 import { FormComponentProps } from "antd/lib/form";
 
@@ -11,7 +11,7 @@ interface IProps extends FormComponentProps {
   history?: History;
 }
 
-interface IState {}
+interface IState { }
 
 class ForgotPassword extends React.Component<IProps, IState> {
   componentWillMount() {

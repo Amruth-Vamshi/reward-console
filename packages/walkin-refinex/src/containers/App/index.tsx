@@ -1,9 +1,14 @@
-import React, { Component } from 'react'
+import * as React from 'react'
 import { Redirect, Route, Switch } from "react-router-dom";
 import AppCreation from './AppCreation'
 import AppList from './AppsList'
 import "./app.css"
-export default class AppIndex extends Component {
+import { RouteChildrenProps } from 'react-router';
+
+interface AppIndexProps extends RouteChildrenProps {
+
+}
+export default class AppIndex extends React.Component<AppIndexProps, {}> {
     render() {
         return (
             <div className="RefineX-Main">

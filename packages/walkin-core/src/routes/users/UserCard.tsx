@@ -1,11 +1,21 @@
-import React, { Component } from "react";
+import * as React from "react";
 import { Col, Row, Dropdown, Menu, Avatar, Button, Divider } from "antd";
+import { RouterProps } from "react-router";
 
 const options = [
   'Edit',
   // 'Delete',
 ];
-export default class UserCard extends Component {
+
+interface UserCardProps extends RouterProps {
+  data?: any
+  key?: any
+}
+
+class UserCard extends React.Component<Partial<UserCardProps>, {}> {
+  constructor(props: UserCardProps) {
+    super(props)
+  }
 
   menus = () => (<Menu onClick={(e) => {
     if (e.key === 'Edit') {
@@ -27,7 +37,7 @@ export default class UserCard extends Component {
     return bgColor;
   }
 
-  status_bg(status) {
+  status_bg(status: string) {
     switch (status) {
       case 'pending': return '#cea500'
       case 'blocked': return 'red'
@@ -91,3 +101,6 @@ export default class UserCard extends Component {
     );
   }
 }
+
+
+export default UserCard;

@@ -1,33 +1,46 @@
 import * as React from "react";
+import { Widget } from "../../Widget";
 
-import { Widget } from "components/Widget/index";
+interface IProps {
+  chartProperties: any;
+}
+interface IState {
+  isHide: boolean;
+  children: any;
+  chartProperties: {
+    prize: string;
+    title: string;
+    bgColor: string;
+    styleName: string;
+    desc: string;
+    percent: number;
+  };
+}
 
-class ChartCard extends React.Component {
-
-  state = {
+class ChartCard extends React.Component<IProps, IState> {
+  readonly state = {
     isHide: false,
-    children: '',
+    children: "",
     chartProperties: {
-      prize: '',
-      title: '',
-      bgColor: '',
-      styleName: '',
-      desc: '',
-      percent: '',
+      prize: "",
+      title: "",
+      bgColor: "",
+      styleName: "",
+      desc: "",
+      percent: 0
     }
-  }
-
+  };
 
   componentDidMount() {
-    this.setState((previousState) => ({
+    this.setState(previousState => ({
       chartProperties: this.props.chartProperties,
-      children: this.props.children,
+      children: this.props.children
     }));
   }
 
   handleToggle() {
-    this.setState((previousState) => ({
-      isHide: !previousState.isHide,
+    this.setState(previousState => ({
+      isHide: !previousState.isHide
     }));
   }
 
@@ -37,27 +50,48 @@ class ChartCard extends React.Component {
     return (
       <Widget styleName={`gx-card-full`}>
         <div
-          className={isHide === true ? `gx-fillchart gx-bg-${bgColor} gx-fillchart-nocontent` : `gx-fillchart gx-bg-${bgColor} gx-overlay-fillchart`}>
-
+          className={
+            isHide === true
+              ? `gx-fillchart gx-bg-${bgColor} gx-fillchart-nocontent`
+              : `gx-fillchart gx-bg-${bgColor} gx-overlay-fillchart`
+          }
+        >
           <div className="ant-card-head-title">{title}</div>
           {children}
           <div className="gx-fillchart-content">
             <div className="ant-card-head-title gx-mb-3">{title}</div>
-            <h2 className="gx-mb-2 gx-fs-xxxl gx-font-weight-medium">{prize}</h2>
+            <h2 className="gx-mb-2 gx-fs-xxxl gx-font-weight-medium">
+              {prize}
+            </h2>
             {percent > 0}
-            <p className="gx-mb-0 gx-fs-sm"><span
-              className={`gx-font-weight-medium gx-fs-md gx-chart-${styleName}`}>{percent}
-              {percent > 0 ? <i className="icon icon-menu-up gx-fs-sm" /> : null}</span>{desc}</p>
+            <p className="gx-mb-0 gx-fs-sm">
+              <span
+                className={`gx-font-weight-medium gx-fs-md gx-chart-${styleName}`}
+              >
+                {percent}
+                {percent > 0 ? (
+                  <i className="icon icon-menu-up gx-fs-sm" />
+                ) : null}
+              </span>
+              {desc}
+            </p>
           </div>
-          <div className="gx-fillchart-btn-close" onClick={this.handleToggle.bind(this)}><i
-            className="icon icon-close" /></div>
-          <div className="gx-fillchart-btn" onClick={this.handleToggle.bind(this)}><i
-            className={`icon icon-stats gx-fs-xxxl`} />
+          <div
+            className="gx-fillchart-btn-close"
+            onClick={this.handleToggle.bind(this)}
+          >
+            <i className="icon icon-close" />
+          </div>
+          <div
+            className="gx-fillchart-btn"
+            onClick={this.handleToggle.bind(this)}
+          >
+            <i className={`icon icon-stats gx-fs-xxxl`} />
           </div>
         </div>
       </Widget>
     );
   }
-};
+}
 
 export default ChartCard;

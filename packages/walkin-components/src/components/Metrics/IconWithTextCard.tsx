@@ -1,8 +1,9 @@
 import * as React from "react";
 
-import { Widget } from "components/Widget/index";
 import { THEME_TYPE_DARK } from "../../constants/ThemeSetting";
 import gql from "graphql-tag";
+import { Widget } from "../Widget";
+import { graphql } from "react-apollo";
 
 const IconWithTextCard = props => {
   const { icon, title, subTitle } = props;
@@ -29,7 +30,7 @@ const IconWithTextCard = props => {
   );
 };
 
-const mapStateToProps = ({ settings }) => {
+const mapStateToProps = ({ settings }: any) => {
   const { themeType } = settings.settings;
   return { themeType };
 };

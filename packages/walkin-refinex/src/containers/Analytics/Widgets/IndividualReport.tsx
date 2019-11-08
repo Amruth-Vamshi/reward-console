@@ -1,19 +1,19 @@
 
-import React, { Component } from 'react'
+import * as React from 'react'
 import { Col, Row, DatePicker, Button, Icon, Empty, Spin, Table, Card, Select, Radio, Typography, Progress } from "antd";
 import { IconWithTextCard, Widget, ChartCard, Auxiliary, WidgetHeader } from "@walkinsole/walkin-components";
 import { graphql, compose, withApollo } from "react-apollo";
-import { GET_ANALYTICS, ANALYTICS } from "@walkinsole/walkin-core/src/PlatformQueries";
-import moment from 'moment';
+import { GET_ANALYTICS } from "@walkinsole/walkin-core/src/PlatformQueries";
+import * as moment from 'moment';
 const dateFormat = 'YYYY/MM/DD';
-import jwt from "jsonwebtoken";
+import * as jwt from "jsonwebtoken";
 import Cylinder3DChart from '@walkinsole/walkin-nearx/src/routes/Dashboard/Cylinder3DChart'
 import PieChartWithAngle from "../Charts/PieChartWithPaddingAngle";
 import PieChartActiveShape from "../Charts/CustomActiveShapePieChart";
 import SimpleRadialBarChart from "../Charts/SimpleRadialBarChart";
 import MixBarChart from "../Charts/StackedBarChart";
-export default class analytics extends Component {
-    handleChange = e => {
+export default class analytics extends React.Component {
+    handleChange = (e: any) => {
         console.log(e);
     }
     render() {
@@ -59,7 +59,7 @@ export default class analytics extends Component {
 
         >
             <Row>
-                <Col g={13} md={13} sm={24} xs={24}>
+                <Col lg={13} md={13} sm={24} xs={24}>
                     <div className="gx-mb-2  gx-pt-2" >
                         <Text disabled style={{
                             marginBottom: "15px"
@@ -148,7 +148,7 @@ export default class analytics extends Component {
                                     <p></p>
                                     <Text style={{ fontSize: "25px" }}>{percent}</Text>
                                     <br />
-                                    <Text style={{ fontSize: "25px" }} level={3}>NPS rate</Text>
+                                    <Text style={{ fontSize: "25px" }} >NPS rate</Text>
                                 </React.Fragment>
                             )} />
                         {/* <SimpleRadialBarChart /> */}

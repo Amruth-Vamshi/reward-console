@@ -5,8 +5,23 @@ import { Redirect, Link } from "react-router-dom";
 import { USER_DATA } from "@walkinsole/walkin-core/src/PlatformQueries";
 import jwt from "jsonwebtoken";
 import { withRouter } from "react-router-dom";
+import { History } from "history";
+import ApolloClient from "apollo-client";
 
-class UserInfo extends Component {
+interface IProps {
+  history: History;
+  client: ApolloClient<any>;
+}
+
+interface IState {
+  firstName?: string;
+  lastName?: string;
+  user?: any;
+  userId?: string;
+  org_id?: string;
+}
+
+class UserInfo extends Component<IProps, IState> {
   constructor(props) {
     super(props);
     this.state = {
@@ -29,7 +44,7 @@ class UserInfo extends Component {
   };
 
   componentWillMount() {
-    const { id, org_id } = jwt.decode(localStorage.getItem("jwt"));
+    const { id, org_id } = jwt.decode(localStorage.getItem("jwt")) as any;
     this.setState({ userId: id, org_id });
     id
       ? this.props.client

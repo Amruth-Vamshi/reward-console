@@ -1,14 +1,13 @@
 import * as React from "react";
-import {Card} from "antd";
+import { Card } from "antd";
 import PropTypes from "prop-types";
 
-
-const Metrics = ({title, styleName, children}) => {
+const Metrics = ({ title, styleName, children }) => {
   return (
     <Card title={title} className={`gx-card-metrics ${styleName}`}>
       {children}
     </Card>
-  )
+  );
 };
 
 export default Metrics;

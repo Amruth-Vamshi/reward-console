@@ -22,7 +22,10 @@ const setValuesFromProps = (props: IProps): IState => {
     errors: props.errors ? props.errors : {}
   };
 };
-class AddAndDeleteSelectDynamically extends React.Component<IProps, IState> {
+export class AddAndDeleteSelectDynamically extends React.Component<
+  IProps,
+  IState
+> {
   readonly state = setValuesFromProps(this.props);
 
   constructor(props: IProps) {

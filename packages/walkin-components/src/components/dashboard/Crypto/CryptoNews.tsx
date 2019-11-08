@@ -2,9 +2,10 @@ import React, { Component } from "react";
 import { Radio } from "antd";
 
 import { Widget } from "../../Widget/index";
-import CircularProgress from "../../CircularProgress";
+
 import CryptoNewsItem from "./CryptoNewsItem";
 import { any } from "prop-types";
+import { CircularProgress } from "../../..";
 
 export class CryptoNews extends Component {
   state = {
@@ -57,10 +58,9 @@ export class CryptoNews extends Component {
         {loader ? (
           <CircularProgress className="gx-loader-400" />
         ) : (
-            news.map((data, index) => <CryptoNewsItem key={index} data={data} />)
-          )}
+          news.map((data, index) => <CryptoNewsItem key={index} data={data} />)
+        )}
       </Widget>
     );
   }
 }
-

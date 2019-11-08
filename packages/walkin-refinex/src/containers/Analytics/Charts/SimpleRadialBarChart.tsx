@@ -8,7 +8,7 @@ const SimpleRadialBarChart = () => (
   <ResponsiveContainer width="100%" height={300}>
     <RadialBarChart startAngle={180} endAngle={0} innerRadius={120} barSize={10}
       data={data04}>
-      <RadialBar minAngle={55} background clockWise={false} dataKey='uv' />
+      <RadialBar background dataKey='uv' />
       <Legend width={200} height={240} align="center" layout='vertical' verticalAlign='middle'
         wrapperStyle={style} />
     </RadialBarChart>

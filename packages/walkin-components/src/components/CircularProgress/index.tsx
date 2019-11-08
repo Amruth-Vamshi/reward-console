@@ -1,7 +1,7 @@
 import * as React from "react";
-import loader from "../../assets/images/loader.svg";
+const loader = require("./../assets/images/loader.svg") as string;
 
-export const CircularProgress = ({ className }) => (
+export const CircularProgress = ({ className }: { className: any }) => (
   <div className={`loader ${className}`}>
     <img src={loader} alt="loader" />
   </div>

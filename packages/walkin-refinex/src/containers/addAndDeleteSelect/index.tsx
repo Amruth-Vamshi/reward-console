@@ -1,12 +1,21 @@
-import React, { Fragment } from "react";
+import * as React from "react";
 import { Select, Button, Icon } from "antd";
 import "./style.css";
-import PropTypes from "prop-types";
+import * as PropTypes from "prop-types";
 
 const { Option } = Select;
 
-class AddAndDeleteSelectDynamically extends React.Component {
-  constructor(props) {
+interface AddAndDeleteSelectDynamicallyProps {
+  onValuesSelected?: (a: any) => void
+  segmentSelectionData: any
+}
+
+interface AddAndDeleteSelectDynamicallyState {
+  values?: any
+}
+
+class AddAndDeleteSelectDynamically extends React.Component<AddAndDeleteSelectDynamicallyProps, AddAndDeleteSelectDynamicallyState> {
+  constructor(props: AddAndDeleteSelectDynamicallyProps) {
     super(props);
     this.state = { values: ["Choose from the list"] };
   }
@@ -14,14 +23,14 @@ class AddAndDeleteSelectDynamically extends React.Component {
     this.setState(prevState => ({ values: [...prevState.values, ""] }));
   }
 
-  handleChange(i, value) {
+  handleChange(i: any, value: any) {
     let values = [...this.state.values];
     values[i] = value;
     this.setState({ values });
     this.props.onValuesSelected(values);
   }
 
-  removeClick(i, e) {
+  removeClick(i: any, e: any) {
     var array = [...this.state.values]; // make a separate copy of the array
     if (i !== -1) {
       array.splice(i, 1);
@@ -31,18 +40,18 @@ class AddAndDeleteSelectDynamically extends React.Component {
   render() {
     const { segmentSelectionData } = this.props;
     return (
-      <Fragment>
-        {this.state.values.map((el, i) => {
+      <React.Fragment>
+        {this.state.values.map((el: any, i: any) => {
           return (
             <div key={i} className="selectSegmentBoxContainer">
               <Select
-                classname="segmentSelectBoxStyle"
+                className="segmentSelectBoxStyle"
                 value={el || ""}
                 style={{ width: 200 }}
                 onChange={this.handleChange.bind(this, i)}
               >
                 {segmentSelectionData &&
-                  segmentSelectionData.map((val, i) => {
+                  segmentSelectionData.map((val: any, i: any) => {
                     return (
                       <Option key={i} value={val.name}>
                         {val.description}
@@ -61,18 +70,10 @@ class AddAndDeleteSelectDynamically extends React.Component {
         >
           Add
         </Button>
-      </Fragment>
+      </React.Fragment>
     );
   }
 }
-AddAndDeleteSelectDynamically.propTypes = {
-  onValuesSelected: PropTypes.func,
-  segmentSelectionData: PropTypes.array
-};
 
-AddAndDeleteSelectDynamically.defaultProps = {
-  onValuesSelected: () => {},
-  segmentSelectionData: []
-};
 
 export default AddAndDeleteSelectDynamically;

@@ -1,10 +1,16 @@
-import React, { Component } from "react";
+import * as React from "react";
 import { Query } from "react-apollo";
 import { gql } from "apollo-boost";
 import RefineXRoutes from "./routes";
-import { Redirect, Route, Switch } from "react-router-dom";
+import { Redirect, Route, Switch, RouteProps } from "react-router-dom";
 import "./index.css"
-export default class extends Component {
+import { RouteChildrenProps } from "react-router";
+
+
+interface HomeProps extends RouteChildrenProps {
+
+}
+export default class extends React.Component<HomeProps, {}> {
     render() {
         return (
             <div>
