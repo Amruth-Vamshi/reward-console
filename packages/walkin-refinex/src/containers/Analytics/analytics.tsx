@@ -1,28 +1,12 @@
 
-import React, { Component } from 'react'
+import * as React from 'react'
 import { Col, Row, DatePicker, Button, Icon, Empty, Spin, Table, Card, Select, Radio } from "antd";
 import { IconWithTextCard, Widget, ChartCard, Auxiliary, WidgetHeader } from "@walkinsole/walkin-components";
-import {
-    ResponsiveContainer,
-    PieChart,
-    Pie,
-    Sector,
-    Cell,
-    Bar,
-    BarChart,
-    Legend,
-    CartesianGrid,
-    Tooltip,
-    XAxis,
-    YAxis,
-    RadialBarChart,
-    RadialBar
-} from "recharts";
-import { graphql, compose, withApollo } from "react-apollo";
-import { GET_ANALYTICS, ANALYTICS } from "@walkinsole/walkin-core/src/PlatformQueries";
-import moment from 'moment';
+import { graphql, compose, withApollo, ApolloProviderProps } from "react-apollo";
+import { GET_ANALYTICS } from "@walkinsole/walkin-core/src/PlatformQueries";
+import * as moment from 'moment';
 const dateFormat = 'YYYY/MM/DD';
-import jwt from "jsonwebtoken";
+import * as jwt from "jsonwebtoken";
 import Cylinder3DChart from '@walkinsole/walkin-nearx/src/routes/Dashboard/Cylinder3DChart'
 import PieChartWithAngle from "./Charts/PieChartWithPaddingAngle";
 import PieChartActiveShape from "./Charts/CustomActiveShapePieChart";
@@ -58,8 +42,24 @@ const style = {
     left: 350,
     lineHeight: '24px',
 };
-class analytics extends Component {
-    constructor(props) {
+
+interface analyticsProps extends ApolloProviderProps<any> {
+
+}
+
+interface analyticsState {
+    HOUR_OF_DAY_VS_EVENT_COUNT: number,
+    DAY_OF_WEEK_VS_EVENT_COUNT: number,
+    TOP_QUESTION: number,
+    startDate: any,
+    endDate: any,
+    org_id: string,
+    errors: any,
+    spin: boolean
+}
+
+class analytics extends React.Component<analyticsProps, Partial<analyticsState>> {
+    constructor(props: analyticsProps) {
         super(props)
         this.state = {
             HOUR_OF_DAY_VS_EVENT_COUNT: 0,
@@ -68,13 +68,14 @@ class analytics extends Component {
             startDate: moment().subtract(30, 'day'),
             endDate: moment(),
             org_id: '',
-            errors: {}
+            errors: {},
+            spin: false
         }
     }
 
     componentWillMount() {
         console.log("This.state...", this.state)
-        const { id, org_id } = jwt.decode(localStorage.getItem("jwt"));
+        const { id, org_id }: any = jwt.decode(localStorage.getItem("jwt"));
         this.getMetrics(org_id, this.state.endDate)
 
         // if (org_id && id) {
@@ -83,41 +84,41 @@ class analytics extends Component {
         // } else console.log("Error getting JwtData");
     }
 
-    disabledDate = current => {
+    disabledDate = (current: any) => {
         if (!current) return false;
         const date = moment();
         date.hour(0); date.minute(0); date.second(0);
         return current.valueOf() > date.valueOf();
     }
 
-    disableEndDate = current => {
+    disableEndDate = (current: any) => {
         if (!current) return false;
         const date = moment(this.state.startDate).add(1, 'day');
         date.hour(0); date.minute(0); date.second(0);
         return (current.valueOf() <= date.valueOf() || moment() < current);
     }
 
-    handleChange2 = (value) => {
-        var time = "5:30:00"
-        var value1 = moment(value).format('YYYY-MM-DD');
-        var d = value1 + " " + time;
-        var newdate1 = new Date(d).toISOString();
+    handleChange2 = (value: any) => {
+        let time = "5:30:00"
+        let value1 = moment(value).format('YYYY-MM-DD');
+        let d = value1 + " " + time;
+        let newdate1 = new Date(d).toISOString();
         console.log("newd", newdate1)
         this.setState({ startDate: newdate1, endDate: '' });
         if (newdate1 !== '') this.state.errors.startDate = '';
     }
-    handleChange3 = (value) => {
-        var time = "5:30:00"
-        var value1 = moment(value).format('YYYY-MM-DD');
-        var d = value1 + " " + time;
-        var newdate2 = new Date(d).toISOString();
+    handleChange3 = (value: any) => {
+        let time = "5:30:00"
+        let value1 = moment(value).format('YYYY-MM-DD');
+        let d = value1 + " " + time;
+        let newdate2 = new Date(d).toISOString();
         //console.log("newd",newdate2)
         this.setState({ endDate: newdate2 });
         this.getMetrics(this.state.org_id, newdate2)
         if (newdate2 !== '') this.state.errors.endDate = '';
     }
 
-    getMetrics = (org_id, endDate) => {
+    getMetrics = (org_id: any, endDate: any) => {
         this.setState({ spin: true });
         this.props.client
             .query({
@@ -133,17 +134,17 @@ class analytics extends Component {
             .catch(err => {
                 this.setState({ spin: false });
                 console.log("Failed to get User Details" + err);
-                this.formatData()
+
             });
     }
 
-    formatData = data => {
+    formatData = (data: any) => {
         let { HOUR_OF_DAY_VS_EVENT_COUNT, DAY_OF_WEEK_VS_EVENT_COUNT, TOP_QUESTION } = this.state
         // if (!data) {
         //   data = AnyNear
         // }
         console.log("Service analytics data..", this.state);
-        data.data.analytics.map(i => {
+        data.data.analytics.map((i: any) => {
             if (i.name === "HOUR_OF_DAY_VS_EVENT_COUNT") HOUR_OF_DAY_VS_EVENT_COUNT = i.response
             else if (i.name === "DAY_OF_WEEK_VS_EVENT_COUNT") DAY_OF_WEEK_VS_EVENT_COUNT = i.response
             else if (i.name === "TOP_QUESTION") TOP_QUESTION = i.response
@@ -151,7 +152,7 @@ class analytics extends Component {
         this.setState({ HOUR_OF_DAY_VS_EVENT_COUNT, DAY_OF_WEEK_VS_EVENT_COUNT, TOP_QUESTION, spin: false })
     }
 
-    handleChange = (value) => {
+    handleChange = (value: any) => {
         console.log(`selected ${value}`);
     }
 
@@ -159,12 +160,9 @@ class analytics extends Component {
     render() {
         console.log("Analytics..", this.state)
         const { Option } = Select;
-        let hoursOfTheWeek = []
-        let dayOfTheWeek = []
-        let topQuestions = []
-        hoursOfTheWeek = this.state.HOUR_OF_DAY_VS_EVENT_COUNT;
-        dayOfTheWeek = this.state.DAY_OF_WEEK_VS_EVENT_COUNT;
-        topQuestions = this.state.TOP_QUESTION;
+        let hoursOfTheWeek: any = this.state.HOUR_OF_DAY_VS_EVENT_COUNT;
+        let dayOfTheWeek: any = this.state.DAY_OF_WEEK_VS_EVENT_COUNT;
+        let topQuestions: any = this.state.TOP_QUESTION;
         return (
             <div style={{
                 backgroundColor: "white",

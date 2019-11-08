@@ -1,5 +1,5 @@
 
-import React, { Component } from 'react'
+import * as React from 'react'
 import {
     Col,
     Row,
@@ -32,13 +32,14 @@ import {
     RadialBar
 } from "recharts";
 import { graphql, compose, withApollo } from "react-apollo";
-import { GET_ANALYTICS, ANALYTICS } from "@walkinsole/walkin-core/src/PlatformQueries";
-import moment from 'moment';
+import { GET_ANALYTICS } from "@walkinsole/walkin-core/src/PlatformQueries";
+import * as moment from 'moment';
 const dateFormat = 'YYYY/MM/DD';
-import jwt from "jsonwebtoken";
+import * as jwt from "jsonwebtoken";
 import Cylinder3DChart from '@walkinsole/walkin-nearx/src/routes/Dashboard/Cylinder3DChart'
 import PieChartWithAngle from "../Charts/PieChartWithPaddingAngle";
 import PieChartActiveShape from "../Charts/CustomActiveShapePieChart";
+import { TableSize } from 'antd/lib/table';
 const { Option } = Select;
 
 
@@ -50,24 +51,44 @@ const FormItem = Form.Item;
 
 
 
+interface analyticsProps {
 
+}
+
+interface analyticsState {
+    bordered: boolean,
+    loading: boolean,
+    pagination: any,
+    size: TableSize,
+    title: any,
+    showHeader: boolean,
+    scroll: any,
+    hasData: boolean,
+    data: Array<any>,
+    count: number
+}
 
 
 const scroll = { y: 240 };
 const pagination = { position: 'top' };
-export default class analytics extends Component {
-    state = {
-        bordered: false,
-        loading: false,
-        pagination,
-        size: 'default',
-        title: undefined,
-        showHeader: true,
-        scroll: undefined,
-        hasData: true,
-        data: [],
-        count: 1
-    };
+export default class analytics extends React.Component<analyticsProps, analyticsState> {
+
+    constructor(props: analyticsProps) {
+        super(props)
+        this.state = {
+            bordered: false,
+            loading: false,
+            pagination: '',
+            size: 'default',
+            title: undefined,
+            showHeader: true,
+            scroll: undefined,
+            hasData: true,
+            data: [],
+            count: 1
+        };
+    }
+
 
     componentDidMount() {
         const data = [{
@@ -81,7 +102,7 @@ export default class analytics extends Component {
         this.setState({ data: data, count })
     }
 
-    onChangeDate = (record, value, dateString) => {
+    onChangeDate = (record: any, value: any, dateString: any) => {
         const { data } = this.state;
         const newData = data.map(i => {
             if (i.id === record.id) {
@@ -92,7 +113,7 @@ export default class analytics extends Component {
         this.setState({ data: newData });
     }
 
-    handleSwitchChange = (record, value) => {
+    handleSwitchChange = (record: any, value: any) => {
         const { data } = this.state;
         const newData = data.map(i => {
             if (i.id === record.id) {
@@ -108,7 +129,7 @@ export default class analytics extends Component {
         console.log("data", data);
     }
 
-    onOk = (value) => {
+    onOk = (value: any) => {
         console.log('onOk: ', value);
     }
 
@@ -121,11 +142,11 @@ export default class analytics extends Component {
         console.log('focus');
     }
 
-    onSearch = (val) => {
+    onSearch = (val: any) => {
         console.log('search:', val);
     }
 
-    onInputChange = (record, e) => {
+    onInputChange = (record: any, e: any) => {
 
         const { data } = this.state;
         const newData = data.map(i => {
@@ -139,7 +160,7 @@ export default class analytics extends Component {
         // console.log("value", e.target.value)
     }
 
-    onChange = (record, checked) => {
+    onChange = (record: any, checked: any) => {
         const { data } = this.state;
         const newData = data.map(i => {
             if (i.id === record.id) {
@@ -150,8 +171,13 @@ export default class analytics extends Component {
         this.setState({ data: newData });
     }
 
-    handleToggle = prop => enable => {
-        this.setState({ [prop]: enable });
+    handleToggle = (prop: any) => (enable: any) => {
+        this.setState((prevProps: any) => {
+            return ({
+                ...prevProps,
+                [prop]: enable
+            })
+        });
     };
 
 
@@ -177,7 +203,7 @@ export default class analytics extends Component {
                 key: '1',
                 dataIndex: "enabled",
                 width: 140,
-                render: (text, record) => (
+                render: (text: any, record: any) => (
                     <div style={{ marginBottom: 10 }}>
                         <Switch
                             defaultChecked
@@ -192,7 +218,7 @@ export default class analytics extends Component {
                 dataIndex: 'recipients',
                 key: '2',
                 width: 300,
-                render: (text, record) => (<div style={{ marginBottom: 10 }}>
+                render: (text: any, record: any) => (<div style={{ marginBottom: 10 }}>
                     <Input
                         onChange={this.onInputChange.bind(this, record)}
                         addonBefore="To"
@@ -204,7 +230,7 @@ export default class analytics extends Component {
                 dataIndex: 'date',
                 key: '3',
                 width: 300,
-                render: (text, record) => (
+                render: (text: any, record: any) => (
                     <div style={{ marginBottom: 10 }}>
                         <DatePicker
                             value={text}
@@ -221,7 +247,7 @@ export default class analytics extends Component {
                 dataIndex: "frequency",
                 key: '4',
                 width: 360,
-                render: (text, record) => (
+                render: (text: any, record: any) => (
                     <div style={{ marginBottom: 10 }}>
                         <Select
                             value={text}
@@ -233,7 +259,7 @@ export default class analytics extends Component {
                             onFocus={this.onFocus}
                             onBlur={this.onBlur}
                             onSearch={this.onSearch}
-                            filterOption={(input, option) =>
+                            filterOption={(input: any, option: any) =>
                                 option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                             }
                         >
