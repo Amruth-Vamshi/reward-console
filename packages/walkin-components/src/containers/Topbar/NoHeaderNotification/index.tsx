@@ -4,7 +4,12 @@ import IntlMessages from "../../../util/IntlMessages";
 import gql from "graphql-tag";
 import { compose, graphql } from "react-apollo";
 
-class NoHeaderNotification extends Component {
+interface IProps {
+  navCollapsed?;
+  toggleCollapsedSideNav?;
+}
+interface IState {}
+class NoHeaderNotification extends Component<IProps, IState> {
   render() {
     const { navCollapsed } = this.props;
     return (
@@ -30,7 +35,7 @@ class NoHeaderNotification extends Component {
   }
 }
 
-const mapStateToProps = ({ settings }) => {
+const mapStateToProps = ({ settings }: any) => {
   const { navCollapsed } = settings.settings;
   return { navCollapsed };
 };

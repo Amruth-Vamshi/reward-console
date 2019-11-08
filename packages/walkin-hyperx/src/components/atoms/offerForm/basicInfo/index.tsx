@@ -253,7 +253,6 @@ const OfferBasicInfoForm = Form.create({ name: 'offer_basic_info' })(
 						/>
 					</Form.Item>
 					<Form.Item
-						placeholder="Select a transaction time"
 						style={{ display: 'inline-block', width: 'calc(35% - 12px)' }}
 						label="Condition"
 					>

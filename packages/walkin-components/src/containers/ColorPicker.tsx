@@ -8,10 +8,10 @@ const pickers: any = {
   sketch: SketchPicker
 };
 
-interface iProps extends ApolloProviderProps<any> {
+interface iProps extends Partial<ApolloProviderProps<any>> {
   color: string;
   small: Boolean;
-  type: number;
+  type: string;
   position: string;
   onChangeComplete?: any;
   onChange?: any;

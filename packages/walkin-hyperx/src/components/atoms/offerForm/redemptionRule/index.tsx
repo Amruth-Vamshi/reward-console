@@ -1,11 +1,21 @@
-import React, { Fragment } from 'react';
-import { Form, Icon, Input, Select, Row, Col, DatePicker } from 'antd';
-const { Option } = Select;
-
 import './style.css';
 
+import { Form, Input, Select } from 'antd';
+import React from 'react';
+
+const { Option } = Select;
+
+interface IProps {
+	cappingData?: any;
+	wrappedComponentRef?: any;
+	form?: any;
+	formValues?: any
+}
+
+
+
 const OfferRedemptionRulesForm = Form.create({ name: 'offer_redemption_rule' })(
-	class OfferRedemptionRulesForm extends React.Component {
+	class OfferRedemptionRulesForm extends React.Component<IProps, {}> {
 		render() {
 			const { cappingData, wrappedComponentRef, form, formValues } = this.props;
 			const { getFieldDecorator } = form;
@@ -91,9 +101,10 @@ const OfferRedemptionRulesForm = Form.create({ name: 'offer_redemption_rule' })(
 						{getFieldDecorator('type', {
 							initialValue: `${Object.keys(formValues).length != 0 ? formValues.type : ''}`,
 						})(
-							<Select placeholder="Select a type" onChange={this.handleSelectChange}>
+							<Select placeholder="Select a type" //onChange={this.handleSelectChange}
+							>
 								{cappingData &&
-									cappingData.map((el, i) => (
+									cappingData.map((el: any, i: any) => (
 										<Option key={i} value={el.val}>
 											{el.title}
 										</Option>

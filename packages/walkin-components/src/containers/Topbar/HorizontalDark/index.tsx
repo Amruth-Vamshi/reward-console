@@ -9,7 +9,7 @@ import {
   Popover,
   Select
 } from "antd";
-import CustomScrollbars from "../../../util/CustomScrollbars";
+import { CustomScrollbars } from "../../../util/CustomScrollbars";
 
 import languageData from "../languageData";
 import SearchBox from "../../../components/SearchBox";
@@ -41,7 +41,14 @@ function handleChange(value) {
   console.log(`selected ${value}`);
 }
 
-class HorizontalDark extends Component {
+interface IProps {
+  locale?;
+  navCollapsed?;
+  switchLanguage?;
+  toggleCollapsedSideNav?;
+}
+interface IState {}
+class HorizontalDark extends Component<IProps, IState> {
   state = {
     searchText: ""
   };
@@ -244,7 +251,7 @@ class HorizontalDark extends Component {
   }
 }
 
-const mapStateToProps = ({ settings }) => {
+const mapStateToProps = ({ settings }: any) => {
   const { locale, navCollapsed } = settings.settings;
   return { locale, navCollapsed };
 };

@@ -9,7 +9,7 @@ import {
   Popover,
   Select
 } from "antd";
-import CustomScrollbars from "../../../util/CustomScrollbars";
+import { CustomScrollbars } from "../../../util/CustomScrollbars";
 
 import languageData from "../languageData";
 import SearchBox from "../../../components/SearchBox";
@@ -43,8 +43,17 @@ function handleChange(value) {
   console.log(`selected ${value}`);
 }
 
-class AboveHeader extends Component {
-  state = {
+interface IProps {
+  switchLanguage?;
+  width?;
+  locale?;
+  navCollapsed?;
+  toggleCollapsedSideNav?;
+}
+interface IState {}
+
+class AboveHeader extends Component<IProps, IState> {
+  readonly state = {
     searchText: ""
   };
 
@@ -252,7 +261,7 @@ class AboveHeader extends Component {
   }
 }
 
-const mapStateToProps = ({ settings }) => {
+const mapStateToProps = ({ settings }: any) => {
   const { locale, navCollapsed, width } = settings.settings;
   return { locale, navCollapsed, width };
 };
