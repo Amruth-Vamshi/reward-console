@@ -1,7 +1,7 @@
-import React, { Component } from "react";
+import * as React from "react";
 import { Avatar, Popover } from "antd";
 
-class UserProfile extends Component {
+class UserProfile extends React.Component<{}, {}> {
   render() {
     const userMenuOptions = (
       <ul className="gx-user-popover">
