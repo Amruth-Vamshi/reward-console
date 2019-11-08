@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { NEW_CAMPAIGN, CAMPAIGN_MANAGEMENT, CAMPAIGN_DASHBOARD } from '../../../utils/RouterConstants';
 import { campaigns, DISABLE_CAMPAIGN } from '../../../query/campaign';
 import { Card, Menu, Dropdown, Col, Spin, Button, Progress, Tabs, Icon } from 'antd';
-import moment from 'moment';
+import * as moment from 'moment';
 import { withApollo, graphql, compose } from 'react-apollo';
 import { DEFAULT_ACTIVE_STATUS, DEFAULT_HYPERX_CAMPAIGN, SHOULD_EDIT } from "../../../utils"
 import { SortableDataTable, InstantSearch, CampaignHeader } from '@walkinsole/shared';

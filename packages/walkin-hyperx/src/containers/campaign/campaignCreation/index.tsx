@@ -1,5 +1,6 @@
-import React, { Component, Fragment } from "react";
-import { withRouter } from "react-router-dom";
+import * as React from "react"
+import { Component, Fragment } from "react";
+import { withRouter, } from "react-router-dom";
 // import BasicInfo from "./basicInfo";
 // import Audience from "./audience";
 // import Offer from "./offer";
@@ -8,15 +9,16 @@ import { BasicInfo, Audience, Offer, Communication } from "@walkinsole/shared/sr
 import { campaignOverview as Overview } from "@walkinsole/shared";
 import { allSegments, RULE_ATTRIBUTES, GET_AUDIENCES, CREATE_AUDIENCE, CREATE_RULE, AUDIENCE_COUNT, UPDATE_RULE, UPDATE_AUDIENCES } from "../../../query/audience";
 import { getOffers, ADD_OFFER_TO_CAMPAIGN, GET_OFFER_FOR_CAMPAIGN } from "../../../query/offer";
-import { withApollo, graphql, compose } from 'react-apollo';
+import { withApollo, graphql, compose, ApolloProviderProps } from 'react-apollo';
 import { GET_ALL_APPS_OF_ORGANIZATION } from "@walkinsole/walkin-core/src/PlatformQueries";
 import { Col, Row, message } from 'antd';
-import jwt from "jsonwebtoken";
+import * as jwt from "jsonwebtoken";
 import '../styles.css'
 import { DEFAULT_ACTIVE_STATUS, DEFAULT_HYPERX_CAMPAIGN } from "../../../utils"
-import moment from "moment";
+import * as  moment from "moment";
 import { CampaignFooter, CampaignHeader, Stepper } from '@walkinsole/shared';
 import { GET_CAMPAIGN, CREATE_CAMPAIGN, UPDATE_CAMPAIGN, CREATE_MESSAGE_TEMPLETE, CREATE_COMMUNICATION, LAUNCH_CAMPAIGN, CREATE_COMMUNICATION_WITH_MESSAGE_TEMPLETE, COMMUNICATIONS, VIEW_CAMPAIGN, UPDATE_COMMUNICATION_WITH_MESSAGE_TEMPLETE, PREPROCESS_LAUNCH_CAMPAIGN } from '../../../query/campaign';
+import { RouteChildrenProps } from "react-router";
 
 const stepData = [{
 	id: 1,
@@ -46,8 +48,67 @@ const communicationData = [
 	{ value: "EMAIL", title: "Email" }
 ];
 
-class CampaignCreation extends Component {
-	constructor(props) {
+interface AA {
+	createRule: any;
+	updateRule: any;
+	addOfferToCampaign: any;
+	updateCampaign: any;
+	updateAudiences: any;
+	updateCommunicationWithMessageTemplate: any;
+	createCommunicationWithMessageTemplate: any;
+	createCommunication: any;
+	messageTemplate: any;
+	launchCampaign: any;
+	createAudience: any;
+}
+interface IProps extends RouteChildrenProps, ApolloProviderProps<AA> {
+
+
+
+
+}
+
+interface IState {
+	formValues: any;
+	current: number,
+	priorityChosen: any,
+	priorityNumberError: boolean,
+	showTestAndControl: boolean,
+	testValue: number,
+	controlValue: number,
+	testControlSelected: any,
+	communication: any,
+	communicationSelected: string,
+	errors: any,
+	audienceCount: number,
+	loading: boolean,
+	noOfferRequired: boolean,
+	offer: any,
+	audienceFilterRuleId: any,
+	scheduleData: any,
+	smsForm: any,
+	emailForm: any,
+	pushForm: any,
+	scheduleSaveMark: boolean,
+	ruleQuery: object,
+	selectedSegments: Array<string>,
+	campaignCreated: boolean,
+	audienceCreated: boolean,
+	audienceFilterRuleCreated: boolean,
+	offerCreated: boolean,
+	createComm: boolean,
+	audience: Array<string>,
+	update: boolean,
+	audienceChange: object,
+	audienceFilterRule: any
+	spin: boolean,
+	communications: object
+	campaign: object
+	audiences: any,
+	offerData: object
+}
+class CampaignCreation extends Component<IProps, Partial<IState>> {
+	constructor(props: IProps) {
 		super(props);
 		this.state = {
 			formValues: {},
@@ -80,13 +141,14 @@ class CampaignCreation extends Component {
 			createComm: false,
 			audience: [],
 			update: false,
-			audienceChange: { audience: false, rule: false }
+			audienceChange: { audience: false, rule: false },
+			spin: false
 		};
 	}
 
 	componentWillMount = () => {
 		const { location, match, client } = this.props;
-		const { id, org_id } = jwt.decode(localStorage.getItem("jwt"))
+		// const { id, org_id }: any = jwt.decode(localStorage.getItem("jwt"))
 		if (location && location.state) {
 			console.log("this...", location.state)
 			if (location.state.update)
@@ -96,7 +158,7 @@ class CampaignCreation extends Component {
 			this.setState({ spin: true })
 			client.query({
 				query: VIEW_CAMPAIGN,
-				variables: { campaignId: this.props.match.params.id },
+				variables: { campaignId: match.params.id },
 				// fetchPolicy: 'network-only'
 			}).then(res => {
 				console.log('res', res.data.viewCampaignForHyperX);
@@ -105,22 +167,22 @@ class CampaignCreation extends Component {
 				this.setState({ spin: false, campaign, formValues: campaign, communications, campaignCreated: true });
 
 				if (audiences && audiences.length) {
-					let selectedSegments = []
-					audiences.map(item => selectedSegments.push(item.segment.id))
+					let selectedSegments: Array<any> = []
+					audiences.map((item: any) => selectedSegments.push(item.segment.id))
 					selectedSegments = selectedSegments.length ? selectedSegments : ['']
 					this.setState({ selectedSegments: selectedSegments, audiences, audienceCreated: true })
 				}
 
 				if (campaign.audienceFilterRule) {
 					let str = campaign.audienceFilterRule.ruleConfiguration;
-					var mapObj = {
+					var mapObj: any = {
 						// ruleAttributeId: 'field',
 						attributeName: 'field',
 						attributeValue: 'value',
 						expressionType: 'operator',
 					};
 					if (typeof str != 'string') str = JSON.stringify(str)
-					str = str.replace(/attributeName|attributeValue|expressionType/gi, function (matched) {
+					str = str.replace(/attributeName|attributeValue|expressionType/gi, function (matched: any) {
 						return mapObj[matched];
 					});
 					this.setState({
@@ -762,7 +824,7 @@ class CampaignCreation extends Component {
 								onTestAndControlEdit={this.onTestAndControlEdit}
 								showTestAndControl={showTestAndControl}
 								popupTitle="Test & Control"
-								handleOk={this.handleOk}
+								// handleOk={this.handleOk}
 								handleCancel={this.handleCancel}
 								applyTestControlChange={this.applyTestControlChange}
 								popupbodyText="Divide customers selected for a specific audience into local test and local control groups"

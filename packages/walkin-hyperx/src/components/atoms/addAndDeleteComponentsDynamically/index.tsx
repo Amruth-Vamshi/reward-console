@@ -1,20 +1,42 @@
-import React, { Fragment } from "react";
-import { Select, Button, Icon, Form } from "antd";
-import PropTypes from "prop-types";
-import map from "lodash/map";
+import { Button, Icon, Select } from "antd";
 import findIndex from "lodash/findIndex";
+import map from "lodash/map";
+import PropTypes from "prop-types";
+import React, { Fragment } from "react";
+
 const { Option } = Select;
 
-function logProps(InputComponent) {
-  InputComponent.prototype.componentWillReceiveProps = function(nextProps) {};
+function logProps(InputComponent: any) {
+  InputComponent.prototype.componentWillReceiveProps = function(
+    nextProps: any
+  ) {};
   InputComponent.prototype.componentDidMount = function() {};
   return InputComponent;
 }
 
-class AddAndDeleteComponentsDynamically extends React.Component {
+interface IProps {
+  data_1?;
+  data_2?;
+  defaultSelectOneValue?;
+  defaultSelectTwoValue?;
+  onSelectOneValuesSelected?;
+  onSelectTwoValuesSelected?;
+  productValues?;
+  locationValues?;
+}
+
+interface IState {
+  selectTwoData: any;
+  items: any;
+}
+
+class AddAndDeleteComponentsDynamically extends React.Component<
+  IProps,
+  IState
+> {
   static propTypes: any;
   static defaultProps: any;
-  constructor(props) {
+  constructor(props: IProps) {
     super(props);
 
     const {
@@ -133,8 +155,8 @@ class AddAndDeleteComponentsDynamically extends React.Component {
     );
   }
 
-  getDefaultSelectedValue(data_1, searchKey) {
-    const defaultIndex = findIndex(data_1, dat => {
+  getDefaultSelectedValue(data_1: any, searchKey: any) {
+    const defaultIndex = findIndex(data_1, (dat: any) => {
       return dat.value === searchKey;
     });
     return defaultIndex !== -1 ? data_1 && data_1[defaultIndex].value : null;
@@ -146,7 +168,7 @@ class AddAndDeleteComponentsDynamically extends React.Component {
 
     return (
       <Fragment>
-        {map(items, (item, index) => {
+        {map(items, (item: any, index: number) => {
           const { valueOne, valueTwo, onOneChange, onTwoChange } = item;
           return (
             <div key={`select-${index}`} className="selectSegmentBoxContainer">
@@ -161,7 +183,7 @@ class AddAndDeleteComponentsDynamically extends React.Component {
                 onChange={onOneChange}
               >
                 {data_1 &&
-                  data_1.map((val, i) => {
+                  data_1.map((val: any, i: any) => {
                     return (
                       <Option key={i} value={val.value}>
                         {val.title}
@@ -182,7 +204,7 @@ class AddAndDeleteComponentsDynamically extends React.Component {
                 onChange={onTwoChange}
               >
                 {data_2 &&
-                  data_2.map((val, i) => {
+                  data_2.map((val: any, i: any) => {
                     return (
                       <Option key={i} value={val.value}>
                         {val.title}
@@ -216,7 +238,7 @@ AddAndDeleteComponentsDynamically.propTypes = {
 
 AddAndDeleteComponentsDynamically.defaultProps = {
   onValuesSelected: () => {},
-  data_2: [],
+  data_1: [],
   data_2: [],
   prop1: "prop1",
   prop2: "prop2"

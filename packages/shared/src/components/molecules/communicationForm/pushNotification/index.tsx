@@ -1,15 +1,24 @@
-import React, { Fragment } from 'react';
-import { Form, Input, Upload, Button, Icon } from 'antd';
+import * as React from 'react';
+import { Form, Input, Upload, Button } from 'antd';
 import moment from 'moment';
 const { TextArea } = Input;
+
 const props = {
 	action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
 	listType: 'picture',
 };
 
+interface iProps {
+	form?: any,
+	onFormNext?: any,
+	wrappedComponentRef?: any,
+	formValues?: any,
+	text?: string
+}
+
 const PushNotificationForm = Form.create({ name: 'form_in_modal' })(
 	// eslint-disable-next-line
-	class PushNotificationForm extends React.Component {
+	class PushNotificationForm extends React.Component<iProps, {}> {
 		render() {
 			const { form, onFormNext, wrappedComponentRef, formValues, text } = this.props;
 			const { getFieldDecorator } = form;

@@ -4,9 +4,9 @@ import { allSegments, disableSegment, UPDATE_SEGMENT } from '../../../query/audi
 import { withApollo, graphql } from 'react-apollo';
 import { NEW_SEGMENT } from '../../../utils/RouterConstants';
 import { Card, Menu, Dropdown, Button, Col, Icon } from 'antd';
-import moment from 'moment';
+import * as moment from 'moment';
 import { SortableDataTable, InstantSearch, CampaignHeader } from '@walkinsole/shared';
-import jwt from "jsonwebtoken";
+import * as jwt from "jsonwebtoken";
 
 class SegmentList extends Component {
 	constructor(props) {
