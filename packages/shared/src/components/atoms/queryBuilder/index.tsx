@@ -1,6 +1,6 @@
 import QueryBuilder from '@walkin-frontend/walkin-react-querybuilder';
 import * as React from "react";
-import PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types';
 import './style.css';
 import { Select } from 'antd';
 
@@ -11,8 +11,15 @@ for (let i = 10; i < 36; i++) {
 	children.push(<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
 }
 
-class WalkinQueryBuilder extends React.Component {
-	removeProp = (obj, propToDelete) => {
+interface iProps {
+	onQueryChange?: any,
+	operators?: any,
+	fields?: any,
+	query?: any
+}
+
+class WalkinQueryBuilder extends React.Component<iProps, {}> {
+	removeProp = (obj: any, propToDelete: string) => {
 		for (var property in obj) {
 			if (typeof obj[property] == 'object') {
 				let objectToCheck = obj[property];
@@ -27,10 +34,10 @@ class WalkinQueryBuilder extends React.Component {
 		}
 		return obj;
 	};
-	renameQueryProperties = query => {
+	renameQueryProperties = (query: any) => {
 
 		let str = JSON.stringify(query);
-		var mapObj = {
+		var mapObj: any = {
 			// field: 'ruleAttributeId',
 			field: 'attributeName',
 			value: 'attributeValue',
@@ -44,7 +51,7 @@ class WalkinQueryBuilder extends React.Component {
 		this.props.onQueryChange(renamedQuery, query);
 	};
 
-	handleMultiSelect = value => {
+	handleMultiSelect = (value: any) => {
 		// console.log("val,", value);
 	};
 

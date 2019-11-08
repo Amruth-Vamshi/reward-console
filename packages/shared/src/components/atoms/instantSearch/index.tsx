@@ -10,7 +10,7 @@ interface InstantSearchProps {
 const Search = Input.Search;
 class InstantSearch extends React.Component<InstantSearchProps, {}> {
 
-	onChange(data, e) {
+	onChange(data?: any, e?: any) {
 		let currentList = [];
 		let newList = [];
 
@@ -18,7 +18,7 @@ class InstantSearch extends React.Component<InstantSearchProps, {}> {
 			currentList = data;
 			// Use .filter() to determine which items should be displayed
 			// based on the search terms
-			newList = currentList.filter(item => {
+			newList = currentList.filter((item: any) => {
 				// change current item to lowercase
 				const lc = item.name.toLowerCase();
 				// change search term to lowercase

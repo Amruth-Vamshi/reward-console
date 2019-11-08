@@ -1,7 +1,41 @@
-import React, { Component, Fragment } from 'react';
+import *  as React from 'react';
 import { Row, Col, Typography } from 'antd';
 import { CampaignPriority, BasicInfoForm, Popup, BasicSlider } from '@walkinsole/shared';
 const { Text } = Typography;
+
+interface iProps {
+	errors?: any,
+	subTitle?: string,
+	onFormNext?: any,
+	saveFormRef?: any,
+	formValues?: any,
+	textAndControlText?: string,
+	promptText?: string,
+	toolTipText?: string,
+	prioritySelectionTitle?: string,
+	priorityButtonText?: string,
+	testControlTitle?: string,
+	testControlPercentage?: any,
+	handleButtonGroupChange?: any,
+	testControlPercentageEditText?: string,
+	onPriorityButtonClick?: any,
+	priorityNumberInvalidErrorMessage?: any,
+	onTestAndControlEdit?: any,
+	showTestAndControl?: any,
+	handleOk?: any,
+	popupTitle?: string,
+	handleCancel?: any,
+	applyTestControlChange?: any,
+	popupbodyText?: string,
+	controlValue?: any,
+	maxValueAllowed?: any,
+	onTestValueChange?: any,
+	onControlValueChange?: any,
+	popupButtonText?: string,
+	testValue?: any,
+	edit?: any,
+	priorityChosen?: any
+}
 
 const BasicInfo = ({
 	errors,
@@ -34,9 +68,9 @@ const BasicInfo = ({
 	popupButtonText,
 	testValue, edit,
 	priorityChosen
-}) => {
+}: iProps) => {
 	return (
-		<Fragment>
+		<React.Fragment>
 			<div> {' '}
 				<h3 className="gx-text-grey">{subTitle}</h3>
 			</div>
@@ -68,7 +102,7 @@ const BasicInfo = ({
 				handleCancel={handleCancel}
 				handleOnClick={applyTestControlChange}
 				popupContent={
-					<Fragment>
+					<React.Fragment>
 						<Text>{popupbodyText}</Text>
 						<BasicSlider
 							controlValue={controlValue}
@@ -77,11 +111,11 @@ const BasicInfo = ({
 							onTestValueChange={onTestValueChange}
 							onControlValueChange={onControlValueChange}
 						/>
-					</Fragment>
+					</React.Fragment>
 				}
 				buttonText={popupButtonText}
 			/>
-		</Fragment>
+		</React.Fragment>
 	);
 };
 

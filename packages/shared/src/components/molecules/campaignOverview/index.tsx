@@ -1,12 +1,26 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import * as React from "react";
+import * as PropTypes from "prop-types";
 import { Row, Col, Icon, Typography, Progress, Button } from "antd";
 const { Title } = Typography;
 import moment from "moment";
 import './overViewStyle.css'
 
-export default class Overview extends Component {
-  changeState = e => {
+interface iProps {
+  launchCampaign?: any,
+  pauseCampaign?: any,
+  unpauseCampaign?: any,
+  abandonCampaign?: any,
+  campaign?: any,
+  audience?: any,
+  offer?: any,
+  communication?: any,
+  view?: any,
+  loading?: any,
+  loading1?: any
+}
+
+export default class Overview extends React.Component<iProps, {}> {
+  changeState = (e: any) => {
     console.log(e.target.innerText);
     if (e.target.innerText.trim() == "LAUNCH")
       this.props.launchCampaign()
@@ -73,7 +87,7 @@ export default class Overview extends Component {
               <Col className="mb-10" md={24} lg={8}>  Start date &nbsp; &nbsp;:&nbsp;&nbsp;&nbsp;{start} </Col>
               <Col className="mb-10" md={24} lg={8}>  End date &nbsp; &nbsp;:&nbsp;&nbsp;&nbsp;{end} </Col>
               <Col className="mb-10" md={24} lg={8}> <Progress
-                style={{ width: '250px', margin: '0px 5px 0px 5px', colorRendering: '#654665' }}
+                style={{ width: '250px', margin: '0px 5px 0px 5px', color: '#654665' }}
                 percent={Math.round(
                   ((moment() - moment(campaign.startTime)) / (moment(campaign.endTime) - moment(campaign.startTime))) * 100)}
                 showInfo={true} status="active"
@@ -100,7 +114,7 @@ export default class Overview extends Component {
                 <Col className='AudienceTitle' sm={16} md={12} xl={10} xxl={9}> <h3>Audience</h3></Col>
                 <Col >Total Reach : 6412 </Col>
               </Row>
-              {audience.map((i, n) =>
+              {audience.map((i: any, n: number) =>
                 <Row key={n} style={{ marginBottom: 10 }}>
                   <Col xs={24} sm={16} md={12} xl={10} xxl={9} className="audBg">
                     {i.segment.name}

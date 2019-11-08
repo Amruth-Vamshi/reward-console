@@ -1,10 +1,15 @@
-import React, { Component } from "react";
-import { Avatar, Row, Col, Tag, Button } from "antd";
-import { Area, AreaChart, ResponsiveContainer } from "recharts";
-
+import * as React from "react";
+import { Row, Col, Tag, Button } from "antd";
 import { Widget } from "@walkinsole/walkin-components";
 
-const ManageCampaignCard = ({ campaign, history }) => {
+import { History } from 'history'
+
+interface iProps {
+  history: History,
+  campaign: any
+}
+
+const ManageCampaignCard = ({ campaign, history }: iProps) => {
   return (
     <Widget
       styleName="gx-card-full"

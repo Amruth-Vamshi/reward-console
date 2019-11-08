@@ -1,16 +1,41 @@
-import React, { Component, Fragment } from "react";
-import { Radio, Form, Row, Col } from "antd";
+import * as React from "react";
+import { Radio, Row, Col } from "antd";
 // import SMSForm from "../../../../components/atoms/communicationForm/sms";
 // import PushNotificationForm from "../../../../components/atoms/communicationForm/pushNotification";
 // import Email from "../../../../components/atoms/communicationForm/Email";
 // import Schedule from "../../../../components/atoms/communicationForm/schedule";
 import { SMSForm, PushNotificationForm, Email, Schedule } from "../../molecules/communicationForm"
 
+interface iProps {
+  subTitle?: string,
+  onChange?: any,
+  communicationData?: any,
+  defaultValue?: any,
+  value?: any,
+  getScheduleData?: any,
+  OnCommunicationFormNext?: any,
+  commWrappedComponentRef?: any,
+  communicationFormValues?: any,
+  pushFormData?: any,
+  pushFormRef?: any,
+  emailFormRef?: any,
+  emailFormData?: any,
+  onFormNext?: any,
+  scheduleData?: any,
+  schedule?: any,
+  campaign?: any,
+  scheduleSaveMark?: any,
+  saveSchedule?: any,
+  form?: any
+}
+
 const Communication = ({
-  subTitle, onChange,
+  subTitle,
+  onChange,
   communicationData,
   defaultValue,
-  value, getScheduleData,
+  value,
+  getScheduleData,
   OnCommunicationFormNext,
   commWrappedComponentRef,
   communicationFormValues,
@@ -18,12 +43,14 @@ const Communication = ({
   pushFormRef,
   emailFormRef,
   emailFormData,
-  onFormNext, scheduleData,
-  schedule, campaign,
+  onFormNext,
+  scheduleData,
+  schedule,
+  campaign,
   scheduleSaveMark,
   saveSchedule,
   form
-}) => {
+}: iProps) => {
   return (
     <div>
       <h3 className="gx-text-grey gx-mb-1">{subTitle}</h3>
@@ -39,7 +66,7 @@ const Communication = ({
             value={value}
           >
             {communicationData &&
-              communicationData.map((el, index) => (
+              communicationData.map((el: any, index: number) => (
                 <Radio.Button key={index} value={el.value}>
                   {el.title}
                 </Radio.Button>

@@ -1,14 +1,21 @@
-import React, { Fragment } from 'react';
+import * as React from 'react';
 import { Slider } from 'antd';
 import './style.css';
-import PropTypes from 'prop-types';
+import *  as PropTypes from 'prop-types';
 
-class BasicSlider extends React.Component {
-	constructor(props) {
+interface iProps {
+	maxValueAllowed?: any,
+	onTestValueChange?: any,
+	onControlValueChange?: any,
+	testValue?: number,
+	controlValue?: number
+}
+class BasicSlider extends React.Component<iProps, {}> {
+	constructor(props: iProps) {
 		super(props);
 		this.state = {};
 	}
-	limitRange = value => {
+	limitRange = (value: any) => {
 		if (value >= this.props.maxValueAllowed) {
 			this.props.onTestValueChange(value);
 			this.props.onControlValueChange(100 - value);

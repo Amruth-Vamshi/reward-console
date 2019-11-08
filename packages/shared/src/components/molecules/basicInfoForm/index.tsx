@@ -1,11 +1,19 @@
-import React, { Fragment } from "react";
+import * as React from "react";
 import { Form, Input, DatePicker } from "antd";
 import moment from "moment";
 
+interface iProps {
+  form?: any,
+  edit?: Boolean,
+  onFormNext?: any,
+  wrappedComponentRef?: any, formValues?: any,
+  text?: any
+}
+
 const BasicInfoForm = Form.create({ name: "form_in_modal" })(
   // eslint-disable-next-line
-  class BasicInfoForm extends React.Component {
-    checkStart = (rule, value, callback) => {
+  class BasicInfoForm extends React.Component<iProps, {}> {
+    checkStart = (rule: any, value: any, callback: any) => {
       const { validateFields } = this.props.form;
       const { edit } = this.props;
       if (edit) {
@@ -21,7 +29,7 @@ const BasicInfoForm = Form.create({ name: "form_in_modal" })(
     };
 
 
-    checkEnd = (rule, value, callback) => {
+    checkEnd = (rule: any, value: any, callback: any) => {
       const { edit } = this.props;
       if (edit) {
         callback()
