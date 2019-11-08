@@ -7,13 +7,35 @@ import { message } from "antd/lib/index";
 import CircularProgress from "../components/CircularProgress/index";
 import gql from "graphql-tag";
 import { compose, graphql } from "react-apollo";
+import { History } from "history";
 
 const FormItem = Form.Item;
 
-class SignUp extends React.Component {
-  handleSubmit = e => {
+interface iProps {
+  form?: any,
+  showAuthLoader?: any,
+  userSignUp?: any,
+  showMessage?: Boolean,
+  hideMessage?: any,
+  authUser?: any,
+  history: History,
+  loader?: Boolean,
+  alertMessage?: string,
+  userGithubSignIn?: any,
+  userGoogleSignIn?: any,
+  userTwitterSignIn?: any,
+  userFacebookSignIn?: any
+}
+
+interface iState {
+  email: string,
+  password: string
+}
+
+class SignUp extends React.Component<iProps, iState> {
+  handleSubmit = (e: any) => {
     e.preventDefault();
-    this.props.form.validateFields((err, values) => {
+    this.props.form.validateFields((err: Boolean, values: any) => {
       console.log("values", values);
       if (!err) {
         this.props.showAuthLoader();
@@ -22,8 +44,8 @@ class SignUp extends React.Component {
     });
   };
 
-  constructor() {
-    super();
+  constructor(props: iProps) {
+    super(props);
     this.state = {
       email: "demo@example.com",
       password: "demo#123"
@@ -181,7 +203,7 @@ class SignUp extends React.Component {
 
 const WrappedSignUpForm = Form.create()(SignUp);
 
-const mapStateToProps = ({ auth }) => {
+const mapStateToProps = ({ auth }: any) => {
   const { loader, alertMessage, showMessage, authUser } = auth;
   return { loader, alertMessage, showMessage, authUser };
 };

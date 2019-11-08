@@ -1,53 +1,68 @@
-import React, {Component} from "react";
-import {ChromePicker, SketchPicker} from "react-color";
-
+import * as React from "react";
+import { ChromePicker, SketchPicker } from "react-color";
+import { ApolloProviderProps } from "react-apollo";
 const noop = () => {
 };
 
-const pickers = {
+const pickers: any = {
   chrome: ChromePicker,
   sketch: SketchPicker,
 };
 
-export default class ColorPicker extends Component {
+interface iProps extends ApolloProviderProps<any> {
+  color: string,
+  small: Boolean,
+  type: number,
+  position: string,
+  onChangeComplete?: any
+  onChange?: any
+}
+
+interface iState {
+  displayColorPicker: Boolean,
+  color: String,
+}
+
+
+export default class ColorPicker extends React.Component<iProps, iState> {
   static defaultProps = {
     onChange: noop,
     onChangeComplete: noop,
     position: 'bottom',
   };
   handleClick = () => {
-    this.setState({displayColorPicker: !this.state.displayColorPicker});
+    this.setState({ displayColorPicker: !this.state.displayColorPicker });
   };
   handleClose = () => {
-    this.setState({displayColorPicker: false});
+    this.setState({ displayColorPicker: false });
   };
-  handleChange = (color) => {
-    this.setState({color: color.hex});
+  handleChange = (color: any) => {
+    this.setState({ color: color.hex });
     this.props.onChange(color.hex, color);
   };
-  handleChangeComplete = (color) => {
-    this.setState({color: color.hex});
+  handleChangeComplete = (color: any) => {
+    this.setState({ color: color.hex });
     this.props.onChangeComplete(color.hex);
   };
 
-  constructor(props) {
-    super();
+  constructor(props: iProps) {
+    super(props);
     this.state = {
       displayColorPicker: false,
       color: props.color,
     };
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.setState({color: nextProps.color});
+  componentWillReceiveProps(nextProps: any) {
+    this.setState({ color: nextProps.color });
   }
 
   render() {
-    const {small, type, position} = this.props;
+    const { small, type, position } = this.props;
 
     const Picker = pickers[type];
 
-    const styles = {
+    const styles: any = {
       color: {
         display: 'inline-block',
         width: small ? '16px' : '120px',
@@ -88,13 +103,13 @@ export default class ColorPicker extends Component {
 
     const swatch = (
       <div style={styles.swatch} onClick={this.handleClick}>
-        <span style={styles.color}/>
+        <span style={styles.color} />
         <span>        {this.props.children}</span>
       </div>
     );
     const picker = this.state.displayColorPicker ? (
       <div style={styles.popover}>
-        <div style={styles.cover} onClick={this.handleClose}/>
+        <div style={styles.cover} onClick={this.handleClose} />
         <div style={styles.wrapper}>
           <Picker
             {...this.props}

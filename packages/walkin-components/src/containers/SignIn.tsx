@@ -6,13 +6,35 @@ import IntlMessages from "../util/IntlMessages";
 import CircularProgress from "../components/CircularProgress/index";
 import { compose, graphql } from "react-apollo";
 import gql from "graphql-tag";
+import { History } from "history";
 
 const FormItem = Form.Item;
 
-class SignIn extends React.Component {
-  handleSubmit = e => {
+interface iProps {
+  showAuthLoader?: any,
+  userSignIn?: any
+  form?: any,
+  showMessage?: any,
+  hideMessage?: any,
+  authUser?: any,
+  history: History,
+  alertMessage?: string,
+  loader?: Boolean,
+  userGithubSignIn?: any,
+  userGoogleSignIn?: any,
+  userTwitterSignIn?: any,
+  userFacebookSignIn?: any
+
+}
+
+interface iState {
+
+}
+
+class SignIn extends React.Component<iProps, iState> {
+  handleSubmit = (e: any) => {
     e.preventDefault();
-    this.props.form.validateFields((err, values) => {
+    this.props.form.validateFields((err: boolean, values: any) => {
       if (!err) {
         this.props.showAuthLoader();
         this.props.userSignIn(values);
@@ -170,7 +192,7 @@ class SignIn extends React.Component {
 
 const WrappedNormalLoginForm = Form.create()(SignIn);
 
-const mapStateToProps = ({ auth }) => {
+const mapStateToProps = ({ auth }: any) => {
   const { loader, alertMessage, showMessage, authUser } = auth;
   return { loader, alertMessage, showMessage, authUser };
 };

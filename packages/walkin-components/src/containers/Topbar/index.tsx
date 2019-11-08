@@ -1,13 +1,10 @@
-import React, { Component } from 'react';
-import { Layout, Popover } from 'antd';
-import { Link } from 'react-router-dom';
+import *  as  React from 'react';
+import { Layout } from 'antd';
+import { Link, RouteComponentProps } from 'react-router-dom';
 
 import CustomScrollbars from '../../util/CustomScrollbars';
 import languageData from './languageData';
-import SearchBox from '../../components/SearchBox';
 import UserInfo from '../../components/UserInfo';
-import AppNotification from '../../components/AppNotification';
-import MailNotification from '../../components/MailNotification';
 import Auxiliary from '../../util/Auxiliary';
 import '../../styles/styles.css';
 
@@ -23,7 +20,20 @@ import { withRouter } from "react-router-dom";
 
 const { Header } = Layout;
 
-class Topbar extends Component {
+interface iProps extends RouteComponentProps {
+	width: Number,
+	navCollapsed: Boolean,
+	navStyle: string,
+	switchLanguage: any,
+	toggleCollapsedSideNav: any,
+	locale: string
+}
+
+interface iState {
+	searchText: string
+}
+
+class Topbar extends React.Component<iProps, iState> {
 	state = {
 		searchText: '',
 	};
@@ -51,7 +61,7 @@ class Topbar extends Component {
 		</CustomScrollbars>
 	);
 
-	updateSearchChatUser = evt => {
+	updateSearchChatUser = (evt: any) => {
 		this.setState({
 			searchText: evt.target.value,
 		});
@@ -177,7 +187,7 @@ class Topbar extends Component {
 	}
 }
 
-const mapStateToProps = ({ settings }) => {
+const mapStateToProps = ({ settings }: any) => {
 	const { locale, navStyle, navCollapsed, width } = settings.settings;
 	return { locale, navStyle, navCollapsed, width };
 };
@@ -219,8 +229,5 @@ export const TopbarModule = compose(
 	withRouter,
 	graphql(TOGGLE_COLLAPSED_SIDE_NAV, { name: "toggleCollapsedSideNav" }),
 	graphql(SWITCH_LANGUAGE, { name: "switchLanguage" }),
-	graphql(GET_SETTINGS, {
-		props: mapStateToProps,
-		name: "settings"
-	})
+	graphql(GET_SETTINGS, { props: mapStateToProps, name: "settings" })
 )(Topbar);
