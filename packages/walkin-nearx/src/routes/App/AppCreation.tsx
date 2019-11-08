@@ -8,7 +8,7 @@ import {
 } from "@walkinsole/walkin-core/src/PlatformQueries";
 import { nearXClient } from "../../nearXApollo";
 import { CREATE_APP } from "../../queries";
-import jwt from "jsonwebtoken";
+import * as jwt from "jsonwebtoken";
 import { withApollo, compose, graphql } from "react-apollo";
 import gql from "graphql-tag";
 

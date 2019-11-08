@@ -6,7 +6,7 @@ import {
   GENERATE_API_KEY,
   DELETE_APP
 } from "@walkinsole/walkin-core/src/PlatformQueries";
-import jwt from "jsonwebtoken";
+import * as jwt from "jsonwebtoken";
 import { withApollo } from "react-apollo";
 import conf from 'walkin-app/config'
 // import { nearXClient as client } from "../../nearXApollo";
