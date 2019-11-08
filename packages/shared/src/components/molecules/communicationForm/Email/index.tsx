@@ -1,11 +1,19 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Form, Upload, Icon, Button, Input, Row, Col } from "antd";
-class EmailForm extends Component {
+import * as React from "react";
+import * as PropTypes from "prop-types";
+import { Form, Upload, Icon, Button, Input } from "antd";
+
+interface iProps {
+  form?: any,
+  onFormNext?: any,
+  wrappedComponentRef?: any,
+  formValues?: any,
+  text?: string
+}
+class EmailForm extends React.Component<iProps, {}> {
   static propTypes = {
     prop: PropTypes
   };
-  constructor(props) {
+  constructor(props: iProps) {
     super(props);
     this.state = {
       // email_subject: "",

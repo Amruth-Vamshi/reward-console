@@ -1,11 +1,28 @@
-import React, { Fragment } from 'react';
+import * as React from 'react';
 import { Input, Typography, Alert } from 'antd';
 import './style.css';
 import ButtonGroups from '../../atoms/buttonGroup';
 const { Text } = Typography;
 
-class PrioritySelection extends React.Component {
-	constructor(props) {
+interface iProps {
+	priorityChosen?: any,
+	maxPriority?: any,
+	onClick?: any,
+	prioritySelectionTitle?: any,
+	priorityButtonText?: any,
+	priorityNumberInvalidErrorMessage?: any,
+	selectedPriorityButton?: any
+}
+
+interface iState {
+	maxPriority?: any,
+	priorityChosen?: any,
+	priorityNumberError?: boolean,
+
+}
+
+class PrioritySelection extends React.Component<iProps, iState> {
+	constructor(props: iProps) {
 		super(props);
 		this.state = {
 			priorityChosen: this.props.priorityChosen ? parseInt(this.props.priorityChosen) : 3,
@@ -14,7 +31,7 @@ class PrioritySelection extends React.Component {
 		};
 	}
 
-	displayError = state => {
+	displayError = (state: any) => {
 		this.setState({ [state]: true }, () => {
 			setTimeout(() => {
 				this.setState({ [state]: false });
@@ -22,7 +39,7 @@ class PrioritySelection extends React.Component {
 		});
 	};
 
-	validateCampaignPriority = e => {
+	validateCampaignPriority = (e: any) => {
 		const { value } = e.target;
 		if ((!Number.isNaN(value) && value > 0 && value <= this.state.maxPriority) || value === '') {
 			this.setState({ priorityChosen: value });
@@ -32,7 +49,7 @@ class PrioritySelection extends React.Component {
 		}
 	};
 
-	handleButtonGroup = e => {
+	handleButtonGroup = (e: any) => {
 		const { value } = e.target;
 		this.props.onClick(e)
 		this.setState({ priorityChosen: value });
@@ -47,7 +64,7 @@ class PrioritySelection extends React.Component {
 		} = this.props;
 		const { priorityChosen, priorityNumberError } = this.state;
 		return (
-			<Fragment>
+			<React.Fragment>
 				<Text>{prioritySelectionTitle}</Text>
 				<div className="prioritySelectionContainer">
 					<ButtonGroups
@@ -64,7 +81,7 @@ class PrioritySelection extends React.Component {
 					/>
 				</div>
 				{priorityNumberError && <Alert message={priorityNumberInvalidErrorMessage} type="error" />}
-			</Fragment>
+			</React.Fragment>
 		);
 	}
 }

@@ -1,9 +1,17 @@
-import React, { Fragment } from 'react';
+import * as React from 'react';
 import { Tooltip, Typography, Button } from 'antd';
 import './style.css';
-import PrioritySelection from '../prioritySelection/index';
 
 const { Text } = Typography;
+
+interface iProps {
+	testControlTitle?: any,
+	promptText?: any,
+	tootTipText?: any,
+	testControlPercentage?: any,
+	testControlPercentageEditText?: any,
+	onTestAndControlEdit?: any,
+}
 
 const TestAndControl = ({
 	testControlTitle,
@@ -12,9 +20,9 @@ const TestAndControl = ({
 	testControlPercentage,
 	testControlPercentageEditText,
 	onTestAndControlEdit,
-}) => {
+}: iProps) => {
 	return (
-		<Fragment>
+		<React.Fragment>
 			<div className="testControlContainer">
 				<Text>{testControlTitle}</Text>
 
@@ -28,7 +36,7 @@ const TestAndControl = ({
 					{testControlPercentageEditText}
 				</Button>
 			</div>
-		</Fragment>
+		</React.Fragment>
 	);
 };
 
