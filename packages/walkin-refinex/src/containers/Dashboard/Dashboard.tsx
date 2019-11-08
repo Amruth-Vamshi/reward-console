@@ -7,11 +7,22 @@ import * as jwt from "jsonwebtoken";
 import "./style.css"
 import { withApollo, ApolloProviderProps } from "react-apollo";
 import { GET_ANALYTICS } from "@walkinsole/walkin-core/src/PlatformQueries";
+import { ColumnProps } from "antd/lib/table";
 
 
 const dateFormat = 'YYYY/MM/DD';
 
 interface LandingProps extends ApolloProviderProps<any> {
+
+}
+
+interface TColumnProps {
+
+    title: string,
+    dataIndex: string,
+    key: number,
+    width: number,
+    fixed: string,
 
 }
 
@@ -91,7 +102,7 @@ class Landing extends React.Component<LandingProps, Partial<LandingState>> {
         //   data = AnyNear
         // }
         console.log("Service analytics data..", data.data.analytics);
-        data.data.analytics.map(i => {
+        data.data.analytics.map((i: any) => {
             if (i.name === "TOTAL_CAMPAIGNS") totalCampaigns = i.total
             else if (i.name === "TOTAL_FEEDBACKS") totalFeedbacks = i.total
             else if (i.name === "TOTAL_FORMS") totalForms = i.total
@@ -149,7 +160,7 @@ class Landing extends React.Component<LandingProps, Partial<LandingState>> {
 
     render() {
 
-        const columns = [
+        const columns: ColumnProps<TColumnProps>[] = [
             {
                 title: 'REFINEX_EVENT_ID',
                 dataIndex: 'id',
@@ -405,7 +416,7 @@ class Landing extends React.Component<LandingProps, Partial<LandingState>> {
                                                 <ResponsiveContainer width="100%" height={130}>
                                                     <AreaChart data={this.state.customers}
                                                         margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
-                                                        <Tooltip content={c => this.customPopup(c)} />
+                                                        <Tooltip content={(c: any) => this.customPopup(c)} />
                                                         {/* <Tooltip /> */}
                                                         {/* <XAxis dataKey="name" /> */}
                                                         <defs>

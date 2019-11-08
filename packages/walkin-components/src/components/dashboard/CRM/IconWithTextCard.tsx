@@ -2,8 +2,18 @@ import * as React from "react";
 import { Icon } from "antd";
 
 import { Widget } from "../../../index";
+import { CardProps } from "antd/lib/card";
 
-export const IconWithTextCard = ({
+interface IconWithTextCardProps {
+  cardColor?: string,
+  icon?: string,
+  title?: string | number,
+  antIcon?: string,
+  subTitle?: string,
+  iconColor?: string
+}
+
+export const IconWithTextCard: React.FunctionComponent<IconWithTextCardProps> = ({
   cardColor,
   icon,
   title,

@@ -1,6 +1,5 @@
 import * as React from "react";
-import * as AmCharts from "@amcharts/amcharts3-react";
-
+const AmCharts = require("@amcharts/amcharts3-react")
 interface Cylinder3DChartProps {
   data?: any
 }
