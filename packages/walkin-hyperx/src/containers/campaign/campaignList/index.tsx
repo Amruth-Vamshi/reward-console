@@ -1,22 +1,47 @@
-import React, { Component, Fragment } from 'react';
-import { withRouter } from 'react-router-dom';
-import { NEW_CAMPAIGN, CAMPAIGN_MANAGEMENT, CAMPAIGN_DASHBOARD } from '../../../utils/RouterConstants';
-import { campaigns, DISABLE_CAMPAIGN } from '../../../query/campaign';
-import { Card, Menu, Dropdown, Col, Spin, Button, Progress, Tabs, Icon } from 'antd';
-import * as moment from 'moment';
-import { withApollo, graphql, compose } from 'react-apollo';
-import { DEFAULT_ACTIVE_STATUS, DEFAULT_HYPERX_CAMPAIGN, SHOULD_EDIT } from "../../../utils"
-import { SortableDataTable, InstantSearch, CampaignHeader } from '@walkinsole/shared';
-import { CircularProgress, Widget } from '@walkinsole/walkin-components';
-import includes from "lodash/includes"
-
 import './style.css';
-import jwt from 'jsonwebtoken'
 
+import { CampaignHeader, InstantSearch, SortableDataTable } from '@walkinsole/shared';
+import { Widget } from '@walkinsole/walkin-components';
+import { Button, Col, Dropdown, Icon, Menu, Progress, Tabs } from 'antd';
+import jwt from 'jsonwebtoken';
+import * as moment from 'moment';
+import * as React from 'react';
+import { compose, graphql, withApollo } from 'react-apollo';
+import { RouteChildrenProps } from 'react-router';
+import { withRouter } from 'react-router-dom';
+
+import { campaigns, DISABLE_CAMPAIGN } from '../../../query/campaign';
+import { DEFAULT_ACTIVE_STATUS, DEFAULT_HYPERX_CAMPAIGN } from '../../../utils';
+import { CAMPAIGN_DASHBOARD, NEW_CAMPAIGN } from '../../../utils/RouterConstants';
+
+const { org_id, id }: any = jwt.decode(localStorage.getItem("jwt"));
 const { TabPane } = Tabs;
 
-class CampaignList extends Component {
-	constructor(props) {
+interface CampaignListProps extends RouteChildrenProps {
+	campaigns?: any
+	loading?: any
+	disableCampaign?: any
+	refetch?: any
+	location: any
+	data?: any
+	campaign?: any
+	changeStatus: () => any
+}
+
+interface CampaignListState {
+	sortedInfo: any,
+	filtered: any,
+	allCampaigns: any,
+	data: any,
+	loading: boolean,
+	showPopUp: boolean,
+	popupmessage: any,
+	key: any,
+	filteredInfo: any
+}
+
+class CampaignList extends React.Component<CampaignListProps, Partial<CampaignListState>> {
+	constructor(props: CampaignListProps) {
 		super(props);
 		this.state = {
 			sortedInfo: null,
@@ -33,7 +58,7 @@ class CampaignList extends Component {
 	}
 
 
-	componentDidUpdate(preValue) {
+	componentDidUpdate(preValue: any) {
 		if (this.props.loading !== preValue.loading) {
 			this.setInitialValues()
 			console.log(this.props)
@@ -57,23 +82,23 @@ class CampaignList extends Component {
 			pathname: NEW_CAMPAIGN,
 		});
 	};
-	handleChange = (pagination, filters, sorter, key, e) => {
+	handleChange = (pagination: any, filters: any, sorter: any, key: any, e: any) => {
 		console.log(pagination, filters, sorter, key, e);
 		this.setState({ sortedInfo: sorter });
 	};
 
-	onDeleteCampaign = campaign => {
+	onDeleteCampaign = (campaign: any) => {
 		console.log('delete', campaign);
 	};
 
-	onViewCampaign = campaign => {
+	onViewCampaign = (campaign: any) => {
 		console.log('View', campaign);
 		this.props.history.push({
 			pathname: `${CAMPAIGN_DASHBOARD}/${campaign.id}`,
 			state: { campaignSelected: campaign },
 		});
 	};
-	disableCampaign = campaign => {
+	disableCampaign = (campaign: any) => {
 		this.setState({ loading: true })
 		this.props.disableCampaign({
 			variables: {
@@ -87,14 +112,14 @@ class CampaignList extends Component {
 				this.onTabChange(this.state.key)
 			})
 			this.setState({ loading: false })
-		}).catch(err => {
+		}).catch((err: any) => {
 
 			console.log("ERR", err);
 			this.setState({ loading: false })
 		})
 	}
 
-	onDuplicateCampaign = campaign => {
+	onDuplicateCampaign = (campaign: any) => {
 		console.log('dupl', campaign);
 		const { history, match } = this.props;
 		history.push({
@@ -105,7 +130,7 @@ class CampaignList extends Component {
 		});
 	};
 
-	onEditCampaign = campaign => {
+	onEditCampaign = (campaign: any) => {
 		console.log('edit', campaign);
 		const { history, match } = this.props;
 		history.push({
@@ -132,25 +157,25 @@ class CampaignList extends Component {
 			}}
 		>
 			<Menu.Item key="view"><Icon type="eye" /> View</Menu.Item>
-			{/* {includes(record.campaignStatus, SHOULD_EDIT) ? <Menu.Item key="edit"><Icon type="edit" /> Edit</Menu.Item> : null} */}
+			{/* {_.includes(record.campaignStatus, SHOULD_EDIT) ? <Menu.Item key="edit"><Icon type="edit" /> Edit</Menu.Item> : null} */}
 			{/* <Menu.Item key="duplicate"><Icon type="copy" /> Duplicate</Menu.Item> */}
 			<Menu.Item key="delete"><Icon type="delete" /> Delete</Menu.Item>
 		</Menu>
 	);
 
-	onCampaignFilteredList = newList => {
+	onCampaignFilteredList = (newList: any) => {
 		console.log("new list", newList)
 		this.setState({
 			filtered: newList,
 		});
 	};
 
-	onTabChange = key => {
+	onTabChange = (key: any) => {
 		this.setState({ key })
 		const { allCampaigns } = this.state
 		if (!allCampaigns || allCampaigns.length < 1) return
 		if (key == 2) {
-			let upcomingCampaigns = allCampaigns.filter(val => {
+			let upcomingCampaigns = allCampaigns.filter((val: any) => {
 				if (val.status == 'ACTIVE') {
 					return val.campaignStatus == 'LIVE' && moment(val.startTime).isAfter(moment());
 				}
@@ -159,7 +184,7 @@ class CampaignList extends Component {
 		}
 
 		if (key == 3) {
-			let completedCampaigns = allCampaigns.filter(val => {
+			let completedCampaigns = allCampaigns.filter((val: any) => {
 				if (val.status == 'ACTIVE') {
 					return moment(val.endTime).isBefore(moment());
 				}
@@ -167,19 +192,19 @@ class CampaignList extends Component {
 			this.setState({ data: completedCampaigns, filtered: null });
 		}
 		if (key == 4) {
-			let draftCampaigns = allCampaigns.filter(val => {
+			let draftCampaigns = allCampaigns.filter((val: any) => {
 				return val.campaignStatus == 'DRAFT';
 			});
 			this.setState({ data: draftCampaigns, filtered: null });
 		}
 		if (key == 5) {
-			let draftCampaigns = allCampaigns.filter(val => {
+			let draftCampaigns = allCampaigns.filter((val: any) => {
 				return val.campaignStatus == 'PAUSE';
 			});
 			this.setState({ data: draftCampaigns, filtered: null });
 		}
 		if (key == 1) {
-			let liveCampaigns = allCampaigns.filter(val => {
+			let liveCampaigns = allCampaigns.filter((val: any) => {
 				if (val.status == 'ACTIVE') {
 					return val.campaignStatus == 'LIVE' && moment().isBetween(val.startTime, val.endTime);
 				}
@@ -202,7 +227,7 @@ class CampaignList extends Component {
 			position: "bottom",
 			total: campaignData ? campaignData.length : 0,
 			defaultPageSize: 6,
-			showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`
+			showTotal: (total: any, range: any) => `${range[0]}-${range[1]} of ${total} items`
 		}
 
 		const columns = [
@@ -211,42 +236,47 @@ class CampaignList extends Component {
 				dataIndex: 'name',
 				key: 'name',
 				width: '30%',
-				render: (text, row) => <div style={{ color: '#292929' }}> {text} </div>,
-				sorter: (a, b) => (a.name !== b.name ? (a.name < b.name ? -1 : 1) : 0),
+				render: (text: any, row: any) => <div style={{ color: '#292929' }}> {text} </div>,
+				sorter: (a: any, b: any) => (a.name !== b.name ? (a.name < b.name ? -1 : 1) : 0),
 				sortOrder: sortedInfo.columnKey === 'name' && sortedInfo.order,
 			},
 			{
 				title: 'Start date & end date',
 				dataIndex: 'startTime',
 				key: 'startTime',
-				render: (text, row) => (
-					<div>
-						{moment(text).format('DD-MMM-YY')}
-						<Progress
-							style={{ width: '35%', margin: '0px 5px 0px 5px' }}
-							percent={Math.round(
-								((moment() - moment(text)) / (moment(row.endTime) - moment(text))) * 100
-							)}
-							showInfo={false}
-						/>
-						{moment(row.endTime).format('DD-MMM-YY')}
-					</div>
-				),
+				render: (text: any, row: any) => {
+					const a: any = moment();
+					const b: any = moment(text);
+					const c: any = moment(row.endTime)
+					return (
+						<div>
+							{moment(text).format('DD-MM-YYYY')}
+							<Progress
+								style={{ width: '35%', margin: '0px 5px 0px 5px' }}
+								percent={Math.round(
+									((a - b) / (c - b)) * 100
+								)}
+								showInfo={false}
+							/>
+							{moment(row.endTime).format('DD-MM-YYYY')}
+						</div>
+					)
+				},
 			},
 			{
 				title: 'Priority',
 				dataIndex: 'priority',
 				key: 'priority',
-				render: (text, row) => <div className="priorityTextStyle">
+				render: (text: any, row: any) => <div className="priorityTextStyle">
 					{text < 10 ? `0${text}` : text} </div>,
-				sorter: (a, b) => (a.priority !== b.priority ? (a.priority < b.priority ? -1 : 1) : 0),
+				sorter: (a: any, b: any) => (a.priority !== b.priority ? (a.priority < b.priority ? -1 : 1) : 0),
 				sortOrder: sortedInfo.columnKey === 'priority' && sortedInfo.order,
 			},
 			{
 				title: '',
 				key: 'action',
 				width: 10,
-				render: (text, record) => (
+				render: (text: any, record: any) => (
 					<div className="gx-module-campaign-right">
 						<Dropdown overlay={this.menus(record)} placement="bottomRight" trigger={['click']}>
 							<i className="gx-icon-btn icon icon-ellipse-v" />
@@ -259,7 +289,7 @@ class CampaignList extends Component {
 			<div>
 				<CampaignHeader
 					children={
-						<Fragment>
+						<React.Fragment>
 							<Col span={12}>
 								<h3 className="gx-text-grey paddingLeftStyle campaignHeaderTitleStyle">Campaigns</h3>
 							</Col>
@@ -268,7 +298,7 @@ class CampaignList extends Component {
 									CREATE CAMPAIGN
 								</Button>
 							</Col>
-						</Fragment>
+						</React.Fragment>
 					}
 				/>
 				{/* // <div className="gx-card" style={{ margin: '32px' }}>
@@ -320,33 +350,31 @@ class CampaignList extends Component {
 }
 
 export default withRouter(
-	withApollo(
-		compose(
-			graphql(campaigns, {
-				options: () => ({
-					variables: {
-						organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
-						status: DEFAULT_ACTIVE_STATUS,
-						campaignType: DEFAULT_HYPERX_CAMPAIGN
-					}, fetchPolicy: "network-only",
-					forceFetch: true
-				}),
-				props: ({ data: { loading, error, campaigns, refetch } }) => ({
-					loading, campaigns, error,
-					changeStatus: status => {
-						refetch({
-							variables: {
-								organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
-								status: DEFAULT_ACTIVE_STATUS,
-								campaignType: DEFAULT_HYPERX_CAMPAIGN
-							}, fetchPolicy: "network-only"
-						});
-					},
-				}),
+	compose(
+		graphql(campaigns, {
+			options: () => ({
+				variables: {
+					organization_id: org_id,
+					status: DEFAULT_ACTIVE_STATUS,
+					campaignType: DEFAULT_HYPERX_CAMPAIGN
+				}, fetchPolicy: "network-only",
+				forceFetch: true
 			}),
-			graphql(DISABLE_CAMPAIGN, {
-				name: "disableCampaign"
+			props: ({ data: { loading, error, campaigns, refetch } }: any) => ({
+				loading, campaigns, error,
+				changeStatus: (status: any) => {
+					refetch({
+						variables: {
+							organization_id: org_id,
+							status: DEFAULT_ACTIVE_STATUS,
+							campaignType: DEFAULT_HYPERX_CAMPAIGN
+						}, fetchPolicy: "network-only"
+					});
+				},
 			}),
-		)(CampaignList)
-	)
+		}),
+		graphql(DISABLE_CAMPAIGN, {
+			name: "disableCampaign"
+		}),
+	)(CampaignList)
 );

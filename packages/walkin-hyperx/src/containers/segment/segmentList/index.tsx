@@ -274,7 +274,7 @@ class SegmentList extends Component<IProps, IState> {
 export default withRouter(
 	withApollo(
 		graphql(allSegments, {
-			options: ownProps => ({
+			options: (ownProps: IProps) => ({
 				variables: {
 					organization_id: org_id,
 					status: 'ACTIVE',
