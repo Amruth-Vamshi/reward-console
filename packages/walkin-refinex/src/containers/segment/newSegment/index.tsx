@@ -1,18 +1,31 @@
-import React, { Component, Fragment } from 'react';
+import * as React from 'react';
 import { Input, Button, Alert, Col, Icon, Spin } from 'antd';
 import { withRouter } from 'react-router-dom';
-import { withApollo, graphql, compose, mutate } from 'react-apollo';
+import { withApollo, graphql, compose, ApolloProviderProps } from 'react-apollo';
 import { attributes, createRule, createSegment } from '../../Query';
 import './style.css';
 import { SEGMENT_LIST, DEFAULT_ACTIVE_STATUS } from '../../../Utils';
-import get from 'lodash/get';
+import * as _ from 'lodash';
 import { WalkinQueryBuilder, CampaignHeader } from '@walkinsole/shared';
 import { ErrorBoundary } from '@walkinsole/walkin-components';
-import jwt from "jsonwebtoken";
+import * as jwt from "jsonwebtoken";
 import { GET_ALL_APPS_OF_ORGANIZATION } from "@walkinsole/walkin-core/src/PlatformQueries";
 import { toNumber } from '@walkinsole/walkin-components/src/util/common';
-class NewSegment extends Component {
-    constructor(props) {
+import { RouteChildrenProps } from 'react-router';
+
+interface NewSegmentProps extends RouteChildrenProps, ApolloProviderProps<any> {
+    allApplications?: any
+    attributes?: any
+}
+
+interface NewSegmentState {
+    value?: string,
+    query?: any,
+    newSegmentError?: boolean,
+    isDuplicateSegment?: boolean,
+}
+class NewSegment extends React.Component<NewSegmentProps, NewSegmentState> {
+    constructor(props: NewSegmentProps) {
         super(props);
         this.state = {
             value: '',
@@ -21,17 +34,17 @@ class NewSegment extends Component {
             isDuplicateSegment: false,
         };
     }
-    logQuery = query => {
+    logQuery = (query: any) => {
         this.setState({
             query: query,
             newSegmentError: false,
         });
     };
-    onChange = e => {
+    onChange = (e: any) => {
         this.setState({ value: e.target.value });
     };
 
-    displayError = state => {
+    displayError = (state: any) => {
         this.setState({ [state]: true }, () => {
             setTimeout(() => {
                 this.setState({ [state]: false });
@@ -47,7 +60,7 @@ class NewSegment extends Component {
         let { client } = this.props;
         console.log(this.props.allApplications.organization.applications[0])
         console.log(jwt.decode(localStorage.getItem("jwt")))
-        let org_id = jwt.decode(localStorage.getItem("jwt")).org_id;
+        let { org_id }: any = jwt.decode(localStorage.getItem("jwt"));
         client
             .mutate({
                 mutation: createRule,
@@ -99,12 +112,12 @@ class NewSegment extends Component {
         if (location && location.state) {
             if (location.state.segmentSelected) {
                 let str = location.state.segmentSelected.rule.ruleConfiguration;
-                var mapObj = {
+                let mapObj: any = {
                     attributeName: 'field',
                     attributeValue: 'value',
                     expressionType: 'operator',
                 };
-                str = str.replace(/attributeName|attributeValue|expressionType/gi, function (matched) {
+                str = str.replace(/attributeName|attributeValue|expressionType/gi, function (matched: any) {
                     return mapObj[matched];
                 });
                 this.setState({ query: JSON.parse(str) });
@@ -142,7 +155,7 @@ class NewSegment extends Component {
         }
         let attributeData =
             ruleAttributes.length > 0 &&
-            ruleAttributes.map(el => ({
+            ruleAttributes.map((el: any) => ({
                 name: el.attributeName,
                 key: el.id,
                 label: el.attributeName,
@@ -184,36 +197,35 @@ class NewSegment extends Component {
 }
 
 export default withRouter(
-    withApollo(
-        compose(
-            graphql(attributes, {
-                name: "attributes",
-                options: props => {
-                    return {
-                        variables: {
-                            input: {
-                                organizationId: jwt.decode(localStorage.getItem("jwt")).org_id,
-                                status: DEFAULT_ACTIVE_STATUS
-                            }
+    compose(
+        graphql(attributes, {
+            name: "attributes",
+            options: props => {
+                const { org_id }: any = jwt.decode(localStorage.getItem("jwt"))
+                return {
+                    variables: {
+                        input: {
+                            organizationId: org_id,
+                            status: DEFAULT_ACTIVE_STATUS
+                        }
 
-                        },
-                        fetchPolicy: "cache-and-network"
-                    };
-                }
+                    },
+                    fetchPolicy: "cache-and-network"
+                };
+            }
 
-            }),
-            graphql(GET_ALL_APPS_OF_ORGANIZATION, {
-                name: "allApplications",
-                options: props => {
-                    return {
-                        variables: {
-                            id: jwt.decode(localStorage.getItem("jwt")).org_id
-                        },
-                        fetchPolicy: "cache-and-network"
-                    };
-                }
-            })
-
-        )(NewSegment)
-    )
+        }),
+        graphql(GET_ALL_APPS_OF_ORGANIZATION, {
+            name: "allApplications",
+            options: props => {
+                const { org_id }: any = jwt.decode(localStorage.getItem("jwt"))
+                return {
+                    variables: {
+                        id: org_id
+                    },
+                    fetchPolicy: "cache-and-network"
+                };
+            }
+        }),
+    )(withApollo(NewSegment))
 );

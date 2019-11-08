@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import * as React from "react";
 import { Link } from "react-router-dom";
 
 import {
@@ -14,7 +14,17 @@ import { compose, graphql } from "react-apollo";
 import gql from "graphql-tag";
 import { Icon, Row, Col } from "antd";
 
-class SidebarLogo extends Component {
+
+interface SidebarLogoProps {
+  width?: any,
+  themeType?: any,
+  navCollapsed?: any,
+  navStyle?: any,
+  toggleCollapsedSideNav?: (a: any) => void
+  onNavStyleChange?: (a: any) => void
+}
+
+class SidebarLogo extends React.Component<SidebarLogoProps, {}> {
   render() {
     const { width, themeType, navCollapsed } = this.props;
     let { navStyle } = this.props;
@@ -61,7 +71,7 @@ class SidebarLogo extends Component {
   }
 }
 
-const mapStateToProps = ({ settings }) => {
+const mapStateToProps = ({ settings }: any) => {
   const { navStyle, themeType, width, navCollapsed } = settings.settings;
   return { navStyle, themeType, width, navCollapsed };
 };
