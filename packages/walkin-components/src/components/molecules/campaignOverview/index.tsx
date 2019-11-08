@@ -120,10 +120,11 @@ export class Overview extends React.Component<IProps, IState> {
                     margin: "0px 5px 0px 5px"
                   }}
                   percent={Math.round(
-                    ((moment().get("hours") -
-                      moment(campaign.startTime).get("hours")) /
-                      (moment(campaign.endTime).get("hours") -
-                        moment(campaign.startTime).get("hours"))) *
+                    (moment().diff(moment(campaign.startTime), "hours") /
+                      moment(campaign.endTime).diff(
+                        moment(campaign.startTime),
+                        "hours"
+                      )) *
                       100
                   )}
                   showInfo={true}
