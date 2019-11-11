@@ -312,7 +312,7 @@ export default class CreatePlaceManually extends React.Component<iProps, iState>
               handleSubmit={this.handleSubmit}
               handleOnChange={this.handleOnChange}
               deleteRedi={this.deleteRedi}
-              addHotspot={this.addHotspot}
+              // addHotspot={this.addHotspot}
               deleteHotspot={this.deleteHotspot}
               onPlaceSelect={this.onPlaceSelect}
               addRadius={this.addRadius}

@@ -11,7 +11,7 @@ function handleChange(value) {
 
 interface iProps {
   data?: any,
-  getloc?: () => any,
+  getloc?: any,
   myloc?: () => any,
   handleCenterChange?: (val1, val2) => any,
   changeSearchRadius?: (val) => any,

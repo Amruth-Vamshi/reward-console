@@ -308,7 +308,7 @@ export default class GooglePlaces extends React.Component<iProps, iState> {
     this.setState({ center, mark: center, getLoc: false, markLoc: true });
   };
 
-  getloc = i => this.setState({ getLoc: true });
+  getloc = (i: any) => this.setState({ getLoc: true });
   moreOpt = i => {
     if (this.state.moreOptions) {
       let mark = { lat: null, lng: null };
@@ -437,8 +437,8 @@ export default class GooglePlaces extends React.Component<iProps, iState> {
               moreOpt={this.moreOpt}
               selAll={this.selAll}
               handleOnChange={this.handleOnChange}
-              addHotspot={this.addHotspot}
-              deleteHotspot={this.deleteHotspot}
+              // addHotspot={this.addHotspot}
+              // deleteHotspot={this.deleteHotspot}
               onPlaceSelect={this.onPlaceSelect}
             />
 
@@ -525,8 +525,8 @@ export default class GooglePlaces extends React.Component<iProps, iState> {
             <GooglePlacesMap
               getloc={this.getloc}
               data={this.state}
-              addRadius={this.addRadius}
-              onChangeRadius={this.onChangeRadius}
+              // addRadius={this.addRadius}
+              // onChangeRadius={this.onChangeRadius}
               handleCenterChange={this.handleCenterChange}
               changeSearchRadius={this.changeSearchRadius}
               myloc={this.myloc}
