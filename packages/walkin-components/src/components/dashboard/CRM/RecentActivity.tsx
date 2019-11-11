@@ -55,7 +55,7 @@ class RecentActivity extends React.Component<IProps, IState> {
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.setState({
       height: window.innerHeight + "px",
       width: window.innerWidth + "px",

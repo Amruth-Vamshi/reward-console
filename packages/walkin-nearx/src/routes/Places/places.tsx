@@ -91,7 +91,7 @@ export default class Places extends React.Component<iProps, iState> {
       });
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.getPlacesData(0, 7, '', 'network-only')
   }
 

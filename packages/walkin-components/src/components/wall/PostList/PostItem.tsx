@@ -69,7 +69,7 @@ class PostItem extends Component<IProps, IState> {
     }
   };
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.setState({ post: this.props.postData, user: this.props.user });
   }
 

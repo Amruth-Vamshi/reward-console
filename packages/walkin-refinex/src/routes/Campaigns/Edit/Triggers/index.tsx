@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import * as React from "react";
 import PropTypes from "prop-types";
 import {
   Col,
@@ -14,10 +14,22 @@ const { Title } = Typography;
 import Delay from "./Delay";
 import EventType from "./EventType";
 import Filter from "./Filter";
-class Triggers extends Component {
+
+interface TriggersProps {
+  unlinkCampaignFromApplication?: any
+  selectedApplication?: any
+  linkCampaignToApplication?: any
+  applications?: any
+  eventValues?: any
+  onEventTypeEdited?: any
+  query?: any
+  attributeData?: any
+  logQuery?: any
+}
+class Triggers extends React.Component<TriggersProps, {}> {
 
 
-  constructor(props) {
+  constructor(props: TriggersProps) {
     super(props);
 
   }

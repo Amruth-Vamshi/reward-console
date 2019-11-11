@@ -88,7 +88,7 @@ class AppCreation extends React.Component<iProps, iState> {
 
   componentDidMount() { }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     const { id, org_id }: any = jwt.decode(localStorage.getItem("jwt"));
     this.setState({ userId: id, org_id });
 

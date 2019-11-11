@@ -40,7 +40,7 @@ class Users extends React.Component<UsersProps, UsersState> {
 		};
 	}
 
-	componentWillMount() {
+	UNSAFE_componentWillMount() {
 		this.getUsers();
 	}
 

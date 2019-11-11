@@ -45,7 +45,7 @@ class AddAndDeleteSelectDynamically extends React.Component<iProps, iState> {
     if (!values[0] || values[0] == "") this.state.errors.segment = "";
   }
 
-  componentWillReceiveProps = (p: any) => {
+  UNSAFE_componentWillReceiveProps = (p: any) => {
     let { errors } = this.state;
     this.setState({ errors: p.errors ? p.errors : errors });
   };

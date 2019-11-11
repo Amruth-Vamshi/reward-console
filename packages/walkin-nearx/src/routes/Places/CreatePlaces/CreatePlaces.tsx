@@ -42,11 +42,11 @@ export default class CreatePlaces extends React.Component<iProps, iState> {
     };
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.setState({ tab: this.props.tab });
   }
 
-  // componentWillMount(){
+  // UNSAFE_componentWillMount(){
   //   let googleAPIkey = ''
   //   client.query({
   //       query: GET_CONFIGURATION,

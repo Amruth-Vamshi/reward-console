@@ -38,7 +38,7 @@ class Webhooks extends React.Component<WebhooksProps, WebhooksState> {
     };
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     const jwtToken: any = localStorage.getItem("jwt")
     const { org_id }: any = jwt.decode(jwtToken);
     this.props.client

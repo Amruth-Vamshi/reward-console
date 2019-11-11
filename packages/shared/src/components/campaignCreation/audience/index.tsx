@@ -2,6 +2,7 @@ import *  as React from 'react';
 import { Divider, Button, Upload } from 'antd';
 import './style.css';
 import { AddAndDeleteSelectDynamically, WalkinQueryBuilder } from '@walkinsole/shared';
+import { UploadProps } from 'antd/lib/upload';
 
 interface iProps {
 	audienceTitle?: string,
@@ -9,7 +10,7 @@ interface iProps {
 	onValuesSelected?: any,
 	segmentSelectionData?: any,
 	uploadCsvText?: string,
-	uploadProps?: any,
+	uploadProps?: UploadProps,
 	segmentFilterText?: string,
 	segmentFilterSubText?: string,
 	attributeData?: any,
@@ -53,7 +54,7 @@ const Audience = ({
 					/>
 					{uploadCsvText && <span>
 						or
-						<Upload uploadProps={uploadProps}>
+						<Upload {...uploadProps}>
 							<Button style={{ marginBottom: '0px' }} type="link">
 								{uploadCsvText}
 							</Button>

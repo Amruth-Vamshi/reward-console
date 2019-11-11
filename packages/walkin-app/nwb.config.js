@@ -4,10 +4,7 @@ module.exports = {
     config: config => {
       config.plugins.concat([
         "import",
-        [
-          { libraryName: "antd", style: "css" },
-          { libraryName: "lodash" }
-        ]
+        [{ libraryName: "antd", style: "css" }, { libraryName: "lodash" }]
       ]);
 
       config.module.rules.push({
@@ -26,16 +23,22 @@ module.exports = {
           }
         ]
       });
-      config.module.rules.push({
-        test: /\.tsx?$/,
-        use: 'ts-loader',
-        exclude: /node_modules/,
-      });
+      // config.module.rules.push({
+      //   test: /\.tsx?$/,
+      //   use: "ts-loader",
+      //   exclude: /node_modules/
+      // });
 
       config.resolve = {
-        extensions: ['.tsx', '.ts', '.js']
+        extensions: [".tsx", ".ts", ".js"]
       };
-      config.entry = './src/index.tsx';
+      config.entry = "./src/index.tsx";
+
+      config.resolve.extensions.push(".ts", ".tsx");
+      config.module.rules.push({
+        test: /\.tsx?$/,
+        loader: "awesome-typescript-loader"
+      });
       return config;
     }
   }

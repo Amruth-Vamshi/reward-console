@@ -98,7 +98,7 @@ class Hooks extends React.Component<iProps, iState> {
       : this.setState({ visible: false, update: false });
   };
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.getWebhooks();
     this.props.client
       .query({ query: LIST_WEBHOOK_EVENTS })

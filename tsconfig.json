@@ -8,7 +8,12 @@
     "jsx": "react",
     "allowJs": true,
     "resolveJsonModule": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "lib": ["es6", "dom"],
+    "typeRoots": [
+      "packages/walkin-app/typings/global-fetch.d.ts",
+      "packages/walkin-app/typings/index.d.ts"
+    ]
   },
   "exclude": [
     "node_modules",
@@ -19,8 +24,5 @@
     "jest",
     "src/setupTests.ts"
   ],
-  "include": [
-    "packages/walkin-components/src/assets",
-    "packages/walkin-app/typings/index.d.ts"
-  ]
+  "include": ["packages/*/src/assets"]
 }

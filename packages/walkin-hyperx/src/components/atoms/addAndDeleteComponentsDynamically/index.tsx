@@ -7,10 +7,10 @@ import React, { Fragment } from "react";
 const { Option } = Select;
 
 function logProps(InputComponent: any) {
-  InputComponent.prototype.componentWillReceiveProps = function (
+  InputComponent.prototype.UNSAFE_componentWillReceiveProps = function(
     nextProps: any
-  ) { };
-  InputComponent.prototype.componentDidMount = function () { };
+  ) {};
+  InputComponent.prototype.componentDidMount = function() {};
   return InputComponent;
 }
 
@@ -33,7 +33,7 @@ interface IState {
 class AddAndDeleteComponentsDynamically extends React.Component<
   IProps,
   IState
-  > {
+> {
   static propTypes: any;
   static defaultProps: any;
   constructor(props: IProps) {
@@ -237,7 +237,7 @@ AddAndDeleteComponentsDynamically.propTypes = {
 };
 
 AddAndDeleteComponentsDynamically.defaultProps = {
-  onValuesSelected: () => { },
+  onValuesSelected: () => {},
   data_1: [],
   data_2: [],
   prop1: "prop1",

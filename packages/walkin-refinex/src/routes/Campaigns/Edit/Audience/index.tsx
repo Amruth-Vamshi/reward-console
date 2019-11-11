@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import * as React from "react";
 import PropTypes from "prop-types";
 import "./style.css";
 import { Col, Row, Typography, Upload, Divider, Button } from "antd";
@@ -8,10 +8,30 @@ import { AddAndDeleteSelectDynamically } from "@walkinsole/shared";
 import { WalkinQueryBuilder } from "@walkinsole/shared";
 const { Title } = Typography;
 
-class Audience extends Component {
+interface AudienceProps {
+  allAttributes?: any
+  segmentList?: any
+  logQuery?: any
+  onValuesSelected?: any
+}
+
+
+interface AudienceState {
+  formValues: any,
+  current: any,
+  rows: any,
+  values: any
+}
+
+class Audience extends React.Component<AudienceProps, AudienceState> {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      formValues: "",
+      current: "",
+      rows: "",
+      values: ""
+    };
   }
   static propTypes = {
     prop: PropTypes
@@ -49,7 +69,7 @@ class Audience extends Component {
                 Segments
               </p>
               <AddAndDeleteSelectDynamically
-                onValuesSelected={this.onValuesSelected}
+                onValuesSelected={this.props.onValuesSelected}
                 segmentSelectionData={this.props.segmentList.segments}
               />
               <span>
@@ -68,7 +88,7 @@ class Audience extends Component {
               <p className="gx-text-grey gx-mb-1">Campaign applies to :</p>
               <WalkinQueryBuilder
                 fields={attributeData}
-                onQueryChange={this.logQuery}
+                onQueryChange={this.props.logQuery}
               />
             </div>
           </div>

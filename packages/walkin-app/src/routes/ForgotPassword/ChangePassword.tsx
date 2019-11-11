@@ -18,7 +18,7 @@ class ChangePassword extends React.Component<IProps, IState> {
     confirmDirty: false
   };
 
-  // componentWillMount() {
+  // UNSAFE_componentWillMount() {
   //     if (localStorage.getItem("jwt")) this.props.history.push("/");
   // }
 

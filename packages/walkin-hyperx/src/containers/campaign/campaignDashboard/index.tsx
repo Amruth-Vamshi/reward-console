@@ -42,7 +42,7 @@ class CampaignDashboard extends Component<IProps, Partial<IState>> {
         }
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.setState({ spin: true })
         this.props.client.query({
             query: VIEW_CAMPAIGN,
