@@ -43,7 +43,7 @@ class UserInfo extends Component<IProps, IState> {
     this.props.history.push(url);
   };
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     const { id, org_id } = jwt.decode(localStorage.getItem("jwt")) as any;
     this.setState({ userId: id, org_id });
     id

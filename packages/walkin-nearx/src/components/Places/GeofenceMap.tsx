@@ -161,7 +161,7 @@ export default class GeofenceMap extends React.Component<iProps, iState> {
     this.isUnmounted = true;
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     geolocation.getCurrentPosition(position => {
       var center = this.state.center;
       (center = {

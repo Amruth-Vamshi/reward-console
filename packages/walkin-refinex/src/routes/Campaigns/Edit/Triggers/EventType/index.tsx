@@ -47,7 +47,7 @@ class EventType extends React.Component<EventTypeProps, EventTypeState> {
     console.log(this.props)
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     const { event, selectedApplication } = this.props;
     if (selectedApplication) {
       this.setState({

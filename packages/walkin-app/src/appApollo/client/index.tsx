@@ -38,7 +38,7 @@ export const configureClient = async () => {
       if (graphQLErrors) {
         console.log(graphQLErrors);
 
-        if (!includes(graphQLErrors[0].message, ERROR_EXCEPTIONS)) {
+        if (!includes(ERROR_EXCEPTIONS, graphQLErrors[0].message)) {
           if (
             graphQLErrors[0].extensions &&
             graphQLErrors[0].extensions.code == "UNTH"

@@ -50,7 +50,7 @@ class CommentBox extends Component<IProps, IState> {
     }
   };
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.setState({ commentData: this.props.commentData });
   }
 

@@ -67,7 +67,7 @@ class Landing extends React.Component<LandingProps, Partial<LandingState>> {
     }
 
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         console.log("This.state...", this.state)
         const { id, org_id }: any = jwt.decode(localStorage.getItem("jwt"));
         if (org_id && id) {

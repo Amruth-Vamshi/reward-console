@@ -116,7 +116,7 @@ class Schedule extends React.Component<iProps, iState> {
         }
     }
 
-    componentWillReceiveProps = (p: any) => {
+    UNSAFE_componentWillReceiveProps = (p: any) => {
         this.setState({ saved: p.saved })
     }
 

@@ -14,7 +14,7 @@ export default PlacesWithStandaloneSearchBox = compose(
     containerElement: <div style={{ height: `400px` }} />
   }),
   lifecycle({
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
       const refs = {};
 
       this.setState({

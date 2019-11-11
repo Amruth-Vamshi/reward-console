@@ -57,7 +57,7 @@ export default class EntityVariablesForm extends React.Component<EntityVariables
     };
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     let { entityExtendField } = this.props;
     if (entityExtendField) {
       this.setState({ entityExtendField });

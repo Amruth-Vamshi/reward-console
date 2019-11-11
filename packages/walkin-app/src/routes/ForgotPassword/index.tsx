@@ -14,7 +14,7 @@ interface IProps extends FormComponentProps {
 interface IState { }
 
 class ForgotPassword extends React.Component<IProps, IState> {
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     if (localStorage.getItem("jwt")) this.props.history.push("/");
   }
   render() {

@@ -21,7 +21,7 @@ class CampaignDashboard extends Component {
         }
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.setState({ spin: true })
         this.props.client.query({
             query: VIEW_CAMPAIGN,

@@ -73,7 +73,7 @@ class analytics extends React.Component<analyticsProps, Partial<analyticsState>>
         }
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         console.log("This.state...", this.state)
         const { id, org_id }: any = jwt.decode(localStorage.getItem("jwt"));
         this.getMetrics(org_id, this.state.endDate)

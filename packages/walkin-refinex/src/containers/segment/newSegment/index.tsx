@@ -107,7 +107,7 @@ class NewSegment extends React.Component<NewSegmentProps, NewSegmentState> {
             });
     };
 
-    componentWillMount = () => {
+    UNSAFE_componentWillMount = () => {
         const { location, match } = this.props;
         if (location && location.state) {
             if (location.state.segmentSelected) {

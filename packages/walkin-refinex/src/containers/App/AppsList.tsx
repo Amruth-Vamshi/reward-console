@@ -61,7 +61,7 @@ class AppsList extends React.Component<ApplistProps, ApplistState> {
     //   }).catch(err=>{console.log("Failed"+err)})
     // }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.setState({ spin: true });
         const jwtData = jwt.decode(localStorage.getItem("jwt"));
 

@@ -78,7 +78,7 @@ export default class SettingsForm extends React.Component<iProps, iState> {
     };
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     let googleAPIkey,
       facebookAPIkey = "";
     let radius = [RADIUS_1_MIN];

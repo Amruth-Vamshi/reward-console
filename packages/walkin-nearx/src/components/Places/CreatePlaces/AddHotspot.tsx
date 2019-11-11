@@ -47,7 +47,7 @@ class AddHotspot extends Component {
     };
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     // let location = this.props.formData.places[0].center;
     // client
     //   .query({
