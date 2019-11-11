@@ -2,17 +2,33 @@ import * as React from "react"
 import reactCSS from 'reactcss'
 import { SketchPicker } from 'react-color'
 
-class ColorControl extends React.Component {
-    state = {
-        displayColorPicker: false,
-        color: {
-            r: '241',
-            g: '112',
-            b: '19',
-            a: '1',
-        },
-        hex: ""
-    };
+interface ColorControlProps {
+    colorChange?: any
+
+}
+
+interface ColorControlState {
+    displayColorPicker: boolean,
+    color: any,
+    hex: string
+}
+
+class ColorControl extends React.Component<ColorControlProps, ColorControlState> {
+
+    constructor(props: ColorControlProps) {
+        super(props)
+        this.state = {
+            displayColorPicker: false,
+            color: {
+                r: '241',
+                g: '112',
+                b: '19',
+                a: '1',
+            },
+            hex: ""
+        };
+    }
+
 
     handleClick = () => {
         this.setState({ displayColorPicker: !this.state.displayColorPicker })

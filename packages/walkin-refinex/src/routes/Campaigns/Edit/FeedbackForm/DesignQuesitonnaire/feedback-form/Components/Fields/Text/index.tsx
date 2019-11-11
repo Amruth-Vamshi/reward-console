@@ -3,7 +3,14 @@ import { Input } from 'antd';
 
 const { TextArea } = Input;
 
-const SingleAnswer = ({ question, value, radioStyle, onChange }) => {
+interface SingleAnswerProps {
+    question?: any,
+    value?: any,
+    radioStyle?: any,
+    onChange?: any
+}
+
+const SingleAnswer: React.FC<SingleAnswerProps> = ({ question, value, radioStyle, onChange }) => {
     return (<TextArea
         value={value}
         onChange={onChange}

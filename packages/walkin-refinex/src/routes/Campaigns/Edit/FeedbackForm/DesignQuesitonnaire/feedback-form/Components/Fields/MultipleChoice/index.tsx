@@ -1,7 +1,14 @@
 import * as React from "react";
 import { Checkbox } from "antd"
 
-const SingleAnswer = ({ question, value, radioStyle, onChange }) => {
+interface SingleAnswerProps {
+    question?: any,
+    value?: any,
+    radioStyle?: any,
+    onChange?: any
+}
+
+const SingleAnswer: React.FC<SingleAnswerProps> = ({ question, value, radioStyle, onChange }) => {
     return (<Checkbox.Group onChange={onChange} value={value}>
         {
             question.choices.map(choice => {

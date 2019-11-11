@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import * as React from 'react'
 import { Layout, PageHeader, Button, Icon, Radio, Input, Row, Col, Switch } from "antd"
 const { Header, Content, Footer } = Layout;
 import "./index.css"
@@ -7,9 +7,30 @@ import SingleAnswer from "./Components/Fields/SigleChoice"
 import MultipleAnswer from "./Components/Fields/MultipleChoice"
 import Text from "./Components/Fields/Text"
 import RateScale from "./Components/Fields/RatingScale"
-class Home extends Component {
 
-    constructor(props) {
+interface HomeProps {
+    color?: any
+    question?: any
+    nextQuestion?: any
+    goTopreviousQuestion?: any
+}
+
+interface HomeState {
+    backgroundColor?: any
+    transitions?: any
+    logo?: any
+    templateStructure?: any
+    title?: any
+    subtitle?: any
+    value?: any
+    buttonColor?: any
+    textValue?: any
+    rateValue?: any
+}
+
+class Home extends React.Component<HomeProps, HomeState> {
+
+    constructor(props: HomeProps) {
         super(props)
         this.state = {
             backgroundColor: "#891732",
@@ -65,7 +86,11 @@ class Home extends Component {
             case "MULTIPLE_ANSWER":
                 return <MultipleAnswer question={question} onChange={this.onChangeMultiple} radioStyle={radioStyle} />
             case "RATING_SCALE":
-                return <RateScale character="star" question={question} onChange={this.handleChangeRate} value={this.state.rateValue} />
+                return <RateScale
+                    character="star"
+                    question={question}
+                    onChange={this.handleChangeRate}
+                    value={this.state.rateValue} />
             case "OPINION_SCALE":
                 return <RateScale character="smile" question={question} onChange={this.handleChangeRate} value={this.state.rateValue} />
         }
