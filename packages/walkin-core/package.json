@@ -56,7 +56,7 @@
     "nwb": "0.23.x",
     "style-loader": "^0.23.1",
     "ts-loader": "^6.2.1",
-    "typescript": "^3.7.2"
+    "typescript": "~3.5.2"
   },
   "keywords": [
     "react-component"

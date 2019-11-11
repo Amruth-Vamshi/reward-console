@@ -26,6 +26,7 @@ import { graphql, compose, MutationFunc } from "react-apollo";
 import ForgotPassword from "../../routes/ForgotPassword";
 import ChangePassword from "../../routes/ForgotPassword/ChangePassword";
 import { Location } from "history";
+import { LocationProps } from "@reach/router";
 
 const RestrictedRoute = ({
   setRedirectRoute,
@@ -72,6 +73,7 @@ interface IProps {
   themeType?: string;
   layoutType?: string;
   userId?: string;
+  match: any;
 }
 
 interface IState {}
@@ -134,7 +136,8 @@ class App extends React.Component<IProps, IState> {
       layoutType,
       navStyle,
       locale,
-      userId
+      userId,
+      match
     } = this.props;
 
     if (themeType === THEME_TYPE_DARK) {
@@ -173,28 +176,17 @@ class App extends React.Component<IProps, IState> {
               render={props => <ChangePassword {...props} />}
             />
             <Route exact path="/forgotpassword" component={ForgotPassword} />
-            {/* <RestrictedRoute
+            <RestrictedRoute
               path={`${match.url}`}
               // userId={userId}
               component={MainApp}
-            /> */}
+            />
           </Switch>
         </IntlProvider>
       </ConfigProvider>
     );
   }
 }
-// Old code
-// const mapStateToProps = ({ settings }) => {
-//   const { locale, navStyle, themeType, layoutType } = settings;
-//   return { locale, navStyle, themeType, layoutType };
-// };
-// export default connect(
-//   mapStateToProps,
-//   { setThemeType, onNavStyleChange, onLayoutTypeChange }
-// )(App);
-
-// New graphql code
 
 const GET_SETTINGS = gql`
   query localData {
