@@ -1,12 +1,20 @@
-import React, { Component } from "react";
+import * as React from "react";
 import { Col, Row, Dropdown, Menu, Card, Button, Divider } from "antd";
 // import CreatePlaces from '../../routes/Places/CreatePlaces/CreatePlaces';
+import { History } from "history"
 
 const options = [
   "Edit",
   'Delete'
 ];
-export default class placeCard extends Component {
+
+interface iProps {
+  history?: History,
+  data?: any,
+  disablePlace?: (val) => any,
+  key?: any
+}
+export default class placeCard extends React.Component<iProps, {}> {
 
 
   menus = () => (<Menu onClick={e => {

@@ -1,15 +1,15 @@
-import React, { Component } from "react";
-import { Row, Col, Affix, Button, message, Modal } from "antd";
+import * as React from "react";
+import { Row, Col, message, Modal } from "antd";
 import CreatePlaceForm from "./CreatePlaceForm";
 import GeofenceMap from "../GeofenceMap";
 import canUseDOM from "can-use-dom";
 import { nearXClient as client } from "../../../nearXApollo";
-import raf from "raf";
 import { CREATE_PLACE, PLACES_BY_ID } from "../../../queries";
 import AddHotspot from "./AddHotspot";
-import { RADIUS_1_MAX, RADIUS_1_MIN, RADIUS_2_MAX, RADIUS_3_MAX, HOTSPOT_RADIUS } from "../../../Constants";
+import { RADIUS_1_MIN, HOTSPOT_RADIUS } from "../../../Constants";
+import { History } from "history"
 
-const geolocation =
+const geolocation: any =
   canUseDOM && navigator.geolocation
     ? navigator.geolocation
     : {
@@ -18,7 +18,24 @@ const geolocation =
       }
     };
 
-export default class CreatePlaceManually extends Component {
+interface iProps {
+  history?: History
+}
+
+interface iState {
+  places?: Array<any>,
+  places1?: Array<any>,
+  center?: { lat?: any, lng?: any },
+  errors?: any,
+  markerPlace?: number,
+  getLoc?: boolean,
+  visible?: boolean,
+  loading1?: boolean,
+  loading?: boolean
+}
+
+export default class CreatePlaceManually extends React.Component<iProps, iState> {
+  deleteHotspot: any;
   constructor(props) {
     super(props);
     this.state = {
@@ -69,7 +86,7 @@ export default class CreatePlaceManually extends Component {
       })
       .then(res => {
         let place = res.data.Place;
-        let places = [
+        let places: any = [
           {
             id: place.id,
             placeName: place.geofenceName,
@@ -286,7 +303,7 @@ export default class CreatePlaceManually extends Component {
         {/* <div>
            <p style={{fontSize:20 }} > CREATE  PLACES</p>    
          </div> */}
-        <Row style={{ float: "center" }} gutter={20}>
+        <Row style={{ float: "none" }} gutter={20}>
           <Col xs={24} sm={12} span={12}>
             <CreatePlaceForm
               formData={this.state}

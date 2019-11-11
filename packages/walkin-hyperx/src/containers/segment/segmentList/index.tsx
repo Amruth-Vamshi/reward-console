@@ -9,6 +9,7 @@ import { withRouter } from 'react-router-dom';
 
 import { allSegments, disableSegment } from '../../../query/audience';
 import { NEW_SEGMENT } from '../../../utils/RouterConstants';
+import { DEFAULT_ACTIVE_STATUS } from '../../../utils';
 
 const { org_id, id }: any = jwt.decode(localStorage.getItem("jwt"));
 
@@ -276,7 +277,7 @@ export default withRouter(
 		options: (ownProps: IProps) => ({
 			variables: {
 				organization_id: org_id,
-				status: 'ACTIVE',
+				status: DEFAULT_ACTIVE_STATUS,
 			},
 			forceFetch: true,
 			fetchPolicy: 'network-only',
@@ -289,7 +290,7 @@ export default withRouter(
 				refetch({
 					variables: {
 						organization_id: org_id,
-						status: 'ACTIVE',
+						status: DEFAULT_ACTIVE_STATUS,
 					},
 				});
 			},

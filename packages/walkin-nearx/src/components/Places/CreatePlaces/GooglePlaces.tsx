@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import * as React from "react";
 import { Row, Col, Card, Affix, message, Modal, Input, Button, Icon } from "antd";
 import GetGooglePlaces from "./GetGooglePlaces";
 import { Link } from "react-router-dom";
@@ -18,10 +18,11 @@ import {
   RADIUS_1_MIN,
   TYPE
 } from "../../../Constants";
+import { History } from "history"
 
 // AIzaSyCwRQqzyQuopL0CQ212q97uFVyXn5EMLbs
 
-const geolocation =
+const geolocation: any =
   canUseDOM && navigator.geolocation
     ? navigator.geolocation
     : {
@@ -29,7 +30,37 @@ const geolocation =
         failure(`Your browser doesn't support geolocation.`);
       }
     };
-export default class GooglePlaces extends Component {
+
+interface iProps {
+  history?: History
+}
+
+interface iState {
+  places?: Array<any>,
+  places1?: Array<any>,
+  center?: { lat?: any, lng?: any },
+  mark?: { lat?: any, lng?: any },
+  errors?: any,
+  search?: string,
+  getLoc?: boolean,
+  visible?: boolean,
+  noOfPlaces?: number,
+  markLoc?: boolean,
+  searchRadius?: number,
+  moreOptions?: boolean,
+  selectAll?: boolean,
+  loading?: boolean,
+  loading1?: boolean,
+  defaultRadius?: Array<number>,
+  googleAPIkey?: string,
+  type?: string
+}
+
+export default class GooglePlaces extends React.Component<iProps, iState> {
+  addHotspot: any;
+  deleteHotspot: any;
+  addRadius: any;
+  onChangeRadius: any;
   constructor(props) {
     super(props);
     this.state = {
@@ -109,7 +140,7 @@ export default class GooglePlaces extends Component {
   handleSubmit = e => {
     let { googleAPIkey } = this.state;
     // e.preventDefault();
-    let errors = {};
+    let errors: any = {};
     if (this.state.search.trim() == "")
       errors.search = "* this field is mandatory";
     if (this.state.searchRadius !== null && this.state.searchRadius !== NaN) {
@@ -263,7 +294,7 @@ export default class GooglePlaces extends Component {
 
   changeSearchRadius = e => {
     let val = e.target.value;
-    let errors = {};
+    let errors: any = {};
     if (val < 100) errors.searchRadius = "Radius should be greater than 100";
     else if (this.state.mark.lat == null || this.state.mark.lng == null)
       errors.searchRadius = "Please fill Latitude and Longitude values first";
@@ -398,7 +429,7 @@ export default class GooglePlaces extends Component {
             </div>
           </Row> */}
 
-        <Row style={{ float: "center" }} gutter={1}>
+        <Row style={{ float: "none" }} gutter={1}>
           <Col xs={24} sm={14} span={14}>
             <GetGooglePlaces
               formData={this.state}
@@ -462,7 +493,7 @@ export default class GooglePlaces extends Component {
                         </Col>
                       </Row>
                     )}
-                </Card>{" "}
+                </Card>
               </Affix>
             ) : (
                 <div className="">

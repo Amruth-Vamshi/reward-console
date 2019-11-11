@@ -6,7 +6,7 @@ const {
   StandaloneSearchBox
 } = require("react-google-maps/lib/components/places/SearchBox");
 
-export default PlacesWithStandaloneSearchBox = compose(
+const PlacesWithStandaloneSearchBox = compose(
   withProps({
     googleMapURL:
       "https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&v=3.exp&libraries=geometry,drawing,places",
@@ -15,7 +15,7 @@ export default PlacesWithStandaloneSearchBox = compose(
   }),
   lifecycle({
     UNSAFE_componentWillMount() {
-      const refs = {};
+      const refs: any = {};
 
       this.setState({
         places: [],
@@ -70,6 +70,8 @@ export default PlacesWithStandaloneSearchBox = compose(
     </ol>
   </div>
 ));
+
+export default PlacesWithStandaloneSearchBox;
 
 // ReactDOM.render(
 //   <PlacesWithStandaloneSearchBox />,

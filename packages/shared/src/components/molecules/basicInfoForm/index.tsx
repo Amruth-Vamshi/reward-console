@@ -4,7 +4,7 @@ import moment from "moment";
 
 interface iProps {
   form?: any;
-  edit?: Boolean;
+  edit?: boolean;
   onFormNext?: any;
   wrappedComponentRef?: any;
   formValues?: any;
