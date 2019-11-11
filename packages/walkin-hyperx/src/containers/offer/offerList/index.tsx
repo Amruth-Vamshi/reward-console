@@ -1,14 +1,33 @@
+import { CampaignHeader, InstantSearch, SortableDataTable } from '@walkinsole/shared';
+import { Button, Col, Dropdown, Menu } from 'antd';
+import * as jwt from 'jsonwebtoken';
 import React, { Component, Fragment } from 'react';
+import { graphql, withApollo, ApolloProviderProps } from 'react-apollo';
+import { RouteChildrenProps } from 'react-router';
 import { withRouter } from 'react-router-dom';
-import { getOffers, closeOffer, LAUNCH_OFFER } from '../../../query/offer';
-import { withApollo, graphql } from 'react-apollo';
-import { NEW_SEGMENT, NEW_OFFER } from '../../../utils/RouterConstants';
-import { Card, Menu, Dropdown, Button, Col } from 'antd';
-import * as moment from 'moment';
-import * as jwt from "jsonwebtoken";
-import { SortableDataTable, InstantSearch, CampaignHeader } from '@walkinsole/shared';
 
-class OfferList extends Component {
+import { closeOffer, getOffers, LAUNCH_OFFER } from '../../../query/offer';
+import { NEW_OFFER } from '../../../utils/RouterConstants';
+import { DEFAULT_ACTIVE_STATUS } from '../../../utils';
+
+const { org_id, id }: any = jwt.decode(localStorage.getItem("jwt"));
+
+
+interface IProps extends RouteChildrenProps, ApolloProviderProps<any> {
+	refetchOffers
+	getOffers
+	loading
+	data
+	changeStatus: () => any
+}
+
+interface IState {
+	filteredInfo
+	sortedInfo: any,
+	filtered: any,
+	loading: any
+}
+class OfferList extends Component<IProps, Partial<IState>> {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -81,7 +100,7 @@ class OfferList extends Component {
 					this.onDuplicateContact(record);
 				} else if (e.key === 'CLOSED') {
 					this.onDeleteContact(record);
-				} else this.onLaunchOffer(record, e.key)
+				} else this.onLaunchOffer(record)
 			}}
 		>
 			{record.state == "DRAFT" ? <Menu.Item key="LIVE">Launch offer</Menu.Item> :
@@ -186,26 +205,24 @@ class OfferList extends Component {
 }
 
 export default withRouter(
-	withApollo(
-		graphql(getOffers, {
-			options: ownProps => ({
-				variables: {
-					organizationId: jwt.decode(localStorage.getItem("jwt")).org_id,
-				},
-				forceFetch: true,
-				fetchPolicy: 'network-only',
-			}),
-			props: ({ data: { loading, error, getOffers, refetch } }) => ({
-				loading, getOffers, error,
-				refetchOffers: props => {
-					refetch({
-						variables: {
-							organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
-							status: 'ACTIVE',
-						},
-					});
-				},
-			}),
-		})(OfferList)
-	)
+	graphql(getOffers, {
+		options: (ownProps: any) => ({
+			variables: {
+				organizationId: org_id,
+			},
+			forceFetch: true,
+			fetchPolicy: 'network-only',
+		}),
+		props: ({ data: { loading, error, getOffers, refetch } }: any) => ({
+			loading, getOffers, error,
+			refetchOffers: (props: any) => {
+				refetch({
+					variables: {
+						organization_id: org_id,
+						status: DEFAULT_ACTIVE_STATUS,
+					},
+				});
+			},
+		}),
+	})(withApollo(OfferList))
 );

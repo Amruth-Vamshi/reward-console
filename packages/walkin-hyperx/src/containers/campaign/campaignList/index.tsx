@@ -6,7 +6,7 @@ import { Button, Col, Dropdown, Icon, Menu, Progress, Tabs } from 'antd';
 import jwt from 'jsonwebtoken';
 import * as moment from 'moment';
 import * as React from 'react';
-import { compose, graphql, withApollo } from 'react-apollo';
+import { compose, graphql } from 'react-apollo';
 import { RouteChildrenProps } from 'react-router';
 import { withRouter } from 'react-router-dom';
 
@@ -82,8 +82,8 @@ class CampaignList extends React.Component<CampaignListProps, Partial<CampaignLi
 			pathname: NEW_CAMPAIGN,
 		});
 	};
-	handleChange = (pagination: any, filters: any, sorter: any, key: any, e: any) => {
-		console.log(pagination, filters, sorter, key, e);
+	handleChange = (pagination: any, filters: any, sorter: any) => {
+		console.log(pagination, filters, sorter);
 		this.setState({ sortedInfo: sorter });
 	};
 
