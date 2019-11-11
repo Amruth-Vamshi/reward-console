@@ -1,7 +1,15 @@
 import * as React from "react";
 import { Rate, Row, Col, Icon } from 'antd';
 
-const RateScale = ({ question, value, radioStyle, onChange, character }) => {
+interface RateScaleProps {
+    question?: any,
+    value?: any,
+    radioStyle?: any,
+    onChange?: any,
+    character?: any
+}
+
+const RateScale: React.FC<RateScaleProps> = ({ question, value, radioStyle, onChange, character }) => {
     const desc = ['terrible', 'bad', 'normal', 'good', 'wonderful'];
     return (
         <Row>

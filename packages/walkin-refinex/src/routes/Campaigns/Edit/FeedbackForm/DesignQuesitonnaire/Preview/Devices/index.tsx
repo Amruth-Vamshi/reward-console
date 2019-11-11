@@ -1,5 +1,5 @@
 import "./index.css";
-import React, { Component } from 'react';
+import * as React from 'react';
 import { Card, Col, Row, message } from 'antd';
 import Home from "../../feedback-form/index";
 import {
@@ -13,8 +13,18 @@ import {
     Lumia920,
     Galaxys5
 } from "./Device/index";
-export default class Device extends Component {
-    constructor(props) {
+
+interface DeviceProps {
+    color?: any
+    isFirstQuestion?: any
+    question?: any
+    nextQuestion?: any
+    goTopreviousQuestion?: any
+    isLastQuestion?: any
+}
+
+export default class Device extends React.Component<DeviceProps, {}> {
+    constructor(props: DeviceProps) {
         super(props)
     }
     warning = () => {
@@ -34,7 +44,11 @@ export default class Device extends Component {
                     <Col style={{ width: "100%", height: "100%" }}>
                         {isLastQuestion ? this.warning() : null}
                         {isFirstQuestion ? this.newWarning() : null}
-                        <Home color={color} question={question} nextQuestion={nextQuestion} goTopreviousQuestion={goTopreviousQuestion} />
+                        <Home
+                            color={color}
+                            question={question}
+                            nextQuestion={nextQuestion}
+                            goTopreviousQuestion={goTopreviousQuestion} />
                     </Col>
                 </Row>
             </Nexus5>

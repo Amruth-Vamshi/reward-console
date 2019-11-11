@@ -1,19 +1,34 @@
-import React, { Component } from "react";
+import * as React from "react";
 import { Tabs, Row } from "antd";
 import Build from "./BuildQuestionnaire";
 import Design from "./DesignQuesitonnaire";
 import gql from "graphql-tag";
-import { withRouter } from "react-router-dom";
-import { Query, compose } from "react-apollo";
+import { withRouter, RouteComponentProps } from "react-router-dom";
+import { Query, compose, ApolloProviderProps, QueryResult } from "react-apollo";
 import { CircularProgress } from "@walkinsole/walkin-components";
 import { CustomScrollbars } from "@walkinsole/walkin-components"
 import {
   GET_QUESTIONNAIRE,
   GET_FEEDBACK_FORM
 } from "../../../../containers/Query";
+import { ApolloQueryResult, ApolloCurrentQueryResult } from "apollo-client";
 const { TabPane } = Tabs;
 
-class FeedbackFormConfig extends Component {
+interface RouteParams {
+  id?: string
+}
+interface FeedbackFormConfigProps extends RouteComponentProps<RouteParams>, ApolloProviderProps<any> {
+  campaign?: any
+}
+
+interface FeedbackFormConfigState {
+
+}
+
+class FeedbackFormConfig extends React.Component<FeedbackFormConfigProps, FeedbackFormConfigState> {
+  constructor(props: FeedbackFormConfigProps) {
+    super(props);
+  }
   render() {
     const { match, campaign } = this.props;
     const campaignId = match.params.id ? match.params.id : campaign.id;
@@ -30,7 +45,7 @@ class FeedbackFormConfig extends Component {
           loading,
           error,
           refetch: refetchFeedbackForm
-        }) => {
+        }: QueryResult<any>) => {
 
           if (loading) {
             return <CircularProgress />;
@@ -63,6 +78,7 @@ class FeedbackFormConfig extends Component {
                     <Tabs
                       size="large"
                       animated={{
+                        inkBar: false,
                         tabPane: true
                       }}
                       defaultActiveKey="1"

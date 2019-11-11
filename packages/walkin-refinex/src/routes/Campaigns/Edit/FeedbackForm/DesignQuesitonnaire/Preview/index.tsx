@@ -2,7 +2,24 @@ import * as React from "react";
 import { Card, Col, Row, message } from 'antd';
 import Home from "../feedback-form/index";
 import Device from "./Devices/index";
-export default class Controls extends React.Component {
+
+interface ControlsProps {
+    accentColor?: any
+    buttonText?: any
+    exitMessage?: any
+    formStructure?: any
+    headerText?: any
+    layoutCode?: any
+    transition?: any
+    color?: any
+    isFirstQuestion?: any
+    question?: any
+    nextQuestion?: any
+    goTopreviousQuestion?: any
+    isLastQuestion?: any
+}
+
+export default class Controls extends React.Component<ControlsProps, {}> {
     warning = () => {
         message.warning('This is last question');
     };

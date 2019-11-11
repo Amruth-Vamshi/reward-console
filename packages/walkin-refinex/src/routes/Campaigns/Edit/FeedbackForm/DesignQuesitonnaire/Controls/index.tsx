@@ -1,21 +1,44 @@
 import * as React from "react";
 import { Card, Col, Row, Radio, Upload, Button, Icon, Divider } from 'antd';
 import ColorControl from "./ColorControl/index"
-export default class Controls extends React.Component {
-    state = {
-        template: "",
-        transition: "",
-        layout: "",
-        color: ""
 
-    };
+interface ControlsProps {
+    onAccentColorUpdate?: any
+    onFormStructureChange?: any
+    onLayoutChange?: any
+    onTransitionChange?: any
+    onCOlorUpdate?: any
+}
+
+interface ControlState {
+    template: any,
+    transition: any,
+    layout: any,
+    color: any
+}
+
+export default class Controls extends React.Component<ControlsProps, ControlState> {
+    constructor(props: ControlsProps) {
+        super(props)
+        this.state = {
+            template: "",
+            transition: "",
+            layout: "",
+            color: ""
+
+        };
+    }
     onColorChange = (hex) => {
         this.setState({ color: hex })
         this.props.onCOlorUpdate(hex)
     }
     onChange = e => {
-        this.setState({
-            [e.target.name]: e.target.value,
+        this.setState((prevProps) => {
+            return {
+                ...prevProps,
+                [e.target.name]: e.target.value,
+            }
+
         });
     };
     render() {

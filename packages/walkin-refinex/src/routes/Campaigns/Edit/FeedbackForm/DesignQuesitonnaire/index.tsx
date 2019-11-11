@@ -1,13 +1,32 @@
 
-import React, { Component } from "react";
+import * as React from "react";
 
 import { Col, Row, Spin } from 'antd';
 import Preview from "./Preview"
 import Controls from "./Controls"
-import { graphql } from "react-apollo";
+import { graphql, ApolloProviderProps, compose } from "react-apollo";
 import { UPDATE_FEEDBACK_UI_CONFIG } from "../../../../../containers/Query";
-class FormDesign extends Component {
-    constructor(props) {
+
+interface FormDesignProps extends ApolloProviderProps<any> {
+    questionnaire?: any
+}
+
+interface FormDesignState {
+    counter: number,
+    isLastQuestion: boolean,
+    isFirstQuestion: boolean,
+    backgroundColor: string,
+    accentColor: string,
+    transition: string,
+    formStructure: string,
+    headerText: string,
+    exitMessage: string,
+    buttonText: string,
+    layoutCode: string
+}
+
+class FormDesign extends React.Component<FormDesignProps, FormDesignState> {
+    constructor(props: FormDesignProps) {
         super(props)
         this.state = {
             counter: 0,
@@ -126,8 +145,9 @@ class FormDesign extends Component {
         )
     }
 }
-export default graphql(
-    UPDATE_FEEDBACK_UI_CONFIG, {
-    name: "updateFeedbackUiConfig"
-}
-)(FormDesign);
+export default compose(
+    graphql(
+        UPDATE_FEEDBACK_UI_CONFIG, {
+        name: "updateFeedbackUiConfig"
+    }
+    ))(FormDesign);
