@@ -178,17 +178,26 @@ class Landing extends React.Component<iProps, iState> {
               <Row gutter={20} type="flex" justify="end" style={{ marginBottom: 15 }} >
                 <Col>
                   {/* <div>From Date</div> */}
-                  <DatePicker getCalendarContainer={triggerNode => triggerNode.parentNode}
+                  <DatePicker
+                    // getCalendarContainer={triggerNode => triggerNode.parentNode}
                     onChange={this.handleChange2}
-                    value={this.state.startDate ? moment(this.state.startDate, dateFormat) : ''}
-                    format={dateFormat} disabledDate={this.disabledDate} name="startDate" placeholder="Select Start Date" />
+                    value={this.state.startDate ? moment(this.state.startDate, dateFormat) : null}
+                    format={dateFormat}
+                    disabledDate={this.disabledDate}
+                    name="startDate"
+                    placeholder="Select Start Date" />
                   <p>{this.state.errors.startDate}</p>
                 </Col>
                 <Col>
                   {/* <div>To Date</div> */}
-                  <DatePicker getCalendarContainer={triggerNode => triggerNode.parentNode}
+                  <DatePicker
+                    // getCalendarContainer={triggerNode => triggerNode.parentNode}
                     onChange={this.handleChange3}
-                    value={this.state.endDate ? moment(this.state.endDate, dateFormat) : ''} format={dateFormat} disabledDate={this.disableEndDate} name="endDate" placeholder="Select End Date" />
+                    value={this.state.endDate ? moment(this.state.endDate, dateFormat) : null}
+                    format={dateFormat}
+                    disabledDate={this.disableEndDate}
+                    name="endDate"
+                    placeholder="Select End Date" />
                   <p>{this.state.errors.endDate}</p>
                 </Col>
               </Row>
