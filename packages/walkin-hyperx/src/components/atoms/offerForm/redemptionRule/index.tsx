@@ -2,19 +2,19 @@ import './style.css';
 
 import { Form, Input, Select } from 'antd';
 import React from 'react';
+import { FormComponentProps } from 'antd/lib/form';
 
 const { Option } = Select;
 
-interface IProps {
+interface IProps extends FormComponentProps {
 	cappingData?: Array<any>;
 	wrappedComponentRef?: any;
-	form?: any;
 	formValues?: any
 }
 
 
 
-const OfferRedemptionRulesForm = Form.create({ name: 'offer_redemption_rule' })(
+const OfferRedemptionRulesForm = Form.create<IProps>({ name: 'offer_redemption_rule' })(
 	class OfferRedemptionRulesForm extends React.Component<IProps, {}> {
 		render() {
 			const { cappingData, wrappedComponentRef, form, formValues } = this.props;

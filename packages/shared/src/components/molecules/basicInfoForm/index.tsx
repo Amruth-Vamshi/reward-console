@@ -1,9 +1,9 @@
 import * as React from "react";
 import { Form, Input, DatePicker } from "antd";
 import moment from "moment";
+import { FormComponentProps, FormItemProps } from "antd/lib/form";
 
-interface iProps {
-  form?: any;
+interface iProps extends FormComponentProps {
   edit?: boolean;
   onFormNext?: any;
   wrappedComponentRef?: any;
@@ -11,9 +11,13 @@ interface iProps {
   text?: any;
 }
 
-const BasicInfoForm = Form.create({ name: "form_in_modal" })(
+interface iState {
+  // checkEnd: () => any
+}
+
+const BasicInfoForm = Form.create<iProps>({ name: "form_in_modal" })(
   // eslint-disable-next-line
-  class BasicInfoForm extends React.Component<iProps, {}> {
+  class BasicInfoForm extends React.Component<iProps, iState> {
     checkStart = (rule: any, value: any, callback: any) => {
       const { validateFields } = this.props.form;
       const { edit } = this.props;
@@ -30,9 +34,9 @@ const BasicInfoForm = Form.create({ name: "form_in_modal" })(
     };
 
     checkEnd = (rule: any, value: any, callback: any) => {
-      const { edit } = this.props;
+      const { edit }: any = this.props;
       if (edit) {
-        callback();
+        return callback();
       }
       const end = value;
       const { getFieldValue } = this.props.form;
@@ -119,13 +123,7 @@ const BasicInfoForm = Form.create({ name: "form_in_modal" })(
             {getFieldDecorator("endTime", {
               initialValue: endTime,
               rules: [
-                {
-                  type: "object",
-                  required: true,
-                  message: "Please select end time!"
-                },
-                this.checkEnd
-              ]
+                { type: "object", required: true, message: "Please select end time!" }, this.checkEnd]
             })(<DatePicker showTime format="DD-MM-YYYY HH:mm:ss" />)}
           </Form.Item>
         </Form>

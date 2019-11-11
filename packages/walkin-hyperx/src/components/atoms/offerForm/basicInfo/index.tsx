@@ -8,9 +8,10 @@ import AddAndDeleteComponentsDynamically from '../../addAndDeleteComponentsDynam
 import { FormComponentProps } from "antd/lib/form";
 
 
-interface IProps extends FormComponentProps<any> {
+interface IProps extends FormComponentProps {
 	offerTypeData?: any;
 	handleOfferTypeChange?: any;
+	cappingData?: any;
 	offerTypeStatus?: any;
 	transactionTimeData?: any;
 	locationData?: any;
@@ -37,6 +38,10 @@ interface IProps extends FormComponentProps<any> {
 	checked?: any;
 	OnNoCouponCodeChange?: any;
 	couponTypeData?: any;
+	productDropDown?
+	location?
+	locationDropDown?
+	values?
 }
 
 interface IState {
@@ -46,7 +51,7 @@ interface IState {
 }
 
 
-const OfferBasicInfoForm = Form.create({ name: 'offer_basic_info' })(
+const OfferBasicInfoForm = Form.create<IProps>({ name: 'offer_basic_info' })(
 	class OfferBasicInfoForm extends React.Component<IProps, IState> {
 		constructor(props: IProps) {
 			super(props);

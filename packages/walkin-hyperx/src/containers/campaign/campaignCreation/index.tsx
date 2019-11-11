@@ -15,7 +15,7 @@ import { Col, Row, message } from 'antd';
 import * as jwt from "jsonwebtoken";
 import '../styles.css'
 import { DEFAULT_ACTIVE_STATUS, DEFAULT_HYPERX_CAMPAIGN } from "../../../utils"
-import * as  moment from "moment";
+import moment from "moment";
 import { CampaignFooter, CampaignHeader, Stepper } from '@walkinsole/shared';
 import { GET_CAMPAIGN, CREATE_CAMPAIGN, UPDATE_CAMPAIGN, CREATE_MESSAGE_TEMPLETE, CREATE_COMMUNICATION, LAUNCH_CAMPAIGN, CREATE_COMMUNICATION_WITH_MESSAGE_TEMPLETE, COMMUNICATIONS, VIEW_CAMPAIGN, UPDATE_COMMUNICATION_WITH_MESSAGE_TEMPLETE, PREPROCESS_LAUNCH_CAMPAIGN } from '../../../query/campaign';
 import { RouteChildrenProps, RouteComponentProps } from "react-router";
@@ -111,6 +111,10 @@ interface IState {
 	offerData: any
 }
 class CampaignCreation extends Component<IProps, Partial<IState>> {
+	private smsForm
+	private emailForm
+	private formRef
+	private pushForm
 	constructor(props: IProps) {
 		super(props);
 		this.state = {
@@ -302,8 +306,8 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 		//  this.setState({ current });
 		this.props.history.push({
 			pathname: '/hyperx/campaigns',
-			tabKey: "4",
-			// state: { key: "4" }
+			// tabKey: "4",
+			state: { tabKey: "4" }
 		})
 		// this.props.history.push('/hyperx/campaign', { key: "4" })
 	}
@@ -343,7 +347,10 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 			message.success('Campaign Launched')
 			moment().isBetween(this.state.campaign.startTime, this.state.campaign.endTime) ?
 				this.props.history.push('/hyperx/campaigns') :
-				this.props.history.push({ pathname: '/hyperx/campaigns', tabKey: "2" })
+				this.props.history.push({
+					pathname: '/hyperx/campaigns', //tabKey: "2"
+					state: { tabKey: "2" }
+				})
 		}).catch(err => {
 			console.log("Error Update campaign", err)
 			this.setState({ loading: false })
