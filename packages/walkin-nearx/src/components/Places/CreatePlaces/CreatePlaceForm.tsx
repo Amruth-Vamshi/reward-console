@@ -1,5 +1,4 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import * as React from "react";
 import {
   Col,
   Card,
@@ -11,6 +10,7 @@ import {
   InputNumber,
   Icon
 } from "antd";
+import { IconProps } from "antd/lib/icon";
 import { Auxiliary } from "@walkinsole/walkin-components";
 import HotspotCard from "./HotspotCard";
 import { RADIUS_1_MAX, RADIUS_1_MIN, RADIUS_2_MAX, RADIUS_3_MAX } from "../../../Constants";
@@ -80,7 +80,21 @@ const tailFormItemLayout1 = {
   }
 };
 
-export default class CreatePlaceForm extends Component {
+interface iProps extends IconProps {
+  onChangeRadius?: (val1, val2, val3) => any,
+  deleteRedi?: (val) => any,
+  formData?: any,
+  onPlaceSelect?: any,
+  deleteHotspot?: any,
+  handleSubmit?: any,
+  handleOnChange?: (val1, val2) => any,
+  handleCenterChange?: (val1, val2, val3) => any,
+  getloc?: (val) => any,
+  addRadius?: (val) => any,
+  showModal?: any
+}
+
+export default class CreatePlaceForm extends React.Component<iProps, {}> {
   constructor(props) {
     super(props);
   }
@@ -161,7 +175,6 @@ export default class CreatePlaceForm extends Component {
               index={i}
               onPlaceSelect={this.props.onPlaceSelect}
               hp={formData.places1[i]}
-              deleteHotspot={this.props.deleteHotspot}
             />
           ) : (
               ""
@@ -181,7 +194,6 @@ export default class CreatePlaceForm extends Component {
                       <Icon
                         type="environment"
                         style={{ color: "#e20464", fontSize: 18 }}
-                        color="#ff0000"
                         theme="filled"
                       />
                       <span style={{ fontSize: 20 }}> Place</span>
@@ -278,7 +290,7 @@ export default class CreatePlaceForm extends Component {
                             onClick={() => this.props.addRadius(0)}
                             style={{ float: "right", color: "#34bfe2" }}
                           >
-                            <a to="#"> + Add Fence </a>
+                            <a href="#"> + Add Fence </a>
                           </p>
                         </div>
                       </Form.Item>

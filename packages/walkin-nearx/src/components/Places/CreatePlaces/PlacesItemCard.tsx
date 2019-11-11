@@ -1,7 +1,12 @@
-import React, { Component } from 'react'
+import * as React from 'react'
 import { Avatar, Checkbox } from "antd";
 
-export default class PlacesItemCard extends Component {
+interface iProps {
+  place?: any,
+  onPlaceSelect?: (val) => any
+}
+
+export default class PlacesItemCard extends React.Component<iProps, {}> {
   render() {
     const { place } = this.props;
     const { placeName, sroreId, address, image, selected } = place
@@ -32,7 +37,6 @@ export default class PlacesItemCard extends Component {
               <Checkbox className="gx-icon-btn"
                 checked={selected}
                 value="checkedF"
-                size='large'
                 onClick={() => { this.props.onPlaceSelect(sroreId) }}
               />
 

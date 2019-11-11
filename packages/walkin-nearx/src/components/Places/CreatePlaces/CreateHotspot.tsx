@@ -1,5 +1,4 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import * as React from "react";
 import {
   Col,
   Card,
@@ -7,8 +6,6 @@ import {
   Form,
   Input,
   Button,
-  Slider,
-  InputNumber,
   Icon
 } from "antd";
 import { Auxiliary } from "@walkinsole/walkin-components";
@@ -49,7 +46,21 @@ const tailFormItemLayout1 = {
   }
 };
 
-export default class CreateHotspot extends Component {
+interface iProps {
+  formData?: any,
+  deleteHotspot?: (val) => any,
+  handleOnChange?: (val1, val2) => any,
+  getloc?: (val) => any,
+  handleCenterChange?: (va1l, val2, string) => any,
+  handleSubmit?: any,
+  addHotspot?: any
+}
+
+interface iState {
+
+}
+
+export default class CreateHotspot extends React.Component<iProps, iState> {
   constructor(props) {
     super(props);
   }

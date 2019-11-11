@@ -1,11 +1,19 @@
-import React, { Component } from 'react'
-import { Col, Card, Row, Form, Input, Checkbox, Button, Slider, Select, InputNumber, Icon } from 'antd';
-import axios from 'axios'
+import * as React from 'react'
+import { Col, Row, Input } from 'antd';
 import PlacesItemCard from './PlacesItemCard'
+
+interface iProps {
+  formData?: any,
+  handleSubmit?: any,
+  handleOnChange?: (val) => any,
+  moreOpt?: any,
+  onPlaceSelect?: any,
+  selAll?: any
+}
 
 const Search = Input.Search;
 
-export default class GetGooglePlaces extends Component {
+export default class GetGooglePlaces extends React.Component<iProps, {}> {
   constructor(props) {
     super(props)
   }

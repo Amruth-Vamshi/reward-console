@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Affix, Col, Card, Row, Form, Input, Button, Slider, Select, InputNumber, Icon } from 'antd';
+import { Col, Row, Input, Select } from 'antd';
 import { placeTypesArr } from './data'
 import GeofenceMap from '../GeofenceMap';
 
@@ -9,7 +9,21 @@ function handleChange(value) {
   console.log(`selected ${value}`);
 }
 
-export default class GooglePlacesMap extends Component {
+interface iProps {
+  data?: any,
+  getloc?: () => any,
+  myloc?: () => any,
+  handleCenterChange?: (val1, val2) => any,
+  changeSearchRadius?: (val) => any,
+  handleOnTypeChange?: (val) => any,
+  setlocationDetails?: any
+}
+
+interface iState {
+
+}
+
+export default class GooglePlacesMap extends Component<iProps, iState> {
 
   // .replace('_', ' ').toLowerCase().split(' ')
   //       .map(s => s.charAt(0).toUpperCase() + s.substring(1))
@@ -33,7 +47,7 @@ export default class GooglePlacesMap extends Component {
 
 
 
-          <Row style={{ padding: 10, paddingLeft: 30, float: "center" }} >
+          <Row style={{ padding: 10, paddingLeft: 30, float: "none" }} >
             <Col span={10}>
 
               Latitude: <Input required placeholder="Latitude" value={formData.mark.lat} type="number" step="0.0001" name="latitude" onChange={c => this.props.handleCenterChange(c, "lat")} />
@@ -47,7 +61,7 @@ export default class GooglePlacesMap extends Component {
           </Row>
 
 
-          <Row style={{ padding: 10, paddingLeft: 30, float: "center" }}>
+          <Row style={{ padding: 10, paddingLeft: 30, float: "none" }}>
             <Col span={10}>
               Search radius: <Input required placeholder="Search Radius" value={formData.searchRadius} name="searchRadius" min={100} type="number" step="1" onChange={c => this.props.changeSearchRadius(c)} />
               <span style={{ color: 'Red' }}>{formData.errors.searchRadius}</span>
@@ -58,10 +72,11 @@ export default class GooglePlacesMap extends Component {
               Type:
               <Select
                 getPopupContainer={() => document.getElementById('Sarea')}
-                showSearch value={formData.type} name="type" style={{ width: '100%' }}
+                showSearch value={formData.type}
+                style={{ width: '100%' }}
                 placeholder="Select Type" optionFilterProp="children"
                 onChange={e => this.props.handleOnTypeChange(e)}
-                filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}  >
+                filterOption={(input: any, option: any) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}  >
                 {options}
               </Select>
               <span style={{ color: 'Red' }}>{formData.errors.type}</span>

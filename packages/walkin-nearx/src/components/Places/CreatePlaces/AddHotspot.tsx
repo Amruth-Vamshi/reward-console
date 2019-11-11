@@ -1,6 +1,5 @@
-import React, { Component } from "react";
-import { Modal, Affix, Button, Row, Col, Tabs } from "antd";
-import GooglePlacesMap from "./GooglePlacesMap";
+import * as React from "react";
+import { Affix, Row, Col, Tabs } from "antd";
 import GeofenceMap from "../GeofenceMap";
 import CreateHotspot from "./CreateHotspot";
 import SelectHotspots from "./SelectHotspots";
@@ -12,14 +11,30 @@ import CustomScrollbars from "../../../util/CustomScrollbars";
 
 const TabPane = Tabs.TabPane;
 
-class AddHotspot extends Component {
+interface iProps {
+  submitHotspots?: (val) => any
+}
+
+interface iState {
+  places?: Array<any>,
+  places1?: Array<any>,
+  places2: Array<any>,
+  center?: { lat?: any, lng?: any },
+  errors?: any,
+  markerPlace?: number,
+  search?: string,
+  getLoc?: Boolean,
+  totalPlaces?: number,
+  tab?: number,
+  visible?: boolean
+}
+
+class AddHotspot extends React.Component<iProps, iState> {
   constructor(props) {
     super(props);
     this.state = {
       places: [],
-
       places1: [],
-
       places2: [
         {
           placeName: "",
@@ -33,12 +48,10 @@ class AddHotspot extends Component {
           errors: {}
         }
       ],
-
       center: {
         lat: null,
         lng: null
       },
-
       errors: {},
       markerPlace: 1,
       search: "",
@@ -217,10 +230,14 @@ class AddHotspot extends Component {
     this.setState({ places2: places });
   };
 
-  handleChange = e => {
+  handleChange = (e: any) => {
     let errors = this.state.errors;
     if (e.target.value.trim() != "") errors[e.target.name] = "";
-    this.setState({ [e.target.name]: e.target.value });
+    // this.setState({ [e.target.name]: e.target.value }); // Old implementation
+    this.setState((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }))
   };
 
   handleCenterChange = (e, i, name) => {
