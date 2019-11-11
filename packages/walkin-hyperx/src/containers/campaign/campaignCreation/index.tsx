@@ -18,7 +18,10 @@ import { DEFAULT_ACTIVE_STATUS, DEFAULT_HYPERX_CAMPAIGN } from "../../../utils"
 import * as  moment from "moment";
 import { CampaignFooter, CampaignHeader, Stepper } from '@walkinsole/shared';
 import { GET_CAMPAIGN, CREATE_CAMPAIGN, UPDATE_CAMPAIGN, CREATE_MESSAGE_TEMPLETE, CREATE_COMMUNICATION, LAUNCH_CAMPAIGN, CREATE_COMMUNICATION_WITH_MESSAGE_TEMPLETE, COMMUNICATIONS, VIEW_CAMPAIGN, UPDATE_COMMUNICATION_WITH_MESSAGE_TEMPLETE, PREPROCESS_LAUNCH_CAMPAIGN } from '../../../query/campaign';
-import { RouteChildrenProps } from "react-router";
+import { RouteChildrenProps, RouteComponentProps } from "react-router";
+import { FormComponentProps } from "antd/lib/form";
+
+const { org_id }: any = jwt.decode(localStorage.getItem('jwt'))
 
 const stepData = [{
 	id: 1,
@@ -48,23 +51,20 @@ const communicationData = [
 	{ value: "EMAIL", title: "Email" }
 ];
 
-interface AA {
-	createRule: any;
-	updateRule: any;
-	addOfferToCampaign: any;
-	updateCampaign: any;
-	updateAudiences: any;
-	updateCommunicationWithMessageTemplate: any;
-	createCommunicationWithMessageTemplate: any;
-	createCommunication: any;
-	messageTemplate: any;
-	launchCampaign: any;
-	createAudience: any;
-}
-interface IProps extends RouteChildrenProps, ApolloProviderProps<AA> {
 
-
-
+interface IProps extends RouteChildrenProps<any>, ApolloProviderProps<any> {
+	updateRule: (variables: any) => any
+	addOfferToCampaign: (variables: any) => any
+	updateCommunicationWithMessageTemplate: (variables: any) => any
+	createCommunicationWithMessageTemplate: (variables: any) => any
+	updateAudiences: (variables: any) => any
+	launchCampaign: (variables: any) => any
+	createRule: (variables: any) => any
+	updateCampaign: (variables: any) => any
+	allApplications: any
+	allAttributes: any
+	segmentList: any
+	allOffers: any
 
 }
 
@@ -75,7 +75,7 @@ interface IState {
 	priorityNumberError: boolean,
 	showTestAndControl: boolean,
 	testValue: number,
-	controlValue: number,
+	controlValue: any,
 	testControlSelected: any,
 	communication: any,
 	communicationSelected: string,
@@ -89,8 +89,8 @@ interface IState {
 	smsForm: any,
 	emailForm: any,
 	pushForm: any,
-	scheduleSaveMark: boolean,
-	ruleQuery: object,
+	scheduleSaveMark: any,
+	ruleQuery: any,
 	selectedSegments: Array<string>,
 	campaignCreated: boolean,
 	audienceCreated: boolean,
@@ -99,13 +99,13 @@ interface IState {
 	createComm: boolean,
 	audience: Array<string>,
 	update: boolean,
-	audienceChange: object,
+	audienceChange: any,
 	audienceFilterRule: any
 	spin: boolean,
-	communications: object
-	campaign: object
+	communications: any
+	campaign: any
 	audiences: any,
-	offerData: object
+	offerData: any
 }
 class CampaignCreation extends Component<IProps, Partial<IState>> {
 	constructor(props: IProps) {
@@ -260,7 +260,8 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 	// }
 
 
-	saveFormRef = formRef => {
+
+	saveFormRef = (formRef: FormComponentProps) => {
 		this.formRef = formRef;
 	};
 
@@ -290,7 +291,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 	// }
 
 	saveDraft = current => {
-		this.props.history.push('/hyperx/campaigns')
+		// this.props.history.push('/hyperx/campaigns')
 		//  this.setState({ current });
 		this.props.history.push({
 			pathname: '/hyperx/campaigns',
@@ -301,7 +302,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 	}
 	goToNextPage(current, e) {
 		console.log(current);
-		let errors = {}
+		let errors: any = {}
 		let segments = this.state.selectedSegments
 		let current1 = this.state.current
 
@@ -330,7 +331,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 		this.setState({ loading: true })
 		this.props.launchCampaign({
 			variables: { id: this.state.campaign.id }
-		}).then(data => {
+		}).then((data: any) => {
 			console.log("campaign data..", data);
 			message.success('Campaign Launched')
 			moment().isBetween(this.state.campaign.startTime, this.state.campaign.endTime) ?
@@ -379,21 +380,21 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 			templateBodyText: communicationSelected == "SMS" ? values.smsBody : communicationSelected == "EMAIL" ? values.email_body : values.notificationBody,
 			templateSubjectText: communicationSelected == "SMS" ? values.smsTag : communicationSelected == "EMAIL" ? values.email_subject : values.notificationTag,
 			templateStyle: "MUSTACHE",
-			organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
+			organization_id: org_id,
 			status: DEFAULT_ACTIVE_STATUS
 		};
-		var communicationInput = {
+		var communicationInput: any = {
 			id: communication.id,
 			entityId: this.state.offerData ? this.state.offerData.id : ' ',
 			entityType: "Offer",
 			isScheduled: scheduleSaveMark,
 			isRepeatable: scheduleSaveMark,
-			organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
+			organization_id: org_id,
 			status: DEFAULT_ACTIVE_STATUS,
 			firstScheduleDateTime: this.state.campaign.startTime
 		};
 		if (scheduleSaveMark) {
-			let repeatRuleConf = { frequency: scheduleData.repeatType, time: moment(scheduleData.time).format('HH:MM:SS') }
+			let repeatRuleConf: any = { frequency: scheduleData.repeatType, time: moment(scheduleData.time).format('HH:MM:SS') }
 			scheduleData.repeatType == "WEEKLY" ? repeatRuleConf.byWeekDay = scheduleData.days : ''
 			scheduleData.hasOwnProperty('endTime') ? repeatRuleConf.endAfter = scheduleData.endTime : repeatRuleConf.noOfOccurances = scheduleData.noOfOccurances
 			communicationInput.repeatRuleConfiguration = repeatRuleConf
@@ -401,7 +402,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 
 		this.props.updateCommunicationWithMessageTemplate({
 			variables: { communicationInput: communicationInput, messageTemplateInput: messageTemplateInput }
-		}).then(data => {
+		}).then((data: any) => {
 			console.log("Communication data..", data)
 			this.setState({ loading: false, current, communication: data.data.createCommunicationWithMessageTempate })
 		}).catch(err => {
@@ -421,23 +422,23 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 			templateBodyText: communicationSelected == "SMS" ? values.smsBody : communicationSelected == "EMAIL" ? values.email_body : values.notificationBody,
 			templateSubjectText: communicationSelected == "SMS" ? values.smsTag : communicationSelected == "EMAIL" ? values.email_subject : values.notificationTag,
 			templateStyle: "MUSTACHE",
-			organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
+			organization_id: org_id,
 			status: DEFAULT_ACTIVE_STATUS
 		};
-		var communicationInput = {
+		var communicationInput: any = {
 			entityId: this.state.offerData ? this.state.offerData.id : ' ',
 			entityType: "Offer",
 			campaign_id: this.state.campaign.id,
 			isScheduled: scheduleSaveMark,
 			isRepeatable: scheduleSaveMark,
-			organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
+			organization_id: org_id,
 			status: DEFAULT_ACTIVE_STATUS,
 			firstScheduleDateTime: this.state.campaign.startTime,
 			commsChannelName: "Test"
 		};
 		if (scheduleSaveMark) {
 			console.log(this.state.scheduleData);
-			let repeatRuleConf = { frequency: scheduleData.repeatType, time: moment(scheduleData.time).format('HH:MM:SS') }
+			let repeatRuleConf: any = { frequency: scheduleData.repeatType, time: moment(scheduleData.time).format('HH:MM:SS') }
 			scheduleData.repeatType == "WEEKLY" ? repeatRuleConf.byWeekDay = scheduleData.days : ''
 			scheduleData.hasOwnProperty('endTime') ? repeatRuleConf.endAfter = scheduleData.endTime : repeatRuleConf.noOfOccurances = scheduleData.noOfOccurances
 			communicationInput.repeatRuleConfiguration = repeatRuleConf
@@ -511,11 +512,10 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 		if (this.state.noOfferRequired) this.setState({ current })
 		else if (this.state.offer != "" && !this.state.offerCreated) {
 			this.setState({ loading: true })
-			let { allApplications: { organization } } = this.props;
 			var input = {
 				campaignId: this.state.campaign.id,
 				offerId: this.state.offer,
-				organizationId: organization.id,
+				organizationId: org_id,
 				// status: DEFAULT_ACTIVE_STATUS
 			};
 			this.props.addOfferToCampaign({
@@ -533,12 +533,11 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 	ruleQuery = current => {
 		if (this.state.audienceFilterRule.rules.length)
 			if (!this.state.audienceFilterRuleCreated) {
-				let { allApplications: { organization } } = this.props;
 				const input = {
 					name: Math.random().toString(36).substring(7),
 					description: "",
 					type: "SIMPLE",
-					organizationId: organization.id,
+					organizationId: org_id,
 					status: DEFAULT_ACTIVE_STATUS,
 					ruleConfiguration: JSON.stringify(this.state.audienceFilterRule)
 				};
@@ -583,12 +582,11 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 	// createAudience = current => {
 	// 	let segments = this.state.selectedSegments
 	// 	if (!this.state.audienceCreated) {
-	// 		let { allApplications: { organization } } = this.props;
 	// 		this.setState({ loading: true });
 	// 		var input = {
 	// 			campaign_id: this.state.campaign.id,
 	// 			segment_id: segments,
-	// 			organization_id: organization.id,
+	// 			organization_id: org_id,
 	// 			application_id: organization.applications[0].id,
 	// 			status: DEFAULT_ACTIVE_STATUS
 	// 		};
@@ -637,8 +635,8 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 	}
 
 	updateCampaign = (values, current) => {
-		const { client } = this.props;
-		const { priorityChosen, controlValue } = this.state;
+		const { client, match } = this.props;
+		const { priorityChosen, controlValue, campaign } = this.state;
 
 		const input = {
 			...values,
@@ -650,7 +648,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 		this.setState({ loading: true });
 		client.mutate({
 			mutation: UPDATE_CAMPAIGN,
-			variables: { input: input, id: this.state.campaign.id ? this.state.campaign.id : this.props.match.params.id }
+			variables: { input: input, id: campaign.id ? campaign.id : match.params.id }
 		}).then(res =>
 			this.setState({
 				current, loading: false,
@@ -674,7 +672,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 			...values,
 			priority: parseInt(priorityChosen),
 			campaignControlPercent: parseInt(controlValue),
-			organization_id: organization.id,
+			organization_id: org_id,
 			application_id: organization.applications[0].id,
 			campaignType: DEFAULT_HYPERX_CAMPAIGN
 		};
@@ -728,17 +726,13 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 		this.setState({ offer: e });
 	};
 
-	handleOnOfferChange = e => {
-		this.setState({ offer: e })
-	}
-
 	onValuesSelected = e => {
 		// let { allApplications: { organization } } = this.props;
 		this.setState({ selectedSegments: e })
 		this.state.errors.segment = ''
 		this.props.client.query({
 			query: AUDIENCE_COUNT,
-			variables: { segments: e, organizationId: this.props.allApplications.organization.id },
+			variables: { segments: e, organizationId: org_id },
 			fetchPolicy: 'network-only'
 		}).then(res => {
 			console.log(res.data.audienceCount.count)
@@ -764,7 +758,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 	}
 
 	render() {
-		const { formValues, current, showTestAndControl, testValue, controlValue, testControlSelected, update, rows, values, scheduleData, communicationSelected } = this.state;
+		const { formValues, current, showTestAndControl, testValue, controlValue, testControlSelected, update, scheduleData, communicationSelected } = this.state;
 		let attributeData = []
 		if (this.props.allAttributes)
 			attributeData = this.props.allAttributes && this.props.allAttributes.ruleAttributes &&
@@ -811,7 +805,6 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 								saveFormRef={this.saveFormRef}
 								formValues={formValues}
 								priorityChosen={this.state.priorityChosen}
-								testAndControlText="Test & Control"
 								promptText="prompt text"
 								toolTipText="what is test and control?"
 								prioritySelectionTitle="Campaign Priority"
@@ -919,102 +912,98 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 }
 
 export default withRouter(
-	withApollo(
-		compose(
-			graphql(allSegments, {
-				name: 'segmentList',
-				options: ownProps => ({
+	compose(
+		graphql(allSegments, {
+			name: 'segmentList',
+			options: ownProps => ({
+				variables: {
+					organization_id: org_id,
+					status: 'ACTIVE',
+				},
+				fetchPolicy: 'network-only',
+			}),
+		}),
+		graphql(RULE_ATTRIBUTES, {
+			name: 'allAttributes',
+			options: ownProps => ({
+				variables: {
+					input: {
+						entityName: "CustomerSearch",
+						status: DEFAULT_ACTIVE_STATUS,
+						organizationId: org_id,
+					}
+				},
+				fetchPolicy: 'network-only',
+			}),
+		}),
+		graphql(getOffers, {
+			name: 'allOffers',
+			options: ownProps => ({
+				variables: {
+					organizationId: org_id,
+					state: "LIVE"
+				},
+				fetchPolicy: 'network-only',
+			})
+		}),
+		// graphql(GET_AUDIENCES, {
+		// 	name: 'linkedAudiences',
+		// 	options: ownProps => ({
+		// 		variables: {
+		// 			organization_id:org_id,
+		// 			campaign_id: ownProps.match.params.id,
+		// 			status: DEFAULT_ACTIVE_STATUS
+		// 		},
+		// 		fetchPolicy: 'network-only',
+		// 	})
+		// }),
+		graphql(GET_ALL_APPS_OF_ORGANIZATION, {
+			name: "allApplications",
+			options: props => {
+				return {
 					variables: {
-						organization_id: ownProps.client.cache.data.data['$ROOT_QUERY.auth'].organizationId ?
-							ownProps.client.cache.data.data['$ROOT_QUERY.auth'].organizationId : jwt.decode(localStorage.getItem('jwt')).org_id,
-						status: 'ACTIVE',
-					},
-					fetchPolicy: 'network-only',
-				}),
-			}),
-			graphql(RULE_ATTRIBUTES, {
-				name: 'allAttributes',
-				options: ownProps => ({
-					variables: {
-						input: {
-							entityName: "CustomerSearch",
-							status: DEFAULT_ACTIVE_STATUS,
-							organizationId: jwt.decode(localStorage.getItem("jwt")).org_id,
-						}
-					},
-					fetchPolicy: 'network-only',
-				}),
-			}),
-			graphql(getOffers, {
-				name: 'allOffers',
-				options: ownProps => ({
-					variables: {
-						organizationId: jwt.decode(localStorage.getItem("jwt")).org_id,
-						state: "LIVE"
-					},
-					fetchPolicy: 'network-only',
-				})
-			}),
-			// graphql(GET_AUDIENCES, {
-			// 	name: 'linkedAudiences',
-			// 	options: ownProps => ({
-			// 		variables: {
-			// 			organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
-			// 			campaign_id: ownProps.match.params.id,
-			// 			status: DEFAULT_ACTIVE_STATUS
-			// 		},
-			// 		fetchPolicy: 'network-only',
-			// 	})
-			// }),
-			graphql(GET_ALL_APPS_OF_ORGANIZATION, {
-				name: "allApplications",
-				options: props => {
-					return {
-						variables: {
-							id: jwt.decode(localStorage.getItem("jwt")).org_id
-						}
-					};
-				}
-			}),
-			// graphql(COMMUNICATIONS, {
-			// 	name: "allCommunications",
-			// 	options: props => ({
-			// 		variables: {
-			// 			entityId: props.match.params.id,
-			// 			entityType: "Campaign",
-			// 			organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
-			// 			status: DEFAULT_ACTIVE_STATUS
-			// 		},
-			// 		fetchPolicy: "network-only"
-			// 	})
-			// }),
+						id: org_id
+					}
+				};
+			}
+		}),
+		// graphql(COMMUNICATIONS, {
+		// 	name: "allCommunications",
+		// 	options: props => ({
+		// 		variables: {
+		// 			entityId: props.match.params.id,
+		// 			entityType: "Campaign",
+		// 			organization_id: org_id,
+		// 			status: DEFAULT_ACTIVE_STATUS
+		// 		},
+		// 		fetchPolicy: "network-only"
+		// 	})
+		// }),
 
-			graphql(CREATE_RULE, {
-				name: "createRule"
-			}), graphql(UPDATE_RULE, {
-				name: "updateRule"
-			}), graphql(ADD_OFFER_TO_CAMPAIGN, {
-				name: "addOfferToCampaign"
-			}), graphql(UPDATE_RULE, {
-				name: "updateRule"
-			}), graphql(UPDATE_CAMPAIGN, {
-				name: "updateCampaign"
-			}), graphql(LAUNCH_CAMPAIGN, {
-				name: "launchCampaign"
-			}), graphql(CREATE_AUDIENCE, {
-				name: "createAudience"
-			}), graphql(CREATE_MESSAGE_TEMPLETE, {
-				name: "messageTemplate"
-			}), graphql(CREATE_COMMUNICATION, {
-				name: "createCommunication"
-			}), graphql(CREATE_COMMUNICATION_WITH_MESSAGE_TEMPLETE, {
-				name: "createCommunicationWithMessageTemplate"
-			}), graphql(UPDATE_COMMUNICATION_WITH_MESSAGE_TEMPLETE, {
-				name: "updateCommunicationWithMessageTemplate"
-			}), graphql(UPDATE_AUDIENCES, {
-				name: "updateAudiences"
-			}),
+		graphql(CREATE_RULE, {
+			name: "createRule"
+		}), graphql(UPDATE_RULE, {
+			name: "updateRule"
+		}), graphql(ADD_OFFER_TO_CAMPAIGN, {
+			name: "addOfferToCampaign"
+		}), graphql(UPDATE_CAMPAIGN, {
+			name: "updateCampaign"
+		}), graphql(LAUNCH_CAMPAIGN, {
+			name: "launchCampaign"
+		}), graphql(CREATE_AUDIENCE, {
+			name: "createAudience"
+		}), graphql(CREATE_MESSAGE_TEMPLETE, {
+			name: "messageTemplate"
+		}), graphql(CREATE_COMMUNICATION, {
+			name: "createCommunication"
+		}), graphql(CREATE_COMMUNICATION_WITH_MESSAGE_TEMPLETE, {
+			name: "createCommunicationWithMessageTemplate"
+		}), graphql(UPDATE_COMMUNICATION_WITH_MESSAGE_TEMPLETE, {
+			name: "updateCommunicationWithMessageTemplate"
+		}), graphql(UPDATE_AUDIENCES, {
+			name: "updateAudiences"
+		}),
 
-		)(CampaignCreation)
-	)
+	)(withApollo(CampaignCreation))
+
 );

@@ -79,7 +79,7 @@ const BasicInfoForm = Form.create({ name: "form_in_modal" })(
                     ? formValues.name
                     : ""
                   : ""
-              }`,
+                }`,
               rules: [{ required: true, message: "Name is required" }]
             })(<Input value={formValues.name} maxLength={80} size="large" />)}
           </Form.Item>
@@ -91,7 +91,7 @@ const BasicInfoForm = Form.create({ name: "form_in_modal" })(
                     ? formValues.description
                     : ""
                   : ""
-              }`
+                }`
             })(<Input type="textarea" size="large" />)}
           </Form.Item>
           <Form.Item
