@@ -4,7 +4,6 @@ import { CampaignPriority, BasicInfoForm, Popup, BasicSlider } from '@walkinsole
 const { Text } = Typography;
 
 interface iProps {
-	errors?: any,
 	subTitle?: string,
 	onFormNext?: any,
 	saveFormRef?: any,
@@ -38,7 +37,6 @@ interface iProps {
 }
 
 const BasicInfo = ({
-	errors,
 	subTitle,
 	onFormNext,
 	saveFormRef,
@@ -71,14 +69,14 @@ const BasicInfo = ({
 }: iProps) => {
 	return (
 		<React.Fragment>
-			<div> {' '}
+			<div>
 				<h3 className="gx-text-grey">{subTitle}</h3>
 			</div>
 			<Row style={{ marginTop: 34 }}>
-				<Col sd={24} md={14} style={{ marginBottom: 15 }}>
-					<BasicInfoForm errors={errors} onFormNext={onFormNext} edit={edit} wrappedComponentRef={saveFormRef} formValues={formValues} />
+				<Col sm={24} md={14} style={{ marginBottom: 15 }}>
+					<BasicInfoForm onFormNext={onFormNext} edit={edit} wrappedComponentRef={saveFormRef} formValues={formValues} />
 				</Col>
-				<Col sd={24} md={10}>
+				<Col sm={24} md={10}>
 					<CampaignPriority
 						text={textAndControlText}
 						promptText={promptText}

@@ -13,7 +13,8 @@ const dateItemLayout = {
 const Option = Select.Option;
 
 interface iProps {
-	noOfferRequired?: Boolean,
+	onFormNext?: any;
+	noOfferRequired?: boolean,
 	offerChecked?: any,
 	offersList?: Array<any>,
 	subTitle?: any,
@@ -23,7 +24,7 @@ interface iProps {
 }
 
 interface iState {
-	check?: Boolean
+	check?: boolean
 }
 
 export default class Offers extends React.Component<iProps, iState> {
@@ -58,7 +59,8 @@ export default class Offers extends React.Component<iProps, iState> {
 								name="name" onChange={c => this.props.handleOnOfferChange(c)} /> */}
 							<Select showSearch disabled={this.state.check}
 								// getPopupContainer={() => document.getElementById('OffArea')}
-								value={this.props.offer} name="type" style={{ width: '100%' }}
+								value={this.props.offer}
+								style={{ width: '100%' }}
 								placeholder="Select Type" optionFilterProp="children"
 								onChange={e => this.props.handleOnOfferChange(e)} size='large'
 								filterOption={(input: any, option: any) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
