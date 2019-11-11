@@ -74,6 +74,7 @@ interface IProps {
   layoutType?: string;
   userId?: string;
   match: any;
+  setRedirectRoute: any;
 }
 
 interface IState {}
@@ -137,7 +138,8 @@ class App extends React.Component<IProps, IState> {
       navStyle,
       locale,
       userId,
-      match
+      match,
+      setRedirectRoute
     } = this.props;
 
     if (themeType === THEME_TYPE_DARK) {
@@ -180,6 +182,7 @@ class App extends React.Component<IProps, IState> {
               path={`${match.url}`}
               // userId={userId}
               component={MainApp}
+              setRedirectRoute={setRedirectRoute}
             />
           </Switch>
         </IntlProvider>
