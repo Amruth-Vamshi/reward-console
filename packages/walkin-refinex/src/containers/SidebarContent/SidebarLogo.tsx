@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import * as React from "react";
 import { Link } from "react-router-dom";
 
 import {
@@ -14,7 +14,17 @@ import { compose, graphql } from "react-apollo";
 import gql from "graphql-tag";
 import { Icon, Row, Col } from "antd";
 
-class SidebarLogo extends Component {
+
+interface SidebarLogoProps {
+  width?: any,
+  themeType?: any,
+  navCollapsed?: any,
+  navStyle?: any,
+  toggleCollapsedSideNav?: (a: any) => void
+  onNavStyleChange?: (a: any) => void
+}
+
+class SidebarLogo extends React.Component<SidebarLogoProps, {}> {
   render() {
     const { width, themeType, navCollapsed } = this.props;
     let { navStyle } = this.props;
@@ -24,36 +34,45 @@ class SidebarLogo extends Component {
     return (
       <div className="RefineX-Logo">
         <div className="gx-layout-sider-header">
-          {width < TAB_SIZE_MAX && width > TAB_SIZE ?
+          {width < TAB_SIZE_MAX && width > TAB_SIZE ? (
             <Link to="/refinex/dashboard" className="gx-pointer">
-              <img alt="fgd" src={require("@walkinsole/walkin-components/src/assets/images/logo_refine.png")} style={{ maxWidth: 35 }} />
-            </Link> : navStyle === NAV_STYLE_FIXED || navStyle === NAV_STYLE_MINI_SIDEBAR ? (
-              <div className="gx-linebar refinex-header-home">
-                <Link to="/">
-                  <Icon type="home" className="gx-icon-btn" style={{ padding: "10px", backgroundColor: "#FCFCFC" }} />
-                </Link>
-
-              </div>
-            ) : null}
+              <img
+                alt="fgd"
+                src={require("@walkinsole/walkin-components/src/assets/images/logo_refine.png")}
+                style={{ maxWidth: 35 }}
+              />
+            </Link>
+          ) : navStyle === NAV_STYLE_FIXED ||
+            navStyle === NAV_STYLE_MINI_SIDEBAR ? (
+            <div className="gx-linebar refinex-header-home">
+              <Link to="/">
+                <Icon
+                  type="home"
+                  className="gx-icon-btn"
+                  style={{ padding: "10px", backgroundColor: "#FCFCFC" }}
+                />
+              </Link>
+            </div>
+          ) : null}
 
           <Link to="/refinex/dashboard" className="gx-site-logo">
             {navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR &&
-              width >= TAB_SIZE ? (
-                <img
-                  alt=""
-                  src={require("@walkinsole/walkin-components/src/assets/images/w-logo.png")}
-                />
-              ) : themeType === THEME_TYPE_LITE ? (
-                <img
-                  alt=""
-                  src={require("@walkinsole/walkin-components/src/assets/images/logo_refine.png")}
-                />
-              ) : (
-                  <img
-                    alt=""
-                    src={require("@walkinsole/walkin-components/src/assets/images/logo_refine.png")}
-                  />
-                )}
+            width >= TAB_SIZE ? (
+              <img
+                alt=""
+                src={require("@walkinsole/walkin-components/src/assets/images/w-logo.png")}
+              />
+            ) : themeType === THEME_TYPE_LITE ? (
+              <img
+                alt=""
+                src={require("@walkinsole/walkin-components/src/assets/images/logo_refine.png")}
+              />
+            ) : (
+              <img
+                alt=""
+                src={require("@walkinsole/walkin-components/src/assets/images/logo_refine.png")}
+              />
+            )}
           </Link>
         </div>
       </div>
@@ -61,7 +80,7 @@ class SidebarLogo extends Component {
   }
 }
 
-const mapStateToProps = ({ settings }) => {
+const mapStateToProps = ({ settings }: any) => {
   const { navStyle, themeType, width, navCollapsed } = settings.settings;
   return { navStyle, themeType, width, navCollapsed };
 };

@@ -12,14 +12,14 @@ export const Popup = ({
   buttonText,
   handleOnClick
 }: {
-  title: string;
-  visible: boolean;
-  handleCancel: any;
-  loading: boolean;
-  handleOk: any;
-  popupContent: string;
-  buttonText: string;
-  handleOnClick: any;
+  title?: string;
+  visible?: boolean;
+  handleCancel?: any;
+  loading?: boolean;
+  handleOk?: any;
+  popupContent?: any;
+  buttonText?: string;
+  handleOnClick?: any;
 }) => {
   return (
     <Modal

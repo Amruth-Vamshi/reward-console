@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { Button, Drawer, Form, message, Radio } from "antd";
 
 import ColorPicker from "./ColorPicker";
-import Auxiliary from "../util/Auxiliary";
-import CustomScrollbars from "../util/CustomScrollbars";
+import { Auxiliary } from "../util/Auxiliary";
+import { CustomScrollbars } from "../util/CustomScrollbars";
 
 import {
   BLUE,
@@ -64,7 +64,22 @@ import {
 import { compose, graphql } from "react-apollo";
 import gql from "graphql-tag";
 
-class Customizer extends Component {
+interface IProps {
+  setThemeType?;
+  setThemeColorSelection?;
+  onNavStyleChange?;
+  themeType?;
+  layoutType?;
+  navStyle?;
+  colorSelection?;
+}
+
+interface IState {
+  vars?;
+  isCustomizerOpened?;
+  initialValue?;
+}
+class Customizer extends Component<IProps, IState> {
   onChangeComplete = (varName, color) => {
     const { vars } = this.state;
     vars[varName] = color;
@@ -83,21 +98,21 @@ class Customizer extends Component {
           small
           color={this.state.vars[varName]}
           position="bottom"
-          presetColors={[
-            "#038fde",
-            "#722ED1",
-            "#2F54EB",
-            "#1890FF",
-            "#13C2C2",
-            "#EB2F96",
-            "#F5222D",
-            "#FA541C",
-            "#FA8C16",
-            "#FAAD14",
-            "#FADB14",
-            "#A0D911",
-            "#52C41A"
-          ]}
+          // presetColors={[
+          //   "#038fde",
+          //   "#722ED1",
+          //   "#2F54EB",
+          //   "#1890FF",
+          //   "#13C2C2",
+          //   "#EB2F96",
+          //   "#F5222D",
+          //   "#FA541C",
+          //   "#FA8C16",
+          //   "#FAAD14",
+          //   "#FADB14",
+          //   "#A0D911",
+          //   "#52C41A"
+          // ]}
           onChangeComplete={color => this.handleColorChange(varName, color)}
         >
           <span className="gx-pointer gx-text-capitalize gx-media-body">
@@ -180,8 +195,8 @@ class Customizer extends Component {
               </Button>
             </div>
           ) : (
-              this.getPresetColors()
-            )}
+            this.getPresetColors()
+          )}
         </div>
 
         <h6 className="gx-mb-3 gx-text-uppercase">Nav Style</h6>
@@ -206,11 +221,11 @@ class Customizer extends Component {
     modifiedVars["@nav-dark-bg"] = navDarkBg;
     modifiedVars["@nav-dark-text-color"] = navDarkTextColor;
     this.setState({ vars: modifiedVars });
-    this.handleColorChange();
+    // this.handleColorChange();
   };
 
   handleLayoutTypes = layoutType => {
-    this.props.onLayoutTypeChange(layoutType);
+    // this.props.onLayoutTypeChange(layoutType);
   };
   getPresetColors = () => {
     const themeColor = Object.entries(this.state.vars)[0][1];
@@ -610,9 +625,9 @@ class Customizer extends Component {
   }
 }
 
-Customizer = Form.create()(Customizer);
+const CustomizerForm = Form.create()(Customizer);
 
-const mapStateToProps = ({ settings }) => {
+const mapStateToProps = ({ settings }: any) => {
   const { themeType, width, colorSelection, navStyle, layoutType } = settings;
   return { themeType, width, colorSelection, navStyle, layoutType };
 };
@@ -680,4 +695,4 @@ export const CustomizerModule = compose(
     props: mapStateToProps,
     name: "settings"
   })
-)(Customizer);
+)(CustomizerForm);

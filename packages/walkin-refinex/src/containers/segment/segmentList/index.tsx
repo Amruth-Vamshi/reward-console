@@ -1,25 +1,39 @@
-import React, { Component, Fragment } from 'react';
+import * as React from 'react';
 import { withRouter } from 'react-router-dom';
 import { allSegments, disableSegment } from '../../Query';
-import { withApollo, graphql } from 'react-apollo';
+import { withApollo, graphql, ApolloProviderProps, compose } from 'react-apollo';
 import { NEW_SEGMENT } from '../../../Utils';
 import { Card, Menu, Dropdown, Button, Col, Spin } from 'antd';
-import moment from 'moment';
+import * as moment from 'moment';
 import { SortableDataTable, InstantSearch, CampaignHeader } from '@walkinsole/shared';
 import { ErrorBoundary } from '@walkinsole/walkin-components';
-import jwt from "jsonwebtoken";
+import * as jwt from "jsonwebtoken";
+import { RouteChildrenProps } from 'react-router';
 
-class SegmentList extends Component {
-	constructor(props) {
+interface SegmentListProps extends RouteChildrenProps, ApolloProviderProps<any> {
+	segments?: any
+	loading?: boolean
+}
+
+interface SegmentListState {
+	sortedInfo?: any,
+	filtered?: any,
+	spinner?: boolean,
+	filteredInfo?: any
+}
+
+class SegmentList extends React.Component<SegmentListProps, SegmentListState> {
+	constructor(props: SegmentListProps) {
 		super(props);
 		this.state = {
 			sortedInfo: null,
 			filtered: null,
-			spinner: false
+			spinner: false,
+			filteredInfo: ''
 		};
 	}
 
-	handleChange = (pagination, filters, sorter) => {
+	handleChange = (pagination: any, filters: any, sorter: any) => {
 		this.setState({
 			sortedInfo: sorter,
 		});
@@ -31,7 +45,7 @@ class SegmentList extends Component {
 			pathname: NEW_SEGMENT,
 		});
 	};
-	onDeleteContact = contact => {
+	onDeleteContact = (contact: any) => {
 		let { client } = this.props;
 		client
 			.mutate({
@@ -41,14 +55,14 @@ class SegmentList extends Component {
 				},
 			})
 			.then(({ data }) => {
-				const { refetchSegments } = this.props;
+				const { refetchSegments }: any = this.props;
 				refetchSegments();
 			})
 			.catch(error => {
 				console.log('err', error);
 			});
 	};
-	onDuplicateContact = record => {
+	onDuplicateContact = (record: any) => {
 		const { history, match } = this.props;
 		console.log(record)
 		history.push({
@@ -58,7 +72,7 @@ class SegmentList extends Component {
 			},
 		});
 	};
-	menus = record => (
+	menus = (record: any) => (
 		<Menu
 			onClick={e => {
 				if (e.key === 'duplicate') {
@@ -73,7 +87,7 @@ class SegmentList extends Component {
 		</Menu>
 	);
 
-	onSegmentFilteredList = newList => {
+	onSegmentFilteredList = (newList: any) => {
 		this.setState({
 			filtered: newList,
 		});
@@ -141,14 +155,14 @@ class SegmentList extends Component {
 				title: 'Segment Name',
 				dataIndex: 'name',
 				key: 'name',
-				sorter: (a, b) => (a.name !== b.name ? (a.name < b.name ? -1 : 1) : 0),
+				sorter: (a: any, b: any) => (a.name !== b.name ? (a.name < b.name ? -1 : 1) : 0),
 				sortOrder: sortedInfo.columnKey === 'name' && sortedInfo.order,
 			},
 			{
 				title: 'Segment type',
 				dataIndex: 'segmentType',
 				key: 'segmentType',
-				sorter: (a, b) => a.segmentType - b.segmentType,
+				sorter: (a: any, b: any) => a.segmentType - b.segmentType,
 				sortOrder: sortedInfo.columnKey === 'segmentType' && sortedInfo.order,
 			},
 			{
@@ -159,7 +173,7 @@ class SegmentList extends Component {
 			{
 				title: '',
 				key: 'action',
-				render: (text, record) => (
+				render: (text: any, record: any) => (
 					<div className="gx-module-contact-right">
 						<Dropdown overlay={this.menus(record)} placement="bottomRight" trigger={['click']}>
 							<i className="gx-icon-btn icon icon-ellipse-v" />
@@ -178,7 +192,7 @@ class SegmentList extends Component {
 					}}>
 						<CampaignHeader
 							children={
-								<Fragment>
+								<React.Fragment>
 									<Col span={12}>
 										<h3 className="gx-text-grey paddingLeftStyle campaignHeaderTitleStyle">Segments</h3>
 									</Col>
@@ -187,7 +201,7 @@ class SegmentList extends Component {
 											New Segment
 									</Button>
 									</Col>
-								</Fragment>
+								</React.Fragment>
 							}
 						/>
 					</div>
@@ -209,29 +223,34 @@ class SegmentList extends Component {
 }
 
 export default withRouter(
-	withApollo(
+	compose(
 		graphql(allSegments, {
-			options: ownProps => ({
-				variables: {
-					org_id: jwt.decode(localStorage.getItem("jwt")).org_id,
-					status: 'ACTIVE',
-				},
-				forceFetch: true,
-				fetchPolicy: 'network-only',
-			}),
-			props: ({ data: { loading, error, segments, refetch } }) => ({
+			options: (ownProps: any) => {
+				const { org_id }: any = jwt.decode(localStorage.getItem("jwt"));
+				return ({
+					variables: {
+						org_id: org_id,
+						status: 'ACTIVE',
+					},
+					forceFetch: true,
+					fetchPolicy: 'network-only',
+				})
+			},
+			props: ({ data: { loading, error, segments, refetch } }: any) => ({
 				loading,
 				segments,
 				error,
-				refetchSegments: ownProps => {
+				refetchSegments: (ownProps: any) => {
+					const { org_id }: any = jwt.decode(localStorage.getItem("jwt"));
 					refetch({
 						variables: {
-							org_id: jwt.decode(localStorage.getItem("jwt")).org_id, //get it from props
+							org_id: org_id, //get it from props
 							status: 'ACTIVE',
 						},
 					});
 				},
 			}),
-		})(SegmentList)
-	)
+		})
+	)(withApollo(SegmentList))
+
 );

@@ -9,7 +9,7 @@ import {
   Popover,
   Select
 } from "antd";
-import CustomScrollbars from "../../../util/CustomScrollbars";
+import { CustomScrollbars } from "../../../util/CustomScrollbars";
 
 import languageData from "../languageData";
 import SearchBox from "../../../components/SearchBox";
@@ -41,7 +41,14 @@ function handleChange(value) {
   console.log(`selected ${value}`);
 }
 
-class HorizontalDefault extends Component {
+interface IProps {
+  switchLanguage?;
+  locale?;
+  navCollapsed?;
+  toggleCollapsedSideNav?;
+}
+interface IState {}
+class HorizontalDefault extends Component<IProps, IState> {
   state = {
     searchText: ""
   };
@@ -162,7 +169,6 @@ class HorizontalDefault extends Component {
                         </Dropdown>
                         <SearchBox
                           styleName="gx-popover-search-bar"
-                          z
                           placeholder="Search in app..."
                           onChange={this.updateSearchChatUser.bind(this)}
                           value={this.state.searchText}
@@ -250,7 +256,7 @@ class HorizontalDefault extends Component {
   }
 }
 
-const mapStateToProps = ({ settings }) => {
+const mapStateToProps = ({ settings }: any) => {
   const { locale, navCollapsed } = settings.settings;
   return { locale, navCollapsed };
 };

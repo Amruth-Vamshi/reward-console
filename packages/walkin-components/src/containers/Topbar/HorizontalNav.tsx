@@ -13,7 +13,13 @@ import { compose, graphql } from "react-apollo";
 
 const SubMenu = Menu.SubMenu;
 
-class HorizontalNav extends Component {
+interface IProps {
+  pathname?;
+  navStyle?;
+}
+interface IState {}
+
+class HorizontalNav extends Component<IProps, IState> {
   static propTypes: any;
   static defaultProps: any;
 
@@ -60,7 +66,7 @@ class HorizontalNav extends Component {
 }
 
 HorizontalNav.propTypes = {};
-const mapStateToProps = ({ settings }) => {
+const mapStateToProps = ({ settings }: any) => {
   const { themeType, navStyle, pathname, locale } = settings.settings;
   return { themeType, navStyle, pathname, locale };
 };

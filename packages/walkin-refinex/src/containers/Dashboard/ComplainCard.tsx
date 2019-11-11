@@ -1,7 +1,11 @@
-import React, { Component } from 'react'
+import * as React from 'react'
 import { Row, Col } from "antd";
 
-export default class ComplainCard extends Component {
+interface ComplainCardProps {
+    complain?: any
+}
+
+export default class ComplainCard extends React.Component<ComplainCardProps, {}> {
     render() {
         let { Category, number_of_complains } = this.props.complain
         return (
