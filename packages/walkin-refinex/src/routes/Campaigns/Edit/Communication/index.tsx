@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import * as React from "react";
 import PropTypes from "prop-types";
 import { Col, Row, Typography, Tabs, Radio, Form, Input, Upload, Button, Icon } from "antd";
 import SMSForm from "./SMS";
@@ -7,7 +7,28 @@ import PushNotification from "./Push";
 const { TabPane } = Tabs;
 const { Title } = Typography;
 import TestComponent from "./TestCampaign/index"
-const Communication = ({
+
+interface CommunicationProps {
+  subTitle?: any,
+  onChange?: any,
+  communicationData?: any,
+  defaultValue?: any,
+  value?: any,
+  OnCommunicationFormNext?: any,
+  commWrappedComponentRef?: any,
+  communicationFormValues?: any,
+  pushFormData?: any,
+  pushFormRef?: any,
+  emailFormRef?: any,
+  emailFormData?: any,
+  onFormNext?: any,
+  schedule?: any,
+  campaign?: any,
+  scheduleSaveMark?: any,
+  saveSchedule?: any,
+  form?: any
+}
+const Communication: React.FC<CommunicationProps> = ({
   subTitle,
   onChange,
   communicationData,
