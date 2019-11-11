@@ -1,6 +1,6 @@
-import React, { Component } from "react";
+import * as React from "react";
 import PropTypes from "prop-types";
-import { graphql, compose } from "react-apollo"
+import { graphql, compose, ApolloProviderProps } from "react-apollo"
 import {
   Col,
   Row,
@@ -18,8 +18,24 @@ import {
 } from "antd";
 import jwt from "jsonwebtoken";
 import { EVENT_TYPES_FOR_APPLICATION, EVENT_SUBSCRIPTION } from "../../../../../containers/Query"
-class EventType extends Component {
-  constructor(props) {
+import { FormProps, FormComponentProps } from "antd/lib/form";
+
+interface EventTypeProps extends FormComponentProps, ApolloProviderProps<any> {
+  event?: any,
+  selectedApplication?: any
+  unlinkCampaignFromApplication?: any
+  application?: any
+  eventType?: any
+  onEventTypeEdited?: any
+  linkCampaignToApplication?: any
+}
+
+interface EventTypeState {
+  showEvents: boolean,
+  visible: boolean,
+}
+class EventType extends React.Component<EventTypeProps, EventTypeState> {
+  constructor(props: EventTypeProps) {
     super(props);
     this.state = {
       showEvents: false,
@@ -106,7 +122,7 @@ class EventType extends Component {
               <h2>App</h2>
             </Col>
             <Col span={12}>
-              <Form layout="vertical" onSubmit={this.handleSubmit}>
+              <Form layout="vertical" onSubmit={() => console.log("submit")}>
 
 
                 <Form.Item label="Choose an App">
@@ -124,7 +140,6 @@ class EventType extends Component {
                       }}
                       notFoundContent={this.props.eventType.loading ? <Spin size="small" /> : null}
                       placeholder="Select an Application"
-                      onChange={this.handleSelectChange}
                     >
                       <Select.Option key="addnewApplication">
                         <div style={{ padding: '8px', cursor: 'pointer' }}>
@@ -154,7 +169,7 @@ class EventType extends Component {
               <h2>Event</h2>
             </Col>
             <Col span={12}>
-              <Form layout="vertical" onSubmit={this.handleSubmit}>
+              <Form layout="vertical" onSubmit={() => console.log("submit")}>
 
 
                 <Form.Item label="Choose an event type">
@@ -172,7 +187,7 @@ class EventType extends Component {
                       }}
                       notFoundContent={this.props.eventType.loading ? <Spin size="small" /> : null}
                       placeholder="Select an Event"
-                      onChange={this.handleSelectChange}
+
                     >
                       {
                         this.props.eventType.loading ? (
@@ -221,7 +236,7 @@ class EventType extends Component {
 
 const EventTypeForm = Form.create({
   name: "EventType",
-  onValuesChange(props, values) {
+  onValuesChange(props: EventTypeProps, values) {
     if (values.event) {
       props.onEventTypeEdited(values);
     } else if (props.selectedApplication !== values.application) {
@@ -229,8 +244,8 @@ const EventTypeForm = Form.create({
     }
 
   },
-  mapPropsToFields(props) {
-    const { event, selectedApplication } = props;
+  mapPropsToFields(props: EventTypeProps) {
+    //const { event, selectedApplication } = props;
     // if (selectedApplication) {
     //   props.eventSubscription.refetch()
     // }
@@ -252,7 +267,7 @@ const EventTypeForm = Form.create({
 export default compose(
   graphql(EVENT_TYPES_FOR_APPLICATION, {
     name: "eventType",
-    options: props => ({
+    options: (props: EventTypeProps) => ({
       fetchPolicy: "cache-first",
       variables: {
         appId: props.selectedApplication

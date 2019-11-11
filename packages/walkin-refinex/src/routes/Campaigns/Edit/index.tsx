@@ -13,7 +13,7 @@ import { campaignOverview as Overview } from "@walkinsole/shared";
 import FeedbackFormConfig from "./FeedbackForm";
 import ContainerHeader from "../CampaignHeader";
 import gql from "graphql-tag";
-import { compose, graphql } from "react-apollo";
+import { compose, graphql, ApolloProviderProps } from "react-apollo";
 import Stepper from "../Stepper"
 import isEmpty from "lodash/isEmpty";
 import moment from "moment";
@@ -46,7 +46,65 @@ import {
 import { async } from "q";
 import { GET_ALL_APPS_OF_ORGANIZATION } from "@walkinsole/walkin-core/src/PlatformQueries";
 import pick from "lodash/pick";
+import { RouteChildrenProps, RouteProps, RouteComponentProps } from "react-router";
+import { any } from "prop-types";
 
+
+interface RouteParams {
+  id?:string
+}
+interface EditCampaignProps extends RouteComponentProps<RouteParams>,ApolloProviderProps<any>{
+  updateCampaign?:any,
+  rule?:any,
+  campaign?:any
+  messageTemplate?:any
+  communication?:any
+  communications?:any
+  allAttributes?:any
+  segmentList?:any
+  allApplications?:any
+  allAudiences?:any
+  allCommunications?:any
+  createEventSubscription?:any
+  updateEventSubscription?:any
+  updateAudiencesWithCampaignIdWithSegments?:any
+  audience?:any
+  updateMessageTemplate?:any
+  updateRule?:any
+  linkCampaignToApplication?:any
+  unlinkCampaignFromApplication?:any
+
+}
+
+interface EditCampaignState {
+  current: number,
+  loading: boolean,
+  priorityChosen: any,
+  priorityNumberError: boolean,
+  showTestAndControl: boolean,
+  testValue: number,
+  controlValue: any,
+  testControlSelected: any,
+  communicationSelected: string,
+  communicationFormValues: any,
+  formValues: any,
+  campaign: any,
+  segmentList: any,
+  attributeData: any,
+  query:any,
+  formName: string,
+  stepperData: any,
+  feedbackForm:any,
+  communications:any,
+  communication:any,
+  oldQueryTriggers:any
+  oldQueryAudience:any
+  emailForm:any
+  pushForm:any
+  eventValues:any
+  selectedSegments:any
+  communicationId:any,
+}
 
 const communicationData = [
   { value: "SMS", title: "SMS" },
@@ -55,10 +113,15 @@ const communicationData = [
 ];
 //Math.random().toString(36).substring(7);
 // import { allSegments } from "@walkinsole/walkin-hyperx/src/query/audience";
-class EditCampaign extends Component {
-  constructor() {
-    super();
+class EditCampaign extends React.Component<EditCampaignProps,Partial<EditCampaignState>> {
+  private pushFormRef
+  private formRef1
+  private formRef
+  private emailFormRef
+  constructor(props:EditCampaignProps) {
+    super(props);
     this.state = {
+      communicationId:'',
       current: 0,
       priorityChosen: "",
       priorityNumberError: false,
@@ -144,7 +207,7 @@ class EditCampaign extends Component {
     }
     if(this.props.allCommunications.loading !== preValue.allCommunications.loading){
       let {communicationFormValues} = this.state
-    let communicationId = {}
+    let communicationId :any= {}
     if(this.props.allCommunications.communications) {
       this.props.allCommunications.communications.map(item => {
         if(item.messageTemplate.messageFormat == "SMS"){
@@ -168,11 +231,12 @@ class EditCampaign extends Component {
   }
 
   createEvenetSubscription= ()=>{
+    const {org_id}:any=jwt.decode(localStorage.getItem("jwt"))
     const input={
       queue:DEFAULT_QUEUE,
         meta:{},
         application_id:this.props.campaign.campaign.application.id,
-        organization_id:jwt.decode(localStorage.getItem("jwt")).org_id,
+        organization_id:org_id,
         event_type_id:this.state.eventValues.event,
         description:"",
         name:Math.random()
@@ -353,10 +417,11 @@ class EditCampaign extends Component {
   })
   }
   createAudience = (current, segmentId) =>{
-    var input = {
+    const {org_id}:any=jwt.decode(localStorage.getItem("jwt"));
+    let input = {
       campaign_id:this.props.campaign.campaign.id,
      segment_id:segmentId,
-     organization_id:jwt.decode(localStorage.getItem("jwt")).org_id,
+     organization_id:org_id,
      application_id:this.props.campaign.campaign.application.id,
      status:DEFAULT_ACTIVE_STATUS
     };
@@ -372,11 +437,12 @@ class EditCampaign extends Component {
   }
 
   createCommunicationMutation = (current, values) => {
+    const {org_id}:any=jwt.decode(localStorage.getItem("jwt"));
     //Update
     let update = false
     let input = {
        ...values,
-        organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
+        organization_id:org_id,
     }
     input= pick(input,['organization_id','templateBodyText','templateSubjectText']);
       if(this.state.communicationId.smsid && this.state.communicationSelected==="SMS"){
@@ -418,14 +484,14 @@ class EditCampaign extends Component {
           }
         })
         .then(async data => {
-          console.log("MessageTemplate data..", data);
+          const {org_id}:any=jwt.decode(localStorage.getItem("jwt"));
           var input = {
             entityId: this.props.campaign.campaign.id, 
             entityType: "Campaign",
             messageTemplateId: data.data.createMessageTemplate.id,
             isScheduled: true,
             isRepeatable: false,
-            organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
+            organization_id:org_id,
             status: DEFAULT_ACTIVE_STATUS,
             firstScheduleDateTime: this.props.campaign.campaign.startTime,
             commsChannelName: "Test",
@@ -454,9 +520,11 @@ class EditCampaign extends Component {
   saveDraft = current => {
 		this.props.history.push('/refinex/feedback')
 		this.props.history.push({
-			pathname: '/refinex/feedback',
-			tabKey: "4",
-	
+      pathname: '/refinex/feedback',
+      state:{
+        tabKey: "4",
+      }
+			
 		})
 	}
 
@@ -493,13 +561,14 @@ class EditCampaign extends Component {
     })
   }
   ruleQuery = current => {
+    const {org_id}:any=jwt.decode(localStorage.getItem("jwt"));
     const input = {
       name: Math.random()
         .toString(36)
         .substring(7),
       description: "",
       type: "SIMPLE",
-      organizationId: jwt.decode(localStorage.getItem("jwt")).org_id,
+      organizationId: org_id,
       status: DEFAULT_ACTIVE_STATUS,
       ruleConfiguration: this.state.query
     };
@@ -516,7 +585,7 @@ class EditCampaign extends Component {
             audienceFilterRule: data.data.createRule.id
           };
         if (current == 3) {
-          var input = {
+          let input = {
             triggerRule: data.data.createRule.id
           };
         }
@@ -600,8 +669,8 @@ class EditCampaign extends Component {
     });
   };
 
-  handleButtonGroupChange = e => {
-    this.setState({ value: e.target.value });
+  handleButtonGroupChange = (e:any)=> {
+    this.setState({ [e.target.name]: e.target.value });
   };
 
   onCommunicationChange = e => {
@@ -661,8 +730,8 @@ class EditCampaign extends Component {
 
   getContainer = () => {
     const { campaign } = this.props.campaign;
-    let triggerRule={id:1,combinator: "and", rules: [] }
-    let audienceRule={id:1,combinator: "and", rules: [] };
+    let triggerRule:any={id:1,combinator: "and", rules: [] }
+    let audienceRule:any={id:1,combinator: "and", rules: [] };
     if(campaign && campaign.triggerRule){
       triggerRule= campaign.triggerRule.ruleConfiguration;
       var mapObj = {
@@ -732,8 +801,6 @@ class EditCampaign extends Component {
             onTestAndControlEdit={this.onTestAndControlEdit}
             showTestAndControl={showTestAndControl}
             popupTitle="Test & Control"
-            handleOk={this.handleOk}
-            handleCancel={this.handleCancel}
             applyTestControlChange={this.applyTestControlChange}
             popupbodyText="Divide customers selected for a specific audience into local test and local control
             groups"
@@ -799,7 +866,6 @@ class EditCampaign extends Component {
             value={this.state.communicationSelected}
             commWrappedComponentRef={this.commWrappedComponentRef}
             communicationFormValues={this.state.communicationFormValues}
-            subTitle="Communication"
             campaign={this.state.formValues}
             OnCommunicationFormNext={this.onFormNext}
             emailFormRef={this.saveEmailFormRef}
@@ -838,8 +904,8 @@ class EditCampaign extends Component {
                     tabKey="4"
       this.props.history.push({
        pathname: "/refinex/feedback/overview",
-       tabKey: tabKey,
         state:{
+          tabKey: tabKey,
           showPopup:true,
           message:"Feedback form successfully created"
         }
@@ -899,17 +965,19 @@ class EditCampaign extends Component {
 export default compose(
   graphql(GET_ALL_APPS_OF_ORGANIZATION, {
     name: "allApplications",
-    options: props =>  ({
+    options: props =>  {
+      const {org_id}:any=jwt.decode(localStorage.getItem("jwt"));
+      return ({
         variables: {
-          id: jwt.decode(localStorage.getItem("jwt")).org_id
+          id: org_id
         },
         fetchPolicy: "cache-and-network"
-      })
+      })}
     }
   ),
   graphql(GET_CAMPAIGN, {
     name: "campaign",
-    options: props => ({
+    options: (props:EditCampaignProps) => ({
       variables: {
         id: props.match.params.id,
         
@@ -919,13 +987,15 @@ export default compose(
   }),
   graphql(allSegments, {
     name: "segmentList",
-    options: ownProps => ({
+    options: ownProps => {
+      const {org_id}:any=jwt.decode(localStorage.getItem("jwt"));
+      return ({
       variables: {
-        org_id: jwt.decode(localStorage.getItem("jwt")).org_id,
+        org_id: org_id,
         status: DEFAULT_ACTIVE_STATUS
       },
       fetchPolicy: "cache-and-network"
-    })
+    })}
   }),
   graphql(createRule, {
     name: "rule"
@@ -939,9 +1009,10 @@ export default compose(
   graphql(attributes, {
     name: "allAttributes",
     options:props=>{
+      const {org_id}:any=jwt.decode(localStorage.getItem("jwt"));
       const input= {
         status: DEFAULT_ACTIVE_STATUS, 
-      organizationId: jwt.decode(localStorage.getItem("jwt")).org_id
+      organizationId: org_id
       }
      const a= {
        variables:{
@@ -982,26 +1053,29 @@ export default compose(
   }),
   graphql(communications,{
     name:"allCommunications",
-    options:props =>({
+    options:(props:EditCampaignProps) =>{
+      const {org_id}:any=jwt.decode(localStorage.getItem("jwt"));
+      return ({
       variables:{
       entityId:props.match.params.id,
       entityType:"Campaign",
-      organization_id:jwt.decode(localStorage.getItem("jwt")).org_id,
+      organization_id:org_id,
       status:DEFAULT_ACTIVE_STATUS
       },
       fetchPolicy:"network-only"
-    })
+    })}
   }),graphql(audiences,{
     name:"allAudiences",
-    options:props =>({
+    options:(props:EditCampaignProps) =>{
+      const {org_id}:any=jwt.decode(localStorage.getItem("jwt"));
+      return ({
       variables:{
         status:DEFAULT_ACTIVE_STATUS,
         campaign_id:props.match.params.id,
-        organization_id:jwt.decode(localStorage.getItem("jwt")).org_id,
-        status:DEFAULT_ACTIVE_STATUS
+        organization_id:org_id,
       },
       fetchPolicy:"network-only"
-    })
+    })}
   })
 )(EditCampaign);
 

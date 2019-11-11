@@ -2,7 +2,17 @@ import * as React from "react";
 import { Row, Col, Button } from "antd";
 import "./foo.css";
 
-export const CampaignFooter = ({
+interface CampaignFooterProps {
+  nextButtonText?: any,
+  loading?: any,
+  saveDraftText?: any,
+  saveDraftButtonClass?: any,
+  nextButtonClass?: any,
+  saveDraft?: any,
+  goToPage2?: any
+}
+
+export const CampaignFooter: React.FunctionComponent<CampaignFooterProps> = ({
   nextButtonText,
   loading,
   saveDraftText,
