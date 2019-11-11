@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { Col, Card, Row, Select, Form, Input, Button, Icon } from "antd";
+import * as React from "react";
+import { Col, message, Select, Form, Input, Button, Icon } from "antd";
 import "../../styles/app.css";
 import {
   GET_ALL_APPS_OF_ORGANIZATION,
@@ -11,9 +11,9 @@ import { CREATE_APP } from "../../queries";
 import * as jwt from "jsonwebtoken";
 import { withApollo, compose, graphql } from "react-apollo";
 import gql from "graphql-tag";
+import { History } from 'history'
 
 const Option = Select.Option;
-
 const formItemLayout = {
   labelCol: {
     sm: { span: 24 },
@@ -29,8 +29,30 @@ const formItemLayout = {
   }
 };
 
-class AppCreation extends Component {
-  constructor(props) {
+interface iProps {
+  client?: any,
+  errors?: any,
+  history?: History
+}
+
+interface iState {
+  organizations?: Array<any>,
+  update?: boolean,
+  id?: string,
+  errors?: any,
+  loading?: boolean,
+  firstName?: string,
+  lastName?: string,
+  appName?: string,
+  description?: string,
+  platform?: string,
+  organizationId?: string,
+  userId?: any,
+  org_id?: any
+}
+
+class AppCreation extends React.Component<iProps, iState> {
+  constructor(props: iProps) {
     super(props);
     this.state = {
       organizations: [],
@@ -47,7 +69,7 @@ class AppCreation extends Component {
     };
   }
 
-  choosePlatform = (e, n) => {
+  choosePlatform = (e) => {
     // console.log(e.target.name, n)
     this.setState({ platform: e.target.name });
   };
@@ -67,7 +89,7 @@ class AppCreation extends Component {
   componentDidMount() { }
 
   componentWillMount() {
-    const { id, org_id } = jwt.decode(localStorage.getItem("jwt"));
+    const { id, org_id }: any = jwt.decode(localStorage.getItem("jwt"));
     this.setState({ userId: id, org_id });
 
     sessionStorage.getItem("AppData")
@@ -117,7 +139,7 @@ class AppCreation extends Component {
       : console.log("Error getting JwtData");
   }
 
-  handleOnChange = (e, n) => {
+  handleOnChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
     // console.log(e, n)
   };
@@ -127,8 +149,8 @@ class AppCreation extends Component {
     this.setState({ organizationId: e });
   };
 
-  handleSubmit = orgId => {
-    let errors = {};
+  handleSubmit = () => {
+    let errors: any = {};
     if (this.state.appName.trim() == "")
       errors.appName = "* this field is mandatory";
     if (this.state.platform == "") errors.platform = "* select your platform";
@@ -185,11 +207,11 @@ class AppCreation extends Component {
             console.log("Failed to get Places Details" + err.graphQLErrors);
 
             console.log(err && err.graphQLErrors
-              ? error.graphQLErrors[0].errorCode
+              ? err.graphQLErrors[0].errorCode
               : 'Error in submitting the form');
 
             if (err.graphQLErrors[0].message) {
-              message.warn(graphQLErrors[0].message)
+              message.warn(err.graphQLErrors[0].message)
             }
             this.setState({ loading: false });
           });
@@ -265,14 +287,14 @@ class AppCreation extends Component {
                     <Button
                       name="Android"
                       onClick={c => this.choosePlatform(c)}
-                      type={this.state.platform === "Android" ? "primary" : ""}
+                      type={this.state.platform === "Android" ? "primary" : null}
                     >
                       <Icon type="android" theme="filled" /> Android{" "}
                     </Button>
                     <Button
                       name="IOS"
                       onClick={c => this.choosePlatform(c)}
-                      type={this.state.platform === "IOS" ? "primary" : ""}
+                      type={this.state.platform === "IOS" ? "primary" : null}
                     >
                       <Icon type="apple" theme="filled" /> IOS{" "}
                     </Button>
@@ -295,7 +317,7 @@ class AppCreation extends Component {
                           optionFilterProp="children"
                           onChange={this.onChange}
                           // onSearch={onSearch}
-                          filterOption={(input, option) =>
+                          filterOption={(input: any, option: any) =>
                             option.props.children
                               .toLowerCase()
                               .indexOf(input.toLowerCase()) >= 0
@@ -333,7 +355,7 @@ class AppCreation extends Component {
                       style={{
                         textAlign: "center",
                         width: "200px",
-                        float: "center",
+                        float: 'none',
                         margin: "25px 30px 20px 0"
                       }}
                     >

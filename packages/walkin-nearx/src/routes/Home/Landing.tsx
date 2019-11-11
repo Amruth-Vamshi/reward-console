@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { Col, Row, Pagination, Divider, Card, Input, Icon, Button } from "antd";
+import * as React from "react";
+import { Col, Row, Card, Input, Button } from "antd";
 import { Link } from "react-router-dom";
 import HomeMap from "../../components/HomeMap"
 import Auxiliary from "../../util/Auxiliary";
@@ -7,10 +7,22 @@ import '../../styles/home.css'
 import Cylinder3DChart from './Cylinder3DChart';
 import { getNewPlaces } from '../Places/data'
 
+interface iProps {
+
+}
+
+interface iState {
+  places?: Array<any>,
+  center?: any,
+  noOfPlaces?: number,
+  errors?: any,
+  markerPlace?: number,
+  getLoc?: boolean
+}
 const demoData = getNewPlaces
 
 const Search = Input.Search;
-export default class Landing extends Component {
+export default class Landing extends React.Component<iProps, iState> {
   constructor(props) {
     super(props)
     this.state = {

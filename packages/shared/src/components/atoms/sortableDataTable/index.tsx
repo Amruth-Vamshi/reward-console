@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { Table } from 'antd';
-import { ColumnProps, PaginationConfig, SorterResult, TableProps } from 'antd/lib/table';
+import { ColumnProps, PaginationConfig, SorterResult, TableProps, TableCurrentDataSource } from 'antd/lib/table';
 
 interface SortableDataTableProps {
 	columns?: ColumnProps<any>[],
 	data?: any[],
-	onChange: (pagination: PaginationConfig, filters: Record<string | number | symbol, string[]>, sorter: SorterResult<any>, key: any, e: TableProps<any>) => any,
+	onChange: (pagination: PaginationConfig, filters: Record<string | number | symbol, string[]>, sorter: SorterResult<any>, extra: TableCurrentDataSource<any>) => any;
 	pagination?: object,
 	loading?: boolean
 }

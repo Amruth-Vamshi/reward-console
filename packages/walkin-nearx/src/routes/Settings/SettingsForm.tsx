@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import * as React from "react";
 import { Col, Row, Form, Input, Button, Slider, message, InputNumber, Icon } from "antd";
 import Auxiliary from "../../util/Auxiliary";
 import { GET_CONFIGURATION, SET_CONFIGURATION } from "../../queries";
@@ -52,7 +52,20 @@ const tailFormItemLayout1 = {
   }
 };
 
-export default class SettingsForm extends Component {
+interface iProps {
+  handleSubmit?: any
+}
+
+interface iState {
+  errors?: any,
+  googleAPIkey?: string,
+  facebookAPIkey?: string,
+  radius?: Array<any>,
+  loading?: boolean,
+  loading1?: boolean
+}
+
+export default class SettingsForm extends React.Component<iProps, iState> {
   constructor(props) {
     super(props);
     this.state = {
@@ -154,8 +167,8 @@ export default class SettingsForm extends Component {
   );
 
   keysUpdate = () => {
-    let errors = {};
-    let keys = []
+    let errors: any = {};
+    let keys: Array<any> = []
 
     // if (this.state.googleAPIkey && this.state.googleAPIkey != ' ') {
     this.setState({ loading: true });

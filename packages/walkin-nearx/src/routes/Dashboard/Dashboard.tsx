@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import * as React from "react";
 import { Col, Row, DatePicker, Button, Icon, Empty, Spin } from "antd";
 import Auxiliary from "../../util/Auxiliary";
 import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis } from "recharts";
@@ -24,7 +24,27 @@ function now() {
   return newdate1
 }
 
-class Landing extends Component {
+interface iState {
+  totalPlaces?: number,
+  totalEntries?: number,
+  totalExits?: number,
+  totalDwell?: number,
+  customers?: Array<any>,
+  popularPlaces?: Array<any>,
+  recentPlaces?: Array<any>,
+  customerCount?: number,
+  org_id?: string,
+  startDate?: any,
+  endDate?: any,
+  errors?: any,
+  spin: boolean
+}
+
+interface iProps {
+  client?: any
+}
+
+class Landing extends React.Component<iProps, iState> {
   constructor(props) {
     super(props)
     this.state = {
@@ -39,12 +59,13 @@ class Landing extends Component {
       org_id: '',
       startDate: moment().subtract(30, 'day'),
       endDate: now(),
-      errors: {}
+      errors: {},
+      spin: false
     }
   }
 
   componentWillMount() {
-    const { id, org_id } = jwt.decode(localStorage.getItem("jwt"));
+    const { id, org_id }: any = jwt.decode(localStorage.getItem("jwt"));
     if (org_id && id) {
       this.setState({ org_id })
       this.getMetrics(org_id, this.state.endDate)

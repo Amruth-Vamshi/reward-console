@@ -1,9 +1,13 @@
 import React, { Component } from 'react'
-import { Redirect, Route, Switch } from "react-router-dom";
+import { Redirect, Route, Switch, RouteComponentProps } from "react-router-dom";
 import AppCreation from './AppCreation'
 import AppList from './AppsList'
+import { } from "history"
 
-export default class AppIndex extends Component {
+interface iProps extends RouteComponentProps {
+
+}
+export default class AppIndex extends Component<iProps, {}> {
   render() {
     return (
       <div>

@@ -1,12 +1,8 @@
-import React, { Component } from "react";
+import * as React from "react";
 import { Menu } from "antd";
 import { Link } from "react-router-dom";
-import "../../styles/sidebar.css";
-import {
-  CustomScrollbars,
-  Auxiliary,
-  IntlMessages
-} from "@walkinsole/walkin-components";
+import '../../styles/sidebar.css'
+import { Auxiliary } from "@walkinsole/walkin-components";
 import SidebarLogo from "./SidebarLogo";
 import { withRouter } from "react-router-dom";
 
@@ -18,7 +14,17 @@ import {
 import { compose, graphql } from "react-apollo";
 import gql from "graphql-tag";
 
-class SidebarContent extends Component {
+interface iProps {
+  themeType?: any,
+  navStyle?: any,
+  pathname?: any
+}
+
+interface iState {
+  propTypes?: any
+}
+
+class SidebarContent extends React.Component<iProps, iState> {
   static propTypes: any;
   static defaultProps: any;
   getNoHeaderClass = navStyle => {
@@ -48,7 +54,7 @@ class SidebarContent extends Component {
           <Menu
             defaultOpenKeys={[defaultOpenKeys]}
             selectedKeys={[selectedKeys]}
-            theme={themeType === THEME_TYPE_LITE ? "lite" : "dark"}
+            theme={themeType === THEME_TYPE_LITE ? "light" : "dark"}
             mode="inline"
           >
             {/* <Menu.Item key="nearx/home/landing">
