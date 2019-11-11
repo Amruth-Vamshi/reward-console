@@ -136,7 +136,7 @@ export default class Landing extends React.Component<iProps, iState> {
                   </Row>
                   {/* <Row> */}
                   <div style={{ margin: '20px 20px 30px 0px', width: '100%' }}>
-                    <p style={{ float: "right", color: "#34bfe2" }}> <a to='#'> View All </a></p>
+                    <p style={{ float: "right", color: "#34bfe2" }}> <a href='#'> View All </a></p>
                   </div>
                   {/* </Row> */}
                 </div>

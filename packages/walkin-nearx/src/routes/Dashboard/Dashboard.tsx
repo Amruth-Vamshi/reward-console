@@ -88,7 +88,7 @@ class Landing extends React.Component<iProps, iState> {
       .catch(err => {
         this.setState({ spin: false });
         console.log("Failed to get User Details" + err);
-        this.formatData()
+        // this.formatData()
       });
   }
 
@@ -152,7 +152,7 @@ class Landing extends React.Component<iProps, iState> {
   }
 
   render() {
-    let nRows = parseInt(window.innerWidth / 300)
+    let nRows = (window.innerWidth / 300)
     let demoData = []
     // if (window.innerWidth > 991)
     //   for (let i = 0; i < nRows && i < this.state.recentPlaces.length && i < 5; i++)

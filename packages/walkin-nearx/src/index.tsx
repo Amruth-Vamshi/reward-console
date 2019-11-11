@@ -1,7 +1,11 @@
-import React, { Component } from "react";
+import * as React from "react";
 import { Route } from "react-router-dom";
 import NearXRoutes from "./routes";
-export default class extends Component {
+
+interface iProps {
+  match?: any
+}
+export default class extends React.Component<iProps, {}> {
   render() {
     return <Route path={`${this.props.match.url}`} component={NearXRoutes} />;
   }
