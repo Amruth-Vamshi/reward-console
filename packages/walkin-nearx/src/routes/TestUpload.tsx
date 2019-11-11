@@ -1,13 +1,20 @@
-import React, { Component } from 'react'
+import * as React from 'react'
 import { Upload, Icon, message } from 'antd';
 import '../styles/places.css'
 import csv from 'csv';
 
 const Dragger = Upload.Dragger;
 
+interface iProps {
+
+}
+
+interface iState {
+    fileList?: Array<any>
+}
 
 
-export default class TestUpload extends Component {
+export default class TestUpload extends React.Component<iProps, iState> {
     constructor(props) {
         super(props)
         this.state = {

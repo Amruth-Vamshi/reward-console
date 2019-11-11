@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import * as React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import '../styles/styles.css'
 import Dashboard from './Home/index';
@@ -9,7 +9,7 @@ import NearxApps from './App';
 import Hooks from './Webhooks';
 import TestUpload from './TestUpload';
 
-export default class NearXRoutes extends Component {
+export default class NearXRoutes extends React.Component {
 	render() {
 		// console.log('props',this.props)
 		return (

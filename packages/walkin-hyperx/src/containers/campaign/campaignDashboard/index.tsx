@@ -5,8 +5,8 @@ import { campaignOverview as Overview } from "@walkinsole/shared";
 import { CAMPAIGN_DASHBOARD, GET_CAMPAIGN_DASHBOARD, UPDATE_CAMPAIGN, LAUNCH_CAMPAIGN, PAUSE_CAMPAIGN, UNPAUSE_CAMPAIGN, ABANDON_CAMPAIGN, VIEW_CAMPAIGN, PREPROCESS_LAUNCH_CAMPAIGN } from '../../../query/campaign'
 import { withApollo, graphql, compose, mutate } from 'react-apollo';
 import { withRouter } from 'react-router-dom';
-import moment from 'moment';
-import jwt from "jsonwebtoken";
+import * as moment from 'moment';
+import * as jwt from "jsonwebtoken";
 import { GET_AUDIENCES } from '../../../query/audience';
 
 

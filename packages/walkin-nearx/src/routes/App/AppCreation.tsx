@@ -8,10 +8,10 @@ import {
 } from "@walkinsole/walkin-core/src/PlatformQueries";
 import { nearXClient } from "../../nearXApollo";
 import { CREATE_APP } from "../../queries";
-import jwt from "jsonwebtoken";
-import { History } from "history"
-
-
+import * as jwt from "jsonwebtoken";
+import { withApollo, compose, graphql } from "react-apollo";
+import gql from "graphql-tag";
+import { History } from 'history'
 
 const Option = Select.Option;
 const formItemLayout = {
@@ -287,14 +287,14 @@ class AppCreation extends React.Component<iProps, iState> {
                     <Button
                       name="Android"
                       onClick={c => this.choosePlatform(c)}
-                      type={this.state.platform === "Android" ? "primary" : ""}
+                      type={this.state.platform === "Android" ? "primary" : null}
                     >
                       <Icon type="android" theme="filled" /> Android{" "}
                     </Button>
                     <Button
                       name="IOS"
                       onClick={c => this.choosePlatform(c)}
-                      type={this.state.platform === "IOS" ? "primary" : ""}
+                      type={this.state.platform === "IOS" ? "primary" : null}
                     >
                       <Icon type="apple" theme="filled" /> IOS{" "}
                     </Button>
@@ -355,7 +355,7 @@ class AppCreation extends React.Component<iProps, iState> {
                       style={{
                         textAlign: "center",
                         width: "200px",
-                        float: "center",
+                        float: 'none',
                         margin: "25px 30px 20px 0"
                       }}
                     >

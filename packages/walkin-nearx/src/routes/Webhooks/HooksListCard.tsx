@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
-import { Col, Row, Dropdown, Menu, Card, Icon, Tooltip, Button, Input } from "antd";
+import * as React from 'react'
+import { Col, Row, Dropdown, Menu, Card } from "antd";
 
 const options = [
   // 'Activate',
@@ -7,7 +7,17 @@ const options = [
   'Delete',
 ];
 
-export default class HooksListCard extends Component {
+interface iProps {
+  updateHook?: any,
+  deleteHook?: any,
+  data?: any
+}
+
+interface iState {
+
+}
+
+export default class HooksListCard extends React.Component<iProps, iState> {
 
   menus = () => (<Menu onClick={(e) => {
     if (e.key === 'Edit') {
@@ -23,7 +33,7 @@ export default class HooksListCard extends Component {
 
 
   copy = () => {
-    var copyText = document.getElementById(this.props.data.appKey);
+    var copyText: any = document.getElementById(this.props.data.appKey);
     copyText.select();
     document.execCommand("copy");
     console.log("Copied Key: " + copyText.value)

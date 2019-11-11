@@ -1,19 +1,38 @@
+import { CampaignHeader, InstantSearch, SortableDataTable } from '@walkinsole/shared';
+import { Button, Col, Dropdown, Icon, Menu } from 'antd';
+import { History } from 'history';
+import * as jwt from 'jsonwebtoken';
 import React, { Component, Fragment } from 'react';
+import { ApolloProviderProps, graphql, withApollo } from 'react-apollo';
+import { RouteChildrenProps } from 'react-router';
 import { withRouter } from 'react-router-dom';
-import { allSegments, disableSegment, UPDATE_SEGMENT } from '../../../query/audience';
-import { withApollo, graphql } from 'react-apollo';
-import { NEW_SEGMENT } from '../../../utils/RouterConstants';
-import { Card, Menu, Dropdown, Button, Col, Icon } from 'antd';
-import moment from 'moment';
-import { SortableDataTable, InstantSearch, CampaignHeader } from '@walkinsole/shared';
-import jwt from "jsonwebtoken";
 
-class SegmentList extends Component {
+import { allSegments, disableSegment } from '../../../query/audience';
+import { NEW_SEGMENT } from '../../../utils/RouterConstants';
+
+const { org_id, id }: any = jwt.decode(localStorage.getItem("jwt"));
+
+interface IProps extends RouteChildrenProps, ApolloProviderProps<any> {
+	history: History
+	loading: any,
+	error: any
+	refetchSegments: () => void
+}
+
+interface IState {
+	sortedInfo: any,
+	filtered: any,
+	filteredInfo: any
+	// loading: boolean
+	// update: boolean
+}
+class SegmentList extends Component<IProps, IState> {
 	constructor(props) {
 		super(props);
 		this.state = {
 			sortedInfo: null,
 			filtered: null,
+			filteredInfo: {},
 		};
 	}
 
@@ -94,7 +113,7 @@ class SegmentList extends Component {
 					this.onDuplicateContact(record);
 				} else if (e.key === 'delete') {
 					this.onDeleteContact(record);
-				} else this.onUpdateSegment(record, e.key)
+				} else this.onUpdateSegment(record)
 			}}
 		>
 			{/* {record.status != "ACTIVE" ? <Menu.Item key="ACTIVE">Make Active</Menu.Item> : <Menu.Item key="INACTIVE">Make Inactive</Menu.Item>} */}
@@ -114,7 +133,7 @@ class SegmentList extends Component {
 
 	render() {
 		let { sortedInfo, filteredInfo, filtered } = this.state;
-		const { segments } = this.props;
+		const { segments }: any = this.props;
 		sortedInfo = sortedInfo || {};
 		filteredInfo = filteredInfo || {};
 		let segmentData = [];
@@ -257,7 +276,7 @@ export default withRouter(
 		graphql(allSegments, {
 			options: ownProps => ({
 				variables: {
-					organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
+					organization_id: org_id,
 					status: 'ACTIVE',
 				},
 				forceFetch: true,
@@ -270,7 +289,7 @@ export default withRouter(
 				refetchSegments: ownProps => {
 					refetch({
 						variables: {
-							organization_id: jwt.decode(localStorage.getItem("jwt")).org_id, //get it from props
+							organization_id: org_id
 							status: 'ACTIVE',
 						},
 					});

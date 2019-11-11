@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import * as React from "react";
 import { Menu } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, RouteComponentProps } from 'react-router-dom';
 import { CustomScrollbars, Auxiliary, IntlMessages } from '@walkinsole/walkin-components';
 import SidebarLogo from './SidebarLogo';
 import { withRouter } from 'react-router-dom';
@@ -17,7 +17,22 @@ import { CAMPAIGN_MANAGEMENT, SEGMENT_LIST, OFFER_LIST } from '../../utils/Route
 
 const SubMenu = Menu.SubMenu;
 
-class SidebarContent extends Component {
+import * as jwt from "jsonwebtoken";
+import { MenuTheme } from "antd/lib/menu";
+
+
+interface SidebarContentProps extends RouteComponentProps {
+	themeType: any,
+	navStyle: any,
+	pathname: any
+}
+
+interface SidebarContentState {
+	orgId?: any,
+	userId?: any
+}
+
+class SidebarContent extends React.Component<SidebarContentProps, SidebarContentState> {
 	getNoHeaderClass = navStyle => {
 		if (
 			navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR ||
@@ -38,6 +53,12 @@ class SidebarContent extends Component {
 		const { themeType, navStyle, pathname } = this.props;
 		const selectedKeys = pathname.substr(1);
 		const defaultOpenKeys = selectedKeys.split('/')[1];
+
+		let isSettingsSideBar = defaultOpenKeys[1] === "settings";
+		let sidebarTheme: MenuTheme = "dark";
+		if (themeType === THEME_TYPE_LITE || isSettingsSideBar)
+			sidebarTheme = "light";
+
 		return (
 			<Auxiliary>
 				<SidebarLogo />
@@ -46,7 +67,7 @@ class SidebarContent extends Component {
 						style={{ height: '100%' }}
 						defaultOpenKeys={[defaultOpenKeys]}
 						selectedKeys={[selectedKeys]}
-						theme={themeType === THEME_TYPE_LITE ? 'lite' : 'dark'}
+						theme={sidebarTheme}
 						mode="inline"
 					>
 						<Menu.Item key='hyperx/campaigns'>
@@ -91,8 +112,6 @@ class SidebarContent extends Component {
 		);
 	}
 }
-
-SidebarContent.propTypes = {};
 
 const mapStateToProps = ({ settings, ownProps }) => {
 	const { navStyle, themeType, locale } = settings.settings;

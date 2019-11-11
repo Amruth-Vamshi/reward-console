@@ -8,7 +8,7 @@ import {
   UPDATE_WEBHOOK,
   DELETE_WEBHOOK
 } from "@walkinsole/walkin-core/src/PlatformQueries";
-import jwt from "jsonwebtoken";
+import * as jwt from "jsonwebtoken";
 import { withApollo } from "react-apollo";
 // import { nearXClient as client } from "../../nearXApollo";
 const { TextArea } = Input;
@@ -178,7 +178,7 @@ class Hooks extends React.Component<iProps, iState> {
       this.setState({ errors, loading: false });
       console.log("Errors in submition" + Object.keys(errors).length);
     } else {
-      const { org_id }: string = jwt.decode(localStorage.getItem("jwt"));
+      const { org_id }: any = jwt.decode(localStorage.getItem("jwt"));
 
       if (this.state.update) {
         this.props.client
@@ -403,7 +403,7 @@ class Hooks extends React.Component<iProps, iState> {
                 style={{
                   textAlign: "center",
                   width: "200px",
-                  float: "center",
+                  float: "none",
                   margin: "25px 30px 20px 0"
                 }}
               >

@@ -25,6 +25,8 @@ interface iState {
 }
 
 class SidebarContent extends React.Component<iProps, iState> {
+  static propTypes: any;
+  static defaultProps: any;
   getNoHeaderClass = navStyle => {
     if (
       navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR ||
@@ -52,7 +54,7 @@ class SidebarContent extends React.Component<iProps, iState> {
           <Menu
             defaultOpenKeys={[defaultOpenKeys]}
             selectedKeys={[selectedKeys]}
-            theme={themeType === THEME_TYPE_LITE ? "lite" : "dark"}
+            theme={themeType === THEME_TYPE_LITE ? "light" : "dark"}
             mode="inline"
           >
             {/* <Menu.Item key="nearx/home/landing">
@@ -89,7 +91,10 @@ class SidebarContent extends React.Component<iProps, iState> {
               </Link>
             </Menu.Item>
             <Menu.Item key="nearx/documentation">
-              <a target="_blank" href="https://distracted-easley-4dc5d1.netlify.com/docs/overview"  >
+              <a
+                target="_blank"
+                href="https://distracted-easley-4dc5d1.netlify.com/docs/overview"
+              >
                 <i className="icon icon-timeline-left-align" />
                 {/* <IntlMessages id="sidebar.samplePage" /> */}
                 <span>Documentation</span>

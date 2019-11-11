@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Row, Icon, Button } from "antd";
+import { Row, Icon, Button, Input } from "antd";
 import { Link } from "react-router-dom";
 import { Auxiliary } from "@walkinsole/walkin-components";
 import PlaceCard from "../../components/Places/placeCard";

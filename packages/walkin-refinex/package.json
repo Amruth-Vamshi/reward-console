@@ -30,6 +30,7 @@
     "graphql": "^14.3.0",
     "lodash": "^4.17.11",
     "nprogress": "^0.2.0",
+    "prop-types": "^15.7.2",
     "react-apollo": "^2.5.5",
     "react-color": "^2.17.3",
     "react-placeholder": "^3.0.2",
@@ -44,6 +45,7 @@
     "react": "16.x"
   },
   "devDependencies": {
+    "@types/amcharts": "^3.21.5",
     "@types/jsonwebtoken": "^8.3.5",
     "@types/lodash": "^4.14.145",
     "@types/react": "^16.9.11",

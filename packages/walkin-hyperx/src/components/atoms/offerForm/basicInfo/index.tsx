@@ -1,13 +1,54 @@
-import React, { Fragment } from 'react';
+import * as React from 'react';
+import { Fragment } from 'react';
 import { Form, Icon, Input, Select, Button, Col, DatePicker, Radio, Checkbox } from 'antd';
 const { TextArea } = Input;
 const Option = Select.Option;
 const { RangePicker } = DatePicker;
 import AddAndDeleteComponentsDynamically from '../../addAndDeleteComponentsDynamically';
+import { FormComponentProps } from "antd/lib/form";
+
+
+interface IProps extends FormComponentProps<any> {
+	offerTypeData?: any;
+	handleOfferTypeChange?: any;
+	offerTypeStatus?: any;
+	transactionTimeData?: any;
+	locationData?: any;
+	productData?: any;
+	handleTransactionTimeChange?: any;
+	transactionTimeStatus?: any;
+	cartValueConditionData?: any;
+	wrappedComponentRef?: any;
+	form: any;
+	products?: any;
+	handleLocationChange?: any;
+	locationArray?: any;
+	productItems?: any;
+	onSelectOneValuesSelected?: any;
+	onSelectTwoValuesSelected?: any;
+	formValues?: any;
+	locationValues?: any;
+	productValues?: any;
+	couponDefaultValue?: any;
+	onCouponChange?: any;
+	couponTypeSelected?: any;
+	couponInputLabel?: any;
+	onCouponLabelChange?: any;
+	checked?: any;
+	OnNoCouponCodeChange?: any;
+	couponTypeData?: any;
+}
+
+interface IState {
+	values: Array<any>;
+	productDropDown: any;
+
+}
+
 
 const OfferBasicInfoForm = Form.create({ name: 'offer_basic_info' })(
-	class OfferBasicInfoForm extends React.Component {
-		constructor(props) {
+	class OfferBasicInfoForm extends React.Component<IProps, IState> {
+		constructor(props: IProps) {
 			super(props);
 			this.state = {
 				values: [{ product: '', productItem: '' }],
@@ -17,6 +58,7 @@ const OfferBasicInfoForm = Form.create({ name: 'offer_basic_info' })(
 					showBrandList: false,
 				},
 			};
+
 		}
 		addClick() {
 			let array = this.state.values;
@@ -31,7 +73,7 @@ const OfferBasicInfoForm = Form.create({ name: 'offer_basic_info' })(
 			// });
 		}
 
-		handleProductChange(i, value) {
+		handleProductChange(i: any, value: any) {
 			let nextValues = this.state.values.slice();
 			nextValues[i].product = value;
 			this.setState({ values: nextValues });
@@ -64,13 +106,13 @@ const OfferBasicInfoForm = Form.create({ name: 'offer_basic_info' })(
 			}
 		}
 
-		handleProductItemChange(i, value) {
+		handleProductItemChange(i: any, value: any) {
 			let nextValues = this.state.values.slice();
 			nextValues[i].productItem = value;
 			this.setState({ values: nextValues });
 		}
 
-		removeClick(i, e) {
+		removeClick(i: any, e: any) {
 			const values = [...this.state.values];
 			values.splice(i, 1);
 			this.setState({ values });
@@ -130,7 +172,7 @@ const OfferBasicInfoForm = Form.create({ name: 'offer_basic_info' })(
 						})(
 							<Select placeholder="Select an offer type" onChange={handleOfferTypeChange}>
 								{offerTypeData &&
-									offerTypeData.map((el, i) => (
+									offerTypeData.map((el: any, i: any) => (
 										<Option key={i} value={el.val}>
 											{el.title}
 										</Option>
@@ -161,10 +203,10 @@ const OfferBasicInfoForm = Form.create({ name: 'offer_basic_info' })(
 									mode="multiple"
 									style={{ width: '300px' }}
 									placeholder="Please select"
-									onChange={this.handleChange}
+								// onChange={this.handleChange}
 								>
 									{products &&
-										products.map((el, i) => (
+										products.map((el: any, i: any) => (
 											<Option key={i} value={el.sku}>
 												{el.name}
 											</Option>
@@ -224,7 +266,7 @@ const OfferBasicInfoForm = Form.create({ name: 'offer_basic_info' })(
 								onChange={handleTransactionTimeChange}
 							>
 								{transactionTimeData &&
-									transactionTimeData.map((el, i) => (
+									transactionTimeData.map((el: any, i: any) => (
 										<Option key={i} value={el.val}>
 											{el.title}
 										</Option>
@@ -280,9 +322,11 @@ const OfferBasicInfoForm = Form.create({ name: 'offer_basic_info' })(
 										Object.keys(formValues).length != 0 ? formValues.cartValueCondition : ''
 										}`,
 								})(
-									<Select onChange={this.handleSelectChange}>
+									<Select
+									// onChange={this.handleSelectChange}
+									>
 										{cartValueConditionData &&
-											cartValueConditionData.map((el, i) => (
+											cartValueConditionData.map((el: any, i: any) => (
 												<Option key={i} value={el.val}>
 													{el.title}
 												</Option>
@@ -308,7 +352,7 @@ const OfferBasicInfoForm = Form.create({ name: 'offer_basic_info' })(
 								value={couponTypeSelected}
 							>
 								{couponTypeData &&
-									couponTypeData.map((el, i) => (
+									couponTypeData.map((el: any, i: any) => (
 										<Radio key={i} value={el.value}>
 											{el.title}
 										</Radio>

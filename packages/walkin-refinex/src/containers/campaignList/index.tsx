@@ -1,21 +1,42 @@
-import React, { Component, Fragment } from 'react';
+import * as React from 'react';
 import { withRouter } from 'react-router-dom';
 import { campaigns, DISABLE_CAMPAIGN } from '../Query/index';
 import { Card, Menu, Dropdown, Col, Button, Progress, Tabs, message, Icon } from 'antd';
-import moment from 'moment';
+import * as moment from 'moment';
 import { withApollo, graphql, compose } from 'react-apollo';
 import { SortableDataTable, InstantSearch, CampaignHeader } from '@walkinsole/shared';
 import { CircularProgress, Widget } from '@walkinsole/walkin-components';
 import './style.css';
 import { DEFAULT_ACTIVE_STATUS, DEFAULT_REFINEX_CAMPAIGN, NEW_CAMPAIGN, CAMPAIGN_DASHBOARD, SHOULD_EDIT } from "../../Utils"
-import jwt from "jsonwebtoken";
-import includes from "lodash/includes"
+import * as jwt from "jsonwebtoken";
+import * as _ from "lodash"
+import { RouteChildrenProps } from 'react-router';
+import { any } from 'prop-types';
 const { TabPane } = Tabs;
 
-class CampaignList extends Component {
-    constructor(props) {
+interface CampaignListProps extends RouteChildrenProps {
+    campaigns?: any
+    loading?: any
+    disableCampaign?: any
+    refetch?: any
+}
+
+interface CampaignListState {
+    sortedInfo: any,
+    filtered: any,
+    allCampaigns: any,
+    data: any,
+    loading: boolean,
+    showPopUp: boolean,
+    popupmessage: any,
+    key: any,
+    filteredInfo: any
+}
+class CampaignList extends React.Component<CampaignListProps, Partial<CampaignListState>> {
+    constructor(props: CampaignListProps) {
         super(props);
         this.state = {
+            filteredInfo: '',
             sortedInfo: null,
             filtered: null,
             allCampaigns: null,
@@ -23,7 +44,7 @@ class CampaignList extends Component {
             loading: false,
             showPopUp: false,
             popupmessage: "",
-            key: this.props.location.tabKey ? this.props.location.tabKey : '1'
+            key: this.props.location.state.tabKey ? this.props.location.state.tabKey : '1'
         };
     }
 
@@ -39,7 +60,7 @@ class CampaignList extends Component {
     }
 
 
-    componentDidUpdate(preValue) {
+    componentDidUpdate(preValue: any) {
         if (this.props.loading !== preValue.loading) {
             this.setInitialValues()
             console.log(this.props)
@@ -59,13 +80,13 @@ class CampaignList extends Component {
             pathname: NEW_CAMPAIGN,
         });
     };
-    handleChange = (pagination, filters, sorter) => {
+    handleChange = (pagination: any, filters: any, sorter: any) => {
         this.setState({
             sortedInfo: sorter,
         });
     };
 
-    onDeleteContact = async  contact => {
+    onDeleteContact = async (contact: any) => {
         console.log('delete', contact);
         this.setState({ loading: true })
         await this.props.disableCampaign({
@@ -82,7 +103,7 @@ class CampaignList extends Component {
             console.log(err)
         }
     };
-    onDuplicateContact = contact => {
+    onDuplicateContact = (contact: any) => {
         console.log('dupl', contact);
         const { history, match } = this.props;
         console.log(this.props)
@@ -94,15 +115,16 @@ class CampaignList extends Component {
         });
     };
 
-    showMatrics = record => {
+    showMatrics = (record: any) => {
         console.log("matrics", record)
         this.props.history.push({
             pathname: `${CAMPAIGN_DASHBOARD}/${record.id}`,
             state: { campaignSelected: record },
         });
     }
-    menus = record => {
+    menus = (record: any) => {
         console.log("record", record)
+        const { Item } = Menu;
         return (
             <Menu
                 onClick={e => {
@@ -118,28 +140,28 @@ class CampaignList extends Component {
                     }
                 }}
             >
-                <Menu.Item key="view" icon="eye"><Icon type="eye" /> View</Menu.Item>
-                {includes(record.campaignStatus, SHOULD_EDIT) ? <Menu.Item key="edit" icon="edit"><Icon type="edit" /> Edit</Menu.Item> : null}
-                <Menu.Item key="duplicate" icon="copy"><Icon type="copy" /> Duplicate</Menu.Item>
-                <Menu.Item key="delete" icon="delete"><Icon type="delete" /> Delete</Menu.Item>
+                <Menu.Item key="view" ><Icon type="eye" /> View</Menu.Item>
+                {_.includes(record.campaignStatus, SHOULD_EDIT) ? <Menu.Item key="edit" ><Icon type="edit" /> Edit</Menu.Item> : null}
+                <Menu.Item key="duplicate" ><Icon type="copy" /> Duplicate</Menu.Item>
+                <Menu.Item key="delete" ><Icon type="delete" /> Delete</Menu.Item>
             </Menu>
         );
     }
 
-    onCampaignFilteredList = newList => {
+    onCampaignFilteredList = (newList: any) => {
         console.log("new list", newList)
         this.setState({
             filtered: newList,
         });
     };
 
-    onTabChange = key => {
+    onTabChange = (key: any) => {
         const { allCampaigns } = this.state
 
         console.log(key)
         if (!allCampaigns || allCampaigns.length < 1) return
         if (key == 2) {
-            let upcomingCampaigns = allCampaigns.filter(val => {
+            let upcomingCampaigns = allCampaigns.filter((val: any) => {
                 if (val.status == 'ACTIVE') {
                     return val.campaignStatus == 'LIVE' && moment(val.startTime).isAfter(moment());
                 }
@@ -148,7 +170,7 @@ class CampaignList extends Component {
         }
 
         if (key == 3) {
-            let completedCampaigns = allCampaigns.filter(val => {
+            let completedCampaigns = allCampaigns.filter((val: any) => {
                 if (val.status == 'ACTIVE') {
                     return moment(val.endTime).isBefore(moment());
                 }
@@ -156,19 +178,19 @@ class CampaignList extends Component {
             this.setState({ data: completedCampaigns, filtered: null });
         }
         if (key == 4) {
-            let draftCampaigns = allCampaigns.filter(val => {
+            let draftCampaigns = allCampaigns.filter((val: any) => {
                 return val.campaignStatus == 'DRAFT';
             });
             this.setState({ data: draftCampaigns, filtered: null });
         }
         if (key == 5) {
-            let draftCampaigns = allCampaigns.filter(val => {
+            let draftCampaigns = allCampaigns.filter((val: any) => {
                 return val.campaignStatus == 'PAUSE';
             });
             this.setState({ data: draftCampaigns, filtered: null });
         }
         if (key == 1) {
-            let liveCampaigns = allCampaigns.filter(val => {
+            let liveCampaigns = allCampaigns.filter((val: any) => {
                 if (val.status == 'ACTIVE') {
                     return val.campaignStatus == 'LIVE' && moment().isBetween(val.startTime, val.endTime);
                 }
@@ -195,7 +217,7 @@ class CampaignList extends Component {
             position: "bottom",
             total: campaignData ? campaignData.length : 0,
             defaultPageSize: 5,
-            showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`
+            showTotal: (total: any, range: any) => `${range[0]}-${range[1]} of ${total} items`
         }
 
 
@@ -204,26 +226,31 @@ class CampaignList extends Component {
                 title: 'Name',
                 dataIndex: 'name',
                 key: 'name',
-                sorter: (a, b) => (a.name !== b.name ? (a.name < b.name ? -1 : 1) : 0),
+                sorter: (a: any, b: any) => (a.name !== b.name ? (a.name < b.name ? -1 : 1) : 0),
                 sortOrder: sortedInfo.columnKey === 'name' && sortedInfo.order,
             },
             {
                 title: 'Start date & end date',
                 dataIndex: 'startTime',
                 key: 'startTime',
-                render: (text, row) => (
-                    <div>
-                        {moment(text).format('DD-MM-YYYY')}
-                        <Progress
-                            style={{ width: '35%', margin: '0px 5px 0px 5px' }}
-                            percent={Math.round(
-                                ((moment() - moment(text)) / (moment(row.endTime) - moment(text))) * 100
-                            )}
-                            showInfo={false}
-                        />
-                        {moment(row.endTime).format('DD-MM-YYYY')}
-                    </div>
-                ),
+                render: (text: any, row: any) => {
+                    const a: any = moment();
+                    const b: any = moment(text);
+                    const c: any = moment(row.endTime)
+                    return (
+                        <div>
+                            {moment(text).format('DD-MM-YYYY')}
+                            <Progress
+                                style={{ width: '35%', margin: '0px 5px 0px 5px' }}
+                                percent={Math.round(
+                                    ((a - b) / (c - b)) * 100
+                                )}
+                                showInfo={false}
+                            />
+                            {moment(row.endTime).format('DD-MM-YYYY')}
+                        </div>
+                    )
+                },
             },
             // {
             //     title: 'Views/Visits',
@@ -272,7 +299,7 @@ class CampaignList extends Component {
             {
                 title: '',
                 key: 'action',
-                render: (text, record) => (
+                render: (text: any, record: any) => (
                     <div className="gx-module-contact-right">
                         <Dropdown overlay={this.menus(record)} placement="bottomRight" trigger={['click']}>
                             <i className="gx-icon-btn icon icon-ellipse-v" />
@@ -289,7 +316,7 @@ class CampaignList extends Component {
             }}>
                 <CampaignHeader
                     children={
-                        <Fragment>
+                        <React.Fragment>
                             <Col span={12}>
                                 <h3 className="gx-text-grey paddingLeftStyle campaignHeaderTitleStyle">Surveys</h3>
                             </Col>
@@ -298,7 +325,7 @@ class CampaignList extends Component {
                                     CREATE SURVEYS
 								</Button>
                             </Col>
-                        </Fragment>
+                        </React.Fragment>
                     }
                 />
                 <div className="RefineX-campaignList">
@@ -344,29 +371,31 @@ export default withRouter(
             name: "disableCampaign"
         }),
         graphql(campaigns, {
-            options: () => ({
-                variables: {
-                    status: DEFAULT_ACTIVE_STATUS,
-                    campaignType: DEFAULT_REFINEX_CAMPAIGN,
-                    organization_id: jwt.decode(localStorage.getItem("jwt")).org_id
-                },
-                fetchPolicy: "network-only"
-            }),
-            props: ({ data: { loading, error, campaigns, refetch } }) => ({
+            options: () => {
+                const { org_id }: any = jwt.decode(localStorage.getItem("jwt"))
+                return ({
+                    variables: {
+                        status: DEFAULT_ACTIVE_STATUS,
+                        campaignType: DEFAULT_REFINEX_CAMPAIGN,
+                        organization_id: org_id
+                    },
+                    fetchPolicy: "network-only"
+                })
+            },
+            props: ({ data: { loading, error, campaigns, refetch } }: any) => ({
                 loading,
                 campaigns,
                 error,
                 refetch,
-                changeStatus: status => {
+                changeStatus: (status: any) => {
+                    const { org_id }: any = jwt.decode(localStorage.getItem("jwt"))
                     const variables = {
                         status,
                         campaignType: DEFAULT_REFINEX_CAMPAIGN,
-                        organization_id: jwt.decode(localStorage.getItem("jwt")).org_id
+                        organization_id: org_id
                     };
                     refetch(variables);
                 }
-
-
             })
             ,
         }

@@ -4,8 +4,8 @@ import { getOffers, closeOffer, LAUNCH_OFFER } from '../../../query/offer';
 import { withApollo, graphql } from 'react-apollo';
 import { NEW_SEGMENT, NEW_OFFER } from '../../../utils/RouterConstants';
 import { Card, Menu, Dropdown, Button, Col } from 'antd';
-import moment from 'moment';
-import jwt from "jsonwebtoken";
+import * as moment from 'moment';
+import * as jwt from "jsonwebtoken";
 import { SortableDataTable, InstantSearch, CampaignHeader } from '@walkinsole/shared';
 
 class OfferList extends Component {
