@@ -46,7 +46,7 @@ import {
 import { async } from "q";
 import { GET_ALL_APPS_OF_ORGANIZATION } from "@walkinsole/walkin-core/src/PlatformQueries";
 import pick from "lodash/pick";
-import { RouteChildrenProps, RouteProps, RouteComponentProps } from "react-router";
+import {  RouteComponentProps } from "react-router";
 import { any } from "prop-types";
 
 
