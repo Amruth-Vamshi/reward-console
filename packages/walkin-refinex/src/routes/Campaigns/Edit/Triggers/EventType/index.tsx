@@ -234,7 +234,7 @@ class EventType extends React.Component<EventTypeProps, EventTypeState> {
   }
 }
 
-const EventTypeForm = Form.create({
+const EventTypeForm = Form.create<EventTypeProps>({
   name: "EventType",
   onValuesChange(props: EventTypeProps, values) {
     if (values.event) {
