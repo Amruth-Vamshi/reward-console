@@ -40,7 +40,7 @@ export default class WebhookForm extends React.Component<WebhookFormProps, Webho
     };
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     let { webhookDetails, events } = this.props;
     let defaultEventValue = events[0] ? events[0].event : "";
 

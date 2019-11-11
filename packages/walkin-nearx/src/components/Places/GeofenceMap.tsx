@@ -149,7 +149,7 @@ export default class GeofenceMap extends Component {
     this.isUnmounted = true;
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     geolocation.getCurrentPosition(position => {
       var center = this.state.center;
       (center = {

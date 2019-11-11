@@ -17,21 +17,23 @@ import {
 import { compose, graphql } from "react-apollo";
 import gql from "graphql-tag";
 import * as jwt from "jsonwebtoken";
-import { MenuTheme } from "antd/lib/menu";
-
+// import { MenuTheme } from "antd/lib/menu";
 
 interface SidebarContentProps extends RouteComponentProps {
-  themeType: any,
-  navStyle: any,
-  pathname: any
+  themeType: any;
+  navStyle: any;
+  pathname: any;
 }
 
 interface SidebarContentState {
-  orgId?: any,
-  userId?: any
+  orgId?: any;
+  userId?: any;
 }
 
-class SidebarContent extends React.Component<SidebarContentProps, SidebarContentState> {
+class SidebarContent extends React.Component<
+  SidebarContentProps,
+  SidebarContentState
+> {
   constructor(props: SidebarContentProps) {
     super(props);
     this.state = {
@@ -40,8 +42,8 @@ class SidebarContent extends React.Component<SidebarContentProps, SidebarContent
     };
   }
 
-  componentWillMount() {
-    const jwtToken = localStorage.getItem("jwt")
+  UNSAFE_componentWillMount() {
+    const jwtToken = localStorage.getItem("jwt");
     const { id, org_id }: any = jwt.decode(jwtToken);
     this.setState({ userId: id, orgId: org_id });
   }
@@ -71,7 +73,7 @@ class SidebarContent extends React.Component<SidebarContentProps, SidebarContent
     const defaultOpenKeys = selectedKeys.split("/");
     let isSettingsSideBar = defaultOpenKeys[1] === "settings";
 
-    let sidebarTheme: MenuTheme = "dark";
+    let sidebarTheme = "dark";
     if (themeType === THEME_TYPE_LITE || isSettingsSideBar)
       sidebarTheme = "light";
 
@@ -83,7 +85,7 @@ class SidebarContent extends React.Component<SidebarContentProps, SidebarContent
           }}
           defaultOpenKeys={[]}
           selectedKeys={[]}
-          theme={sidebarTheme}
+          // theme={sidebarTheme}
           mode="inline"
         >
           <Menu.Item key="core">
@@ -102,7 +104,7 @@ class SidebarContent extends React.Component<SidebarContentProps, SidebarContent
           <Menu.Item key="organizationInfo">
             <Link
               to={`/core/organization/${orgId ? orgId : ""}`}
-            // to="core/organization"
+              // to="core/organization"
             >
               <i className="icon icon-inbox" />
               {/* <IntlMessages id="sidebar.nearx" /> */}
@@ -121,7 +123,7 @@ class SidebarContent extends React.Component<SidebarContentProps, SidebarContent
         }}
         defaultOpenKeys={[defaultOpenKeys[2]]}
         selectedKeys={[defaultOpenKeys[3]]}
-        theme={sidebarTheme}
+        // theme={sidebarTheme}
         mode="inline"
       >
         <Menu.SubMenu
@@ -180,8 +182,6 @@ class SidebarContent extends React.Component<SidebarContentProps, SidebarContent
     );
   }
 }
-
-
 
 const mapStateToProps = ({ settings, ownProps }: any) => {
   const { navStyle, themeType, locale } = settings.settings;

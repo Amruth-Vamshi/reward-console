@@ -57,7 +57,7 @@ export default class GooglePlaces extends Component {
     };
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     let googleAPIkey = "";
     let defaultRadius = [RADIUS_1_MIN];
     client

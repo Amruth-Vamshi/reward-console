@@ -123,7 +123,7 @@ class EntityExtention extends React.Component<EntityExtentionProps, EntityExtent
     };
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.getEntities();
   }
 

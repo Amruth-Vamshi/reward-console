@@ -167,7 +167,7 @@ class NewSegment extends Component<IProps, Partial<IState>> {
 		}
 	};
 
-	componentWillMount = () => {
+	UNSAFE_componentWillMount = () => {
 		const { location, match } = this.props;
 		if (location && location.state) {
 			console.log("this...", location.state)

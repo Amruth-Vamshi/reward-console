@@ -89,7 +89,7 @@ class AppCreation extends React.Component<AppCreationProps, Partial<AppCreationS
 
   componentDidMount() { }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     const jwtToken = localStorage.getItem("jwt");
     const { id, org_id }: any = jwt.decode(jwtToken);
     this.setState({ userId: id, org_id });

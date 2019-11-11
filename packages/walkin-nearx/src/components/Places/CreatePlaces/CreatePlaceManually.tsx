@@ -52,7 +52,7 @@ export default class CreatePlaceManually extends Component {
     };
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
 
     sessionStorage.getItem("placeId")
       ? this.getPlaceDetails(JSON.parse(sessionStorage.getItem("placeId")))

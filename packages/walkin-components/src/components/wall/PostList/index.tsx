@@ -13,7 +13,7 @@ class PostList extends Component<IProps, IState> {
     user: {}
   };
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.setState({ postList: this.props.postList, user: this.props.user });
   }
 

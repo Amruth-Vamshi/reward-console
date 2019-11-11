@@ -1,7 +1,7 @@
 import * as React from "react";
 import URLSearchParams from "url-search-params";
 import { Redirect, Route, Switch } from "react-router-dom";
-import { LocaleProvider } from "antd";
+import { ConfigProvider } from "antd";
 import { IntlProvider } from "react-intl";
 
 import AppLocale from "../../lngProvider";
@@ -109,7 +109,7 @@ class App extends React.Component<IProps, IState> {
     }
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     const params = new URLSearchParams(this.props.location.search);
 
     if (params.has("theme")) {
@@ -151,7 +151,7 @@ class App extends React.Component<IProps, IState> {
     //TODO: Handle location
     const currentAppLocale = AppLocale.en;
     return (
-      <LocaleProvider locale={currentAppLocale.antd}>
+      <ConfigProvider locale={currentAppLocale.antd}>
         <IntlProvider
           locale={currentAppLocale.locale}
           messages={currentAppLocale.messages}
@@ -180,7 +180,7 @@ class App extends React.Component<IProps, IState> {
             /> */}
           </Switch>
         </IntlProvider>
-      </LocaleProvider>
+      </ConfigProvider>
     );
   }
 }

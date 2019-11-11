@@ -51,7 +51,7 @@ export default class ColorPicker extends React.Component<iProps, iState> {
     };
   }
 
-  componentWillReceiveProps(nextProps: any) {
+  UNSAFE_componentWillReceiveProps(nextProps: any) {
     this.setState({ color: nextProps.color });
   }
 

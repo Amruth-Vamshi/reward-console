@@ -112,7 +112,7 @@ class CoreLandingPage extends React.Component<CoreLandingPageProps, CoreLandingP
 		};
 	}
 
-	componentWillMount() {
+	UNSAFE_componentWillMount() {
 		const jwtToken: any = localStorage.getItem("jwt")
 		const { org_id }: any = jwt.decode(jwtToken);
 		let formattedApps = apps

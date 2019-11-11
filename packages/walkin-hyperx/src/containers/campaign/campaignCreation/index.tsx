@@ -146,7 +146,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 		};
 	}
 
-	componentWillMount = () => {
+	UNSAFE_componentWillMount = () => {
 		const { location, match, client } = this.props;
 		// const { id, org_id }: any = jwt.decode(localStorage.getItem("jwt"))
 		if (location && location.state) {
