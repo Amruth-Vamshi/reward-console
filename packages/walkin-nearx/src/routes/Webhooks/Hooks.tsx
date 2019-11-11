@@ -290,7 +290,7 @@ class Hooks extends React.Component<iProps, iState> {
             {this.state.hooksList.map((item, i) => (
               <HooksListCard
                 key={i}
-                index={i}
+                // index={i}
                 updateHook={this.updateHook}
                 deleteHook={this.deleteHook}
                 data={item}

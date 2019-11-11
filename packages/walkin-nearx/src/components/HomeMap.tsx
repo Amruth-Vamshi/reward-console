@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import * as React from "react";
 import { Auxiliary } from "@walkinsole/walkin-components";
 import {
   Circle,
@@ -9,9 +9,18 @@ import {
 } from "react-google-maps";
 import DrawingManager from "react-google-maps/lib/components/drawing/DrawingManager";
 import canUseDOM from "can-use-dom";
-import markerIcon from "@walkinsole/walkin-components/src/assets/images/marker-location.png";
+const markerIcon = require("@walkinsole/walkin-components/src/assets/images/marker-location.png");
 
-const geolocation =
+interface iProps {
+  setlocationDetails?: any,
+  mapData?: any
+}
+
+interface iState {
+  center?: { lat: any, lng: any }
+}
+
+const geolocation: any =
   canUseDOM && navigator.geolocation
     ? navigator.geolocation
     : {
@@ -73,7 +82,7 @@ const Geofences = mapData => {
   return geoFen;
 };
 
-const GeolocationExampleGoogleMap = withGoogleMap(props => (
+const GeolocationExampleGoogleMap = withGoogleMap((props: any) => (
   <GoogleMap
     defaultZoom={14}
     center={props.center.lat ? props.center : props.myLocation}
@@ -140,7 +149,7 @@ const GeolocationExampleGoogleMap = withGoogleMap(props => (
   </GoogleMap>
 ));
 
-export default class GeofenceMap extends Component {
+export default class GeofenceMap extends React.Component<iProps, iState> {
   constructor(props) {
     super(props);
     this.state = { center: { lat: 0.1, lng: 0.1 } };

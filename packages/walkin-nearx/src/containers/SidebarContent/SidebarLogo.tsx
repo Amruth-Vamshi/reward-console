@@ -104,10 +104,11 @@ class SidebarLogo extends React.Component<iProps, iState> {
   }
 }
 
-const mapStateToProps = ({ settings }) => {
+const mapStateToProps = ({ settings }: any) => {
   const { navStyle, themeType, width, navCollapsed } = settings.settings;
   return { navStyle, themeType, width, navCollapsed };
 };
+
 
 // export default connect(
 //   mapStateToProps,

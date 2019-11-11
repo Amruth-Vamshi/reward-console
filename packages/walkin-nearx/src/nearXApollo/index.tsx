@@ -1,6 +1,7 @@
 import { InMemoryCache } from "apollo-boost";
 import ApolloClient from "apollo-boost";
 import env from "walkin-app/config";
+import { message } from "antd"
 
 const cache = new InMemoryCache();
 const token = localStorage.getItem("jwt");

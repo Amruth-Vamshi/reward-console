@@ -283,7 +283,6 @@ export default class SettingsForm extends React.Component<iProps, iState> {
   };
 
   render() {
-    var { formData } = this.props;
 
     let { radius } = this.state
 
@@ -295,7 +294,6 @@ export default class SettingsForm extends React.Component<iProps, iState> {
             <Icon
               type="setting"
               style={{ color: "#e20464" }}
-              color="#ff0000"
               theme="filled"
             />{" "}
             Settings
@@ -380,7 +378,7 @@ export default class SettingsForm extends React.Component<iProps, iState> {
                           onClick={() => this.addRadius()}
                           style={{ color: "#34bfe2" }}
                         >
-                          <a to="#"> +Add Radius </a>
+                          <a href="#"> +Add Radius </a>
                         </span>
                       </Form.Item>
                     }
