@@ -18,7 +18,7 @@ interface iState {
 const BasicInfoForm = Form.create<iProps>({ name: "form_in_modal" })(
   // eslint-disable-next-line
   class BasicInfoForm extends React.Component<iProps, iState> {
-    checkStart = (rule: any, value: any, callback: any) => {
+    checkStart = (rule: any, value: any, callback: any): any => {
       const { validateFields } = this.props.form;
       const { edit } = this.props;
       if (edit) {
@@ -77,6 +77,7 @@ const BasicInfoForm = Form.create<iProps>({ name: "form_in_modal" })(
         <Form layout="vertical" ref={wrappedComponentRef} onSubmit={onFormNext}>
           <Form.Item label="Campaign name" {...formItemLayout}>
             {getFieldDecorator("name", {
+
               initialValue: `${
                 Object.keys(formValues).length != 0
                   ? formValues.name
@@ -109,10 +110,12 @@ const BasicInfoForm = Form.create<iProps>({ name: "form_in_modal" })(
                 {
                   type: "object",
                   required: true,
-                  message: "Please select start time!"
-                },
-                this.checkStart
-              ]
+                  message: "Please select start time!",
+
+                  validator: this.checkStart
+                }
+              ],
+
             })(<DatePicker showTime format="DD-MM-YYYY HH:mm:ss" />)}
           </Form.Item>
           <Form.Item
@@ -123,7 +126,12 @@ const BasicInfoForm = Form.create<iProps>({ name: "form_in_modal" })(
             {getFieldDecorator("endTime", {
               initialValue: endTime,
               rules: [
-                { type: "object", required: true, message: "Please select end time!" }, this.checkEnd]
+                {
+                  type: "object",
+                  required: true,
+                  message: "Please select end time!",
+                  validator: this.checkEnd
+                }]
             })(<DatePicker showTime format="DD-MM-YYYY HH:mm:ss" />)}
           </Form.Item>
         </Form>

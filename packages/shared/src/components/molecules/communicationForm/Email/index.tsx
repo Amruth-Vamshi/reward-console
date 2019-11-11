@@ -3,17 +3,15 @@ import * as PropTypes from "prop-types";
 import { Form, Upload, Icon, Button, Input } from "antd";
 import { FormComponentProps } from "antd/lib/form";
 
-interface iProps extends FormComponentProps {
+interface IProps extends FormComponentProps {
   onFormNext?: any,
   wrappedComponentRef?: any,
   formValues?: any,
   text?: string
 }
-class EmailForm extends React.Component<iProps, {}> {
-  static propTypes = {
-    prop: PropTypes
-  };
-  constructor(props: iProps) {
+class EmailForm extends React.Component<IProps, {}> {
+
+  constructor(props: IProps) {
     super(props);
     this.state = {
       // email_subject: "",
@@ -52,7 +50,6 @@ class EmailForm extends React.Component<iProps, {}> {
             rules: [{ required: true, message: "Please enter Email body!" }]
           })(
             <Input.TextArea rows={6}
-              prefix={<Icon type="mail" style={{ color: "rgba(0,0,0,.25)" }} />}
               placeholder="Enter Email body"
             />
           )}
@@ -74,6 +71,6 @@ class EmailForm extends React.Component<iProps, {}> {
   }
 }
 
-const Email1 = Form.create<iProps>({ name: "EmailForm" })(EmailForm);
+const Email1 = Form.create<IProps>({ name: "EmailForm" })(EmailForm);
 
 export default Email1;
