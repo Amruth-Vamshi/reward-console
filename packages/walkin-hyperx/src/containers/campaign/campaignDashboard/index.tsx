@@ -2,15 +2,36 @@ import React, { Component, Fragment } from 'react'
 import { CampaignHeader } from '@walkinsole/walkin-components'
 import { Button, Row, Col, Spin, message } from 'antd'
 import { campaignOverview as Overview } from "@walkinsole/shared";
-import { CAMPAIGN_DASHBOARD, GET_CAMPAIGN_DASHBOARD, UPDATE_CAMPAIGN, LAUNCH_CAMPAIGN, PAUSE_CAMPAIGN, UNPAUSE_CAMPAIGN, ABANDON_CAMPAIGN, VIEW_CAMPAIGN, PREPROCESS_LAUNCH_CAMPAIGN } from '../../../query/campaign'
-import { withApollo, graphql, compose, mutate } from 'react-apollo';
+import { GET_CAMPAIGN_DASHBOARD, UPDATE_CAMPAIGN, LAUNCH_CAMPAIGN, PAUSE_CAMPAIGN, UNPAUSE_CAMPAIGN, ABANDON_CAMPAIGN, VIEW_CAMPAIGN, PREPROCESS_LAUNCH_CAMPAIGN } from '../../../query/campaign'
+import { withApollo, graphql, compose, ApolloProviderProps } from 'react-apollo';
 import { withRouter } from 'react-router-dom';
 import * as moment from 'moment';
 import * as jwt from "jsonwebtoken";
-import { GET_AUDIENCES } from '../../../query/audience';
+import { RouteChildrenProps, RouteComponentProps } from "react-router";
 
 
-class CampaignDashboard extends Component {
+interface IProps extends RouteChildrenProps<any>, ApolloProviderProps<any> {
+    pauseCampaign: (variables: any) => any
+    launchCampaign: (variables: any) => any
+    abandonCampaign: (variables: any) => any
+    unpauseCampaign: (variables: any) => any
+    campaign: {}
+
+}
+
+// this.props.history.push({ pathname: '/hyperx/campaigns', tabKey: "2" })
+
+interface IState {
+    loading: boolean;
+    loading1: boolean;
+    spin: boolean;
+    campaign: {};
+    audiences: {}
+    offers: {},
+    communications: {}
+}
+
+class CampaignDashboard extends Component<IProps, Partial<IState>> {
     constructor(props) {
         super(props)
         this.state = {
@@ -98,6 +119,8 @@ class CampaignDashboard extends Component {
         });
     }
 
+    disableCampaign = () => { }
+
     render() {
         console.log("this.props....", this.props)
         console.log("this.state....", this.state)
@@ -148,57 +171,55 @@ class CampaignDashboard extends Component {
     }
 }
 export default withRouter(
-    withApollo(
-        compose(
-            // graphql(VIEW_CAMPAIGN, {
-            //     name: "campaign",
-            //     options: props => ({
-            //         variables: { campaignId: props.match.params.id },
-            //         fetchPolicy: "network-only"
-            //     })
-            // }),
-            // graphql(GET_CAMPAIGN_DASHBOARD, {
-            //     name: "campaign",
-            //     options: props => {
-            //         return {
-            //             variables: { id: props.match.params.id },
-            //             fetchPolicy: "cache-and-network"
-            //         };
-            //     }
-            // }), 
-            graphql(PREPROCESS_LAUNCH_CAMPAIGN, {
-                name: "launchCampaign"
-            }),
-            graphql(PAUSE_CAMPAIGN, {
-                name: "pauseCampaign"
-            }),
-            graphql(UNPAUSE_CAMPAIGN, {
-                name: "unpauseCampaign"
-            }),
-            graphql(ABANDON_CAMPAIGN, {
-                name: "abandonCampaign"
-            }),
-            // graphql(GET_AUDIENCES, {
-            //     name: "allAudiences",
-            //     options: props => ({
-            //         variables: {
-            //             status: "ACTIVE",
-            //             campaign_id: props.match.params.id,
-            //             // organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
-            //             status: "Active"
-            //         },
-            //         fetchPolicy: "network-only"
-            //     })
-            // }),
-            // graphql(GET_OFFER_FOR_CAMPAIGN, {
-            //     name: "getOfferForACampaign",
-            //     options: props => ({
-            //         variables: {
-            //             campaignId: props.match.params.id,
-            //             organizationId: jwt.decode(localStorage.getItem("jwt")).org_id,
-            //         }
-            //     })
-            // })
-        )(CampaignDashboard)
-    )
+    compose(
+        // graphql(VIEW_CAMPAIGN, {
+        //     name: "campaign",
+        //     options: props => ({
+        //         variables: { campaignId: props.match.params.id },
+        //         fetchPolicy: "network-only"
+        //     })
+        // }),
+        // graphql(GET_CAMPAIGN_DASHBOARD, {
+        //     name: "campaign",
+        //     options: props => {
+        //         return {
+        //             variables: { id: props.match.params.id },
+        //             fetchPolicy: "cache-and-network"
+        //         };
+        //     }
+        // }), 
+        graphql(PREPROCESS_LAUNCH_CAMPAIGN, {
+            name: "launchCampaign"
+        }),
+        graphql(PAUSE_CAMPAIGN, {
+            name: "pauseCampaign"
+        }),
+        graphql(UNPAUSE_CAMPAIGN, {
+            name: "unpauseCampaign"
+        }),
+        graphql(ABANDON_CAMPAIGN, {
+            name: "abandonCampaign"
+        }),
+        // graphql(GET_AUDIENCES, {
+        //     name: "allAudiences",
+        //     options: props => ({
+        //         variables: {
+        //             status: "ACTIVE",
+        //             campaign_id: props.match.params.id,
+        //             // organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
+        //             status: "Active"
+        //         },
+        //         fetchPolicy: "network-only"
+        //     })
+        // }),
+        // graphql(GET_OFFER_FOR_CAMPAIGN, {
+        //     name: "getOfferForACampaign",
+        //     options: props => ({
+        //         variables: {
+        //             campaignId: props.match.params.id,
+        //             organizationId: jwt.decode(localStorage.getItem("jwt")).org_id,
+        //         }
+        //     })
+        // })
+    )(withApollo(CampaignDashboard))
 );
