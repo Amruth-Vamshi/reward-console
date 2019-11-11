@@ -4,7 +4,26 @@ import TestAndControl from "../../molecules/testAndControl";
 import "./style.css";
 import { Card } from "antd";
 
-export const CampaignPriority = ({
+interface CampaignPriorityProps {
+  buttons?: any,
+  promptText?: any,
+  tootTipText?: any,
+  prioritySelectionTitle?: any,
+  priorityButtonText?: any,
+  testControlTitle?: any,
+  testControlPercentage?: any,
+  testControlPercentageEditText?: any,
+  priorityNumberInvalidErrorMessage?: any,
+  onTestAndControlEdit?: any,
+  handleChange?: any,
+  priorityChosen?: any,
+  HideTestConstrol?: any,
+  text?: any,
+  onClick?: any
+}
+
+
+export const CampaignPriority: React.FC<CampaignPriorityProps> = ({
   buttons,
   promptText,
   tootTipText,
@@ -17,7 +36,9 @@ export const CampaignPriority = ({
   onTestAndControlEdit,
   handleChange,
   priorityChosen,
-  HideTestConstrol
+  HideTestConstrol,
+  text,
+  onClick
 }) => {
   return (
     <Fragment>

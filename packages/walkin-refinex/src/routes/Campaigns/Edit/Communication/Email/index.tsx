@@ -1,9 +1,17 @@
-import React, { Component } from "react";
+import * as React from "react";
 import PropTypes from "prop-types";
 import { Form, Upload, Icon, Button, Input, Row, Col } from "antd";
-class EmailForm extends Component {
+import { FormComponentProps } from "antd/lib/form";
 
-  constructor(props) {
+interface EmailFormProps extends FormComponentProps {
+  onFormNext?: any,
+  wrappedComponentRef?: any,
+  formValues?: any,
+  text?: any
+}
+class EmailForm extends React.Component<EmailFormProps, {}> {
+
+  constructor(props: EmailFormProps) {
     super(props);
     this.state = {
       // email_subject: "",
@@ -43,7 +51,6 @@ class EmailForm extends Component {
           })(
             <Input.TextArea
               rows={6}
-              prefix={<Icon type="mail" style={{ color: "rgba(0,0,0,.25)" }} />}
               placeholder="Enter Email body"
             />
           )}
@@ -51,7 +58,6 @@ class EmailForm extends Component {
         <Form.Item>
           {getFieldDecorator("upload", {
             valuePropName: "fileList",
-            getValueFromEvent: this.normFile
           })(
             <Upload name="logo" action="/upload.do" listType="picture">
               <Button>
@@ -65,6 +71,6 @@ class EmailForm extends Component {
   }
 }
 
-const Email = Form.create({ name: "EmailForm" })(EmailForm);
+const Email = Form.create<EmailFormProps>({ name: "EmailForm" })(EmailForm);
 
 export default Email;

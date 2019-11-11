@@ -4,16 +4,16 @@ import moment, { Moment } from "moment";
 import { FormComponentProps } from "antd/lib/form";
 
 interface IProps extends FormComponentProps {
-  edit: boolean;
-  onFormNext: any;
-  wrappedComponentRef: any;
-  formValues: any;
-  text: string;
+  edit?: boolean;
+  onFormNext?: any;
+  wrappedComponentRef?: any;
+  formValues?: any;
+  text?: string;
 }
 
-interface IState {}
+interface IState { }
 
-export const BasicInfoForm = Form.create({ name: "form_in_modal" })(
+export const BasicInfoForm = Form.create<IProps>({ name: "form_in_modal" })(
   // eslint-disable-next-line
   class BasicInfoForm extends React.Component<IProps, IState> {
     checkStart = (rule, value, callback) => {
@@ -81,7 +81,7 @@ export const BasicInfoForm = Form.create({ name: "form_in_modal" })(
                     ? formValues.name
                     : ""
                   : ""
-              }`,
+                }`,
               rules: [{ required: true, message: "Name is required" }]
             })(<Input value={formValues.name} size="large" />)}
           </Form.Item>
@@ -93,7 +93,7 @@ export const BasicInfoForm = Form.create({ name: "form_in_modal" })(
                     ? formValues.description
                     : ""
                   : ""
-              }`
+                }`
             })(<Input type="textarea" size="large" />)}
           </Form.Item>
           <Form.Item
