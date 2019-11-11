@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { ErrorBoundary, CardBox } from "@walkinsole/walkin-components";
 import { Row, Col, Button, Tooltip, Form, Input, Select, Divider, Icon } from "antd";
+import { FormComponentProps } from "antd/lib/form";
 const { Option } = Select;
 
 const getMultiChoice = () => {
@@ -11,7 +12,23 @@ const getRatingChoice = () => {
   return <span>Rating Choice</span>;
 };
 
-class ChoiceInput extends Component {
+interface ChoiceInputProps extends FormComponentProps {
+  choice?: any
+  questionnaire?: any
+  questionType?: any
+  removeChoice?: any
+  addNewQuestion?: any
+  onChoiceEdited?: any
+  submitChoice?: any
+  onLinkChoiceToQuestion?: any
+}
+
+
+
+class ChoiceInput extends Component<ChoiceInputProps, {}> {
+  constructor(props: ChoiceInputProps) {
+    super(props);
+  }
   setFieldValues = () => {
     const { choice } = this.props;
     this.props.form.setFieldsValue({
@@ -106,7 +123,9 @@ class ChoiceInput extends Component {
               <Select
                 placeholder="Choose or add next question"
                 {...props}
-                onChange={this.onChange.bind(this, choice)} style={{ width: "100%" }} size="large" style={{ width: "100%" }}
+                onChange={this.onChange.bind(this, choice)}
+                style={{ width: "100%" }}
+                size="large"
                 dropdownRender={menu => (
                   <div>
                     {menu}
@@ -157,9 +176,9 @@ class ChoiceInput extends Component {
   }
 }
 
-const choiceForm = Form.create({
+const choiceForm = Form.create<ChoiceInputProps>({
   name: "ChoiceInput",
-  onValuesChange(props, value) {
+  onValuesChange(props: ChoiceInputProps, value) {
     props.onChoiceEdited(value, props.choice);
   }
 })(ChoiceInput);
