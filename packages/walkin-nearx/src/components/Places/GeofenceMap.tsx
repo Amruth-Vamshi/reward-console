@@ -1,24 +1,36 @@
-import React, { Component } from "react";
+import * as React from "react";
 import { Auxiliary } from "@walkinsole/walkin-components";
 import {
   Circle,
   GoogleMap,
-  InfoWindow,
   Marker,
-  withGoogleMap
+  withGoogleMap,
+  GoogleMapProps
 } from "react-google-maps";
 import DrawingManager from "react-google-maps/lib/components/drawing/DrawingManager";
 import canUseDOM from "can-use-dom";
-import markerIcon from "@walkinsole/walkin-components/src/assets/images/marker-location.png";
+const markerIcon = require("@walkinsole/walkin-components/src/assets/images/marker-location.png");
 
-const geolocation =
+interface iProps extends GoogleMapProps {
+  mapData?: any,
+  setlocationDetails?: any,
+  mapHeight?: string,
+  places?: any,
+  myLocation?: any
+}
+
+interface iState {
+  center?: object
+}
+
+const geolocation: any =
   canUseDOM && navigator.geolocation
     ? navigator.geolocation
     : {
-        getCurrentPosition(success, failure) {
-          failure(`Your browser doesn't support geolocation.`);
-        }
-      };
+      getCurrentPosition(success, failure) {
+        failure(`Your browser doesn't support geolocation.`);
+      }
+    };
 
 const Geofences = places => {
   let geoFen = [];
@@ -73,7 +85,7 @@ const Geofences = places => {
   return geoFen;
 };
 
-const GeolocationExampleGoogleMap = withGoogleMap(props => (
+const GeolocationExampleGoogleMap: any = withGoogleMap((props: iProps) => (
   <GoogleMap
     defaultZoom={16}
     center={props.center.lat ? props.center : props.myLocation}
@@ -97,8 +109,8 @@ const GeolocationExampleGoogleMap = withGoogleMap(props => (
         }
       />
     ) : (
-      ""
-    )}
+        ""
+      )}
 
     {Geofences(props.places ? props.places : props.mapData.places)}
 
@@ -115,8 +127,8 @@ const GeolocationExampleGoogleMap = withGoogleMap(props => (
         }}
       />
     ) : (
-      ""
-    )}
+        ""
+      )}
 
     {props.mapData.getLoc ? (
       <DrawingManager
@@ -133,12 +145,12 @@ const GeolocationExampleGoogleMap = withGoogleMap(props => (
         }}
       />
     ) : (
-      ""
-    )}
+        ""
+      )}
   </GoogleMap>
 ));
 
-export default class GeofenceMap extends Component {
+export default class GeofenceMap extends React.Component<iProps, iState> {
   constructor(props) {
     super(props);
     this.state = { center: { lat: 0.1, lng: 0.1 } };
