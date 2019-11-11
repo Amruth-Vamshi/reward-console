@@ -1,5 +1,5 @@
 import "./BuildQuestionnaire.css";
-import React, { Component } from "react";
+import * as React from "react";
 import FormPane from "./FormPane";
 import { Query, graphql, compose } from "react-apollo";
 import gql from "graphql-tag";
@@ -18,9 +18,39 @@ import {
 import { Card } from "antd";
 import { isEmptyStatement } from "@babel/types";
 import isEmpty from "lodash/isEmpty"
-class Questionnaire extends Component {
-  constructor() {
-    super();
+
+interface QuestionnaireProps {
+  questionnaire?: any
+  linkChoieToQuestion?: any
+  refetchQuestionnaire?: any
+  addQuestion?: any
+  editChoice?: any
+  feedbackForm?: any
+  createQuestionnaire?: any
+  refetchFeedbackForm?: any
+  editQuestion?: any
+  addChoice?: any
+  removeChoice?: any
+}
+
+interface QuestionnaireState {
+  questionToEdit: any,
+  loading: boolean,
+  questionIndex: any,
+  addQuestion: boolean,
+  choiceToAddQuestion: any,
+  questionTypeSelector: any,
+  choiceData: any,
+  questionnaire: any,
+  isChoiceLoading: boolean,
+  isQuestionLoading: boolean,
+  questionData: any
+}
+
+class Questionnaire extends React.Component<QuestionnaireProps, QuestionnaireState> {
+  private listRef: any = React.createRef();
+  constructor(props: QuestionnaireProps) {
+    super(props);
     this.state = {
       questionToEdit: null,
       loading: true,
@@ -31,9 +61,9 @@ class Questionnaire extends Component {
       choiceData: null,
       questionnaire: null,
       isChoiceLoading: false,
-      isQuestionLoading: false
+      isQuestionLoading: false,
+      questionData: null
     };
-    this.listRef = React.createRef();
   }
 
   componentDidUpdate(prevProps) {
@@ -79,7 +109,7 @@ class Questionnaire extends Component {
     })
   }
 
-  onNewQuestionAdd = () => {
+  onNewQuestionAdd = (questionType) => {
     const { choiceToAddQuestion } = this.state;
     this.props.addQuestion({
       variables: {
@@ -124,7 +154,7 @@ class Questionnaire extends Component {
         await this.props.refetchQuestionnaire();
         if (questionType == "TEXT") {
 
-          this.addChoice(data.addQuestion.id)
+          this.addChoice(data.addQuestion.id, null)
         } else {
           this.setState({
             isQuestionLoading: false,
@@ -162,7 +192,7 @@ class Questionnaire extends Component {
       await this.props.refetchFeedbackForm();
       if (questionType == "TEXT") {
 
-        this.addChoice(data.createQuestionnaire.id)
+        this.addChoice(data.createQuestionnaire.id, null)
       } else {
         this.setState({ isQuestionLoading: false })
       }
@@ -181,7 +211,7 @@ class Questionnaire extends Component {
         choiceId: "",
         input: {
           questionText: "  ",
-          type: questionType,
+          type: questionData.type,
           rangeMax: 10,
           rangeMin: 1,
           choices: []
@@ -192,7 +222,7 @@ class Questionnaire extends Component {
       this.props.refetchQuestionnaire();
 
       this.setState({
-        questionTypeSelector: questionType,
+        questionTypeSelector: questionData.type,
         addQuestion: false,
         questionData: questionData,
         questionToEdit: data.data.addQuestion

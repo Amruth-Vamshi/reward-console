@@ -1,8 +1,8 @@
-import React, { Component } from "react";
+import * as React from "react";
 import PropTypes from "prop-types";
 import { ErrorBoundary } from "@walkinsole/walkin-components";
 import gql from "graphql-tag";
-import { graphql } from "react-apollo";
+import { graphql, compose } from "react-apollo";
 import {
   Form,
   TreeSelect,
@@ -11,9 +11,27 @@ import {
   Popconfirm
 } from "antd";
 import { QUESTION_TYPES } from "../../../../../../../containers/Query";
+import { FormComponentProps, FormItemProps } from "antd/lib/form";
+declare const ValidateStatuses: ["success", "warning", "error", "validating", ""];
 
-class FormHeader extends Component {
-  constructor(props) {
+interface FormHeaderProps extends FormComponentProps {
+  onQuestionTypeEdit?: any
+  onQuestionEdited?: any
+  questionToEdit?: any
+  questionType?: any
+  questionTypesQuery?: any
+}
+
+interface FormHeaderState {
+  showSubCategory: boolean,
+  subCategory: any,
+  popUpVisible: boolean,
+  newTypeValue: any,
+  validationStatus?: (typeof ValidateStatuses)[number]
+}
+
+class FormHeader extends React.Component<FormHeaderProps, FormHeaderState> {
+  constructor(props: FormHeaderProps) {
     super(props);
     this.state = {
       showSubCategory: false,
@@ -295,13 +313,14 @@ class FormHeader extends Component {
 //   onQuestionEdited(formValue);
 // };
 
-const FormPane = Form.create({ name: "FormHeader" })(
+const FormPane = Form.create<FormHeaderProps>({ name: "FormHeader" })(
   FormHeader
 );
 
-export default graphql(QUESTION_TYPES, {
-  name: "questionTypesQuery",
-  options: {
-    fetchPolicy: "cache-first"
-  }
-})(FormPane);
+export default compose(
+  graphql(QUESTION_TYPES, {
+    name: "questionTypesQuery",
+    options: {
+      fetchPolicy: "cache-first"
+    }
+  }))(FormPane);

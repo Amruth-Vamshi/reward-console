@@ -1,6 +1,6 @@
 import "./FormPane.css";
 import { Form, Slider, Button, Icon, Row, Col, TreeSelect, Card } from "antd";
-import React, { Component } from "react";
+import * as React from "react";
 import FormHeader from "./FormHeader";
 import ChoiceForm from "./ChoiceForm";
 import QuestionForm from "./QuestionForm";
@@ -14,8 +14,30 @@ const questionWithSlider = {
   OPINION_SCALE: "OPINION_SCALE"
 };
 
-class QuestionnaireFormPane extends Component {
-  constructor(props) {
+interface QuestionnaireFormPaneProps {
+  questionToEdit?: any
+  onQuestionSubmitted?: any
+  onChoiceSubmitted?: any
+  addChoice?: any
+  removeChoice?: any
+  choiceData?: any
+  addNewQuestion?: any
+  questionType?: any
+  choiceToAddQuestion?: any
+  isChoiceLoading?: any
+  isQuestionLoading?: any
+  questionnaire?: any
+  onLinkChoiceToQuestion?: any
+}
+
+interface QuestionnaireFormPaneState {
+  questionToEdit: any,
+  choiceToEdit: any,
+  showButton: boolean
+}
+
+class QuestionnaireFormPane extends React.Component<QuestionnaireFormPaneProps, QuestionnaireFormPaneState> {
+  constructor(props: QuestionnaireFormPaneProps) {
     super(props);
     this.state = {
       questionToEdit: {},
