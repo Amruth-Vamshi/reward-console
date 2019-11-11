@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { Col, Alert, message, Radio, Spin, Checkbox, Input } from 'antd';
 import { withRouter } from 'react-router-dom';
-import { withApollo, graphql, compose, mutate } from 'react-apollo';
+import { withApollo, graphql, compose, ApolloProviderProps } from 'react-apollo';
 import { createRule } from '../../../query/audience';
 import { OFFER_LIST } from '../../../utils/RouterConstants';
 import get from 'lodash/get';
@@ -16,6 +16,9 @@ import omit from 'lodash/omit';
 import remove from 'lodash/remove';
 import { transposeObject, isValidObject } from '../../../utils/common';
 import jwt from 'jsonwebtoken'
+import { RouteChildrenProps } from "react-router";
+
+const { org_id }: any = jwt.decode(localStorage.getItem('jwt'))
 
 const offerStepData = [
 	{
@@ -187,8 +190,38 @@ const dummyBrandData = [
 	},
 ];
 
-class NewOffer extends Component {
-	constructor(props) {
+interface IProps extends RouteChildrenProps<any>, ApolloProviderProps<any> {
+	// pauseCampaign: (variables: any) => any
+	loading?, error?, categories?, products?, organizationHierarchy?, subOrganizations?, data?
+
+}
+
+// this.props.history.push({ pathname: '/hyperx/campaigns', tabKey: "2" })
+
+interface IState {
+	current: number,
+	offerId: String,
+	couponTypeSelected: any,
+	newOfferErrorMessage: '',
+	offerEligibityRule: any,
+	offerType: any,
+	couponLableSelected: '',
+	productValues: Array<any>,
+	redemptionRule: any,
+	loading1: boolean,
+	offerEligibityRuleId: String,
+	locationValues: Array<any>,
+	formValues: any
+	offerTypeStatus: any
+	transactionTimeStatus: any
+	productDropDown: any
+	locationDropDown: any
+	values,
+
+};
+
+class NewOffer extends Component<IProps, Partial<IState>> {
+	constructor(props: IProps) {
 		super(props);
 		this.state = {
 			current: 0,
@@ -386,7 +419,7 @@ class NewOffer extends Component {
 		}
 	};
 
-	goToNextPage = (current, e) => {
+	goToNextPage = (current: number, e: any) => {
 		let { client } = this.props;
 		const { formValues } = this.state;
 		if (current === 1 && e && e.target.innerText === 'Next') {
@@ -399,7 +432,7 @@ class NewOffer extends Component {
 
 				let combinedArray = productValues.concat(locationValues);
 				let reArrangedObj = {};
-				let arr;
+				let arr: Array<{}>;
 				combinedArray.map(val => {
 					reArrangedObj[val.valueOne] = val.valueTwo;
 					arr = transposeObject(reArrangedObj && reArrangedObj, 'in');
@@ -422,7 +455,6 @@ class NewOffer extends Component {
 						let ommitedObject = omit(redemptionFormObject, ['type', 'cappingValue']);
 						let redemptionArray = { rules: transposeObject(ommitedObject, '='), combinator: 'and' };
 						const { offerEligibityRule, redemptionRule } = this.state;
-						let org_id = jwt.decode(localStorage.getItem('jwt')).org_id
 						this.setState({ loading1: true })
 						client
 							.mutate({
@@ -609,7 +641,7 @@ class NewOffer extends Component {
 		console.log(
 			'productsproductsproductsproducts',
 			products,
-			jwt.decode(localStorage.getItem('jwt')).org_id,
+			org_id,
 			subOrganizations
 		);
 		let productItems;
@@ -739,10 +771,10 @@ class NewOffer extends Component {
 											cartValueConditionData={cartValueConditionData}
 											wrappedComponentRef={this.saveFormRef}
 											cappingData={cappingData}
-											handleProductChange={this.onProductChange}
+											// handleProductChange={this.onProductChange}
 											productDropDown={productDropDown}
 											location={organizationHierarchy}
-											handleLocationChange={this.onLocationChange}
+											// handleLocationChange={this.onLocationChange}
 											locationDropDown={locationDropDown}
 											locationArray={locationArray}
 											values={values}
@@ -758,7 +790,7 @@ class NewOffer extends Component {
 											couponTypeSelected={couponTypeSelected}
 											couponInputLabel="Enter Coupon label"
 											onCouponLabelChange={this.onCouponLabelChange}
-											OnNoCouponCodeChange={this.OnNoCouponCodeChange}
+											// OnNoCouponCodeChange={this.OnNoCouponCodeChange}
 											checked={true}
 											couponTypeData={couponTypeData}
 										/>
@@ -787,7 +819,7 @@ class NewOffer extends Component {
 								<CampaignFooter
 									nextButtonText={current === 1 ? 'Save' : 'Next'}
 									// saveDraftText="Save Draft"
-									saveDraft={this.onPage1SaveDraft}
+									// saveDraft={this.onPage1SaveDraft}
 									loading={loading1}
 									goToPage2={e => this.goToNextPage(current + 1, e)}
 									nextButtonClass={'offersNextButton'}
@@ -804,12 +836,10 @@ class NewOffer extends Component {
 export default withApollo(
 	compose(
 		graphql(products, {
-			options: props => ({
-				variables: {
-					organizationId: jwt.decode(localStorage.getItem('jwt')).org_id,
-				},
+			options: (props: IProps) => ({
+				variables: { organizationId: org_id },
 			}),
-			props: ({ data: { loading, error, products } }) => ({
+			props: ({ data: { loading, error, products } }: any) => ({
 				loading,
 				products,
 				error,
@@ -821,7 +851,7 @@ export default withApollo(
 					catalogId: '2',
 				},
 			}),
-			props: ({ data: { loading, error, categories } }) => ({
+			props: ({ data: { loading, error, categories } }: any) => ({
 				loading,
 				categories,
 				error,
@@ -830,11 +860,11 @@ export default withApollo(
 		graphql(subOrganizations, {
 			options: props => ({
 				variables: {
-					parentId: jwt.decode(localStorage.getItem('jwt')).org_id,
+					parentId: org_id,
 					type: 'STORE',
 				},
 			}),
-			props: ({ data: { loading, error, subOrganizations } }) => ({
+			props: ({ data: { loading, error, subOrganizations } }: any) => ({
 				loading,
 				subOrganizations,
 				error,

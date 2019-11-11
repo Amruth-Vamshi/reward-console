@@ -6,7 +6,7 @@ import React from 'react';
 const { Option } = Select;
 
 interface IProps {
-	cappingData?: any;
+	cappingData?: Array<any>;
 	wrappedComponentRef?: any;
 	form?: any;
 	formValues?: any
