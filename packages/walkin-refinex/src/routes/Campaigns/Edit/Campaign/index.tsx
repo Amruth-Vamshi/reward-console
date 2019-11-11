@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import * as React from "react";
 import { Row, Col, Typography } from "antd";
 import {
     CampaignPriority,
@@ -11,7 +11,45 @@ import CreateCampaignRow from "../../Overview/CreateCampaignRow"
 import gql from "graphql-tag";
 import { compose, graphql } from "react-apollo";
 import { CustomScrollbars } from "@walkinsole/walkin-components";
-const BasicInfo = ({
+
+
+interface BasicInfoProps {
+    subTitle?: any,
+    onFormNext?: any,
+    saveFormRef?: any,
+    formValues?: any,
+    textAndControlText?: any,
+    promptText?: any,
+    toolTipText?: any,
+    prioritySelectionTitle?: any,
+    priorityButtonText?: any,
+    testControlTitle?: any,
+    testControlPercentage?: any,
+    handleButtonGroupChange?: any,
+    testControlPercentageEditText?: any,
+    onPriorityButtonClick?: any,
+    priorityNumberInvalidErrorMessage?: any,
+    onTestAndControlEdit?: any,
+    showTestAndControl?: any,
+    handleOk?: any,
+    popupTitle?: any,
+    handleCancel?: any,
+    applyTestControlChange?: any,
+    popupbodyText?: any,
+    controlValue?: any,
+    maxValueAllowed?: any,
+    onTestValueChange?: any,
+    onControlValueChange?: any,
+    popupButtonText?: any,
+    testValue?: any,
+    auth?: any,
+    setFeedbackForm?: any,
+    formName?: any,
+    edit?: any,
+    showFeedbackFormType?: any
+}
+
+const BasicInfo: React.FC<BasicInfoProps> = ({
     subTitle,
     onFormNext,
     saveFormRef,
@@ -56,7 +94,7 @@ const BasicInfo = ({
             </div>
 
             <Row style={{ marginTop: 32 }}>
-                <Col sd={24} md={14} style={{ marginBottom: 15 }}>
+                <Col sm={24} md={14} style={{ marginBottom: 15 }}>
                     <BasicInfoForm
                         onFormNext={onFormNext}
                         wrappedComponentRef={saveFormRef}
@@ -64,7 +102,7 @@ const BasicInfo = ({
                         edit={edit}
                     />
                 </Col>
-                <Col sd={24} md={10}>
+                <Col sm={24} md={10}>
                     <CampaignPriority
                         HideTestConstrol={true}
                         text={textAndControlText}

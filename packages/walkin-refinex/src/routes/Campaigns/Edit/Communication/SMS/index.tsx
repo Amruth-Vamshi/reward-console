@@ -1,6 +1,7 @@
-import React, { Fragment } from 'react';
+import * as  React from 'react';
 import { Form, Input, Upload, Button, message } from 'antd';
 import moment from 'moment';
+import { FormComponentProps } from 'antd/lib/form';
 const { TextArea } = Input;
 
 const props = {
@@ -21,9 +22,20 @@ const props = {
 	},
 };
 
-const SMSForm = Form.create({ name: 'form_in_modal' })(
+
+interface SMSFormProps extends FormComponentProps {
+	onFormNext?: any,
+	wrappedComponentRef?: any,
+	formValues?: any,
+	text?: any
+}
+
+const SMSForm = Form.create<SMSFormProps>({ name: 'form_in_modal' })(
 	// eslint-disable-next-line
-	class SMSForm extends React.Component {
+	class SMSForm extends React.Component<SMSFormProps, {}> {
+		constructor(props: SMSFormProps) {
+			super(props);
+		}
 		render() {
 			const { form, onFormNext, wrappedComponentRef, formValues, text } = this.props;
 			const { getFieldDecorator } = form;
@@ -33,7 +45,7 @@ const SMSForm = Form.create({ name: 'form_in_modal' })(
 			};
 			return (
 				<Form style={{ paddingTop: '20px' }} layout="vertical" ref={wrappedComponentRef} onSubmit={onFormNext}>
-					<Form.Item size={'large'} label="SMS tag" {...formItemLayout}>
+					<Form.Item label="SMS tag" {...formItemLayout}>
 						{getFieldDecorator('smsTag', {
 							initialValue: `${Object.keys(formValues).length != 0 ? formValues.smsTag ? formValues.smsTag : "" : ""}`,
 							rules: [{ required: true, message: 'SMS tag is required' }],

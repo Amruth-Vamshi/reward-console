@@ -127,7 +127,7 @@ class Filter extends React.Component<FilterProps, {}> {
   }
 }
 
-const FilterForm = Form.create({
+const FilterForm = Form.create<FilterProps>({
   name: "Filter",
   onFieldsChange(props, changedFields) {
     console.log(changedFields);

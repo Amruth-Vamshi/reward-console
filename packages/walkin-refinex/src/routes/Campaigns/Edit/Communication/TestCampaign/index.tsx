@@ -1,8 +1,14 @@
-import React, { Component } from 'react'
+import * as React from 'react'
 import { Card, Row, Col, Button, TimePicker, DatePicker, InputNumber, Input, Icon, Select, Form } from "antd";
 import { Widget } from "@walkinsole/walkin-components";
 
-export default class TestComponent extends Component {
+interface TestComponentProps {
+    text: string
+    label: any
+    placeholder: any
+}
+
+export default class TestComponent extends React.Component<TestComponentProps, {}> {
     render() {
         return (
             <Widget

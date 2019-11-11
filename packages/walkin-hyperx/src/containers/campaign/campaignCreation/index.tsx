@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Component, Fragment } from "react";
+import { Component, Fragment, useRef } from "react";
 import { withRouter, } from "react-router-dom";
 // import BasicInfo from "./basicInfo";
 // import Audience from "./audience";
@@ -20,6 +20,7 @@ import { CampaignFooter, CampaignHeader, Stepper } from '@walkinsole/shared';
 import { GET_CAMPAIGN, CREATE_CAMPAIGN, UPDATE_CAMPAIGN, CREATE_MESSAGE_TEMPLETE, CREATE_COMMUNICATION, LAUNCH_CAMPAIGN, CREATE_COMMUNICATION_WITH_MESSAGE_TEMPLETE, COMMUNICATIONS, VIEW_CAMPAIGN, UPDATE_COMMUNICATION_WITH_MESSAGE_TEMPLETE, PREPROCESS_LAUNCH_CAMPAIGN } from '../../../query/campaign';
 import { RouteChildrenProps, RouteComponentProps } from "react-router";
 import { FormComponentProps } from "antd/lib/form";
+import { History } from "history";
 
 const { org_id }: any = jwt.decode(localStorage.getItem('jwt'))
 
@@ -67,6 +68,8 @@ interface IProps extends RouteChildrenProps<any>, ApolloProviderProps<any> {
 	allOffers: any
 
 }
+
+// this.props.history.push({ pathname: '/hyperx/campaigns', tabKey: "2" })
 
 interface IState {
 	formValues: any;
@@ -144,6 +147,8 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 			audienceChange: { audience: false, rule: false },
 			spin: false
 		};
+
+		// var formRef = useRef<HTMLElement | null>(null);
 	}
 
 	UNSAFE_componentWillMount = () => {
@@ -259,6 +264,8 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 	// 	}
 	// }
 
+
+	// var formRef = useRef<HTMLElement>(null!);
 
 
 	saveFormRef = (formRef: FormComponentProps) => {

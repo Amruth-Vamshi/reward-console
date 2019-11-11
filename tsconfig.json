@@ -8,8 +8,12 @@
     "jsx": "react",
     "allowJs": true,
     "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-    "lib": ["es6", "dom"],
+    "lib": [
+      "es6",
+      "dom"
+    ],
     "typeRoots": [
       "packages/walkin-app/typings/global-fetch.d.ts",
       "packages/walkin-app/typings/index.d.ts"
@@ -24,5 +28,7 @@
     "jest",
     "src/setupTests.ts"
   ],
-  "include": ["packages/*/src/assets"]
+  "include": [
+    "packages/*/src/assets"
+  ]
 }

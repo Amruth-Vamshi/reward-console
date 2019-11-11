@@ -1,5 +1,5 @@
 import "./Edit.css";
-import React, { Component } from "react";
+import * as React from "react";
 import { Row, Col, Button,message, Spin ,Icon} from "antd";
 import CampaignConfig from "./Campaign";
 // import Audience from "./Audience";

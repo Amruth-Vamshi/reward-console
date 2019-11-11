@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import * as React from "react";
 import PropTypes from "prop-types";
 import {
   Col,
@@ -10,10 +10,21 @@ import {
   Input,
   Button
 } from "antd";
-class Delay extends Component {
+import { FormComponentProps } from "antd/lib/form";
+
+interface DelayProps extends FormComponentProps {
+
+}
+
+interface DelayState {
+  delay?: number,
+  delay_type?: string
+}
+
+class Delay extends React.Component<DelayProps, DelayState> {
 
 
-  constructor(props) {
+  constructor(props: DelayProps) {
     super(props);
     this.state = {
       delay: 0,
@@ -66,5 +77,5 @@ class Delay extends Component {
   }
 }
 
-const DelayForm = Form.create({ name: "Delay" })(Delay);
+const DelayForm = Form.create<DelayProps>({ name: "Delay" })(Delay);
 export default DelayForm;
