@@ -154,7 +154,7 @@ class AppsList extends React.Component<ApplistProps, ApplistState> {
                                 onClick={() => this.addApp()}
                                 className="buttonPrimary"
                             >
-                                Add App
+                                Create Application
               </Button>
                         </div>
                     </div>

@@ -198,7 +198,7 @@ class SegmentList extends React.Component<SegmentListProps, SegmentListState> {
 									</Col>
 									<Col style={{ display: 'flex', justifyContent: 'flex-end' }} span={12}>
 										<Button type="primary" onClick={this.onNewSegment}>
-											New Segment
+											Create Segment
 									</Button>
 									</Col>
 								</React.Fragment>

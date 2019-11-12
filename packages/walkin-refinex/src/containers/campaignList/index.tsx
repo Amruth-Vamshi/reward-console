@@ -314,20 +314,22 @@ class CampaignList extends React.Component<CampaignListProps, Partial<CampaignLi
                 minHeight: "100vh",
                 margin: '1 2px'
             }}>
-                <CampaignHeader
-                    children={
-                        <React.Fragment>
-                            <Col span={12}>
-                                <h3 className="gx-text-grey paddingLeftStyle campaignHeaderTitleStyle">Surveys</h3>
-                            </Col>
-                            <Col className="searchInputStyle" span={12}>
-                                <Button type="primary" onClick={this.onNewCampaign}>
-                                    CREATE SURVEYS
+                <div>
+                    <CampaignHeader
+                        children={
+                            <React.Fragment>
+                                <Col span={12}>
+                                    <h3 className="gx-text-grey paddingLeftStyle campaignHeaderTitleStyle">Surveys</h3>
+                                </Col>
+                                <Col className="searchInputStyle" span={12}>
+                                    <Button type="primary" onClick={this.onNewCampaign}>
+                                        Create Surveys
 								</Button>
-                            </Col>
-                        </React.Fragment>
-                    }
-                />
+                                </Col>
+                            </React.Fragment>
+                        }
+                    />
+                </div>
                 <div className="RefineX-campaignList">
                     <Widget title="Campaign List" style={{ margin: '22px' }} styleName="gx-card-tabs"
                         extra={
