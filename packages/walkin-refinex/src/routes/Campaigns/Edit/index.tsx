@@ -818,7 +818,9 @@ class EditCampaign extends React.Component<EditCampaignProps,Partial<EditCampaig
       case 1:
         return (
            
-             <FeedbackFormConfig />
+             <FeedbackFormConfig 
+             campaign={campaign} 
+             feedbackForm={campaign.feedbackForm}/>
            
            );
       case 2:

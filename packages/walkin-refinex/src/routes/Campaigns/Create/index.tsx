@@ -450,7 +450,9 @@ class CreateCampaign extends React.Component<CreateCampaignProps,CreateCampaignS
         );
       case 1:
         return (
-          <FeedbackFormConfig campaign={campaign} feedbackForm={feedbackForm} />
+          <FeedbackFormConfig 
+          campaign={campaign} 
+          feedbackForm={feedbackForm} />
         );
       case 2:
         return (

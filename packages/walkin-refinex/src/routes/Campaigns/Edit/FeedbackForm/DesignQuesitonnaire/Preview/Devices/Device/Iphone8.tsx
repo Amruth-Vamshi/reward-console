@@ -1,25 +1,25 @@
 import "../index.css"
-import React, { Component } from "react";
+import * as React from "react";
 
-class Iphone8 extends Component {
+class Iphone8 extends React.Component {
     constructor(props) {
         super(props);
         this.state = {}
     }
     render() {
         return (
-            <div class="marvel-device iphone8 silver">
-                <div class="top-bar"></div>
-                <div class="sleep"></div>
-                <div class="volume"></div>
-                <div class="camera"></div>
-                <div class="sensor"></div>
-                <div class="speaker"></div>
-                <div class="screen">
+            <div className="marvel-device iphone8 silver">
+                <div className="top-bar"></div>
+                <div className="sleep"></div>
+                <div className="volume"></div>
+                <div className="camera"></div>
+                <div className="sensor"></div>
+                <div className="speaker"></div>
+                <div className="screen">
                     {this.props.children}
                 </div>
-                <div class="home"></div>
-                <div class="bottom-bar"></div>
+                <div className="home"></div>
+                <div className="bottom-bar"></div>
             </div>
         );
     }

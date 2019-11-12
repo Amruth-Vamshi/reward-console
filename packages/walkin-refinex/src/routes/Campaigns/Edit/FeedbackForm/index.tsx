@@ -17,8 +17,13 @@ const { TabPane } = Tabs;
 interface RouteParams {
   id?: string
 }
-interface FeedbackFormConfigProps extends RouteComponentProps<RouteParams>, ApolloProviderProps<any> {
+
+interface apolloProps extends ApolloProviderProps<any> {
+
+}
+interface FeedbackFormConfigProps extends RouteComponentProps<RouteParams>, Partial<apolloProps> {
   campaign?: any
+  feedbackForm?: any
 }
 
 interface FeedbackFormConfigState {

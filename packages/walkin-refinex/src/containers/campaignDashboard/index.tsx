@@ -46,7 +46,7 @@ class CampaignDashboard extends React.Component<CampaignDashboardProps, Campaign
         this.setState({ loading: true })
         this.props.launchCampaign({
             variables: { id: this.props.location.state.campaignSelected.id }
-        }).then((data: any) => {
+        }).then((data: any): void => {
             console.log("campaign data..", data);
             message.success('Campaign Launched')
             moment(this.props.location.state.campaignSelected.startTime).isAfter(moment()) ?
