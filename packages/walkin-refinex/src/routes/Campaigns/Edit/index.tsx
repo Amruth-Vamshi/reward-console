@@ -363,10 +363,24 @@ class EditCampaign extends React.Component<EditCampaignProps,Partial<EditCampaig
         this.formRef && this.formRef.props && this.formRef.props.form;
       if (form) {
         form.validateFields((err, values) => {
-          console.log("value",values)
+
           if (err) {
+            this.setState({
+              loading:false
+            })
             return;
           } else {
+            if(this.props.campaign && 
+              this.props.campaign.campaign && 
+              (moment(this.props.campaign.campaign.startTime).isSame(values.startTime))){
+              delete values.startTime;
+            }
+            if(this.props.campaign && 
+              this.props.campaign.campaign && 
+             (moment(this.props.campaign.campaign.endTime).isSame(values.endTime))
+              ){
+              delete values.endTime;
+            }
             // this.ruleQuery();
            this.setState({
               formValues: values,
@@ -607,6 +621,7 @@ class EditCampaign extends React.Component<EditCampaignProps,Partial<EditCampaig
 
    
   onCampaignUpdate= (formValues)=>{
+    console.log("formValues",formValues)
     this.props.updateCampaign({
       variables:{
         id:this.props.campaign.campaign.id,
@@ -614,9 +629,21 @@ class EditCampaign extends React.Component<EditCampaignProps,Partial<EditCampaig
     })
     .then(data=>{
       console.log(data)
+      this.setState((prevState)=>{
+        return {
+          ...prevState,
+          loading:false
+        }
+      })
     })
     .catch(err=>{
       console.log(err)
+      this.setState((prevState)=>{
+        return {
+          ...prevState,
+          loading:false
+        }
+      })
     })
   }
    goToNextPage(current) {
