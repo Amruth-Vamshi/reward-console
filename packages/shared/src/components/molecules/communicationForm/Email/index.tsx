@@ -1,19 +1,17 @@
 import * as React from "react";
 import * as PropTypes from "prop-types";
 import { Form, Upload, Icon, Button, Input } from "antd";
+import { FormComponentProps } from "antd/lib/form";
 
-interface iProps {
-  form?: any,
+interface IProps extends FormComponentProps {
   onFormNext?: any,
   wrappedComponentRef?: any,
   formValues?: any,
   text?: string
 }
-class EmailForm extends React.Component<iProps, {}> {
-  static propTypes = {
-    prop: PropTypes
-  };
-  constructor(props: iProps) {
+class EmailForm extends React.Component<IProps, {}> {
+
+  constructor(props: IProps) {
     super(props);
     this.state = {
       // email_subject: "",
@@ -51,9 +49,7 @@ class EmailForm extends React.Component<iProps, {}> {
             initialValue: `${Object.keys(formValues).length != 0 ? formValues.email_body ? formValues.email_body : "" : ""}`,
             rules: [{ required: true, message: "Please enter Email body!" }]
           })(
-            <Input.TextArea
-              rows={6}
-              prefix={<Icon type="mail" style={{ color: "rgba(0,0,0,.25)" }} />}
+            <Input.TextArea rows={6}
               placeholder="Enter Email body"
             />
           )}
@@ -61,7 +57,7 @@ class EmailForm extends React.Component<iProps, {}> {
         <Form.Item>
           {getFieldDecorator("upload", {
             valuePropName: "fileList",
-            getValueFromEvent: this.normFile
+            // getValueFromEvent: this.normFile
           })(
             <Upload name="logo" action="/upload.do" listType="picture">
               <Button>
@@ -75,6 +71,6 @@ class EmailForm extends React.Component<iProps, {}> {
   }
 }
 
-const Email = Form.create({ name: "EmailForm" })(EmailForm);
+const Email1 = Form.create<IProps>({ name: "EmailForm" })(EmailForm);
 
-export default Email;
+export default Email1;

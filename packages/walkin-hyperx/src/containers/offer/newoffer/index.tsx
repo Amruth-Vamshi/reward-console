@@ -221,6 +221,8 @@ interface IState {
 };
 
 class NewOffer extends Component<IProps, Partial<IState>> {
+	private basicFormRef
+	private redemptionRef
 	constructor(props: IProps) {
 		super(props);
 		this.state = {
@@ -744,7 +746,7 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 										Create Offer
 									</h3>
 								</Col>
-								<Col span={12} className="searchInputStyle" span={12}>
+								<Col span={12} className="searchInputStyle">
 									<Stepper stepData={offerStepData} current={current} onChange={this.goToNextPage} />
 								</Col>
 							</Fragment>

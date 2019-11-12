@@ -4,6 +4,7 @@ import TestAndControl from "../../molecules/testAndControl";
 import "./style.css";
 
 interface iProps {
+  text?
   buttons?: any;
   promptText?: string;
   tootTipText?: any;

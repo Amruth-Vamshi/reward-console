@@ -1,8 +1,8 @@
-import React, { Component } from "react";
+import * as React from "react";
 import { CardBox, ErrorBoundary } from "@walkinsole/walkin-components";
 import throttle from "lodash.throttle"
 import gql from "graphql-tag";
-import { graphql } from "react-apollo";
+import { graphql, compose } from "react-apollo";
 import {
   Form,
   Slider,
@@ -17,15 +17,34 @@ import {
   Icon
 } from "antd";
 import { QUESTION_TYPES } from "../../../../../../../containers/Query";
+import { FormComponentProps } from "antd/lib/form";
 
 const QUESTION_WITH_SLIDER = {
   RATING_SCALE: "RATING_SCALE",
   OPINION_SCALE: "OPINION_SCALE"
 };
+declare const ValidateStatuses: ["success", "warning", "error", "validating", ""];
+interface QuestionFormProps extends FormComponentProps {
+  showButton?: any
+  onQuestionEdited?: any
+  onQuestionSubmitted?: any
+  questionToEdit?: any
+  style?: any
+  questionTypesQuery?: any
+}
 
-class QuestionForm extends Component {
-  constructor() {
-    super();
+
+interface QuestionFormState {
+  popUpVisible: boolean,
+  newTypeValue: any,
+  validationStatus?: (typeof ValidateStatuses)[number],
+  showButton: boolean
+}
+
+class QuestionForm extends React.Component<QuestionFormProps, QuestionFormState> {
+  private handleClickThrottled
+  constructor(props: QuestionFormProps) {
+    super(props);
     this.state = {
       popUpVisible: false,
       newTypeValue: null,
@@ -173,7 +192,7 @@ class QuestionForm extends Component {
                       required: true
                     }
                   ]
-                })(<Input {...props} autosize={{ minRows: 3, maxRows: 6 }} />)}
+                })(<Input {...props} />)}
               </Item>
               {/* <Popconfirm
                 title="Changin question type will delete the existing choices, continue?"
@@ -215,7 +234,7 @@ class QuestionForm extends Component {
               </Item>
               <Item wrapperCol={{ offset: 18 }}>
                 <Button
-                  type="submit"
+                  type="primary"
                   style={{ position: "absolute", left: "-99999px" }}
                 />
               </Item>
@@ -233,14 +252,15 @@ class QuestionForm extends Component {
 
 const FormPane = Form.create({
   name: "QuestionForm",
-  onValuesChange(props, values) {
+  onValuesChange(props: QuestionFormProps, values) {
     props.onQuestionEdited(values);
   }
 })(QuestionForm);
 
-export default graphql(QUESTION_TYPES, {
-  name: "questionTypesQuery",
-  options: {
-    fetchPolicy: "cache-first"
-  }
-})(FormPane);
+export default compose(
+  graphql(QUESTION_TYPES, {
+    name: "questionTypesQuery",
+    options: {
+      fetchPolicy: "cache-first"
+    }
+  }))(FormPane);

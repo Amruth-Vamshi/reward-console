@@ -1,9 +1,9 @@
 import * as React from "react";
 import { Form, Input, DatePicker } from "antd";
 import moment from "moment";
+import { FormComponentProps, FormItemProps } from "antd/lib/form";
 
-interface iProps {
-  form?: any;
+interface iProps extends FormComponentProps {
   edit?: boolean;
   onFormNext?: any;
   wrappedComponentRef?: any;
@@ -11,10 +11,14 @@ interface iProps {
   text?: any;
 }
 
-const BasicInfoForm = Form.create({ name: "form_in_modal" })(
+interface iState {
+  // checkEnd: () => any
+}
+
+const BasicInfoForm = Form.create<iProps>({ name: "form_in_modal" })(
   // eslint-disable-next-line
-  class BasicInfoForm extends React.Component<iProps, {}> {
-    checkStart = (rule: any, value: any, callback: any) => {
+  class BasicInfoForm extends React.Component<iProps, iState> {
+    checkStart = (rule: any, value: any, callback: any): any => {
       const { validateFields } = this.props.form;
       const { edit } = this.props;
       if (edit) {
@@ -30,9 +34,9 @@ const BasicInfoForm = Form.create({ name: "form_in_modal" })(
     };
 
     checkEnd = (rule: any, value: any, callback: any) => {
-      const { edit } = this.props;
+      const { edit }: any = this.props;
       if (edit) {
-        callback();
+        return callback();
       }
       const end = value;
       const { getFieldValue } = this.props.form;
@@ -73,6 +77,7 @@ const BasicInfoForm = Form.create({ name: "form_in_modal" })(
         <Form layout="vertical" ref={wrappedComponentRef} onSubmit={onFormNext}>
           <Form.Item label="Campaign name" {...formItemLayout}>
             {getFieldDecorator("name", {
+
               initialValue: `${
                 Object.keys(formValues).length != 0
                   ? formValues.name
@@ -105,10 +110,12 @@ const BasicInfoForm = Form.create({ name: "form_in_modal" })(
                 {
                   type: "object",
                   required: true,
-                  message: "Please select start time!"
-                },
-                this.checkStart
-              ]
+                  message: "Please select start time!",
+
+                  validator: this.checkStart
+                }
+              ],
+
             })(<DatePicker showTime format="DD-MM-YYYY HH:mm:ss" />)}
           </Form.Item>
           <Form.Item
@@ -122,10 +129,9 @@ const BasicInfoForm = Form.create({ name: "form_in_modal" })(
                 {
                   type: "object",
                   required: true,
-                  message: "Please select end time!"
-                },
-                this.checkEnd
-              ]
+                  message: "Please select end time!",
+                  validator: this.checkEnd
+                }]
             })(<DatePicker showTime format="DD-MM-YYYY HH:mm:ss" />)}
           </Form.Item>
         </Form>

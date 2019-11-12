@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { Form, Input, Upload, Button, message } from 'antd';
 import moment from 'moment';
+import { FormComponentProps } from 'antd/lib/form';
+import { UploadProps } from 'antd/lib/upload';
 const { TextArea } = Input;
 
 const Item = Form.Item
 
-interface iProps {
-	form?: any,
+interface iProps extends FormComponentProps {
 	onFormNext?: any,
 	wrappedComponentRef?: any,
 	formValues?: any,
@@ -31,7 +32,7 @@ const props = {
 	},
 };
 
-const SMSForm = Form.create({ name: 'form_in_modal' })(
+const SMSForm = Form.create<iProps>({ name: 'form_in_modal' })(
 	// eslint-disable-next-line
 	class SMSForm extends React.Component<iProps, {}> {
 		render() {
@@ -43,7 +44,7 @@ const SMSForm = Form.create({ name: 'form_in_modal' })(
 			};
 			return (
 				<Form style={{ paddingTop: '20px' }} layout="vertical" ref={wrappedComponentRef} onSubmit={onFormNext}>
-					<Item size={'large'} label="SMS tag" {...formItemLayout}>
+					<Item label="SMS tag" {...formItemLayout}>
 						{getFieldDecorator('smsTag', {
 							initialValue: `${Object.keys(formValues).length != 0 ? formValues.smsTag ? formValues.smsTag : "" : ""}`,
 							rules: [{ required: true, message: 'SMS tag is required' }],

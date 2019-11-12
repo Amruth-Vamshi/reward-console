@@ -17,6 +17,7 @@ interface iProps {
   view?: any;
   loading?: any;
   loading1?: any;
+  disableCampaign?
 }
 
 export default class Overview extends React.Component<iProps, {}> {
@@ -54,8 +55,8 @@ export default class Overview extends React.Component<iProps, {}> {
             Overview{" "}
           </Title>
         ) : (
-          ""
-        )}
+            ""
+          )}
         <div style={{ margin: "20px 10px 20px 30px" }}>
           <Row>
             <Col style={{ paddingLeft: 0 }} sm={24} md={16}>
@@ -80,8 +81,8 @@ export default class Overview extends React.Component<iProps, {}> {
                     {value}
                   </div>
                 ) : (
-                  value
-                )}{" "}
+                    value
+                  )}{" "}
               </div>
             </Col>
             <Col sm={24} md={8}>
@@ -104,44 +105,44 @@ export default class Overview extends React.Component<iProps, {}> {
                       LAUNCH{" "}
                     </Button>
                   ) : (
-                    // (campaign.campaignStatus == 'LIVE') ?
-                    <div>
-                      {" "}
-                      <Button
-                        type="primary"
-                        style={{
-                          width: "140px",
-                          letterSpacing: 0,
-                          height: 40,
-                          fontSize: 17
-                        }}
-                        shape="round"
-                        onClick={this.changeState}
-                        loading={this.props.loading}
-                      >
-                        {campaign.campaignStatus == "LIVE"
-                          ? "PAUSE"
-                          : "UNPAUSE"}{" "}
-                      </Button>
-                      <Button
-                        type="primary"
-                        style={{
-                          width: "145px",
-                          letterSpacing: 0,
-                          height: 40,
-                          fontSize: 16
-                        }}
-                        shape="round"
-                        onClick={this.changeState}
-                        loading={this.props.loading1}
-                      >
-                        FORCE STOP{" "}
-                      </Button>
-                    </div>
-                  ) //: ''
+                      // (campaign.campaignStatus == 'LIVE') ?
+                      <div>
+                        {" "}
+                        <Button
+                          type="primary"
+                          style={{
+                            width: "140px",
+                            letterSpacing: 0,
+                            height: 40,
+                            fontSize: 17
+                          }}
+                          shape="round"
+                          onClick={this.changeState}
+                          loading={this.props.loading}
+                        >
+                          {campaign.campaignStatus == "LIVE"
+                            ? "PAUSE"
+                            : "UNPAUSE"}{" "}
+                        </Button>
+                        <Button
+                          type="primary"
+                          style={{
+                            width: "145px",
+                            letterSpacing: 0,
+                            height: 40,
+                            fontSize: 16
+                          }}
+                          shape="round"
+                          onClick={this.changeState}
+                          loading={this.props.loading1}
+                        >
+                          FORCE STOP{" "}
+                        </Button>
+                      </div>
+                    ) //: ''
                 ) : (
-                  ""
-                )}
+                    ""
+                  )}
               </div>
             </Col>
           </Row>
@@ -170,7 +171,7 @@ export default class Overview extends React.Component<iProps, {}> {
                         moment(campaign.startTime),
                         "hours"
                       )) *
-                      100
+                    100
                   )}
                   showInfo={true}
                   status="active"
@@ -196,8 +197,8 @@ export default class Overview extends React.Component<iProps, {}> {
               </Row>
             </div>
           ) : (
-            ""
-          )}
+              ""
+            )}
 
           {audience && audience.length ? (
             <div className="mb-25">
@@ -227,8 +228,8 @@ export default class Overview extends React.Component<iProps, {}> {
               ))}
             </div>
           ) : (
-            ""
-          )}
+              ""
+            )}
 
           {offer && (
             <div className="mb-25">

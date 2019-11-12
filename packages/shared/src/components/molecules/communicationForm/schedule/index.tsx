@@ -33,6 +33,7 @@ const Option = Select.Option;
 
 interface iProps {
     saved?: boolean,
+    getScheduleData?: any;
     campaign?: any,
     saveSchedule?: any,
     scheduleData?: any,
@@ -44,13 +45,13 @@ interface iState {
     repeatOn?: Array<any>
     errors?: any,
     repeatType?: string,
-    time?: string,
-    end?: string,
+    time?: any,
+    end?: any,
     noOfOccurances?: number,
     saved?: boolean
 }
 
-class Schedule extends React.Component<iProps, iState> {
+class Schedule extends React.Component<iProps, Partial<iState>> {
     constructor(props: iProps) {
         super(props);
         this.state = {
@@ -120,7 +121,7 @@ class Schedule extends React.Component<iProps, iState> {
         this.setState({ saved: p.saved })
     }
 
-    onChangeTime = (e: string, n: any) => {
+    onChangeTime = (e: any, n: any) => {
         this.state.errors.time = "";
         this.setState({ time: e, saved: false })
     }
@@ -146,7 +147,7 @@ class Schedule extends React.Component<iProps, iState> {
                         <Form.Item label="Repeat Every" {...formItemLayout}>
                             <Select
                                 // getPopupContainer={() => document.getElementById('OffArea')}
-                                value={this.state.repeatType} name="type" className="scheduleType"
+                                value={this.state.repeatType} className="scheduleType"
                                 placeholder="Select Type" optionFilterProp="children"
                                 onChange={e => this.handleTypeChange(e)}
                                 filterOption={(input: any, option: any) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
@@ -181,7 +182,7 @@ class Schedule extends React.Component<iProps, iState> {
                         <Form.Item style={{ marginTop: 5 }} label="Ends" {...formItemLayout}>
                             <Select
                                 // getPopupContainer={() => document.getElementById('OffArea')}
-                                value={this.state.end} name="type" className="scheduleEnd"
+                                value={this.state.end} className="scheduleEnd"
                                 placeholder="Select Type" optionFilterProp="children"
                                 onChange={e => this.handleOnEndChange(e)}
                                 filterOption={(input: any, option: any) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}

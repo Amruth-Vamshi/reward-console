@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import * as React from "react";
 
 import { Query, graphql, compose } from "react-apollo";
 import gql from "graphql-tag";
@@ -19,17 +19,26 @@ import {
 } from "antd";
 import { QUESTION_TYPES } from "../../../../../../containers/Query";
 
-class QuestionTypeSelection extends Component {
+interface QuestionTypeSelectionProps {
+  onQuestionTypeSelector?: any
+  questionTypesQuery?: any
+}
+
+interface QuestionTypeSelectionState {
+  data: any
+}
+
+class QuestionTypeSelection extends React.Component<QuestionTypeSelectionProps, QuestionTypeSelectionState> {
 
 
-  constructor(props) {
+  constructor(props: QuestionTypeSelectionProps) {
     super(props);
     this.state = {
       data: []
     };
   }
 
-  getTreeNodes = questionTypes => {
+  getTreeNodes = (questionTypes): any => {
     const { TreeNode } = TreeSelect;
     const data = [];
     for (const questionType in questionTypes) {
@@ -84,7 +93,7 @@ class QuestionTypeSelection extends Component {
               <List
                 grid={{ gutter: 16, column: 3 }}
                 dataSource={data}
-                renderItem={item => (
+                renderItem={(item: any) => (
                   <List.Item>
                     <Card
                       style={{
@@ -107,9 +116,10 @@ class QuestionTypeSelection extends Component {
 
 
 
-export default graphql(QUESTION_TYPES, {
-  name: "questionTypesQuery",
-  options: {
-    fetchPolicy: "cache-first"
-  }
-})(QuestionTypeSelection);
+export default compose(
+  graphql(QUESTION_TYPES, {
+    name: "questionTypesQuery",
+    options: {
+      fetchPolicy: "cache-first"
+    }
+  }))(QuestionTypeSelection);

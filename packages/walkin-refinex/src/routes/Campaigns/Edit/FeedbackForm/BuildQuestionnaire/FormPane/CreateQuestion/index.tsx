@@ -4,7 +4,27 @@ import FormHeader from "../FormHeader";
 import QuestionForm from "../QuestionForm";
 import ChoiceForm from "../ChoiceForm";
 
-export default function ShowQuestion({
+interface ShowQuestionProps {
+  onQuestionTypeEdit?: any
+  showButton?: any
+  questionnaire?: any
+  onQuestionEdited?: any
+  onQuestionSubmitted?: any
+  onChoiceEdited?: any
+  questionToEdit?: any
+  addChoice?: any
+  removeChoice?: any
+  addNewQuestion?: any
+  choiceData?: any
+  questionType?: any
+  choiceToAddQuestion?: any
+  submitChoice?: any
+  isChoiceLoading?: any
+  isQuestionLoading?: any
+  onLinkChoiceToQuestion?: any
+}
+
+const ShowQuestion: React.FC<ShowQuestionProps> = ({
   onQuestionEdited,
   onQuestionSubmitted,
   questionToEdit,
@@ -20,7 +40,7 @@ export default function ShowQuestion({
   onLinkChoiceToQuestion,
   showButton,
   onQuestionTypeEdit
-}) {
+}) => {
   console.log(
     "new question addition",
     submitChoice
@@ -64,3 +84,5 @@ export default function ShowQuestion({
     </React.Fragment>
   );
 }
+
+export default ShowQuestion;

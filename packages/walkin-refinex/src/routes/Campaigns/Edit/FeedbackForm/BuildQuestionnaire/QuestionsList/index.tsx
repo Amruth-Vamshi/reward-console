@@ -1,12 +1,25 @@
-import React, { Component } from "react";
+import * as React from "react";
 import AutorSizer from "react-virtualized-auto-sizer";
 import { VariableSizeList as List } from "react-window";
 import { ErrorBoundary, CardBox } from "@walkinsole/walkin-components";
 import { Icon, Row, Col, Button } from "antd";
 
-export default class QuestionsList extends Component {
-  constructor() {
-    super();
+interface QuestionsListProps {
+  questionnaire?: any
+  onQuestionSelected?: any
+  addNewQuestion?: any
+  reference?: any
+  createRootQuestionnaire?: any
+  isQuestionLoading?: any
+}
+
+interface QuestionsListState {
+
+}
+
+export default class QuestionsList extends React.Component<QuestionsListProps, QuestionsListState> {
+  constructor(props: QuestionsListProps) {
+    super(props);
 
   }
 
@@ -27,7 +40,7 @@ export default class QuestionsList extends Component {
 
 
   getTextHeightWidth = (text, height, width, index) => {
-    const canvas = document.createElement("div");
+    const canvas: any = document.createElement("div");
     const creatediv = document.createElement("div");
     creatediv.innerHTML = text;
     creatediv.setAttribute("style", `width:${width}px`)
@@ -37,7 +50,7 @@ export default class QuestionsList extends Component {
     canvas.append(creatediv)
     document.body.append(canvas);
     const createdDiv = document.getElementById(`${index}-randomDiv`);
-    const styles = this.getStyle(createdDiv, "height");
+    const styles: any = this.getStyle(createdDiv, "height");
     canvas.remove()
     return Math.floor((styles.replace(/[a-zA-Z]+/, "")));
   }

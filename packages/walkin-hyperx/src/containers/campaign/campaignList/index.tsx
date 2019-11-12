@@ -4,7 +4,7 @@ import { CampaignHeader, InstantSearch, SortableDataTable } from '@walkinsole/sh
 import { Widget } from '@walkinsole/walkin-components';
 import { Button, Col, Dropdown, Icon, Menu, Progress, Tabs } from 'antd';
 import jwt from 'jsonwebtoken';
-import * as moment from 'moment';
+import moment from 'moment';
 import * as React from 'react';
 import { compose, graphql, withApollo } from 'react-apollo';
 import { RouteChildrenProps } from 'react-router';

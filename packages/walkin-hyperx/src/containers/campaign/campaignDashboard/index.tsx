@@ -5,8 +5,7 @@ import { campaignOverview as Overview } from "@walkinsole/shared";
 import { GET_CAMPAIGN_DASHBOARD, UPDATE_CAMPAIGN, LAUNCH_CAMPAIGN, PAUSE_CAMPAIGN, UNPAUSE_CAMPAIGN, ABANDON_CAMPAIGN, VIEW_CAMPAIGN, PREPROCESS_LAUNCH_CAMPAIGN } from '../../../query/campaign'
 import { withApollo, graphql, compose, ApolloProviderProps } from 'react-apollo';
 import { withRouter } from 'react-router-dom';
-import * as moment from 'moment';
-import * as jwt from "jsonwebtoken";
+import moment from 'moment';
 import { RouteChildrenProps, RouteComponentProps } from "react-router";
 
 
@@ -68,7 +67,10 @@ class CampaignDashboard extends Component<IProps, Partial<IState>> {
             message.success('Campaign Launched')
             moment().isBetween(this.props.location.state.campaignSelected.startTime, this.props.location.state.campaignSelected.endTime) ?
                 this.props.history.push('/hyperx/campaigns')
-                : this.props.history.push({ pathname: '/hyperx/campaigns', tabKey: "2" })
+                : this.props.history.push({
+                    pathname: '/hyperx/campaigns', //tabKey: "2"
+                    state: { tabKey: "2" }
+                })
         }).catch(err => {
             console.log("Error Update campaign", err)
             this.setState({ loading: false })
@@ -82,7 +84,10 @@ class CampaignDashboard extends Component<IProps, Partial<IState>> {
         }).then(data => {
             console.log("campaign data..", data);
             message.success('Campaign Paused')
-            this.props.history.push({ pathname: '/hyperx/campaigns', tabKey: "5" })
+            this.props.history.push({
+                pathname: '/hyperx/campaigns', //tabKey: "5"
+                state: { tabKey: "5" }
+            })
         }).catch(err => {
             console.log("Error Update campaign", err)
             this.setState({ loading: false })
@@ -98,7 +103,10 @@ class CampaignDashboard extends Component<IProps, Partial<IState>> {
             message.success('Campaign unPaused')
             moment().isBetween(this.props.location.state.campaignSelected.startTime, this.props.location.state.campaignSelected.endTime) ?
                 this.props.history.push('/hyperx/campaigns')
-                : this.props.history.push({ pathname: '/hyperx/campaigns', tabKey: "2" })
+                : this.props.history.push({
+                    pathname: '/hyperx/campaigns', //tabKey: "2" 
+                    state: { tabKey: "2" }
+                })
         }).catch(err => {
             console.log("Error Update campaign", err)
             this.setState({ loading: false })
@@ -112,7 +120,10 @@ class CampaignDashboard extends Component<IProps, Partial<IState>> {
         }).then(data => {
             console.log("campaign data..", data);
             message.success('Abandon campaign')
-            this.props.history.push({ pathname: '/hyperx/campaigns', tabKey: "6" })
+            this.props.history.push({
+                pathname: '/hyperx/campaigns', //tabKey: "6" 
+                state: { tabKey: "6" }
+            })
         }).catch(err => {
             console.log("Error Update campaign", err)
             this.setState({ loading1: false })
