@@ -17,9 +17,6 @@ import { CAMPAIGN_MANAGEMENT, SEGMENT_LIST, OFFER_LIST } from '../../utils/Route
 
 const SubMenu = Menu.SubMenu;
 
-import * as jwt from "jsonwebtoken";
-import { MenuTheme } from "antd/lib/menu";
-
 
 interface SidebarContentProps extends RouteComponentProps {
 	themeType: any,
@@ -54,10 +51,10 @@ class SidebarContent extends React.Component<SidebarContentProps, SidebarContent
 		const selectedKeys = pathname.substr(1);
 		const defaultOpenKeys = selectedKeys.split('/')[1];
 
-		let isSettingsSideBar = defaultOpenKeys[1] === "settings";
-		let sidebarTheme: MenuTheme = "dark";
-		if (themeType === THEME_TYPE_LITE || isSettingsSideBar)
-			sidebarTheme = "light";
+		// let isSettingsSideBar = defaultOpenKeys[1] === "settings";
+		// let sidebarTheme: MenuTheme = "dark";
+		// if (themeType === THEME_TYPE_LITE || isSettingsSideBar)
+		// 	sidebarTheme = "light";
 
 		return (
 			<Auxiliary>
@@ -67,7 +64,7 @@ class SidebarContent extends React.Component<SidebarContentProps, SidebarContent
 						style={{ height: '100%' }}
 						defaultOpenKeys={[defaultOpenKeys]}
 						selectedKeys={[selectedKeys]}
-						theme={sidebarTheme}
+						theme={themeType === THEME_TYPE_LITE ? "light" : "dark"}
 						mode="inline"
 					>
 						<Menu.Item key='hyperx/campaigns'>
