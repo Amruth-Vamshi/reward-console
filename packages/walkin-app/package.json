@@ -27,17 +27,20 @@
     "lodash": "^4.17.11",
     "nprogress": "^0.2.0",
     "prop-types": "^15.7.2",
+    "react": "^16.9.11",
     "react-apollo": "^2.5.5",
     "react-dom": "16.11.0",
     "react-intl": "^2.9.0",
     "react-placeholder": "^3.0.2",
     "react-router-dom": "^5.0.0",
     "recharts": "^1.6.2",
-    "url-search-params": "^1.1.0",
-    "react": "^16.9.11"
+    "url-search-params": "^1.1.0"
   },
   "devDependencies": {
+    "@types/googlemaps": "^3.38.0",
     "@types/lodash": "^4.14.145",
+    "@types/moment": "^2.13.0",
+    "@types/markerclustererplus": "^2.1.33",
     "@types/react": "^16.9.11",
     "@types/react-dom": "^16.9.4",
     "@types/recharts": "^1.8.2",

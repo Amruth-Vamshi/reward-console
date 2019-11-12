@@ -12,7 +12,8 @@ import {
 } from '../Query'
 import { withApollo, graphql, compose, ApolloProviderProps } from 'react-apollo';
 import { withRouter } from 'react-router-dom';
-import * as moment from 'moment';
+// import moment = require("moment");
+import moment from 'moment';
 import * as jwt from "jsonwebtoken";
 import { RouteComponentProps } from 'react-router'
 import { path } from 'd3-path'
@@ -46,7 +47,7 @@ class CampaignDashboard extends React.Component<CampaignDashboardProps, Campaign
         this.setState({ loading: true })
         this.props.launchCampaign({
             variables: { id: this.props.location.state.campaignSelected.id }
-        }).then((data: any) => {
+        }).then((data: any): void => {
             console.log("campaign data..", data);
             message.success('Campaign Launched')
             moment(this.props.location.state.campaignSelected.startTime).isAfter(moment()) ?

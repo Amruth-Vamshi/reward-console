@@ -1,6 +1,6 @@
 import "../index.css";
-import React, { Component } from "react";
-class Nexus5 extends Component {
+import * as React from "react";
+class Nexus5 extends React.Component {
     constructor(props) {
         super(props);
         this.state = {}

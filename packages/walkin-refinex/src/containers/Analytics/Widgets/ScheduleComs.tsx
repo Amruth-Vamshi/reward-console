@@ -33,7 +33,7 @@ import {
 } from "recharts";
 import { graphql, compose, withApollo } from "react-apollo";
 import { GET_ANALYTICS } from "@walkinsole/walkin-core/src/PlatformQueries";
-import * as moment from 'moment';
+import moment from 'moment';
 const dateFormat = 'YYYY/MM/DD';
 import * as jwt from "jsonwebtoken";
 import Cylinder3DChart from '@walkinsole/walkin-nearx/src/routes/Dashboard/Cylinder3DChart'

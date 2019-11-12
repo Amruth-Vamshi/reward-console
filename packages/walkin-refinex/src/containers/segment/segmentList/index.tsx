@@ -4,7 +4,7 @@ import { allSegments, disableSegment } from '../../Query';
 import { withApollo, graphql, ApolloProviderProps, compose } from 'react-apollo';
 import { NEW_SEGMENT } from '../../../Utils';
 import { Card, Menu, Dropdown, Button, Col, Spin } from 'antd';
-import * as moment from 'moment';
+import moment from 'moment';
 import { SortableDataTable, InstantSearch, CampaignHeader } from '@walkinsole/shared';
 import { ErrorBoundary } from '@walkinsole/walkin-components';
 import * as jwt from "jsonwebtoken";
