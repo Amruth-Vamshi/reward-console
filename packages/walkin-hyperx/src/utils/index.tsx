@@ -1,0 +1,7 @@
+export const CAMPAIGN_TYPE = "OFFER"
+export const TEMPLATE_STYLE = "MUSTACHE"
+export const DEFAULT_QUEUE = "HYPERX_EVENTS_QUEUE"
+export const DEFAULT_ACTIVE_STATUS = "ACTIVE"
+export const DEFAULT_INACTIVE_STATUS = "INACTIVE"
+export const DEFAULT_HYPERX_CAMPAIGN = "OFFER"
+export const SHOULD_EDIT = ["DRAFT"]

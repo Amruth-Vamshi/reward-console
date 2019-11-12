@@ -1,6 +1,5 @@
 {
   "editor.formatOnSave": true,
-  "prettier.eslintIntegration": true,
   "git.ignoreLimitWarning": true,
   "editor.acceptSuggestionOnEnter": "on",
   "javascript.suggest.autoImports": true,

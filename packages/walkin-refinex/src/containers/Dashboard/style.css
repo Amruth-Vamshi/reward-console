@@ -1,0 +1,97 @@
+.homeSearch{
+    position: relative;
+    z-index: 2;
+    margin: -340px 0px 0px 230px;
+    max-width: 400px;
+    
+}
+
+.homeMap{
+   position: relative;
+    min-height: 350px;
+    min-width: 100%;
+    box-shadow: 0 5px 10px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+}
+
+.homeAnalytics{
+    /* margin-top: 300px;
+    margin-left: 26px; */
+    margin: 300px 0px 10px 0px;
+}
+
+.homeAnalytics1 .ant-col{
+    padding: 0px
+}
+
+.divCenter {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+}
+
+.divCenterVertical {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+	float: left;
+}
+
+.homeAnalytics1 .cenTitle{
+    margin: 0px 10px 0px 10px;
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+    text-align: center;
+    font-size: 18px;
+    color: #747474
+}
+
+.bigNum{   
+    font-size: 3em;
+    /* font-weight: bold; */
+    font-family: sans-serif;
+    color: rgb(63, 63, 63);
+    justify-content: center;
+    width: 100%;
+    text-align: center;
+    margin: 15px 0px 25px 0px
+}
+
+
+.rightVr{
+    float: right;
+    width: 2px;
+    margin: 10px 0px 10px 0px;
+    background-color: #c9c9c9;
+    height: 80%;
+}
+
+.homeNewPlaces .ant-row{
+    margin: 10px 0px;
+    background-color: #f1f1f1;
+    padding: 13px 13px 5px 13px
+}
+
+.tooltipPopup{
+    margin: 0px; 
+    padding: 10px;
+    background-color: rgb(255, 255, 255);
+    border: 1px solid rgb(204, 204, 204);
+    white-space: nowrap
+}
+
+.tooltipData{
+    margin-top: 5px;
+    color: rgb(3, 0, 173);
+}
+.ant-table-fixed {
+    table-layout: fixed;
+  }
+
+  .ant-table-tbody > tr > td {
+    word-wrap: break-word;
+    word-break: break-all;
+  }

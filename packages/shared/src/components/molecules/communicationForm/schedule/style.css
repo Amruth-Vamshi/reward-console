@@ -1,0 +1,57 @@
+.scheduleCard{
+    padding: 0
+}
+
+.scheduleCard .ant-row{
+    margin: 0 
+}
+
+.divCenterVertical {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+	float: left;
+}
+
+.scheduleCard .dBtn{
+    margin-left: 0;
+    margin-right: 2px;
+    margin-bottom: 0;
+}
+
+.scheduleCard .saveRow{
+    margin: 20px 10px 10px 20px; 
+}
+
+.scheduleCard .ant-card-body{
+    padding-bottom: 15px
+}
+.scheduleCard .saveMark{
+    color: chartreuse;
+    font-size: 18px
+}
+
+.scheduleCard{
+    box-shadow: 0 3px 6px 0 rgba(0,0,0,0.2);
+}
+
+.scheduleCard .scheduleEnd{
+    width: 150px;
+    margin-right: 5px
+}
+
+.scheduleCard .scheduleType{
+    width: 200px
+}
+
+.scheduleCard .scheduleTime{
+    width: 200px
+}
+
+.scheduleCard .ant-form-item{
+ margin-bottom: 20px
+}
+.scheduleCard .campDate{
+    margin: 0 0 15px 10px
+}

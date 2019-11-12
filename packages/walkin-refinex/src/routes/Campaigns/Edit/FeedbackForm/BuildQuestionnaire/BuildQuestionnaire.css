@@ -1,3 +1,10 @@
 .QuestionnaireArea {
   height: calc(100vh - 300px);
 }
+
+.divCenter {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+}

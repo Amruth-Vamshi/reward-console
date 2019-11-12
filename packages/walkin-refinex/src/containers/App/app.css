@@ -1,0 +1,120 @@
+.appHeader .name{
+    font-size: 35px;
+    word-spacing: 8px;
+    color:#705d94
+}
+
+.appHeader{
+    margin: 1 32px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow'
+}
+
+.appHeader .title{
+    font-size: 20px;
+    margin-top: 5px;
+}
+
+.appForm label{
+    color: #848484
+}
+
+.placeTableHeaders{
+    font-size: 17px;
+    margin: 0px 20px 5px 10px
+}
+
+.divCenter {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+}
+
+.headerRow1 {
+	padding:13px 20px;
+	margin: 0;
+    background-color:#abd6a2;
+    box-shadow: 0 6px 7px 0px rgba(0,0,0,0.2);
+    /* border: #e9e9e9 solid 1px */
+}
+.divCenterVertical {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+	float: left;
+}
+
+.placesListCard{
+    margin: 0px 10px 10px 10px;
+    color: #757575;
+
+    box-shadow: 0 3px 6px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+}
+
+.card-shadow{
+    box-shadow: 0 3px 6px 0 rgba(0,0,0,0.2);
+}
+
+.placesListCard .ant-card-body{
+   padding: 15px 0px
+
+}
+
+.placesListCard .ant-row {
+    margin: 0
+}
+
+/* .placeCardLocation{
+} */
+
+.placeCardLocation span{
+    color: #1f1f1f;
+    padding-left: 7px
+    
+}
+  
+.placesListCard:hover {
+box-shadow: -1px 6px 12px 6px rgba(0, 0, 0, 0.384);
+}
+
+.headerCard .ant-card-body{
+	background-color: rgb(238, 238, 238);
+	padding: 0px !important;
+}
+
+.headerCard .ant-tabs-bar {
+	margin: 0;
+}
+
+.haderCard .ant-tabs {
+    margin-top: -45px;
+}
+
+  /* .ant-layout > .gx-layout-content {
+    background-color: #eeeeee;
+} */
+
+
+
+
+/* .headerRow {
+	padding:13px 30px;
+	margin: 0;
+	background-color:#b3faff;
+} */
+
+.headerTitle{
+	font-size: 17px
+
+}
+
+/* .mainDrawer div.ant-drawer-wrapper-body{
+	background-color: #003366
+} */
+
+/* 
+.ant-row > [class*=ant-col-] {
+    margin: "!important";
+} */

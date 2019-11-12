@@ -93,3 +93,4 @@ packages/.DS_Store
 dump.rdb
 **/dump.rdb
 package-lock.json
+yarn.lock

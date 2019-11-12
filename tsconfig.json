@@ -1,0 +1,38 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist/",
+    "noImplicitAny": false,
+    "module": "commonjs",
+    "target": "es5",
+    "moduleResolution": "node",
+    "jsx": "react",
+    "allowJs": true,
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "lib": [
+      "es6",
+      "dom"
+    ],
+    "typeRoots": [
+      "packages/walkin-app/typings/global-fetch.d.ts",
+      "packages/walkin-app/typings/index.d.ts"
+    ],
+    "types": [
+      "googlemaps",
+      "markerclustererplus"
+    ]
+  },
+  "exclude": [
+    "node_modules",
+    "build",
+    "scripts",
+    "acceptance-tests",
+    "webpack",
+    "jest",
+    "src/setupTests.ts"
+  ],
+  "include": [
+    "packages/*/src/assets"
+  ]
+}

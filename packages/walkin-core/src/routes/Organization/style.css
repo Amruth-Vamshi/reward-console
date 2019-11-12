@@ -4,3 +4,18 @@
 .orgDetailsContainer {
 	margin: '-32px -12px 0px -12px';
 }
+
+.divCenter {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+}
+
+.divCenterVertical {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+	float: left;
+}

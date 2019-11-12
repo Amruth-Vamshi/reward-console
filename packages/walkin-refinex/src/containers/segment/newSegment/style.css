@@ -1,0 +1,19 @@
+.segmentFooterButton{
+    display: flex;
+    justify-content: center
+}
+
+.divCenter {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+}
+
+.divCenterVertical {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+	float: left;
+}

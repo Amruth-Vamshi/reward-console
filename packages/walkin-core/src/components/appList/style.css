@@ -1,7 +1,12 @@
-.appIconStyle {
+.appActiveIconStyle {
 	display: flex;
 	flex-direction: row-reverse;
-	padding: 10px;
+	padding: 15px;
+}
+.appInactiveIconStyle {
+	display: flex;
+	flex-direction: row-reverse;
+	padding: 5px 15px 0px 10px;
 }
 .gradedCardStyle {
 	background-color: '#ececec';
@@ -12,3 +17,17 @@
 .gradedAppTitle {
 	color: '#8c8c8c';
 }
+
+.coreAppsCard .ant-card-body{
+	padding-top: 0;
+}
+
+.coreAppsCard{
+    box-shadow: 0 3px 6px 0 rgba(0,0,0,0.2);
+}
+
+.coreAppsCard:hover {
+	box-shadow: -1px 6px 12px 6px rgba(0, 0, 0, 0.384);
+	}
+
+
