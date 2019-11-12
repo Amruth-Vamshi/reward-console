@@ -2,7 +2,7 @@ import * as React from 'react';
 import { withRouter } from 'react-router-dom';
 import { campaigns, DISABLE_CAMPAIGN } from '../Query/index';
 import { Card, Menu, Dropdown, Col, Button, Progress, Tabs, message, Icon } from 'antd';
-import * as moment from 'moment';
+import moment from 'moment';
 import { withApollo, graphql, compose } from 'react-apollo';
 import { SortableDataTable, InstantSearch, CampaignHeader } from '@walkinsole/shared';
 import { CircularProgress, Widget } from '@walkinsole/walkin-components';

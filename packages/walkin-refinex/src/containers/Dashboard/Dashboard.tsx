@@ -2,7 +2,7 @@ import * as React from "react";
 import { Col, Row, DatePicker, Button, Icon, Empty, Spin, Table } from "antd";
 import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis } from "recharts";
 import { IconWithTextCard, Widget, ChartCard, Auxiliary } from "@walkinsole/walkin-components";
-import * as moment from 'moment';
+import moment from 'moment';
 import * as jwt from "jsonwebtoken";
 import "./style.css"
 import { withApollo, ApolloProviderProps } from "react-apollo";
