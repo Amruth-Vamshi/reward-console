@@ -38,10 +38,10 @@ export default class TestUpload extends React.Component<iProps, iState> {
                 const reader: any = new FileReader();
                 let input: string = reader.result
                 reader.onload = () => {
-                    csv.parse(input, (err, records, info) => {
-                        console.log(info);
-                        console.log(records)
-                    });
+                    // csv.parse(input, (err, records, info) => {
+                    //     console.log(info);
+                    //     console.log(records)
+                    // });
                 };
 
                 reader.readAsBinaryString(file);
