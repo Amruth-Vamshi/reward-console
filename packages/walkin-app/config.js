@@ -1,6 +1,5 @@
 export const GRAPHQL_URL = "https://dev-api.getwalkin.in/core_dev/graphql";
 export const NEARX_GRAPHQL_URL = "https://dev-api.getwalkin.in/nearx/graphql";
-
 let proxy = "https://cors-anywhere.herokuapp.com/";
 
 let env = 'default'
