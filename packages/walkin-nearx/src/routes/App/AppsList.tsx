@@ -7,7 +7,7 @@ import {
   DELETE_APP
 } from "@walkinsole/walkin-core/src/PlatformQueries";
 import * as jwt from "jsonwebtoken";
-import { withApollo } from "react-apollo";
+import { withApollo, ApolloProviderProps } from "react-apollo";
 import conf from 'walkin-app/config'
 import { History } from "history"
 // import { nearXClient as client } from "../../nearXApollo";
@@ -15,9 +15,9 @@ const { TextArea } = Input;
 
 // const text = <code></code>
 
-interface iProps {
+interface iProps extends ApolloProviderProps<any> {
   history: History,
-  client?: any
+  client: any
 }
 
 interface iState {
@@ -48,6 +48,18 @@ class AppsList extends React.Component<iProps, iState> {
   handleCancel = () => {
     this.setState({ visible: false });
   };
+
+  handleOk = () => {
+
+  }
+
+  copy = () => {
+
+  }
+
+  handleSubmit = () => {
+
+  }
 
   // activateApp = (appId) => {
   //   client.mutate({
@@ -271,15 +283,15 @@ class AppsList extends React.Component<iProps, iState> {
               <Row style={{ marginTop: 30 }}>
                 <Col span={14}>
                   <TextArea
-                    suffix={
-                      <Tooltip title="Copy">
-                        <Icon
-                          type="copy"
-                          onClick={() => this.copy()}
-                          theme="twoTone"
-                        />
-                      </Tooltip>
-                    }
+                    // suffix={
+                    //   <Tooltip title="Copy">
+                    //     <Icon
+                    //       type="copy"
+                    //       onClick={() => this.copy()}
+                    //       theme="twoTone"
+                    //     />
+                    //   </Tooltip>
+                    // }
                     placeholder="Autosize height with minimum and maximum number of lines"
                     autosize={{ minRows: 20, maxRows: 20 }}
                   />

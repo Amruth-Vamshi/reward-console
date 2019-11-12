@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Upload, Icon, message } from 'antd';
 import '../styles/places.css'
-import csv from 'csv';
+import * as csv from 'csv';
 
 const Dragger = Upload.Dragger;
 
@@ -35,11 +35,13 @@ export default class TestUpload extends React.Component<iProps, iState> {
             accept: '.csv',
             beforeUpload(file, fileList) {
 
-                const reader = new FileReader();
+                const reader: any = new FileReader();
+                let input: string = reader.result
                 reader.onload = () => {
-                    csv.parse(reader.result, (err, data) => {
-                        console.log(data);
-                    });
+                    // csv.parse(input, (err, records, info) => {
+                    //     console.log(info);
+                    //     console.log(records)
+                    // });
                 };
 
                 reader.readAsBinaryString(file);
