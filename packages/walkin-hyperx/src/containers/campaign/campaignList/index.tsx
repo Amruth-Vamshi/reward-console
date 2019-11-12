@@ -13,6 +13,7 @@ import { withRouter } from 'react-router-dom';
 import { campaigns, DISABLE_CAMPAIGN } from '../../../query/campaign';
 import { DEFAULT_ACTIVE_STATUS, DEFAULT_HYPERX_CAMPAIGN } from '../../../utils';
 import { CAMPAIGN_DASHBOARD, NEW_CAMPAIGN } from '../../../utils/RouterConstants';
+import HyperXContainer from '../../../components/atoms/HyperXContainer';
 
 const { org_id, id }: any = jwt.decode(localStorage.getItem("jwt"));
 const { TabPane } = Tabs;
@@ -310,37 +311,39 @@ class CampaignList extends React.Component<CampaignListProps, Partial<CampaignLi
 					// 				onFilteredList={this.onCampaignFilteredList}
 					// 			/>
 					// 		</div> */}
-        <div className="HyperX-campaignList">
-          <Widget title="Campaign List" style={{ margin: '32px' }} styleName="gx-card-tabs"
-            extra={
-              <InstantSearch
-                placeHolder="Search campaign"
-                data={data}
-                onFilteredList={this.onCampaignFilteredList}
-              />}
-          >
-            <Tabs defaultActiveKey={key ? key : "1"} onChange={this.onTabChange}>
-              <TabPane tab="Live" key="1">
-                <SortableDataTable loading={loading} data={campaignData} onChange={this.handleChange} columns={columns} pagination={paginationData} />
-              </TabPane>
-              <TabPane tab="Upcoming" key="2">
-                <SortableDataTable loading={loading} data={campaignData} onChange={this.handleChange} columns={columns} pagination={paginationData} />
-              </TabPane>
-              <TabPane tab="Completed" key="3">
-                <SortableDataTable loading={loading} data={campaignData} onChange={this.handleChange} columns={columns} pagination={paginationData} />
-              </TabPane>
-              <TabPane tab="Draft" key="4">
-                <SortableDataTable loading={loading} data={campaignData} onChange={this.handleChange} columns={columns} pagination={paginationData} />
-              </TabPane>
-              <TabPane tab="Paused" key="5">
-                <SortableDataTable loading={loading} data={campaignData} onChange={this.handleChange} columns={columns} pagination={paginationData} />
-              </TabPane>
-              {/* <TabPane tab="closed" key="6">
+        <HyperXContainer margin='32px' headerHeightInPX={152}>
+          <div className="HyperX-campaignList">
+            <Widget title="Campaign List" styleName="gx-card-tabs"
+              extra={
+                <InstantSearch
+                  placeHolder="Search campaign"
+                  data={data}
+                  onFilteredList={this.onCampaignFilteredList}
+                />}
+            >
+              <Tabs defaultActiveKey={key ? key : "1"} onChange={this.onTabChange}>
+                <TabPane tab="Live" key="1">
+                  <SortableDataTable loading={loading} data={campaignData} onChange={this.handleChange} columns={columns} pagination={paginationData} />
+                </TabPane>
+                <TabPane tab="Upcoming" key="2">
+                  <SortableDataTable loading={loading} data={campaignData} onChange={this.handleChange} columns={columns} pagination={paginationData} />
+                </TabPane>
+                <TabPane tab="Completed" key="3">
+                  <SortableDataTable loading={loading} data={campaignData} onChange={this.handleChange} columns={columns} pagination={paginationData} />
+                </TabPane>
+                <TabPane tab="Draft" key="4">
+                  <SortableDataTable loading={loading} data={campaignData} onChange={this.handleChange} columns={columns} pagination={paginationData} />
+                </TabPane>
+                <TabPane tab="Paused" key="5">
+                  <SortableDataTable loading={loading} data={campaignData} onChange={this.handleChange} columns={columns} pagination={paginationData} />
+                </TabPane>
+                {/* <TabPane tab="closed" key="6">
 								<SortableDataTable loading={loading} data={campaignData} onChange={this.handleChange} columns={columns} pagination={paginationData} />
 							</TabPane> */}
-            </Tabs>
-          </Widget>
-        </div>
+              </Tabs>
+            </Widget>
+          </div>
+        </HyperXContainer>
         {/* // 	</div>
 					// </div> */}
 

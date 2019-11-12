@@ -21,6 +21,7 @@ import { GET_CAMPAIGN, CREATE_CAMPAIGN, UPDATE_CAMPAIGN, CREATE_MESSAGE_TEMPLETE
 import { RouteChildrenProps, RouteComponentProps } from "react-router";
 import { FormComponentProps } from "antd/lib/form";
 import { History } from "history";
+import HyperXContainer from "../../../components/atoms/HyperXContainer";
 
 const { org_id }: any = jwt.decode(localStorage.getItem('jwt'))
 
@@ -810,103 +811,105 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 						</Fragment>
 					}
 				/>
-				<div className="stepperContainer">
-					<div style={{ margin: '40px', height: '60vh' }}>
-						{current === 0 && (
-							<BasicInfo
-								subTitle="Basic information"
-								onFormNext={this.onFormNext}
-								saveFormRef={this.saveFormRef}
-								formValues={formValues}
-								priorityChosen={this.state.priorityChosen}
-								promptText="prompt text"
-								toolTipText="what is test and control?"
-								prioritySelectionTitle="Campaign Priority"
-								priorityButtonText="Custom no"
-								testControlTitle="Test & Control"
-								testControlPercentage={testControlSelected ? testControlSelected : `${testValue}% - ${controlValue}%`}
-								handleButtonGroupChange={this.handleButtonGroupChange}
-								testControlPercentageEditText="Edit"
-								priorityNumberInvalidErrorMessage="Enter a value between 1 and 99"
-								onTestAndControlEdit={this.onTestAndControlEdit}
-								showTestAndControl={showTestAndControl}
-								popupTitle="Test & Control"
-								// handleOk={this.handleOk}
-								handleCancel={this.handleCancel}
-								applyTestControlChange={this.applyTestControlChange}
-								popupbodyText="Divide customers selected for a specific audience into local test and local control groups"
-								controlValue={controlValue}
-								testValue={testValue}
-								maxValueAllowed={75}
-								onTestValueChange={this.onTestValueChange}
-								onControlValueChange={this.onControlValueChange}
-								popupButtonText="Apply"
-								edit={update}
-							/>
-						)}
-						{current === 1 && <div style={{ marginBottom: 200 }}>
-							<Audience
-								audienceTitle="Audience"
-								segmentSubTitle="Segment"
-								audienceCount={this.state.audienceCount}
-								onValuesSelected={this.onValuesSelected}
-								selectedSegments={this.state.selectedSegments}
-								segmentSelectionData={this.props.segmentList.segments}
-								// uploadCsvText="Upload CSV"
-								uploadProps={props}
-								ruleQuery={this.state.ruleQuery}
-								segmentFilterText="Filter"
-								segmentFilterSubText="Campaign applies to :"
-								attributeData={attributeData}
-								logQuery={this.logQuery}
-								errors={this.state.errors}
-							/>
-						</div>
-						}
-						{current === 2 &&
-							<Offer onFormNext={this.onFormNext}
-								offersList={this.props.allOffers.getOffers}
-								errors={this.state.errors}
-								offer={this.state.offer}
-								offerChecked={this.offerChecked}
-								noOfferRequired={this.state.noOfferRequired}
-								handleOnOfferChange={this.handleOnOfferChange}
-								subTitle="Offer" />}
-						{current === 3 && (
-							<Communication
-								subTitle="Communication"
-								schedule={true}
-								scheduleData={scheduleData}
-								campaign={this.state.formValues}
-								saveSchedule={this.saveSchedule}
-								scheduleSaveMark={this.state.scheduleSaveMark}
-								onChange={this.onCommunicationChange}
-								communicationData={communicationData}
-								defaultValue={communicationSelected}
-								value={communicationSelected}
-								OnCommunicationFormNext={this.onFormNext}
-								commWrappedComponentRef={this.saveSmsFormRef}
-								communicationFormValues={this.state.smsForm}
-								emailFormRef={this.saveEmailFormRef}
-								emailFormData={this.state.emailForm}
-								pushFormRef={this.savePushFormRef}
-								pushFormData={this.state.pushForm}
-							/>
-						)}
-						{current === 4 &&
-							<div className="gx-card" style={{ margin: -20 }}>
-								<div className="gx-card-body">
-									<Overview
-										campaign={this.state.formValues}
-										audience={this.state.audiences}
-										offer={this.state.offerData}
-										communication={this.state.communication.messageTemplate ?
-											`${communicationSelected} - ${this.state.communication.messageTemplate.templateSubjectText}` : ''}
-									/>
-								</div></div>
-						}
+				{/* <div className="HyperXContainer">
+					<div style={{ margin: '40px', height: '60vh' }}> */}
+				<HyperXContainer margin='40px' headerHeightInPX={225} heightInVH={60}>
+					{current === 0 && (
+						<BasicInfo
+							subTitle="Basic information"
+							onFormNext={this.onFormNext}
+							saveFormRef={this.saveFormRef}
+							formValues={formValues}
+							priorityChosen={this.state.priorityChosen}
+							promptText="prompt text"
+							toolTipText="what is test and control?"
+							prioritySelectionTitle="Campaign Priority"
+							priorityButtonText="Custom no"
+							testControlTitle="Test & Control"
+							testControlPercentage={testControlSelected ? testControlSelected : `${testValue}% - ${controlValue}%`}
+							handleButtonGroupChange={this.handleButtonGroupChange}
+							testControlPercentageEditText="Edit"
+							priorityNumberInvalidErrorMessage="Enter a value between 1 and 99"
+							onTestAndControlEdit={this.onTestAndControlEdit}
+							showTestAndControl={showTestAndControl}
+							popupTitle="Test & Control"
+							// handleOk={this.handleOk}
+							handleCancel={this.handleCancel}
+							applyTestControlChange={this.applyTestControlChange}
+							popupbodyText="Divide customers selected for a specific audience into local test and local control groups"
+							controlValue={controlValue}
+							testValue={testValue}
+							maxValueAllowed={75}
+							onTestValueChange={this.onTestValueChange}
+							onControlValueChange={this.onControlValueChange}
+							popupButtonText="Apply"
+							edit={update}
+						/>
+					)}
+					{current === 1 && <div style={{ marginBottom: 200 }}>
+						<Audience
+							audienceTitle="Audience"
+							segmentSubTitle="Segment"
+							audienceCount={this.state.audienceCount}
+							onValuesSelected={this.onValuesSelected}
+							selectedSegments={this.state.selectedSegments}
+							segmentSelectionData={this.props.segmentList.segments}
+							// uploadCsvText="Upload CSV"
+							uploadProps={props}
+							ruleQuery={this.state.ruleQuery}
+							segmentFilterText="Filter"
+							segmentFilterSubText="Campaign applies to :"
+							attributeData={attributeData}
+							logQuery={this.logQuery}
+							errors={this.state.errors}
+						/>
 					</div>
-				</div>
+					}
+					{current === 2 &&
+						<Offer onFormNext={this.onFormNext}
+							offersList={this.props.allOffers.getOffers}
+							errors={this.state.errors}
+							offer={this.state.offer}
+							offerChecked={this.offerChecked}
+							noOfferRequired={this.state.noOfferRequired}
+							handleOnOfferChange={this.handleOnOfferChange}
+							subTitle="Offer" />}
+					{current === 3 && (
+						<Communication
+							subTitle="Communication"
+							schedule={true}
+							scheduleData={scheduleData}
+							campaign={this.state.formValues}
+							saveSchedule={this.saveSchedule}
+							scheduleSaveMark={this.state.scheduleSaveMark}
+							onChange={this.onCommunicationChange}
+							communicationData={communicationData}
+							defaultValue={communicationSelected}
+							value={communicationSelected}
+							OnCommunicationFormNext={this.onFormNext}
+							commWrappedComponentRef={this.saveSmsFormRef}
+							communicationFormValues={this.state.smsForm}
+							emailFormRef={this.saveEmailFormRef}
+							emailFormData={this.state.emailForm}
+							pushFormRef={this.savePushFormRef}
+							pushFormData={this.state.pushForm}
+						/>
+					)}
+					{current === 4 &&
+						<div className="gx-card" style={{ margin: -20 }}>
+							<div className="gx-card-body">
+								<Overview
+									campaign={this.state.formValues}
+									audience={this.state.audiences}
+									offer={this.state.offerData}
+									communication={this.state.communication.messageTemplate ?
+										`${communicationSelected} - ${this.state.communication.messageTemplate.templateSubjectText}` : ''}
+								/>
+							</div></div>
+					}
+				</HyperXContainer>
+				{/* </div>
+				</div> */}
 				<div style={{}}>
 					<div className="gx-card campFooter" style={{ position: 'absolute', width: '100%' }}>
 						<div className="gx-card-body" style={{ background: "#F6F6F6" }}>
