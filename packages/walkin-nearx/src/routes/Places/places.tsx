@@ -10,6 +10,7 @@ import PlaceCard from "../../components/Places/placeCard";
 import { GET_ALL_AND_SEARCH_PLACES, DISABLE_PLACES } from "../../queries";
 import { History } from 'history'
 import { any } from "prop-types";
+import ApolloClient from "apollo-client";
 
 const Search = Input.Search;
 
@@ -43,11 +44,12 @@ export default class Places extends React.Component<iProps, iState> {
     this.setState({ spin: true });
     let input: any = { limit: limit, offset: offset };
     if (search && search.trim() !== "") input.search = search.trim();
+    let policy: any = `${fetchPolicy ? fetchPolicy : 'cache-first'}`
     client
       .query({
         query: GET_ALL_AND_SEARCH_PLACES,
         variables: input,
-        fetchPolicy: `${fetchPolicy ? fetchPolicy : 'cache-first'}`
+        fetchPolicy: policy
       })
       .then(res => {
         var places = [];
