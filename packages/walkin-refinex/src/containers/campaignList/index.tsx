@@ -44,7 +44,7 @@ class CampaignList extends React.Component<CampaignListProps, Partial<CampaignLi
             loading: false,
             showPopUp: false,
             popupmessage: "",
-            key: this.props.location.state.tabKey ? this.props.location.state.tabKey : '1'
+            key: this.props.location.state ? this.props.location.state.tabKey : '1'
         };
     }
 

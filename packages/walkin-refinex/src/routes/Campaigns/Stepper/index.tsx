@@ -12,7 +12,7 @@ const Stepper: React.FunctionComponent<StepperProps> = ({ current, onChange, Ste
   return (
     <Steps
       current={current}
-      //onChange={onChange}
+      onChange={onChange}
       size="small"
       labelPlacement="vertical"
     >
