@@ -9,6 +9,7 @@ import { withRouter } from 'react-router-dom';
 import { closeOffer, getOffers, LAUNCH_OFFER } from '../../../query/offer';
 import { NEW_OFFER } from '../../../utils/RouterConstants';
 import { DEFAULT_ACTIVE_STATUS } from '../../../utils';
+import HyperXContainer from '../../../components/atoms/HyperXContainer';
 
 const { org_id, id }: any = jwt.decode(localStorage.getItem("jwt"));
 
@@ -187,18 +188,20 @@ class OfferList extends Component<IProps, Partial<IState>> {
 						}
 					/>
 				</div>
-				<div className="gx-card" style={{ margin: '32px' }}>
-					<div className="gx-card-body">
-						<div style={{ marginBottom: '24px' }}>
-							<InstantSearch
-								placeHolder="Search offer"
-								data={getOffers}
-								onFilteredList={this.onOfferFilteredList}
-							/>
+				<HyperXContainer margin='32px' headerHeightInPX={152}>
+					<div className="gx-card">
+						<div className="gx-card-body">
+							<div style={{ marginBottom: '24px' }}>
+								<InstantSearch
+									placeHolder="Search offer"
+									data={getOffers}
+									onFilteredList={this.onOfferFilteredList}
+								/>
+							</div>
+							<SortableDataTable loading={this.props.loading} pagination={paginationData} data={offerData} onChange={this.handleChange} columns={columns} />
 						</div>
-						<SortableDataTable loading={this.props.loading} pagination={paginationData} data={offerData} onChange={this.handleChange} columns={columns} />
 					</div>
-				</div>
+				</HyperXContainer>
 			</Fragment>
 		);
 	}

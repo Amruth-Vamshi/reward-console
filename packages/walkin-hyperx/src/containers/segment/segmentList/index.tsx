@@ -10,6 +10,7 @@ import { withRouter } from 'react-router-dom';
 import { allSegments, disableSegment } from '../../../query/audience';
 import { NEW_SEGMENT } from '../../../utils/RouterConstants';
 import { DEFAULT_ACTIVE_STATUS } from '../../../utils';
+import HyperXContainer from '../../../components/atoms/HyperXContainer';
 
 const { org_id, id }: any = jwt.decode(localStorage.getItem("jwt"));
 
@@ -239,34 +240,34 @@ class SegmentList extends Component<IProps, IState> {
 		];
 		return (
 			<Fragment>
-				<div style={{ margin: '0 0 32px' }}>
-					<CampaignHeader
-						children={
-							<Fragment>
-								<Col span={12}>
-									<h3 className="gx-text-grey paddingLeftStyle campaignHeaderTitleStyle">Segments</h3>
-								</Col>
-								<Col style={{ display: 'flex', justifyContent: 'flex-end' }} span={12}>
-									<Button type="primary" style={{ marginBottom: 0 }} onClick={this.onNewSegment}>
-										Create Segment
+				<CampaignHeader
+					children={
+						<Fragment>
+							<Col span={12}>
+								<h3 className="gx-text-grey paddingLeftStyle campaignHeaderTitleStyle">Segments</h3>
+							</Col>
+							<Col style={{ display: 'flex', justifyContent: 'flex-end' }} span={12}>
+								<Button type="primary" style={{ marginBottom: 0 }} onClick={this.onNewSegment}>
+									Create Segment
 									</Button>
-								</Col>
-							</Fragment>
-						}
-					/>
-				</div>
-				<div className="gx-card" style={{ margin: '32px' }}>
-					<div className="gx-card-body">
-						<div style={{ marginBottom: '15px' }}>
-							<InstantSearch
-								placeHolder="Search segment"
-								data={segments}
-								onFilteredList={this.onSegmentFilteredList}
-							/>
+							</Col>
+						</Fragment>
+					}
+				/>
+				<HyperXContainer margin='32px' headerHeightInPX={152}>
+					<div className="gx-card">
+						<div className="gx-card-body">
+							<div style={{ marginBottom: '15px' }}>
+								<InstantSearch
+									placeHolder="Search segment"
+									data={segments}
+									onFilteredList={this.onSegmentFilteredList}
+								/>
+							</div>
+							<SortableDataTable loading={this.props.loading} data={segmentData} pagination={paginationData} onChange={this.handleChange} columns={columns} />
 						</div>
-						<SortableDataTable loading={this.props.loading} data={segmentData} pagination={paginationData} onChange={this.handleChange} columns={columns} />
 					</div>
-				</div>
+				</HyperXContainer>
 			</Fragment>
 		);
 	}
