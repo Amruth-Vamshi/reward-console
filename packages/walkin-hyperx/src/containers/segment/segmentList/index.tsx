@@ -1,4 +1,4 @@
-import { CampaignHeader, InstantSearch, SortableDataTable } from '@walkinsole/shared';
+import { CampaignHeader, InstantSearch, SortableDataTable, WHeader } from '@walkinsole/shared';
 import { Button, Col, Dropdown, Icon, Menu } from 'antd';
 import { History } from 'history';
 import * as jwt from 'jsonwebtoken';
@@ -240,7 +240,7 @@ class SegmentList extends Component<IProps, IState> {
 		];
 		return (
 			<Fragment>
-				<CampaignHeader
+				{/* <CampaignHeader
 					children={
 						<Fragment>
 							<Col span={12}>
@@ -253,7 +253,8 @@ class SegmentList extends Component<IProps, IState> {
 							</Col>
 						</Fragment>
 					}
-				/>
+				/> */}
+				<WHeader title='Segments' extra={<Button type="primary" style={{ marginBottom: 0 }} onClick={this.onNewSegment}>CREATE SEGMENT</Button>} />
 				<HyperXContainer margin='32px' headerHeightInPX={152}>
 					<div className="gx-card">
 						<div className="gx-card-body">

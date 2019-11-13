@@ -14,6 +14,7 @@ import { campaigns, DISABLE_CAMPAIGN } from '../../../query/campaign';
 import { DEFAULT_ACTIVE_STATUS, DEFAULT_HYPERX_CAMPAIGN } from '../../../utils';
 import { CAMPAIGN_DASHBOARD, NEW_CAMPAIGN } from '../../../utils/RouterConstants';
 import HyperXContainer from '../../../components/atoms/HyperXContainer';
+import { WHeader } from '@walkinsole/shared/src';
 
 const { org_id, id }: any = jwt.decode(localStorage.getItem("jwt"));
 const { TabPane } = Tabs;
@@ -288,20 +289,21 @@ class CampaignList extends React.Component<CampaignListProps, Partial<CampaignLi
     ];
     return (
       <div>
-        <CampaignHeader
+        {/* <CampaignHeader
           children={
             <React.Fragment>
               <Col span={12}>
                 <h3 className="gx-text-grey paddingLeftStyle campaignHeaderTitleStyle">Campaigns</h3>
               </Col>
-              <Col className="searchInputStyle" span={12}>
+              <Col style={{ display: 'flex', justifyContent: 'flex-end' }} span={12}>
                 <Button type="primary" style={{ marginBottom: 0 }} onClick={this.onNewCampaign}>
                   CREATE CAMPAIGN
 								</Button>
               </Col>
             </React.Fragment>
           }
-        />
+        /> */}
+        <WHeader title='Campaigns' extra={<Button type="primary" style={{ marginBottom: 0 }} onClick={this.onNewCampaign}>CREATE CAMPAIGN</Button>} />
         {/* // <div className="gx-card" style={{ margin: '32px' }}>
 					// 	<div className="gx-card-body">
 					// 		<div className="searchInputStyle">
@@ -311,7 +313,7 @@ class CampaignList extends React.Component<CampaignListProps, Partial<CampaignLi
 					// 				onFilteredList={this.onCampaignFilteredList}
 					// 			/>
 					// 		</div> */}
-        <HyperXContainer margin='32px' headerHeightInPX={152}>
+        <HyperXContainer margin='32px' headerHeightInPX={160}>
           <div className="HyperX-campaignList">
             <Widget title="Campaign List" styleName="gx-card-tabs"
               extra={

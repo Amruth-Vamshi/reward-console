@@ -5,7 +5,7 @@ import { withApollo, graphql, compose, ApolloProviderProps } from 'react-apollo'
 import { createRule } from '../../../query/audience';
 import { OFFER_LIST } from '../../../utils/RouterConstants';
 import get from 'lodash/get';
-import { Stepper, CampaignHeader, CampaignFooter } from '@walkinsole/shared';
+import { Stepper, CampaignHeader, CampaignFooter, WHeader } from '@walkinsole/shared';
 import OfferBasicInfoForm from '../../../components/atoms/offerForm/basicInfo';
 import isEmpty from 'lodash/isEmpty';
 import './style.css';
@@ -738,7 +738,7 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 		return (
 			<Fragment>
 				<div>
-					<CampaignHeader
+					{/* <CampaignHeader
 						children={
 							<Fragment>
 								<Col span={12}>
@@ -751,7 +751,10 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 								</Col>
 							</Fragment>
 						}
-					/>
+					/> */}
+
+					<WHeader title='Create Offer' extra={<Stepper stepData={offerStepData} current={current} onChange={this.goToNextPage} />} />
+
 					{/* Each step is different step because the form has to be validated and saved as draft */}
 					<div className="stepperContainer">
 						<div style={{ margin: '10px' }}>
