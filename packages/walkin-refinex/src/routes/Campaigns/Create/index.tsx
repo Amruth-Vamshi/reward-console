@@ -518,7 +518,7 @@ class CreateCampaign extends React.Component<CreateCampaignProps,CreateCampaignS
         }
         />
         <div className="stepperContainer">
-        <div style={{ margin: '20px 20px 20px 30px', height: '70vh' }}>
+        <div style={{ margin: '20px 20px 20px 30px', height: '68vh' }}>
          {this.getContainer()}
         </div>
          
@@ -531,7 +531,7 @@ class CreateCampaign extends React.Component<CreateCampaignProps,CreateCampaignS
 								nextButtonText={current === 4 ? 'Launch' : 'Save and Next'}
 								saveDraftText={current === 0 ? "" : 'Save Draft'}
 								saveDraft={()=>console.log("save to draft")}
-								goToPage2={this.onFormNext.bind(this, current + 1)}
+								goToPage2={this.goToNextPage.bind(this, current + 1)}
 							/>
 						</div>
 					</div>
