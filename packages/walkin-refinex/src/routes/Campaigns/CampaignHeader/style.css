@@ -1,8 +1,8 @@
 .RefineXCampaignHeaderStyle {
-	padding: 10px;
-	background-color: #FCFCFC;
-	box-shadow: 0 8px 6px -6px #F2F2F2;
+	padding: 10px !important;
+	background-color: #FCFCFC !important; 
+	box-shadow: 0 8px 6px -6px #F2F2F2 !important; 
 }
 .campaignHeaderTitleStyle {
-	margin-top: 0.5em;
+	margin-top: 0.5em !important; 
 }
