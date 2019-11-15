@@ -63,12 +63,12 @@ class SidebarContent extends React.Component<iProps, iState> {
                 <span>Home</span>
               </Link>
             </Menu.Item> */}
-            {/* <Menu.Item key="nearx/dashboard">
+            <Menu.Item key="nearx/dashboard">
               <Link to="/nearx/dashboard">
                 <i className="icon icon-dasbhoard" />
                 <span>Dashboard</span>
               </Link>
-            </Menu.Item> */}
+            </Menu.Item>
             <Menu.Item key="nearx/places">
               <Link to="/nearx/places">
                 <i className="icon icon-geo-location" />
