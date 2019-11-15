@@ -260,7 +260,7 @@ class AppsList extends React.Component<iProps, iState> {
                   <div style={{ textAlign: "center" }}>
                     <a
                       target="_blank"
-                      href="https://drive.google.com/open?id=15Tb8DOEC3PwNQELuTy9NfnJvn-KEgzQy"
+                      href="https://drive.google.com/open?id=1W3UCxBm3LxSCdWhjvkHZIr_GmcR5Y3Jq"
                     >
                       <Button
                         onClick={this.handleSubmit}
@@ -268,10 +268,11 @@ class AppsList extends React.Component<iProps, iState> {
                         className="buttonPrimary"
                         style={{ margin: "0px 30px 10px 20px" }}
                       >
-                        Download SDK
+                        Download ARR
                       </Button>
                     </a>
-                    <div >NearX sdk file (40kb)</div>
+                    <div >NearX ARR file</div>
+                    <div> Integration reference <a href="https://drive.google.com/open?id=1W3UCxBm3LxSCdWhjvkHZIr_GmcR5Y3Jq">here</a></div>
                   </div>
                 </div>
               </Col>
