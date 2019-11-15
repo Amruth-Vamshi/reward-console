@@ -16,7 +16,7 @@ import { CAMPAIGN_DASHBOARD, NEW_CAMPAIGN } from '../../../utils/RouterConstants
 import HyperXContainer from '../../../components/atoms/HyperXContainer';
 import { WHeader } from '@walkinsole/shared/src';
 
-const { org_id, id }: any = jwt.decode(localStorage.getItem("jwt"));
+
 const { TabPane } = Tabs;
 
 interface CampaignListProps extends RouteChildrenProps {
@@ -357,17 +357,21 @@ class CampaignList extends React.Component<CampaignListProps, Partial<CampaignLi
 export default withRouter(
   compose(
     graphql(campaigns, {
-      options: () => ({
-        variables: {
-          organization_id: org_id,
-          status: DEFAULT_ACTIVE_STATUS,
-          campaignType: DEFAULT_HYPERX_CAMPAIGN
-        }, fetchPolicy: "network-only",
-        forceFetch: true
-      }),
+      options: () => {
+        const { org_id, id }: any = jwt.decode(localStorage.getItem("jwt"));
+        return ({
+          variables: {
+            organization_id: org_id,
+            status: DEFAULT_ACTIVE_STATUS,
+            campaignType: DEFAULT_HYPERX_CAMPAIGN
+          }, fetchPolicy: "network-only",
+          forceFetch: true
+        })
+      },
       props: ({ data: { loading, error, campaigns, refetch } }: any) => ({
         loading, campaigns, error,
         changeStatus: (status: any) => {
+          const { org_id, id }: any = jwt.decode(localStorage.getItem("jwt"));
           refetch({
             variables: {
               organization_id: org_id,

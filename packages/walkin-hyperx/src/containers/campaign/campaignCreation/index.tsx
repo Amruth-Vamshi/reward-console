@@ -1013,7 +1013,7 @@ export default withRouter(
 			name: "addOfferToCampaign"
 		}), graphql(UPDATE_CAMPAIGN, {
 			name: "updateCampaign"
-		}), graphql(LAUNCH_CAMPAIGN, {
+		}), graphql(PREPROCESS_LAUNCH_CAMPAIGN, {
 			name: "launchCampaign"
 		}), graphql(CREATE_AUDIENCE, {
 			name: "createAudience"

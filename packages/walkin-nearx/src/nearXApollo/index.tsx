@@ -10,21 +10,24 @@ export const nearXClient = new ApolloClient({
   cache,
   uri: env.NEARX_GRAPHQL_URL,
   credentials: "same-origin",
-  headers: {
-    api_key: "0X3bmLq5sBImabgEXkDVBfnOyUOkD2WN",
-    Host: "dev-api.getwalkin.in",
-    "Access-Control-Allow-Origin": "*",
-    token
-  },
-
-  // request: async operation => {
-  //   const token = await localStorage.getItem("jwt");
-  //   operation.setContext({
-  //     headers: {
-  //       authorization: token ? `Bearer ${token}` : ""
-  //     }
-  //   });
+  // headers: {
+  //   api_key: "0X3bmLq5sBImabgEXkDVBfnOyUOkD2WN",
+  //   Host: "dev-api.getwalkin.in",
+  //   "Access-Control-Allow-Origin": "*",
+  //   token
   // },
+
+  request: async operation => {
+    const token = await localStorage.getItem("jwt");
+    operation.setContext({
+      headers: {
+        api_key: "0X3bmLq5sBImabgEXkDVBfnOyUOkD2WN",
+        Host: "dev-api.getwalkin.in",
+        "Access-Control-Allow-Origin": "*",
+        token
+      }
+    });
+  },
 
   onError: ({ graphQLErrors, networkError }) => {
 
