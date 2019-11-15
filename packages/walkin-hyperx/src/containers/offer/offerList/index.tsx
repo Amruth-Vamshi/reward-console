@@ -1,4 +1,4 @@
-import { CampaignHeader, InstantSearch, SortableDataTable } from '@walkinsole/shared';
+import { CampaignHeader, InstantSearch, SortableDataTable, WHeader } from '@walkinsole/shared';
 import { Button, Col, Dropdown, Menu } from 'antd';
 import * as jwt from 'jsonwebtoken';
 import React, { Component, Fragment } from 'react';
@@ -172,7 +172,7 @@ class OfferList extends Component<IProps, Partial<IState>> {
 		];
 		return (
 			<Fragment>
-				<div>
+				{/* <div>
 					<CampaignHeader
 						children={
 							<Fragment>
@@ -187,7 +187,8 @@ class OfferList extends Component<IProps, Partial<IState>> {
 							</Fragment>
 						}
 					/>
-				</div>
+				</div> */}
+				<WHeader title='Offers' extra={<Button type="primary" style={{ marginBottom: 0 }} onClick={this.onNewSegment}>CREATE OFFER</Button>} />
 				<HyperXContainer margin='32px' headerHeightInPX={152}>
 					<div className="gx-card">
 						<div className="gx-card-body">

@@ -28,8 +28,8 @@ export const returnMatchingKeyvalues = (array, key, obj) => {
 
 export const transposeObject = (obj, extraPropValue) => {
 	return Object.entries(obj).map(([field, value]) => ({
-		field,
-		value,
+		attributeName: field,
+		attributeValue: value,
 		operator: extraPropValue,
 	}));
 };

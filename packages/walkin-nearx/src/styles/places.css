@@ -5,55 +5,54 @@
 }
 
 .headerRow {
-	padding:13px 20px;
-	margin: 0;
+	padding:13px 20px !important;
+	margin: 0 !important;
 	background-color:#b3faff;
 }
 
 .headerRow1 {
-	padding:13px 20px;
-	margin: 0;
+	padding:13px 20px !important;
+	margin: 0 !important;
     background-color:#abd6a2;
     box-shadow: 0 6px 7px 0px rgba(0,0,0,0.2);
     /* border: #e9e9e9 solid 1px */
 }
 
 .buttonPrimary {
-	background-color: #3d31eb;
-    color: white;
+	background-color: #3d31eb !important;
+    color: white !important;
 }
 
 .bold{
-    font-weight: bold
+    font-weight: bold !important
 }
 
 
 .hotspot{   
-    font-size: 2.2em;
-    font-weight: bold;
-    font-family: sans-serif;
-    color: rgb(128, 128, 128);
+    font-size: 2.2em !important;
+    font-weight: bold !important;
+    font-family: sans-serif !important;
+    color: rgb(128, 128, 128) !important;
 }
 
 .placesListCard{
-    margin: 0px 10px 10px 10px;
-    color: #757575;
-
-    box-shadow: 0 3px 6px 0 rgba(0,0,0,0.2);
-    transition: 0.3s;
+    margin: 0px 10px 10px 10px !important;
+    color: #757575 !important;
+    box-shadow: 0 3px 6px 0 rgba(0,0,0,0.2) !important;
+    transition: 0.3s !important;
 }
 
 .card-shadow{
-    box-shadow: 0 3px 6px 0 rgba(0,0,0,0.2);
+    box-shadow: 0 3px 6px 0 rgba(0,0,0,0.2) !important;
 }
 
 .placesListCard .ant-card-body{
-   padding: 15px 0px
+   padding: 15px 0px !important
 
 }
 
 .placesListCard .ant-row {
-    margin: 0
+    margin: 0 !important
 }
 
 /* .placeCardLocation{
@@ -66,29 +65,29 @@
 }
   
 .placesListCard:hover {
-box-shadow: -1px 6px 12px 6px rgba(0, 0, 0, 0.384);
+    box-shadow: -1px 6px 12px 6px rgba(0, 0, 0, 0.384) !important;
 }
 
 .placeTableHeaders{
-    font-size: 17px;
-    margin: 0px 20px 5px 10px
+    font-size: 17px !important;
+    margin: 0px 20px 5px 10px !important
 }
 
 .headerCard{
-	margin-bottom: 0
+	margin-bottom: 0 !important
 }
 
 .createPlaceCard{
-    margin-bottom:0;
-    position:"absolute";
-    background-color:'#fffffff';
-    padding:24px;
-    width:100%;
-    bottom:0
+    margin-bottom:0 !important;
+    position:"absolute" !important;
+    background-color:'#fffffff' !important;
+    padding:24px !important;
+    width:100% !important;
+    bottom:0 !important
 }
 
 .createPlaceCard .ant-card-body{
-    background-color: #ffffff !important;
+    background-color: #ffffff !important; /*default !imp */
 }
 
 .hotspotCard{
@@ -103,14 +102,14 @@ box-shadow: -1px 6px 12px 6px rgba(0, 0, 0, 0.384);
 }
 
 .hotspotCard .ant-checkbox-inner{
-    width: 20px;
-    height: 20px;
+    width: 20px !important;
+    height: 20px !important;
 
 }
 
 .addHpForm{
-    height: 535px !important;
-    overflow-y: scroll !important;
+    height: 535px !important;           /*default !imp */
+    overflow-y: scroll !important;      /*default !imp */
 }
 
 
@@ -128,8 +127,8 @@ box-shadow: -1px 6px 12px 6px rgba(0, 0, 0, 0.384);
   
 
   .upload-list-csv .ant-upload-list-item-info .anticon-paper-clip {
-    font-size: 18px;
-    padding: 0px 5px;
+    font-size: 18px !important;
+    padding: 0px 5px !important;
   } 
   .upload-list-csv .ant-upload-list-item-name{
     padding-left: 30px;
@@ -142,7 +141,7 @@ box-shadow: -1px 6px 12px 6px rgba(0, 0, 0, 0.384);
   }
 
   .upload-list-csv .anticon-close{
-    font-size: 18px !important;
+    font-size: 18px !important;             /*default !imp */
   }
 
   .upload-list-csv .ant-upload-list-item{

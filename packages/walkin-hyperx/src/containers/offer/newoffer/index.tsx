@@ -1,199 +1,28 @@
-import React, { Component, Fragment } from 'react';
-import { Col, Alert, message, Radio, Spin, Checkbox, Input } from 'antd';
-import { withRouter } from 'react-router-dom';
-import { withApollo, graphql, compose, ApolloProviderProps } from 'react-apollo';
-import { createRule } from '../../../query/audience';
-import { OFFER_LIST } from '../../../utils/RouterConstants';
-import get from 'lodash/get';
-import { Stepper, CampaignHeader, CampaignFooter } from '@walkinsole/shared';
-import OfferBasicInfoForm from '../../../components/atoms/offerForm/basicInfo';
-import isEmpty from 'lodash/isEmpty';
 import './style.css';
-import OfferRedemptionRulesForm from '../../../components/atoms/offerForm/redemptionRule';
-import { products, categories, subOrganizations, createOffer, updateOffer, launchOffer } from '../../../query/offer';
-import { returnMatchingKeyvalues } from '../../../utils/common/index';
+
+import { CampaignFooter, Stepper, WHeader } from '@walkinsole/shared';
+import { Alert, message, Spin } from 'antd';
+import jwt from 'jsonwebtoken';
+import isEmpty from 'lodash/isEmpty';
 import omit from 'lodash/omit';
-import remove from 'lodash/remove';
-import { transposeObject, isValidObject } from '../../../utils/common';
-import jwt from 'jsonwebtoken'
-import { RouteChildrenProps } from "react-router";
+import React, { Component, Fragment } from 'react';
+import { ApolloProviderProps, compose, graphql, withApollo } from 'react-apollo';
+import { RouteChildrenProps } from 'react-router';
+
+import OfferBasicInfoForm from '../../../components/atoms/offerForm/basicInfo';
+import OfferRedemptionRulesForm from '../../../components/atoms/offerForm/redemptionRule';
+import { createRule } from '../../../query/audience';
+import { categories, createOffer, products, subOrganizations } from '../../../query/offer';
+import { isValidObject, transposeObject } from '../../../utils/common';
+import { OFFER_LIST } from '../../../utils/RouterConstants';
+import { cappingData, cartValueConditionData, couponTypeData, dummyBrandData, locationData, offerStepData, offerTypeData, productData, transactionTimeData } from './data';
 
 const { org_id }: any = jwt.decode(localStorage.getItem('jwt'))
 
-const offerStepData = [
-	{
-		id: 1,
-		route: 'basicInfo',
-		title: 'Basic Info',
-	},
-	{
-		id: 2,
-		title: 'Redemption Rule',
-		route: 'redemptionRule',
-	},
-];
-const couponTypeData = [
-	{
-		id: 1,
-		value: 1,
-		title: 'Static',
-	},
-	{
-		id: 2,
-		value: '2',
-		title: 'No Coupon Code',
-	},
-];
-const offerTypeData = [
-	{
-		id: 1,
-		val: 'PERCENTAGE_DISCOUNT',
-		title: 'Discount on the bill',
-	},
-	{
-		id: 2,
-		val: 'FLATX_DISCOUNT',
-		title: 'Flat Xrs off on the bill',
-	},
-	{
-		id: 3,
-		val: 'PERCENTAGE_CASHBACK',
-		title: '% Cashback on the bill',
-	},
-	{
-		id: 4,
-		val: 'FLATX_CASHBACK',
-		title: 'Flat X Cashback on the bill',
-	},
-	{
-		id: 5,
-		val: 'FREE_ITMES_FROM_LIST',
-		title: 'Any item/items from the list',
-	},
-];
-
-let transactionTimeData = [
-	{
-		id: 1,
-		val: 'frequency',
-		title: 'Frequency',
-	},
-	{
-		id: 2,
-		val: 'dayPart',
-		title: 'Daypart',
-	},
-	{
-		id: 3,
-		val: 'cartValue',
-		title: 'Cart value aka Bill size',
-	},
-];
-
-let productData = [
-	{
-		id: 1,
-		value: 'product_sku',
-		title: 'SKU',
-	},
-	{
-		id: 2,
-		value: 'product_brand',
-		title: 'Brand',
-	},
-	{
-		id: 3,
-		value: 'product_category',
-		title: 'Category',
-	},
-];
-
-let locationData = [
-	{
-		id: 1,
-		value: 'location_city',
-		title: 'City',
-	},
-	{
-		id: 2,
-		value: 'location_state',
-		title: 'State',
-	},
-	{
-		id: 3,
-		value: 'location_pincode',
-		title: 'Pincode',
-	},
-	{
-		id: 4,
-		value: 'location_store',
-		title: 'Store',
-	},
-];
-
-let cartValueConditionData = [
-	{
-		id: 1,
-		val: 'equalTo',
-		title: 'Equal to',
-	},
-	{
-		id: 2,
-		val: 'notEqualTo',
-		title: 'Not Equal to',
-	},
-	{
-		id: 3,
-		val: 'greaterThan',
-		title: 'Greater than',
-	},
-	{
-		id: 4,
-		val: 'equalToOrGreaterThan',
-		title: 'Equal/Greater than',
-	},
-	{
-		id: 5,
-		val: 'equalToOrLessThan',
-		title: 'Equal/Less than',
-	},
-];
-
-let cappingData = [
-	{
-		id: 1,
-		val: 'redemption_cap_max_discount',
-		title: 'Max discount',
-	},
-	{
-		id: 2,
-		val: 'redemption_cap_max_cashback',
-		title: 'Max Cashback',
-	},
-	{
-		id: 3,
-		val: 'redemption_cap_no_of_items',
-		title: 'No. of items',
-	},
-];
-
-const dummyBrandData = [
-	{
-		id: 1,
-		title: 'sample1',
-		val: 'sampleOne',
-	},
-	{
-		id: 3,
-		name: 'sample2',
-		val: 'sampleTwo',
-	},
-];
 
 interface IProps extends RouteChildrenProps<any>, ApolloProviderProps<any> {
 	// pauseCampaign: (variables: any) => any
 	loading?, error?, categories?, products?, organizationHierarchy?, subOrganizations?, data?
-
 }
 
 // this.props.history.push({ pathname: '/hyperx/campaigns', tabKey: "2" })
@@ -300,29 +129,17 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 	onTransactionTimeChange = value => {
 		if (value === 'dayPart') {
 			this.setState(
-				Object.assign(this.state.transactionTimeStatus, {
-					showFrequency: false,
-					showDayPart: true,
-					showCartValue: false,
-				})
+				Object.assign(this.state.transactionTimeStatus, { showFrequency: false, showDayPart: true, showCartValue: false })
 			);
 		}
 		if (value === 'frequency') {
 			this.setState(
-				Object.assign(this.state.transactionTimeStatus, {
-					showFrequency: true,
-					showDayPart: false,
-					showCartValue: false,
-				})
+				Object.assign(this.state.transactionTimeStatus, { showFrequency: true, showDayPart: false, showCartValue: false })
 			);
 		}
 		if (value === 'cartValue') {
 			this.setState(
-				Object.assign(this.state.transactionTimeStatus, {
-					showFrequency: false,
-					showDayPart: false,
-					showCartValue: true,
-				})
+				Object.assign(this.state.transactionTimeStatus, { showFrequency: false, showDayPart: false, showCartValue: true })
 			);
 		}
 	};
@@ -403,20 +220,12 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 		}
 	};
 
-	onBasicInfoSubmit = val => { };
 	saveFormValues = (current, state, ref) => {
 		const form = ref && ref.props.form;
 		if (form) {
 			form.validateFields((err, values) => {
-				if (err) {
-					return;
-				} else {
-					this.setState(
-						Object.assign(this.state.formValues, {
-							[state]: values,
-						})
-					);
-				}
+				if (err) return;
+				else this.setState(Object.assign(this.state.formValues, { [state]: values }));
 			});
 		}
 	};
@@ -437,9 +246,12 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 				let arr: Array<{}>;
 				combinedArray.map(val => {
 					reArrangedObj[val.valueOne] = val.valueTwo;
+					// console.log('');
 					arr = transposeObject(reArrangedObj && reArrangedObj, 'in');
 				});
 				let basicFormArray = { rules: arr, combinator: 'and' };
+
+				console.log('>>>', basicFormArray);
 				this.setState({
 					offerEligibityRule: basicFormArray,
 					offerType: offerType,
@@ -640,38 +452,20 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 			formValues,
 		} = this.state;
 		const { loading, error, categories, products, organizationHierarchy, subOrganizations } = this.props;
-		console.log(
-			'productsproductsproductsproducts',
-			products,
-			org_id,
-			subOrganizations
-		);
+		console.log('productsproductsproductsproducts', products, org_id, subOrganizations);
 		let productItems;
 		if (productDropDown.showProductList == true) {
-			productItems =
-				products &&
-				products.map(el => ({
-					value: el.sku,
-					id: el.id,
-					title: el.name,
-				}));
+			productItems = products && products.map(el => ({
+				value: el.sku,
+				id: el.id,
+				title: el.name,
+			}));
 		}
 		if (productDropDown.showCategoryList == true) {
-			productItems =
-				categories &&
-				categories
-					.map(el => ({
-						value: el.code,
-						id: el.id,
-						title: el.name,
-					}))
-					.concat([
-						{
-							value: 'all',
-							id: 'default',
-							title: 'All',
-						},
-					]);
+			productItems = categories && categories
+				.map(el => ({ value: el.code, id: el.id, title: el.name }))
+				.concat([{ value: 'all', id: 'default', title: 'All', }]);
+			console.log('productItems>>', productItems);
 		}
 		if (productDropDown.showBrandList == true) {
 			productItems =
@@ -732,34 +526,19 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 				<br /> <br /> <br />
 			</div>
 		}
-		if (error) {
-			return <p>{error}</p>;
-		}
+		// if (error) {
+		// 	return <p>{error}</p>;
+		// }
 		return (
 			<Fragment>
 				<div>
-					<CampaignHeader
-						children={
-							<Fragment>
-								<Col span={12}>
-									<h3 className="gx-text-grey paddingLeftStyle campaignHeaderTitleStyle">
-										Create Offer
-									</h3>
-								</Col>
-								<Col span={12} className="searchInputStyle">
-									<Stepper stepData={offerStepData} current={current} onChange={this.goToNextPage} />
-								</Col>
-							</Fragment>
-						}
-					/>
+					<WHeader title='Create Offer' extra={<Stepper stepData={offerStepData} current={current} onChange={this.goToNextPage} />} />
 					{/* Each step is different step because the form has to be validated and saved as draft */}
 					<div className="stepperContainer">
 						<div style={{ margin: '10px' }}>
 							{current === 0 && (
 								<Fragment>
-									<div>
-										<h3 className="gx-text-grey subTitlePadding">Basic Information</h3>
-									</div>
+									<h3 className="gx-text-grey subTitlePadding">Basic Information</h3>
 									<div className="offerBasicFormContainer">
 										<OfferBasicInfoForm
 											offerTypeData={offerTypeData}

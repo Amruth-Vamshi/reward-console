@@ -63,12 +63,12 @@ class SidebarContent extends React.Component<iProps, iState> {
                 <span>Home</span>
               </Link>
             </Menu.Item> */}
-            <Menu.Item key="nearx/dashboard">
+            {/* <Menu.Item key="nearx/dashboard">
               <Link to="/nearx/dashboard">
                 <i className="icon icon-dasbhoard" />
                 <span>Dashboard</span>
               </Link>
-            </Menu.Item>
+            </Menu.Item> */}
             <Menu.Item key="nearx/places">
               <Link to="/nearx/places">
                 <i className="icon icon-geo-location" />
@@ -83,13 +83,12 @@ class SidebarContent extends React.Component<iProps, iState> {
                 <span>Apps</span>
               </Link>
             </Menu.Item>
-            <Menu.Item key="nearx/hooks">
+            {/* <Menu.Item key="nearx/hooks">
               <Link to="/nearx/hooks">
                 <i className="icon icon-link" />
-                {/* <IntlMessages id="sidebar.samplePage" /> */}
                 <span>Web Hooks</span>
               </Link>
-            </Menu.Item>
+            </Menu.Item> */}
             <Menu.Item key="nearx/documentation">
               <a
                 target="_blank"
