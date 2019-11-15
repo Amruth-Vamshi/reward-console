@@ -5,7 +5,7 @@
 }
 
 .appHeader{
-    margin: 25px 10px 20px 40px;
+    margin: 25px 10px 20px 40px !important;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow'
 }
 
