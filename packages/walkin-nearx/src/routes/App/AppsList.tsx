@@ -272,7 +272,7 @@ class AppsList extends React.Component<iProps, iState> {
                       </Button>
                     </a>
                     <div >NearX ARR file</div>
-                    <div> Integration reference <a href="https://drive.google.com/open?id=1W3UCxBm3LxSCdWhjvkHZIr_GmcR5Y3Jq">here</a></div>
+                    <div> Integration reference <a target="_blank" href="https://nearx.getwalk.in/docs/integrations">here</a></div>
                   </div>
                 </div>
               </Col>
