@@ -518,26 +518,24 @@ class CreateCampaign extends React.Component<CreateCampaignProps,CreateCampaignS
         }
         />
         <div className="stepperContainer">
-        <div style={{ margin: '30px 30px 30px 10px', height: '60vh' }}>
+        <div style={{ margin: '20px 20px 20px 30px', height: '68vh' }}>
          {this.getContainer()}
         </div>
          
         </div>
        
-         
-        <div style={{}}>
-        <div className="gx-card campFooter" style={{ position: 'absolute', width: '100%' }}>
-        <div className="gx-card-body" style={{ background: "#F6F6F6" }}>
-        <CampaignFooter
-            loading={this.state.loading}
-            nextButtonText={current>=5?"Launch" : 'Save and Next'}
-            saveDraftText={current === 0 ? "" : 'Save Draft'}
-            saveDraft={()=>console.log("save to draft")}
-            goToPage2={this.goToNextPage.bind(this, current + 1)}
-          />
-        </div>
-        </div>
-          </div>
+        <div className="campFooterRefinex" style={{ position: 'absolute', width: '100%' }}>
+						<div className="gx-card-body" style={{ background: "#FFFFFF" }}>
+							<CampaignFooter
+								loading={this.state.loading}
+								nextButtonText={current === 4 ? 'Launch' : 'Save and Next'}
+								saveDraftText={current === 0 ? "" : 'Save Draft'}
+								saveDraft={()=>console.log("save to draft")}
+								goToPage2={this.goToNextPage.bind(this, current + 1)}
+							/>
+						</div>
+					</div>
+        
           </div>
     );
   }

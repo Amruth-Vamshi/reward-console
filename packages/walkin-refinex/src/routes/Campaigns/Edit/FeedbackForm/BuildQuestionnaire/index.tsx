@@ -392,11 +392,7 @@ class Questionnaire extends React.Component<QuestionnaireProps, QuestionnaireSta
                 isQuestionLoading={isQuestionLoading}
                 onLinkChoiceToQuestion={this.onLinkChoiceToQuestion}
               />
-            ) : (
-                <QuestionTypeSelector
-                  onQuestionTypeSelector={this.onQuestionTypeSelector}
-                />
-              ) :
+            ) : null :
               !addQuestion && !isEmpty(questionToEdit) ? (
                 <FormPane
                   questionnaire={this.props.questionnaire}

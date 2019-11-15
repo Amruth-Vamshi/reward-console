@@ -1,14 +1,14 @@
 .searchInputStyle {
-	display: flex;
-	justify-content: flex-end;
+	display: flex !important;
+	justify-content: flex-end !important;
 }
 
 .divCenter {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	height: 100%;
+	display: flex !important;
+	justify-content: center !important;
+	align-items: center !important;
+	height: 100% !important;
 }
 .RefineX-campaignList .gx-card-tabs .ant-tabs-tab{
-	margin-right: 50px
+	margin-right: 50px !important;
 }
