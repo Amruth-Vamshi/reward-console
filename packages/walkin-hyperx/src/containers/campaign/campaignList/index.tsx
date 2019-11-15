@@ -1,4 +1,4 @@
-import './style.css';
+import '../styles.css';
 
 import { CampaignHeader, InstantSearch, SortableDataTable } from '@walkinsole/shared';
 import { Widget } from '@walkinsole/walkin-components';

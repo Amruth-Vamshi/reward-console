@@ -9,6 +9,7 @@ import {
 	OFFER_LIST,
 	NEW_OFFER,
 	CAMPAIGN_DASHBOARD,
+	OFFER_DASHBOARD,
 } from '../src/utils/RouterConstants';
 import CampaignList from './containers/campaign/campaignList';
 import CampaignDashboard from './containers/campaign/campaignDashboard';
@@ -18,6 +19,7 @@ import NewSegment from './containers/segment/newSegment';
 import OfferList from './containers/offer/offerList';
 import NewOffer from './containers/offer/newoffer';
 import { RouteChildrenProps } from "react-router";
+import offerDashboard from "./containers/offer/offerDashboard";
 
 interface HyperXRoutesProps extends RouteChildrenProps {
 
@@ -36,6 +38,7 @@ const HyperXRoutes: React.FunctionComponent<HyperXRoutesProps> = ({ match }) => 
 				<Route path={NEW_SEGMENT} component={NewSegment} />
 				<Route path={`${NEW_SEGMENT}/:id`} component={NewSegment} />
 				<Route exact path={OFFER_LIST} component={OfferList} />
+				<Route path={OFFER_DASHBOARD} component={offerDashboard} />
 				<Route path={NEW_OFFER} component={NewOffer} />
 				<Route path="/hyperx/*" component={CampaignList} />
 			</Switch>
