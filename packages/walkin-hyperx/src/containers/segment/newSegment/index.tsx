@@ -5,7 +5,7 @@ import { withApollo, graphql, compose, ApolloProviderProps } from 'react-apollo'
 import { RULE_ATTRIBUTES, CREATE_RULE, createRule, createSegment, UPDATE_RULE, UPDATE_SEGMENT } from '../../../query/audience';
 import './style.css';
 import { SEGMENT_LIST } from '../../../utils/RouterConstants';
-import { WalkinQueryBuilder, CampaignHeader } from '@walkinsole/shared';
+import { WalkinQueryBuilder, CampaignHeader, WHeader } from '@walkinsole/shared';
 import * as jwt from "jsonwebtoken";
 import { GET_ALL_APPS_OF_ORGANIZATION } from "@walkinsole/walkin-core/src/PlatformQueries";
 import { RouteChildrenProps } from "react-router";
@@ -221,7 +221,7 @@ class NewSegment extends Component<IProps, Partial<IState>> {
 		else this.state.errors.rule = 'you dont have any rule attributes'
 		return (
 			<Fragment>
-				<div>
+				{/* <div>
 					<CampaignHeader>
 						<Col span={12}>
 							<h3 className="gx-text-grey paddingLeftStyle campaignHeaderTitleStyle">
@@ -229,7 +229,8 @@ class NewSegment extends Component<IProps, Partial<IState>> {
 							</h3>
 						</Col>
 					</CampaignHeader>
-				</div>
+				</div> */}
+				<WHeader title={isDuplicateSegment ? 'Duplicate segment' : 'New Segment'} />
 				<div style={{ margin: '32px' }}>
 					<div style={{ width: '50%', marginBottom: '40px' }}>
 						<div style={{ marginBottom: '10px' }}>

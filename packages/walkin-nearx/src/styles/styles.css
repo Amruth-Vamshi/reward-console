@@ -14,16 +14,16 @@
 }
 
 .headerCard .ant-card-body{
-	background-color: rgb(238, 238, 238);
-	padding: 0px !important;
+	background-color: rgb(238, 238, 238) !important;
+	padding: 0px !important;		 /*default !imp */
 }
 
 .headerCard .ant-tabs-bar {
-	margin: 0;
+	margin: 0 !important;
 }
 
 .haderCard .ant-tabs {
-    margin-top: -45px;
+    margin-top: -45px !important;
 }
 
   /* .ant-layout > .gx-layout-content {
@@ -32,7 +32,7 @@
 
 .NearX-Topbar{
 	/* background-color: #ececec; */
-	background-image: linear-gradient(to right, #052c53 , rgb(36, 157, 179));
+	background-image: linear-gradient(to right, #052c53 , rgb(36, 157, 179)) !important;
 	/* background-image: linear-gradient(to right, #052c53 , #4cc3c7); */
 }
 
@@ -43,20 +43,20 @@
 }
 
 .NearX-sidebar .ant-menu-item {
-	font-size: 18px;
-	margin-bottom: 20px;
+	font-size: 18px !important;
+	margin-bottom: 20px !important;
   }
   
   .NearX-sidebar .ant-menu {
-	padding-top: 20px;
+	padding-top: 20px !important;
   }
   
   .NearX-sidebar .ant-menu-inline .ant-menu-item:not(:last-child) {
-	margin-bottom: 10px;
+	margin-bottom: 10px !important;
   }
   
   .NearX-sidebar .ant-menu-dark .ant-menu-item-selected > a {
-	color: #5f0;
+	color: #5f0 !important;
   }
 
 /* .headerRow {
@@ -67,7 +67,6 @@
 
 .headerTitle{
 	font-size: 17px
-
 }
 
 /* .mainDrawer div.ant-drawer-wrapper-body{

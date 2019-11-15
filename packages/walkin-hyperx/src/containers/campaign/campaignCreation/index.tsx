@@ -6,7 +6,7 @@ import { withRouter, } from "react-router-dom";
 // import Offer from "./offer";
 // import Communication from "./communication";
 import { BasicInfo, Audience, Offer, Communication } from "@walkinsole/shared/src/components/campaignCreation";
-import { campaignOverview as Overview } from "@walkinsole/shared";
+import { campaignOverview as Overview, WHeader } from "@walkinsole/shared";
 import { allSegments, RULE_ATTRIBUTES, GET_AUDIENCES, CREATE_AUDIENCE, CREATE_RULE, AUDIENCE_COUNT, UPDATE_RULE, UPDATE_AUDIENCES } from "../../../query/audience";
 import { getOffers, ADD_OFFER_TO_CAMPAIGN, GET_OFFER_FOR_CAMPAIGN } from "../../../query/offer";
 import { withApollo, graphql, compose, ApolloProviderProps } from 'react-apollo';
@@ -793,7 +793,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 
 		return (
 			<div>
-				<CampaignHeader
+				{/* <CampaignHeader
 					children={
 						<Fragment>
 							<Col sm={5} md={8} lg={10} xl={12} xxl={15}>
@@ -810,7 +810,15 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 							</Col>
 						</Fragment>
 					}
-				/>
+				/> */}
+
+				<WHeader title={update ? "Update Campaign" : "Create Campaign"} extra={<Stepper
+					stepData={stepData} current={current} // onChange={this.goToNextPage.bind(this)}
+				/>} />
+
+
+
+
 				{/* <div className="HyperXContainer">
 					<div style={{ margin: '40px', height: '60vh' }}> */}
 				<HyperXContainer margin='40px' headerHeightInPX={225} heightInVH={60}>

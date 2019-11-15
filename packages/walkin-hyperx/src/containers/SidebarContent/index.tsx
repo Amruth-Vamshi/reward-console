@@ -1,10 +1,17 @@
 import * as React from "react";
-import { Menu } from 'antd';
+import { Menu, Icon } from 'antd';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { CustomScrollbars, Auxiliary, IntlMessages } from '@walkinsole/walkin-components';
 import SidebarLogo from './SidebarLogo';
 import { withRouter } from 'react-router-dom';
-import { Icon } from "antd";
+// import Dashboard from "../../Icons/IconComponents/dashboard";
+// import Survey from "../../Icons/IconComponents/survey";
+// import Segments from "../../Icons/IconComponents/segemnts";
+// import Analytics from "../../Icons/help.svg";
+// const help = require("../../Icons/help.svg")
+
+
+
 
 import {
 	NAV_STYLE_NO_HEADER_EXPANDED_SIDEBAR,
@@ -13,7 +20,7 @@ import {
 } from '@walkinsole/walkin-components/src/constants/ThemeSetting';
 import { compose, graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import { CAMPAIGN_MANAGEMENT, SEGMENT_LIST, OFFER_LIST } from '../../utils/RouterConstants';
+import { CAMPAIGN_MANAGEMENT, SEGMENT_LIST, OFFER_LIST, OFFER_DASHBOARD } from '../../utils/RouterConstants';
 
 const SubMenu = Menu.SubMenu;
 
@@ -80,14 +87,17 @@ class SidebarContent extends React.Component<SidebarContentProps, SidebarContent
 							</Link>
 						</Menu.Item>
 						<Menu.Item key="hyperx/offers">
-							<Link to={OFFER_LIST}>
+							<Link to={OFFER_DASHBOARD}>
 								<i className="icon icon-tag" />
+
+								{/* <Icon component={Analytics} className='' /> */}
 								<span>Offers</span>
 							</Link>
 						</Menu.Item>
 						{/* <Menu.Item key="analytics">
 							<Link to="/nearx">
-								<i className="icon icon-geo-location" />
+								// <i className="icon icon-geo-location" />
+								<Icon component={Analytics} className='' />
 								Analytics
 							</Link>
 						</Menu.Item>

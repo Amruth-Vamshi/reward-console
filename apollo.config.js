@@ -3,9 +3,10 @@ module.exports = {
     name: "walkin-console",
     service: {
       name: "walkin-app",
-      url: "https://dev-api.getwalkin.in/core_dev/graphql"
+      url: "https://dev-api.getwalkin.in/core_dev/graphql",
+      skipSSLValidation: true
     },
-    includes: ["packages/**/*.js"],
-    excludes: ["packages/walkin-nearx/**/*.js"]
+    includes: ["packages/**/**/*.tsx"],
+    excludes: ["packages/walkin-nearx/**/*.tsx"]
   }
 };
