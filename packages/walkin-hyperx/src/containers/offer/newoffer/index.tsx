@@ -17,9 +17,6 @@ import { isValidObject, transposeObject } from '../../../utils/common';
 import { OFFER_LIST } from '../../../utils/RouterConstants';
 import { cappingData, cartValueConditionData, couponTypeData, dummyBrandData, locationData, offerStepData, offerTypeData, productData, transactionTimeData } from './data';
 
-const { org_id }: any = jwt.decode(localStorage.getItem('jwt'))
-
-
 interface IProps extends RouteChildrenProps<any>, ApolloProviderProps<any> {
 	// pauseCampaign: (variables: any) => any
 	loading?, error?, categories?, products?, organizationHierarchy?, subOrganizations?, data?
@@ -233,6 +230,7 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 	goToNextPage = (current: number, e: any) => {
 		let { client } = this.props;
 		const { formValues } = this.state;
+		const { org_id }: any = jwt.decode(localStorage.getItem('jwt'))
 		if (current === 1 && e && e.target.innerText === 'Next') {
 			if (isEmpty(formValues.basicForm) || isValidObject(formValues.basicForm)) {
 				this.saveFormValues(current, 'basicForm', this.basicFormRef);
@@ -452,7 +450,8 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 			formValues,
 		} = this.state;
 		const { loading, error, categories, products, organizationHierarchy, subOrganizations } = this.props;
-		console.log('productsproductsproductsproducts', products, org_id, subOrganizations);
+
+		console.log('productsproductsproductsproducts', products, subOrganizations);
 		let productItems;
 		if (productDropDown.showProductList == true) {
 			productItems = products && products.map(el => ({
@@ -617,9 +616,12 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 export default withApollo(
 	compose(
 		graphql(products, {
-			options: (props: IProps) => ({
-				variables: { organizationId: org_id },
-			}),
+			options: (props: IProps) => {
+				var { org_id }: any = jwt.decode(localStorage.getItem('jwt'))
+				return ({
+					variables: { organizationId: org_id },
+				})
+			},
 			props: ({ data: { loading, error, products } }: any) => ({
 				loading,
 				products,
@@ -639,12 +641,15 @@ export default withApollo(
 			}),
 		}),
 		graphql(subOrganizations, {
-			options: props => ({
-				variables: {
-					parentId: org_id,
-					type: 'STORE',
-				},
-			}),
+			options: props => {
+				var { org_id }: any = jwt.decode(localStorage.getItem('jwt'))
+				return ({
+					variables: {
+						parentId: org_id,
+						type: 'STORE',
+					},
+				})
+			},
 			props: ({ data: { loading, error, subOrganizations } }: any) => ({
 				loading,
 				subOrganizations,

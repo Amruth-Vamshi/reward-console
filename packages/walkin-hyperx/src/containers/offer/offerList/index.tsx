@@ -11,9 +11,6 @@ import { NEW_OFFER } from '../../../utils/RouterConstants';
 import { DEFAULT_ACTIVE_STATUS } from '../../../utils';
 import HyperXContainer from '../../../components/atoms/HyperXContainer';
 
-const { org_id, id }: any = jwt.decode(localStorage.getItem("jwt"));
-
-
 interface IProps extends RouteChildrenProps, ApolloProviderProps<any> {
 	refetchOffers
 	getOffers
@@ -210,23 +207,29 @@ class OfferList extends Component<IProps, Partial<IState>> {
 
 export default withRouter(
 	graphql(getOffers, {
-		options: (ownProps: any) => ({
-			variables: {
-				organizationId: org_id,
-			},
-			forceFetch: true,
-			fetchPolicy: 'network-only',
-		}),
-		props: ({ data: { loading, error, getOffers, refetch } }: any) => ({
-			loading, getOffers, error,
-			refetchOffers: (props: any) => {
-				refetch({
-					variables: {
-						organization_id: org_id,
-						status: DEFAULT_ACTIVE_STATUS,
-					},
-				});
-			},
-		}),
+		options: (ownProps: any) => {
+			const { org_id }: any = jwt.decode(localStorage.getItem('jwt'))
+			return ({
+				variables: {
+					organizationId: org_id,
+				},
+				forceFetch: true,
+				fetchPolicy: 'network-only',
+			})
+		},
+		props: ({ data: { loading, error, getOffers, refetch } }: any) => {
+			const { org_id }: any = jwt.decode(localStorage.getItem('jwt'))
+			return ({
+				loading, getOffers, error,
+				refetchOffers: (props: any) => {
+					refetch({
+						variables: {
+							organization_id: org_id,
+							status: DEFAULT_ACTIVE_STATUS,
+						},
+					});
+				},
+			})
+		},
 	})(withApollo(OfferList))
 );
