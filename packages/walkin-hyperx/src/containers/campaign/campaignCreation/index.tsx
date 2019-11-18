@@ -23,8 +23,6 @@ import { FormComponentProps } from "antd/lib/form";
 import { History } from "history";
 import HyperXContainer from "../../../components/atoms/HyperXContainer";
 
-const { org_id }: any = jwt.decode(localStorage.getItem('jwt'))
-
 const stepData = [{
 	id: 1,
 	route: "basicInfo",
@@ -158,7 +156,6 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 
 	UNSAFE_componentWillMount = () => {
 		const { location, match, client } = this.props;
-		// const { id, org_id }: any = jwt.decode(localStorage.getItem("jwt"))
 		if (location && location.state) {
 			console.log("this...", location.state)
 			if (location.state.update)
@@ -384,6 +381,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 	}
 
 	updateCommunicationWithMessageTemplate = (current, values) => {
+		let { org_id }: any = jwt.decode(localStorage.getItem('jwt'))
 		let { communicationSelected, scheduleData, scheduleSaveMark, communication } = this.state;
 		console.log('COMM', communicationSelected, values);
 		this.setState({ loading: true })
@@ -427,6 +425,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 	}
 
 	createCommunicationWithMessageTemplate = (current, values) => {
+		const { org_id }: any = jwt.decode(localStorage.getItem('jwt'))
 		let { communicationSelected, scheduleData, scheduleSaveMark } = this.state;
 		console.log('COMM', communicationSelected, values);
 		this.setState({ loading: true })
@@ -526,6 +525,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 	linkOffer = current => {
 		if (this.state.noOfferRequired) this.setState({ current })
 		else if (this.state.offer != "" && !this.state.offerCreated) {
+			let { org_id }: any = jwt.decode(localStorage.getItem('jwt'))
 			this.setState({ loading: true })
 			var input = {
 				campaignId: this.state.campaign.id,
@@ -548,6 +548,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 	ruleQuery = current => {
 		if (this.state.audienceFilterRule.rules.length)
 			if (!this.state.audienceFilterRuleCreated) {
+				let { org_id }: any = jwt.decode(localStorage.getItem('jwt'))
 				const input = {
 					name: Math.random().toString(36).substring(7),
 					description: "",
@@ -681,7 +682,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 		const { priorityChosen, controlValue } = this.state;
 		if (!this.props.allApplications.organization) return console.log('No Applications for your organization');
 		const { allApplications: { organization } } = this.props;
-
+		let { org_id }: any = jwt.decode(localStorage.getItem('jwt'))
 		console.log(organization.applications);
 		const input = {
 			...values,
@@ -743,6 +744,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 
 	onValuesSelected = e => {
 		// let { allApplications: { organization } } = this.props;
+		let { org_id }: any = jwt.decode(localStorage.getItem('jwt'))
 		this.setState({ selectedSegments: e })
 		this.state.errors.segment = ''
 		this.props.client.query({
@@ -940,36 +942,44 @@ export default withRouter(
 	compose(
 		graphql(allSegments, {
 			name: 'segmentList',
-			options: ownProps => ({
-				variables: {
-					organization_id: org_id,
-					status: 'ACTIVE',
-				},
-				fetchPolicy: 'network-only',
-			}),
+			options: ownProps => {
+				let { org_id }: any = jwt.decode(localStorage.getItem('jwt'))
+				return ({
+					variables: {
+						organization_id: org_id,
+						status: 'ACTIVE',
+					},
+					fetchPolicy: 'network-only',
+				})
+			},
 		}),
 		graphql(RULE_ATTRIBUTES, {
 			name: 'allAttributes',
-			options: ownProps => ({
-				variables: {
-					input: {
-						entityName: "CustomerSearch",
-						status: DEFAULT_ACTIVE_STATUS,
-						organizationId: org_id,
-					}
-				},
-				fetchPolicy: 'network-only',
-			}),
+			options: ownProps => {
+				let { org_id }: any = jwt.decode(localStorage.getItem('jwt'))
+				return ({
+					variables: {
+						input: {
+							entityName: "CustomerSearch",
+							status: DEFAULT_ACTIVE_STATUS,
+							organizationId: org_id,
+						}
+					}, fetchPolicy: 'network-only',
+				})
+			},
 		}),
 		graphql(getOffers, {
 			name: 'allOffers',
-			options: ownProps => ({
-				variables: {
-					organizationId: org_id,
-					state: "LIVE"
-				},
-				fetchPolicy: 'network-only',
-			})
+			options: ownProps => {
+				let { org_id }: any = jwt.decode(localStorage.getItem('jwt'))
+				return ({
+					variables: {
+						organizationId: org_id,
+						state: "LIVE"
+					},
+					fetchPolicy: 'network-only',
+				})
+			}
 		}),
 		// graphql(GET_AUDIENCES, {
 		// 	name: 'linkedAudiences',
@@ -985,6 +995,7 @@ export default withRouter(
 		graphql(GET_ALL_APPS_OF_ORGANIZATION, {
 			name: "allApplications",
 			options: props => {
+				let { org_id }: any = jwt.decode(localStorage.getItem('jwt'))
 				return {
 					variables: {
 						id: org_id
