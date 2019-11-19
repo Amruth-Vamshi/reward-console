@@ -16,6 +16,7 @@ import { categories, createOffer, products, subOrganizations } from '../../../qu
 import { isValidObject, transposeObject } from '../../../utils/common';
 import { OFFER_LIST } from '../../../utils/RouterConstants';
 import { cappingData, cartValueConditionData, couponTypeData, dummyBrandData, locationData, offerStepData, offerTypeData, productData, transactionTimeData } from './data';
+import HyperXContainer from '../../../components/atoms/HyperXContainer';
 
 interface IProps extends RouteChildrenProps<any>, ApolloProviderProps<any> {
 	// pauseCampaign: (variables: any) => any
@@ -533,66 +534,67 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 				<div>
 					<WHeader title='Create Offer' extra={<Stepper stepData={offerStepData} current={current} onChange={this.goToNextPage} />} />
 					{/* Each step is different step because the form has to be validated and saved as draft */}
-					<div className="stepperContainer">
-						<div style={{ margin: '10px' }}>
-							{current === 0 && (
-								<Fragment>
-									<h3 className="gx-text-grey subTitlePadding">Basic Information</h3>
-									<div className="offerBasicFormContainer">
-										<OfferBasicInfoForm
-											offerTypeData={offerTypeData}
-											handleOfferTypeChange={this.onOfferTypeChange}
-											offerTypeStatus={offerTypeStatus}
-											transactionTimeData={transactionTimeData}
-											productData={productData}
-											locationData={locationData}
-											handleTransactionTimeChange={this.onTransactionTimeChange}
-											transactionTimeStatus={transactionTimeStatus}
-											cartValueConditionData={cartValueConditionData}
-											wrappedComponentRef={this.saveFormRef}
-											cappingData={cappingData}
-											// handleProductChange={this.onProductChange}
-											productDropDown={productDropDown}
-											location={organizationHierarchy}
-											// handleLocationChange={this.onLocationChange}
-											locationDropDown={locationDropDown}
-											locationArray={locationArray}
-											values={values}
-											productItems={productItems}
-											onSelectOneValuesSelected={this.onValuesSelected}
-											onSelectTwoValuesSelected={this.onSelectTwoValuesSelected}
-											productValues={productValues}
-											locationValues={locationValues}
-											formValues={formValues.basicForm}
-											products={products}
-											couponDefaultValue={1}
-											onCouponChange={this.onCouponChange}
-											couponTypeSelected={couponTypeSelected}
-											couponInputLabel="Enter Coupon label"
-											onCouponLabelChange={this.onCouponLabelChange}
-											// OnNoCouponCodeChange={this.OnNoCouponCodeChange}
-											checked={true}
-											couponTypeData={couponTypeData}
-										/>
-									</div>
-									{newOfferErrorMessage !== '' && <Alert message={newOfferErrorMessage} type="error" />}
-								</Fragment>
-							)}
-							{current === 1 && (
-								<Fragment>
-									<div>
-										<h3 className="gx-text-grey subTitlePadding">Redemption Rules</h3>
-									</div>
-									<div className="offerBasicFormContainer">
-										<OfferRedemptionRulesForm
-											cappingData={cappingData}
-											wrappedComponentRef={this.saveRedemptionFormRef}
-											formValues={formValues.redemptionForm}
-										/>
-									</div>
-								</Fragment>
-							)}
-						</div></div>
+					<HyperXContainer margin='40px' headerHeightInPX={250}>
+						{current === 0 && (
+							<Fragment>
+								<h3 className="gx-text-grey subTitlePadding">Basic Information</h3>
+								<div className="offerBasicFormContainer">
+									<OfferBasicInfoForm
+										offerTypeData={offerTypeData}
+										handleOfferTypeChange={this.onOfferTypeChange}
+										offerTypeStatus={offerTypeStatus}
+										transactionTimeData={transactionTimeData}
+										productData={productData}
+										locationData={locationData}
+										handleTransactionTimeChange={this.onTransactionTimeChange}
+										transactionTimeStatus={transactionTimeStatus}
+										cartValueConditionData={cartValueConditionData}
+										wrappedComponentRef={this.saveFormRef}
+										cappingData={cappingData}
+										// handleProductChange={this.onProductChange}
+										productDropDown={productDropDown}
+										location={organizationHierarchy}
+										// handleLocationChange={this.onLocationChange}
+										locationDropDown={locationDropDown}
+										locationArray={locationArray}
+										values={values}
+										productItems={productItems}
+										onSelectOneValuesSelected={this.onValuesSelected}
+										onSelectTwoValuesSelected={this.onSelectTwoValuesSelected}
+										productValues={productValues}
+										locationValues={locationValues}
+										formValues={formValues.basicForm}
+										products={products}
+										couponDefaultValue={1}
+										onCouponChange={this.onCouponChange}
+										couponTypeSelected={couponTypeSelected}
+										couponInputLabel="Enter Coupon label"
+										onCouponLabelChange={this.onCouponLabelChange}
+										// OnNoCouponCodeChange={this.OnNoCouponCodeChange}
+										checked={true}
+										couponTypeData={couponTypeData}
+									/>
+								</div>
+								{newOfferErrorMessage !== '' && <Alert message={newOfferErrorMessage} type="error" />}
+							</Fragment>
+						)}
+						{current === 1 && (
+							<Fragment>
+								<div>
+									<h3 className="gx-text-grey subTitlePadding">Redemption Rules</h3>
+								</div>
+								<div className="offerBasicFormContainer">
+									<OfferRedemptionRulesForm
+										cappingData={cappingData}
+										wrappedComponentRef={this.saveRedemptionFormRef}
+										formValues={formValues.redemptionForm}
+									/>
+								</div>
+							</Fragment>
+						)}
+
+					</HyperXContainer>
+
 					<div>
 						<div className="gx-card campFooter" style={{ position: 'absolute', width: '100%' }}>
 							<div className="gx-card-body" style={{ background: "#F6F6F6" }}>
