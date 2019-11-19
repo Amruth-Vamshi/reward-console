@@ -5,31 +5,34 @@ import { Select, Input, Button } from "antd";
 const { Option } = Select;
 
 interface WebhookFormProps {
-  webhookDetails: any,
-  events: any,
-  isLoading: boolean,
-  onSave: (a: any) => void
+  webhookDetails: any;
+  events: any;
+  isLoading: boolean;
+  onSave: (a: any) => void;
 }
 
 interface WebhookFormState {
-  headerEntries: any,
+  headerEntries: any;
   webhookDetails: {
-    id: string,
-    event: string,
-    url: string,
-    name: string,
-    headers: any,
-    method: string,
-    status: string
-  }
+    id: string;
+    event: string;
+    url: string;
+    name: string;
+    headers: any;
+    method: string;
+    status: string;
+  };
 }
-export default class WebhookForm extends React.Component<WebhookFormProps, WebhookFormState> {
+export default class WebhookForm extends React.Component<
+  WebhookFormProps,
+  WebhookFormState
+> {
   constructor(props: WebhookFormProps) {
     super(props);
     this.state = {
       headerEntries: [[]],
       webhookDetails: {
-        id: '',
+        id: "",
         event: "",
         url: "",
         name: "",
@@ -61,26 +64,71 @@ export default class WebhookForm extends React.Component<WebhookFormProps, Webho
   }
 
   onChange = (type: string, value: any) => {
-    this.setState((prevState: Readonly<WebhookFormState>, props: Readonly<WebhookFormProps>) => {
-      return {
-        ...prevState,
-        [type]: value
+    this.setState(
+      (
+        prevState: Readonly<WebhookFormState>,
+        props: Readonly<WebhookFormProps>
+      ) => {
+        return {
+          ...prevState,
+          [type]: value
+        };
       }
-    });
+    );
   };
 
   onChangeHeadersHandler = (value: any, index: number, subIndex: number) => {
+    console.log(value, index, subIndex);
+
     let { headerEntries } = this.state;
     headerEntries[index][subIndex] = value;
     this.setState({ headerEntries });
   };
 
+  onAddHeaderField = () => {
+    let { headerEntries } = this.state;
+
+    // headerEntries.map((headerEntry: Array<any>, index: number) => {
+    //   if (headerEntry.length === 2)
+    // });
+    this.setState({ headerEntries: [...headerEntries, []] });
+  };
+
+  //Object.fromEntries is not supported in typescript and in some older browser, following function is the alternative.
+  ObjectFromEntries = iter => {
+    const obj = {};
+
+    for (const pair of iter) {
+      if (Object(pair) !== pair) {
+        throw new TypeError("iterable for fromEntries should yield objects");
+      }
+
+      // Consistency with Map: contract is that entry has "0" and "1" keys, not
+      // that it is an array or iterable.
+
+      const { "0": key, "1": val } = pair;
+
+      Object.defineProperty(obj, key, {
+        configurable: true,
+        enumerable: true,
+        writable: true,
+        value: val
+      });
+    }
+
+    return obj;
+  };
+
   onSave = () => {
     let { headerEntries, webhookDetails } = this.state;
-    let filteredHeaderEntries = headerEntries.filter((headerEntry: Array<any>, index: number) => {
-      return headerEntry.length === 2;
-    });
+    let filteredHeaderEntries = this.ObjectFromEntries(
+      headerEntries.filter((headerEntry: Array<any>, index: number) => {
+        return headerEntry.length === 2;
+      })
+    );
+
     let headers = JSON.stringify(filteredHeaderEntries);
+
     let input: any = {
       headers,
       method: webhookDetails.method,
@@ -108,6 +156,7 @@ export default class WebhookForm extends React.Component<WebhookFormProps, Webho
     }
     const selectBefore = (
       <Select
+        getPopupContainer={() => document.getElementById("WebhookInputWrapper")}
         onChange={(method: any) => {
           this.onChange("webhookDetails", {
             ...webhookDetails,
@@ -122,8 +171,6 @@ export default class WebhookForm extends React.Component<WebhookFormProps, Webho
       </Select>
     );
 
-    console.log(headerEntries, "webhook header render");
-
     return (
       <div className="webhookFormContainer">
         <div
@@ -132,9 +179,14 @@ export default class WebhookForm extends React.Component<WebhookFormProps, Webho
           }}
         >
           <div className="webhookEditTitle">{header}</div>
-          <div className="webhookTypeInputWrapper">
-            <div className="InputLabel">Select Type</div>
+          <div id="WebhookInputWrapper" className="webhookTypeInputWrapper">
+            <div className="InputLabel">Select Event Type*</div>
             <Select
+              showSearch
+              getPopupContainer={() =>
+                document.getElementById("WebhookInputWrapper")
+              }
+              disabled={Boolean(webhookDetails.id)}
               defaultValue={webhookDetails.event}
               style={{ width: "100%" }}
               size="large"
@@ -160,7 +212,7 @@ export default class WebhookForm extends React.Component<WebhookFormProps, Webho
             </div>
           </div>
           <div className="webhookLabelInputWrapper">
-            <div className="InputLabel">Label</div>
+            <div className="InputLabel">Label*</div>
 
             <Input
               size="large"
@@ -175,7 +227,7 @@ export default class WebhookForm extends React.Component<WebhookFormProps, Webho
             />
           </div>
           <div className="webhookURLInputWrapper">
-            <div className="InputLabel">URL</div>
+            <div className="InputLabel">URL*</div>
             <Input
               size="large"
               addonBefore={selectBefore}
@@ -190,15 +242,19 @@ export default class WebhookForm extends React.Component<WebhookFormProps, Webho
             />
           </div>
           <div className="webhookHeaderInputWrapper">
-            <div className="InputLabel">Request Header</div>
+            <div className="InputLabel">Request Header (Optional)</div>
             <div className="headerInputFlex">
               {headerEntries.map((item: any, index: number) => {
                 return (
-                  <div key={index} className="requestHeaderrowWrapper">
+                  <div
+                    key={`header${index}`}
+                    className="requestHeaderrowWrapper"
+                  >
                     <Input
                       style={{ width: "45%" }}
                       size="large"
                       defaultValue={headerEntries[index][0]}
+                      value={headerEntries[index][0]}
                       onChange={e =>
                         this.onChangeHeadersHandler(e.target.value, index, 0)
                       }
@@ -207,6 +263,7 @@ export default class WebhookForm extends React.Component<WebhookFormProps, Webho
                       style={{ width: "45%" }}
                       size="large"
                       defaultValue={headerEntries[index][1]}
+                      value={headerEntries[index][1]}
                       onChange={e =>
                         this.onChangeHeadersHandler(e.target.value, index, 1)
                       }
@@ -216,10 +273,7 @@ export default class WebhookForm extends React.Component<WebhookFormProps, Webho
                         marginRight: "2%"
                       }}
                       onClick={() => {
-                        // headerEntries.pop();
                         headerEntries.splice(index, 1);
-                        console.log(headerEntries, "webhook header");
-
                         this.setState({
                           headerEntries
                         });
@@ -234,17 +288,17 @@ export default class WebhookForm extends React.Component<WebhookFormProps, Webho
               })}
 
               <Button
+                // disabled
                 className="buttonBlueBorder"
                 size="large"
-                onClick={() => {
-                  this.setState({ headerEntries: [...headerEntries, []] });
-                }}
+                onClick={() => this.onAddHeaderField()}
               >
                 +Add
               </Button>
             </div>
           </div>
           <Button
+            disabled={!Boolean(webhookDetails.url && webhookDetails.name)}
             className="button"
             type="primary"
             size="large"
