@@ -1,0 +1,11 @@
+.wHeaderStyle {
+    padding: 20px;
+    overflow: auto;
+	background-color: #f7f4f4;
+	box-shadow: 0 8px 6px -6px #b1b0b0;
+}
+
+.wHeaderStyle .w-title{
+   font-size: large;
+   /* padding: 5px; */
+}

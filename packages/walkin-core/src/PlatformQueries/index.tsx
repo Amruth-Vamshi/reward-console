@@ -292,17 +292,17 @@ export const GET_ALL_APPS_OF_ORGANIZATION = gql`
       children {
         id
         name
-        # applications {
-        #   id
-        #   name
-        #   description
-        #   platform
-        #   auth_key_hooks
-        #   organization {
-        #     id
-        #     name
-        #   }
-        # }
+        applications {
+          id
+          name
+          description
+          platform
+          auth_key_hooks
+          organization {
+            id
+            name
+          }
+        }
         # children {
         #   id
         #   name
@@ -371,22 +371,22 @@ export const GET_ALL_USERS_OF_ORGANIZATION = gql`
           id
         }
       }
-      # children {
-      #   id
-      #   name
-      #   status
-      #   code
-      #   users {
-      #     id
-      #     firstName
-      #     lastName
-      #     status
-      #     email
-      #     roles {
-      #       name
-      #       id
-      #     }
-      #   }
+      children {
+        id
+        name
+        status
+        code
+        users {
+          id
+          firstName
+          lastName
+          status
+          email
+          roles {
+            name
+            id
+          }
+        }
       #   children {
       #     id
       #     name
@@ -455,7 +455,7 @@ export const GET_ALL_USERS_OF_ORGANIZATION = gql`
       #       }
       #     }
       #   }
-      # }
+      }
     }
   }
 `;

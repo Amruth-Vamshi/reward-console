@@ -11968,6 +11968,11 @@ no-case@^2.2.0:
   dependencies:
     lower-case "^1.1.1"
 
+node-bin-setup@^1.0.0:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/node-bin-setup/-/node-bin-setup-1.0.6.tgz#4b5c9bb937ece702d7069b36ca78af4684677528"
+  integrity sha512-uPIxXNis1CRbv1DwqAxkgBk5NFV3s7cMN/Gf556jSw6jBvV7ca4F9lRL/8cALcZecRibeqU+5dFYqFFmzv5a0Q==
+
 node-dir@^0.1.10:
   version "0.1.17"
   resolved "https://registry.yarnpkg.com/node-dir/-/node-dir-0.1.17.tgz#5f5665d93351335caabef8f1c554516cf5f1e4e5"
@@ -12096,6 +12101,13 @@ node-uuid@~1.4.7:
   version "1.4.8"
   resolved "https://registry.yarnpkg.com/node-uuid/-/node-uuid-1.4.8.tgz#b040eb0923968afabf8d32fb1f17f1167fdab907"
   integrity sha1-sEDrCSOWivq/jTL7HxfxFn/auQc=
+
+node@^13.1.0:
+  version "13.1.0"
+  resolved "https://registry.yarnpkg.com/node/-/node-13.1.0.tgz#c26bba0dcd749eaca0eace039ecfd0cc05c56d01"
+  integrity sha512-EAolY+/NT6s737S8VdlbcO0s6RXNoYtFBsQarcXrEFWindhzWiPi5H8V6Y+qmF2uESjz0+DvPej+UJ9zLZx6ig==
+  dependencies:
+    node-bin-setup "^1.0.0"
 
 nodemailer-direct-transport@3.3.2:
   version "3.3.2"

@@ -20,7 +20,7 @@
   margin: 0;
 } */
 
-.headerTitle {
+.webhooksHeaderTitle {
   font-size: 30px;
   letter-spacing: 0;
 }
@@ -129,6 +129,7 @@
 .webhookURLInputWrapper,
 .webhookHeaderInputWrapper {
   margin: 20px 0;
+  position: relative;
 }
 
 /* .ant-select-selection,

@@ -79,15 +79,6 @@
 box-shadow: -1px 6px 12px 6px rgba(0, 0, 0, 0.384) !important;
 }
 
-.headerCard .ant-card-body{
-	background-color: rgb(238, 238, 238) !important;
-	padding: 0px !important;
-}
-
-.headerCard .ant-tabs-bar {
-	margin: 0 !important;
-}
-
 .haderCard .ant-tabs {
     margin-top: -45px !important;
 }

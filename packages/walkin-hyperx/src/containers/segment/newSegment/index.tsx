@@ -5,12 +5,10 @@ import { withApollo, graphql, compose, ApolloProviderProps } from 'react-apollo'
 import { RULE_ATTRIBUTES, CREATE_RULE, createRule, createSegment, UPDATE_RULE, UPDATE_SEGMENT } from '../../../query/audience';
 import './style.css';
 import { SEGMENT_LIST } from '../../../utils/RouterConstants';
-import { WalkinQueryBuilder, CampaignHeader } from '@walkinsole/shared';
+import { WalkinQueryBuilder, CampaignHeader, WHeader } from '@walkinsole/shared';
 import * as jwt from "jsonwebtoken";
 import { GET_ALL_APPS_OF_ORGANIZATION } from "@walkinsole/walkin-core/src/PlatformQueries";
 import { RouteChildrenProps } from "react-router";
-
-const { org_id, id }: any = jwt.decode(localStorage.getItem("jwt"));
 
 interface IProps extends RouteChildrenProps, ApolloProviderProps<any> {
 	allApplications: any
@@ -66,6 +64,7 @@ class NewSegment extends Component<IProps, Partial<IState>> {
 		let errors: any = {}
 		const { value, query } = this.state;
 		let { client } = this.props;
+		let { org_id }: any = jwt.decode(localStorage.getItem('jwt'))
 		if (!this.state.value || this.state.value.trim() == '') errors.name = "* this field is mandatory"
 		if (!this.state.query.rules || this.state.query.rules.length < 1) errors.rule = "* this field is mandatory"
 		else if (!this.state.query.rules[0] || this.state.query.rules[0].attributeValue == '') errors.rule = "* enter rule value"
@@ -221,7 +220,7 @@ class NewSegment extends Component<IProps, Partial<IState>> {
 		else this.state.errors.rule = 'you dont have any rule attributes'
 		return (
 			<Fragment>
-				<div>
+				{/* <div>
 					<CampaignHeader>
 						<Col span={12}>
 							<h3 className="gx-text-grey paddingLeftStyle campaignHeaderTitleStyle">
@@ -229,7 +228,8 @@ class NewSegment extends Component<IProps, Partial<IState>> {
 							</h3>
 						</Col>
 					</CampaignHeader>
-				</div>
+				</div> */}
+				<WHeader title={isDuplicateSegment ? 'Duplicate segment' : 'New Segment'} />
 				<div style={{ margin: '32px' }}>
 					<div style={{ width: '50%', marginBottom: '40px' }}>
 						<div style={{ marginBottom: '10px' }}>
@@ -262,6 +262,7 @@ export default withRouter(
 	compose(
 		graphql(RULE_ATTRIBUTES, {
 			options: props => {
+				let { org_id }: any = jwt.decode(localStorage.getItem('jwt'))
 				return {
 					variables: {
 						input: {
@@ -282,6 +283,7 @@ export default withRouter(
 		graphql(GET_ALL_APPS_OF_ORGANIZATION, {
 			name: "allApplications",
 			options: props => {
+				let { org_id }: any = jwt.decode(localStorage.getItem('jwt'))
 				return {
 					variables: {
 						id: org_id
