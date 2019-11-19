@@ -528,7 +528,7 @@ class CreateCampaign extends React.Component<CreateCampaignProps,CreateCampaignS
 						<div className="gx-card-body" style={{ background: "#FFFFFF" }}>
 							<CampaignFooter
 								loading={this.state.loading}
-								nextButtonText={current === 4 ? 'Launch' : 'Save and Next'}
+								nextButtonText={current > 4 ? 'Launch' : 'Save and Next'}
 								saveDraftText={current === 0 ? "" : 'Save Draft'}
 								saveDraft={()=>console.log("save to draft")}
 								goToPage2={this.goToNextPage.bind(this, current + 1)}
