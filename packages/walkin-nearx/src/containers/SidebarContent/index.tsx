@@ -83,13 +83,12 @@ class SidebarContent extends React.Component<iProps, iState> {
                 <span>Apps</span>
               </Link>
             </Menu.Item>
-            <Menu.Item key="nearx/hooks">
+            {/* <Menu.Item key="nearx/hooks">
               <Link to="/nearx/hooks">
                 <i className="icon icon-link" />
-                {/* <IntlMessages id="sidebar.samplePage" /> */}
                 <span>Web Hooks</span>
               </Link>
-            </Menu.Item>
+            </Menu.Item> */}
             <Menu.Item key="nearx/documentation">
               <a
                 target="_blank"

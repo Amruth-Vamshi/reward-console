@@ -13,6 +13,7 @@ import CampaignHeader from './components/molecules/campaignHeader';
 import CampaignFooter from './components/molecules/campaignFooter';
 import Stepper from './components/atoms/stepper';
 import campaignOverview from "./components/molecules/campaignOverview/index"
+import WHeader from "./components/molecules/wHeader/WHeader";
 
 export {
     ManageCampaignCard,
@@ -27,5 +28,6 @@ export {
     CampaignHeader,
     CampaignFooter,
     Stepper,
-    campaignOverview
+    campaignOverview,
+    WHeader
 };

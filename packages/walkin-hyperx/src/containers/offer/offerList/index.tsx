@@ -1,4 +1,4 @@
-import { CampaignHeader, InstantSearch, SortableDataTable } from '@walkinsole/shared';
+import { CampaignHeader, InstantSearch, SortableDataTable, WHeader } from '@walkinsole/shared';
 import { Button, Col, Dropdown, Menu } from 'antd';
 import * as jwt from 'jsonwebtoken';
 import React, { Component, Fragment } from 'react';
@@ -10,9 +10,6 @@ import { closeOffer, getOffers, LAUNCH_OFFER } from '../../../query/offer';
 import { NEW_OFFER } from '../../../utils/RouterConstants';
 import { DEFAULT_ACTIVE_STATUS } from '../../../utils';
 import HyperXContainer from '../../../components/atoms/HyperXContainer';
-
-const { org_id, id }: any = jwt.decode(localStorage.getItem("jwt"));
-
 
 interface IProps extends RouteChildrenProps, ApolloProviderProps<any> {
 	refetchOffers
@@ -172,7 +169,7 @@ class OfferList extends Component<IProps, Partial<IState>> {
 		];
 		return (
 			<Fragment>
-				<div>
+				{/* <div>
 					<CampaignHeader
 						children={
 							<Fragment>
@@ -187,7 +184,8 @@ class OfferList extends Component<IProps, Partial<IState>> {
 							</Fragment>
 						}
 					/>
-				</div>
+				</div> */}
+				<WHeader title='Offers' extra={<Button type="primary" style={{ marginBottom: 0 }} onClick={this.onNewSegment}>CREATE OFFER</Button>} />
 				<HyperXContainer margin='32px' headerHeightInPX={152}>
 					<div className="gx-card">
 						<div className="gx-card-body">
@@ -209,23 +207,29 @@ class OfferList extends Component<IProps, Partial<IState>> {
 
 export default withRouter(
 	graphql(getOffers, {
-		options: (ownProps: any) => ({
-			variables: {
-				organizationId: org_id,
-			},
-			forceFetch: true,
-			fetchPolicy: 'network-only',
-		}),
-		props: ({ data: { loading, error, getOffers, refetch } }: any) => ({
-			loading, getOffers, error,
-			refetchOffers: (props: any) => {
-				refetch({
-					variables: {
-						organization_id: org_id,
-						status: DEFAULT_ACTIVE_STATUS,
-					},
-				});
-			},
-		}),
+		options: (ownProps: any) => {
+			const { org_id }: any = jwt.decode(localStorage.getItem('jwt'))
+			return ({
+				variables: {
+					organizationId: org_id,
+				},
+				forceFetch: true,
+				fetchPolicy: 'network-only',
+			})
+		},
+		props: ({ data: { loading, error, getOffers, refetch } }: any) => {
+			const { org_id }: any = jwt.decode(localStorage.getItem('jwt'))
+			return ({
+				loading, getOffers, error,
+				refetchOffers: (props: any) => {
+					refetch({
+						variables: {
+							organization_id: org_id,
+							status: DEFAULT_ACTIVE_STATUS,
+						},
+					});
+				},
+			})
+		},
 	})(withApollo(OfferList))
 );
