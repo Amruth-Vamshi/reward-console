@@ -534,7 +534,7 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 				<div>
 					<WHeader title='Create Offer' extra={<Stepper stepData={offerStepData} current={current} onChange={this.goToNextPage} />} />
 					{/* Each step is different step because the form has to be validated and saved as draft */}
-					<HyperXContainer margin='40px' headerHeightInPX={250}>
+					<HyperXContainer margin='32px' headerHeightInPX={225}>
 						{current === 0 && (
 							<Fragment>
 								<h3 className="gx-text-grey subTitlePadding">Basic Information</h3>

@@ -73,6 +73,15 @@
     margin: 0px 20px 5px 10px !important
 }
 
+.headerCard .ant-card-body{
+	background-color: rgb(238, 238, 238) !important;
+	padding: 0px !important;		 /*default !imp */
+}
+
+.headerCard .ant-tabs-bar {
+	margin: 0 !important;
+}
+
 .headerCard{
 	margin-bottom: 0 !important
 }

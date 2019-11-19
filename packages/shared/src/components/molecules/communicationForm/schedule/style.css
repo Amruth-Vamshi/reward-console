@@ -16,7 +16,7 @@
 
 .scheduleCard .dBtn{
     margin-left: 0;
-    margin-right: 2px;
+    margin-right: 2px !important;
     margin-bottom: 0;
 }
 
