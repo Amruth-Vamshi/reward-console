@@ -977,7 +977,7 @@ class EditCampaign extends React.Component<EditCampaignProps,Partial<EditCampaig
 						<div className="gx-card-body" style={{ background: "#FFFFFF" }}>
 							<CampaignFooter
 								loading={this.state.loading}
-								nextButtonText={current === 4 ? 'Launch' : 'Save and Next'}
+								nextButtonText={current > 4 ? 'Launch' : 'Save and Next'}
 								saveDraftText={current === 0 ? "" : 'Save Draft'}
 								saveDraft={() => this.saveDraft(current + 1)}
 								goToPage2={this.onFormNext.bind(this, current + 1)}
