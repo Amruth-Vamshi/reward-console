@@ -87,7 +87,7 @@ class SidebarContent extends React.Component<SidebarContentProps, SidebarContent
 							</Link>
 						</Menu.Item>
 						<Menu.Item key="hyperx/offers">
-							<Link to={OFFER_DASHBOARD}>
+							<Link to={OFFER_LIST}>
 								<i className="icon icon-tag" />
 
 								{/* <Icon component={Analytics} className='' /> */}

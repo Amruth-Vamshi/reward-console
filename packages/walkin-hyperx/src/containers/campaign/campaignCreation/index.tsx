@@ -793,6 +793,8 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 			},
 		};
 
+		console.log('>>props', this.props);
+
 		return (
 			<div>
 				{/* <CampaignHeader

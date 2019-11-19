@@ -20,29 +20,29 @@
 }
 
 .HyperX-Sidebar .ant-menu-item {
-  font-size: 19px;
-  margin-bottom: 20px;
+  font-size: 19px !important;
+  margin-bottom: 20px !important;
 }
 
 .HyperX-Sidebar .ant-menu {
-  padding-top: 20px;
+  padding-top: 20px !important;
 }
 
 .HyperX-Sidebar .ant-menu-inline .ant-menu-item:not(:last-child) {
-  margin-bottom: 5px;
+  margin-bottom: 5px !important;
 }
 
 .HyperX-Logo {
-  background-color: #37474f;
+  background-color: #37474f !important;
 }
 
 .HyperX-Sidebar .ant-menu-dark {
-  background-color: #37474f;
+  background-color: #37474f !important;
 }
 
 .HyperX-Topbar {
-  background-color: #455a64;
-  background-image: linear-gradient(to left, #607d8b, #37474f);
+  background-color: #455a64 !important;
+  background-image: linear-gradient(to left, #607d8b, #37474f) !important;
 }
 
 .HyperX-Sidebar .ant-menu-dark .ant-menu-item-selected > a {
@@ -51,3 +51,7 @@
 }
 
 /* background-image: linear-gradient(to right, #052c53 , #4cc3c7); */
+
+.ant-layout{
+  overflow: hidden !important;
+}

@@ -275,7 +275,7 @@ class SegmentList extends Component<IProps, IState> {
 export default withRouter(
 	graphql(allSegments, {
 		options: (ownProps: IProps) => {
-			let { org_id }: any = jwt.decode(localStorage.getItem('jwt'))
+			let { org_id }: any = jwt.decode(localStorage.getItem('jwt'));
 			return {
 				variables: {
 					organization_id: org_id,
