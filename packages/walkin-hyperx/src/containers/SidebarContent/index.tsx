@@ -4,8 +4,13 @@ import { Link, RouteComponentProps } from 'react-router-dom';
 import { CustomScrollbars, Auxiliary, IntlMessages } from '@walkinsole/walkin-components';
 import SidebarLogo from './SidebarLogo';
 import { withRouter } from 'react-router-dom';
-// import Dashboard from "../../Icons/IconComponents/dashboard";
-// import Survey from "../../Icons/IconComponents/survey";
+import campaigns from '../../Icons/campaign'
+import Segment from '../../Icons/Segment'
+import analytics from '../../Icons/analytics'
+import offers from '../../Icons/offers'
+import settings from '../../Icons/settings'
+import messages from '../../Icons/messages'
+import campaign from '../../Icons/campaign'
 // import Segments from "../../Icons/IconComponents/segemnts";
 // import Analytics from "../../Icons/help.svg";
 // const help = require("../../Icons/help.svg")
@@ -87,7 +92,7 @@ class SidebarContent extends React.Component<SidebarContentProps, SidebarContent
 							</Link>
 						</Menu.Item>
 						<Menu.Item key="hyperx/offers">
-							<Link to={OFFER_DASHBOARD}>
+							<Link to={OFFER_LIST}>
 								<i className="icon icon-tag" />
 
 								{/* <Icon component={Analytics} className='' /> */}

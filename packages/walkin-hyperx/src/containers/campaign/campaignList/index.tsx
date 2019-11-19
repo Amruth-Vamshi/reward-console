@@ -358,7 +358,7 @@ export default withRouter(
   compose(
     graphql(campaigns, {
       options: () => {
-        const { org_id, id }: any = jwt.decode(localStorage.getItem("jwt"));
+        const { org_id }: any = jwt.decode(localStorage.getItem("jwt"));
         return ({
           variables: {
             organization_id: org_id,
@@ -371,7 +371,7 @@ export default withRouter(
       props: ({ data: { loading, error, campaigns, refetch } }: any) => ({
         loading, campaigns, error,
         changeStatus: (status: any) => {
-          const { org_id, id }: any = jwt.decode(localStorage.getItem("jwt"));
+          const { org_id }: any = jwt.decode(localStorage.getItem("jwt"));
           refetch({
             variables: {
               organization_id: org_id,

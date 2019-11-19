@@ -8,7 +8,7 @@
   color: #333333;
   margin-bottom: 20px;
 }
-.headerTitle {
+.entityExtentionheaderTitle {
   font-size: 30px;
   letter-spacing: 0;
 }
@@ -103,7 +103,7 @@
 }
 
 .noHeightTable .ant-table-content {
-  height: 0;
+  display: none;
 }
 .entityExtendcolumn {
   text-align: left;
