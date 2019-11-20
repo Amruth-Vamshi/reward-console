@@ -278,9 +278,7 @@ class Webhooks extends React.Component<WebhooksProps, WebhooksState> {
                 </Col>
                 <Col xl={18} lg={18} md={18} sm={18} xs={18}>
                   <div className="webhookTitle">{webhook.name}</div>
-                  <div className="webhookUrl">
-                    {webhook.url} › incoming-webhooks
-                  </div>
+                  <div className="webhookUrl">{webhook.url}</div>
                 </Col>
               </Col>
               <Col
