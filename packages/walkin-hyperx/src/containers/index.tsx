@@ -18,7 +18,7 @@ export default class extends React.Component<HyperXRoutesProps, {}> {
 	render() {
 		console.log('HyperX');
 		return (
-			<div className="NearX-Main">
+			<div className="HyperX-Main">
 				<Switch>
 					{/* <Route exact path={'/hyperx'} render={() => <Redirect from="/hyperx" to={CAMPAIGN_MANAGEMENT} />} /> */}
 					<Redirect exact from="/hyperx" to={CAMPAIGN_MANAGEMENT} />
