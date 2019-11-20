@@ -291,9 +291,12 @@ class EntityExtention extends React.Component<
       const { Option } = Select;
       return (
         <div className="entityVariablesListWrapper">
-          <div className="entityVariableInputWrapper">
+          <div id="EntityInputWrapper" className="entityVariableInputWrapper">
             <div className="InputLabel">Label</div>
             <Select
+              getPopupContainer={() =>
+                document.getElementById("EntityInputWrapper")
+              }
               size="large"
               defaultValue={selectedEntity}
               style={{ width: "50%" }}
