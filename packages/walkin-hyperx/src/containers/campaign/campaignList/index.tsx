@@ -315,7 +315,7 @@ class CampaignList extends React.Component<CampaignListProps, Partial<CampaignLi
 					// 		</div> */}
         <HyperXContainer margin='32px' headerHeightInPX={160}>
           <div className="HyperX-campaignList">
-            <Widget title="Campaign List" styleName="gx-card-tabs"
+            <Widget styleName="gx-card-tabs"
               extra={
                 <InstantSearch
                   placeHolder="Search campaign"
