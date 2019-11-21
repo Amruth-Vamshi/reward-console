@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { WHeader } from '@walkinsole/shared';
 import HyperXContainer from '../../../components/atoms/HyperXContainer';
-import { Row, Col, Button, Divider } from 'antd';
+import { Row, Col, Button, Divider, Input, Checkbox } from 'antd';
 import './offerDashboard.css'
 
 export interface IAppProps {
@@ -32,9 +32,9 @@ export default class App extends React.Component<IAppProps, IAppState> {
         return (
             <div>
                 <WHeader title='Offers' />
-                <HyperXContainer className='viewOffer' margin='50px' headerHeightInPX={225}>
+                <HyperXContainer className='viewOffer' margin='40px' headerHeightInPX={152}>
                     <Row type='flex' justify='center'>
-                        <Col span={14}>
+                        <Col sm={24} md={21} lg={18} xl={15} xxl={12}>
                             <Row type="flex" justify="space-between" align="bottom">
                                 <Col style={{ fontSize: 20 }} span={18}>
                                     Anniverssary Sale
@@ -53,9 +53,22 @@ export default class App extends React.Component<IAppProps, IAppState> {
                                 <Col {...labelCol}>  Product  </Col>
                                 <Col {...wrapperCol} >SKU </Col>
                             </Row>
+                            {/* <Row className='' >
+                                <Col span={20}>  Offer Type  </Col>
+                                <Col span={4} >View All </Col>
+                            </Row> */}
+                            <Row style={{ padding: '0 25px' }}>
+                                <Input className='inputRow' value='SLALKASJLAS, KSJHDKASKL, KSDKJADKAD, JCDSKJDXCS, HKCXJSXIS, SCXDKSAJX, KJXCSKXZSAJ ' disabled addonAfter={<span className='gx-text-primary gx-pointer'>View All</span>} />
+                            </Row>
                             <Row>
                                 <Col {...labelCol}>  Location  </Col>
                                 <Col {...wrapperCol}> Zone </Col>
+                            </Row>
+                            <Row style={{ padding: '0 25px' }}>
+                                <Input className='inputRow' value='south_india_zone.csv' disabled addonAfter={<span className='gx-text-primary gx-pointer'>View CSV</span>} />
+                            </Row>
+                            <Row style={{ padding: '0 25px' }}>
+                                <Input className='inputRow' value='North_india_zone.csv ' disabled addonAfter={<span className='gx-text-primary gx-pointer'>View CSV</span>} />
                             </Row>
                             <Row>
                                 <Col {...labelCol}>  User Transaction Time  </Col>
@@ -94,7 +107,9 @@ export default class App extends React.Component<IAppProps, IAppState> {
                             <h4>Coupon Based Offer</h4>
 
                             <Row>
-                                <Col span={24}>  This Offer Is Auto Applied (On Coupon Code) </Col>
+                                <Col style={{ paddingLeft: 30 }} span={24}>
+                                    <Checkbox checked> This Offer Is Auto Applied (On Coupon Code) </Checkbox>
+                                </Col>
                             </Row>
 
 

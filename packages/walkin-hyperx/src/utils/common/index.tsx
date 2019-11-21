@@ -39,3 +39,16 @@ export const isValidObject = objToTest => {
 	if ('undefined' == typeof objToTest) return false;
 	return true;
 };
+
+export const strToRule = rule => {
+	let str = rule;
+	var mapObj = {
+		// ruleAttributeId: 'field',
+		attributeName: 'field',
+		attributeValue: 'value',
+		expressionType: 'operator',
+	};
+	if (typeof str != 'string') str = JSON.stringify(str)
+	str = str.replace(/attributeName|attributeValue|expressionType/gi, matched => mapObj[matched]);
+	return JSON.parse(str)
+}
