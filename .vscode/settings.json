@@ -5,5 +5,6 @@
   "javascript.suggest.autoImports": true,
   // "vscode-devtools-for-chrome.chromePath": "http://localhost:3000",
   "vscode-devtools-for-chrome.hostname": "localhost",
-  "vscode-devtools-for-chrome.port": 9222
+  "vscode-devtools-for-chrome.port": 9222,
+  "files.autoSave": "onFocusChange",
 }

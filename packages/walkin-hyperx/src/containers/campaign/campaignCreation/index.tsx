@@ -1,28 +1,27 @@
-import * as React from "react"
-import { Component, Fragment, useRef } from "react";
-import { withRouter, } from "react-router-dom";
-// import BasicInfo from "./basicInfo";
-// import Audience from "./audience";
-// import Offer from "./offer";
-// import Communication from "./communication";
-import { BasicInfo, Audience, Offer, Communication } from "@walkinsole/shared/src/components/campaignCreation";
-import { campaignOverview as Overview, WHeader } from "@walkinsole/shared";
-import { allSegments, RULE_ATTRIBUTES, GET_AUDIENCES, CREATE_AUDIENCE, CREATE_RULE, AUDIENCE_COUNT, UPDATE_RULE, UPDATE_AUDIENCES } from "../../../query/audience";
-import { getOffers, ADD_OFFER_TO_CAMPAIGN, GET_OFFER_FOR_CAMPAIGN } from "../../../query/offer";
-import { withApollo, graphql, compose, ApolloProviderProps } from 'react-apollo';
-import { GET_ALL_APPS_OF_ORGANIZATION } from "@walkinsole/walkin-core/src/PlatformQueries";
-import { Col, Row, message } from 'antd';
-import * as jwt from "jsonwebtoken";
-import '../styles.css'
-import { DEFAULT_ACTIVE_STATUS, DEFAULT_HYPERX_CAMPAIGN } from "../../../utils"
-import moment from "moment";
-import { CampaignFooter, CampaignHeader, Stepper } from '@walkinsole/shared';
-import { GET_CAMPAIGN, CREATE_CAMPAIGN, UPDATE_CAMPAIGN, CREATE_MESSAGE_TEMPLETE, CREATE_COMMUNICATION, LAUNCH_CAMPAIGN, CREATE_COMMUNICATION_WITH_MESSAGE_TEMPLETE, COMMUNICATIONS, VIEW_CAMPAIGN, UPDATE_COMMUNICATION_WITH_MESSAGE_TEMPLETE, PREPROCESS_LAUNCH_CAMPAIGN } from '../../../query/campaign';
-import { RouteChildrenProps, RouteComponentProps } from "react-router";
-import { FormComponentProps } from "antd/lib/form";
-import { History } from "history";
-import HyperXContainer from "../../../components/atoms/HyperXContainer";
-import { strToRule } from "../../../utils/common";
+import '../styles.css';
+
+import moment from 'moment';
+import * as React from 'react';
+import { message } from 'antd';
+import { Component } from 'react';
+import * as jwt from 'jsonwebtoken';
+import { withRouter } from 'react-router-dom';
+import { RouteChildrenProps } from 'react-router';
+import { FormComponentProps } from 'antd/lib/form';
+import { ApolloProviderProps, compose, graphql, withApollo } from 'react-apollo';
+import { GET_ALL_APPS_OF_ORGANIZATION } from '@walkinsole/walkin-core/src/PlatformQueries';
+import { CampaignFooter, campaignOverview as Overview, Stepper, WHeader } from '@walkinsole/shared';
+import { Audience, BasicInfo, Communication, Offer } from '@walkinsole/shared/src/components/campaignCreation';
+
+import { strToRule } from '../../../utils/common';
+import HyperXContainer from '../../../components/atoms/HyperXContainer';
+import { ADD_OFFER_TO_CAMPAIGN, getOffers } from '../../../query/offer';
+import { DEFAULT_ACTIVE_STATUS, DEFAULT_HYPERX_CAMPAIGN } from '../../../utils';
+import { allSegments, AUDIENCE_COUNT, CREATE_AUDIENCE, CREATE_RULE, RULE_ATTRIBUTES, UPDATE_AUDIENCES, UPDATE_RULE } from '../../../query/audience';
+import { CREATE_CAMPAIGN, CREATE_COMMUNICATION, CREATE_COMMUNICATION_WITH_MESSAGE_TEMPLETE, CREATE_MESSAGE_TEMPLETE, PREPROCESS_LAUNCH_CAMPAIGN, UPDATE_CAMPAIGN, UPDATE_COMMUNICATION_WITH_MESSAGE_TEMPLETE, VIEW_CAMPAIGN } from '../../../query/campaign';
+
+
+
 
 const stepData = [{
 	id: 1,
@@ -378,6 +377,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 		console.log('COMM', communicationSelected, values);
 		this.setState({ loading: true })
 		var messageTemplateInput = {
+
 			id: communication.messageTemplate.id,
 			name: this.state.campaign.name + "_" + communicationSelected,
 			description: "",
@@ -681,6 +681,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 			priority: parseInt(priorityChosen),
 			campaignControlPercent: parseInt(controlValue),
 			organization_id: org_id,
+			campaignTriggerType: "SCHEDULED",
 			application_id: organization.applications[0].id,
 			campaignType: DEFAULT_HYPERX_CAMPAIGN
 		};
