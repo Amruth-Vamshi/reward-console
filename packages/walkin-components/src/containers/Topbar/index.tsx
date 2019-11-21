@@ -89,8 +89,7 @@ class Topbar extends React.Component<iProps, iState> {
               navStyle === NAV_STYLE_MINI_SIDEBAR) &&
               width < TAB_SIZE) ? (
               <div className="gx-linebar gx-mr-3" style={{ color: "#ffffff" }}>
-                <i
-                  className="gx-icon-btn icon icon-menu"
+                <i className="gx-icon-btn icon icon-menu" style={{ color: '#000000' }}
                   onClick={() => {
                     this.props.toggleCollapsedSideNav({
                       variables: { navCollapsed: !navCollapsed }
