@@ -210,7 +210,7 @@ class Questionnaire extends React.Component<QuestionnaireProps, QuestionnaireSta
       variables: {
         choiceId: "",
         input: {
-          questionText: "  ",
+          questionText: " ",
           type: questionData.type,
           rangeMax: 10,
           rangeMin: 1,
@@ -362,6 +362,7 @@ class Questionnaire extends React.Component<QuestionnaireProps, QuestionnaireSta
       isChoiceLoading,
       isQuestionLoading
     } = this.state;
+    console.log("!isEmpty(questionToEdit) && !addQuestion", !isEmpty(questionToEdit) && !addQuestion)
     return (
       <Row className="QuestionnaireArea">
         <Col span={8}>
@@ -376,7 +377,7 @@ class Questionnaire extends React.Component<QuestionnaireProps, QuestionnaireSta
         </Col>
         <Col span={16}>
           {
-            (this.props.questionnaire.length > 0 ? !isEmpty(questionToEdit) && !addQuestion ? (
+            (this.props.questionnaire.length > 0 ? !isEmpty(questionToEdit) ? (
               <FormPane
                 questionnaire={this.props.questionnaire}
                 questionToEdit={questionToEdit}
@@ -392,7 +393,11 @@ class Questionnaire extends React.Component<QuestionnaireProps, QuestionnaireSta
                 isQuestionLoading={isQuestionLoading}
                 onLinkChoiceToQuestion={this.onLinkChoiceToQuestion}
               />
-            ) : null :
+            ) : (
+                <QuestionTypeSelector
+                  onQuestionTypeSelector={this.onQuestionTypeSelector}
+                />
+              ) :
               !addQuestion && !isEmpty(questionToEdit) ? (
                 <FormPane
                   questionnaire={this.props.questionnaire}
