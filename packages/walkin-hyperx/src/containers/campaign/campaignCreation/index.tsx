@@ -377,6 +377,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 		console.log('COMM', communicationSelected, values);
 		this.setState({ loading: true })
 		var messageTemplateInput = {
+
 			id: communication.messageTemplate.id,
 			name: this.state.campaign.name + "_" + communicationSelected,
 			description: "",
@@ -680,6 +681,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 			priority: parseInt(priorityChosen),
 			campaignControlPercent: parseInt(controlValue),
 			organization_id: org_id,
+			campaignTriggerType: "SCHEDULED",
 			application_id: organization.applications[0].id,
 			campaignType: DEFAULT_HYPERX_CAMPAIGN
 		};
