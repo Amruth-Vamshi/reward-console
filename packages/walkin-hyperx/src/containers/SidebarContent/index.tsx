@@ -5,12 +5,11 @@ import { CustomScrollbars, Auxiliary, IntlMessages } from '@walkinsole/walkin-co
 import SidebarLogo from './SidebarLogo';
 import { withRouter } from 'react-router-dom';
 import campaigns from '../../Icons/campaign'
-import Segment from '../../Icons/Segment'
+import Segments from '../../Icons/Segment'
 import analytics from '../../Icons/analytics'
 import offers from '../../Icons/offers'
 import settings from '../../Icons/settings'
 import messages from '../../Icons/messages'
-import campaign from '../../Icons/campaign'
 // import Segments from "../../Icons/IconComponents/segemnts";
 // import Analytics from "../../Icons/help.svg";
 // const help = require("../../Icons/help.svg")
@@ -81,21 +80,23 @@ class SidebarContent extends React.Component<SidebarContentProps, SidebarContent
 					>
 						<Menu.Item key='hyperx/campaigns'>
 							<Link to={CAMPAIGN_MANAGEMENT}>
-								<i className="icon icon-alert" />
+								{/* <i className="icon icon-alert" /> */}
+								<Icon component={campaigns} className='sidebar-icon' />
 								<span>Campaigns</span>
 							</Link>
 						</Menu.Item>
 						<Menu.Item key="hyperx/segments">
 							<Link to={SEGMENT_LIST}>
-								<i className="icon icon-chart-radial" />
+								{/* <i className="icon icon-chart-radial" /> */}
+								<Icon component={Segments} className='sidebar-icon' />
 								<span>Segments</span>
 							</Link>
 						</Menu.Item>
 						<Menu.Item key="hyperx/offers">
 							<Link to={OFFER_LIST}>
-								<i className="icon icon-tag" />
+								{/* <i className="icon icon-tag" /> */}
 
-								{/* <Icon component={Analytics} className='' /> */}
+								<Icon component={offers} className='sidebar-icon' />
 								<span>Offers</span>
 							</Link>
 						</Menu.Item>

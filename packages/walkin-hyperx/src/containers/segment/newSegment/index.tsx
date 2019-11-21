@@ -9,6 +9,7 @@ import { WalkinQueryBuilder, CampaignHeader, WHeader } from '@walkinsole/shared'
 import * as jwt from "jsonwebtoken";
 import { GET_ALL_APPS_OF_ORGANIZATION } from "@walkinsole/walkin-core/src/PlatformQueries";
 import { RouteChildrenProps } from "react-router";
+import { strToRule } from '../../../utils/common';
 
 interface IProps extends RouteChildrenProps, ApolloProviderProps<any> {
 	allApplications: any
@@ -173,20 +174,20 @@ class NewSegment extends Component<IProps, Partial<IState>> {
 			if (location.state.update) this.setState({ update: true });
 			if (location.state.segmentSelected) {
 				let str = location.state.segmentSelected.rule.ruleConfiguration;
-				var mapObj: any = {
-					// ruleAttributeId: 'field',
-					attributeName: 'field',
-					attributeValue: 'value',
-					expressionType: 'operator',
-				};
-				console.log(str);
-				if (typeof str != 'string') {
-					str = JSON.stringify(str);
-				}
-				str = str.replace(/attributeName|attributeValue|expressionType/gi, function (matched) {
-					return mapObj[matched];
-				});
-				this.setState({ query: JSON.parse(str) });
+				// var mapObj: any = {
+				// 	// ruleAttributeId: 'field',
+				// 	attributeName: 'field',
+				// 	attributeValue: 'value',
+				// 	expressionType: 'operator',
+				// };
+				// console.log(str);
+				// if (typeof str != 'string') {
+				// 	str = JSON.stringify(str);
+				// }
+				// str = str.replace(/attributeName|attributeValue|expressionType/gi, function (matched) {
+				// 	return mapObj[matched];
+				// });
+				this.setState({ query: strToRule(str) });
 				if (!location.state.update) {
 					this.setState({
 						value: location.state.segmentSelected.name + ' ' + 'copy',

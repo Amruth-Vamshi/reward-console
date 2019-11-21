@@ -49,14 +49,8 @@ export default class Overview extends React.Component<iProps, {}> {
     console.log(this.props);
     return (
       <div className="campaignOverview">
-        {view === false ? (
-          <Title level={3} className="gx-text-grey">
-            {" "}
-            Overview{" "}
-          </Title>
-        ) : (
-            ""
-          )}
+        {view === false ?
+          <Title level={3} className="gx-text-grey">Overview</Title> : ''}
         <div style={{ margin: "20px 10px 20px 30px" }}>
           <Row>
             <Col style={{ paddingLeft: 0 }} sm={24} md={16}>
@@ -65,84 +59,36 @@ export default class Overview extends React.Component<iProps, {}> {
                 {campaign.description != null ? campaign.description : ""}
               </div>
               <div className="cpDaysLeft mb-30">
-                {" "}
-                <b style={{ textTransform: "capitalize" }}>
-                  {" "}
-                  {diff ? diff : ""}
-                </b>{" "}
-                &nbsp;
-                {value == "Completed" ? (
-                  <div>
-                    <Icon
-                      style={{ color: "#00b707" }}
-                      type="check-circle"
-                      theme="filled"
-                    />{" "}
-                    {value}
-                  </div>
-                ) : (
-                    value
-                  )}{" "}
+                <b style={{ textTransform: "capitalize" }}>{diff ? diff : ""}</b> &nbsp;
+                {value == "Completed" ? <div>
+                  <Icon style={{ color: "#00b707" }} type="check-circle" theme="filled" />{value}
+                </div> : value
+                }
               </div>
             </Col>
             <Col sm={24} md={8}>
               <div className="divCenterVertical">
-                {view && value != "Completed" ? (
-                  campaign.campaignStatus == "DRAFT" ? (
-                    <Button
-                      shape="round"
-                      type="primary"
-                      style={{
-                        width: "200px",
-                        letterSpacing: 1,
-                        height: 40,
-                        fontSize: 20
-                      }}
-                      onClick={this.changeState}
-                      loading={this.props.loading}
-                    >
-                      {" "}
-                      LAUNCH{" "}
-                    </Button>
-                  ) : (
-                      // (campaign.campaignStatus == 'LIVE') ?
-                      <div>
-                        {" "}
-                        <Button
-                          type="primary"
-                          style={{
-                            width: "140px",
-                            letterSpacing: 0,
-                            height: 40,
-                            fontSize: 17
-                          }}
-                          shape="round"
-                          onClick={this.changeState}
-                          loading={this.props.loading}
-                        >
-                          {campaign.campaignStatus == "LIVE"
-                            ? "PAUSE"
-                            : "UNPAUSE"}{" "}
+
+                {view && value != "Completed" ?
+                  campaign.campaignStatus == "DRAFT" ?
+                    <Button shape="round" type="primary" style={{ width: "200px", letterSpacing: 1, height: 40, fontSize: 20 }}
+                      onClick={this.changeState} loading={this.props.loading}>  LAUNCH  </Button> :
+
+                    // (campaign.campaignStatus == 'LIVE') ?
+                    <div>
+                      <Button type="primary" shape="round" onClick={this.changeState}
+                        style={{ width: "140px", letterSpacing: 0, height: 40, fontSize: 17 }}
+                        loading={this.props.loading} >
+                        {(campaign.campaignStatus == "LIVE" || campaign.campaignStatus == "PRE_LIVE_PROCESSING") ? "PAUSE" : "UNPAUSE"}
+                      </Button>
+
+                      <Button type="primary" shape="round" onClick={this.changeState} loading={this.props.loading1}
+                        style={{ width: "145px", letterSpacing: 0, height: 40, fontSize: 16 }}>
+                        FORCE STOP
                         </Button>
-                        <Button
-                          type="primary"
-                          style={{
-                            width: "145px",
-                            letterSpacing: 0,
-                            height: 40,
-                            fontSize: 16
-                          }}
-                          shape="round"
-                          onClick={this.changeState}
-                          loading={this.props.loading1}
-                        >
-                          FORCE STOP{" "}
-                        </Button>
-                      </div>
-                    ) //: ''
-                ) : (
-                    ""
-                  )}
+
+                    </div> : ""
+                }
               </div>
             </Col>
           </Row>
@@ -150,99 +96,59 @@ export default class Overview extends React.Component<iProps, {}> {
           <div className="mb-25">
             <Row>
               <Col className="mb-10" md={24} lg={8}>
-                {" "}
-                Start date &nbsp; &nbsp;:&nbsp;&nbsp;&nbsp;{start}{" "}
+                Start date &nbsp; &nbsp;:&nbsp;&nbsp;&nbsp;{start}
               </Col>
               <Col className="mb-10" md={24} lg={8}>
-                {" "}
-                End date &nbsp; &nbsp;:&nbsp;&nbsp;&nbsp;{end}{" "}
+                End date &nbsp; &nbsp;:&nbsp;&nbsp;&nbsp;{end}
               </Col>
               <Col className="mb-10" md={24} lg={8}>
-                {" "}
-                <Progress
-                  style={{
-                    width: "250px",
-                    margin: "0px 5px 0px 5px",
-                    color: "#654665"
-                  }}
+
+                <Progress style={{ width: "250px", margin: "0px 5px 0px 5px", color: "#654665" }}
                   percent={Math.round(
                     (moment().diff(moment(campaign.startTime), "hours") /
-                      moment(campaign.endTime).diff(
-                        moment(campaign.startTime),
-                        "hours"
-                      )) *
-                    100
-                  )}
-                  showInfo={true}
-                  status="active"
+                      moment(campaign.endTime).diff(moment(campaign.startTime), "hours")) * 100)}
+                  showInfo={true} status="active"
                 />
               </Col>
             </Row>
           </div>
 
-          {campaign.feedbackForm ? (
+          {campaign.feedbackForm ?
             <div className="mb-25">
               <h3>Form </h3>
               <Row>
-                <Col
-                  xs={24}
-                  sm={24}
-                  md={17}
-                  xl={14}
-                  xxl={12}
-                  className="overViewBg"
-                >
+                <Col xs={24} sm={24} md={17} xl={14} xxl={12} className="overViewBg">
                   {campaign.feedbackForm ? campaign.feedbackForm.title : ""}
                 </Col>
               </Row>
-            </div>
-          ) : (
-              ""
-            )}
+            </div> : ""}
 
-          {audience && audience.length ? (
+          {audience && audience.length ?
             <div className="mb-25">
               <Row>
                 <Col className="AudienceTitle" sm={16} md={12} xl={10} xxl={9}>
-                  {" "}
+
                   <h3>Audience</h3>
                 </Col>
                 <Col>Total Reach : 6412 </Col>
               </Row>
-              {audience.map((i: any, n: number) => (
+              {audience.map((i: any, n: number) =>
                 <Row key={n} style={{ marginBottom: 10 }}>
-                  <Col
-                    xs={24}
-                    sm={16}
-                    md={12}
-                    xl={10}
-                    xxl={9}
-                    className="audBg"
-                  >
+                  <Col xs={24} sm={16} md={12} xl={10} xxl={9} className="audBg">
                     {i.segment.name}
                   </Col>
                   <Col xs={24} sm={8} md={5} xl={4} xxl={3} className="audBg">
                     users 3422
                   </Col>
                 </Row>
-              ))}
-            </div>
-          ) : (
-              ""
-            )}
+              )}
+            </div> : ''}
 
           {offer && (
             <div className="mb-25">
               <h3>Offer</h3>
               <Row>
-                <Col
-                  xs={24}
-                  sm={24}
-                  md={17}
-                  xl={14}
-                  xxl={12}
-                  className="offerBg"
-                >
+                <Col xs={24} sm={24} md={17} xl={14} xxl={12} className="offerBg">
                   {offer.name}
                 </Col>
               </Row>
@@ -253,14 +159,7 @@ export default class Overview extends React.Component<iProps, {}> {
             <div className="mb-25">
               <h3>Communication</h3>
               <Row>
-                <Col
-                  xs={24}
-                  sm={24}
-                  md={17}
-                  xl={14}
-                  xxl={12}
-                  className="overViewBg"
-                >
+                <Col xs={24} sm={24} md={17} xl={14} xxl={12} className="overViewBg">
                   {communication}
                 </Col>
               </Row>

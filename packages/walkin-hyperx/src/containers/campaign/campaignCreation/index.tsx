@@ -22,6 +22,7 @@ import { RouteChildrenProps, RouteComponentProps } from "react-router";
 import { FormComponentProps } from "antd/lib/form";
 import { History } from "history";
 import HyperXContainer from "../../../components/atoms/HyperXContainer";
+import { strToRule } from "../../../utils/common";
 
 const stepData = [{
 	id: 1,
@@ -182,18 +183,8 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 
 				if (campaign.audienceFilterRule) {
 					let str = campaign.audienceFilterRule.ruleConfiguration;
-					var mapObj: any = {
-						// ruleAttributeId: 'field',
-						attributeName: 'field',
-						attributeValue: 'value',
-						expressionType: 'operator',
-					};
-					if (typeof str != 'string') str = JSON.stringify(str)
-					str = str.replace(/attributeName|attributeValue|expressionType/gi, function (matched: any) {
-						return mapObj[matched];
-					});
 					this.setState({
-						ruleQuery: JSON.parse(str), audienceFilterRule: campaign.audienceFilterRule.ruleConfiguration,
+						ruleQuery: strToRule(str), audienceFilterRule: campaign.audienceFilterRule.ruleConfiguration,
 						audienceFilterRuleCreated: true, audienceFilterRuleId: campaign.audienceFilterRule.id
 					});
 				}
@@ -343,12 +334,13 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 		}).then((data: any) => {
 			console.log("campaign data..", data);
 			message.success('Campaign Launched')
-			moment().isBetween(this.state.campaign.startTime, this.state.campaign.endTime) ?
-				this.props.history.push('/hyperx/campaigns') :
-				this.props.history.push({
-					pathname: '/hyperx/campaigns', //tabKey: "2"
-					state: { tabKey: "2" }
-				})
+			// moment().isBetween(this.state.campaign.startTime, this.state.campaign.endTime) ?
+			// 	this.props.history.push('/hyperx/campaigns') :
+			// 	this.props.history.push({
+			// 		pathname: '/hyperx/campaigns', //tabKey: "2"
+			// 		state: { tabKey: "2" }
+			// 	})
+			this.props.history.push({ pathname: '/hyperx/campaigns', state: { tabKey: "2" } })
 		}).catch(err => {
 			console.log("Error Update campaign", err)
 			this.setState({ loading: false })
