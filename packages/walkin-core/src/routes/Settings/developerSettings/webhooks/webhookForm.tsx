@@ -78,8 +78,6 @@ export default class WebhookForm extends React.Component<
   };
 
   onChangeHeadersHandler = (value: any, index: number, subIndex: number) => {
-    console.log(value, index, subIndex);
-
     let { headerEntries } = this.state;
     headerEntries[index][subIndex] = value;
     this.setState({ headerEntries });
@@ -180,7 +178,9 @@ export default class WebhookForm extends React.Component<
         >
           <div className="webhookEditTitle">{header}</div>
           <div id="WebhookInputWrapper" className="webhookTypeInputWrapper">
-            <div className="InputLabel">Select Event Type*</div>
+            <div className="InputLabel">
+              Select Event Type<span className="requiredFieldRedColor">*</span>
+            </div>
             <Select
               showSearch
               getPopupContainer={() =>
@@ -212,7 +212,9 @@ export default class WebhookForm extends React.Component<
             </div>
           </div>
           <div className="webhookLabelInputWrapper">
-            <div className="InputLabel">Label*</div>
+            <div className="InputLabel">
+              Label<span className="requiredFieldRedColor">*</span>
+            </div>
 
             <Input
               size="large"
@@ -227,7 +229,9 @@ export default class WebhookForm extends React.Component<
             />
           </div>
           <div className="webhookURLInputWrapper">
-            <div className="InputLabel">URL*</div>
+            <div className="InputLabel">
+              URL<span className="requiredFieldRedColor">*</span>
+            </div>
             <Input
               size="large"
               addonBefore={selectBefore}
