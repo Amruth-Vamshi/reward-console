@@ -28,20 +28,20 @@ import { InjectMassageModule as IntlMessages } from "./util/IntlMessages";
 import { CardBox } from "./components/CardBox";
 import { CircularProgress } from "./components/CircularProgress";
 import { ManageCampaignCard } from "./components/Cards/ManageCampaignCard";
-import { CampaignPriority } from "./components/organisms/campaignPriority";
-import { BasicInfoForm } from "./components/molecules/basicInfoForm";
-import { BasicSlider } from "./components/atoms/testAndControlSlider";
-import { Popup } from "./components/atoms/popup";
-import { AddAndDeleteSelectDynamically } from "./components/atoms/addAndDeleteSelect";
-import { WalkinQueryBuilder } from "./components/atoms/queryBuilder";
-import { SortableDataTable } from "./components/atoms/sortableDataTable";
-import { InstantSearch } from "./components/atoms/instantSearch";
-import { CampaignHeader } from "./components/molecules/campaignHeader";
-import { CampaignFooter } from "./components/molecules/campaignFooter";
-import { Stepper } from "./components/atoms/stepper";
+// import { CampaignPriority } from "./components/organisms/campaignPriority";
+// import { BasicInfoForm } from "./components/molecules/basicInfoForm";
+// import { BasicSlider } from "./components/atoms/testAndControlSlider";
+// import { Popup } from "./components/atoms/popup";
+// import { AddAndDeleteSelectDynamically } from "./components/atoms/addAndDeleteSelect";
+// import { WalkinQueryBuilder } from "./components/atoms/queryBuilder";
+// import { SortableDataTable } from "./components/atoms/sortableDataTable";
+// import { InstantSearch } from "./components/atoms/instantSearch";
+// import { CampaignHeader } from "./components/molecules/campaignHeader";
+// import { CampaignFooter } from "./components/molecules/campaignFooter";
+// import { Stepper } from "./components/atoms/stepper";
 import { ErrorBoundary } from "./util/ErrorBoundary";
 import { IconWithTextCard } from "./components/dashboard/CRM/IconWithTextCard";
-import { Overview as campaignOverview } from "./components/molecules/campaignOverview/index";
+// import { Overview as campaignOverview } from "./components/molecules/campaignOverview/index";
 import { WidgetHeader } from "./components/WidgetHeader";
 export {
   CircularProgress,
@@ -72,19 +72,19 @@ export {
   IntlMessages,
   CardBox,
   ManageCampaignCard,
-  CampaignPriority,
-  BasicInfoForm,
-  BasicSlider,
-  Popup,
-  AddAndDeleteSelectDynamically,
-  WalkinQueryBuilder,
-  SortableDataTable,
-  InstantSearch,
-  CampaignHeader,
-  CampaignFooter,
-  Stepper,
+  // CampaignPriority,
+  // BasicInfoForm,
+  // BasicSlider,
+  // Popup,
+  // AddAndDeleteSelectDynamically,
+  // WalkinQueryBuilder,
+  // SortableDataTable,
+  // InstantSearch,
+  // CampaignHeader,
+  // CampaignFooter,
+  // Stepper,
   ErrorBoundary,
   IconWithTextCard,
-  campaignOverview,
+  // campaignOverview,
   WidgetHeader
 };
