@@ -334,12 +334,13 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 		}).then((data: any) => {
 			console.log("campaign data..", data);
 			message.success('Campaign Launched')
-			moment().isBetween(this.state.campaign.startTime, this.state.campaign.endTime) ?
-				this.props.history.push('/hyperx/campaigns') :
-				this.props.history.push({
-					pathname: '/hyperx/campaigns', //tabKey: "2"
-					state: { tabKey: "2" }
-				})
+			// moment().isBetween(this.state.campaign.startTime, this.state.campaign.endTime) ?
+			// 	this.props.history.push('/hyperx/campaigns') :
+			// 	this.props.history.push({
+			// 		pathname: '/hyperx/campaigns', //tabKey: "2"
+			// 		state: { tabKey: "2" }
+			// 	})
+			this.props.history.push({ pathname: '/hyperx/campaigns', state: { tabKey: "2" } })
 		}).catch(err => {
 			console.log("Error Update campaign", err)
 			this.setState({ loading: false })
