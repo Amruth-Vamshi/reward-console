@@ -30,7 +30,7 @@ const OfferRedemptionRulesForm = Form.create<IProps>({ name: 'offer_redemption_r
 				},
 			};
 			return (
-				<Form {...formItemLayout} style={{ padding: '20px 50px' }} ref={wrappedComponentRef} layout="vertical">
+				<Form {...formItemLayout} className='offerRedemptionForm' style={{ padding: '20px 50px' }} ref={wrappedComponentRef} layout="vertical">
 					<Form.Item style={{ display: 'inline-block', width: 'calc(35% - 12px)' }} label="Usage Limit">
 						{getFieldDecorator('redemption_usage_limit', {
 							initialValue: `${

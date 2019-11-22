@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Fragment } from 'react';
 import { Form, Icon, Input, Select, Button, Col, DatePicker, Radio, Checkbox } from 'antd';
 const { TextArea } = Input;
+import './style.css'
 const Option = Select.Option;
 const { RangePicker } = DatePicker;
 import AddAndDeleteComponentsDynamically from '../../addAndDeleteComponentsDynamically';
@@ -169,7 +170,7 @@ const OfferBasicInfoForm = Form.create<IProps>({ name: 'offer_basic_info' })(
 				},
 			};
 			return (
-				<Form {...formItemLayout} style={{ padding: '20px 50px' }} ref={wrappedComponentRef} layout="vertical">
+				<Form className='offerBasicForm' {...formItemLayout} style={{ padding: '20px 50px' }} ref={wrappedComponentRef} layout="vertical">
 					<Form.Item style={{ display: 'inline-block', width: 'calc(35% - 12px)' }} label="Offer Type">
 						{getFieldDecorator('offerType', {
 							initialValue: `${Object.keys(formValues).length != 0 ? formValues.offerType : ''}`,
