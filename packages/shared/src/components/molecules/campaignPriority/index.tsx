@@ -41,7 +41,7 @@ export const CampaignPriority: React.FC<CampaignPriorityProps> = ({
 }) => {
   return (
     <Fragment>
-      <div className="campaignPriorityContainerStyle prioritySection">
+      <div style={{ padding: 15 }} className="campaignPriorityContainerStyle prioritySection">
         <PrioritySelection
           priorityChosen={priorityChosen}
           prioritySelectionTitle={prioritySelectionTitle}
