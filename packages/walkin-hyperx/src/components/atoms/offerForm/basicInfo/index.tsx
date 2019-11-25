@@ -178,22 +178,21 @@ const OfferBasicInfoForm = Form.create<IProps>({ name: 'offer_basic_info' })(
 							rules: [{ required: true, message: 'Please input offer type!' }],
 						})(
 							<Select placeholder="Select an offer type" onChange={handleOfferTypeChange}>
-								{offerTypeData &&
-									offerTypeData.map((el: any, i: any) => <Option key={i} value={el.val}> {el.title} </Option>)}
+								{offerTypeData && offerTypeData.map((el: any, i: any) => <Option key={i} value={el.val}> {el.title} </Option>)}
 							</Select>
 						)}
 					</Form.Item>
 
 					{offerTypeStatus.showList ?
-						<Form.Item style={{ display: 'inline-block', width: 'calc(20% - 12px)' }} label="Value">
+						<Form.Item style={{ display: 'inline-block', width: "calc(65% - 12px)" }} label="Value">
 							{getFieldDecorator('offerTypeValue', {
-								initialValue: `${Object.keys(formValues).length != 0 ? formValues.offerTypeValue : ''}`,
+								initialValue: `${Object.keys(formValues).length != 0 ? formValues.offerTypeValue : 'All'}`,
 							})(
-								<Select showSearch mode="multiple" style={{ width: '300px' }} placeholder="Please select"
+								<Select showSearch mode="multiple" style={{ width: '100%' }} allowClear placeholder="Please select"
 								// onChange={this.handleChange}
 								>
 									{products && products.map((el: any, i: any) =>
-										<Option key={i} value={el.sku}> {el.name}</Option>)}
+										<Option key={i} value={el.code}> {el.name}</Option>)}
 								</Select>
 							)}
 						</Form.Item> :
