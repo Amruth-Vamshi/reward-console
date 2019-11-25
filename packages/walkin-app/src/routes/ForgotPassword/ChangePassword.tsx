@@ -1,17 +1,15 @@
-import * as React from "react";
-import { Form, Icon, Input, Button, Checkbox } from "antd";
-import { compose, graphql, Mutation, MutationFunc } from "react-apollo";
-import gql from "graphql-tag";
-import { Link } from "react-router-dom";
-import { IntlMessages } from "@walkinsole/walkin-components";;
-import { FormComponentProps } from "antd/lib/form";
-import { History } from "history";
+import { Button, Form, Icon, Input } from 'antd';
+import { FormComponentProps } from 'antd/lib/form';
+import gql from 'graphql-tag';
+import { History } from 'history';
+import * as React from 'react';
+import { compose, Mutation, MutationFunc } from 'react-apollo';
 
 interface IProps extends FormComponentProps {
   history?: History;
 }
 
-interface IState {}
+interface IState { }
 
 class ChangePassword extends React.Component<IProps, IState> {
   state = {

@@ -515,15 +515,27 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 	// };
 
 	linkOffer = current => {
-		if (this.state.noOfferRequired) this.setState({ current })
-		else if (this.state.offer != "" && !this.state.offerCreated) {
+		this.setState({ loading: true })
+		if (this.state.noOfferRequired) {
+			let campaignInput = { campaignType: "MESSAGING" };
+			this.props.updateCampaign({
+				variables: {
+					id: this.state.campaign.id,
+					input: campaignInput
+				}
+			}).then(data => {
+				console.log("Update campaign data..", data);
+				this.setState({ current, loading: false })
+			}).catch(err => {
+				console.log("Error Update campaign", err)
+				this.setState({ loading: false })
+			});
+		} else if (this.state.offer != "" && !this.state.offerCreated) {
 			let { org_id }: any = jwt.decode(localStorage.getItem('jwt'))
-			this.setState({ loading: true })
-			var input = {
+			let input = {
 				campaignId: this.state.campaign.id,
 				offerId: this.state.offer,
 				organizationId: org_id,
-				// status: DEFAULT_ACTIVE_STATUS
 			};
 			this.props.addOfferToCampaign({
 				variables: { input: input }
@@ -547,12 +559,12 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 					type: "SIMPLE",
 					organizationId: org_id,
 					status: DEFAULT_ACTIVE_STATUS,
-					ruleConfiguration: JSON.stringify(this.state.audienceFilterRule)
+					ruleConfiguration: this.state.audienceFilterRule
 				};
 				this.props.createRule({ variables: { input: input } })
 					.then(data => {
 						console.log("Rule data...", data);
-						var campaignInput = { audienceFilterRule: data.data.createRule.id };
+						let campaignInput = { audienceFilterRule: data.data.createRule.id };
 						this.props.updateCampaign({
 							variables: {
 								id: this.state.campaign.id,
@@ -575,7 +587,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 
 	ruleUpdate = current => {
 		if (this.state.audienceFilterRule.rules.length) {
-			const input = { ruleConfiguration: JSON.stringify(this.state.audienceFilterRule) };
+			const input = { ruleConfiguration: this.state.audienceFilterRule };
 			this.props.updateRule({ variables: { id: this.state.audienceFilterRuleId, input: input } })
 				.then(data => {
 					console.log("Rule data...", data);

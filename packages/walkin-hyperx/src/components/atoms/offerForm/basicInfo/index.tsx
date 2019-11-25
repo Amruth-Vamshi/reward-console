@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Fragment } from 'react';
 import { Form, Icon, Input, Select, Button, Col, DatePicker, Radio, Checkbox } from 'antd';
 const { TextArea } = Input;
+import './style.css'
 const Option = Select.Option;
 const { RangePicker } = DatePicker;
 import AddAndDeleteComponentsDynamically from '../../addAndDeleteComponentsDynamically';
@@ -168,8 +169,9 @@ const OfferBasicInfoForm = Form.create<IProps>({ name: 'offer_basic_info' })(
 					sm: { span: 24 },
 				},
 			};
+			console.log('offerTypeStatus', offerTypeStatus);
 			return (
-				<Form {...formItemLayout} style={{ padding: '20px 50px' }} ref={wrappedComponentRef} layout="vertical">
+				<Form className='offerBasicForm' {...formItemLayout} style={{ padding: '20px 50px' }} ref={wrappedComponentRef} layout="vertical">
 					<Form.Item style={{ display: 'inline-block', width: 'calc(35% - 12px)' }} label="Offer Type">
 						{getFieldDecorator('offerType', {
 							initialValue: `${Object.keys(formValues).length != 0 ? formValues.offerType : ''}`,
@@ -177,49 +179,36 @@ const OfferBasicInfoForm = Form.create<IProps>({ name: 'offer_basic_info' })(
 						})(
 							<Select placeholder="Select an offer type" onChange={handleOfferTypeChange}>
 								{offerTypeData &&
-									offerTypeData.map((el: any, i: any) => (
-										<Option key={i} value={el.val}>
-											{el.title}
-										</Option>
-									))}
+									offerTypeData.map((el: any, i: any) => <Option key={i} value={el.val}> {el.title} </Option>)}
 							</Select>
 						)}
 					</Form.Item>
-					{offerTypeStatus.showList === false && (
+
+					{offerTypeStatus.showList ?
 						<Form.Item style={{ display: 'inline-block', width: 'calc(20% - 12px)' }} label="Value">
 							{getFieldDecorator('offerTypeValue', {
 								initialValue: `${Object.keys(formValues).length != 0 ? formValues.offerTypeValue : ''}`,
 							})(
-								<Input
-									type="number"
+								<Select showSearch mode="multiple" style={{ width: '300px' }} placeholder="Please select"
+								// onChange={this.handleChange}
+								>
+									{products && products.map((el: any, i: any) =>
+										<Option key={i} value={el.sku}> {el.name}</Option>)}
+								</Select>
+							)}
+						</Form.Item> :
+						<Form.Item style={{ display: 'inline-block', width: 'calc(20% - 12px)' }} label="Value">
+							{getFieldDecorator('offerTypeValue', {
+								initialValue: `${Object.keys(formValues).length != 0 ? formValues.offerTypeValue : ''}`,
+							})(
+								<Input type="number" addonBefore={offerTypeStatus.showRupee === true ? 'Rs.' : ''}
 									addonAfter={offerTypeStatus.showPercent === true ? <Icon type="percentage" /> : ''}
-									addonBefore={offerTypeStatus.showRupee === true ? 'Rs.' : ''}
+									max={offerTypeStatus.showPercent ? 100 : Infinity} min={0}
 								/>
 							)}
 						</Form.Item>
-					)}
-					{offerTypeStatus.showList === true && (
-						<Form.Item style={{ display: 'inline-block', width: 'calc(20% - 12px)' }} label="Value">
-							{getFieldDecorator('offerTypeValue', {
-								initialValue: `${Object.keys(formValues).length != 0 ? formValues.offerTypeValue : ''}`,
-							})(
-								<Select
-									showSearch
-									mode="multiple"
-									style={{ width: '300px' }}
-									placeholder="Please select"
-								// onChange={this.handleChange}
-								>
-									{products &&
-										products.map((el: any, i: any) => (
-											<Option key={i} value={el.sku}>
-												{el.name}
-											</Option>
-										))}
-								</Select>
-							)}
-						</Form.Item>
-					)}
+					}
+
 					<Form.Item style={{ width: 'calc(100% - 22px)' }} label="Offer Name">
 						{getFieldDecorator('offerName', {
 							initialValue: `${Object.keys(formValues).length != 0 ? formValues.offerName : ''}`,
