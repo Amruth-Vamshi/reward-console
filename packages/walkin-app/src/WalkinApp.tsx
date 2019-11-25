@@ -9,12 +9,7 @@ import { ApolloProvider, Query, Mutation } from "react-apollo";
 import { ErrorBoundary, CircularProgress } from "@walkinsole/walkin-components";
 import { ApolloClient } from "apollo-boost";
 
-export class WalkinApp extends React.Component<
-  {},
-  {
-    client: ApolloClient<any>;
-  }
-> {
+export class WalkinApp extends React.Component<{}, { client: ApolloClient<any>; }> {
   constructor(props) {
     super(props);
     this.state = {
@@ -42,8 +37,8 @@ export class WalkinApp extends React.Component<
         </ApolloProvider>
       </ErrorBoundary>
     ) : (
-      <CircularProgress className="circular" />
-    );
+        <CircularProgress className="circular" />
+      );
   }
 }
 

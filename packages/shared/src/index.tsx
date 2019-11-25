@@ -1,7 +1,7 @@
 // export all components here
 
 import ManageCampaignCard from './components/Cards/ManageCampaignCard';
-import CampaignPriority from './components/molecules/campaignPriority';
+import { CampaignPriority } from './components/molecules/campaignPriority';
 import BasicInfoForm from './components/molecules/basicInfoForm';
 import BasicSlider from './components/atoms/testAndControlSlider';
 import Popup from './components/atoms/popup';
