@@ -71,7 +71,7 @@ class SidebarContent extends React.Component<SidebarContentProps, SidebarContent
           className="RefineX-Sidebar gx-sidebar-content"
         >
           <Menu
-            style={{ height: "100%" }}
+            style={{ height: "80%" }}
             defaultOpenKeys={[defaultOpenKeys]}
             selectedKeys={[defaultOpenKeys]}
             theme={themeType === THEME_TYPE_LITE ? "light" : "dark"}
@@ -127,9 +127,8 @@ class SidebarContent extends React.Component<SidebarContentProps, SidebarContent
                                 <IntlMessages id="sidebar.refinex.help" />
                             </Link>
                         </Menu.Item> */}
-            <CollapseSidebar />
           </Menu>
-
+          <CollapseSidebar />
           {/* <div className="gx-linebar">
                         <i
                             className={`gx-icon-btn icon icon-${
