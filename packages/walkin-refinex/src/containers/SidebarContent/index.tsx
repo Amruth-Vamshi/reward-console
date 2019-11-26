@@ -19,6 +19,7 @@ import {
   NAV_STYLE_MINI_SIDEBAR
 } from "@walkinsole/walkin-components/src/constants/ThemeSetting";
 import SidebarLogo from "./SidebarLogo";
+import CollapseSidebar from './CollapseSidebar'
 import { compose, graphql } from "react-apollo";
 import gql from "graphql-tag";
 import Dashboard from "../../Icons/IconComponents/dashboard";
@@ -126,6 +127,7 @@ class SidebarContent extends React.Component<SidebarContentProps, SidebarContent
                                 <IntlMessages id="sidebar.refinex.help" />
                             </Link>
                         </Menu.Item> */}
+            <CollapseSidebar />
           </Menu>
 
           {/* <div className="gx-linebar">
