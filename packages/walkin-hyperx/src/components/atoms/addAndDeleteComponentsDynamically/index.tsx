@@ -172,12 +172,13 @@ class AddAndDeleteComponentsDynamically extends React.Component<
           const { valueOne, valueTwo, onOneChange, onTwoChange } = item;
           return (
             <div key={`select-${index}`} className="selectSegmentBoxContainer">
-              <Select value={valueOne || ""} onChange={onOneChange}
+              <Select value={valueOne || ""} onChange={onOneChange} getPopupContainer={(triggerNode: any) => triggerNode.parentNode}
                 style={{ display: "inline-block", width: "calc(35% - 12px)", marginBottom: "0px", paddingRight: "5px" }}>
                 {data_1 && data_1.map((val: any, i: any) => <Option key={i} value={val.value}>  {val.title} </Option>)}
               </Select>
 
               <Select showSearch mode="multiple" value={valueTwo || ""} onChange={onTwoChange}
+                getPopupContainer={(triggerNode: any) => triggerNode.parentNode}
                 style={{ display: "inline-block", width: "calc(65% - 12px)", marginBottom: "0px" }}>
                 {data_2 && data_2.map((val: any, i: any) => <Option key={i} value={val.value}>  {val.title} </Option>)}
               </Select>

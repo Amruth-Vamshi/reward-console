@@ -78,7 +78,7 @@ const OfferRedemptionRulesForm = Form.create<IProps>({ name: 'offer_redemption_r
 							<Input
 								type="number"
 								addonAfter={
-									<Select defaultValue="day" style={{ width: 80 }}>
+									<Select getPopupContainer={(triggerNode: any) => triggerNode.parentNode} defaultValue="day" style={{ width: 80 }}>
 										<Option value="day">/Day</Option>
 										<Option value="week">/Week</Option>
 										<Option value="month">/Month</Option>
@@ -102,7 +102,7 @@ const OfferRedemptionRulesForm = Form.create<IProps>({ name: 'offer_redemption_r
 							initialValue: `${Object.keys(formValues).length != 0 ? formValues.type : ''}`,
 						})(
 							<Select placeholder="Select a type" //onChange={this.handleSelectChange}
-							>
+								getPopupContainer={(triggerNode: any) => triggerNode.parentNode}>
 								{cappingData &&
 									cappingData.map((el: any, i: any) => (
 										<Option key={i} value={el.val}>

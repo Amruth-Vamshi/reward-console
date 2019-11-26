@@ -281,7 +281,7 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 									type: 'SIMPLE',
 									organizationId: org_id,
 									status: 'ACTIVE',
-									ruleConfiguration: JSON.stringify(offerEligibityRule),
+									ruleConfiguration: offerEligibityRule,
 								},
 							})
 							.then(({ data }) => {
@@ -299,7 +299,7 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 											type: 'SIMPLE',
 											organizationId: org_id,
 											status: 'ACTIVE',
-											ruleConfiguration: JSON.stringify(redemptionArray),
+											ruleConfiguration: redemptionArray,
 										},
 									})
 									.then(({ data }) => {
@@ -317,7 +317,7 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 												variables: {
 													name: formValues.basicForm.offerName,
 													offerType: formValues.basicForm.offerType,
-													reward: JSON.stringify(offerType),
+													reward: offerType,
 													organizationId: org_id,
 													offerEligibilityRule: offerEligibityRuleId,
 													offerCategory: couponTypeSelected === 1 ? 'COUPONS' : 'AUTO_APPLY',

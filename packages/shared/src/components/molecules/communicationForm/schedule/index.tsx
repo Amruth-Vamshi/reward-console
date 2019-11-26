@@ -146,7 +146,7 @@ class Schedule extends React.Component<iProps, Partial<iState>> {
                     <Form ref={this.props.wrappedComponentRef} onSubmit={this.props.submit}>
                         <Form.Item label="Repeat Every" {...formItemLayout}>
                             <Select
-                                // getPopupContainer={() => document.getElementById('OffArea')}
+                                getPopupContainer={(triggerNode: any) => triggerNode.parentNode}
                                 value={this.state.repeatType} className="scheduleType"
                                 placeholder="Select Type" optionFilterProp="children"
                                 onChange={e => this.handleTypeChange(e)}
@@ -181,7 +181,7 @@ class Schedule extends React.Component<iProps, Partial<iState>> {
 
                         <Form.Item style={{ marginTop: 5 }} label="Ends" {...formItemLayout}>
                             <Select
-                                // getPopupContainer={() => document.getElementById('OffArea')}
+                                getPopupContainer={(triggerNode: any) => triggerNode.parentNode}
                                 value={this.state.end} className="scheduleEnd"
                                 placeholder="Select Type" optionFilterProp="children"
                                 onChange={e => this.handleOnEndChange(e)}
