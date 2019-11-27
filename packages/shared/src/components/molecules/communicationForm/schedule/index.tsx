@@ -138,7 +138,7 @@ class Schedule extends React.Component<iProps, Partial<iState>> {
         return (
             <div>
                 <Card className="scheduleCard">
-                    <Row><p style={{ fontSize: 18 }}>Schedule</p></Row>
+                    <Row><p style={{ fontSize: 20 }}>Schedule</p></Row>
                     {this.props.campaign &&
                         <p className="campDate"> Campaign Date: &nbsp;  <b>{moment(campaign.startTime).format("DD MMM YY HH:mm") + ' - ' +
                             moment(campaign.endTime).format("DD MMM YY HH:mm")} </b></p>}
