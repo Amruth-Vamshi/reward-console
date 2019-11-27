@@ -107,17 +107,17 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 				Object.assign(this.state.offerTypeStatus, { showRupee: false, showPercent: true, showList: false })
 			);
 		}
-		if (value === 'FLATX_OFF_ON_BILL') {
+		if (value === 'FLATX_DISCOUNT') {
 			this.setState(
 				Object.assign(this.state.offerTypeStatus, { showRupee: true, showPercent: false, showList: false })
 			);
 		}
-		if (value === 'FREE_ITEMS') {
+		if (value === 'FREE_ITMES_FROM_LIST') {
 			this.setState(
 				Object.assign(this.state.offerTypeStatus, { showList: true, showPercent: false, showRupee: false })
 			);
 		}
-		if (value === 'FLAT_CASHBACK') {
+		if (value === 'FLATX_CASHBACK') {
 			this.setState(
 				Object.assign(this.state.offerTypeStatus, { showList: false, showPercent: false, showRupee: false })
 			);
@@ -228,12 +228,14 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 		}
 	};
 
+	changePage = current => this.setState({ current })
+
 	goToNextPage = (current: number, e: any) => {
 		let { client } = this.props;
 		const { formValues } = this.state;
 		const { org_id }: any = jwt.decode(localStorage.getItem('jwt'))
 		if (current === 1 && e && e.target.innerText === 'Next') {
-			if (isEmpty(formValues.basicForm) || isValidObject(formValues.basicForm)) {
+			if (isValidObject(formValues.basicForm)) {
 				this.saveFormValues(current, 'basicForm', this.basicFormRef);
 				let { productValues, locationValues, formValues } = this.state;
 				let { basicForm } = formValues;
@@ -532,7 +534,7 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 		return (
 			<Fragment>
 				<div>
-					<WHeader title='Create Offer' extra={<Stepper stepData={offerStepData} current={current} onChange={this.goToNextPage} />} />
+					<WHeader title='Create Offer' extra={<Stepper stepData={offerStepData} current={current} onChange={this.changePage} />} />
 					{/* Each step is different step because the form has to be validated and saved as draft */}
 					<HyperXContainer margin='32px' headerHeightInPX={225}>
 						{current === 0 && (
