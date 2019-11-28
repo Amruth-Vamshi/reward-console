@@ -2,7 +2,7 @@ import * as React from "react";
 import AutorSizer from "react-virtualized-auto-sizer";
 import { VariableSizeList as List } from "react-window";
 import { ErrorBoundary, CardBox } from "@walkinsole/walkin-components";
-import { Icon, Row, Col, Button } from "antd";
+import { Icon, Row, Col, Button, Spin } from "antd";
 
 interface QuestionsListProps {
   questionnaire?: any
@@ -152,8 +152,11 @@ export default class QuestionsList extends React.Component<QuestionsListProps, Q
                           }}
                         >
                           <Icon type="plus" /> CreateQuestionnaire
-                      </Button>
+                        </Button>
                       </Col>
+                    </Row>
+                    <Row type="flex" justify="center">
+                      {(questionnaire.length === 0) && <div className="QuestionTypeLoader"><Spin size="small" tip="checking..." /></div>}
                     </Row>
                   </Col>
                 </Row>
