@@ -1,7 +1,7 @@
 import *  as React from 'react';
 import { Divider, Button, Upload } from 'antd';
 import './style.css';
-import { AddAndDeleteSelectDynamically, WalkinQueryBuilder } from '@walkinsole/shared';
+import { AddAndDeleteSelectDynamically, WalkinQueryBuilder, FileUpload } from '@walkinsole/shared';
 import { UploadProps } from 'antd/lib/upload';
 
 interface iProps {
@@ -19,6 +19,11 @@ interface iProps {
 	ruleQuery?: any,
 	audienceCount?: any,
 	errors?: any
+	showModal?
+	handleOk?
+	handleCancel?
+	visible?, fileList?
+	handleUploadChangeProps?
 }
 
 const Audience = ({
@@ -35,7 +40,10 @@ const Audience = ({
 	selectedSegments,
 	ruleQuery,
 	audienceCount,
-	errors
+	errors, showModal, handleCancel,
+	visible, handleOk, fileList,
+	handleUploadChangeProps
+
 }: iProps) => {
 	return (
 		<div>
@@ -54,12 +62,14 @@ const Audience = ({
 					/>
 					{uploadCsvText && <span>
 						or
-						<Upload {...uploadProps}>
-							<Button style={{ marginBottom: '0px' }} type="link">
-								{uploadCsvText}
-							</Button>
-						</Upload>
+						{/* <Upload {...uploadProps}>
+							<Button style={{ marginBottom: '0px' }} type="link"> */}
+						<i onClick={showModal}>{uploadCsvText}</i>
+						{/* </Button>
+						</Upload> */}
 					</span>}
+					{/* <FileUpload visible={visible} handleOk={handleOk} handleCancel={handleCancel}
+						fileList={fileList} handleUploadChangeProps={handleUploadChangeProps} /> */}
 				</div>
 				<div style={{ marginTop: '50px' }}>
 					<Divider className='audienceDivider' style={{ color: '#000000' }} orientation="left">
@@ -69,7 +79,7 @@ const Audience = ({
 					<WalkinQueryBuilder fields={attributeData} onQueryChange={logQuery} query={ruleQuery} />
 				</div>
 			</div>
-		</div>
+		</div >
 	);
 };
 

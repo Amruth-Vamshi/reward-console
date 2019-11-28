@@ -112,6 +112,22 @@ const OfferBasicInfoForm = Form.create<IProps>({ name: 'offer_basic_info' })(
 			}
 		}
 
+		// handleChangeLocation = (value) => {
+		// 	if (value == "SelectAll") {
+		// 		if (this.state.selectedLocations !== '') this.state.errors.selectedLocations = ''
+		// 		this.setState({
+		// 			selectedLocations: this.state.locationsList.slice(1, this.state.locationsList.length)
+		// 		})
+
+		// 	} else if (value.length == 22) {
+		// 		if (this.state.selectedLocations !== '') this.state.errors.selectedLocations = ''
+		// 		this.setState({ selectedLocations: [] })
+		// 	} else {
+		// 		if (this.state.selectedLocations !== '') this.state.errors.selectedLocations = ''
+		// 		this.setState({ selectedLocations: value })
+		// 	}
+		// }
+
 		handleProductItemChange(i: any, value: any) {
 			let nextValues = this.state.values.slice();
 			nextValues[i].productItem = value;
@@ -177,7 +193,7 @@ const OfferBasicInfoForm = Form.create<IProps>({ name: 'offer_basic_info' })(
 							initialValue: `${Object.keys(formValues).length != 0 ? formValues.offerType : ''}`,
 							rules: [{ required: true, message: 'Please input offer type!' }],
 						})(
-							<Select placeholder="Select an offer type" onChange={handleOfferTypeChange}>
+							<Select placeholder="Select an offer type" onChange={handleOfferTypeChange} getPopupContainer={(triggerNode: any) => triggerNode.parentNode}>
 								{offerTypeData && offerTypeData.map((el: any, i: any) => <Option key={i} value={el.val}> {el.title} </Option>)}
 							</Select>
 						)}
@@ -189,6 +205,7 @@ const OfferBasicInfoForm = Form.create<IProps>({ name: 'offer_basic_info' })(
 								initialValue: `${Object.keys(formValues).length != 0 ? formValues.offerTypeValue : 'All'}`,
 							})(
 								<Select showSearch mode="multiple" style={{ width: '100%' }} allowClear placeholder="Please select"
+									getPopupContainer={(triggerNode: any) => triggerNode.parentNode}
 								// onChange={this.handleChange}
 								>
 									{products && products.map((el: any, i: any) =>
@@ -252,11 +269,8 @@ const OfferBasicInfoForm = Form.create<IProps>({ name: 'offer_basic_info' })(
 						{getFieldDecorator('transactionTime', {
 							initialValue: `${Object.keys(formValues).length != 0 ? formValues.transactionTime : ''}`,
 						})(
-							<Select
-								defaultValue="frequency"
-								placeholder="Select a transaction time"
-								onChange={handleTransactionTimeChange}
-							>
+							<Select defaultValue="frequency" getPopupContainer={(triggerNode: any) => triggerNode.parentNode}
+								placeholder="Select a transaction time" onChange={handleTransactionTimeChange}>
 								{transactionTimeData &&
 									transactionTimeData.map((el: any, i: any) => (
 										<Option key={i} value={el.val}>
@@ -314,7 +328,7 @@ const OfferBasicInfoForm = Form.create<IProps>({ name: 'offer_basic_info' })(
 										Object.keys(formValues).length != 0 ? formValues.cartValueCondition : ''
 										}`,
 								})(
-									<Select
+									<Select getPopupContainer={(triggerNode: any) => triggerNode.parentNode}
 									// onChange={this.handleSelectChange}
 									>
 										{cartValueConditionData &&
