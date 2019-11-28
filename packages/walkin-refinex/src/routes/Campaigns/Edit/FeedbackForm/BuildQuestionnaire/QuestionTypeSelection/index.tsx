@@ -80,7 +80,7 @@ class QuestionTypeSelection extends React.Component<QuestionTypeSelectionProps, 
     return (
       <Row
         style={{
-          height: "-webkit-fill-available",
+          height: "100%",
           overflowX: "scroll"
         }}
       >

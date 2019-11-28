@@ -382,7 +382,7 @@ class Questionnaire extends React.Component<QuestionnaireProps, QuestionnaireSta
                         reference={this.listRef}
                     />}
                 </Col>
-                <Col span={16}>
+                <Col span={16} className="QuestionType">
                     {
                         (this.props.questionnaire.length > 0 ? !isEmpty(questionToEdit) && !addQuestion ? (
                             <FormPane
