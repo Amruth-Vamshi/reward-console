@@ -1,14 +1,15 @@
 import * as React from 'react';
-import { Modal, Upload, Button, Icon } from 'antd';
+import { Modal, Upload, Button, Icon, Row, Col } from 'antd';
+import "./index.css"
 
 export interface IAppProps {
-    visible, handleOk?, handleCancel?, fileList?, handleUploadChangeProps?
+    visible, handleOk?, handleCancel?, fileList?, handleUploadChangeProps?, title?: string
 }
 
 export interface IAppState {
 }
 
-export default class App extends React.Component<IAppProps, IAppState> {
+export default class FileUpload extends React.Component<IAppProps, IAppState> {
     constructor(props: IAppProps) {
         super(props);
 
@@ -17,7 +18,7 @@ export default class App extends React.Component<IAppProps, IAppState> {
     }
 
     public render() {
-        let { visible, handleOk, handleCancel, fileList, handleUploadChangeProps } = this.props
+        let { visible, handleOk, handleCancel, fileList, handleUploadChangeProps, title } = this.props
         const props = {
             action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
             onChange: handleUploadChangeProps,
@@ -25,21 +26,21 @@ export default class App extends React.Component<IAppProps, IAppState> {
         };
         return (
             <div>
-                <Modal width="500px" key="model"
+                <Modal
+                    width="500px"
+                    key="model"
                     visible={visible}
+                    title={title}
                     onOk={handleOk}
                     onCancel={handleCancel}
+                    okText="Submit"
                 >
                     <Upload {...props} fileList={fileList}>
-                        <Button
-                            style={{ width: "400px" }}
-                            className="buttonPrimary"
-                            type="default"
-                        >
-                            <Icon type="upload" /> Upload </Button>
+                        <Button>
+                            <Icon type="upload" /> Upload
+                        </Button>
                     </Upload>
                 </Modal>
-
             </div>
         );
     }
