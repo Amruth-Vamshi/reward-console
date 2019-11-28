@@ -17,6 +17,7 @@ import { isValidObject, transposeObject } from '../../../utils/common';
 import { OFFER_LIST } from '../../../utils/RouterConstants';
 import { cappingData, cartValueConditionData, couponTypeData, dummyBrandData, locationData, offerStepData, offerTypeData, productData, transactionTimeData } from './data';
 import HyperXContainer from '../../../components/atoms/HyperXContainer';
+import { DEFAULT_RULE_TYPE, DEFAULT_ACTIVE_STATUS } from '../../../utils';
 
 interface IProps extends RouteChildrenProps<any>, ApolloProviderProps<any> {
 	// pauseCampaign: (variables: any) => any
@@ -220,12 +221,17 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 
 	saveFormValues = (current, state, ref) => {
 		const form = ref && ref.props.form;
+		let fmValues
 		if (form) {
 			form.validateFields((err, values) => {
 				if (err) return;
-				else this.setState(Object.assign(this.state.formValues, { [state]: values }));
+				else {
+					fmValues = values;
+					this.setState(Object.assign(this.state.formValues, { [state]: values }));
+				}
 			});
 		}
+		return fmValues
 	};
 
 	changePage = current => this.setState({ current })
@@ -234,30 +240,25 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 		let { client } = this.props;
 		const { formValues } = this.state;
 		const { org_id }: any = jwt.decode(localStorage.getItem('jwt'))
-		if (current === 1 && e && e.target.innerText === 'Next') {
+		if (e && e.target.innerText === 'Next') {
 			if (isValidObject(formValues.basicForm)) {
-				this.saveFormValues(current, 'basicForm', this.basicFormRef);
-				let { productValues, locationValues, formValues } = this.state;
-				let { basicForm } = formValues;
-				let offerType = {};
-				offerType[basicForm.offerType] = parseInt(basicForm.offerTypeValue);
+				let basicForm: any = this.saveFormValues(current, 'basicForm', this.basicFormRef);
+				if (basicForm) {
+					let { productValues, locationValues, formValues } = this.state;
+					// let { basicForm } = formValues;
+					let offerType = {}, reArrangedObj = {};
+					offerType[basicForm.offerType] = parseInt(basicForm.offerTypeValue);
 
-				let combinedArray = productValues.concat(locationValues);
-				let reArrangedObj = {};
-				let arr: Array<{}>;
-				combinedArray.map(val => {
-					reArrangedObj[val.valueOne] = val.valueTwo;
-					// console.log('');
-					arr = transposeObject(reArrangedObj && reArrangedObj, 'in');
-				});
-				let basicFormArray = { rules: arr, combinator: 'and' };
+					let combinedArray = productValues.concat(locationValues);
+					let arr: Array<{}>;
+					combinedArray.map(val => {
+						reArrangedObj[val.valueOne] = val.valueTwo;
+						arr = transposeObject(reArrangedObj && reArrangedObj, 'IN');
+					});
+					let basicFormArray = { rules: arr, combinator: 'AND' };
 
-				console.log('>>>', basicFormArray);
-				this.setState({
-					offerEligibityRule: basicFormArray,
-					offerType: offerType,
-					current: current,
-				});
+					this.setState({ offerEligibityRule: basicFormArray, offerType: offerType, current: current });
+				}
 			}
 		} else if (e && e.target.innerText === 'Save') {
 			const { formValues } = this.state;
@@ -268,56 +269,44 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 						let redemptionFormObject = this.state.formValues.redemptionForm;
 						redemptionFormObject[redemptionFormObject.type] = redemptionFormObject.cappingValue;
 						let ommitedObject = omit(redemptionFormObject, ['type', 'cappingValue']);
-						let redemptionArray = { rules: transposeObject(ommitedObject, '='), combinator: 'and' };
+						let redemptionArray = { rules: transposeObject(ommitedObject, '='), combinator: 'AND' };
 						const { offerEligibityRule, redemptionRule } = this.state;
+						console.log('>>Rules', JSON.stringify(offerEligibityRule), JSON.stringify(redemptionArray));
+						let ruleInput = {
+							name: Math.random().toString(36).substring(7),
+							type: DEFAULT_RULE_TYPE,
+							organizationId: org_id,
+							status: DEFAULT_ACTIVE_STATUS,
+							ruleConfiguration: offerEligibityRule,
+						}
+						console.log('ruleInput>>> ', JSON.stringify(ruleInput));
 						this.setState({ loading1: true })
 						client
-							.mutate({
-								mutation: createRule,
-								variables: {
-									name: Math.random()
-										.toString(36)
-										.substring(7),
-									type: 'SIMPLE',
-									organizationId: org_id,
-									status: 'ACTIVE',
-									ruleConfiguration: JSON.stringify(offerEligibityRule),
-								},
-							})
+							.mutate({ mutation: createRule, variables: ruleInput })
 							.then(({ data }) => {
 								console.log('created rule', data);
-								this.setState({
-									offerEligibityRuleId: data.createRule.id,
-								});
+								this.setState({ offerEligibityRuleId: data.createRule.id });
 								client
 									.mutate({
 										mutation: createRule,
 										variables: {
-											name: Math.random()
-												.toString(36)
-												.substring(7),
-											type: 'SIMPLE',
+											name: Math.random().toString(36).substring(7),
+											type: DEFAULT_RULE_TYPE,
 											organizationId: org_id,
-											status: 'ACTIVE',
-											ruleConfiguration: JSON.stringify(redemptionArray),
+											status: DEFAULT_ACTIVE_STATUS,
+											ruleConfiguration: redemptionArray,
 										},
 									})
 									.then(({ data }) => {
 										console.log('created redemption rule', data);
-										const {
-											offerEligibityRuleId,
-											offerType,
-											formValues,
-											couponLableSelected,
-											couponTypeSelected,
-										} = this.state;
+										const { offerEligibityRuleId, offerType, formValues, couponLableSelected, couponTypeSelected } = this.state;
 										client
 											.mutate({
 												mutation: createOffer,
 												variables: {
 													name: formValues.basicForm.offerName,
 													offerType: formValues.basicForm.offerType,
-													reward: JSON.stringify(offerType),
+													reward: offerType,
 													organizationId: org_id,
 													offerEligibilityRule: offerEligibityRuleId,
 													offerCategory: couponTypeSelected === 1 ? 'COUPONS' : 'AUTO_APPLY',
@@ -330,9 +319,7 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 												console.log('created offer', data);
 												this.setState({ loading1: false })
 												const { history } = this.props;
-												history.push({
-													pathname: OFFER_LIST,
-												});
+												history.push({ pathname: OFFER_LIST });
 
 												message.success('Your changes were saved', 5);
 												// client
@@ -397,9 +384,7 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 				}
 			}
 		} else {
-			this.setState({
-				current: current,
-			});
+			//this.setState({ current: current });
 		}
 	};
 
@@ -412,29 +397,20 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 	};
 
 	isKeyExists = (obj, key) => {
-		if (obj[key]) {
-			return [obj[key]];
-		} else {
-			return [];
-		}
+		if (obj[key]) return [obj[key]];
+		else return [];
 	};
 
 	onSelectTwoValuesSelected = values => {
-		this.setState({
-			locationValues: values,
-		});
+		this.setState({ locationValues: values });
 	};
 
 	onCouponChange = e => {
-		this.setState({
-			couponTypeSelected: e.target.value,
-		});
+		this.setState({ couponTypeSelected: e.target.value });
 	};
 
 	onCouponLabelChange = e => {
-		this.setState({
-			couponLableSelected: e.target.value,
-		});
+		this.setState({ couponLableSelected: e.target.value });
 	};
 
 	render() {
@@ -457,11 +433,7 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 		console.log('productsproductsproductsproducts', products, subOrganizations);
 		let productItems;
 		if (productDropDown.showProductList == true) {
-			productItems = products && products.map(el => ({
-				value: el.sku,
-				id: el.id,
-				title: el.name,
-			}));
+			productItems = products && products.map(el => ({ value: el.sku, id: el.id, title: el.name }));
 		}
 		if (productDropDown.showCategoryList == true) {
 			productItems = categories && categories

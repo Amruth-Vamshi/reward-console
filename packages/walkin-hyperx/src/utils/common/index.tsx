@@ -30,7 +30,7 @@ export const transposeObject = (obj, extraPropValue) => {
 	return Object.entries(obj).map(([field, value]) => ({
 		attributeName: field,
 		attributeValue: value,
-		operator: extraPropValue,
+		expressionType: extraPropValue,
 	}));
 };
 
