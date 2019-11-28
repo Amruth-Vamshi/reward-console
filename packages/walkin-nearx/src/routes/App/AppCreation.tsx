@@ -308,20 +308,10 @@ class AppCreation extends React.Component<iProps, iState> {
                     ""
                   ) : (
                       <Form.Item {...formItemLayout} label="Industry">
-                        <Select
-                          showSearch
-                          size="large"
-                          style={{ width: "100%" }}
-                          placeholder="Select Industy"
-                          // value = { auth.user.organization.name }
-                          optionFilterProp="children"
-                          onChange={this.onChange}
-                          // onSearch={onSearch}
-                          filterOption={(input: any, option: any) =>
-                            option.props.children
-                              .toLowerCase()
-                              .indexOf(input.toLowerCase()) >= 0
-                          }
+                        <Select showSearch size="large" style={{ width: "100%" }} placeholder="Select Industy"
+                          getPopupContainer={(triggerNode: any) => triggerNode.parentNode} // value = { auth.user.organization.name }
+                          optionFilterProp="children" onChange={this.onChange} // onSearch={onSearch}
+                          filterOption={(input: any, option: any) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                         >
                           {/* <Option value={auth.user.organization.name}>{auth.user.organization?auth.user.organization.name:''}</Option> */}
                           {options}

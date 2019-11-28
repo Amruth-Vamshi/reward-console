@@ -331,35 +331,23 @@ class Hooks extends React.Component<iProps, iState> {
               <span style={{ color: "Red" }}> {this.state.errors.hookName} </span>
             </Form.Item> */}
 
-            {this.state.update ? (
-              ""
-            ) : (
-                <Form.Item {...formItemLayout} label="Event Type">
-                  <Select
-                    showSearch
-                    size="large"
-                    style={{ width: "100%" }}
-                    placeholder="Select Event Type"
-                    // value = { auth.user.organization.name }
-                    optionFilterProp="children"
-                    onChange={this.onChange}
-                  // onSearch={onSearch}
-                  >
-                    {options}
-                  </Select>
-                  <span style={{ color: "Red" }}>{this.state.errors.event}</span>
-                </Form.Item>
-              )}
+            {this.state.update ? "" :
+              <Form.Item {...formItemLayout} label="Event Type">
+                <Select showSearch size="large" getPopupContainer={(triggerNode: any) => triggerNode.parentNode}
+                  style={{ width: "100%" }} placeholder="Select Event Type" // value = { auth.user.organization.name }
+                  optionFilterProp="children" onChange={this.onChange}
+                // onSearch={onSearch}
+                >
+                  {options}
+                </Select>
+                <span style={{ color: "Red" }}>{this.state.errors.event}</span>
+              </Form.Item>
+            }
 
             <Form.Item {...formItemLayout} label="Method">
-              <Select
-                size="large"
-                style={{ width: "100%" }}
-                placeholder="Select method"
-                optionFilterProp="children"
-                value={this.state.method}
-                onChange={this.onChangeMethod}
-              // onSearch={onSearch}
+              <Select size="large" style={{ width: "100%" }} placeholder="Select method" optionFilterProp="children"
+                value={this.state.method} getPopupContainer={(triggerNode: any) => triggerNode.parentNode}
+                onChange={this.onChangeMethod} // onSearch={onSearch}
               >
                 <Option value="POST">POST</Option>
                 <Option value="GET">GET</Option>

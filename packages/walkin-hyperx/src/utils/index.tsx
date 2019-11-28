@@ -5,3 +5,4 @@ export const DEFAULT_ACTIVE_STATUS = "ACTIVE"
 export const DEFAULT_INACTIVE_STATUS = "INACTIVE"
 export const DEFAULT_HYPERX_CAMPAIGN = "OFFER"
 export const SHOULD_EDIT = ["DRAFT"]
+export const DEFAULT_RULE_TYPE = "SIMPLE"

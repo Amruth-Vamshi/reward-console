@@ -58,9 +58,8 @@ export default class Offers extends React.Component<iProps, iState> {
 							{/* <Input required placeholder="Address" value={this.props.offersList} size='large'
 								name="name" onChange={c => this.props.handleOnOfferChange(c)} /> */}
 							<Select showSearch disabled={this.state.check}
-								// getPopupContainer={() => document.getElementById('OffArea')}
-								value={this.props.offer}
-								style={{ width: '100%' }}
+								value={this.props.offer} style={{ width: '100%' }}
+								getPopupContainer={(triggerNode: any) => triggerNode.parentNode}
 								placeholder="Select Type" optionFilterProp="children"
 								onChange={e => this.props.handleOnOfferChange(e)} size='large'
 								filterOption={(input: any, option: any) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}

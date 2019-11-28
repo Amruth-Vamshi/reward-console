@@ -684,7 +684,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 		console.log('Create Campaign');
 		const { client } = this.props;
 		const { priorityChosen, controlValue } = this.state;
-		if (!this.props.allApplications.organization) return console.log('No Applications for your organization');
+		if (!this.props.allApplications.organization) return message.error('No Applications for your organization');
 		const { allApplications: { organization } } = this.props;
 		let { org_id }: any = jwt.decode(localStorage.getItem('jwt'))
 		console.log(organization.applications);

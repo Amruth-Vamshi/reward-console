@@ -122,7 +122,7 @@ class QuestionnaireFormPane extends React.Component<QuestionnaireFormPaneProps, 
     return (
       <Row
         style={{
-          height: "-webkit-fill-available",
+          height: "100%",
           overflowX: "scroll"
         }}
       >
