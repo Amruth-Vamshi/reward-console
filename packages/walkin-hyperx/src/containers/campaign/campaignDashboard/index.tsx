@@ -146,9 +146,7 @@ class CampaignDashboard extends Component<IProps, Partial<IState>> {
         let { campaign, audiences, offers, communications } = this.state
         return (
             <div>
-
                 <WHeader title='Campaign Dashboard' />
-                {console.log('>>', this.props.campaign)}
                 {
                     this.state.spin ?
                         <div>
