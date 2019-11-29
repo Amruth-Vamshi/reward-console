@@ -111,6 +111,12 @@ class SidebarContent extends React.Component<
               <span>Organization Info</span>
             </Link>
           </Menu.Item>
+          <Menu.Item key="business-rules">
+            <Link to={`/core/business-rules`}>
+              <i className="icon icon-inbox" />
+              <span>Business Rules</span>
+            </Link>
+          </Menu.Item>
         </Menu>
       );
     }

@@ -256,6 +256,35 @@ export const ADD_ENTITY_EXTEND_FIELD = gql`
   }
 `;
 
+export const RULES = gql`
+  query rules($input: SearchRuleInput) {
+    rules(input: $input) {
+      id
+      name
+      description
+      status
+      type
+      ruleConfiguration
+      ruleExpression
+      # organization
+    }
+  }
+`;
+
+export const UPDATE_RULE = gql`
+  mutation updateRule($id: ID, $input: UpdateRuleInput!) {
+    updateRule(id: $id, input: $input) {
+    id
+      name
+      description
+      status
+      type
+      ruleConfiguration
+      ruleExpression
+    }
+  }
+`;
+
 export const GENERATE_API_KEY = gql`
   mutation generateAPIKey($id: ID!, $env: String) {
     generateAPIKey(id: $id, environment: $env) {
@@ -387,74 +416,74 @@ export const GET_ALL_USERS_OF_ORGANIZATION = gql`
             id
           }
         }
-      #   children {
-      #     id
-      #     name
-      #     status
-      #     code
-      #     users {
-      #       id
-      #       firstName
-      #       lastName
-      #       status
-      #       email
-      #       roles {
-      #         name
-      #         id
-      #       }
-      #     }
-      #     children {
-      #       id
-      #       name
-      #       status
-      #       code
-      #       users {
-      #         id
-      #         firstName
-      #         lastName
-      #         status
-      #         email
-      #         roles {
-      #           name
-      #           id
-      #         }
-      #       }
-      #       children {
-      #         id
-      #         name
-      #         status
-      #         code
-      #         users {
-      #           id
-      #           firstName
-      #           lastName
-      #           status
-      #           email
-      #           roles {
-      #             name
-      #             id
-      #           }
-      #         }
-      #         children {
-      #           id
-      #           name
-      #           status
-      #           code
-      #           users {
-      #             id
-      #             firstName
-      #             lastName
-      #             status
-      #             email
-      #             roles {
-      #               name
-      #               id
-      #             }
-      #           }
-      #         }
-      #       }
-      #     }
-      #   }
+        #   children {
+        #     id
+        #     name
+        #     status
+        #     code
+        #     users {
+        #       id
+        #       firstName
+        #       lastName
+        #       status
+        #       email
+        #       roles {
+        #         name
+        #         id
+        #       }
+        #     }
+        #     children {
+        #       id
+        #       name
+        #       status
+        #       code
+        #       users {
+        #         id
+        #         firstName
+        #         lastName
+        #         status
+        #         email
+        #         roles {
+        #           name
+        #           id
+        #         }
+        #       }
+        #       children {
+        #         id
+        #         name
+        #         status
+        #         code
+        #         users {
+        #           id
+        #           firstName
+        #           lastName
+        #           status
+        #           email
+        #           roles {
+        #             name
+        #             id
+        #           }
+        #         }
+        #         children {
+        #           id
+        #           name
+        #           status
+        #           code
+        #           users {
+        #             id
+        #             firstName
+        #             lastName
+        #             status
+        #             email
+        #             roles {
+        #               name
+        #               id
+        #             }
+        #           }
+        #         }
+        #       }
+        #     }
+        #   }
       }
     }
   }
