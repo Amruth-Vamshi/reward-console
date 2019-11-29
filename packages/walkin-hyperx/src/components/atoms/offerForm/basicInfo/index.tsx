@@ -185,7 +185,7 @@ const OfferBasicInfoForm = Form.create<IProps>({ name: 'offer_basic_info' })(
 					sm: { span: 24 },
 				},
 			};
-			console.log('offerTypeStatus', offerTypeStatus);
+			// console.log('offerTypeStatus', offerTypeStatus);
 			return (
 				<Form className='offerBasicForm' {...formItemLayout} style={{ padding: '20px 50px' }} ref={wrappedComponentRef} layout="vertical">
 					<Form.Item style={{ display: 'inline-block', width: 'calc(35% - 12px)' }} label="Offer Type">
