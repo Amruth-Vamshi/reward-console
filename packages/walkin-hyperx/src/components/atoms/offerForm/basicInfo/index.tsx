@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Fragment } from 'react';
 import { Form, Icon, Input, Select, Button, Col, DatePicker, Radio, Checkbox } from 'antd';
 const { TextArea } = Input;
+import './style.css'
 const Option = Select.Option;
 const { RangePicker } = DatePicker;
 import AddAndDeleteComponentsDynamically from '../../addAndDeleteComponentsDynamically';
@@ -111,6 +112,22 @@ const OfferBasicInfoForm = Form.create<IProps>({ name: 'offer_basic_info' })(
 			}
 		}
 
+		// handleChangeLocation = (value) => {
+		// 	if (value == "SelectAll") {
+		// 		if (this.state.selectedLocations !== '') this.state.errors.selectedLocations = ''
+		// 		this.setState({
+		// 			selectedLocations: this.state.locationsList.slice(1, this.state.locationsList.length)
+		// 		})
+
+		// 	} else if (value.length == 22) {
+		// 		if (this.state.selectedLocations !== '') this.state.errors.selectedLocations = ''
+		// 		this.setState({ selectedLocations: [] })
+		// 	} else {
+		// 		if (this.state.selectedLocations !== '') this.state.errors.selectedLocations = ''
+		// 		this.setState({ selectedLocations: value })
+		// 	}
+		// }
+
 		handleProductItemChange(i: any, value: any) {
 			let nextValues = this.state.values.slice();
 			nextValues[i].productItem = value;
@@ -168,58 +185,46 @@ const OfferBasicInfoForm = Form.create<IProps>({ name: 'offer_basic_info' })(
 					sm: { span: 24 },
 				},
 			};
+			console.log('offerTypeStatus', offerTypeStatus);
 			return (
-				<Form {...formItemLayout} style={{ padding: '20px 50px' }} ref={wrappedComponentRef} layout="vertical">
+				<Form className='offerBasicForm' {...formItemLayout} style={{ padding: '20px 50px' }} ref={wrappedComponentRef} layout="vertical">
 					<Form.Item style={{ display: 'inline-block', width: 'calc(35% - 12px)' }} label="Offer Type">
 						{getFieldDecorator('offerType', {
 							initialValue: `${Object.keys(formValues).length != 0 ? formValues.offerType : ''}`,
 							rules: [{ required: true, message: 'Please input offer type!' }],
 						})(
-							<Select placeholder="Select an offer type" onChange={handleOfferTypeChange}>
-								{offerTypeData &&
-									offerTypeData.map((el: any, i: any) => (
-										<Option key={i} value={el.val}>
-											{el.title}
-										</Option>
-									))}
+							<Select placeholder="Select an offer type" onChange={handleOfferTypeChange} getPopupContainer={(triggerNode: any) => triggerNode.parentNode}>
+								{offerTypeData && offerTypeData.map((el: any, i: any) => <Option key={i} value={el.value}> {el.title} </Option>)}
 							</Select>
 						)}
 					</Form.Item>
-					{offerTypeStatus.showList === false && (
+
+					{offerTypeStatus.showList ?
+						<Form.Item style={{ display: 'inline-block', width: "calc(65% - 12px)" }} label="Value">
+							{getFieldDecorator('offerTypeValue', {
+								initialValue: `${Object.keys(formValues).length != 0 ? formValues.offerTypeValue : 'All'}`,
+							})(
+								<Select showSearch mode="multiple" style={{ width: '100%' }} allowClear placeholder="Please select"
+									getPopupContainer={(triggerNode: any) => triggerNode.parentNode}
+								// onChange={this.handleChange}
+								>
+									{products && products.map((el: any, i: any) =>
+										<Option key={i} value={el.code}> {el.name}</Option>)}
+								</Select>
+							)}
+						</Form.Item> :
 						<Form.Item style={{ display: 'inline-block', width: 'calc(20% - 12px)' }} label="Value">
 							{getFieldDecorator('offerTypeValue', {
 								initialValue: `${Object.keys(formValues).length != 0 ? formValues.offerTypeValue : ''}`,
 							})(
-								<Input
-									type="number"
+								<Input type="number" addonBefore={offerTypeStatus.showRupee === true ? 'Rs.' : ''}
 									addonAfter={offerTypeStatus.showPercent === true ? <Icon type="percentage" /> : ''}
-									addonBefore={offerTypeStatus.showRupee === true ? 'Rs.' : ''}
+									max={offerTypeStatus.showPercent ? 100 : Infinity} min={0}
 								/>
 							)}
 						</Form.Item>
-					)}
-					{offerTypeStatus.showList === true && (
-						<Form.Item style={{ display: 'inline-block', width: 'calc(20% - 12px)' }} label="Value">
-							{getFieldDecorator('offerTypeValue', {
-								initialValue: `${Object.keys(formValues).length != 0 ? formValues.offerTypeValue : ''}`,
-							})(
-								<Select
-									showSearch
-									mode="multiple"
-									style={{ width: '300px' }}
-									placeholder="Please select"
-								// onChange={this.handleChange}
-								>
-									{products &&
-										products.map((el: any, i: any) => (
-											<Option key={i} value={el.sku}>
-												{el.name}
-											</Option>
-										))}
-								</Select>
-							)}
-						</Form.Item>
-					)}
+					}
+
 					<Form.Item style={{ width: 'calc(100% - 22px)' }} label="Offer Name">
 						{getFieldDecorator('offerName', {
 							initialValue: `${Object.keys(formValues).length != 0 ? formValues.offerName : ''}`,
@@ -264,14 +269,12 @@ const OfferBasicInfoForm = Form.create<IProps>({ name: 'offer_basic_info' })(
 						{getFieldDecorator('transactionTime', {
 							initialValue: `${Object.keys(formValues).length != 0 ? formValues.transactionTime : ''}`,
 						})(
-							<Select
-								defaultValue="frequency"
-								placeholder="Select a transaction time"
-								onChange={handleTransactionTimeChange}
-							>
+							<Select //defaultValue="frequency" 
+								getPopupContainer={(triggerNode: any) => triggerNode.parentNode}
+								placeholder="Select a transaction time" onChange={handleTransactionTimeChange}>
 								{transactionTimeData &&
 									transactionTimeData.map((el: any, i: any) => (
-										<Option key={i} value={el.val}>
+										<Option key={i} value={el.value}>
 											{el.title}
 										</Option>
 									))}
@@ -326,12 +329,12 @@ const OfferBasicInfoForm = Form.create<IProps>({ name: 'offer_basic_info' })(
 										Object.keys(formValues).length != 0 ? formValues.cartValueCondition : ''
 										}`,
 								})(
-									<Select
+									<Select getPopupContainer={(triggerNode: any) => triggerNode.parentNode}
 									// onChange={this.handleSelectChange}
 									>
 										{cartValueConditionData &&
 											cartValueConditionData.map((el: any, i: any) => (
-												<Option key={i} value={el.val}>
+												<Option key={i} value={el.value}>
 													{el.title}
 												</Option>
 											))}
@@ -351,9 +354,9 @@ const OfferBasicInfoForm = Form.create<IProps>({ name: 'offer_basic_info' })(
 							rules: [{ required: true, message: 'Please input coupon type!' }],
 						})(
 							<Radio.Group
-								defaultValue={couponDefaultValue}
+								// defaultValue={couponDefaultValue}
 								onChange={onCouponChange}
-								value={couponTypeSelected}
+							// value={couponTypeSelected}
 							>
 								{couponTypeData &&
 									couponTypeData.map((el: any, i: any) => (

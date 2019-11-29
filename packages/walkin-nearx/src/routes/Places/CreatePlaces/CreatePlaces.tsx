@@ -1,15 +1,10 @@
 import * as React from "react";
-import {
-  Upload,
-  Modal,
-  Tabs,
-  Icon,
-  Button
-} from "antd";
+import { Upload, Modal, Tabs, Icon, Button } from "antd";
 import { Widget } from "@walkinsole/walkin-components";
 import GooglePlaces from "../../../components/Places/CreatePlaces/GooglePlaces";
 import MalnualCreate from "../../../components/Places/CreatePlaces/CreatePlaceManually";
 import { History } from "history"
+import { FileUpload } from '@walkinsole/shared'
 
 const TabPane = Tabs.TabPane;
 
@@ -116,11 +111,10 @@ export default class CreatePlaces extends React.Component<iProps, iState> {
         <Widget
           title={<p style={{ fontSize: 23 }}>Create Places</p>}
           styleName="gx-card-tabs headerCard"
-        // extra={<i className="icon icon-search-new gx-pointer gx-fs-xxl gx-text-primary"/>}>
         // extra={
         //   <Button onClick={this.showModal} type="primary">
         //     Upload CSV
-        //   </Button>
+        // </Button>
         // }
         >
           <Tabs
@@ -137,7 +131,10 @@ export default class CreatePlaces extends React.Component<iProps, iState> {
           </Tabs>
         </Widget>
 
-        <Modal
+        <FileUpload visible={this.state.visible} handleOk={this.handleOk} handleCancel={this.handleCancel}
+          fileList={this.state.fileList} uploadProps={props} />
+
+        {/* <Modal
           width="500px"
           key="model"
           visible={this.state.visible}
@@ -153,7 +150,7 @@ export default class CreatePlaces extends React.Component<iProps, iState> {
               <Icon type="upload" /> Upload
             </Button>
           </Upload>
-        </Modal>
+        </Modal> */}
 
         {/* <Modal
               width='500px'

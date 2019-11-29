@@ -30,7 +30,7 @@ export const transposeObject = (obj, extraPropValue) => {
 	return Object.entries(obj).map(([field, value]) => ({
 		attributeName: field,
 		attributeValue: value,
-		operator: extraPropValue,
+		expressionType: extraPropValue,
 	}));
 };
 
@@ -51,4 +51,8 @@ export const strToRule = rule => {
 	if (typeof str != 'string') str = JSON.stringify(str)
 	str = str.replace(/attributeName|attributeValue|expressionType/gi, matched => mapObj[matched]);
 	return JSON.parse(str)
+}
+
+export const fieldConvert = (jsObjects: Array<{}>, val, from: string, to: string) => {
+	return jsObjects.find((obj: any) => obj[from] === val)[to]
 }

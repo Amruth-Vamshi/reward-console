@@ -30,7 +30,7 @@ export default class extends React.Component<HyperXRoutesProps, {}> {
 					<Route path={NEW_SEGMENT} component={NewSegment} />
 					<Route path={`${NEW_SEGMENT}/:id`} component={NewSegment} />
 					<Route exact path={OFFER_LIST} component={OfferList} />
-					<Route path={OFFER_DASHBOARD} component={offerDashboard} />
+					<Route path={`${OFFER_DASHBOARD}/:id`} component={offerDashboard} />
 					<Route path={NEW_OFFER} component={NewOffer} />
 					<Route path="/hyperx/*" component={CampaignList} />
 				</Switch>

@@ -47,6 +47,7 @@ class NewSegment extends Component<IProps, Partial<IState>> {
 			query: query,
 			newSegmentError: false,
 		});
+		console.log(query);
 	};
 	onChange = (e: any) => {
 		this.state.errors.name = ''
@@ -80,7 +81,7 @@ class NewSegment extends Component<IProps, Partial<IState>> {
 			console.log("update segment/rule...")
 			let id = this.props.location.state.segmentSelected.rule.id;
 			let input = {
-				ruleConfiguration: JSON.stringify(query)
+				ruleConfiguration: query
 			};
 			console.log("input..", input)
 			console.log("input id..", id)
@@ -118,6 +119,8 @@ class NewSegment extends Component<IProps, Partial<IState>> {
 				console.log("Error whilw updating..", err)
 			})
 		} else {
+
+			console.log('>>>', this.state.query);
 			client
 				.mutate({
 					mutation: createRule,
@@ -129,7 +132,7 @@ class NewSegment extends Component<IProps, Partial<IState>> {
 						type: 'SIMPLE',
 						organizationId: org_id,
 						status: 'ACTIVE',
-						ruleConfiguration: JSON.stringify(query),
+						ruleConfiguration: query,
 					},
 				})
 				.then(({ data }) => {
@@ -174,19 +177,6 @@ class NewSegment extends Component<IProps, Partial<IState>> {
 			if (location.state.update) this.setState({ update: true });
 			if (location.state.segmentSelected) {
 				let str = location.state.segmentSelected.rule.ruleConfiguration;
-				// var mapObj: any = {
-				// 	// ruleAttributeId: 'field',
-				// 	attributeName: 'field',
-				// 	attributeValue: 'value',
-				// 	expressionType: 'operator',
-				// };
-				// console.log(str);
-				// if (typeof str != 'string') {
-				// 	str = JSON.stringify(str);
-				// }
-				// str = str.replace(/attributeName|attributeValue|expressionType/gi, function (matched) {
-				// 	return mapObj[matched];
-				// });
 				this.setState({ query: strToRule(str) });
 				if (!location.state.update) {
 					this.setState({
@@ -219,6 +209,7 @@ class NewSegment extends Component<IProps, Partial<IState>> {
 					label: el.attributeName,
 				}));
 		else this.state.errors.rule = 'you dont have any rule attributes'
+		console.log(attributeData);
 		return (
 			<Fragment>
 				{/* <div>

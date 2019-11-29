@@ -108,6 +108,8 @@ interface IState {
 	campaign: any
 	audiences: any,
 	offerData: any
+	campaignType: string
+	visible?, fileList?
 }
 class CampaignCreation extends Component<IProps, Partial<IState>> {
 	private smsForm
@@ -147,12 +149,48 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 			createComm: false,
 			audience: [],
 			update: false,
+			visible: false,
 			audienceChange: { audience: false, rule: false },
-			spin: false
+			spin: false,
+			fileList: [],
+			campaignType: DEFAULT_HYPERX_CAMPAIGN[0]
 		};
 
 		// var formRef = useRef<HTMLElement | null>(null);
 	}
+
+
+	handleChange = info => {
+		let fileList = [...info.fileList];
+
+		// 1. Limit the number of uploaded files
+		// Only to show two recent uploaded files, and old ones will be replaced by the new
+		fileList = fileList.slice(-1);
+
+		// 2. Read from response and show file link
+		fileList = fileList.map(file => {
+			if (file.response) {
+				// Component will show file.url as link
+				file.url = file.response.url;
+			}
+			return file;
+		});
+
+		this.setState({ fileList });
+	};
+
+	showModal = () => this.setState({ visible: true });
+
+	handleOk = () => {
+		this.setState({ loading: true });
+		setTimeout(() => {
+			this.setState({ loading: false, visible: false });
+		}, 3000);
+	};
+
+	handleUploadCancel = () => {
+		this.setState({ visible: false });
+	};
 
 	UNSAFE_componentWillMount = () => {
 		const { location, match, client } = this.props;
@@ -433,7 +471,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 		};
 		var communicationInput: any = {
 			entityId: this.state.offerData ? this.state.offerData.id : ' ',
-			entityType: "Offer",
+			entityType: this.state.campaignType,
 			campaign_id: this.state.campaign.id,
 			isScheduled: scheduleSaveMark,
 			isRepeatable: scheduleSaveMark,
@@ -515,15 +553,27 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 	// };
 
 	linkOffer = current => {
-		if (this.state.noOfferRequired) this.setState({ current })
-		else if (this.state.offer != "" && !this.state.offerCreated) {
+		this.setState({ loading: true })
+		if (this.state.noOfferRequired) {
+			let campaignInput = { campaignType: "MESSAGING" };
+			this.props.updateCampaign({
+				variables: {
+					id: this.state.campaign.id,
+					input: campaignInput
+				}
+			}).then(data => {
+				console.log("Update campaign data..", data);
+				this.setState({ current, loading: false, campaignType: "MESSAGING" })
+			}).catch(err => {
+				console.log("Error Update campaign", err)
+				this.setState({ loading: false })
+			});
+		} else if (this.state.offer != "" && !this.state.offerCreated) {
 			let { org_id }: any = jwt.decode(localStorage.getItem('jwt'))
-			this.setState({ loading: true })
-			var input = {
+			let input = {
 				campaignId: this.state.campaign.id,
 				offerId: this.state.offer,
 				organizationId: org_id,
-				// status: DEFAULT_ACTIVE_STATUS
 			};
 			this.props.addOfferToCampaign({
 				variables: { input: input }
@@ -547,12 +597,12 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 					type: "SIMPLE",
 					organizationId: org_id,
 					status: DEFAULT_ACTIVE_STATUS,
-					ruleConfiguration: JSON.stringify(this.state.audienceFilterRule)
+					ruleConfiguration: this.state.audienceFilterRule
 				};
 				this.props.createRule({ variables: { input: input } })
 					.then(data => {
 						console.log("Rule data...", data);
-						var campaignInput = { audienceFilterRule: data.data.createRule.id };
+						let campaignInput = { audienceFilterRule: data.data.createRule.id };
 						this.props.updateCampaign({
 							variables: {
 								id: this.state.campaign.id,
@@ -575,7 +625,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 
 	ruleUpdate = current => {
 		if (this.state.audienceFilterRule.rules.length) {
-			const input = { ruleConfiguration: JSON.stringify(this.state.audienceFilterRule) };
+			const input = { ruleConfiguration: this.state.audienceFilterRule };
 			this.props.updateRule({ variables: { id: this.state.audienceFilterRuleId, input: input } })
 				.then(data => {
 					console.log("Rule data...", data);
@@ -672,7 +722,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 		console.log('Create Campaign');
 		const { client } = this.props;
 		const { priorityChosen, controlValue } = this.state;
-		if (!this.props.allApplications.organization) return console.log('No Applications for your organization');
+		if (!this.props.allApplications.organization) return message.error('No Applications for your organization');
 		const { allApplications: { organization } } = this.props;
 		let { org_id }: any = jwt.decode(localStorage.getItem('jwt'))
 		console.log(organization.applications);
@@ -683,7 +733,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 			organization_id: org_id,
 			campaignTriggerType: "SCHEDULED",
 			application_id: organization.applications[0].id,
-			campaignType: DEFAULT_HYPERX_CAMPAIGN
+			campaignType: DEFAULT_HYPERX_CAMPAIGN[0]
 		};
 		this.setState({ loading: true });
 		client.mutate({
@@ -860,7 +910,8 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 							selectedSegments={this.state.selectedSegments}
 							segmentSelectionData={this.props.segmentList.segments}
 							// uploadCsvText="Upload CSV"
-							uploadProps={props}
+							visible={this.state.visible} handleOk={this.handleOk} handleCancel={this.handleUploadCancel}
+							fileList={this.state.fileList} uploadProps={props}
 							ruleQuery={this.state.ruleQuery}
 							segmentFilterText="Filter"
 							segmentFilterSubText="Campaign applies to :"

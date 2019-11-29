@@ -30,7 +30,7 @@ const OfferRedemptionRulesForm = Form.create<IProps>({ name: 'offer_redemption_r
 				},
 			};
 			return (
-				<Form {...formItemLayout} style={{ padding: '20px 50px' }} ref={wrappedComponentRef} layout="vertical">
+				<Form {...formItemLayout} className='offerRedemptionForm' style={{ padding: '20px 50px' }} ref={wrappedComponentRef} layout="vertical">
 					<Form.Item style={{ display: 'inline-block', width: 'calc(35% - 12px)' }} label="Usage Limit">
 						{getFieldDecorator('redemption_usage_limit', {
 							initialValue: `${
@@ -56,29 +56,24 @@ const OfferRedemptionRulesForm = Form.create<IProps>({ name: 'offer_redemption_r
 								}`,
 						})(<Input type="number" />)}
 					</Form.Item>
-					<Form.Item
-						className="textPaddingTop"
-						style={{ display: 'inline-block', width: 'calc(65% - 12px)' }}
-					>
+					<Form.Item className="textPaddingTop"
+						style={{ display: 'inline-block', width: 'calc(65% - 12px)' }} >
 						<span>
-							Maximum no. of times offer can be used by a customer. Ex: User cannot use the offer once
-							used
+							Maximum no. of times offer can be used by a customer. Ex: User cannot use the offer once used
 						</span>
 					</Form.Item>
 					<Form.Item
-						className="textPaddingTop"
 						style={{ display: 'inline-block', width: 'calc(35% - 12px)' }}
 						label="Time Limit"
 					>
 						{getFieldDecorator('redemption_time_limit', {
 							initialValue: `${
-								Object.keys(formValues).length != 0 ? formValues.redemption_time_limit : ''
-								}`,
+								Object.keys(formValues).length != 0 ? formValues.redemption_time_limit : ''}`,
 						})(
 							<Input
 								type="number"
 								addonAfter={
-									<Select defaultValue="day" style={{ width: 80 }}>
+									<Select getPopupContainer={(triggerNode: any) => triggerNode.parentNode} defaultValue="day" style={{ width: 80 }}>
 										<Option value="day">/Day</Option>
 										<Option value="week">/Week</Option>
 										<Option value="month">/Month</Option>
@@ -94,7 +89,7 @@ const OfferRedemptionRulesForm = Form.create<IProps>({ name: 'offer_redemption_r
 						<span>Maximum no. of times an offer can be used within a time duration</span>
 					</Form.Item>
 					<Form.Item>
-						<h3>Capping</h3>
+						<h3 style={{ marginTop: 22 }}>Capping</h3>
 						<span>Max discount, cashback or points and no. of items for an offer</span>
 					</Form.Item>
 					<Form.Item style={{ display: 'inline-block', width: 'calc(35% - 12px)' }} label="Type">
@@ -102,10 +97,10 @@ const OfferRedemptionRulesForm = Form.create<IProps>({ name: 'offer_redemption_r
 							initialValue: `${Object.keys(formValues).length != 0 ? formValues.type : ''}`,
 						})(
 							<Select placeholder="Select a type" //onChange={this.handleSelectChange}
-							>
+								getPopupContainer={(triggerNode: any) => triggerNode.parentNode}>
 								{cappingData &&
 									cappingData.map((el: any, i: any) => (
-										<Option key={i} value={el.val}>
+										<Option key={i} value={el.value}>
 											{el.title}
 										</Option>
 									))}

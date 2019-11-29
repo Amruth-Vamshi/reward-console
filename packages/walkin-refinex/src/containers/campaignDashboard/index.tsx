@@ -1,7 +1,6 @@
 import * as React from 'react'
-import { CampaignHeader } from '@walkinsole/walkin-components'
+import { CampaignHeader, campaignOverview as Overview } from '@walkinsole/shared'
 import { Button, Row, Col, message } from 'antd'
-import { Overview } from '@walkinsole/walkin-components/src/components/molecules/campaignOverview'
 import {
     GET_CAMPAIGN_DASHBOARD,
     LAUNCH_CAMPAIGN,

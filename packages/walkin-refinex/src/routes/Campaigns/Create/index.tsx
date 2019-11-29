@@ -5,10 +5,8 @@ import CampaignConfig from "../Edit/Campaign";
 // import Audience from "./Audience";
 import Audience from "@walkinsole/shared/src/components/campaignCreation/audience";
 import {
-  CampaignFooter,
-  CampaignHeader,
-  CircularProgress
-} from "@walkinsole/walkin-components";
+  CampaignFooter
+} from "@walkinsole/shared";
 import "@walkinsole/shared/src/components/campaignCreation/audience/style.css";
 import Comm from "@walkinsole/shared/src/components/campaignCreation/communication";
 // import Communication from "../Edit/Communication";

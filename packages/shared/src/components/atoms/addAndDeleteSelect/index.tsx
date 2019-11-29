@@ -65,30 +65,19 @@ class AddAndDeleteSelectDynamically extends React.Component<iProps, iState> {
         {this.state.values.map((el: any, i: number) => {
           return (
             <div key={i} className="selectSegmentBoxContainer">
-              <Select
-                showSearch
-                placeholder="Choose from the list"
-                value={el ? el : undefined}
-                style={{ width: "50%" }}
-                optionFilterProp="children"
-                onChange={this.handleChange.bind(this, i)}
+              <Select showSearch placeholder="Choose from the list"
+                value={el ? el : undefined} style={{ width: "50%" }}
+                getPopupContainer={(triggerNode: any) => triggerNode.parentNode}
+                optionFilterProp="children" onChange={this.handleChange.bind(this, i)}
               >
                 {segmentSelectionData &&
-                  segmentSelectionData.map((val: any, i: number) => {
-                    return (
-                      <Option key={i} value={val.id}>
-                        {" "}
-                        {val.name}{" "}
-                      </Option>
-                    );
-                  })}
+                  segmentSelectionData.map((val: any, i: number) => <Option key={i} value={val.id}> {val.name}</Option>)}
               </Select>
               <Icon type="close" onClick={this.removeClick.bind(this, i)} />
             </div>
           );
         })}
         <div style={{ color: "Red", marginTop: 10 }}>
-          {" "}
           {this.state.errors.segment}{" "}
         </div>
         <Button
@@ -96,8 +85,7 @@ class AddAndDeleteSelectDynamically extends React.Component<iProps, iState> {
           type="primary"
           onClick={this.addClick.bind(this)}
         >
-          {" "}
-          Add{" "}
+          Add
         </Button>
       </React.Fragment>
     );
@@ -109,7 +97,7 @@ AddAndDeleteSelectDynamically.propTypes = {
 };
 
 AddAndDeleteSelectDynamically.defaultProps = {
-  onValuesSelected: () => {},
+  onValuesSelected: () => { },
   segmentSelectionData: []
 };
 
