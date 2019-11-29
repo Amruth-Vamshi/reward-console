@@ -1,6 +1,6 @@
 import "./Create.css";
 import * as React from "react";
-import { Row, Col, Button } from "antd";
+import { Row, Col, Button  , message} from "antd";
 import CampaignConfig from "../Edit/Campaign";
 // import Audience from "./Audience";
 import Audience from "@walkinsole/shared/src/components/campaignCreation/audience";
@@ -223,6 +223,28 @@ class CreateCampaign extends React.Component<CreateCampaignProps,CreateCampaignS
       const form =
         this.formRef && this.formRef.props && this.formRef.props.form;
       if (form) {
+        
+        let name = form.getFieldValue("name")
+        let startTime = form.getFieldValue("startTime")
+        let endTime =  form.getFieldValue("endTime")
+
+        if((name.length === 0 || name === undefined || name === null))
+        {
+            message.warning("Survey name is mandatory")
+            return
+        }
+        if(startTime === undefined || startTime === null)
+        {
+          message.warning("Start Date is mandatory")
+          return
+        }
+
+        if(endTime === undefined || endTime === null)
+        {
+          message.warning("End Date is mandatory")
+          return
+        }
+
         form.validateFields(async (err, values) => {
           if (err) {
             return;

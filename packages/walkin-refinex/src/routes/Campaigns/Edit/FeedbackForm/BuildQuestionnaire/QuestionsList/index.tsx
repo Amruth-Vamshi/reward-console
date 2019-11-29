@@ -155,9 +155,9 @@ export default class QuestionsList extends React.Component<QuestionsListProps, Q
                         </Button>
                       </Col>
                     </Row>
-                    <Row type="flex" justify="center">
+                    {/* <Row type="flex" justify="center">
                       {(questionnaire.length === 0) && <div className="QuestionTypeLoader"><Spin size="small" tip="checking..." /></div>}
-                    </Row>
+                    </Row> */}
                   </Col>
                 </Row>
               )
