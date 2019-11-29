@@ -46,7 +46,9 @@
 .boxborder1 {
   border: 1px solid #cccccc;
 }
-
+.requiredFieldRedColor {
+  color: red;
+}
 /* Entity variable form */
 
 .width75percent {

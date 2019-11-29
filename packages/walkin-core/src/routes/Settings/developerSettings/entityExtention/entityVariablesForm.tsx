@@ -45,7 +45,6 @@ export default class EntityVariablesForm extends React.Component<
     super(props);
     this.state = {
       entityExtendField: {
-        id: "",
         slug: "",
         help: "",
         label: "",
@@ -61,6 +60,8 @@ export default class EntityVariablesForm extends React.Component<
 
   UNSAFE_componentWillMount() {
     let { entityExtendField } = this.props;
+    console.log(entityExtendField, "test");
+
     if (entityExtendField) {
       this.setState({ entityExtendField });
     }
@@ -101,7 +102,9 @@ export default class EntityVariablesForm extends React.Component<
         >
           <div className="entityVariableFormTitle">{header}</div>
           <div className="entityVariableInputWrapper">
-            <div className="InputLabel">Label</div>
+            <div className="InputLabel">
+              Label<span className="requiredFieldRedColor">*</span>
+            </div>
             <Input
               size="large"
               placeholder="Label"
@@ -120,7 +123,9 @@ export default class EntityVariablesForm extends React.Component<
 
           <div className="entityVariableFlexWrapper">
             <div className="entityVariableInputWrapper width45percent">
-              <div className="InputLabel">Slug*</div>
+              <div className="InputLabel">
+                Slug<span className="requiredFieldRedColor">*</span>
+              </div>
 
               <Input
                 size="large"
@@ -141,7 +146,9 @@ export default class EntityVariablesForm extends React.Component<
               id="EntityInputWrapper"
               className="entityVariableInputWrapper width45percent"
             >
-              <div className="InputLabel">Type*</div>
+              <div className="InputLabel">
+                Type<span className="requiredFieldRedColor">*</span>
+              </div>
 
               <Select
                 getPopupContainer={() =>
@@ -184,6 +191,9 @@ export default class EntityVariablesForm extends React.Component<
                     choices: event
                   });
                 }}
+                getPopupContainer={() =>
+                  document.getElementById("EntityInputWrapper")
+                }
               />
               <div className="inputDesc">
                 Short description about above field.
@@ -193,7 +203,9 @@ export default class EntityVariablesForm extends React.Component<
 
           <div className="entityVariableFlexWrapper">
             <div className="entityVariableInputWrapper width45percent">
-              <div className="InputLabel">Default Value</div>
+              <div className="InputLabel">
+                Default Value<span className="requiredFieldRedColor">*</span>
+              </div>
 
               <Input
                 size="large"
@@ -211,7 +223,9 @@ export default class EntityVariablesForm extends React.Component<
               </div>
             </div>
             <div className="entityVariableInputWrapper width45percent">
-              <div className="InputLabel">Description</div>
+              <div className="InputLabel">
+                Description<span className="requiredFieldRedColor">*</span>
+              </div>
 
               <Input
                 size="large"
@@ -269,6 +283,14 @@ export default class EntityVariablesForm extends React.Component<
             </div>
           </div>
           <Button
+            disabled={
+              !(
+                entityExtendField.slug &&
+                entityExtendField.label &&
+                entityExtendField.description &&
+                entityExtendField.defaultValue
+              )
+            }
             className="button"
             type="primary"
             size="large"

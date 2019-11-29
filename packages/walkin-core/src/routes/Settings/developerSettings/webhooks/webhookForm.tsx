@@ -169,6 +169,13 @@ export default class WebhookForm extends React.Component<
       </Select>
     );
 
+    let eventTypeDescription = events.filter((item: any, index: number) => {
+      return item.event === webhookDetails.event;
+    });
+    eventTypeDescription = eventTypeDescription[0]
+      ? eventTypeDescription[0].description
+      : "--";
+
     return (
       <div className="webhookFormContainer">
         <div
@@ -203,13 +210,7 @@ export default class WebhookForm extends React.Component<
                 </Option>
               ))}
             </Select>
-            <div className="inputDesc">
-              {
-                events.filter((item: any, index: number) => {
-                  return item.event === webhookDetails.event;
-                })[0].description
-              }
-            </div>
+            <div className="inputDesc">{eventTypeDescription}</div>
           </div>
           <div className="webhookLabelInputWrapper">
             <div className="InputLabel">
@@ -302,7 +303,9 @@ export default class WebhookForm extends React.Component<
             </div>
           </div>
           <Button
-            disabled={!Boolean(webhookDetails.url && webhookDetails.name)}
+            disabled={
+              !Boolean(webhookDetails.url.trim() && webhookDetails.name.trim())
+            }
             className="button"
             type="primary"
             size="large"
