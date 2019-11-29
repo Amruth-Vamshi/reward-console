@@ -15,7 +15,7 @@ import { createRule } from '../../../query/audience';
 import { categories, createOffer, products, subOrganizations } from '../../../query/offer';
 import { isValidObject, transposeObject } from '../../../utils/common';
 import { OFFER_LIST } from '../../../utils/RouterConstants';
-import { cappingData, cartValueConditionData, couponTypeData, dummyBrandData, locationData, offerStepData, offerTypeData, productData, transactionTimeData } from './data';
+import { cappingData, cartValueConditionData, couponTypeData, dummyBrandData, locationData, offerStepData, offerTypeData, productData, transactionTimeData } from '../../../utils/offerData'
 import HyperXContainer from '../../../components/atoms/HyperXContainer';
 import { DEFAULT_RULE_TYPE, DEFAULT_ACTIVE_STATUS } from '../../../utils';
 
@@ -234,6 +234,31 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 		return fmValues
 	};
 
+	createRule = (rule, type) => {
+		let ruleInput = {
+			name: Math.random().toString(36).substring(7),
+			type: DEFAULT_RULE_TYPE,
+			organizationId: jwt.decode(localStorage.getItem('jwt'))['org_id'],
+			status: DEFAULT_ACTIVE_STATUS,
+			ruleConfiguration: rule,
+		}
+		let ruleId
+		console.log('ruleInput >>> ', JSON.stringify(ruleInput));
+		this.props.client
+			.mutate({ mutation: createRule, variables: ruleInput })
+			.then(({ data }) => {
+				console.log('created rule', data);
+				ruleId = data.createRule.id
+				this.setState({ [type]: data.createRule.id });
+			}).catch(error => {
+				console.log('error', error);
+				this.setState({ loading1: false })
+				this.displayError('newOfferErrorMessage',
+					error && error.graphQLErrors[0] ? error.graphQLErrors[0].message : 'Error in submitting the form');
+			});
+		return ruleId
+	}
+
 	changePage = current => this.setState({ current })
 
 	goToNextPage = (current: number, e: any) => {
@@ -246,6 +271,7 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 				if (basicForm) {
 					let { productValues, locationValues, formValues } = this.state;
 					// let { basicForm } = formValues;
+
 					let offerType = {}, reArrangedObj = {};
 					offerType[basicForm.offerType] = parseInt(basicForm.offerTypeValue);
 
@@ -258,6 +284,47 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 					let basicFormArray = { rules: arr, combinator: 'AND' };
 
 					this.setState({ offerEligibityRule: basicFormArray, offerType: offerType, current: current });
+
+					let ruleId = this.createRule(basicFormArray, 'offerEligibityRuleId')
+
+
+					console.log('ruleInput >>> ', JSON.stringify(basicFormArray), ruleId);
+
+					const { offerEligibityRuleId, couponLableSelected, couponTypeSelected } = this.state;
+					client
+						.mutate({
+							mutation: createOffer,
+							variables: {
+								name: formValues.basicForm.offerName,
+								offerType: formValues.basicForm.offerType,
+								reward: offerType,
+								organizationId: org_id,
+								offerEligibilityRule: ruleId,
+								offerCategory: couponTypeSelected === 1 ? 'COUPONS' : 'AUTO_APPLY',
+								isCustomCoupon: couponTypeSelected === 1 ? true : false,
+								coupon: couponTypeSelected === 1 ? couponLableSelected : null,
+								// rewardRedemptionRule: data.createRule.id,
+							},
+						})
+						.then(({ data }) => {
+							console.log('created offer', data);
+							this.setState({ loading1: false })
+							const { history } = this.props;
+							history.push({ pathname: OFFER_LIST });
+
+							message.success('Your changes were saved', 5);
+						})
+						.catch(error => {
+							console.log('error', error);
+							this.setState({ loading1: false })
+							this.displayError(
+								'newOfferErrorMessage',
+								error && error.graphQLErrors[0]
+									? error.graphQLErrors[0].message
+									: 'Error in submitting the form'
+							);
+						});
+
 				}
 			}
 		} else if (e && e.target.innerText === 'Save') {
@@ -267,119 +334,112 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 					this.saveFormValues(current, 'redemptionForm', this.redemptionRef);
 					if (this.state.formValues && this.state.formValues.redemptionForm) {
 						let redemptionFormObject = this.state.formValues.redemptionForm;
+						console.log('redemptionFormObject', redemptionFormObject);
 						redemptionFormObject[redemptionFormObject.type] = redemptionFormObject.cappingValue;
 						let ommitedObject = omit(redemptionFormObject, ['type', 'cappingValue']);
-						let redemptionArray = { rules: transposeObject(ommitedObject, '='), combinator: 'AND' };
+						let redemptionArray = { rules: transposeObject(ommitedObject, 'EQUALS'), combinator: 'AND' };
 						const { offerEligibityRule, redemptionRule } = this.state;
 						console.log('>>Rules', JSON.stringify(offerEligibityRule), JSON.stringify(redemptionArray));
-						let ruleInput = {
+
+						let ruleInput2 = {
 							name: Math.random().toString(36).substring(7),
 							type: DEFAULT_RULE_TYPE,
 							organizationId: org_id,
 							status: DEFAULT_ACTIVE_STATUS,
-							ruleConfiguration: offerEligibityRule,
+							ruleConfiguration: redemptionArray,
 						}
-						console.log('ruleInput>>> ', JSON.stringify(ruleInput));
+						// console.log('ruleInput >>> ', JSON.stringify(ruleInput));
+						console.log('ruleInput2 >>> ', JSON.stringify(ruleInput2));
 						this.setState({ loading1: true })
-						client
-							.mutate({ mutation: createRule, variables: ruleInput })
-							.then(({ data }) => {
-								console.log('created rule', data);
-								this.setState({ offerEligibityRuleId: data.createRule.id });
-								client
-									.mutate({
-										mutation: createRule,
-										variables: {
-											name: Math.random().toString(36).substring(7),
-											type: DEFAULT_RULE_TYPE,
-											organizationId: org_id,
-											status: DEFAULT_ACTIVE_STATUS,
-											ruleConfiguration: redemptionArray,
-										},
-									})
-									.then(({ data }) => {
-										console.log('created redemption rule', data);
-										const { offerEligibityRuleId, offerType, formValues, couponLableSelected, couponTypeSelected } = this.state;
-										client
-											.mutate({
-												mutation: createOffer,
-												variables: {
-													name: formValues.basicForm.offerName,
-													offerType: formValues.basicForm.offerType,
-													reward: offerType,
-													organizationId: org_id,
-													offerEligibilityRule: offerEligibityRuleId,
-													offerCategory: couponTypeSelected === 1 ? 'COUPONS' : 'AUTO_APPLY',
-													isCustomCoupon: couponTypeSelected === 1 ? true : false,
-													coupon: couponTypeSelected === 1 ? couponLableSelected : null,
-													rewardRedemptionRule: data.createRule.id,
-												},
-											})
-											.then(({ data }) => {
-												console.log('created offer', data);
-												this.setState({ loading1: false })
-												const { history } = this.props;
-												history.push({ pathname: OFFER_LIST });
+						// client
+						// 	.mutate({ mutation: createRule, variables: ruleInput })
+						// 	.then(({ data }) => {
+						// 		console.log('created rule', data);
+						// 		this.setState({ offerEligibityRuleId: data.createRule.id });
+						// 		client
+						// 			.mutate({ mutation: createRule, variables: ruleInput2 })
+						// 			.then(({ data }) => {
+						// 				console.log('created redemption rule', data);
+						// 				const { offerEligibityRuleId, offerType, formValues, couponLableSelected, couponTypeSelected } = this.state;
+						// 				client
+						// 					.mutate({ mutation: createOffer,
+						// 						variables: {
+						// 							name: formValues.basicForm.offerName,
+						// 							offerType: formValues.basicForm.offerType,
+						// 							reward: offerType,
+						// 							organizationId: org_id,
+						// 							offerEligibilityRule: offerEligibityRuleId,
+						// 							offerCategory: couponTypeSelected === 1 ? 'COUPONS' : 'AUTO_APPLY',
+						// 							isCustomCoupon: couponTypeSelected === 1 ? true : false,
+						// 							coupon: couponTypeSelected === 1 ? couponLableSelected : null,
+						// 							rewardRedemptionRule: data.createRule.id,
+						// 						},
+						// 					})
+						// 					.then(({ data }) => {
+						// 						console.log('created offer', data);
+						// 						this.setState({ loading1: false })
+						// 						const { history } = this.props;
+						// 						history.push({ pathname: OFFER_LIST });
 
-												message.success('Your changes were saved', 5);
-												// client
-												// 	.mutate({
-												// 		mutation: launchOffer,
-												// 		variables: {
-												// 			id: data.createOffer.id,
-												// 		},
-												// 	})
-												// 	.then(({ data }) => {
-												// 		console.log('created offer', data);
-												// 		const { history } = this.props;
-												// 		history.push({
-												// 			pathname: OFFER_LIST,
-												// 		});
+						// 						message.success('Your changes were saved', 5);
+						// 						// client
+						// 						// 	.mutate({
+						// 						// 		mutation: launchOffer,
+						// 						// 		variables: {
+						// 						// 			id: data.createOffer.id,
+						// 						// 		},
+						// 						// 	})
+						// 						// 	.then(({ data }) => {
+						// 						// 		console.log('created offer', data);
+						// 						// 		const { history } = this.props;
+						// 						// 		history.push({
+						// 						// 			pathname: OFFER_LIST,
+						// 						// 		});
 
-												// 		message.success('Your changes were saved', 5);
-												// 	})
-												// 	.catch(error => {
-												// 		console.log('error', error);
-												// 		this.displayError(
-												// 			'newOfferErrorMessage',
-												// 			error && error.graphQLErrors[0]
-												// 				? error.graphQLErrors[0].message
-												// 				: 'Error in submitting the form'
-												// 		);
-												// 	});
-											})
-											.catch(error => {
-												console.log('error', error);
-												this.setState({ loading1: false })
-												this.displayError(
-													'newOfferErrorMessage',
-													error && error.graphQLErrors[0]
-														? error.graphQLErrors[0].message
-														: 'Error in submitting the form'
-												);
-											});
-									})
-									.catch(error => {
-										console.log('error', error);
-										this.setState({ loading1: false })
-										this.displayError(
-											'newOfferErrorMessage',
-											error && error.graphQLErrors[0]
-												? error.graphQLErrors[0].message
-												: 'Error in submitting the form'
-										);
-									});
-							})
-							.catch(error => {
-								console.log('error', error);
-								this.setState({ loading1: false })
-								this.displayError(
-									'newOfferErrorMessage',
-									error && error.graphQLErrors[0]
-										? error.graphQLErrors[0].message
-										: 'Error in submitting the form'
-								);
-							});
+						// 						// 		message.success('Your changes were saved', 5);
+						// 						// 	})
+						// 						// 	.catch(error => {
+						// 						// 		console.log('error', error);
+						// 						// 		this.displayError(
+						// 						// 			'newOfferErrorMessage',
+						// 						// 			error && error.graphQLErrors[0]
+						// 						// 				? error.graphQLErrors[0].message
+						// 						// 				: 'Error in submitting the form'
+						// 						// 		);
+						// 						// 	});
+						// 					})
+						// 					.catch(error => {
+						// 						console.log('error', error);
+						// 						this.setState({ loading1: false })
+						// 						this.displayError(
+						// 							'newOfferErrorMessage',
+						// 							error && error.graphQLErrors[0]
+						// 								? error.graphQLErrors[0].message
+						// 								: 'Error in submitting the form'
+						// 						);
+						// 					});
+						// 			})
+						// 			.catch(error => {
+						// 				console.log('error', error);
+						// 				this.setState({ loading1: false })
+						// 				this.displayError(
+						// 					'newOfferErrorMessage',
+						// 					error && error.graphQLErrors[0]
+						// 						? error.graphQLErrors[0].message
+						// 						: 'Error in submitting the form'
+						// 				);
+						// 			});
+						// 	})
+						// 	.catch(error => {
+						// 		console.log('error', error);
+						// 		this.setState({ loading1: false })
+						// 		this.displayError(
+						// 			'newOfferErrorMessage',
+						// 			error && error.graphQLErrors[0]
+						// 				? error.graphQLErrors[0].message
+						// 				: 'Error in submitting the form'
+						// 		);
+						// 	});
 					}
 				}
 			}
@@ -414,20 +474,8 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 	};
 
 	render() {
-		const {
-			current,
-			loading1,
-			offerTypeStatus,
-			transactionTimeStatus,
-			productDropDown,
-			locationDropDown,
-			values,
-			newOfferErrorMessage,
-			couponTypeSelected,
-			productValues,
-			locationValues,
-			formValues,
-		} = this.state;
+		const { current, loading1, offerTypeStatus, transactionTimeStatus, productDropDown, locationValues,
+			locationDropDown, newOfferErrorMessage, couponTypeSelected, productValues, values, formValues } = this.state;
 		const { loading, error, categories, products, organizationHierarchy, subOrganizations } = this.props;
 
 		console.log('productsproductsproductsproducts', products, subOrganizations);
@@ -445,7 +493,7 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 			productItems =
 				dummyBrandData &&
 				dummyBrandData.map(el => ({
-					value: el.val,
+					value: el.value,
 					id: el.id,
 					title: el.title,
 				}));

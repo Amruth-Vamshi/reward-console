@@ -130,3 +130,14 @@ query getOffersForACampaign($campaign_id:ID!, $organization_id:ID!){
     offer{ id offerType  name  description coupon  status  }
   }
 }`
+
+export const VIEW_OFFER = gql`
+query getOffer($id:ID!){
+	getOffer(id:$id){
+		id name description offerType offerCategory isCustomCoupon 
+		organization{id name} coupon state stateCode status reward
+		createdBy createdTime lastModifiedBy lastModifiedTime 
+		offerEligibilityRule{id name description status type ruleConfiguration ruleExpression}
+		rewardRedemptionRule{id name description status type ruleConfiguration ruleExpression}
+  }
+}`

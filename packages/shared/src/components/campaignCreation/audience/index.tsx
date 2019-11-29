@@ -61,15 +61,15 @@ const Audience = ({
 						errors={errors}
 					/>
 					{uploadCsvText && <span>
-						or
+						or &nbsp;&nbsp;
 						{/* <Upload {...uploadProps}>
 							<Button style={{ marginBottom: '0px' }} type="link"> */}
-						<i onClick={showModal}>{uploadCsvText}</i>
+						<i className='gx-text-primary gx-pointer' onClick={showModal}>{uploadCsvText}</i>
 						{/* </Button>
 						</Upload> */}
 					</span>}
-					{/* <FileUpload visible={visible} handleOk={handleOk} handleCancel={handleCancel}
-						fileList={fileList} handleUploadChangeProps={handleUploadChangeProps} /> */}
+					<FileUpload visible={visible} handleOk={handleOk} handleCancel={handleCancel}
+						fileList={fileList} uploadProps={uploadProps} />
 				</div>
 				<div style={{ marginTop: '50px' }}>
 					<Divider className='audienceDivider' style={{ color: '#000000' }} orientation="left">
