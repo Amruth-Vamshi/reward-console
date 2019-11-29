@@ -25,27 +25,27 @@ export const couponTypeData = [
 export const offerTypeData = [
     {
         id: 1,
-        val: 'PERCENTAGE_DISCOUNT',
+        value: 'PERCENTAGE_DISCOUNT',
         title: 'Discount on the bill',
     },
     {
         id: 2,
-        val: 'FLATX_DISCOUNT',
+        value: 'FLATX_DISCOUNT',
         title: 'Flat Xrs off on the bill',
     },
     {
         id: 3,
-        val: 'PERCENTAGE_CASHBACK',
+        value: 'PERCENTAGE_CASHBACK',
         title: '% Cashback on the bill',
     },
     {
         id: 4,
-        val: 'FLATX_CASHBACK',
+        value: 'FLATX_CASHBACK',
         title: 'Flat X Cashback on the bill',
     },
     {
         id: 5,
-        val: 'FREE_ITMES_FROM_LIST',
+        value: 'FREE_ITMES_FROM_LIST',
         title: 'Any item/items from the list',
     },
 ];
@@ -53,17 +53,17 @@ export const offerTypeData = [
 export var transactionTimeData = [
     {
         id: 1,
-        val: 'frequency',
+        value: 'frequency',
         title: 'Frequency',
     },
     {
         id: 2,
-        val: 'dayPart',
+        value: 'dayPart',
         title: 'Daypart',
     },
     {
         id: 3,
-        val: 'cartValue',
+        value: 'cartValue',
         title: 'Cart value aka Bill size',
     },
 ];
@@ -112,27 +112,27 @@ export var locationData = [
 export var cartValueConditionData = [
     {
         id: 1,
-        val: 'equalTo',
+        value: 'equalTo',
         title: 'Equal to',
     },
     {
         id: 2,
-        val: 'notEqualTo',
+        value: 'notEqualTo',
         title: 'Not Equal to',
     },
     {
         id: 3,
-        val: 'greaterThan',
+        value: 'greaterThan',
         title: 'Greater than',
     },
     {
         id: 4,
-        val: 'equalToOrGreaterThan',
+        value: 'equalToOrGreaterThan',
         title: 'Equal/Greater than',
     },
     {
         id: 5,
-        val: 'equalToOrLessThan',
+        value: 'equalToOrLessThan',
         title: 'Equal/Less than',
     },
 ];
@@ -140,17 +140,17 @@ export var cartValueConditionData = [
 export var cappingData = [
     {
         id: 1,
-        val: 'redemption_cap_max_discount',
+        value: 'redemption_cap_max_discount',
         title: 'Max discount',
     },
     {
         id: 2,
-        val: 'redemption_cap_max_cashback',
+        value: 'redemption_cap_max_cashback',
         title: 'Max Cashback',
     },
     {
         id: 3,
-        val: 'redemption_cap_no_of_items',
+        value: 'redemption_cap_no_of_items',
         title: 'No. of items',
     },
 ];
@@ -159,11 +159,11 @@ export const dummyBrandData = [
     {
         id: 1,
         title: 'sample1',
-        val: 'sampleOne',
+        value: 'sampleOne',
     },
     {
         id: 3,
         name: 'sample2',
-        val: 'sampleTwo',
+        value: 'sampleTwo',
     },
 ];

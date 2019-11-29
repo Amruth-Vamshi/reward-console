@@ -52,3 +52,7 @@ export const strToRule = rule => {
 	str = str.replace(/attributeName|attributeValue|expressionType/gi, matched => mapObj[matched]);
 	return JSON.parse(str)
 }
+
+export const fieldConvert = (jsObjects: Array<{}>, val, from: string, to: string) => {
+	return jsObjects.find((obj: any) => obj[from] === val)[to]
+}
