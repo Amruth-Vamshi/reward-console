@@ -50,6 +50,11 @@ class EventType extends React.Component<EventTypeProps, EventTypeState> {
   UNSAFE_componentWillMount() {
     const { event, selectedApplication } = this.props;
     if (selectedApplication) {
+      this.props.eventType({
+        variables: {
+          appId: selectedApplication
+        }
+      })
       this.setState({
         showEvents: true
       })
@@ -266,12 +271,6 @@ const EventTypeForm = Form.create<EventTypeProps>({
 
 export default compose(
   graphql(EVENT_TYPES_FOR_APPLICATION, {
-    name: "eventType",
-    options: (props: EventTypeProps) => ({
-      fetchPolicy: "cache-first",
-      variables: {
-        appId: props.selectedApplication
-      }
-    })
+    name: "eventType"
   })
 )(EventTypeForm);
