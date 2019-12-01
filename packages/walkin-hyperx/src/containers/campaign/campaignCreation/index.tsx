@@ -108,6 +108,8 @@ interface IState {
 	campaign: any
 	audiences: any,
 	offerData: any
+	campaignType: string
+	visible?, fileList?
 }
 class CampaignCreation extends Component<IProps, Partial<IState>> {
 	private smsForm
@@ -147,12 +149,48 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 			createComm: false,
 			audience: [],
 			update: false,
+			visible: false,
 			audienceChange: { audience: false, rule: false },
-			spin: false
+			spin: false,
+			fileList: [],
+			campaignType: DEFAULT_HYPERX_CAMPAIGN[0]
 		};
 
 		// var formRef = useRef<HTMLElement | null>(null);
 	}
+
+
+	handleChange = info => {
+		let fileList = [...info.fileList];
+
+		// 1. Limit the number of uploaded files
+		// Only to show two recent uploaded files, and old ones will be replaced by the new
+		fileList = fileList.slice(-1);
+
+		// 2. Read from response and show file link
+		fileList = fileList.map(file => {
+			if (file.response) {
+				// Component will show file.url as link
+				file.url = file.response.url;
+			}
+			return file;
+		});
+
+		this.setState({ fileList });
+	};
+
+	showModal = () => this.setState({ visible: true });
+
+	handleOk = () => {
+		this.setState({ loading: true });
+		setTimeout(() => {
+			this.setState({ loading: false, visible: false });
+		}, 3000);
+	};
+
+	handleUploadCancel = () => {
+		this.setState({ visible: false });
+	};
 
 	UNSAFE_componentWillMount = () => {
 		const { location, match, client } = this.props;
@@ -433,7 +471,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 		};
 		var communicationInput: any = {
 			entityId: this.state.offerData ? this.state.offerData.id : ' ',
-			entityType: "Offer",
+			entityType: this.state.campaignType,
 			campaign_id: this.state.campaign.id,
 			isScheduled: scheduleSaveMark,
 			isRepeatable: scheduleSaveMark,
@@ -525,7 +563,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 				}
 			}).then(data => {
 				console.log("Update campaign data..", data);
-				this.setState({ current, loading: false })
+				this.setState({ current, loading: false, campaignType: "MESSAGING" })
 			}).catch(err => {
 				console.log("Error Update campaign", err)
 				this.setState({ loading: false })
@@ -695,7 +733,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 			organization_id: org_id,
 			campaignTriggerType: "SCHEDULED",
 			application_id: organization.applications[0].id,
-			campaignType: DEFAULT_HYPERX_CAMPAIGN
+			campaignType: DEFAULT_HYPERX_CAMPAIGN[0]
 		};
 		this.setState({ loading: true });
 		client.mutate({
@@ -872,7 +910,8 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 							selectedSegments={this.state.selectedSegments}
 							segmentSelectionData={this.props.segmentList.segments}
 							// uploadCsvText="Upload CSV"
-							uploadProps={props}
+							visible={this.state.visible} handleOk={this.handleOk} handleCancel={this.handleUploadCancel}
+							fileList={this.state.fileList} uploadProps={props}
 							ruleQuery={this.state.ruleQuery}
 							segmentFilterText="Filter"
 							segmentFilterSubText="Campaign applies to :"

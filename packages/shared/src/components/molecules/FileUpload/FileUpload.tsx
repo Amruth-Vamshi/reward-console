@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Modal, Upload, Button, Icon } from 'antd';
 
 export interface IAppProps {
-    visible, handleOk?, handleCancel?, fileList?, handleUploadChangeProps?
+    visible, handleOk?, handleCancel?, fileList?, uploadProps?
 }
 
 export interface IAppState {
@@ -17,12 +17,8 @@ export default class App extends React.Component<IAppProps, IAppState> {
     }
 
     public render() {
-        let { visible, handleOk, handleCancel, fileList, handleUploadChangeProps } = this.props
-        const props = {
-            action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
-            onChange: handleUploadChangeProps,
-            multiple: false
-        };
+        let { visible, handleOk, handleCancel, fileList, uploadProps } = this.props
+        
         return (
             <div>
                 <Modal width="500px" key="model"
@@ -30,7 +26,7 @@ export default class App extends React.Component<IAppProps, IAppState> {
                     onOk={handleOk}
                     onCancel={handleCancel}
                 >
-                    <Upload {...props} fileList={fileList}>
+                    <Upload {...uploadProps} fileList={fileList}>
                         <Button
                             style={{ width: "400px" }}
                             className="buttonPrimary"
