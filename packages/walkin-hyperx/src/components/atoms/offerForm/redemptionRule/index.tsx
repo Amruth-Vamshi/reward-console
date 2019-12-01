@@ -100,7 +100,7 @@ const OfferRedemptionRulesForm = Form.create<IProps>({ name: 'offer_redemption_r
 								getPopupContainer={(triggerNode: any) => triggerNode.parentNode}>
 								{cappingData &&
 									cappingData.map((el: any, i: any) => (
-										<Option key={i} value={el.val}>
+										<Option key={i} value={el.value}>
 											{el.title}
 										</Option>
 									))}

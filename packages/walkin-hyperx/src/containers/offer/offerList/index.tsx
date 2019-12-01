@@ -7,7 +7,7 @@ import { RouteChildrenProps } from 'react-router';
 import { withRouter } from 'react-router-dom';
 
 import { closeOffer, getOffers, LAUNCH_OFFER } from '../../../query/offer';
-import { NEW_OFFER } from '../../../utils/RouterConstants';
+import { NEW_OFFER, OFFER_DASHBOARD } from '../../../utils/RouterConstants';
 import { DEFAULT_ACTIVE_STATUS } from '../../../utils';
 import HyperXContainer from '../../../components/atoms/HyperXContainer';
 
@@ -82,6 +82,13 @@ class OfferList extends Component<IProps, Partial<IState>> {
 		});
 	};
 
+	onViewOffer = record => {
+		this.props.history.push({
+			pathname: `${OFFER_DASHBOARD}/${record.id}`,
+			state: { campaignSelected: record },
+		});
+	}
+
 	onDuplicateContact = record => {
 		// const { history } = this.props;
 		// history.push({
@@ -98,13 +105,15 @@ class OfferList extends Component<IProps, Partial<IState>> {
 					this.onDuplicateContact(record);
 				} else if (e.key === 'CLOSED') {
 					this.onDeleteContact(record);
+				} else if (e.key === 'VIEW') {
+					this.onViewOffer(record);
 				} else this.onLaunchOffer(record)
 			}}
 		>
-			{record.state == "DRAFT" ? <Menu.Item key="LIVE">Launch offer</Menu.Item> :
-				record.state == "LIVE" ? <Menu.Item key="CLOSED">Close offer</Menu.Item> : ''}
+			{record.state == "DRAFT" ? <Menu.Item key="LIVE">Launch Offer</Menu.Item> :
+				record.state == "LIVE" ? <Menu.Item key="CLOSED">Close Offer</Menu.Item> : ''}
 			{/* <Menu.Item key="duplicate">Duplicate</Menu.Item> */}
-			{/* <Menu.Item key="delete">Delete</Menu.Item> */}
+			<Menu.Item key="VIEW">View Offer</Menu.Item>
 		</Menu>
 	);
 
@@ -158,8 +167,9 @@ class OfferList extends Component<IProps, Partial<IState>> {
 			{
 				title: '',
 				key: 'action',
-				render: (text, record) => (
-					<div className="gx-module-contact-right">
+				width: 10,
+				render: (text: any, record: any) => (
+					<div className="gx-module-campaign-right">
 						<Dropdown overlay={this.menus(record)} placement="bottomRight" trigger={['click']}>
 							<i className="gx-icon-btn icon icon-ellipse-v" />
 						</Dropdown>

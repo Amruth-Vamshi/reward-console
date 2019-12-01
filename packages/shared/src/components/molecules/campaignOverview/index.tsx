@@ -61,7 +61,7 @@ export default class Overview extends React.Component<iProps, {}> {
               <div className="cpDaysLeft mb-30">
                 <b style={{ textTransform: "capitalize" }}>{diff ? diff : ""}</b> &nbsp;
                 {value == "Completed" ? <div>
-                  <Icon style={{ color: "#00b707" }} type="check-circle" theme="filled" />{value}
+                  <Icon style={{ color: "#00b707" }} type="check-circle" theme="filled" /> &nbsp; {value}
                 </div> : value
                 }
               </div>
