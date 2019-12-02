@@ -924,3 +924,104 @@ query audiences($campaign_id:ID, $organization_id:ID,$segment_id:ID){
   }
 }
 `;
+
+
+export const EVENT_SUBSCRITPION_FOR_EVENT_TYPE = gql`
+  query eventSubscriptionsForEventType(
+      $eventTypeId: ID!
+){
+  eventSubscriptionsForEventType(
+    eventTypeId: $eventTypeId
+  ){
+    id
+    eventType{
+      id
+      code
+      description
+      status
+      application{
+        id
+        name
+        descrption 
+
+      }
+    }
+    status
+    triggerAction
+  }
+}
+
+`
+
+export const EVENT_TYPE_FOR_APPLICATION = gql`
+  query eventTypesForApplication(
+    $appId: ID!
+  ){
+    eventTypesForApplication(
+      appId:$appId
+    ){
+      id
+      code
+      description
+      status
+      application{
+        id
+        name
+        descrption 
+
+      }
+
+    }
+  }
+
+`
+
+export const CREATE_EVENT_TYPE = gql`
+    mutation createEventType(
+      $code: String!
+      $description: String
+      $applicationId: ID!
+    ){
+      createEventType(
+        code:$code
+        description:$description
+        applicationId:$applicationId
+    ){
+      id
+      code
+      description
+      status
+      application{
+        id
+        name
+        descrption 
+
+      }
+    }
+    }
+`
+
+export const CREATE_EVENT_SUBSCRIPTIONS = gql`
+
+  mutation createEventSubscription(
+    $eventTypeId: ID!
+    $triggerAction: TriggerActionEnum!
+    $customActionId: ID
+  ){
+    createEventSubscription(
+      eventTypeId:$eventTypeId
+      triggerAction:$triggerAction
+      customActionId:$customActionId
+    ){
+      id
+      triggerAction
+      status
+      sync
+      eventType{
+        id
+        code
+        description
+      }
+     }
+  }
+`

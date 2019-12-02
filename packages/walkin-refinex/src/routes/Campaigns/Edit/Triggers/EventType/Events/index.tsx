@@ -1,9 +1,19 @@
 import React, { Component } from 'react';
-import graphql from "react-apollo/graphql";
+import { graphql, compose } from "react-apollo";
 import "./index.css";
 import { ApolloProviderProps } from 'react-apollo';
-import { } from "../../../../../../containers/Query";
-interface EventsProps extends ApolloProviderProps<any> {
+import {
+    EVENT_SUBSCRITPION_FOR_EVENT_TYPE,
+    EVENT_TYPE_FOR_APPLICATION,
+    CREATE_EVENT_TYPE,
+    CREATE_EVENT_SUBSCRIPTIONS
+} from "../../../../../../containers/Query";
+
+import { Row, Col, Form, Select, Divider, Button, Icon, Spin } from "antd";
+import { FormComponentProps } from 'antd/lib/form';
+interface EventsProps extends FormComponentProps, ApolloProviderProps<any> {
+    application?: any
+    eventType?: any
 
 }
 
@@ -18,14 +28,143 @@ class Events extends Component<EventsProps, EventsState> {
 
         }
     }
-    render() {
-        return (
-            <div>
 
-            </div>
+    getOptions = () => {
+        return this.props.eventType.eventTypesForApplication.map(event => {
+            return (
+                <Select.Option value={event.id} key={event.id}>{event.type}</Select.Option>
+            )
+        })
+    }
+
+    getApplicationOptions = () => {
+        return this.props.application.map(app => {
+            return (
+                <Select.Option style={{ margin: "13px" }} value={app.id} key={app.id}>{app.name}</Select.Option>
+            )
+        })
+    }
+
+    render() {
+        const { getFieldDecorator } = this.props.form;
+        return (
+            <Row style={{ marginTop: "2rem" }}>
+                <Col span={24}>
+                    <Row>
+                        <Col span={6}>
+                            <h2>App</h2>
+                        </Col>
+                        <Col span={12}>
+                            <Form layout="vertical" onSubmit={() => console.log("submit")}>
+
+
+                                <Form.Item label="Choose an App">
+                                    {getFieldDecorator("application", {
+                                        rules: [
+                                            {
+                                                required: true,
+                                                message: "Please select an event type!"
+                                            }
+                                        ]
+                                    })(
+                                        <Select
+                                            style={{
+                                                width: 250
+                                            }}
+                                            notFoundContent={this.props.eventType.loading ? <Spin size="small" /> : null}
+                                            placeholder="Select an Application"
+                                        >
+                                            <Select.Option key="addnewApplication">
+                                                <div style={{ padding: '8px', cursor: 'pointer' }}>
+                                                    <Button style={{ margin: "auto", left: "15%" }} > <Icon type="plus" /> Add new App </Button>
+                                                </div>
+                                                <Divider style={{ margin: '4px 0' }} />
+                                            </Select.Option>
+                                            {
+                                                this.props.eventType.loading ? (
+                                                    <Select.Option value="loading" key="999999">loading</Select.Option>
+                                                ) : this.getApplicationOptions()
+                                            }
+
+                                        </Select>
+                                    )}
+                                </Form.Item>
+
+                            </Form>
+                        </Col>
+                    </Row>
+
+                    <Divider style={{
+                        color: "white"
+                    }} />
+                    <Row>
+                        <Col span={6}>
+                            <h2>Event</h2>
+                        </Col>
+                        <Col span={12}>
+                            <Form layout="vertical" onSubmit={() => console.log("submit")}>
+
+
+                                <Form.Item label="Choose an event type">
+                                    {getFieldDecorator("event", {
+                                        rules: [
+                                            {
+                                                required: true,
+                                                message: "Please select an event type!"
+                                            }
+                                        ]
+                                    })(
+                                        <Select
+                                            style={{
+                                                width: 500
+                                            }}
+                                            notFoundContent={this.props.eventType.loading ? <Spin size="small" /> : null}
+                                            placeholder="Select an Event"
+
+                                        >
+                                            {
+                                                this.props.eventType.loading ? (
+                                                    <Select.Option value="loading" key="999999">loading</Select.Option>
+                                                ) : this.getOptions()
+                                            }
+
+                                        </Select>
+                                    )}
+                                </Form.Item>
+
+                            </Form>
+                        </Col>
+                    </Row>
+
+
+                </Col>
+            </Row>
         )
     }
 }
 
 
-export default (Events);
+export default compose(
+    graphql(
+        EVENT_TYPE_FOR_APPLICATION, {
+        name: "eventType"
+    }
+    ),
+    graphql(
+        EVENT_SUBSCRITPION_FOR_EVENT_TYPE, {
+        name: "eventSubscrptionForEvent"
+    }
+    ),
+    graphql(
+        CREATE_EVENT_TYPE, {
+        name: "createEventTYpe"
+    }
+    ),
+    graphql(
+        CREATE_EVENT_SUBSCRIPTIONS, {
+        name: "createEventSubscription"
+
+    }
+
+    )
+)(Events);

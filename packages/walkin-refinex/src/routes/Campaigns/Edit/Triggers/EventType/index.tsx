@@ -19,7 +19,7 @@ import {
 import jwt from "jsonwebtoken";
 import { EVENT_TYPES_FOR_APPLICATION, EVENT_SUBSCRIPTION } from "../../../../../containers/Query"
 import { FormProps, FormComponentProps } from "antd/lib/form";
-
+import Events from "./Events/index";
 interface EventTypeProps extends FormComponentProps, ApolloProviderProps<any> {
   event?: any,
   selectedApplication?: any
@@ -117,102 +117,7 @@ class EventType extends React.Component<EventTypeProps, EventTypeState> {
       )
     })
   }
-  getEvent = () => {
-    const { getFieldDecorator } = this.props.form;
-    return (
-      <Row style={{ marginTop: "2rem" }}>
-        <Col span={24}>
-          <Row>
-            <Col span={6}>
-              <h2>App</h2>
-            </Col>
-            <Col span={12}>
-              <Form layout="vertical" onSubmit={() => console.log("submit")}>
 
-
-                <Form.Item label="Choose an App">
-                  {getFieldDecorator("application", {
-                    rules: [
-                      {
-                        required: true,
-                        message: "Please select an event type!"
-                      }
-                    ]
-                  })(
-                    <Select
-                      style={{
-                        width: 250
-                      }}
-                      notFoundContent={this.props.eventType.loading ? <Spin size="small" /> : null}
-                      placeholder="Select an Application"
-                    >
-                      <Select.Option key="addnewApplication">
-                        <div style={{ padding: '8px', cursor: 'pointer' }}>
-                          <Button style={{ margin: "auto", left: "15%" }} > <Icon type="plus" /> Add new App </Button>
-                        </div>
-                        <Divider style={{ margin: '4px 0' }} />
-                      </Select.Option>
-                      {
-                        this.props.eventType.loading ? (
-                          <Select.Option value="loading" key="999999">loading</Select.Option>
-                        ) : this.getApplicationOptions()
-                      }
-
-                    </Select>
-                  )}
-                </Form.Item>
-
-              </Form>
-            </Col>
-          </Row>
-
-          <Divider style={{
-            color: "white"
-          }} />
-          <Row>
-            <Col span={6}>
-              <h2>Event</h2>
-            </Col>
-            <Col span={12}>
-              <Form layout="vertical" onSubmit={() => console.log("submit")}>
-
-
-                <Form.Item label="Choose an event type">
-                  {getFieldDecorator("event", {
-                    rules: [
-                      {
-                        required: true,
-                        message: "Please select an event type!"
-                      }
-                    ]
-                  })(
-                    <Select
-                      style={{
-                        width: 500
-                      }}
-                      notFoundContent={this.props.eventType.loading ? <Spin size="small" /> : null}
-                      placeholder="Select an Event"
-
-                    >
-                      {
-                        this.props.eventType.loading ? (
-                          <Select.Option value="loading" key="999999">loading</Select.Option>
-                        ) : this.getOptions()
-                      }
-
-                    </Select>
-                  )}
-                </Form.Item>
-
-              </Form>
-            </Col>
-          </Row>
-
-
-        </Col>
-      </Row>
-    )
-  }
   render() {
     const { showEvents } = this.state;
     return (
@@ -233,7 +138,7 @@ class EventType extends React.Component<EventTypeProps, EventTypeState> {
           marginLeft: "1rem"
         }}>Enable Triggers/Events for your App</span>
         {showEvents ?
-          this.getEvent() : null}
+          <Events applications={this.props.application} /> : null}
       </React.Fragment>
     );
   }
