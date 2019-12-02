@@ -5,7 +5,7 @@ const { TextArea } = Input;
 import './style.css'
 const Option = Select.Option;
 const { RangePicker } = DatePicker;
-import AddAndDeleteComponentsDynamically from '../../addAndDeleteComponentsDynamically';
+import AddAndDeleteComponentsDynamically from '../../../atoms/addAndDeleteComponentsDynamically';
 import { FormComponentProps } from "antd/lib/form";
 
 

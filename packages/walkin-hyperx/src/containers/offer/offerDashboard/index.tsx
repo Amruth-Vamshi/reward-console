@@ -18,6 +18,7 @@ export interface IAppProps extends RouteChildrenProps<any>, ApolloProviderProps<
 export interface IAppState {
     spin: boolean
     offer: {}
+    products: Array<{}>
 }
 
 const labelCol = {
@@ -35,7 +36,8 @@ class OfferDashboard extends React.Component<IAppProps, IAppState> {
 
         this.state = {
             spin: false,
-            offer: {}
+            offer: {},
+            products: []
         }
     }
 
@@ -48,6 +50,7 @@ class OfferDashboard extends React.Component<IAppProps, IAppState> {
         }).then(res => {
             console.log('res', res.data);
             this.setState({ spin: false, offer: res.data.getOffer })
+            this.dataFormatter(res.data.getOffer)
             // let { campaign, audiences, offers, communications } = res.data.viewCampaignForHyperX
             // this.setState({ spin: false, campaign, audiences, offers, communications });
         }).catch(err => {
@@ -56,8 +59,19 @@ class OfferDashboard extends React.Component<IAppProps, IAppState> {
         });
     }
 
+    dataFormatter = data => {
+        let { offerEligibilityRule, rewardRedemptionRule }: any = data
+        let products: Array<{}> = []
+        offerEligibilityRule && offerEligibilityRule.ruleConfiguration.rules.map((rule: any) => {
+            if (rule.attributeName.includes('product_')) products.push({ type: rule.attributeName.replace('product_', ''), values: rule.attributeValue })
+        })
+        this.setState({ products })
+
+    }
+
     public render() {
-        let { offerType, reward }: any = this.state.offer
+        let { offerType, reward, name, offerEligibilityRule, rewardRedemptionRule }: any = this.state.offer
+        let { products } = this.state
         return (
             <div>
                 <WHeader title='Offers' />
@@ -72,9 +86,9 @@ class OfferDashboard extends React.Component<IAppProps, IAppState> {
                         <Row type='flex' justify='center'>
                             <Col sm={24} md={21} lg={18} xl={15} xxl={12}>
                                 <Row type="flex" justify="space-between" align="bottom">
-                                    <Col style={{ fontSize: 20 }} span={18}>
-                                        Anniverssary Sale
-                                </Col>
+                                    <Col style={{ fontSize: 22 }} span={18}>
+                                        {name}
+                                    </Col>
                                     <Col style={{ display: 'flex', justifyContent: 'flex-end' }} span={6} >
                                         <Button style={{ marginBottom: 0 }}>Edit</Button>
                                     </Col>
@@ -85,17 +99,17 @@ class OfferDashboard extends React.Component<IAppProps, IAppState> {
                                     <Col {...labelCol}>  Offer Type  </Col>
                                     <Col {...wrapperCol}> {fieldConvert(offerTypeData, offerType, 'value', 'title')} - {reward[offerType]} </Col>
                                 </Row>
-                                <Row>
-                                    <Col {...labelCol}>  Product  </Col>
-                                    <Col {...wrapperCol}> SKU </Col>
-                                </Row>
-                                {/* <Row className='' >
-                                <Col span={20}>  Offer Type  </Col>
-                                <Col span={4} >View All </Col>
-                            </Row> */}
-                                <Row style={{ padding: '0 25px' }}>
-                                    <Input className='inputRow' value='SLALKASJLAS, KSJHDKASKL, KSDKJADKAD, JCDSKJDXCS, HKCXJSXIS, SCXDKSAJX, KJXCSKXZSAJ ' disabled addonAfter={<span className='gx-text-primary gx-pointer'>View All</span>} />
-                                </Row>
+                                {products.map((p: any) => <div>
+                                    <Row>
+                                        <Col {...labelCol}>  Product  </Col>
+                                        <Col {...wrapperCol}> {p.type} </Col>
+                                    </Row>
+                                    <Row style={{ padding: '0 25px' }}>
+                                        <Input className='inputRow' value={p.values} disabled addonAfter={<span className='gx-text-primary gx-pointer'>View All</span>} />
+                                    </Row>
+
+                                </div>)}
+
                                 <Row>
                                     <Col {...labelCol}>  Location  </Col>
                                     <Col {...wrapperCol}> Zone </Col>
