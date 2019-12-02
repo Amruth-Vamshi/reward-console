@@ -15,6 +15,9 @@ import Stepper from './components/atoms/stepper';
 import campaignOverview from "./components/molecules/campaignOverview/index"
 import WHeader from "./components/molecules/wHeader/WHeader";
 import FileUpload from "./components/molecules/FileUpload/FileUpload"
+import OfferBasicInfoForm from "./components/molecules/offerForm/basicInfo";
+import OfferRedemptionRulesForm from "./components/molecules/offerForm/redemptionRule";
+
 
 export {
     ManageCampaignCard,
@@ -31,5 +34,7 @@ export {
     CampaignFooter,
     Stepper,
     campaignOverview,
-    WHeader
+    WHeader,
+    OfferBasicInfoForm,
+    OfferRedemptionRulesForm
 };
