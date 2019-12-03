@@ -3,7 +3,12 @@ import { Modal, Upload, Button, Icon, Row, Col } from 'antd';
 import "./index.css"
 
 export interface IAppProps {
-    visible, handleOk?, handleCancel?, fileList?, handleUploadChangeProps?, title?: string
+    visible?: any,
+    handleOk?: any,
+    handleCancel?: any,
+    fileList?: any,
+    handleUploadChangeProps?: any,
+    title?: string
 }
 
 export interface IAppState {
