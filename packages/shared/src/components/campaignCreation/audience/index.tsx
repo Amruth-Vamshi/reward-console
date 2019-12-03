@@ -1,7 +1,7 @@
 import *  as React from 'react';
 import { Divider, Button, Upload } from 'antd';
 import './style.css';
-import { AddAndDeleteSelectDynamically, WalkinQueryBuilder, FileUpload } from '@walkinsole/shared';
+import { AddAndDeleteSelectDynamically, WalkinQueryBuilder, FileUploader } from '@walkinsole/shared';
 import { UploadProps } from 'antd/lib/upload';
 
 interface iProps {
@@ -68,7 +68,7 @@ const Audience = ({
 						{/* </Button>
 						</Upload> */}
 					</span>}
-					<FileUpload visible={visible} handleOk={handleOk} handleCancel={handleCancel}
+					<FileUploader visible={visible} handleOk={handleOk} handleCancel={handleCancel}
 						fileList={fileList} uploadProps={uploadProps} />
 				</div>
 				<div style={{ marginTop: '50px' }}>
