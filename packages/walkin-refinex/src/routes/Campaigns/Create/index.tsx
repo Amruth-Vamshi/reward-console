@@ -223,26 +223,26 @@ class CreateCampaign extends React.Component<CreateCampaignProps,CreateCampaignS
         this.formRef && this.formRef.props && this.formRef.props.form;
       if (form) {
         
-        // let name = form.getFieldValue("name")
-        // let startTime = form.getFieldValue("startTime")
-        // let endTime =  form.getFieldValue("endTime")
+        let name = form.getFieldValue("name")
+        let startTime = form.getFieldValue("startTime")
+        let endTime =  form.getFieldValue("endTime")
 
-        // if((name.length === 0 || name === undefined || name === null))
-        // {
-        //     message.warning("Survey name is mandatory")
-        //     return
-        // }
-        // if(startTime === undefined || startTime === null)
-        // {
-        //   message.warning("Start Date is mandatory")
-        //   return
-        // }
+        if((name.length === 0 || name === undefined || name === null))
+        {
+            message.warning("Survey name is mandatory")
+            return
+        }
+        if(startTime === undefined || startTime === null)
+        {
+          message.warning("Start Date is mandatory")
+          return
+        }
 
-        // if(endTime === undefined || endTime === null)
-        // {
-        //   message.warning("End Date is mandatory")
-        //   return
-        // }
+        if(endTime === undefined || endTime === null)
+        {
+          message.warning("End Date is mandatory")
+          return
+        }
 
         form.validateFields(async (err, values) => {
           if (err) {
