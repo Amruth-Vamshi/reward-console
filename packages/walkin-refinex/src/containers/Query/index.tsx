@@ -508,7 +508,7 @@ $status: STATUS
 `
 
 export const campaigns = gql`
-  query campaigns($status: STATUS!,$campaignType:String,$organization_id:ID) {
+  query campaigns($status: STATUS!,$campaignType:[String],$organization_id:ID) {
     campaigns(status: $status,campaignType:$campaignType,organization_id:$organization_id) {
       id name description status campaignStatus
     startTime endTime campaignType priority

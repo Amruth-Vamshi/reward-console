@@ -18,7 +18,7 @@ export default class App extends React.Component<IAppProps, IAppState> {
 
     public render() {
         let { visible, handleOk, handleCancel, fileList, uploadProps } = this.props
-        
+
         return (
             <div>
                 <Modal width="500px" key="model"

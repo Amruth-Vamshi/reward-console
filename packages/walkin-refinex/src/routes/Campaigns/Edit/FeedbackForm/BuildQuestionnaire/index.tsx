@@ -322,7 +322,7 @@ class Questionnaire extends React.Component<QuestionnaireProps, QuestionnaireSta
                 variables: {
                     questionId: this.state.questionToEdit ? this.state.questionToEdit.id : id,
                     input: {
-                        choiceText: "  ",
+                        choiceText: "",
                         rangeStart: rangeStart,
                         rangeEnd: rangeEnd
                     }

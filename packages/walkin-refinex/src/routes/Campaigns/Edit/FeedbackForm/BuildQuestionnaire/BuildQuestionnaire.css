@@ -15,4 +15,8 @@
   .QuestionType {
 	  min-height: calc(100vh - 100px) !important;
   }
+
+  .QuestionTypeLoader {
+	  margin-top: 20px;
+  }
   
