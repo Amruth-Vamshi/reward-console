@@ -329,7 +329,7 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 
 					console.log('ruleInput >>> ', JSON.stringify(redemptionArray), ruleId);
 
-					let offerInput = { id: this.state.offerId, rewardRedemptionRuleId: ruleId }
+					let offerInput = { id: this.state.offerId, rewardRedemptionRule: ruleId }
 
 					console.log('Create Offer Input', offerInput);
 					this.props.client
@@ -547,7 +547,8 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 		return (
 			<Fragment>
 				<div>
-					<WHeader title='Create Offer' extra={<Stepper stepData={offerStepData} current={current} onChange={this.changePage} />} />
+					<WHeader title='Create Offer' extra={<Stepper stepData={offerStepData} current={current} //onChange={this.changePage} 
+					/>} />
 					{/* Each step is different step because the form has to be validated and saved as draft */}
 					<HyperXContainer margin='32px' headerHeightInPX={225}>
 						{current === 0 && (
@@ -633,45 +634,21 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 export default withApollo(
 	compose(
 		graphql(products, {
-			options: (props: IProps) => {
-				var { org_id }: any = jwt.decode(localStorage.getItem('jwt'))
-				return ({
-					variables: { organizationId: org_id },
-				})
-			},
-			props: ({ data: { loading, error, products } }: any) => ({
-				loading,
-				products,
-				error,
-			}),
+			options: (props: IProps) => ({ variables: { organizationId: jwt.decode(localStorage.getItem('jwt'))['org_id'] } }),
+			props: ({ data: { loading, error, products } }: any) => ({ loading, products, error }),
 		}),
 		graphql(categories, {
-			options: () => ({
-				variables: {
-					catalogId: '2',
-				},
-			}),
-			props: ({ data: { loading, error, categories } }: any) => ({
-				loading,
-				categories,
-				error,
-			}),
+			options: () => ({ variables: { catalogId: '2' } }),
+			props: ({ data: { loading, error, categories } }: any) => ({ loading, categories, error }),
 		}),
 		graphql(subOrganizations, {
-			options: props => {
-				var { org_id }: any = jwt.decode(localStorage.getItem('jwt'))
-				return ({
-					variables: {
-						parentId: org_id,
-						type: 'STORE',
-					},
-				})
-			},
-			props: ({ data: { loading, error, subOrganizations } }: any) => ({
-				loading,
-				subOrganizations,
-				error,
+			options: props => ({
+				variables: {
+					parentId: jwt.decode(localStorage.getItem('jwt'))['org_id'],
+					type: 'STORE',
+				},
 			}),
+			props: ({ data: { loading, error, subOrganizations } }: any) => ({ loading, subOrganizations, error }),
 		})
 	)(NewOffer)
 );

@@ -234,8 +234,6 @@ const OfferBasicInfoForm = Form.create<IProps>({ name: 'offer_basic_info' })(
 					</Form.Item>
 
 					<Form.Item label="Product">
-						{/* can't be a part of form as it breaks the functionality
-					TODO: Figure out a way around it */}
 						<AddAndDeleteComponentsDynamically
 							onSelectOneValuesSelected={(val, state) => {
 								onSelectOneValuesSelected(val, 'product', state);
@@ -252,14 +250,14 @@ const OfferBasicInfoForm = Form.create<IProps>({ name: 'offer_basic_info' })(
 
 					<Form.Item label="Location">
 						<AddAndDeleteComponentsDynamically
-							onSelectOneValuesSelected={(...props) => {
-								onSelectOneValuesSelected.apply(this, 'location', [...props]);
+							onSelectOneValuesSelected={(val, state) => {
+								onSelectOneValuesSelected(val, 'location', state);
 							}}
 							onSelectTwoValuesSelected={onSelectTwoValuesSelected}
 							data_1={locationData}
 							data_2={locationArray}
 							locationValues={locationValues}
-							defaultSelectOneValue="location_state"
+							defaultSelectOneValue="location_store"
 							defaultSelectTwoValue="all"
 						/>
 					</Form.Item>
@@ -295,7 +293,7 @@ const OfferBasicInfoForm = Form.create<IProps>({ name: 'offer_basic_info' })(
 								})(<Input />)}
 							</Form.Item>
 							<Form.Item style={{ display: 'inline-block', marginTop: '20px', width: 'calc(5% - 12px)' }}>
-								<span>In</span>
+								<div style={{ marginTop: 12 }}>In</div>
 							</Form.Item>
 							<Form.Item
 								style={{ display: 'inline-block', width: 'calc(31% - 12px)' }}
@@ -326,21 +324,17 @@ const OfferBasicInfoForm = Form.create<IProps>({ name: 'offer_basic_info' })(
 								label="Operator"
 							>
 								{getFieldDecorator('cartValueCondition', {
-									initialValue: `${
-										Object.keys(formValues).length != 0 ? formValues.cartValueCondition : ''
-										}`,
-								})(
-									<Select getPopupContainer={(triggerNode: any) => triggerNode.parentNode}
-									// onChange={this.handleSelectChange}
-									>
-										{cartValueConditionData &&
-											cartValueConditionData.map((el: any, i: any) => (
-												<Option key={i} value={el.value}>
-													{el.title}
-												</Option>
-											))}
-									</Select>
-								)}
+									initialValue: `${Object.keys(formValues).length != 0 ? formValues.cartValueCondition : ''}`
+								})
+									(
+										<Select getPopupContainer={(triggerNode: any) => triggerNode.parentNode}
+										// onChange={this.handleSelectChange}
+										>
+											{cartValueConditionData &&
+												cartValueConditionData.map((el: any, i: any) =>
+													<Option key={i} value={el.value}> {el.title} </Option>)}
+										</Select>
+									)}
 							</Form.Item>
 							<Form.Item style={{ display: 'inline-block', width: 'calc(33.5% - 12px)' }} label="Value">
 								{getFieldDecorator('cartValue', {
@@ -359,12 +353,9 @@ const OfferBasicInfoForm = Form.create<IProps>({ name: 'offer_basic_info' })(
 								onChange={onCouponChange}
 							// value={couponTypeSelected}
 							>
-								{couponTypeData &&
-									couponTypeData.map((el: any, i: any) => (
-										<Radio key={i} value={el.value}>
-											{el.title}
-										</Radio>
-									))}
+								{couponTypeData && couponTypeData.map((el: any, i: any) =>
+									<Radio key={i} value={el.value}> {el.title} </Radio>)}
+
 							</Radio.Group>
 						)}
 					</Form.Item>
