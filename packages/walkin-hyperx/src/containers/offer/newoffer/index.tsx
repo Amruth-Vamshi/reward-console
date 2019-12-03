@@ -172,9 +172,7 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 					})
 				);
 			}
-			this.setState({
-				productValues: stateValues,
-			});
+			this.setState({ productValues: stateValues });
 		} else {
 			if (value == 'location_city') {
 				this.setState(
@@ -204,6 +202,7 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 					})
 				);
 			}
+			this.setState({ locationValues: stateValues });
 		}
 	};
 
@@ -267,7 +266,7 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 						arr = transposeObject(reArrangedObj && reArrangedObj, 'IN');
 					});
 
-					return console.log('>>', arr, locationValues);
+					// return console.log('>>', arr, locationValues);
 
 					let basicFormArray = { rules: arr, combinator: 'AND' };
 
