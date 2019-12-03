@@ -216,6 +216,7 @@ const OfferBasicInfoForm = Form.create<IProps>({ name: 'offer_basic_info' })(
 						<Form.Item style={{ display: 'inline-block', width: 'calc(20% - 12px)' }} label="Value">
 							{getFieldDecorator('offerTypeValue', {
 								initialValue: `${Object.keys(formValues).length != 0 ? formValues.offerTypeValue : ''}`,
+								rules: [{ required: true, message: 'Please input offer Value' }],
 							})(
 								<Input type="number" addonBefore={offerTypeStatus.showRupee === true ? 'Rs.' : ''}
 									addonAfter={offerTypeStatus.showPercent === true ? <Icon type="percentage" /> : ''}
@@ -252,7 +253,7 @@ const OfferBasicInfoForm = Form.create<IProps>({ name: 'offer_basic_info' })(
 					<Form.Item label="Location">
 						<AddAndDeleteComponentsDynamically
 							onSelectOneValuesSelected={(...props) => {
-								onSelectOneValuesSelected.apply(this, [...props, 'location']);
+								onSelectOneValuesSelected.apply(this, 'location', [...props]);
 							}}
 							onSelectTwoValuesSelected={onSelectTwoValuesSelected}
 							data_1={locationData}
