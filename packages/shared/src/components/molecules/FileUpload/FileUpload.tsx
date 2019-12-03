@@ -1,15 +1,14 @@
 import * as React from 'react';
-import { Modal, Upload, Button, Icon, Row, Col } from 'antd';
-import "./index.css"
+import { Modal, Upload, Button, Icon } from 'antd';
 
 export interface IAppProps {
-    visible, handleOk?, handleCancel?, fileList?, handleUploadChangeProps?, title?: string
+    visible, handleOk?, handleCancel?, fileList?, uploadProps?
 }
 
 export interface IAppState {
 }
 
-export default class FileUpload extends React.Component<IAppProps, IAppState> {
+export default class App extends React.Component<IAppProps, IAppState> {
     constructor(props: IAppProps) {
         super(props);
 
@@ -18,29 +17,25 @@ export default class FileUpload extends React.Component<IAppProps, IAppState> {
     }
 
     public render() {
-        let { visible, handleOk, handleCancel, fileList, handleUploadChangeProps, title } = this.props
-        const props = {
-            action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
-            onChange: handleUploadChangeProps,
-            multiple: false
-        };
+        let { visible, handleOk, handleCancel, fileList, uploadProps } = this.props
+
         return (
             <div>
-                <Modal
-                    width="500px"
-                    key="model"
+                <Modal width="500px" key="model"
                     visible={visible}
-                    title={title}
                     onOk={handleOk}
                     onCancel={handleCancel}
-                    okText="Submit"
                 >
-                    <Upload {...props} fileList={fileList}>
-                        <Button>
-                            <Icon type="upload" /> Upload
-                        </Button>
+                    <Upload {...uploadProps} fileList={fileList}>
+                        <Button
+                            style={{ width: "400px" }}
+                            className="buttonPrimary"
+                            type="default"
+                        >
+                            <Icon type="upload" /> Upload </Button>
                     </Upload>
                 </Modal>
+
             </div>
         );
     }

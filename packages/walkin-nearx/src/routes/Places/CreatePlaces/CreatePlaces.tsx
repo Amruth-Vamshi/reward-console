@@ -111,11 +111,11 @@ export default class CreatePlaces extends React.Component<iProps, iState> {
         <Widget
           title={<p style={{ fontSize: 23 }}>Create Places</p>}
           styleName="gx-card-tabs headerCard"
-          extra={
-            <Button onClick={this.showModal} type="primary">
-              Upload CSV
-          </Button>
-          }
+        // extra={
+        //   <Button onClick={this.showModal} type="primary">
+        //     Upload CSV
+        // </Button>
+        // }
         >
           <Tabs
             defaultActiveKey={this.props.tab}
@@ -132,7 +132,7 @@ export default class CreatePlaces extends React.Component<iProps, iState> {
         </Widget>
 
         <FileUpload visible={this.state.visible} handleOk={this.handleOk} handleCancel={this.handleCancel}
-          fileList={this.state.fileList} handleUploadChangeProps={this.handleChange} />
+          fileList={this.state.fileList} uploadProps={props} />
 
         {/* <Modal
           width="500px"

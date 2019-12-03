@@ -5,7 +5,7 @@ const { TextArea } = Input;
 import './style.css'
 const Option = Select.Option;
 const { RangePicker } = DatePicker;
-import AddAndDeleteComponentsDynamically from '../../addAndDeleteComponentsDynamically';
+import AddAndDeleteComponentsDynamically from '../../../atoms/addAndDeleteComponentsDynamically';
 import { FormComponentProps } from "antd/lib/form";
 
 
@@ -185,7 +185,7 @@ const OfferBasicInfoForm = Form.create<IProps>({ name: 'offer_basic_info' })(
 					sm: { span: 24 },
 				},
 			};
-			console.log('offerTypeStatus', offerTypeStatus);
+			// console.log('offerTypeStatus', offerTypeStatus);
 			return (
 				<Form className='offerBasicForm' {...formItemLayout} style={{ padding: '20px 50px' }} ref={wrappedComponentRef} layout="vertical">
 					<Form.Item style={{ display: 'inline-block', width: 'calc(35% - 12px)' }} label="Offer Type">
@@ -194,7 +194,7 @@ const OfferBasicInfoForm = Form.create<IProps>({ name: 'offer_basic_info' })(
 							rules: [{ required: true, message: 'Please input offer type!' }],
 						})(
 							<Select placeholder="Select an offer type" onChange={handleOfferTypeChange} getPopupContainer={(triggerNode: any) => triggerNode.parentNode}>
-								{offerTypeData && offerTypeData.map((el: any, i: any) => <Option key={i} value={el.val}> {el.title} </Option>)}
+								{offerTypeData && offerTypeData.map((el: any, i: any) => <Option key={i} value={el.value}> {el.title} </Option>)}
 							</Select>
 						)}
 					</Form.Item>
@@ -269,11 +269,12 @@ const OfferBasicInfoForm = Form.create<IProps>({ name: 'offer_basic_info' })(
 						{getFieldDecorator('transactionTime', {
 							initialValue: `${Object.keys(formValues).length != 0 ? formValues.transactionTime : ''}`,
 						})(
-							<Select defaultValue="frequency" getPopupContainer={(triggerNode: any) => triggerNode.parentNode}
+							<Select //defaultValue="frequency" 
+								getPopupContainer={(triggerNode: any) => triggerNode.parentNode}
 								placeholder="Select a transaction time" onChange={handleTransactionTimeChange}>
 								{transactionTimeData &&
 									transactionTimeData.map((el: any, i: any) => (
-										<Option key={i} value={el.val}>
+										<Option key={i} value={el.value}>
 											{el.title}
 										</Option>
 									))}
@@ -333,7 +334,7 @@ const OfferBasicInfoForm = Form.create<IProps>({ name: 'offer_basic_info' })(
 									>
 										{cartValueConditionData &&
 											cartValueConditionData.map((el: any, i: any) => (
-												<Option key={i} value={el.val}>
+												<Option key={i} value={el.value}>
 													{el.title}
 												</Option>
 											))}
@@ -353,9 +354,9 @@ const OfferBasicInfoForm = Form.create<IProps>({ name: 'offer_basic_info' })(
 							rules: [{ required: true, message: 'Please input coupon type!' }],
 						})(
 							<Radio.Group
-								defaultValue={couponDefaultValue}
+								// defaultValue={couponDefaultValue}
 								onChange={onCouponChange}
-								value={couponTypeSelected}
+							// value={couponTypeSelected}
 							>
 								{couponTypeData &&
 									couponTypeData.map((el: any, i: any) => (

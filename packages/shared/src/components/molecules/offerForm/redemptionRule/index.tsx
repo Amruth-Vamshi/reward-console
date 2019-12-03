@@ -36,7 +36,7 @@ const OfferRedemptionRulesForm = Form.create<IProps>({ name: 'offer_redemption_r
 							initialValue: `${
 								Object.keys(formValues).length != 0 ? formValues.redemption_usage_limit : ''
 								}`,
-						})(<Input type="number" />)}
+						})(<Input type="number" min={0} />)}
 					</Form.Item>
 					<Form.Item
 						className="textPaddingTop"
@@ -71,7 +71,7 @@ const OfferRedemptionRulesForm = Form.create<IProps>({ name: 'offer_redemption_r
 								Object.keys(formValues).length != 0 ? formValues.redemption_time_limit : ''}`,
 						})(
 							<Input
-								type="number"
+								type="number" min={0}
 								addonAfter={
 									<Select getPopupContainer={(triggerNode: any) => triggerNode.parentNode} defaultValue="day" style={{ width: 80 }}>
 										<Option value="day">/Day</Option>
@@ -100,7 +100,7 @@ const OfferRedemptionRulesForm = Form.create<IProps>({ name: 'offer_redemption_r
 								getPopupContainer={(triggerNode: any) => triggerNode.parentNode}>
 								{cappingData &&
 									cappingData.map((el: any, i: any) => (
-										<Option key={i} value={el.val}>
+										<Option key={i} value={el.value}>
 											{el.title}
 										</Option>
 									))}
@@ -110,14 +110,14 @@ const OfferRedemptionRulesForm = Form.create<IProps>({ name: 'offer_redemption_r
 					<Form.Item style={{ display: 'inline-block', width: 'calc(65% - 12px)' }} label="Value">
 						{getFieldDecorator('cappingValue', {
 							initialValue: `${Object.keys(formValues).length != 0 ? formValues.cappingValue : ''}`,
-						})(<Input type="number" />)}
+						})(<Input type="number" min={0} />)}
 					</Form.Item>
 					<Form.Item style={{ display: 'inline-block', width: 'calc(35% - 12px)' }} label="Limit on Sku's">
 						{getFieldDecorator('redemption_limit_sku_number', {
 							initialValue: `${
 								Object.keys(formValues).length != 0 ? formValues.redemption_limit_sku_number : ''
 								}`,
-						})(<Input type="number" />)}
+						})(<Input type="number" min={0} />)}
 					</Form.Item>
 					<Form.Item
 						className="textPaddingTop"
