@@ -159,9 +159,8 @@ class CreateCampaign extends React.Component<CreateCampaignProps,CreateCampaignS
           formName: formName
         }
       });
-      return createFeedbackForm;
-
       console.log(createFeedbackForm);
+      return createFeedbackForm;
     } catch (err) {
       console.log(err);
     }
