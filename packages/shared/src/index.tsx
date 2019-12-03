@@ -14,8 +14,8 @@ import CampaignFooter from './components/molecules/campaignFooter';
 import Stepper from './components/atoms/stepper';
 import campaignOverview from "./components/molecules/campaignOverview/index"
 import WHeader from "./components/molecules/wHeader/WHeader";
-import FileUpload from "./components/molecules/FileUpload/FileUpload"
-import FileUploader from "./components/molecules/FileUpload/newFileUpload"
+import FileUploader from "./components/molecules/fileUpload/FileUpload"
+// import FileUploader from "./components/molecules/FileUpload/newFileUpload"
 import OfferBasicInfoForm from "./components/molecules/offerForm/basicInfo";
 import OfferRedemptionRulesForm from "./components/molecules/offerForm/redemptionRule";
 
@@ -25,8 +25,8 @@ export {
     CampaignPriority,
     BasicInfoForm,
     BasicSlider,
-    FileUpload,
     FileUploader,
+    // FileUploader,
     Popup,
     AddAndDeleteSelectDynamically,
     WalkinQueryBuilder,

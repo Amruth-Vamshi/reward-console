@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Modal, Upload, Button, Icon, Row, Col } from 'antd';
+import { Modal, Upload, Button, Icon } from 'antd';
 import "./index.css"
 
 export interface IAppProps {
@@ -9,6 +9,7 @@ export interface IAppProps {
     fileList?: any,
     handleUploadChangeProps?: any,
     title?: string
+    uploadProps: any
 }
 
 export interface IAppState {
@@ -23,24 +24,18 @@ export default class FileUpload extends React.Component<IAppProps, IAppState> {
     }
 
     public render() {
-        let { visible, handleOk, handleCancel, fileList, handleUploadChangeProps, title } = this.props
-        const props = {
-            action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
-            onChange: handleUploadChangeProps,
-            multiple: false
-        };
+        let { visible, handleOk, handleCancel, fileList, uploadProps, title } = this.props
+        // const props = {
+        //     action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
+        //     onChange: handleUploadChangeProps,
+        //     multiple: false
+        // };
         return (
             <div>
-                <Modal
-                    width="500px"
-                    key="model"
-                    visible={visible}
-                    title={title}
-                    onOk={handleOk}
-                    onCancel={handleCancel}
-                    okText="Submit"
+                <Modal width="500px" key="model" visible={visible} okText="Submit"
+                    title={title} onOk={handleOk} onCancel={handleCancel}
                 >
-                    <Upload {...props} fileList={fileList}>
+                    <Upload {...uploadProps} fileList={fileList}>
                         <Button>
                             <Icon type="upload" /> Upload
                         </Button>
