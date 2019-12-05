@@ -27,16 +27,19 @@ export const offerTypeData = [
         id: 1,
         value: 'PERCENTAGE_DISCOUNT',
         title: 'Discount on the bill',
+        extra: '%'
     },
     {
         id: 2,
         value: 'FLATX_DISCOUNT',
         title: 'Flat Xrs off on the bill',
+        extra: ' Rs'
     },
     {
         id: 3,
         value: 'PERCENTAGE_CASHBACK',
         title: '% Cashback on the bill',
+        extra: '%'
     },
     {
         id: 4,
@@ -55,16 +58,15 @@ export var transactionTimeData = [
         id: 1,
         value: 'frequency',
         title: 'Frequency',
-    },
-    {
+    }, {
         id: 2,
-        value: 'dayPart',
-        title: 'Daypart',
+        value: 'cartValue',
+        title: 'Cart value aka Bill size',
     },
     {
         id: 3,
-        value: 'cartValue',
-        title: 'Cart value aka Bill size',
+        value: 'dayPart',
+        title: 'Daypart',
     },
 ];
 
@@ -112,28 +114,33 @@ export var locationData = [
 export var cartValueConditionData = [
     {
         id: 1,
-        value: 'equalTo',
+        value: 'EQUALS',
         title: 'Equal to',
     },
     {
         id: 2,
-        value: 'notEqualTo',
+        value: 'NOT_EQUALS',
         title: 'Not Equal to',
     },
     {
         id: 3,
-        value: 'greaterThan',
+        value: 'GREATER_THAN',
         title: 'Greater than',
     },
     {
+        id: 3,
+        value: 'LESS_THAN',
+        title: 'Less than',
+    },
+    {
         id: 4,
-        value: 'equalToOrGreaterThan',
-        title: 'Equal/Greater than',
+        value: 'GREATER_THAN_OR_EQUAL',
+        title: 'Greater than or equal to',
     },
     {
         id: 5,
-        value: 'equalToOrLessThan',
-        title: 'Equal/Less than',
+        value: 'LESS_THAN_OR_EQUAL',
+        title: 'Less than or equal to',
     },
 ];
 
@@ -141,7 +148,7 @@ export var cappingData = [
     {
         id: 1,
         value: 'redemption_cap_max_discount',
-        title: 'Max discount',
+        title: 'Max Discount',
     },
     {
         id: 2,
@@ -151,7 +158,7 @@ export var cappingData = [
     {
         id: 3,
         value: 'redemption_cap_no_of_items',
-        title: 'No. of items',
+        title: 'No. of Items',
     },
 ];
 
