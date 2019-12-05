@@ -17,6 +17,24 @@ module.exports = ({ config }) => {
       loaders: [require.resolve("@storybook/source-loader")],
       enforce: "pre"
     }
+    // comment below to remove less loaders
+    // {
+    //   test: /\.less?$/,
+    //   loaders: [
+    //     {
+    //       loader: "style-loader"
+    //     },
+    //     {
+    //       loader: "css-loader"
+    //     },
+    //     {
+    //       loader: "less-loader",
+    //       options: {
+    //         javascriptEnabled: true
+    //       }
+    //     }
+    //   ]
+    // }
   );
   config.resolve.extensions.push(".ts", ".tsx");
   return config;

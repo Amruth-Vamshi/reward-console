@@ -14,6 +14,12 @@ import CampaignFooter from "./components/molecules/campaignFooter";
 import Stepper from "./components/atoms/stepper";
 import campaignOverview from "./components/molecules/campaignOverview/index";
 import CustomButton from "./components/General/Button";
+import CustomIcon from "./components/General/Icon";
+import CustomParagraph from "./components/General/Typography/Paragraph";
+import CustomText from "./components/General/Typography/Text";
+import CustomTitle from "./components/General/Typography/Title";
+import CustomGrid from "./components/Layout/Grid";
+
 export {
   ManageCampaignCard,
   CampaignPriority,
@@ -28,5 +34,10 @@ export {
   CampaignFooter,
   Stepper,
   campaignOverview,
-  CustomButton
+  CustomButton,
+  CustomIcon,
+  CustomParagraph,
+  CustomText,
+  CustomTitle,
+  CustomGrid
 };
