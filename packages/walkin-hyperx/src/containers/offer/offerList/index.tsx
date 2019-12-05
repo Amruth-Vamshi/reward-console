@@ -7,8 +7,8 @@ import { RouteChildrenProps } from 'react-router';
 import { withRouter } from 'react-router-dom';
 
 import { closeOffer, getOffers, LAUNCH_OFFER } from '../../../query/offer';
-import { NEW_OFFER, OFFER_DASHBOARD } from '../../../utils/RouterConstants';
-import { DEFAULT_ACTIVE_STATUS } from '../../../utils';
+import { NEW_OFFER, OFFER_DASHBOARD } from '../../../constants/RouterConstants';
+import { DEFAULT_ACTIVE_STATUS } from '../../../constants';
 import HyperXContainer from '../../../components/atoms/HyperXContainer';
 
 interface IProps extends RouteChildrenProps, ApolloProviderProps<any> {
@@ -144,14 +144,14 @@ class OfferList extends Component<IProps, Partial<IState>> {
 
 		const columns = [
 			{
-				title: 'Offer Name',
+				title: 'Name',
 				dataIndex: 'name',
 				key: 'name',
 				sorter: (a, b) => (a.name !== b.name ? (a.name < b.name ? -1 : 1) : 0),
 				sortOrder: sortedInfo.columnKey === 'name' && sortedInfo.order,
 			},
 			{
-				title: 'Offer Type',
+				title: 'Type',
 				dataIndex: 'offerType',
 				key: 'offerType',
 				sorter: (a, b) => a.offerType - b.offerType,
