@@ -5,16 +5,17 @@ import { Alert, message, Spin } from 'antd';
 import jwt from 'jsonwebtoken';
 import isEmpty from 'lodash/isEmpty';
 import omit from 'lodash/omit';
+import moment from 'moment'
 import React, { Component, Fragment } from 'react';
 import { ApolloProviderProps, compose, graphql, withApollo } from 'react-apollo';
 import { RouteChildrenProps } from 'react-router';
 import { createRule } from '../../../query/audience';
 import { categories, createOffer, products, subOrganizations, UPDATE_OFFER } from '../../../query/offer';
-import { isValidObject, transposeObject } from '../../../utils/common';
-import { OFFER_LIST } from '../../../utils/RouterConstants';
-import { cappingData, cartValueConditionData, couponTypeData, dummyBrandData, locationData, offerStepData, offerTypeData, productData, transactionTimeData } from '../../../utils/offerData'
+import { isValidObject, transposeObject } from '../../../utils';
+import { OFFER_LIST } from '../../../constants/RouterConstants';
+import { cappingData, cartValueConditionData, couponTypeData, dummyBrandData, locationData, offerStepData, offerTypeData, productData, transactionTimeData } from '../../../constants/offerData'
 import HyperXContainer from '../../../components/atoms/HyperXContainer';
-import { DEFAULT_RULE_TYPE, DEFAULT_ACTIVE_STATUS } from '../../../utils';
+import { DEFAULT_RULE_TYPE, DEFAULT_ACTIVE_STATUS } from '../../../constants';
 
 interface IProps extends RouteChildrenProps<any>, ApolloProviderProps<any> {
 	// pauseCampaign: (variables: any) => any
@@ -30,6 +31,7 @@ interface IState {
 	newOfferErrorMessage: '',
 	offerEligibityRule: any,
 	offerType: any,
+	transactionTime: '',
 	couponLableSelected: '',
 	offerRedemptionRuleId: ''
 	productValues: Array<any>,
@@ -62,6 +64,7 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 			productValues: [],
 			redemptionRule: {},
 			loading1: false,
+			transactionTime: '',
 			offerEligibityRuleId: '',
 			offerRedemptionRuleId: '',
 			locationValues: [],
@@ -140,6 +143,7 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 				Object.assign(this.state.transactionTimeStatus, { showFrequency: false, showDayPart: false, showCartValue: true })
 			);
 		}
+		this.setState({ transactionTime: value })
 	};
 
 	onValuesSelected = (value, str, stateValues) => {
@@ -254,19 +258,38 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 				let basicForm: any = this.saveFormValues(current, 'basicForm', this.basicFormRef);
 				if (basicForm) {
 					let { productValues, locationValues } = this.state;
-
 					let reward = {}, reArrangedObj = {};
+
+					console.log('PV ', JSON.stringify(productValues) + " Lv " + JSON.stringify(locationValues));
+
+
 					reward[basicForm.offerType] = parseInt(basicForm.offerTypeValue);
 
 					let combinedArray = productValues.concat(locationValues);
-					let arr: Array<{}>;
-					combinedArray.map(val => {
-						console.log(val);
-						reArrangedObj[val.valueOne] = val.valueTwo;
-						arr = transposeObject(reArrangedObj && reArrangedObj, 'IN');
-					});
+					let arr: Array<{}> = [];
+					combinedArray.map(val => { reArrangedObj[val.valueOne] = val.valueTwo });
 
-					// return console.log('>>', arr, locationValues);
+
+					console.log('FV', basicForm);
+
+					if (basicForm.transactionTime) {
+						if (basicForm.transactionTime == "cartValue")
+							arr.push({ attributeName: "cartValue", attributeValue: basicForm.cartValue, expressionType: basicForm.cartValueCondition })
+						else if (basicForm.transactionTime == "frequency") {
+							arr.push({ attributeName: "frequency_transaction", attributeValue: basicForm.noOfTransaction, expressionType: "EQUALS" })
+							arr.push({ attributeName: "frequency_days", attributeValue: basicForm.noOfDays, expressionType: "EQUALS" })
+						}
+						else if (basicForm.transactionTime == "dayPart") {
+							arr.push({ attributeName: "dayPart_startTime", attributeValue: moment(basicForm.startTime).format('h:mm:ss a'), expressionType: "EQUALS" })
+							arr.push({ attributeName: "dayPart_endTime", attributeValue: moment(basicForm.endTime).format('h:mm:ss a'), expressionType: "EQUALS" })
+						}
+
+					}
+
+					arr = [...arr, ...transposeObject(reArrangedObj && reArrangedObj, 'IN')]
+
+
+					// return console.log('>>', arr, reArrangedObj);
 
 					let basicFormArray = { rules: arr, combinator: 'AND' };
 
@@ -459,8 +482,8 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 		else return [];
 	};
 
-	onSelectTwoValuesSelected = values => {
-		this.setState({ locationValues: values });
+	onSelectTwoValuesSelected = (values, str) => {
+		this.setState({ [str]: values });
 	};
 
 	onCouponChange = e => {
