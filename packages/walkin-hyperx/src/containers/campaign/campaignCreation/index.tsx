@@ -13,10 +13,10 @@ import { GET_ALL_APPS_OF_ORGANIZATION } from '@walkinsole/walkin-core/src/Platfo
 import { CampaignFooter, campaignOverview as Overview, Stepper, WHeader } from '@walkinsole/shared';
 import { Audience, BasicInfo, Communication, Offer } from '@walkinsole/shared/src/components/campaignCreation';
 
-import { strToRule } from '../../../utils/common';
+import { strToRule } from '../../../utils';
 import HyperXContainer from '../../../components/atoms/HyperXContainer';
 import { ADD_OFFER_TO_CAMPAIGN, getOffers } from '../../../query/offer';
-import { DEFAULT_ACTIVE_STATUS, DEFAULT_HYPERX_CAMPAIGN } from '../../../utils';
+import { DEFAULT_ACTIVE_STATUS, DEFAULT_HYPERX_CAMPAIGN } from '../../../constants';
 import { allSegments, AUDIENCE_COUNT, CREATE_AUDIENCE, CREATE_RULE, RULE_ATTRIBUTES, UPDATE_AUDIENCES, UPDATE_RULE } from '../../../query/audience';
 import { CREATE_CAMPAIGN, CREATE_COMMUNICATION, CREATE_COMMUNICATION_WITH_MESSAGE_TEMPLETE, CREATE_MESSAGE_TEMPLETE, PREPROCESS_LAUNCH_CAMPAIGN, UPDATE_CAMPAIGN, UPDATE_COMMUNICATION_WITH_MESSAGE_TEMPLETE, VIEW_CAMPAIGN } from '../../../query/campaign';
 

@@ -12,7 +12,7 @@ import {
 } from '@walkinsole/walkin-components/src/constants/ThemeSetting';
 import { compose, graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import { CAMPAIGN_MANAGEMENT } from '../../utils/RouterConstants';
+import { CAMPAIGN_MANAGEMENT } from '../../constants/RouterConstants';
 import { Icon } from 'antd';
 
 interface SidebarLogoProps {

@@ -11,8 +11,8 @@ import { RouteChildrenProps } from 'react-router';
 import { withRouter } from 'react-router-dom';
 
 import { campaigns, DISABLE_CAMPAIGN } from '../../../query/campaign';
-import { DEFAULT_ACTIVE_STATUS, DEFAULT_HYPERX_CAMPAIGN } from '../../../utils';
-import { CAMPAIGN_DASHBOARD, NEW_CAMPAIGN } from '../../../utils/RouterConstants';
+import { DEFAULT_ACTIVE_STATUS, DEFAULT_HYPERX_CAMPAIGN } from '../../../constants';
+import { CAMPAIGN_DASHBOARD, NEW_CAMPAIGN } from '../../../constants/RouterConstants';
 import HyperXContainer from '../../../components/atoms/HyperXContainer';
 import { WHeader } from '@walkinsole/shared/src';
 

@@ -6,8 +6,8 @@ import SidebarLogo from './SidebarLogo';
 import { withRouter } from 'react-router-dom';
 import campaigns from '../../Icons/campaign'
 import Segments from '../../Icons/Segment'
-import analytics from '../../Icons/analytics'
 import offers from '../../Icons/offers'
+import analytics from '../../Icons/analytics'
 import settings from '../../Icons/settings'
 import messages from '../../Icons/messages'
 // import Segments from "../../Icons/IconComponents/segemnts";
@@ -24,7 +24,7 @@ import {
 } from '@walkinsole/walkin-components/src/constants/ThemeSetting';
 import { compose, graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import { CAMPAIGN_MANAGEMENT, SEGMENT_LIST, OFFER_LIST, OFFER_DASHBOARD } from '../../utils/RouterConstants';
+import { CAMPAIGN_MANAGEMENT, SEGMENT_LIST, OFFER_LIST, OFFER_DASHBOARD } from '../../constants/RouterConstants';
 
 const SubMenu = Menu.SubMenu;
 
