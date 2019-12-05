@@ -57,7 +57,7 @@ class AddAndDeleteComponentsDynamically extends React.Component<IProps, IState> 
     // const defaultValueTwo = this.getDefaultSelectedValue(data_2, defaultSelectTwoValue);
 
     let { items } = this.state;
-    items[items.length - 1].valueOne != "" && items.length != data_1.length &&
+    (!items.length || items[items.length - 1].valueOne != "") && items.length != data_1.length &&
       this.setState({
         items: [...this.state.items, {
           valueOne: "",
