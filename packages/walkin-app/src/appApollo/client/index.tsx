@@ -38,20 +38,19 @@ export const configureClient = async () => {
       if (graphQLErrors) {
         console.log(graphQLErrors);
 
-        if (!includes(ERROR_EXCEPTIONS, graphQLErrors[0].message)) {
-          if (
-            graphQLErrors[0].extensions &&
-            graphQLErrors[0].extensions.code == "UNTH"
-          ) {
-            localStorage.clear();
-            sessionStorage.clear();
-            location.reload();
-          }
-
-          if (graphQLErrors[0].message) {
-            message.warn(graphQLErrors[0].message);
-          }
+        if (
+          graphQLErrors[0].extensions &&
+          graphQLErrors[0].extensions.code == "UNTH"
+        ) {
+          localStorage.clear();
+          sessionStorage.clear();
+          location.reload();
         }
+
+        if (graphQLErrors[0].message && !includes(ERROR_EXCEPTIONS, graphQLErrors[0].message)) {
+          message.warn(graphQLErrors[0].message);
+        }
+
       } else if (networkError) {
         message.error(
           "Hey! Regret to inform that we are experiencing some issues. Please check your internet connection or try again after sometime"

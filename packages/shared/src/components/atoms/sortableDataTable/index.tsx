@@ -7,10 +7,11 @@ interface SortableDataTableProps {
 	data?: any[],
 	onChange: (pagination: PaginationConfig, filters: Record<string | number | symbol, string[]>, sorter: SorterResult<any>, extra: TableCurrentDataSource<any>) => any;
 	pagination?: object,
-	loading?: boolean
+	loading?: boolean,
+	rowKey?
 }
 
-const SortableDataTable = ({ columns, data, onChange, pagination, loading }: SortableDataTableProps) => {
+const SortableDataTable = ({ columns, data, onChange, pagination, loading, rowKey }: SortableDataTableProps) => {
 	return (
 		<Table
 			className="gx-table-responsive"
@@ -19,6 +20,7 @@ const SortableDataTable = ({ columns, data, onChange, pagination, loading }: Sor
 			columns={columns}
 			pagination={pagination}
 			loading={loading}
+			rowKey={rowKey}
 		/>
 	);
 };

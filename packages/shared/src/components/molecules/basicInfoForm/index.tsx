@@ -111,18 +111,14 @@ const BasicInfoForm = Form.create<iProps>({ name: "form_in_modal" })(
                   type: "object",
                   required: true,
                   message: "Please select start time!",
-
-                  validator: this.checkStart
-                }
+                }, { validator: this.checkStart }
               ],
 
             })(<DatePicker showTime format="DD-MM-YYYY HH:mm:ss" />)}
           </Form.Item>
           <Form.Item
             style={{ display: "inline-block", width: "calc(50% - 12px)" }}
-            label="End date"
-            {...dateItemLayout}
-          >
+            label="End date" {...dateItemLayout}>
             {getFieldDecorator("endTime", {
               initialValue: endTime,
               rules: [
@@ -130,8 +126,7 @@ const BasicInfoForm = Form.create<iProps>({ name: "form_in_modal" })(
                   type: "object",
                   required: true,
                   message: "Please select end time!",
-                  validator: this.checkEnd
-                }]
+                }, { validator: this.checkEnd }]
             })(<DatePicker showTime format="DD-MM-YYYY HH:mm:ss" />)}
           </Form.Item>
         </Form>

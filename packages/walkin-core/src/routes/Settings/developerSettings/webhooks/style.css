@@ -15,6 +15,9 @@
 .webhookButtonMargin0 {
   margin: 0;
 }
+.requiredFieldRedColor {
+  color: red;
+}
 
 /* .ant-btn {
   margin: 0;
@@ -45,8 +48,8 @@
 /* webhook list styles */
 
 .webhookListRow {
-  margin: 0;
-  padding: 30px 0;
+  margin: 0 !important;
+  padding: 30px 0 !important;
   border-bottom: 1px solid #cccccc;
 }
 
@@ -74,9 +77,9 @@
 .webhookTypeWrapper,
 .webhookStatus,
 .webhookUrlWrapper {
-  justify-content: center;
-  display: flex;
-  align-items: center;
+  justify-content: center !important;
+  display: flex !important;
+  align-items: center !important;
 }
 
 .webhookType {
@@ -87,6 +90,11 @@
 .webhookTitle {
   font-size: 16px;
   color: #333333;
+  white-space: nowrap;
+  width: 100%; /* IE6 needs any width */
+  overflow: hidden; /* "overflow" value must be different from  visible"*/
+  -o-text-overflow: ellipsis; /* Opera < 11*/
+  text-overflow: ellipsis;
 }
 .webhookUrl {
   font-size: 14px;
@@ -94,10 +102,10 @@
 }
 
 .webhookStatus {
-  justify-content: space-around;
+  justify-content: space-around !important;
 }
 .webhookStatusSwitch {
-  background-color: #55dba2;
+  background-color: #55dba2 !important;
 }
 
 /* webhook form styles */

@@ -78,8 +78,6 @@ export default class WebhookForm extends React.Component<
   };
 
   onChangeHeadersHandler = (value: any, index: number, subIndex: number) => {
-    console.log(value, index, subIndex);
-
     let { headerEntries } = this.state;
     headerEntries[index][subIndex] = value;
     this.setState({ headerEntries });
@@ -171,6 +169,13 @@ export default class WebhookForm extends React.Component<
       </Select>
     );
 
+    let eventTypeDescription = events.filter((item: any, index: number) => {
+      return item.event === webhookDetails.event;
+    });
+    eventTypeDescription = eventTypeDescription[0]
+      ? eventTypeDescription[0].description
+      : "--";
+
     return (
       <div className="webhookFormContainer">
         <div
@@ -180,7 +185,9 @@ export default class WebhookForm extends React.Component<
         >
           <div className="webhookEditTitle">{header}</div>
           <div id="WebhookInputWrapper" className="webhookTypeInputWrapper">
-            <div className="InputLabel">Select Event Type*</div>
+            <div className="InputLabel">
+              Select Event Type<span className="requiredFieldRedColor">*</span>
+            </div>
             <Select
               showSearch
               getPopupContainer={() =>
@@ -203,16 +210,12 @@ export default class WebhookForm extends React.Component<
                 </Option>
               ))}
             </Select>
-            <div className="inputDesc">
-              {
-                events.filter((item: any, index: number) => {
-                  return item.event === webhookDetails.event;
-                })[0].description
-              }
-            </div>
+            <div className="inputDesc">{eventTypeDescription}</div>
           </div>
           <div className="webhookLabelInputWrapper">
-            <div className="InputLabel">Label*</div>
+            <div className="InputLabel">
+              Label<span className="requiredFieldRedColor">*</span>
+            </div>
 
             <Input
               size="large"
@@ -227,7 +230,9 @@ export default class WebhookForm extends React.Component<
             />
           </div>
           <div className="webhookURLInputWrapper">
-            <div className="InputLabel">URL*</div>
+            <div className="InputLabel">
+              URL<span className="requiredFieldRedColor">*</span>
+            </div>
             <Input
               size="large"
               addonBefore={selectBefore}
@@ -298,7 +303,9 @@ export default class WebhookForm extends React.Component<
             </div>
           </div>
           <Button
-            disabled={!Boolean(webhookDetails.url && webhookDetails.name)}
+            disabled={
+              !Boolean(webhookDetails.url.trim() && webhookDetails.name.trim())
+            }
             className="button"
             type="primary"
             size="large"

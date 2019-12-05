@@ -1,7 +1,7 @@
 // export all components here
 
 import ManageCampaignCard from './components/Cards/ManageCampaignCard';
-import CampaignPriority from './components/molecules/campaignPriority';
+import { CampaignPriority } from './components/molecules/campaignPriority';
 import BasicInfoForm from './components/molecules/basicInfoForm';
 import BasicSlider from './components/atoms/testAndControlSlider';
 import Popup from './components/atoms/popup';
@@ -14,12 +14,19 @@ import CampaignFooter from './components/molecules/campaignFooter';
 import Stepper from './components/atoms/stepper';
 import campaignOverview from "./components/molecules/campaignOverview/index"
 import WHeader from "./components/molecules/wHeader/WHeader";
+import FileUploader from "./components/molecules/fileUpload/FileUpload"
+// import FileUploader from "./components/molecules/FileUpload/newFileUpload"
+import OfferBasicInfoForm from "./components/molecules/offerForm/basicInfo";
+import OfferRedemptionRulesForm from "./components/molecules/offerForm/redemptionRule";
+
 
 export {
     ManageCampaignCard,
     CampaignPriority,
     BasicInfoForm,
     BasicSlider,
+    FileUploader,
+    // FileUploader,
     Popup,
     AddAndDeleteSelectDynamically,
     WalkinQueryBuilder,
@@ -29,5 +36,7 @@ export {
     CampaignFooter,
     Stepper,
     campaignOverview,
-    WHeader
+    WHeader,
+    OfferBasicInfoForm,
+    OfferRedemptionRulesForm
 };

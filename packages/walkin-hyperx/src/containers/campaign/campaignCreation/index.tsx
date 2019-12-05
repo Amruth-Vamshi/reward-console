@@ -1,27 +1,27 @@
-import * as React from "react"
-import { Component, Fragment, useRef } from "react";
-import { withRouter, } from "react-router-dom";
-// import BasicInfo from "./basicInfo";
-// import Audience from "./audience";
-// import Offer from "./offer";
-// import Communication from "./communication";
-import { BasicInfo, Audience, Offer, Communication } from "@walkinsole/shared/src/components/campaignCreation";
-import { campaignOverview as Overview, WHeader } from "@walkinsole/shared";
-import { allSegments, RULE_ATTRIBUTES, GET_AUDIENCES, CREATE_AUDIENCE, CREATE_RULE, AUDIENCE_COUNT, UPDATE_RULE, UPDATE_AUDIENCES } from "../../../query/audience";
-import { getOffers, ADD_OFFER_TO_CAMPAIGN, GET_OFFER_FOR_CAMPAIGN } from "../../../query/offer";
-import { withApollo, graphql, compose, ApolloProviderProps } from 'react-apollo';
-import { GET_ALL_APPS_OF_ORGANIZATION } from "@walkinsole/walkin-core/src/PlatformQueries";
-import { Col, Row, message } from 'antd';
-import * as jwt from "jsonwebtoken";
-import '../styles.css'
-import { DEFAULT_ACTIVE_STATUS, DEFAULT_HYPERX_CAMPAIGN } from "../../../utils"
-import moment from "moment";
-import { CampaignFooter, CampaignHeader, Stepper } from '@walkinsole/shared';
-import { GET_CAMPAIGN, CREATE_CAMPAIGN, UPDATE_CAMPAIGN, CREATE_MESSAGE_TEMPLETE, CREATE_COMMUNICATION, LAUNCH_CAMPAIGN, CREATE_COMMUNICATION_WITH_MESSAGE_TEMPLETE, COMMUNICATIONS, VIEW_CAMPAIGN, UPDATE_COMMUNICATION_WITH_MESSAGE_TEMPLETE, PREPROCESS_LAUNCH_CAMPAIGN } from '../../../query/campaign';
-import { RouteChildrenProps, RouteComponentProps } from "react-router";
-import { FormComponentProps } from "antd/lib/form";
-import { History } from "history";
-import HyperXContainer from "../../../components/atoms/HyperXContainer";
+import '../styles.css';
+
+import moment from 'moment';
+import * as React from 'react';
+import { message } from 'antd';
+import { Component } from 'react';
+import * as jwt from 'jsonwebtoken';
+import { withRouter } from 'react-router-dom';
+import { RouteChildrenProps } from 'react-router';
+import { FormComponentProps } from 'antd/lib/form';
+import { ApolloProviderProps, compose, graphql, withApollo } from 'react-apollo';
+import { GET_ALL_APPS_OF_ORGANIZATION } from '@walkinsole/walkin-core/src/PlatformQueries';
+import { CampaignFooter, campaignOverview as Overview, Stepper, WHeader } from '@walkinsole/shared';
+import { Audience, BasicInfo, Communication, Offer } from '@walkinsole/shared/src/components/campaignCreation';
+
+import { strToRule } from '../../../utils/common';
+import HyperXContainer from '../../../components/atoms/HyperXContainer';
+import { ADD_OFFER_TO_CAMPAIGN, getOffers } from '../../../query/offer';
+import { DEFAULT_ACTIVE_STATUS, DEFAULT_HYPERX_CAMPAIGN } from '../../../utils';
+import { allSegments, AUDIENCE_COUNT, CREATE_AUDIENCE, CREATE_RULE, RULE_ATTRIBUTES, UPDATE_AUDIENCES, UPDATE_RULE } from '../../../query/audience';
+import { CREATE_CAMPAIGN, CREATE_COMMUNICATION, CREATE_COMMUNICATION_WITH_MESSAGE_TEMPLETE, CREATE_MESSAGE_TEMPLETE, PREPROCESS_LAUNCH_CAMPAIGN, UPDATE_CAMPAIGN, UPDATE_COMMUNICATION_WITH_MESSAGE_TEMPLETE, VIEW_CAMPAIGN } from '../../../query/campaign';
+
+
+
 
 const stepData = [{
 	id: 1,
@@ -108,6 +108,8 @@ interface IState {
 	campaign: any
 	audiences: any,
 	offerData: any
+	campaignType: string
+	visible?, fileList?
 }
 class CampaignCreation extends Component<IProps, Partial<IState>> {
 	private smsForm
@@ -147,12 +149,48 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 			createComm: false,
 			audience: [],
 			update: false,
+			visible: false,
 			audienceChange: { audience: false, rule: false },
-			spin: false
+			spin: false,
+			fileList: [],
+			campaignType: DEFAULT_HYPERX_CAMPAIGN[0]
 		};
 
 		// var formRef = useRef<HTMLElement | null>(null);
 	}
+
+
+	handleChange = info => {
+		let fileList = [...info.fileList];
+
+		// 1. Limit the number of uploaded files
+		// Only to show two recent uploaded files, and old ones will be replaced by the new
+		fileList = fileList.slice(-1);
+
+		// 2. Read from response and show file link
+		fileList = fileList.map(file => {
+			if (file.response) {
+				// Component will show file.url as link
+				file.url = file.response.url;
+			}
+			return file;
+		});
+
+		this.setState({ fileList });
+	};
+
+	showModal = () => this.setState({ visible: true });
+
+	handleOk = () => {
+		this.setState({ loading: true });
+		setTimeout(() => {
+			this.setState({ loading: false, visible: false });
+		}, 3000);
+	};
+
+	handleUploadCancel = () => {
+		this.setState({ visible: false });
+	};
 
 	UNSAFE_componentWillMount = () => {
 		const { location, match, client } = this.props;
@@ -182,18 +220,8 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 
 				if (campaign.audienceFilterRule) {
 					let str = campaign.audienceFilterRule.ruleConfiguration;
-					var mapObj: any = {
-						// ruleAttributeId: 'field',
-						attributeName: 'field',
-						attributeValue: 'value',
-						expressionType: 'operator',
-					};
-					if (typeof str != 'string') str = JSON.stringify(str)
-					str = str.replace(/attributeName|attributeValue|expressionType/gi, function (matched: any) {
-						return mapObj[matched];
-					});
 					this.setState({
-						ruleQuery: JSON.parse(str), audienceFilterRule: campaign.audienceFilterRule.ruleConfiguration,
+						ruleQuery: strToRule(str), audienceFilterRule: campaign.audienceFilterRule.ruleConfiguration,
 						audienceFilterRuleCreated: true, audienceFilterRuleId: campaign.audienceFilterRule.id
 					});
 				}
@@ -343,12 +371,13 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 		}).then((data: any) => {
 			console.log("campaign data..", data);
 			message.success('Campaign Launched')
-			moment().isBetween(this.state.campaign.startTime, this.state.campaign.endTime) ?
-				this.props.history.push('/hyperx/campaigns') :
-				this.props.history.push({
-					pathname: '/hyperx/campaigns', //tabKey: "2"
-					state: { tabKey: "2" }
-				})
+			// moment().isBetween(this.state.campaign.startTime, this.state.campaign.endTime) ?
+			// 	this.props.history.push('/hyperx/campaigns') :
+			// 	this.props.history.push({
+			// 		pathname: '/hyperx/campaigns', //tabKey: "2"
+			// 		state: { tabKey: "2" }
+			// 	})
+			this.props.history.push({ pathname: '/hyperx/campaigns', state: { tabKey: "2" } })
 		}).catch(err => {
 			console.log("Error Update campaign", err)
 			this.setState({ loading: false })
@@ -386,6 +415,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 		console.log('COMM', communicationSelected, values);
 		this.setState({ loading: true })
 		var messageTemplateInput = {
+
 			id: communication.messageTemplate.id,
 			name: this.state.campaign.name + "_" + communicationSelected,
 			description: "",
@@ -441,7 +471,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 		};
 		var communicationInput: any = {
 			entityId: this.state.offerData ? this.state.offerData.id : ' ',
-			entityType: "Offer",
+			entityType: this.state.campaignType,
 			campaign_id: this.state.campaign.id,
 			isScheduled: scheduleSaveMark,
 			isRepeatable: scheduleSaveMark,
@@ -523,15 +553,27 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 	// };
 
 	linkOffer = current => {
-		if (this.state.noOfferRequired) this.setState({ current })
-		else if (this.state.offer != "" && !this.state.offerCreated) {
+		this.setState({ loading: true })
+		if (this.state.noOfferRequired) {
+			let campaignInput = { campaignType: "MESSAGING" };
+			this.props.updateCampaign({
+				variables: {
+					id: this.state.campaign.id,
+					input: campaignInput
+				}
+			}).then(data => {
+				console.log("Update campaign data..", data);
+				this.setState({ current, loading: false, campaignType: "MESSAGING" })
+			}).catch(err => {
+				console.log("Error Update campaign", err)
+				this.setState({ loading: false })
+			});
+		} else if (this.state.offer != "" && !this.state.offerCreated) {
 			let { org_id }: any = jwt.decode(localStorage.getItem('jwt'))
-			this.setState({ loading: true })
-			var input = {
+			let input = {
 				campaignId: this.state.campaign.id,
 				offerId: this.state.offer,
 				organizationId: org_id,
-				// status: DEFAULT_ACTIVE_STATUS
 			};
 			this.props.addOfferToCampaign({
 				variables: { input: input }
@@ -555,12 +597,12 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 					type: "SIMPLE",
 					organizationId: org_id,
 					status: DEFAULT_ACTIVE_STATUS,
-					ruleConfiguration: JSON.stringify(this.state.audienceFilterRule)
+					ruleConfiguration: this.state.audienceFilterRule
 				};
 				this.props.createRule({ variables: { input: input } })
 					.then(data => {
 						console.log("Rule data...", data);
-						var campaignInput = { audienceFilterRule: data.data.createRule.id };
+						let campaignInput = { audienceFilterRule: data.data.createRule.id };
 						this.props.updateCampaign({
 							variables: {
 								id: this.state.campaign.id,
@@ -583,7 +625,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 
 	ruleUpdate = current => {
 		if (this.state.audienceFilterRule.rules.length) {
-			const input = { ruleConfiguration: JSON.stringify(this.state.audienceFilterRule) };
+			const input = { ruleConfiguration: this.state.audienceFilterRule };
 			this.props.updateRule({ variables: { id: this.state.audienceFilterRuleId, input: input } })
 				.then(data => {
 					console.log("Rule data...", data);
@@ -680,7 +722,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 		console.log('Create Campaign');
 		const { client } = this.props;
 		const { priorityChosen, controlValue } = this.state;
-		if (!this.props.allApplications.organization) return console.log('No Applications for your organization');
+		if (!this.props.allApplications.organization) return message.error('No Applications for your organization');
 		const { allApplications: { organization } } = this.props;
 		let { org_id }: any = jwt.decode(localStorage.getItem('jwt'))
 		console.log(organization.applications);
@@ -689,8 +731,9 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 			priority: parseInt(priorityChosen),
 			campaignControlPercent: parseInt(controlValue),
 			organization_id: org_id,
+			campaignTriggerType: "SCHEDULED",
 			application_id: organization.applications[0].id,
-			campaignType: DEFAULT_HYPERX_CAMPAIGN
+			campaignType: DEFAULT_HYPERX_CAMPAIGN[0]
 		};
 		this.setState({ loading: true });
 		client.mutate({
@@ -867,7 +910,8 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 							selectedSegments={this.state.selectedSegments}
 							segmentSelectionData={this.props.segmentList.segments}
 							// uploadCsvText="Upload CSV"
-							uploadProps={props}
+							visible={this.state.visible} handleOk={this.handleOk} handleCancel={this.handleUploadCancel}
+							fileList={this.state.fileList} uploadProps={props}
 							ruleQuery={this.state.ruleQuery}
 							segmentFilterText="Filter"
 							segmentFilterSubText="Campaign applies to :"

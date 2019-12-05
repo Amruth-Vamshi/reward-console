@@ -32,7 +32,7 @@ class ChoiceInput extends Component<ChoiceInputProps, {}> {
   setFieldValues = () => {
     const { choice } = this.props;
     this.props.form.setFieldsValue({
-      choiceText: choice.choiceText
+      choiceText: (choice.choiceText).trim()
     });
   };
 
