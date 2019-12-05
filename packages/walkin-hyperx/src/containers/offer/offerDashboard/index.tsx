@@ -9,8 +9,8 @@ import { withRouter } from 'react-router-dom';
 
 import HyperXContainer from '../../../components/atoms/HyperXContainer';
 import { VIEW_OFFER } from '../../../query/offer';
-import { offerTypeData } from '../../../utils/offerData';
-import { fieldConvert } from '../../../utils/common';
+import { offerTypeData, cartValueConditionData, transactionTimeData } from '../../../constants/offerData';
+import { fieldConvert } from '../../../utils';
 
 export interface IAppProps extends RouteChildrenProps<any>, ApolloProviderProps<any> {
 }
@@ -19,6 +19,11 @@ export interface IAppState {
     spin: boolean
     offer: {}
     products: Array<{}>
+    location
+    frequency
+    transactionTime: string
+    cartValue
+    dayPart
 }
 
 const labelCol = {
@@ -37,7 +42,12 @@ class OfferDashboard extends React.Component<IAppProps, IAppState> {
         this.state = {
             spin: false,
             offer: {},
-            products: []
+            products: [],
+            location: [],
+            transactionTime: '',
+            frequency: {},
+            cartValue: {},
+            dayPart: {}
         }
     }
 
@@ -61,17 +71,35 @@ class OfferDashboard extends React.Component<IAppProps, IAppState> {
 
     dataFormatter = data => {
         let { offerEligibilityRule, rewardRedemptionRule }: any = data
-        let products: Array<{}> = []
+        let products: Array<{}> = [], location: Array<{}> = [], frequency: any = {}, cartValue: any = {}, transactionTime = '', dayPart: any = {}
         offerEligibilityRule && offerEligibilityRule.ruleConfiguration.rules.map((rule: any) => {
             if (rule.attributeName.includes('product_')) products.push({ type: rule.attributeName.replace('product_', ''), values: rule.attributeValue })
+            else if (rule.attributeName.includes('location_')) location.push({ type: rule.attributeName.replace('location_', ''), values: rule.attributeValue })
+            else if (rule.attributeName.includes('frequency_')) {
+                transactionTime = "Frequency"
+                frequency[rule.attributeName.replace('frequency_', '')] = rule.attributeValue
+            } else if (rule.attributeName == "cartValue") {
+                transactionTime = "Cart Value"
+                cartValue = { name: rule.attributeName, value: rule.attributeValue, type: rule.expressionType }
+            } else if (rule.attributeName.includes('dayPart_')) {
+                transactionTime = "DayPart"
+                dayPart[rule.attributeName.replace('dayPart_', '')] = rule.attributeValue
+            }
         })
-        this.setState({ products })
+        this.setState({ products, location, transactionTime, frequency, cartValue, dayPart })
 
     }
 
     public render() {
         let { offerType, reward, name, offerEligibilityRule, rewardRedemptionRule }: any = this.state.offer
-        let { products } = this.state
+        let { products, location, transactionTime, frequency, cartValue, dayPart } = this.state
+        let transactionTimeStr = `6 transaction in 30 days`
+
+        if (transactionTime == 'Frequency') transactionTimeStr = `${transactionTime} - ${frequency.transaction} transaction in ${frequency.days} days`
+        else if (transactionTime == 'Cart Value') transactionTimeStr = `${transactionTime} - 
+        ${fieldConvert(transactionTimeData, cartValue.name, 'value', 'title')} ${fieldConvert(cartValueConditionData, cartValue.type, 'value', 'title')}  ${cartValue.value} Rs`
+        else if (transactionTime == 'DayPart') transactionTimeStr = `${transactionTime} - From ${dayPart.startTime} To ${dayPart.endTime}`
+
         return (
             <div>
                 <WHeader title='Offers' />
@@ -97,7 +125,7 @@ class OfferDashboard extends React.Component<IAppProps, IAppState> {
                                 <h4>Basic Information</h4>
                                 <Row>
                                     <Col {...labelCol}>  Offer Type  </Col>
-                                    <Col {...wrapperCol}> {fieldConvert(offerTypeData, offerType, 'value', 'title')} - {reward[offerType]} </Col>
+                                    <Col {...wrapperCol}> {fieldConvert(offerTypeData, offerType, 'value', 'title')} - {reward[offerType]}{fieldConvert(offerTypeData, offerType, 'value', 'extra')} </Col>
                                 </Row>
                                 {products.map((p: any) => <div>
                                     <Row>
@@ -110,7 +138,18 @@ class OfferDashboard extends React.Component<IAppProps, IAppState> {
 
                                 </div>)}
 
-                                <Row>
+                                {location.map((l: any) => (l.values != "") && <div>
+                                    <Row>
+                                        <Col {...labelCol}>  Location  </Col>
+                                        <Col {...wrapperCol}> {l.type} </Col>
+                                    </Row>
+                                    <Row style={{ padding: '0 25px' }}>
+                                        <Input className='inputRow' value={l.values} disabled addonAfter={<span className='gx-text-primary gx-pointer'>View All</span>} />
+                                    </Row>
+
+                                </div>)}
+
+                                {/* <Row>
                                     <Col {...labelCol}>  Location  </Col>
                                     <Col {...wrapperCol}> Zone </Col>
                                 </Row>
@@ -119,11 +158,11 @@ class OfferDashboard extends React.Component<IAppProps, IAppState> {
                                 </Row>
                                 <Row style={{ padding: '0 25px' }}>
                                     <Input className='inputRow' value='North_india_zone.csv ' disabled addonAfter={<span className='gx-text-primary gx-pointer'>View CSV</span>} />
-                                </Row>
-                                <Row>
+                                </Row> */}
+                                {transactionTime != '' && <Row>
                                     <Col {...labelCol}>  User Transaction Time  </Col>
-                                    <Col {...wrapperCol}> Frequency - 6 transaction in 30 days </Col>
-                                </Row>
+                                    <Col {...wrapperCol}> {transactionTimeStr} </Col>
+                                </Row>}
 
                                 <Divider />
                                 <h4>Redemption Rules</h4>
@@ -133,7 +172,7 @@ class OfferDashboard extends React.Component<IAppProps, IAppState> {
                                     <Col {...wrapperCol}> 5000 times </Col>
                                 </Row>
                                 <Row>
-                                    <Col {...labelCol}>  User Limit At Customer Lever  </Col>
+                                    <Col {...labelCol}>  User Limit At Customer Level  </Col>
                                     <Col {...wrapperCol}> 2 times </Col>
                                 </Row>
                                 <Row>
