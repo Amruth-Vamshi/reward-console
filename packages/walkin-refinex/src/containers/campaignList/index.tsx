@@ -378,7 +378,7 @@ export default withRouter(
                 return ({
                     variables: {
                         status: DEFAULT_ACTIVE_STATUS,
-                        campaignType: DEFAULT_REFINEX_CAMPAIGN,
+                        campaignType: [DEFAULT_REFINEX_CAMPAIGN],
                         organization_id: org_id
                     },
                     fetchPolicy: "network-only"

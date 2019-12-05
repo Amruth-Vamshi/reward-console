@@ -1,25 +1,28 @@
-import * as React from "react";
+import React, { Fragment } from "react";
 import PrioritySelection from "../../molecules/prioritySelection";
 import TestAndControl from "../../molecules/testAndControl";
 import "./style.css";
 
-interface iProps {
-  text?
-  buttons?: any;
-  promptText?: string;
-  tootTipText?: any;
-  prioritySelectionTitle?: any;
-  priorityButtonText?: string;
-  testControlTitle?: any;
-  testControlPercentage?: any;
-  testControlPercentageEditText?: any;
-  priorityNumberInvalidErrorMessage?: any;
-  onTestAndControlEdit?: any;
-  handleChange?: any;
-  priorityChosen?: any;
+interface CampaignPriorityProps {
+  buttons?: any,
+  promptText?: any,
+  tootTipText?: any,
+  prioritySelectionTitle?: any,
+  priorityButtonText?: any,
+  testControlTitle?: any,
+  testControlPercentage?: any,
+  testControlPercentageEditText?: any,
+  priorityNumberInvalidErrorMessage?: any,
+  onTestAndControlEdit?: any,
+  handleChange?: any,
+  priorityChosen?: any,
+  HideTestConstrol?: any,
+  text?: any,
+  onClick?: any
 }
 
-const CampaignPriority = ({
+
+export const CampaignPriority: React.FC<CampaignPriorityProps> = ({
   buttons,
   promptText,
   tootTipText,
@@ -31,13 +34,15 @@ const CampaignPriority = ({
   priorityNumberInvalidErrorMessage,
   onTestAndControlEdit,
   handleChange,
-  priorityChosen
-}: iProps) => {
+  priorityChosen,
+  HideTestConstrol,
+  text,
+  onClick
+}) => {
   return (
-    <React.Fragment>
-      <div className="campaignPriorityContainerStyle prioritySection">
+    <Fragment>
+      <div style={{ padding: 15 }} className="campaignPriorityContainerStyle prioritySection">
         <PrioritySelection
-          // buttons={buttons}
           priorityChosen={priorityChosen}
           prioritySelectionTitle={prioritySelectionTitle}
           priorityButtonText={priorityButtonText}
@@ -45,18 +50,18 @@ const CampaignPriority = ({
           onClick={handleChange}
         />
       </div>
-      <div className="campaignPriorityContainerStyle">
-        <TestAndControl
-          testControlTitle={testControlTitle}
-          testControlPercentage={testControlPercentage}
-          promptText={promptText}
-          tootTipText={tootTipText}
-          testControlPercentageEditText={testControlPercentageEditText}
-          onTestAndControlEdit={onTestAndControlEdit}
-        />
-      </div>
-    </React.Fragment>
+      {!HideTestConstrol ? (
+        <div className="campaignPriorityContainerStyle">
+          <TestAndControl
+            testControlTitle={testControlTitle}
+            testControlPercentage={testControlPercentage}
+            promptText={promptText}
+            tootTipText={tootTipText}
+            testControlPercentageEditText={testControlPercentageEditText}
+            onTestAndControlEdit={onTestAndControlEdit}
+          />
+        </div>
+      ) : null}
+    </Fragment>
   );
 };
-
-export default CampaignPriority;

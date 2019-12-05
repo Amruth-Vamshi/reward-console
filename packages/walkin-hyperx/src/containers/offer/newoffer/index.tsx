@@ -1,6 +1,6 @@
 import './style.css';
 
-import { CampaignFooter, Stepper, WHeader } from '@walkinsole/shared';
+import { CampaignFooter, Stepper, WHeader, OfferRedemptionRulesForm, OfferBasicInfoForm } from '@walkinsole/shared';
 import { Alert, message, Spin } from 'antd';
 import jwt from 'jsonwebtoken';
 import isEmpty from 'lodash/isEmpty';
@@ -8,15 +8,13 @@ import omit from 'lodash/omit';
 import React, { Component, Fragment } from 'react';
 import { ApolloProviderProps, compose, graphql, withApollo } from 'react-apollo';
 import { RouteChildrenProps } from 'react-router';
-
-import OfferBasicInfoForm from '../../../components/atoms/offerForm/basicInfo';
-import OfferRedemptionRulesForm from '../../../components/atoms/offerForm/redemptionRule';
 import { createRule } from '../../../query/audience';
-import { categories, createOffer, products, subOrganizations } from '../../../query/offer';
+import { categories, createOffer, products, subOrganizations, UPDATE_OFFER } from '../../../query/offer';
 import { isValidObject, transposeObject } from '../../../utils/common';
 import { OFFER_LIST } from '../../../utils/RouterConstants';
-import { cappingData, cartValueConditionData, couponTypeData, dummyBrandData, locationData, offerStepData, offerTypeData, productData, transactionTimeData } from './data';
+import { cappingData, cartValueConditionData, couponTypeData, dummyBrandData, locationData, offerStepData, offerTypeData, productData, transactionTimeData } from '../../../utils/offerData'
 import HyperXContainer from '../../../components/atoms/HyperXContainer';
+import { DEFAULT_RULE_TYPE, DEFAULT_ACTIVE_STATUS } from '../../../utils';
 
 interface IProps extends RouteChildrenProps<any>, ApolloProviderProps<any> {
 	// pauseCampaign: (variables: any) => any
@@ -33,6 +31,7 @@ interface IState {
 	offerEligibityRule: any,
 	offerType: any,
 	couponLableSelected: '',
+	offerRedemptionRuleId: ''
 	productValues: Array<any>,
 	redemptionRule: any,
 	loading1: boolean,
@@ -58,12 +57,13 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 			couponTypeSelected: null,
 			newOfferErrorMessage: '',
 			offerEligibityRule: {},
-			offerType: {},
+			offerType: '',
 			couponLableSelected: '',
 			productValues: [],
 			redemptionRule: {},
 			loading1: false,
 			offerEligibityRuleId: '',
+			offerRedemptionRuleId: '',
 			locationValues: [],
 			formValues: {
 				basicForm: {},
@@ -107,17 +107,17 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 				Object.assign(this.state.offerTypeStatus, { showRupee: false, showPercent: true, showList: false })
 			);
 		}
-		if (value === 'FLATX_OFF_ON_BILL') {
+		if (value === 'FLATX_DISCOUNT') {
 			this.setState(
 				Object.assign(this.state.offerTypeStatus, { showRupee: true, showPercent: false, showList: false })
 			);
 		}
-		if (value === 'FREE_ITEMS') {
+		if (value === 'FREE_ITMES_FROM_LIST') {
 			this.setState(
 				Object.assign(this.state.offerTypeStatus, { showList: true, showPercent: false, showRupee: false })
 			);
 		}
-		if (value === 'FLAT_CASHBACK') {
+		if (value === 'FLATX_CASHBACK') {
 			this.setState(
 				Object.assign(this.state.offerTypeStatus, { showList: false, showPercent: false, showRupee: false })
 			);
@@ -143,6 +143,7 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 	};
 
 	onValuesSelected = (value, str, stateValues) => {
+		console.log('value: ', value + ' str: ' + str + ' stateValues: ' + stateValues);
 		if (str === 'product') {
 			if (value === 'product_sku') {
 				this.setState(
@@ -171,233 +172,277 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 					})
 				);
 			}
-			this.setState({
-				productValues: stateValues,
-			});
+			this.setState({ productValues: stateValues });
 		} else {
 			if (value == 'location_city') {
 				this.setState(
 					Object.assign(this.state.locationDropDown, {
-						showCityList: true,
-						showStateList: false,
-						showPincodeList: false,
-						showStoreList: false,
+						showCityList: true, showStateList: false, showPincodeList: false, showStoreList: false,
 					})
 				);
 			}
 			if (value == 'location_state') {
 				this.setState(
 					Object.assign(this.state.locationDropDown, {
-						showCityList: false,
-						showStateList: true,
-						showPincodeList: false,
-						showStoreList: false,
+						showCityList: false, showStateList: true, showPincodeList: false, showStoreList: false,
 					})
 				);
 			}
 			if (value == 'location_pincode') {
 				this.setState(
 					Object.assign(this.state.locationDropDown, {
-						showCityList: false,
-						showStateList: false,
-						showPincodeList: true,
-						showStoreList: false,
+						showCityList: false, showStateList: false, showPincodeList: true, showStoreList: false,
 					})
 				);
 			}
 			if (value == 'location_store') {
 				this.setState(
 					Object.assign(this.state.locationDropDown, {
-						showCityList: false,
-						showStateList: false,
-						showPincodeList: false,
-						showStoreList: true,
+						showCityList: false, showStateList: false, showPincodeList: false, showStoreList: true,
 					})
 				);
 			}
+			this.setState({ locationValues: stateValues });
 		}
 	};
 
 	saveFormValues = (current, state, ref) => {
 		const form = ref && ref.props.form;
+		let fmValues
 		if (form) {
 			form.validateFields((err, values) => {
 				if (err) return;
-				else this.setState(Object.assign(this.state.formValues, { [state]: values }));
+				else {
+					fmValues = values;
+					this.setState(Object.assign(this.state.formValues, { [state]: values }));
+				}
 			});
 		}
+		return fmValues
 	};
 
-	goToNextPage = (current: number, e: any) => {
-		let { client } = this.props;
-		const { formValues } = this.state;
+	createRule = async (rule, type) => {
+		let ruleInput = {
+			name: Math.random().toString(36).substring(7),
+			type: DEFAULT_RULE_TYPE,
+			organizationId: jwt.decode(localStorage.getItem('jwt'))['org_id'],
+			status: DEFAULT_ACTIVE_STATUS,
+			ruleConfiguration: rule,
+		}
+		let ruleId
+		console.log('ruleInput >>> ', JSON.stringify(ruleInput));
+		return this.props.client
+			.mutate({ mutation: createRule, variables: ruleInput })
+			.then(({ data }) => {
+				console.log('created rule', data);
+				ruleId = data.createRule.id
+				this.setState({ [type]: data.createRule.id });
+				return ruleId;
+			}).catch(error => {
+				console.log('error', error);
+				this.setState({ loading1: false })
+			});
+	}
+
+	changePage = current => this.setState({ current })
+
+	goToNextPage = async (current: number, e: any) => {
+		let { formValues } = this.state;
 		const { org_id }: any = jwt.decode(localStorage.getItem('jwt'))
-		if (current === 1 && e && e.target.innerText === 'Next') {
-			if (isEmpty(formValues.basicForm) || isValidObject(formValues.basicForm)) {
-				this.saveFormValues(current, 'basicForm', this.basicFormRef);
-				let { productValues, locationValues, formValues } = this.state;
-				let { basicForm } = formValues;
-				let offerType = {};
-				offerType[basicForm.offerType] = parseInt(basicForm.offerTypeValue);
+		if (e && e.target.innerText === 'Next') {
+			if (isValidObject(formValues.basicForm)) {
+				let basicForm: any = this.saveFormValues(current, 'basicForm', this.basicFormRef);
+				if (basicForm) {
+					let { productValues, locationValues } = this.state;
 
-				let combinedArray = productValues.concat(locationValues);
-				let reArrangedObj = {};
-				let arr: Array<{}>;
-				combinedArray.map(val => {
-					reArrangedObj[val.valueOne] = val.valueTwo;
-					// console.log('');
-					arr = transposeObject(reArrangedObj && reArrangedObj, 'in');
-				});
-				let basicFormArray = { rules: arr, combinator: 'and' };
+					let reward = {}, reArrangedObj = {};
+					reward[basicForm.offerType] = parseInt(basicForm.offerTypeValue);
 
-				console.log('>>>', basicFormArray);
-				this.setState({
-					offerEligibityRule: basicFormArray,
-					offerType: offerType,
-					current: current,
-				});
-			}
-		} else if (e && e.target.innerText === 'Save') {
-			const { formValues } = this.state;
-			if (!isEmpty(formValues.basicForm)) {
-				if (isEmpty(formValues.redemptionForm) || isValidObject(formValues.redemptionForm)) {
-					this.saveFormValues(current, 'redemptionForm', this.redemptionRef);
-					if (this.state.formValues && this.state.formValues.redemptionForm) {
-						let redemptionFormObject = this.state.formValues.redemptionForm;
-						redemptionFormObject[redemptionFormObject.type] = redemptionFormObject.cappingValue;
-						let ommitedObject = omit(redemptionFormObject, ['type', 'cappingValue']);
-						let redemptionArray = { rules: transposeObject(ommitedObject, '='), combinator: 'and' };
-						const { offerEligibityRule, redemptionRule } = this.state;
-						this.setState({ loading1: true })
-						client
-							.mutate({
-								mutation: createRule,
-								variables: {
-									name: Math.random()
-										.toString(36)
-										.substring(7),
-									type: 'SIMPLE',
-									organizationId: org_id,
-									status: 'ACTIVE',
-									ruleConfiguration: JSON.stringify(offerEligibityRule),
-								},
-							})
-							.then(({ data }) => {
-								console.log('created rule', data);
-								this.setState({
-									offerEligibityRuleId: data.createRule.id,
-								});
-								client
-									.mutate({
-										mutation: createRule,
-										variables: {
-											name: Math.random()
-												.toString(36)
-												.substring(7),
-											type: 'SIMPLE',
-											organizationId: org_id,
-											status: 'ACTIVE',
-											ruleConfiguration: JSON.stringify(redemptionArray),
-										},
-									})
-									.then(({ data }) => {
-										console.log('created redemption rule', data);
-										const {
-											offerEligibityRuleId,
-											offerType,
-											formValues,
-											couponLableSelected,
-											couponTypeSelected,
-										} = this.state;
-										client
-											.mutate({
-												mutation: createOffer,
-												variables: {
-													name: formValues.basicForm.offerName,
-													offerType: formValues.basicForm.offerType,
-													reward: JSON.stringify(offerType),
-													organizationId: org_id,
-													offerEligibilityRule: offerEligibityRuleId,
-													offerCategory: couponTypeSelected === 1 ? 'COUPONS' : 'AUTO_APPLY',
-													isCustomCoupon: couponTypeSelected === 1 ? true : false,
-													coupon: couponTypeSelected === 1 ? couponLableSelected : null,
-													rewardRedemptionRule: data.createRule.id,
-												},
-											})
-											.then(({ data }) => {
-												console.log('created offer', data);
-												this.setState({ loading1: false })
-												const { history } = this.props;
-												history.push({
-													pathname: OFFER_LIST,
-												});
+					let combinedArray = productValues.concat(locationValues);
+					let arr: Array<{}>;
+					combinedArray.map(val => {
+						console.log(val);
+						reArrangedObj[val.valueOne] = val.valueTwo;
+						arr = transposeObject(reArrangedObj && reArrangedObj, 'IN');
+					});
 
-												message.success('Your changes were saved', 5);
-												// client
-												// 	.mutate({
-												// 		mutation: launchOffer,
-												// 		variables: {
-												// 			id: data.createOffer.id,
-												// 		},
-												// 	})
-												// 	.then(({ data }) => {
-												// 		console.log('created offer', data);
-												// 		const { history } = this.props;
-												// 		history.push({
-												// 			pathname: OFFER_LIST,
-												// 		});
+					// return console.log('>>', arr, locationValues);
 
-												// 		message.success('Your changes were saved', 5);
-												// 	})
-												// 	.catch(error => {
-												// 		console.log('error', error);
-												// 		this.displayError(
-												// 			'newOfferErrorMessage',
-												// 			error && error.graphQLErrors[0]
-												// 				? error.graphQLErrors[0].message
-												// 				: 'Error in submitting the form'
-												// 		);
-												// 	});
-											})
-											.catch(error => {
-												console.log('error', error);
-												this.setState({ loading1: false })
-												this.displayError(
-													'newOfferErrorMessage',
-													error && error.graphQLErrors[0]
-														? error.graphQLErrors[0].message
-														: 'Error in submitting the form'
-												);
-											});
-									})
-									.catch(error => {
-										console.log('error', error);
-										this.setState({ loading1: false })
-										this.displayError(
-											'newOfferErrorMessage',
-											error && error.graphQLErrors[0]
-												? error.graphQLErrors[0].message
-												: 'Error in submitting the form'
-										);
-									});
-							})
-							.catch(error => {
-								console.log('error', error);
-								this.setState({ loading1: false })
-								this.displayError(
-									'newOfferErrorMessage',
-									error && error.graphQLErrors[0]
-										? error.graphQLErrors[0].message
-										: 'Error in submitting the form'
-								);
-							});
+					let basicFormArray = { rules: arr, combinator: 'AND' };
+
+					this.setState({ offerEligibityRule: basicFormArray, offerType: formValues.basicForm.offerType, loading1: true });
+
+					let ruleId = await this.createRule(basicFormArray, 'offerEligibityRuleId')
+
+					if (!ruleId) return console.log('Error in Rule Creation');
+
+					console.log('ruleInput >>> ', JSON.stringify(basicFormArray), ruleId);
+
+					const { offerEligibityRuleId, couponLableSelected, couponTypeSelected } = this.state;
+					let offerInput = {
+						name: formValues.basicForm.offerName,
+						offerType: formValues.basicForm.offerType,
+						reward: reward,
+						organizationId: org_id,
+						offerEligibilityRule: ruleId,
+						offerCategory: couponTypeSelected === 1 ? 'COUPONS' : 'AUTO_APPLY',
+						isCustomCoupon: couponTypeSelected === 1 ? true : false,
+						coupon: couponTypeSelected === 1 ? couponLableSelected : null,
+						// rewardRedemptionRule: data.createRule.id,
 					}
+
+					console.log('Create Offer Input', offerInput);
+					this.props.client
+						.mutate({ mutation: createOffer, variables: offerInput })
+						.then(({ data }) => {
+							console.log('created offer', data);
+							this.setState({ loading1: false, current, offerId: data.createOffer.id })
+							// this.props.history.push({ pathname: OFFER_LIST });
+							message.success('Your changes were saved', 5);
+						})
+						.catch(error => {
+							console.log('error', error);
+							this.setState({ loading1: false })
+							this.displayError('newOfferErrorMessage',
+								error && error.graphQLErrors[0] ? error.graphQLErrors[0].message : 'Error in submitting the form'
+							);
+						});
+
 				}
 			}
+		} else if (e && e.target.innerText === 'Save') {
+			let { formValues } = this.state;
+			if (this.state.offerId) {
+				this.saveFormValues(current, 'redemptionForm', this.redemptionRef);
+				console.log('>>', formValues.redemptionForm);
+				if (!isEmpty(formValues.redemptionForm)) {
+
+					let redemptionFormObject = this.state.formValues.redemptionForm;
+					redemptionFormObject[redemptionFormObject.type] = redemptionFormObject.cappingValue;
+
+					let ommitedObject = omit(redemptionFormObject, ['type', 'cappingValue', ""]);
+					let redemptionArray = { rules: transposeObject(ommitedObject, 'EQUALS'), combinator: 'AND' };
+
+					this.setState({ loading1: true })
+					let ruleId = await this.createRule(redemptionArray, 'offerRedemptionRuleId')
+					if (!ruleId) return console.log('Error in Rule Creation');
+
+					console.log('ruleInput >>> ', JSON.stringify(redemptionArray), ruleId);
+
+					let offerInput = { id: this.state.offerId, rewardRedemptionRuleId: ruleId }
+
+					console.log('Create Offer Input', offerInput);
+					this.props.client
+						.mutate({ mutation: UPDATE_OFFER, variables: { input: offerInput } })
+						.then(({ data }) => {
+							console.log('Update offer', data);
+							this.setState({ loading1: false })
+							this.props.history.push({ pathname: OFFER_LIST });
+							message.success('Your changes were saved', 5);
+						})
+						.catch(error => {
+							console.log('error', error);
+							this.setState({ loading1: false })
+							// message.warn(error.graphQLErrors[0] ? error.graphQLErrors[0].message : 'Error in submitting the form')
+						});
+
+
+					// client
+					// 	.mutate({ mutation: createRule, variables: ruleInput })
+					// 	.then(({ data }) => {
+					// 		console.log('created rule', data);
+					// 		this.setState({ offerEligibityRuleId: data.createRule.id });
+					// 		client
+					// 			.mutate({ mutation: createRule, variables: ruleInput2 })
+					// 			.then(({ data }) => {
+					// 				console.log('created redemption rule', data);
+					// 				const { offerEligibityRuleId, offerType, formValues, couponLableSelected, couponTypeSelected } = this.state;
+					// 				client
+					// 					.mutate({ mutation: createOffer,
+					// 						variables: {
+					// 							name: formValues.basicForm.offerName,
+					// 							offerType: formValues.basicForm.offerType,
+					// 							reward: offerType,
+					// 							organizationId: org_id,
+					// 							offerEligibilityRule: offerEligibityRuleId,
+					// 							offerCategory: couponTypeSelected === 1 ? 'COUPONS' : 'AUTO_APPLY',
+					// 							isCustomCoupon: couponTypeSelected === 1 ? true : false,
+					// 							coupon: couponTypeSelected === 1 ? couponLableSelected : null,
+					// 							rewardRedemptionRule: data.createRule.id,
+					// 						},
+					// 					})
+					// 					.then(({ data }) => {
+					// 						console.log('created offer', data);
+					// 						this.setState({ loading1: false })
+					// 						const { history } = this.props;
+					// 						history.push({ pathname: OFFER_LIST });
+
+					// 						message.success('Your changes were saved', 5);
+					// 						// client
+					// 						// 	.mutate({
+					// 						// 		mutation: launchOffer,
+					// 						// 		variables: {
+					// 						// 			id: data.createOffer.id,
+					// 						// 		},
+					// 						// 	})
+					// 						// 	.then(({ data }) => {
+					// 						// 		console.log('created offer', data);
+					// 						// 		const { history } = this.props;
+					// 						// 		history.push({
+					// 						// 			pathname: OFFER_LIST,
+					// 						// 		});
+
+					// 						// 		message.success('Your changes were saved', 5);
+					// 						// 	})
+					// 						// 	.catch(error => {
+					// 						// 		console.log('error', error);
+					// 						// 		this.displayError(
+					// 						// 			'newOfferErrorMessage',
+					// 						// 			error && error.graphQLErrors[0]
+					// 						// 				? error.graphQLErrors[0].message
+					// 						// 				: 'Error in submitting the form'
+					// 						// 		);
+					// 						// 	});
+					// 					})
+					// 					.catch(error => {
+					// 						console.log('error', error);
+					// 						this.setState({ loading1: false })
+					// 						this.displayError(
+					// 							'newOfferErrorMessage',
+					// 							error && error.graphQLErrors[0]
+					// 								? error.graphQLErrors[0].message
+					// 								: 'Error in submitting the form'
+					// 						);
+					// 					});
+					// 			})
+					// 			.catch(error => {
+					// 				console.log('error', error);
+					// 				this.setState({ loading1: false })
+					// 				this.displayError(
+					// 					'newOfferErrorMessage',
+					// 					error && error.graphQLErrors[0]
+					// 						? error.graphQLErrors[0].message
+					// 						: 'Error in submitting the form'
+					// 				);
+					// 			});
+					// 	})
+					// 	.catch(error => {
+					// 		console.log('error', error);
+					// 		this.setState({ loading1: false })
+					// 		this.displayError(
+					// 			'newOfferErrorMessage',
+					// 			error && error.graphQLErrors[0]
+					// 				? error.graphQLErrors[0].message
+					// 				: 'Error in submitting the form'
+					// 		);
+					// 	});
+				} else {
+					this.props.history.push({ pathname: OFFER_LIST });
+					message.success('Your changes were saved', 5);
+				}
+			} else message.warn("Complete and Save Basic Info First")
 		} else {
-			this.setState({
-				current: current,
-			});
+			//this.setState({ current: current });
 		}
 	};
 
@@ -410,71 +455,41 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 	};
 
 	isKeyExists = (obj, key) => {
-		if (obj[key]) {
-			return [obj[key]];
-		} else {
-			return [];
-		}
+		if (obj[key]) return [obj[key]];
+		else return [];
 	};
 
 	onSelectTwoValuesSelected = values => {
-		this.setState({
-			locationValues: values,
-		});
+		this.setState({ locationValues: values });
 	};
 
 	onCouponChange = e => {
-		this.setState({
-			couponTypeSelected: e.target.value,
-		});
+		this.setState({ couponTypeSelected: e.target.value });
 	};
 
 	onCouponLabelChange = e => {
-		this.setState({
-			couponLableSelected: e.target.value,
-		});
+		this.setState({ couponLableSelected: e.target.value });
 	};
 
 	render() {
-		const {
-			current,
-			loading1,
-			offerTypeStatus,
-			transactionTimeStatus,
-			productDropDown,
-			locationDropDown,
-			values,
-			newOfferErrorMessage,
-			couponTypeSelected,
-			productValues,
-			locationValues,
-			formValues,
-		} = this.state;
+		const { current, loading1, offerTypeStatus, transactionTimeStatus, productDropDown, locationValues,
+			locationDropDown, newOfferErrorMessage, couponTypeSelected, productValues, values, formValues } = this.state;
 		const { loading, error, categories, products, organizationHierarchy, subOrganizations } = this.props;
 
-		console.log('productsproductsproductsproducts', products, subOrganizations);
-		let productItems;
+		// console.log('productsproductsproductsproducts', products, subOrganizations);
+		let productItems = [];
 		if (productDropDown.showProductList == true) {
-			productItems = products && products.map(el => ({
-				value: el.sku,
-				id: el.id,
-				title: el.name,
-			}));
+			productItems = products && products.map(el => ({ value: el.code, id: el.id, title: el.name }));
 		}
 		if (productDropDown.showCategoryList == true) {
 			productItems = categories && categories
 				.map(el => ({ value: el.code, id: el.id, title: el.name }))
 				.concat([{ value: 'all', id: 'default', title: 'All', }]);
-			console.log('productItems>>', productItems);
+			// console.log('productItems>>', productItems);
 		}
 		if (productDropDown.showBrandList == true) {
 			productItems =
-				dummyBrandData &&
-				dummyBrandData.map(el => ({
-					value: el.val,
-					id: el.id,
-					title: el.title,
-				}));
+				dummyBrandData && dummyBrandData.map(el => ({ value: el.value, id: el.id, title: el.title }));
 		}
 		let locationArray;
 		if (locationDropDown.showCityList === true) {
@@ -532,7 +547,7 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 		return (
 			<Fragment>
 				<div>
-					<WHeader title='Create Offer' extra={<Stepper stepData={offerStepData} current={current} onChange={this.goToNextPage} />} />
+					<WHeader title='Create Offer' extra={<Stepper stepData={offerStepData} current={current} onChange={this.changePage} />} />
 					{/* Each step is different step because the form has to be validated and saved as draft */}
 					<HyperXContainer margin='32px' headerHeightInPX={225}>
 						{current === 0 && (

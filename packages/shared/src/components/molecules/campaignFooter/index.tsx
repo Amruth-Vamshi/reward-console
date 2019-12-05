@@ -13,7 +13,6 @@ interface iProps {
 }
 
 const CampaignFooter = ({ nextButtonText, loading, saveDraftText, saveDraftButtonClass, nextButtonClass, saveDraft, goToPage2 }: iProps) => {
-	console.log("loading", loading)
 	return (
 		<div className="">
 			<Button loading={loading} className={nextButtonClass} onClick={goToPage2} type="primary">

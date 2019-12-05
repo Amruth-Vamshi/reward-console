@@ -51,7 +51,7 @@ class CampaignList extends React.Component<CampaignListProps, Partial<CampaignLi
       allCampaigns: null,
       data: null,
       loading: false,
-      key: this.props.location.tabKey ? this.props.location.tabKey : '1'
+      key: this.props.location.state ? this.props.location.state.tabKey ? this.props.location.state.tabKey : '1' : '1'
     };
   }
   componentDidMount() {
@@ -178,9 +178,8 @@ class CampaignList extends React.Component<CampaignListProps, Partial<CampaignLi
     if (!allCampaigns || allCampaigns.length < 1) return
     if (key == 2) {
       let upcomingCampaigns = allCampaigns.filter((val: any) => {
-        if (val.status == 'ACTIVE') {
-          return val.campaignStatus == 'LIVE' && moment(val.startTime).isAfter(moment());
-        }
+        if (val.status == 'ACTIVE')
+          return val.campaignStatus == "PRE_LIVE_PROCESSING" || (val.campaignStatus == 'LIVE' && moment(val.startTime).isAfter(moment()));
       });
       this.setState({ data: upcomingCampaigns, filtered: null });
     }
@@ -188,7 +187,8 @@ class CampaignList extends React.Component<CampaignListProps, Partial<CampaignLi
     if (key == 3) {
       let completedCampaigns = allCampaigns.filter((val: any) => {
         if (val.status == 'ACTIVE') {
-          return moment(val.endTime).isBefore(moment());
+          // return moment(val.endTime).isBefore(moment());
+          return val.campaignStatus == "COMPLETED"
         }
       });
       this.setState({ data: completedCampaigns, filtered: null });
@@ -315,7 +315,7 @@ class CampaignList extends React.Component<CampaignListProps, Partial<CampaignLi
 					// 		</div> */}
         <HyperXContainer margin='32px' headerHeightInPX={160}>
           <div className="HyperX-campaignList">
-            <Widget title="Campaign List" styleName="gx-card-tabs"
+            <Widget styleName="gx-card-tabs"
               extra={
                 <InstantSearch
                   placeHolder="Search campaign"

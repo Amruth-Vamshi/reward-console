@@ -37,7 +37,7 @@ class SidebarLogo extends React.Component<SidebarLogoProps, {}> {
 				<div className="gx-layout-sider-header">
 					<div className="gx-linebar">
 						<Link to="/">
-							<Icon type="home" className="gx-icon-btn" style={{ padding: "10px", backgroundColor: '#FFFFFF' }} />
+							<Icon type="home" theme="filled" className="gx-icon-btn" style={{ padding: "10px", color: "", backgroundColor: '#FFFFFF' }} />
 							{/* <i className={`gx-icon-btn icon icon-home gx-text-white`} /> */}
 						</Link>
 					</div>

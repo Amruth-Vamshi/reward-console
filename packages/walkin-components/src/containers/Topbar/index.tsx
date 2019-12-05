@@ -72,14 +72,10 @@ class Topbar extends React.Component<iProps, iState> {
     const { location } = this.props;
     const appName = location.pathname.split("/")[1];
     switch (appName) {
-      case "nearx":
-        return "NearX-Topbar";
-      case "hyperx":
-        return "HyperX-Topbar";
-      case "refinex":
-        return "RefineX-Topbar";
-      default:
-        return "";
+      case "nearx": return "NearX-Topbar";
+      case "hyperx": return "HyperX-Topbar";
+      case "refinex": return "RefineX-Topbar";
+      default: return "";
     }
   }
 
@@ -89,20 +85,19 @@ class Topbar extends React.Component<iProps, iState> {
       <Auxiliary>
         <Header className={`${this.getLocalHeaderStyle()} `}>
           {navStyle === NAV_STYLE_DRAWER ||
-          ((navStyle === NAV_STYLE_FIXED ||
-            navStyle === NAV_STYLE_MINI_SIDEBAR) &&
-            width < TAB_SIZE) ? (
-            <div className="gx-linebar gx-mr-3" style={{ color: "#ffffff" }}>
-              <i
-                className="gx-icon-btn icon icon-menu"
-                onClick={() => {
-                  this.props.toggleCollapsedSideNav({
-                    variables: { navCollapsed: !navCollapsed }
-                  });
-                }}
-              />
-            </div>
-          ) : null}
+            ((navStyle === NAV_STYLE_FIXED ||
+              navStyle === NAV_STYLE_MINI_SIDEBAR) &&
+              width < TAB_SIZE) ? (
+              <div className="gx-linebar gx-mr-3" style={{ color: "#ffffff" }}>
+                <i className="gx-icon-btn icon icon-menu" style={{ color: '#000000' }}
+                  onClick={() => {
+                    this.props.toggleCollapsedSideNav({
+                      variables: { navCollapsed: !navCollapsed }
+                    });
+                  }}
+                />
+              </div>
+            ) : null}
           <Link to="/" className="gx-d-block gx-d-lg-none gx-pointer">
             <img
               alt=""

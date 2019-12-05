@@ -65,12 +65,16 @@ class CampaignDashboard extends Component<IProps, Partial<IState>> {
         }).then(data => {
             console.log("campaign data..", data);
             message.success('Campaign Launched')
-            moment().isBetween(this.props.location.state.campaignSelected.startTime, this.props.location.state.campaignSelected.endTime) ?
-                this.props.history.push('/hyperx/campaigns')
-                : this.props.history.push({
-                    pathname: '/hyperx/campaigns', //tabKey: "2"
-                    state: { tabKey: "2" }
-                })
+            // moment().isBetween(this.props.location.state.campaignSelected.startTime, this.props.location.state.campaignSelected.endTime) ?
+            //     this.props.history.push('/hyperx/campaigns')
+            //     : this.props.history.push({
+            //         pathname: '/hyperx/campaigns', //tabKey: "2"
+            //         state: { tabKey: "2" }
+            //     })
+            this.props.history.push({
+                pathname: '/hyperx/campaigns', //tabKey: "2"
+                state: { tabKey: "2" }
+            })
         }).catch(err => {
             console.log("Error Update campaign", err)
             this.setState({ loading: false })
@@ -142,9 +146,7 @@ class CampaignDashboard extends Component<IProps, Partial<IState>> {
         let { campaign, audiences, offers, communications } = this.state
         return (
             <div>
-
                 <WHeader title='Campaign Dashboard' />
-                {console.log('>>', this.props.campaign)}
                 {
                     this.state.spin ?
                         <div>
