@@ -45,6 +45,7 @@ interface IState {
 	productDropDown: any
 	locationDropDown: any
 	values,
+	timeLimitType
 
 };
 
@@ -68,6 +69,7 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 			offerEligibityRuleId: '',
 			offerRedemptionRuleId: '',
 			locationValues: [],
+			timeLimitType: '/day',
 			formValues: {
 				basicForm: {},
 				redemptionForm: {},
@@ -334,136 +336,52 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 				}
 			}
 		} else if (e && e.target.innerText === 'Save') {
-			let { formValues } = this.state;
-			if (this.state.offerId) {
-				this.saveFormValues(current, 'redemptionForm', this.redemptionRef);
-				console.log('>>', formValues.redemptionForm);
-				if (!isEmpty(formValues.redemptionForm)) {
+			let { formValues, timeLimitType } = this.state;
+			// if (this.state.offerId) {
+			this.saveFormValues(current, 'redemptionForm', this.redemptionRef);
+			console.log('>>', formValues.redemptionForm);
+			if (!isEmpty(formValues.redemptionForm)) {
 
-					let redemptionFormObject = this.state.formValues.redemptionForm;
-					redemptionFormObject[redemptionFormObject.type] = redemptionFormObject.cappingValue;
+				let redemptionFormObject = this.state.formValues.redemptionForm;
+				redemptionFormObject[redemptionFormObject.type] = redemptionFormObject.cappingValue;
 
-					let ommitedObject = omit(redemptionFormObject, ['type', 'cappingValue', ""]);
-					let redemptionArray = { rules: transposeObject(ommitedObject, 'EQUALS'), combinator: 'AND' };
+				redemptionFormObject.redemption_time_limit = redemptionFormObject.redemption_time_limit + timeLimitType
 
-					this.setState({ loading1: true })
-					let ruleId = await this.createRule(redemptionArray, 'offerRedemptionRuleId')
-					if (!ruleId) return console.log('Error in Rule Creation');
-
-					console.log('ruleInput >>> ', JSON.stringify(redemptionArray), ruleId);
-
-					let offerInput = { id: this.state.offerId, rewardRedemptionRule: ruleId }
-
-					console.log('Create Offer Input', offerInput);
-					this.props.client
-						.mutate({ mutation: UPDATE_OFFER, variables: { input: offerInput } })
-						.then(({ data }) => {
-							console.log('Update offer', data);
-							this.setState({ loading1: false })
-							this.props.history.push({ pathname: OFFER_LIST });
-							message.success('Your changes were saved', 5);
-						})
-						.catch(error => {
-							console.log('error', error);
-							this.setState({ loading1: false })
-							// message.warn(error.graphQLErrors[0] ? error.graphQLErrors[0].message : 'Error in submitting the form')
-						});
+				let ommitedObject = omit(redemptionFormObject, ['type', 'cappingValue', ""]);
+				let redemptionArray = { rules: transposeObject(ommitedObject, 'EQUALS'), combinator: 'AND' };
 
 
-					// client
-					// 	.mutate({ mutation: createRule, variables: ruleInput })
-					// 	.then(({ data }) => {
-					// 		console.log('created rule', data);
-					// 		this.setState({ offerEligibityRuleId: data.createRule.id });
-					// 		client
-					// 			.mutate({ mutation: createRule, variables: ruleInput2 })
-					// 			.then(({ data }) => {
-					// 				console.log('created redemption rule', data);
-					// 				const { offerEligibityRuleId, offerType, formValues, couponLableSelected, couponTypeSelected } = this.state;
-					// 				client
-					// 					.mutate({ mutation: createOffer,
-					// 						variables: {
-					// 							name: formValues.basicForm.offerName,
-					// 							offerType: formValues.basicForm.offerType,
-					// 							reward: offerType,
-					// 							organizationId: org_id,
-					// 							offerEligibilityRule: offerEligibityRuleId,
-					// 							offerCategory: couponTypeSelected === 1 ? 'COUPONS' : 'AUTO_APPLY',
-					// 							isCustomCoupon: couponTypeSelected === 1 ? true : false,
-					// 							coupon: couponTypeSelected === 1 ? couponLableSelected : null,
-					// 							rewardRedemptionRule: data.createRule.id,
-					// 						},
-					// 					})
-					// 					.then(({ data }) => {
-					// 						console.log('created offer', data);
-					// 						this.setState({ loading1: false })
-					// 						const { history } = this.props;
-					// 						history.push({ pathname: OFFER_LIST });
+				// return console.log('>>', redemptionArray, formValues.redemptionForm);
 
-					// 						message.success('Your changes were saved', 5);
-					// 						// client
-					// 						// 	.mutate({
-					// 						// 		mutation: launchOffer,
-					// 						// 		variables: {
-					// 						// 			id: data.createOffer.id,
-					// 						// 		},
-					// 						// 	})
-					// 						// 	.then(({ data }) => {
-					// 						// 		console.log('created offer', data);
-					// 						// 		const { history } = this.props;
-					// 						// 		history.push({
-					// 						// 			pathname: OFFER_LIST,
-					// 						// 		});
+				this.setState({ loading1: true })
+				let ruleId = await this.createRule(redemptionArray, 'offerRedemptionRuleId')
+				if (!ruleId) return console.log('Error in Rule Creation');
 
-					// 						// 		message.success('Your changes were saved', 5);
-					// 						// 	})
-					// 						// 	.catch(error => {
-					// 						// 		console.log('error', error);
-					// 						// 		this.displayError(
-					// 						// 			'newOfferErrorMessage',
-					// 						// 			error && error.graphQLErrors[0]
-					// 						// 				? error.graphQLErrors[0].message
-					// 						// 				: 'Error in submitting the form'
-					// 						// 		);
-					// 						// 	});
-					// 					})
-					// 					.catch(error => {
-					// 						console.log('error', error);
-					// 						this.setState({ loading1: false })
-					// 						this.displayError(
-					// 							'newOfferErrorMessage',
-					// 							error && error.graphQLErrors[0]
-					// 								? error.graphQLErrors[0].message
-					// 								: 'Error in submitting the form'
-					// 						);
-					// 					});
-					// 			})
-					// 			.catch(error => {
-					// 				console.log('error', error);
-					// 				this.setState({ loading1: false })
-					// 				this.displayError(
-					// 					'newOfferErrorMessage',
-					// 					error && error.graphQLErrors[0]
-					// 						? error.graphQLErrors[0].message
-					// 						: 'Error in submitting the form'
-					// 				);
-					// 			});
-					// 	})
-					// 	.catch(error => {
-					// 		console.log('error', error);
-					// 		this.setState({ loading1: false })
-					// 		this.displayError(
-					// 			'newOfferErrorMessage',
-					// 			error && error.graphQLErrors[0]
-					// 				? error.graphQLErrors[0].message
-					// 				: 'Error in submitting the form'
-					// 		);
-					// 	});
-				} else {
-					this.props.history.push({ pathname: OFFER_LIST });
-					message.success('Your changes were saved', 5);
-				}
-			} else message.warn("Complete and Save Basic Info First")
+				console.log('ruleInput >>> ', JSON.stringify(redemptionArray), ruleId);
+
+				let offerInput = { id: this.state.offerId, rewardRedemptionRule: ruleId }
+
+				console.log('Create Offer Input', offerInput);
+				this.props.client
+					.mutate({ mutation: UPDATE_OFFER, variables: { input: offerInput } })
+					.then(({ data }) => {
+						console.log('Update offer', data);
+						this.setState({ loading1: false })
+						this.props.history.push({ pathname: OFFER_LIST });
+						message.success('Your changes were saved', 5);
+					})
+					.catch(error => {
+						console.log('error', error);
+						this.setState({ loading1: false })
+						// message.warn(error.graphQLErrors[0] ? error.graphQLErrors[0].message : 'Error in submitting the form')
+					});
+
+
+			} else {
+				this.props.history.push({ pathname: OFFER_LIST });
+				message.success('Your changes were saved', 5);
+			}
+			// } else message.warn("Complete and Save Basic Info First")
 		} else {
 			//this.setState({ current: current });
 		}
@@ -493,6 +411,8 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 	onCouponLabelChange = e => {
 		this.setState({ couponLableSelected: e.target.value });
 	};
+
+	timeLimitTypeChange = e => this.setState({ timeLimitType: e })
 
 	render() {
 		const { current, loading1, offerTypeStatus, transactionTimeStatus, productDropDown, locationValues,
@@ -570,7 +490,7 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 		return (
 			<Fragment>
 				<div>
-					<WHeader title='Create Offer' extra={<Stepper stepData={offerStepData} current={current} //onChange={this.changePage} 
+					<WHeader title='Create Offer' extra={<Stepper stepData={offerStepData} current={current} onChange={this.changePage}
 					/>} />
 					{/* Each step is different step because the form has to be validated and saved as draft */}
 					<HyperXContainer margin='32px' headerHeightInPX={225}>
@@ -627,6 +547,7 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 										cappingData={cappingData}
 										wrappedComponentRef={this.saveRedemptionFormRef}
 										formValues={formValues.redemptionForm}
+										timeLimitTypeChange={this.timeLimitTypeChange}
 									/>
 								</div>
 							</Fragment>

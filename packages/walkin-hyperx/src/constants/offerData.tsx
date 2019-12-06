@@ -149,16 +149,19 @@ export var cappingData = [
         id: 1,
         value: 'redemption_cap_max_discount',
         title: 'Max Discount',
+        extra: '%'
     },
     {
         id: 2,
         value: 'redemption_cap_max_cashback',
         title: 'Max Cashback',
+        extra: ' Rs'
     },
     {
         id: 3,
         value: 'redemption_cap_no_of_items',
         title: 'No. of Items',
+        extra: ''
     },
 ];
 

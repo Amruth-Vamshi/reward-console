@@ -10,6 +10,7 @@ interface IProps extends FormComponentProps {
 	cappingData?: Array<any>;
 	wrappedComponentRef?: any;
 	formValues?: any
+	timeLimitTypeChange?: any
 }
 
 
@@ -73,10 +74,11 @@ const OfferRedemptionRulesForm = Form.create<IProps>({ name: 'offer_redemption_r
 							<Input
 								type="number" min={0}
 								addonAfter={
-									<Select getPopupContainer={(triggerNode: any) => triggerNode.parentNode} defaultValue="day" style={{ width: 100 }}>
-										<Option value="day">/Day</Option>
-										<Option value="week">/Week</Option>
-										<Option value="month">/Month</Option>
+									<Select getPopupContainer={(triggerNode: any) => triggerNode.parentNode} defaultValue="/day"
+										style={{ width: 100 }} onChange={this.props.timeLimitTypeChange}>
+										<Option value="/day">/Day</Option>
+										<Option value="/week">/Week</Option>
+										<Option value="/month">/Month</Option>
 									</Select>
 								}
 							/>

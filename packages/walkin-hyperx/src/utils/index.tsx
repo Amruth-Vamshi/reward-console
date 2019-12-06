@@ -53,6 +53,7 @@ export const strToRule = rule => {
 	return JSON.parse(str)
 }
 
-export const fieldConvert = (jsObjects: Array<{}>, val, from: string, to: string) => {
-	return jsObjects.find((obj: any) => obj[from] === val)[to]
+export const fieldConvert = (jsObjects: Array<{}>, val: string, from: string, to: string) => {
+	let field = jsObjects.find((obj: any) => obj[from] === val)
+	return field ? field[to] : ''
 }
