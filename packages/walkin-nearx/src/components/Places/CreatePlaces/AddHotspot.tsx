@@ -29,7 +29,7 @@ interface iState {
   visible?: boolean
 }
 
-class AddHotspot extends React.Component<iProps, iState> {
+class AddHotspot extends React.Component<iProps, Partial<iState>> {
   constructor(props) {
     super(props);
     this.state = {
@@ -60,7 +60,7 @@ class AddHotspot extends React.Component<iProps, iState> {
     };
   }
 
-  UNSAFE_componentWillMount() {
+  componentWillMount() {
     // let location = this.props.formData.places[0].center;
     // client
     //   .query({
@@ -99,9 +99,9 @@ class AddHotspot extends React.Component<iProps, iState> {
       .query({
         query: SEARCH_PLACES,
         variables: { limit: limit, offset: offset, search: search }
-      })
-      .then(res => {
+      }).then(res => {
         var places = [...this.state.places];
+
 
         res.data.Places.places.map(p => {
           if (!places.find(e => p.id === e.id))
@@ -152,7 +152,7 @@ class AddHotspot extends React.Component<iProps, iState> {
 
   handleSubmit1 = () => {
     this.props.submitHotspots(this.state.places);
-    this.setState({ places1: [], places: [] });
+    // this.setState({ places1: [], places: [] });
   };
 
   handleSubmit = () => {
@@ -233,11 +233,11 @@ class AddHotspot extends React.Component<iProps, iState> {
   handleChange = (e: any) => {
     let errors = this.state.errors;
     if (e.target.value.trim() != "") errors[e.target.name] = "";
-    // this.setState({ [e.target.name]: e.target.value }); // Old implementation
-    this.setState((prevState) => ({
-      ...prevState,
-      [e.target.name]: e.target.value,
-    }))
+    this.setState({ [e.target.name]: e.target.value }); // Old implementation
+    // this.setState((prevState) => ({
+    //   ...prevState,
+    //   [e.target.name]: e.target.value,
+    // }))
   };
 
   handleCenterChange = (e, i, name) => {

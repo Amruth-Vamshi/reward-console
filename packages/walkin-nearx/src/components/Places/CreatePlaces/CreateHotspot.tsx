@@ -75,44 +75,21 @@ export default class CreateHotspot extends React.Component<iProps, iState> {
         <div key={i}>
           <p>
             <span>
-              <Icon
-                type="environment"
-                style={{ color: "#e20464" }}
-                theme="filled"
-              />
-              Hotspot {" " + (i + 1)}
+              <Icon type="environment" style={{ color: "#e20464" }} theme="filled" /> Hotspot {" " + (i + 1)}
             </span>
-            <Icon
-              type="close"
-              onClick={() => this.props.deleteHotspot(i)}
-              style={{ float: "right", marginRight: 1 }}
-            />
+            <Icon type="close" onClick={() => this.props.deleteHotspot(i)} style={{ float: "right", marginRight: 1 }} />
           </p>
 
           <Form.Item {...formItemLayout} label="Name">
-            <Input
-              required
-              placeholder="Place Name"
-              value={formData.places2[i].placeName}
-              name="placeName"
-              onChange={c => this.props.handleOnChange(c, i)}
-            />
-            <span style={{ color: "Red" }}>
-              {formData.places2[i].errors.placeName}
-            </span>
+            <Input required placeholder="Place Name" value={formData.places2[i].placeName}
+              name="placeName" onChange={c => this.props.handleOnChange(c, i)} />
+            <span style={{ color: "Red" }}> {formData.places2[i].errors.placeName} </span>
           </Form.Item>
 
           <Form.Item {...formItemLayout} label="Address">
-            <Input
-              required
-              placeholder="Address"
-              value={formData.places2[i].address}
-              name="address"
-              onChange={c => this.props.handleOnChange(c, i)}
-            />
-            <span style={{ color: "Red" }}>
-              {formData.places2[i].errors.address}
-            </span>
+            <Input required placeholder="Address" value={formData.places2[i].address}
+              name="address" onChange={c => this.props.handleOnChange(c, i)} />
+            <span style={{ color: "Red" }}> {formData.places2[i].errors.address} </span>
           </Form.Item>
 
           <Form.Item {...tailFormItemLayout1}>
@@ -126,31 +103,15 @@ export default class CreateHotspot extends React.Component<iProps, iState> {
               <Form.Item {...formItemLocation} label="Location">
                 <Row gutter={1}>
                   <Col md={24} xl={12}>
-                    <Input
-                      placeholder="Latitude"
-                      value={formData.places2[i].center.lat}
-                      type="number"
-                      step="0.0001"
-                      name="latitude"
-                      onChange={c => this.props.handleCenterChange(c, i, "lat")}
-                    />
-                    <span style={{ color: "Red" }}>
-                      {formData.places2[i].errors.latitude}
-                    </span>
+                    <Input placeholder="Latitude" value={formData.places2[i].center.lat} type="number"
+                      step="0.0001" name="latitude" onChange={c => this.props.handleCenterChange(c, i, "lat")} />
+                    <span style={{ color: "Red" }}> {formData.places2[i].errors.latitude} </span>
                   </Col>
 
                   <Col md={24} xl={12}>
-                    <Input
-                      placeholder="Longitude"
-                      value={formData.places2[i].center.lng}
-                      name="longitude"
-                      type="number"
-                      step="0.0001"
-                      onChange={c => this.props.handleCenterChange(c, i, "lng")}
-                    />
-                    <span style={{ color: "Red" }}>
-                      {formData.places2[i].errors.longitude}
-                    </span>
+                    <Input placeholder="Longitude" value={formData.places2[i].center.lng} name="longitude"
+                      type="number" step="0.0001" onChange={c => this.props.handleCenterChange(c, i, "lng")} />
+                    <span style={{ color: "Red" }}> {formData.places2[i].errors.longitude} </span>
                   </Col>
                 </Row>
               </Form.Item>
