@@ -25,6 +25,7 @@ import {
 import { compose, graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { CAMPAIGN_MANAGEMENT, SEGMENT_LIST, OFFER_LIST, OFFER_DASHBOARD } from '../../constants/RouterConstants';
+import { CollapseSidebar } from "../../../../shared/src";
 
 const SubMenu = Menu.SubMenu;
 
@@ -70,9 +71,10 @@ class SidebarContent extends React.Component<SidebarContentProps, SidebarContent
 		return (
 			<Auxiliary>
 				<SidebarLogo />
-				<div style={{ height: '100%' }} className="gx-sidebar-content HyperX-Sidebar">
+				<div style={{ height: '100%' }} className="HyperX-Sidebar gx-sidebar-content">
+					{/* <div></div> */}
 					<Menu
-						style={{ height: '100%' }}
+						// style={{ height: '85vh' }}
 						defaultOpenKeys={[defaultOpenKeys]}
 						selectedKeys={[selectedKeys]}
 						theme={themeType === THEME_TYPE_LITE ? "light" : "dark"}
@@ -119,8 +121,12 @@ class SidebarContent extends React.Component<SidebarContentProps, SidebarContent
 								Help
 							</Link>
 						</Menu.Item> */}
+
+
 					</Menu>
+					<CollapseSidebar className='collapseBarStyle' />
 				</div>
+				{/* </div> */}
 			</Auxiliary>
 		);
 	}
