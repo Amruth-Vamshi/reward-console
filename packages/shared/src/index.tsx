@@ -40,6 +40,7 @@ import FixedSiderLayout from "./components/Layout/Layout/FixedSider";
 import ColumnLayout from "./components/Layout/ColumnLayout/ColumnLayout";
 import InfoText from "./components/General/InfoText/InfoText";
 import CustomList from "./components/General/List/List";
+import Image from "./components/General/Image/Image";
 
 export {
   ManageCampaignCard,
@@ -81,5 +82,6 @@ export {
   FixedSiderLayout,
   ColumnLayout,
   InfoText,
-  CustomList
+  CustomList,
+  Image
 };

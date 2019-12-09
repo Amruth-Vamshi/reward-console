@@ -11,6 +11,7 @@
     "coverage:watch": "jest --config jest.config.js --coverage --watch",
     "build-dev": "export NODE_ENV=dev && cd packages/walkin-app && yarn build",
     "build": "cd packages/walkin-app && yarn build",
+    "storybook": "cd packages/shared && yarn storybook",
     "build-storybook": "cd packages/shared && yarn build-storybook"
   },
   "devDependencies": {

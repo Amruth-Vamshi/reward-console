@@ -1,8 +1,15 @@
 import React from "react";
 import { List, Avatar, Col, Row } from "antd";
-import { CustomButton } from "@walkinsole/shared";
+import { CustomButton, Image } from "@walkinsole/shared";
 
 interface ListProps {
+  actionableButtonText: string;
+  imageSpan: number;
+  contentSpan: number;
+  actionSpan: number;
+  imageStyle: any;
+  contentStyle: any;
+  actionStyle: any;
   data: Array<{
     image: string;
     title: string;
@@ -39,18 +46,13 @@ export default class CustomList extends React.Component<ListProps, ListState> {
     };
   }
 
-  renderAvatar(item: ListItem) {
+  renderImage(item: ListItem) {
     return (
-      <Col span={4}>
-        <img
-          alt="image-placeholder"
-          src={item.image}
-          style={{
-            backgroundColor: "transparent",
-            height: "80px",
-            width: "100px",
-            padding: "10px"
-          }}
+      <Col span={this.props.imageSpan}>
+        <Image
+          source={item.image}
+          alternate_text="image-placeholder"
+          style={this.props.imageStyle}
         />
       </Col>
     );
@@ -58,7 +60,7 @@ export default class CustomList extends React.Component<ListProps, ListState> {
 
   renderContent(item: ListItem) {
     return (
-      <Col span={16}>
+      <Col span={this.props.contentSpan} style={this.props.contentStyle}>
         <Row>{item.title}</Row>
         <Row>{item.subTitle}</Row>
       </Col>
@@ -68,19 +70,19 @@ export default class CustomList extends React.Component<ListProps, ListState> {
   renderAction(item: ListItem) {
     if (item.actionable) {
       return (
-        <Col span={4}>
+        <Col span={this.props.actionSpan} style={this.props.actionStyle}>
           <CustomButton
             disabled={false}
             style={{ backgroundColor: "transparent" }}
             onClick={() => console.log("actionable button clicked")}
           >
-            {"Assign"}
+            {this.props.actionableButtonText}
           </CustomButton>
         </Col>
       );
     }
     return (
-      <Col span={4}>
+      <Col span={this.props.actionSpan} style={this.props.actionStyle}>
         <Row>{item.actionableTitle}</Row>
         <Row>{item.actionableSubTitle}</Row>
       </Col>
@@ -94,7 +96,7 @@ export default class CustomList extends React.Component<ListProps, ListState> {
         dataSource={this.state.data}
         renderItem={item => (
           <List.Item>
-            {this.renderAvatar(item)}
+            {this.renderImage(item)}
             {this.renderContent(item)}
             {this.renderAction(item)}
           </List.Item>
