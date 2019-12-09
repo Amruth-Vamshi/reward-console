@@ -4,12 +4,12 @@ import { withRouter } from 'react-router-dom';
 import { withApollo, graphql, compose, ApolloProviderProps } from 'react-apollo';
 import { RULE_ATTRIBUTES, CREATE_RULE, createRule, createSegment, UPDATE_RULE, UPDATE_SEGMENT } from '../../../query/audience';
 import './style.css';
-import { SEGMENT_LIST } from '../../../utils/RouterConstants';
+import { SEGMENT_LIST } from '../../../constants/RouterConstants';
 import { WalkinQueryBuilder, CampaignHeader, WHeader } from '@walkinsole/shared';
 import * as jwt from "jsonwebtoken";
 import { GET_ALL_APPS_OF_ORGANIZATION } from "@walkinsole/walkin-core/src/PlatformQueries";
 import { RouteChildrenProps } from "react-router";
-import { strToRule } from '../../../utils/common';
+import { strToRule } from '../../../utils';
 
 interface IProps extends RouteChildrenProps, ApolloProviderProps<any> {
 	allApplications: any

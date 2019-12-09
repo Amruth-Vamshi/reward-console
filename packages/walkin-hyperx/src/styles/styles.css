@@ -55,9 +55,14 @@
 } */
 
 .HyperX-Sidebar .ant-menu-dark {
-  /* background-color: #37474f !important; */
-
 	background-color: #0e0e5a !important;
+}
+
+.HyperX-Sidebar{
+
+  /* background-color: #37474f !important; */
+  background-color: #0e0e5a !important;
+  overflow: hidden;
 }
 
 .HyperX-Topbar {
@@ -76,4 +81,18 @@
 
 .ant-layout{
   overflow: hidden !important;
+}
+
+.collapseBarStyle{
+  position: absolute !important;
+  bottom: 0px !important;
+  width: 100% !important;
+  background-color: #0b0b4b !important;
+  border: 2px solid #5a5a5a;
+  overflow: hidden;
+  border-width: 1px 0 0 0;
+}
+
+.collapseBarStyle .gx-text-white {
+  font-size: large !important;
 }

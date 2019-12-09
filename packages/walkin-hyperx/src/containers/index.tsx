@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Redirect, Route, Switch } from 'react-router-dom';
 import '../styles/styles.css'
-import { NEW_CAMPAIGN, CAMPAIGN_MANAGEMENT, NEW_SEGMENT, SEGMENT_LIST, OFFER_LIST, NEW_OFFER, CAMPAIGN_DASHBOARD, OFFER_DASHBOARD } from '../utils/RouterConstants';
+import { NEW_CAMPAIGN, CAMPAIGN_MANAGEMENT, NEW_SEGMENT, SEGMENT_LIST, OFFER_LIST, NEW_OFFER, CAMPAIGN_DASHBOARD, OFFER_DASHBOARD } from '../constants/RouterConstants';
 import CampaignList from './campaign/campaignList';
 import CampaignDashboard from './campaign/campaignDashboard';
 import CampaignCreation from './campaign/campaignCreation';

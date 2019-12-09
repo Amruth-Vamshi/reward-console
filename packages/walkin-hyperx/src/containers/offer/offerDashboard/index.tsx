@@ -9,9 +9,9 @@ import { withRouter } from 'react-router-dom';
 
 import HyperXContainer from '../../../components/atoms/HyperXContainer';
 import { VIEW_OFFER } from '../../../query/offer';
-import { offerTypeData } from '../../../utils/offerData';
-import { fieldConvert } from '../../../utils/common';
-
+import { offerTypeData, cartValueConditionData, transactionTimeData, cappingData } from '../../../constants/offerData';
+import { fieldConvert } from '../../../utils';
+import { pickBy, includes } from "lodash";
 export interface IAppProps extends RouteChildrenProps<any>, ApolloProviderProps<any> {
 }
 
@@ -19,6 +19,13 @@ export interface IAppState {
     spin: boolean
     offer: {}
     products: Array<{}>
+    location
+    frequency
+    transactionTime: string
+    cartValue
+    redemption
+    cappingType
+    dayPart
 }
 
 const labelCol = {
@@ -37,7 +44,14 @@ class OfferDashboard extends React.Component<IAppProps, IAppState> {
         this.state = {
             spin: false,
             offer: {},
-            products: []
+            products: [],
+            location: [],
+            transactionTime: '',
+            frequency: {},
+            cartValue: {},
+            dayPart: {},
+            redemption: {},
+            cappingType: ''
         }
     }
 
@@ -61,17 +75,41 @@ class OfferDashboard extends React.Component<IAppProps, IAppState> {
 
     dataFormatter = data => {
         let { offerEligibilityRule, rewardRedemptionRule }: any = data
-        let products: Array<{}> = []
+        let { products, location, transactionTime, frequency, cartValue, dayPart, redemption, cappingType } = this.state
         offerEligibilityRule && offerEligibilityRule.ruleConfiguration.rules.map((rule: any) => {
             if (rule.attributeName.includes('product_')) products.push({ type: rule.attributeName.replace('product_', ''), values: rule.attributeValue })
+            else if (rule.attributeName.includes('location_')) location.push({ type: rule.attributeName.replace('location_', ''), values: rule.attributeValue })
+            else if (rule.attributeName.includes('frequency_')) {
+                transactionTime = "Frequency"
+                frequency[rule.attributeName.replace('frequency_', '')] = rule.attributeValue
+            } else if (rule.attributeName == "cartValue") {
+                transactionTime = "Cart Value"
+                cartValue = { name: rule.attributeName, value: rule.attributeValue, type: rule.expressionType }
+            } else if (rule.attributeName.includes('dayPart_')) {
+                transactionTime = "DayPart"
+                dayPart[rule.attributeName.replace('dayPart_', '')] = rule.attributeValue
+            }
         })
-        this.setState({ products })
+
+        rewardRedemptionRule && rewardRedemptionRule.ruleConfiguration.rules.map((rule: any) => {
+            if (rule.attributeName.includes('redemption_cap')) cappingType = rule.attributeName
+            redemption[rule.attributeName.replace('redemption_', '')] = rule.attributeValue
+        })
+
+        this.setState({ products, location, transactionTime, frequency, cartValue, dayPart, redemption, cappingType })
 
     }
 
     public render() {
-        let { offerType, reward, name, offerEligibilityRule, rewardRedemptionRule }: any = this.state.offer
-        let { products } = this.state
+        let { offerType, reward, name, coupon, offerEligibilityRule, rewardRedemptionRule }: any = this.state.offer
+        let { products, location, transactionTime, frequency, cartValue, dayPart, redemption, cappingType } = this.state
+        let transactionTimeStr = `6 transaction in 30 days`
+
+        if (transactionTime == 'Frequency') transactionTimeStr = `${transactionTime} - ${frequency.transaction} transaction in ${frequency.days} days`
+        else if (transactionTime == 'Cart Value') transactionTimeStr = `${transactionTime} - 
+        ${fieldConvert(transactionTimeData, cartValue.name, 'value', 'title')} ${fieldConvert(cartValueConditionData, cartValue.type, 'value', 'title')}  ${cartValue.value} Rs`
+        else if (transactionTime == 'DayPart') transactionTimeStr = `${transactionTime} - From ${dayPart.startTime} To ${dayPart.endTime}`
+
         return (
             <div>
                 <WHeader title='Offers' />
@@ -97,7 +135,7 @@ class OfferDashboard extends React.Component<IAppProps, IAppState> {
                                 <h4>Basic Information</h4>
                                 <Row>
                                     <Col {...labelCol}>  Offer Type  </Col>
-                                    <Col {...wrapperCol}> {fieldConvert(offerTypeData, offerType, 'value', 'title')} - {reward[offerType]} </Col>
+                                    <Col {...wrapperCol}> {fieldConvert(offerTypeData, offerType, 'value', 'title')} - {reward[offerType]}{fieldConvert(offerTypeData, offerType, 'value', 'extra')} </Col>
                                 </Row>
                                 {products.map((p: any) => <div>
                                     <Row>
@@ -110,7 +148,18 @@ class OfferDashboard extends React.Component<IAppProps, IAppState> {
 
                                 </div>)}
 
-                                <Row>
+                                {location.map((l: any) => (l.values != "") && <div>
+                                    <Row>
+                                        <Col {...labelCol}>  Location  </Col>
+                                        <Col {...wrapperCol}> {l.type} </Col>
+                                    </Row>
+                                    <Row style={{ padding: '0 25px' }}>
+                                        <Input className='inputRow' value={l.values} disabled addonAfter={<span className='gx-text-primary gx-pointer'>View All</span>} />
+                                    </Row>
+
+                                </div>)}
+
+                                {/* <Row>
                                     <Col {...labelCol}>  Location  </Col>
                                     <Col {...wrapperCol}> Zone </Col>
                                 </Row>
@@ -119,48 +168,54 @@ class OfferDashboard extends React.Component<IAppProps, IAppState> {
                                 </Row>
                                 <Row style={{ padding: '0 25px' }}>
                                     <Input className='inputRow' value='North_india_zone.csv ' disabled addonAfter={<span className='gx-text-primary gx-pointer'>View CSV</span>} />
-                                </Row>
-                                <Row>
+                                </Row> */}
+                                {transactionTime != '' && <Row>
                                     <Col {...labelCol}>  User Transaction Time  </Col>
-                                    <Col {...wrapperCol}> Frequency - 6 transaction in 30 days </Col>
-                                </Row>
+                                    <Col {...wrapperCol}> {transactionTimeStr} </Col>
+                                </Row>}
 
                                 <Divider />
                                 <h4>Redemption Rules</h4>
 
                                 <Row>
                                     <Col {...labelCol}>  User Limit </Col>
-                                    <Col {...wrapperCol}> 5000 times </Col>
+                                    <Col {...wrapperCol}> {redemption.usage_limit ? `${redemption.usage_limit} times` : '  -'}</Col>
                                 </Row>
                                 <Row>
-                                    <Col {...labelCol}>  User Limit At Customer Lever  </Col>
-                                    <Col {...wrapperCol}> 2 times </Col>
+                                    <Col {...labelCol}>  User Limit At Customer Level  </Col>
+                                    <Col {...wrapperCol}> {redemption.usage_limit_at_customer ? `${redemption.usage_limit_at_customer} times` : '  -'}</Col>
                                 </Row>
                                 <Row>
                                     <Col {...labelCol}>  Time Limit  </Col>
-                                    <Col {...wrapperCol}> 1/Day </Col>
+                                    <Col {...wrapperCol}> {redemption.time_limit ? `${redemption.time_limit}` : '  -'}</Col>
                                 </Row>
 
                                 <Divider />
                                 <h4>Capping</h4>
 
-                                <Row>
-                                    <Col {...labelCol}>  Maximum Discount </Col>
-                                    <Col {...wrapperCol}> 40% </Col>
-                                </Row>
+                                {cappingType != '' ? <Row>
+                                    <Col {...labelCol}>{fieldConvert(cappingData, cappingType, 'value', 'title')} </Col>
+                                    <Col {...wrapperCol}> {redemption[cappingType.replace('redemption_', '')] ? `${redemption[cappingType.replace('redemption_', '')]}${fieldConvert(cappingData, cappingType, 'value', 'extra')}` : '  -'}</Col>
+                                </Row> : ''}
+
                                 <Row>
                                     <Col {...labelCol}>  Limit on Sku's  </Col>
-                                    <Col {...wrapperCol}> 20,000 </Col>
+                                    <Col {...wrapperCol}> {redemption.limit_sku_number ? `${redemption.limit_sku_number}` : '  -'} </Col>
                                 </Row>
 
                                 <Divider />
                                 <h4>Coupon Based Offer</h4>
 
-                                <Row>
-                                    <Col style={{ paddingLeft: 30 }} span={24}>
-                                        <Checkbox checked> This Offer Is Auto Applied (On Coupon Code) </Checkbox>
-                                    </Col>
-                                </Row>
+
+                                {coupon ? <Row>
+                                    <Col {...labelCol}> Coupon </Col>
+                                    <Col {...wrapperCol}> {coupon} </Col>
+                                </Row> :
+                                    <Row>
+                                        <Col style={{ paddingLeft: 30 }} span={24}>
+                                            <Checkbox checked> This Offer Is Auto Applied (On Coupon Code) </Checkbox>
+                                        </Col>
+                                    </Row>}
 
 
 

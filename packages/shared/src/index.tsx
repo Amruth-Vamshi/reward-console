@@ -18,11 +18,13 @@ import FileUploader from "./components/molecules/fileUpload/FileUpload"
 // import FileUploader from "./components/molecules/FileUpload/newFileUpload"
 import OfferBasicInfoForm from "./components/molecules/offerForm/basicInfo";
 import OfferRedemptionRulesForm from "./components/molecules/offerForm/redemptionRule";
+import CollapseSidebar from "./components/atoms/CollapseSidebar";
 
 
 export {
     ManageCampaignCard,
     CampaignPriority,
+    CollapseSidebar,
     BasicInfoForm,
     BasicSlider,
     FileUploader,
