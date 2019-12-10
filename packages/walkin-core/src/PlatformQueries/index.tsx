@@ -274,7 +274,7 @@ export const RULES = gql`
 export const UPDATE_RULE = gql`
   mutation updateRule($id: ID, $input: UpdateRuleInput!) {
     updateRule(id: $id, input: $input) {
-    id
+      id
       name
       description
       status
@@ -298,6 +298,50 @@ export const ROLES_LIST = gql`
     roles {
       id
       name
+      description
+      tags
+      users {
+        id
+        email
+        firstName
+        lastName
+      }
+      policies {
+        id
+        effect
+        resource
+        permission
+        type
+        accessLevel
+      }
+    }
+  }
+`;
+
+export const LINK_USER_TO_ROLE = gql`
+  mutation linkUserToRole($roleId: ID!, $userId: ID!) {
+    linkUserToRole(roleId: $roleId, userId: $userId) {
+      id
+      roles {
+        id
+        name
+        description
+        tags
+        users {
+          id
+          email
+          firstName
+          lastName
+        }
+        policies {
+          id
+          effect
+          resource
+          permission
+          type
+          accessLevel
+        }
+      }
     }
   }
 `;
@@ -377,6 +421,20 @@ export const GET_ALL_APPS_OF_ORGANIZATION = gql`
         #     }
         #   }
         # }
+      }
+    }
+  }
+`;
+
+export const USERS = gql`
+  query users {
+    users {
+      id
+      firstName
+      email
+      roles {
+        id
+        name
       }
     }
   }

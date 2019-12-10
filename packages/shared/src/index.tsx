@@ -14,7 +14,7 @@ import CampaignFooter from "./components/molecules/campaignFooter";
 import Stepper from "./components/atoms/stepper";
 import campaignOverview from "./components/molecules/campaignOverview/index";
 import WHeader from "./components/molecules/wHeader/WHeader";
-import FileUpload from "./components/molecules/FileUpload/FileUpload";
+import FileUpload from "./components/molecules/fileUpload/FileUpload";
 import EditableFormTable from "./components/molecules/editableFormTable";
 
 export {
