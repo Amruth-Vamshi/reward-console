@@ -1,7 +1,6 @@
 import * as React from "react";
 import { Select, Button, Icon } from "antd";
 import "./style.css";
-import * as PropTypes from "prop-types";
 
 const { Option } = Select;
 
@@ -80,25 +79,10 @@ class AddAndDeleteSelectDynamically extends React.Component<iProps, iState> {
         <div style={{ color: "Red", marginTop: 10 }}>
           {this.state.errors.segment}{" "}
         </div>
-        <Button
-          className="newSegmentAddButton"
-          type="primary"
-          onClick={this.addClick.bind(this)}
-        >
-          Add
-        </Button>
+        <Button className="newSegmentAddButton" type="primary" onClick={this.addClick.bind(this)}> Add </Button>
       </React.Fragment>
     );
   }
 }
-AddAndDeleteSelectDynamically.propTypes = {
-  onValuesSelected: PropTypes.func,
-  segmentSelectionData: PropTypes.array
-};
-
-AddAndDeleteSelectDynamically.defaultProps = {
-  onValuesSelected: () => { },
-  segmentSelectionData: []
-};
 
 export default AddAndDeleteSelectDynamically;

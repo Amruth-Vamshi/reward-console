@@ -1,7 +1,6 @@
 import { Button, Icon, Select } from "antd";
 import findIndex from "lodash/findIndex";
 import map from "lodash/map";
-import PropTypes from "prop-types";
 import React, { Fragment } from "react";
 
 const { Option } = Select;
@@ -30,29 +29,14 @@ interface IState {
   items: any;
 }
 
-class AddAndDeleteComponentsDynamically extends React.Component<
-  IProps,
-  IState
-  > {
+class AddAndDeleteComponentsDynamically extends React.Component<IProps, IState> {
   static propTypes: any;
   static defaultProps: any;
   constructor(props: IProps) {
     super(props);
-
-    const {
-      data_1,
-      data_2,
-      defaultSelectOneValue,
-      defaultSelectTwoValue
-    } = this.props;
-    const defaultValueOne = this.getDefaultSelectedValue(
-      data_1,
-      defaultSelectOneValue
-    );
-    const defaultValueTwo = this.getDefaultSelectedValue(
-      data_2,
-      defaultSelectTwoValue
-    );
+    const { data_1, data_2, defaultSelectOneValue, defaultSelectTwoValue } = this.props;
+    const defaultValueOne = this.getDefaultSelectedValue(data_1, defaultSelectOneValue);
+    const defaultValueTwo = this.getDefaultSelectedValue(data_2, defaultSelectTwoValue);
 
     this.state = {
       selectTwoData: [],
@@ -68,40 +52,33 @@ class AddAndDeleteComponentsDynamically extends React.Component<
   }
 
   addClick() {
-    const {
-      data_1,
-      data_2,
-      defaultSelectTwoValue,
-      defaultSelectOneValue
-    } = this.props;
-    const defaultValueOne = this.getDefaultSelectedValue(
-      data_1,
-      defaultSelectOneValue
-    );
-    const defaultValueTwo = this.getDefaultSelectedValue(
-      data_2,
-      defaultSelectTwoValue
-    );
+    const { data_1, data_2, defaultSelectTwoValue, defaultSelectOneValue } = this.props;
+    // const defaultValueOne = this.getDefaultSelectedValue(data_1, defaultSelectOneValue);
+    // const defaultValueTwo = this.getDefaultSelectedValue(data_2, defaultSelectTwoValue);
 
-    this.setState(prevState => {
-      return {
-        items: [
-          ...prevState.items,
-          {
-            valueOne: defaultValueOne,
-            valueTwo: !!defaultValueTwo ? [...defaultValueTwo] : [],
-            onOneChange: this.handleSelectOneChange.bind(
-              this,
-              prevState.items.length
-            ),
-            onTwoChange: this.handleSelectTwoChange.bind(
-              this,
-              prevState.items.length
-            )
-          }
-        ]
-      };
-    });
+    let { items } = this.state;
+    (!items.length || items[items.length - 1].valueOne != "") && items.length != data_1.length &&
+      this.setState({
+        items: [...this.state.items, {
+          valueOne: "",
+          valueTwo: [],
+          onOneChange: this.handleSelectOneChange.bind(this, items.length),
+          onTwoChange: this.handleSelectTwoChange.bind(this, items.length)
+        }]
+      });
+
+    // this.setState(prevState => {
+    //   return {
+    //     items: [...prevState.items,
+    //     {
+    //       valueOne: "",
+    //       valueTwo: [],
+    //       onOneChange: this.handleSelectOneChange.bind(this, prevState.items.length),
+    //       onTwoChange: this.handleSelectTwoChange.bind(this, prevState.items.length)
+    //     }
+    //     ]
+    //   };
+    // });
   }
 
   removeClick(i) {
@@ -113,28 +90,36 @@ class AddAndDeleteComponentsDynamically extends React.Component<
   }
   componentDidMount() {
     if (this.props.data_2) {
-      this.setState({
-        selectTwoData: this.props.data_2
-      });
+      this.setState({ selectTwoData: this.props.data_2 });
     }
   }
 
   handleSelectOneChange(index, value) {
-    this.setState(
-      prevState => {
-        return {
-          ...prevState,
-          items: [
-            ...prevState.items.slice(0, index),
-            { ...prevState.items[index], valueOne: value },
-            ...prevState.items.slice(index + 1)
-          ]
-        };
-      },
-      () => {
-        this.props.onSelectOneValuesSelected(value, this.state.items);
-      }
-    );
+
+    console.log(index, value);
+
+    let { items }: any = this.state
+    if (!items.find(i => i.valueOne == value)) {
+      items[index].valueOne = value
+      items[index].valueTwo = []
+      this.setState({ items });
+      this.props.onSelectOneValuesSelected(value, this.state.items);
+    }
+    // this.setState(
+    //   prevState => {
+    //     return {
+    //       ...prevState,
+    //       items: [
+    //         ...prevState.items.slice(0, index),
+    //         { ...prevState.items[index], valueOne: value },
+    //         ...prevState.items.slice(index + 1)
+    //       ]
+    //     };
+    //   },
+    //   () => {
+    //     this.props.onSelectOneValuesSelected(value, this.state.items);
+    //   }
+    // );
   }
 
   handleSelectTwoChange(index, value) {
@@ -168,50 +153,31 @@ class AddAndDeleteComponentsDynamically extends React.Component<
 
     return (
       <Fragment>
-        {map(items, (item: any, index: number) => {
-          const { valueOne, valueTwo, onOneChange, onTwoChange } = item;
-          return (
-            <div key={`select-${index}`} className="selectSegmentBoxContainer">
-              <Select value={valueOne || ""} onChange={onOneChange} getPopupContainer={(triggerNode: any) => triggerNode.parentNode}
-                style={{ display: "inline-block", width: "calc(35% - 12px)", marginBottom: "0px", paddingRight: "5px" }}>
-                {data_1 && data_1.map((val: any, i: any) => <Option key={i} value={val.value}>  {val.title} </Option>)}
-              </Select>
+        <div style={{ marginTop: -7 }}>
+          {map(items, (item: any, index: number) => {
+            const { valueOne, valueTwo, onOneChange, onTwoChange } = item;
+            return (
+              <div key={`select-${index}`} className="selectSegmentBoxContainer">
+                <Select value={valueOne || ""} onChange={onOneChange} getPopupContainer={(triggerNode: any) => triggerNode.parentNode}
+                  style={{ display: "inline-block", width: "calc(35% - 12px)", marginBottom: "0px", paddingRight: 20 }}>
+                  {data_1 && data_1.map((val: any, i: any) => <Option key={i} value={val.value}>  {val.title} </Option>)}
+                </Select>
 
-              <Select showSearch mode="multiple" value={valueTwo || ""} onChange={onTwoChange}
-                getPopupContainer={(triggerNode: any) => triggerNode.parentNode}
-                style={{ display: "inline-block", width: "calc(65% - 12px)", marginBottom: "0px" }}>
-                {data_2 && data_2.map((val: any, i: any) => <Option key={i} value={val.value}>  {val.title} </Option>)}
-              </Select>
+                <Select showSearch mode="multiple" value={valueTwo || ""} onChange={onTwoChange}
+                  getPopupContainer={(triggerNode: any) => triggerNode.parentNode}
+                  style={{ display: "inline-block", width: "calc(65% - 12px)", marginBottom: "0px", paddingLeft: 10 }}>
+                  {data_2 && data_2.map((val: any, i: any) => <Option key={i} value={val.value}>  {val.title} </Option>)}
+                </Select>
 
-              <Icon type="close" onClick={this.removeClick.bind(this, index)} />
-            </div>
-          );
-        })}
-        <Button
-          style={{ margin: "0px", paddingLeft: "0px" }}
-          type="link"
-          onClick={this.addClick.bind(this)}
-        >
-          Add
-        </Button>
+                <Icon type="close" onClick={this.removeClick.bind(this, index)} />
+              </div>
+            )
+          })}
+          <Button style={{ margin: "0px", paddingLeft: "0px" }} type="link" onClick={this.addClick.bind(this)}> Add </Button>
+        </div>
       </Fragment>
     );
   }
 }
-AddAndDeleteComponentsDynamically.propTypes = {
-  onValuesSelected: PropTypes.func,
-  data_1: PropTypes.array,
-  data_2: PropTypes.array,
-  prop1: PropTypes.string,
-  prop2: PropTypes.string
-};
-
-AddAndDeleteComponentsDynamically.defaultProps = {
-  onValuesSelected: () => { },
-  data_1: [],
-  data_2: [],
-  prop1: "prop1",
-  prop2: "prop2"
-};
 
 export default AddAndDeleteComponentsDynamically;

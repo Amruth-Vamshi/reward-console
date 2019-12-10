@@ -113,7 +113,7 @@ class Landing extends React.Component<iProps, iState> {
     if (!current) return false;
     const date = moment();
     date.hour(0); date.minute(0); date.second(0);
-    return current.valueOf() > date.valueOf();
+    return moment(current).add(1, 'day') > moment() //current.valueOf() > date.valueOf();
   }
 
   disableEndDate = current => {
