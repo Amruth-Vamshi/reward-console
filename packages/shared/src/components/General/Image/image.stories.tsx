@@ -15,19 +15,23 @@ const stories = storiesOf("Atoms|Other/Image", module);
 
 stories.addDecorator(withKnobs);
 
-stories.add("Image default", () => {
-  const source = require("../../../assets/alltheplussize.png");
-  const styles = {
-    backgroundColor: "transparent",
-    height: "80px",
-    width: "100px",
-    padding: "10px"
-  };
-  return (
-    <Image
-      source={text("source", source)}
-      alternate_text={text("alternate text", "image-placeholder")}
-      style={object("style", styles)}
-    />
-  );
-});
+stories.add(
+  "Image default",
+  () => {
+    const source = require("../../../assets/alltheplussize.png");
+    const styles = {
+      backgroundColor: "transparent",
+      padding: "10px"
+    };
+    return (
+      <Image
+        height={text("height", "80px")}
+        width={text("width", "100px")}
+        source={text("source", source)}
+        alternate_text={text("alternate text", "image-placeholder")}
+        style={object("style", styles)}
+      />
+    );
+  },
+  { notes: "you can use dynamic URLs" }
+);

@@ -17,7 +17,7 @@ stories.addDecorator(withKnobs);
 stories.add("button default", () => {
   const style = {
     backgroundColor: "#FFF",
-    border: "1px solid #DDD",
+    // border: "1px solid #DDD",
     borderRadius: 2,
     outline: 0,
     fontSize: 15,
@@ -25,6 +25,7 @@ stories.add("button default", () => {
   };
   return (
     <CustomButton
+      type={text("Button Type", "default")}
       disabled={boolean("Disabled", false)}
       style={object("Style", style)}
       onClick={action("button-click")}

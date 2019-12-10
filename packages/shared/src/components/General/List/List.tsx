@@ -4,12 +4,15 @@ import { CustomButton, Image } from "@walkinsole/shared";
 
 interface ListProps {
   actionableButtonText: string;
+  actionableButtonType: any;
   imageSpan: number;
   contentSpan: number;
   actionSpan: number;
   imageStyle: any;
   contentStyle: any;
   actionStyle: any;
+  imageHeight: any;
+  imageWidth: any;
   data: Array<{
     image: string;
     title: string;
@@ -50,6 +53,8 @@ export default class CustomList extends React.Component<ListProps, ListState> {
     return (
       <Col span={this.props.imageSpan}>
         <Image
+          height={this.props.imageHeight}
+          width={this.props.imageWidth}
           source={item.image}
           alternate_text="image-placeholder"
           style={this.props.imageStyle}
@@ -72,8 +77,9 @@ export default class CustomList extends React.Component<ListProps, ListState> {
       return (
         <Col span={this.props.actionSpan} style={this.props.actionStyle}>
           <CustomButton
+            type={this.props.actionableButtonType}
             disabled={false}
-            style={{ backgroundColor: "transparent" }}
+            style={{}}
             onClick={() => console.log("actionable button clicked")}
           >
             {this.props.actionableButtonText}

@@ -69,8 +69,6 @@ stories.addDecorator(withKnobs);
 stories.add("list default", () => {
   const imageStyle = {
     backgroundColor: "transparent",
-    height: "80px",
-    width: "100px",
     padding: "10px"
   };
   const contentStyle = {
@@ -85,16 +83,20 @@ stories.add("list default", () => {
     // width: "100px",
     padding: "10px"
   };
+
   return (
     <CustomList
       data={data}
       actionableButtonText={text("Actionable Button text", "Assign")}
-      imageSpan={number("Image span", 4)}
-      contentSpan={number("Content span", 16)}
+      actionableButtonType={text("Actionable Button type", "dashed")}
+      actionStyle={object("Action style", actionStyle)}
       actionSpan={number("Action span", 4)}
       imageStyle={object("Image style", imageStyle)}
+      imageSpan={number("Image span", 4)}
+      imageHeight={text("Image height", "80px")}
+      imageWidth={text("Image width", "100px")}
       contentStyle={object("Content style", contentStyle)}
-      actionStyle={object("Action style", actionStyle)}
+      contentSpan={number("Content span", 16)}
     />
   );
 });
