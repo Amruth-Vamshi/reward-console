@@ -156,6 +156,10 @@ class Landing extends React.Component<LandingProps, Partial<LandingState>> {
                             <MultipleCounterCard textColor={"#999999"} valueColor={"#000"} title={"CSAT"} counterArray={[{ title: "New Customers", value: "0.35" }, { title: "Existing Customers", value: "0.20" }]} />
                         </Col>
                     </Row>
+                    <Row style={{ height: "20px", marginLeft: "1px", marginRight: "1px" }}>
+                        <Col span={11} style={{ backgroundColor: "#FFF" }} ></Col>
+                        <Col span={11} offset={2} style={{ backgroundColor: "#FFF" }} ></Col>
+                    </Row>
                 </div>
             </Auxiliary>
         );
