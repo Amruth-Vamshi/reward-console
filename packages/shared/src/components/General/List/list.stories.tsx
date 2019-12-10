@@ -84,6 +84,16 @@ stories.add("list default", () => {
     padding: "10px"
   };
 
+  const scaleTypeLabel = "Image Fit";
+  const scaleTypeOptions = {
+    fill: "fill",
+    contain: "contain",
+    cover: "cover",
+    scaleDown: "scale-down",
+    none: "none"
+  };
+  const scaleTypeDefaultValue = "contain";
+
   return (
     <CustomList
       data={data}
@@ -95,6 +105,11 @@ stories.add("list default", () => {
       imageSpan={number("Image span", 4)}
       imageHeight={text("Image height", "80px")}
       imageWidth={text("Image width", "100px")}
+      imageScaleType={select(
+        scaleTypeLabel,
+        scaleTypeOptions,
+        scaleTypeDefaultValue
+      )}
       contentStyle={object("Content style", contentStyle)}
       contentSpan={number("Content span", 16)}
     />

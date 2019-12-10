@@ -13,6 +13,7 @@ interface ListProps {
   actionStyle: any;
   imageHeight: any;
   imageWidth: any;
+  imageScaleType: any;
   data: Array<{
     image: string;
     title: string;
@@ -53,6 +54,7 @@ export default class CustomList extends React.Component<ListProps, ListState> {
     return (
       <Col span={this.props.imageSpan}>
         <Image
+          scaleType={this.props.imageScaleType}
           height={this.props.imageHeight}
           width={this.props.imageWidth}
           source={item.image}

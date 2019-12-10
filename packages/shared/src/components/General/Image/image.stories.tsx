@@ -18,11 +18,21 @@ stories.addDecorator(withKnobs);
 stories.add(
   "Image default",
   () => {
-    const source = require("../../../assets/alltheplussize.png");
+    const source = require("../../../assets/nilgiris.png");
     const styles = {
       backgroundColor: "transparent",
-      padding: "10px"
+      padding: "10px",
+      "object-fit": "contain"
     };
+    const scaleTypeLabel = "Image Fit";
+    const scaleTypeOptions = {
+      fill: "fill",
+      contain: "contain",
+      cover: "cover",
+      scaleDown: "scale-down",
+      none: "none"
+    };
+    const scaleTypeDefaultValue = "contain";
     return (
       <Image
         height={text("height", "80px")}
@@ -30,6 +40,11 @@ stories.add(
         source={text("source", source)}
         alternate_text={text("alternate text", "image-placeholder")}
         style={object("style", styles)}
+        scaleType={select(
+          scaleTypeLabel,
+          scaleTypeOptions,
+          scaleTypeDefaultValue
+        )}
       />
     );
   },

@@ -6,6 +6,7 @@ interface ImageProps {
   width: any;
   style: any;
   alternate_text: string;
+  scaleType: any;
 }
 
 interface ImageState {}
@@ -17,7 +18,7 @@ export default class Image extends React.Component<ImageProps, ImageState> {
         src={this.props.source}
         height={this.props.height}
         width={this.props.width}
-        style={this.props.style}
+        style={{ objectFit: this.props.scaleType }}
         alt={this.props.alternate_text}
       />
     );
