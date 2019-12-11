@@ -48,5 +48,5 @@ stories.add(
       />
     );
   },
-  { notes: "you can use dynamic URLs" }
+  { notes: "you can use dynamic URLs as well" }
 );

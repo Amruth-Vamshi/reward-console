@@ -4,14 +4,26 @@ import { CustomTitle, CustomParagraph, CustomText } from "@walkinsole/shared";
 
 const stories = storiesOf("Atoms|Antd/General/Typography", module);
 
-stories.add("Text", () => {
-  return <CustomText />;
-});
+stories.add(
+  "Text",
+  () => {
+    return <CustomText />;
+  },
+  { notes: "Notes will appear here" }
+);
 
-stories.add("Title", () => {
-  return <CustomTitle />;
-});
+stories.add(
+  "Title",
+  () => {
+    return <CustomTitle />;
+  },
+  { notes: "Notes will appear here" }
+);
 
-stories.add("Paragraph", () => {
-  return <CustomParagraph />;
-});
+stories.add(
+  "Paragraph",
+  () => {
+    return <CustomParagraph />;
+  },
+  { notes: "Notes will appear here" }
+);
