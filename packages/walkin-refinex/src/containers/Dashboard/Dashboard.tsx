@@ -1,7 +1,6 @@
 import * as React from "react";
 import { Col, Row, message, Button, Icon, Empty, Spin, Table } from "antd";
-import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis } from "recharts";
-import { IconWithTextCard, Widget, ChartCard, Auxiliary } from "@walkinsole/walkin-components";
+import { Auxiliary } from "@walkinsole/walkin-components";
 import moment from 'moment';
 import * as jwt from "jsonwebtoken";
 import "./style.css"
@@ -9,6 +8,9 @@ import { withApollo, ApolloProviderProps } from "react-apollo";
 import { GET_ANALYTICS } from "@walkinsole/walkin-core/src/PlatformQueries";
 import { ColumnProps } from "antd/lib/table";
 import { CounterCard, MultipleCounterCard } from '@walkinsole/shared';
+import PercentageAreaChart from "./Components/PercentAreaChart"
+import LineValueChart from "./Components/LineValueChart"
+import SimpleBarChart from "./Components/SimpleBarChart"
 
 const dateFormat = 'YYYY/MM/DD';
 
@@ -166,14 +168,44 @@ class Landing extends React.Component<LandingProps, Partial<LandingState>> {
                     </Row>
                     <Row style={{ marginLeft: "1px", marginRight: "1px" }}>
                         <Col span={12}>
-                            <Row style={{ height: "20px", backgroundColor: "#FFF", marginRight: "1px" }} >
-
-                            </Row>
+                            <div>
+                                <Row style={{ backgroundColor: "#FFF", marginRight: "1px", paddingTop: "8px", paddingBottom: "8px" }} >
+                                    <Col span={8} style={{ textAlign: "start" }}>NPS</Col>
+                                    {/* <Col span={16} style={{ textAlign: "end" }}>Max</Col> */}
+                                </Row>
+                                <Row style={{ backgroundColor: "#FFF", marginRight: "1px", padding: "5px 16px 18px 5px" }} >
+                                    <LineValueChart chartType="nps" />
+                                </Row>
+                            </div>
+                            <div>
+                                <Row style={{ backgroundColor: "#FFF", marginRight: "1px", paddingTop: "8px", paddingBottom: "8px" }} >
+                                    <Col span={8} style={{ textAlign: "start" }}>NPS Distribution %</Col>
+                                    {/* <Col span={16} style={{ textAlign: "end" }}>Max</Col> */}
+                                </Row>
+                                <Row style={{ backgroundColor: "#FFF", marginRight: "1px", padding: "5px 16px 18px 5px" }} >
+                                    <PercentageAreaChart />
+                                </Row>
+                            </div>
                         </Col>
                         <Col span={12}>
-                            <Row style={{ height: "20px", backgroundColor: "#FFF", marginLeft: "1px" }} >
-
-                            </Row>
+                            <div>
+                                <Row style={{ backgroundColor: "#FFF", marginLeft: "1px", paddingTop: "8px", paddingBottom: "8px" }} >
+                                    <Col span={8} style={{ textAlign: "start" }}>CSAT</Col>
+                                    {/* <Col span={16} style={{ textAlign: "end" }}>Max</Col> */}
+                                </Row>
+                                <Row style={{ backgroundColor: "#FFF", marginLeft: "1px", padding: "5px 16px 18px 5px" }} >
+                                    <LineValueChart chartType="csat" />
+                                </Row>
+                            </div>
+                            <div>
+                                <Row style={{ backgroundColor: "#FFF", marginLeft: "1px", paddingTop: "8px", paddingBottom: "8px" }} >
+                                    <Col span={8} style={{ textAlign: "start" }}>CSAT</Col>
+                                    {/* <Col span={16} style={{ textAlign: "end" }}>Max</Col> */}
+                                </Row>
+                                <Row style={{ backgroundColor: "#FFF", marginLeft: "1px", padding: "5px 16px 18px 5px" }} >
+                                    <SimpleBarChart />
+                                </Row>
+                            </div>
                         </Col>
                     </Row>
                 </div>
