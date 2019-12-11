@@ -3,7 +3,7 @@ import { Row, Col } from 'antd';
 
 const MultipleCounterCard = ({ title, textColor, valueColor, counterArray, }) => {
     return (
-        <div style={{ backgroundColor: "#FFFFFF ", height: "90px", borderRadius: "4px" }}>
+        <div style={{ backgroundColor: "#FFFFFF ", height: "105px", borderRadius: "4px" }}>
             <div style={{ paddingTop: "5px" }}>
                 <div style={{ color: textColor, fontSize: "12px", paddingLeft: "10px", marginTop: "5px" }}>{title}</div>
                 <div style={{ marginTop: "24px" }}>

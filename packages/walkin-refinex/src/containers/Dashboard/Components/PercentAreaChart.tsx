@@ -47,9 +47,9 @@ const PercentAreaChart = () => (
       <YAxis tickFormatter={toPercent} />
       <CartesianGrid strokeDasharray="3 3" />
       <Tooltip content={renderTooltipContent} />
-      <Area dataKey='promoters' stackId="1" fillOpacity={1} stroke='#292961' fill='#46CB9226' />
-      <Area dataKey='neutrals' stackId="1" fillOpacity={1} stroke='#292961' fill='#FCAD7833' />
-      <Area dataKey='detractors' stackId="1" fillOpacity={1} stroke='#292961' fill='#E96B8133' />
+      <Area dataKey='detractors' stackId="1" fillOpacity={1} stroke='#E96B81' fill='#E96B8133' />
+      <Area dataKey='neutrals' stackId="1" fillOpacity={1} stroke='#46CB92' fill='#FCAD7833' />
+      <Area dataKey='promoters' stackId="1" fillOpacity={1} stroke='#b3b3b3' fill='#46CB9226' />
     </AreaChart>
   </ResponsiveContainer>
 );

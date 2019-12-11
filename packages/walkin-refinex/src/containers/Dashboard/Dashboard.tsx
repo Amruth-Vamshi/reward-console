@@ -166,21 +166,27 @@ class Landing extends React.Component<LandingProps, Partial<LandingState>> {
                             </Row>
                         </Col>
                     </Row>
-                    <Row style={{ marginLeft: "1px", marginRight: "1px" }}>
+                    <Row style={{ backgroundColor: "#FFF", height: "30px", marginLeft: "1px", marginRight: "1px", marginBottom: "5px" }}>
+
+                    </Row>
+                    <Row style={{ marginLeft: "1px", backgroundColor: "#FFF", marginRight: "1px" }}>
                         <Col span={12}>
                             <div>
                                 <Row style={{ backgroundColor: "#FFF", marginRight: "1px", paddingTop: "8px", paddingBottom: "8px" }} >
-                                    <Col span={8} style={{ textAlign: "start" }}>NPS</Col>
-                                    {/* <Col span={16} style={{ textAlign: "end" }}>Max</Col> */}
+                                    <Col span={8} style={{ textAlign: "start", fontWeight: "bold", fontSize: "14px" }}>NPS</Col>
                                 </Row>
                                 <Row style={{ backgroundColor: "#FFF", marginRight: "1px", padding: "5px 16px 18px 5px" }} >
-                                    <LineValueChart chartType="nps" />
+                                    <LineValueChart chartType="nps" strokeColor="#038FDE" />
                                 </Row>
                             </div>
                             <div>
                                 <Row style={{ backgroundColor: "#FFF", marginRight: "1px", paddingTop: "8px", paddingBottom: "8px" }} >
-                                    <Col span={8} style={{ textAlign: "start" }}>NPS Distribution %</Col>
-                                    {/* <Col span={16} style={{ textAlign: "end" }}>Max</Col> */}
+                                    <Col span={8} style={{ textAlign: "start", fontWeight: "bold", fontSize: "14px" }}>NPS Distribution %</Col>
+                                </Row>
+                                <Row style={{ height: "18px", backgroundColor: "#FFF", marginRight: "1px" }}>
+                                    <Col span={6} offset={2}><Row><div style={{ backgroundColor: "#46CB92", height: "12px", width: "12px" }}></div><span style={{ fontSize: "12px", color: "#333333", paddingLeft: "2px" }}>Promoter</span></Row></Col>
+                                    <Col span={6}><Row><div style={{ backgroundColor: "#FCAD78", height: "12px", width: "12px" }}></div><span style={{ fontSize: "12px", color: "#333333", paddingLeft: "2px" }}>Neutrals</span></Row></Col>
+                                    <Col span={6}><Row><div style={{ backgroundColor: "#E96B81", height: "12px", width: "12px" }}></div><span style={{ fontSize: "12px", color: "#333333", paddingLeft: "2px" }}>Detractors</span></Row></Col>
                                 </Row>
                                 <Row style={{ backgroundColor: "#FFF", marginRight: "1px", padding: "5px 16px 18px 5px" }} >
                                     <PercentageAreaChart />
@@ -190,20 +196,47 @@ class Landing extends React.Component<LandingProps, Partial<LandingState>> {
                         <Col span={12}>
                             <div>
                                 <Row style={{ backgroundColor: "#FFF", marginLeft: "1px", paddingTop: "8px", paddingBottom: "8px" }} >
-                                    <Col span={8} style={{ textAlign: "start" }}>CSAT</Col>
+                                    <Col span={8} style={{ textAlign: "start", fontWeight: "bold", fontSize: "14px" }}>CSAT</Col>
                                     {/* <Col span={16} style={{ textAlign: "end" }}>Max</Col> */}
                                 </Row>
                                 <Row style={{ backgroundColor: "#FFF", marginLeft: "1px", padding: "5px 16px 18px 5px" }} >
-                                    <LineValueChart chartType="csat" />
+                                    <LineValueChart chartType="csat" strokeColor="#292961" />
                                 </Row>
                             </div>
                             <div>
                                 <Row style={{ backgroundColor: "#FFF", marginLeft: "1px", paddingTop: "8px", paddingBottom: "8px" }} >
-                                    <Col span={8} style={{ textAlign: "start" }}>CSAT</Col>
+                                    <Col span={8} style={{ textAlign: "start", fontWeight: "bold", fontSize: "14px" }}>CSAT</Col>
                                     {/* <Col span={16} style={{ textAlign: "end" }}>Max</Col> */}
                                 </Row>
+                                <Row style={{ height: "18px", backgroundColor: "#FFF", marginLeft: "1px" }}></Row>
                                 <Row style={{ backgroundColor: "#FFF", marginLeft: "1px", padding: "5px 16px 18px 5px" }} >
                                     <SimpleBarChart />
+                                </Row>
+                            </div>
+                        </Col>
+                    </Row>
+                    <Row style={{ marginTop: "20px", paddingBottom: "20px" }}>
+                        <Col span={12}>
+                            <Row>
+                                <Col xl={12} lg={12} md={12} sm={24} xs={24}>
+                                    <CounterCard titleColor="#038FDE" subtitleColor={"#707070"} title={"7"} subTitle="Total Surveys" />
+                                </Col>
+                                <Col xl={12} lg={12} md={12} sm={24} xs={24}>
+                                    <CounterCard titleColor="#46CB92" subtitleColor={"#707070"} title={"4"} subTitle="Live Surveys" />
+                                </Col>
+                            </Row>
+                            <Row style={{ marginTop: "21px" }}>
+                                <Col xl={12} lg={12} md={12} sm={24} xs={24}>
+                                    <CounterCard titleColor="#FCAD78" subtitleColor={"#707070"} title={"3"} subTitle="Upcoming Surveys" />
+                                </Col>
+                                <Col xl={12} lg={12} md={12} sm={24} xs={24}>
+                                    <CounterCard titleColor="#2E2E2E" subtitleColor={"#707070"} title={"120"} subTitle="Total Responses" />
+                                </Col>
+                            </Row>
+                        </Col>
+                        <Col span={12}>
+                            <div>
+                                <Row style={{ backgroundColor: "#FFF", height: "231px", marginLeft: "1px", marginRight: "1px", paddingTop: "8px", paddingBottom: "8px" }} >
                                 </Row>
                             </div>
                         </Col>

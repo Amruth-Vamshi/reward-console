@@ -11,7 +11,7 @@ const data = [
     { name: '03/12', csat: 6, nps: 95, amt: 2100 },
 ]
 
-const LineValueChart = (chartType: any) => {
+const LineValueChart = (chartType: any, strokeColor: any) => {
     console.log("Chart Type : ", chartType)
     return (
         <ResponsiveContainer width="100%" height={200}>
@@ -21,7 +21,7 @@ const LineValueChart = (chartType: any) => {
                 <YAxis />
                 <CartesianGrid strokeDasharray="3 3" />
                 <Tooltip />
-                <Line dataKey={chartType.chartType} stroke='#003366' fill='#003366' />
+                <Line dataKey={chartType.chartType} stroke={chartType.strokeColor} fill={chartType.strokeColor} />
             </LineChart>
         </ResponsiveContainer>
     )
