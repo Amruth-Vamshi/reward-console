@@ -11,6 +11,7 @@ import { CounterCard, MultipleCounterCard } from '@walkinsole/shared';
 import PercentageAreaChart from "./Components/PercentAreaChart"
 import LineValueChart from "./Components/LineValueChart"
 import SimpleBarChart from "./Components/SimpleBarChart"
+import LiveSurvey from "./Components/LiveSurvey"
 
 const dateFormat = 'YYYY/MM/DD';
 
@@ -136,7 +137,6 @@ class Landing extends React.Component<LandingProps, Partial<LandingState>> {
                         <Col sm={24} md={18} xl={20}>
                             <span className='gx-d-none gx-d-sm-flex'
                                 style={{ width: '100%', fontSize: 24, color: '#5B5B5B' }}>
-                                {/* <Icon style={{ fontSize: 26, marginRight: 14, color: '#D5003A' }} type="alert" theme="filled" /> */}
                                 Dashboard
                             </span>
                         </Col>
@@ -197,7 +197,6 @@ class Landing extends React.Component<LandingProps, Partial<LandingState>> {
                             <div>
                                 <Row style={{ backgroundColor: "#FFF", marginLeft: "1px", paddingTop: "8px", paddingBottom: "8px" }} >
                                     <Col span={8} style={{ textAlign: "start", fontWeight: "bold", fontSize: "14px" }}>CSAT</Col>
-                                    {/* <Col span={16} style={{ textAlign: "end" }}>Max</Col> */}
                                 </Row>
                                 <Row style={{ backgroundColor: "#FFF", marginLeft: "1px", padding: "5px 16px 18px 5px" }} >
                                     <LineValueChart chartType="csat" strokeColor="#292961" />
@@ -206,7 +205,6 @@ class Landing extends React.Component<LandingProps, Partial<LandingState>> {
                             <div>
                                 <Row style={{ backgroundColor: "#FFF", marginLeft: "1px", paddingTop: "8px", paddingBottom: "8px" }} >
                                     <Col span={8} style={{ textAlign: "start", fontWeight: "bold", fontSize: "14px" }}>CSAT</Col>
-                                    {/* <Col span={16} style={{ textAlign: "end" }}>Max</Col> */}
                                 </Row>
                                 <Row style={{ height: "18px", backgroundColor: "#FFF", marginLeft: "1px" }}></Row>
                                 <Row style={{ backgroundColor: "#FFF", marginLeft: "1px", padding: "5px 16px 18px 5px" }} >
@@ -235,8 +233,12 @@ class Landing extends React.Component<LandingProps, Partial<LandingState>> {
                             </Row>
                         </Col>
                         <Col span={12}>
-                            <div>
-                                <Row style={{ backgroundColor: "#FFF", height: "231px", marginLeft: "1px", marginRight: "1px", paddingTop: "8px", paddingBottom: "8px" }} >
+                            <div style={{ backgroundColor: "#FFF", height: "231px" }}>
+                                <Row style={{ backgroundColor: "#FFF", marginRight: "1px", marginLeft: "1px", paddingTop: "8px", paddingBottom: "8px" }} >
+                                    <Col span={8} style={{ textAlign: "start", fontWeight: "bold", fontSize: "14px" }}>Live Survey Result</Col>
+                                </Row>
+                                <Row style={{ backgroundColor: "#FFF", marginLeft: "1px", marginRight: "1px", paddingTop: "8px", paddingBottom: "8px" }} >
+                                    <LiveSurvey />
                                 </Row>
                             </div>
                         </Col>
