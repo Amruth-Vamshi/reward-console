@@ -136,7 +136,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 			offer: '',
 			audienceFilterRuleId: '',
 			scheduleData: {},
-			smsForm: {},
+			smsForm: { smsBody: "", smsTag: "" },
 			emailForm: {},
 			pushForm: {},
 			scheduleSaveMark: false,
@@ -805,6 +805,13 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 
 	}
 
+	linkTypeSelect = e => {
+		console.log(e);
+		let { smsForm } = this.state
+		smsForm.smsBody = smsForm.smsBody ? smsForm.smsBody + e : e
+		this.setState({ smsForm })
+	}
+
 
 	logQuery = (audienceFilterRule, ruleQuery) => {
 		console.log('rule', audienceFilterRule);
@@ -836,7 +843,6 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 			},
 		};
 
-		console.log('>>props', this.props);
 
 		return (
 			<div>
@@ -909,7 +915,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 							onValuesSelected={this.onValuesSelected}
 							selectedSegments={this.state.selectedSegments}
 							segmentSelectionData={this.props.segmentList.segments}
-							// uploadCsvText="Upload CSV"
+							uploadCsvText="Upload CSV"
 							visible={this.state.visible} handleOk={this.handleOk} handleCancel={this.handleUploadCancel}
 							fileList={this.state.fileList} uploadProps={props}
 							ruleQuery={this.state.ruleQuery}
@@ -918,6 +924,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 							attributeData={attributeData}
 							logQuery={this.logQuery}
 							errors={this.state.errors}
+							showModal={this.showModal}
 						/>
 					</div>
 					}
@@ -934,6 +941,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 						<Communication
 							subTitle="Communication"
 							schedule={true}
+							linkTypeSelect={this.linkTypeSelect}
 							scheduleData={scheduleData}
 							campaign={this.state.formValues}
 							saveSchedule={this.saveSchedule}
