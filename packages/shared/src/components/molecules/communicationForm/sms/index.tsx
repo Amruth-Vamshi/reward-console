@@ -99,7 +99,8 @@ const SMSForm = Form.create<iProps>({ name: 'form_in_modal' })(
 							// valuePropName: `${Object.keys(formValues).length != 0 ? formValues.smsBody ? formValues.smsBody : "" : ""}`,
 							// getValueProps: formValues.smsBody,
 							rules: [{ required: true, message: 'SMS body is required' }],
-						})(<TextArea rows={3} name='smsBody' defaultValue={this.props.formValues.smsBody} value={this.props.formValues.smsBody} onChange={(e: any) => { this.props.formValues.smsBody = e.target.value }} />)}
+						})(<TextArea rows={3} name='smsBody' //defaultValue={this.props.formValues.smsBody} value={this.props.formValues.smsBody} onChange={(e: any) => { this.props.formValues.smsBody = e.target.value }} 
+						/>)}
 						<div style={{ float: 'right' }}>
 							<Popover title="Select Link Type" trigger="click" content={this.popupContent()}
 								visible={this.state.visible} onVisibleChange={this.handleVisibleChange}>
