@@ -41,6 +41,7 @@ import ColumnLayout from "./components/Layout/ColumnLayout/ColumnLayout";
 import InfoText from "./components/General/InfoText/InfoText";
 import CustomList from "./components/General/List/List";
 import Image from "./components/General/Image/Image";
+import Header from "./components/General/Header/Header";
 
 export {
   ManageCampaignCard,
@@ -83,5 +84,6 @@ export {
   ColumnLayout,
   InfoText,
   CustomList,
-  Image
+  Image,
+  Header
 };
