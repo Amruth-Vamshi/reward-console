@@ -5,7 +5,7 @@ import {
     BasicInfoForm,
     Popup,
     BasicSlider
-} from "@walkinsole/walkin-components";
+} from "@walkinsole/shared";
 const { Text } = Typography;
 import CreateCampaignRow from "../../Overview/CreateCampaignRow"
 import gql from "graphql-tag";
@@ -89,7 +89,6 @@ const BasicInfo: React.FC<BasicInfoProps> = ({
         <div style={{ minHeight: "100%" }}>
 
             <div style={{ minHeight: "10%" }}>
-                {" "}
                 <h3 className="gx-text-grey">{subTitle}</h3>
             </div>
 

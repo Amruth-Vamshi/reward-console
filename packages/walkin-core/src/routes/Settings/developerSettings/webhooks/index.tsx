@@ -2,7 +2,7 @@ import * as React from "react";
 import * as jwt from "jsonwebtoken";
 import { withApollo, ApolloProviderProps } from "react-apollo";
 import "./style.css";
-import { Button, Switch, Row, Col, Spin, Icon } from "antd";
+import { Button, Switch, Row, Col, Spin, Icon, List } from "antd";
 import WebhookForm from "./webhookForm";
 import {
   GET_WEBHOOKS,
@@ -11,18 +11,15 @@ import {
   LIST_WEBHOOK_EVENTS
 } from "./../../../../PlatformQueries/index";
 
-
-interface WebhooksProps extends ApolloProviderProps<any> {
-
-}
+interface WebhooksProps extends ApolloProviderProps<any> {}
 
 interface WebhooksState {
-  isWebhookFormOpen: boolean,
-  webhooks: any,
-  events: any,
-  selectedWebhookIndex: any,
-  isLoading: boolean,
-  org_id: string
+  isWebhookFormOpen: boolean;
+  webhooks: any;
+  events: any;
+  selectedWebhookIndex: any;
+  isLoading: boolean;
+  org_id: string;
 }
 
 class Webhooks extends React.Component<WebhooksProps, WebhooksState> {
@@ -34,12 +31,12 @@ class Webhooks extends React.Component<WebhooksProps, WebhooksState> {
       events: [],
       selectedWebhookIndex: null,
       isLoading: true,
-      org_id: ''
+      org_id: ""
     };
   }
 
   UNSAFE_componentWillMount() {
-    const jwtToken: any = localStorage.getItem("jwt")
+    const jwtToken: any = localStorage.getItem("jwt");
     const { org_id }: any = jwt.decode(jwtToken);
     this.props.client
       .query({
@@ -170,11 +167,99 @@ class Webhooks extends React.Component<WebhooksProps, WebhooksState> {
       if (!webhooks.length)
         return (
           <div className="webhookListWrapper">
-            <div className="emptyWebhookLabel">No Webhook Added</div>
+            <div className="emptyWebhookLabel">No Webhook Found</div>
           </div>
         );
       return (
         <div className={"webhookListWrapper"}>
+          {/* <List
+            bordered
+            itemLayout="vertical"
+            size="large"
+            pagination={{
+              pageSize: 5
+            }}
+            dataSource={this.state.webhooks}
+            renderItem={(webhook: any, index: number) => {
+              console.log(webhook, index);
+
+              return (
+                <Row className="webhookListRow" key={index}>
+                  <Col
+                    className="webhookUrlWrapper "
+                    xl={11}
+                    lg={24}
+                    md={24}
+                    sm={24}
+                    xs={24}
+                  >
+                    <Col xl={6} lg={6} md={6} sm={6} xs={6}>
+                      <img
+                        alt=""
+                        src={require("@walkinsole/walkin-components/src/assets/images/webhook.png")}
+                      />
+                    </Col>
+                    <Col xl={18} lg={18} md={18} sm={18} xs={18}>
+                      <div className="webhookTitle">{webhook.name}</div>
+                      <div className="webhookUrl">
+                        {webhook.url} › incoming-webhooks
+                      </div>
+                    </Col>
+                  </Col>
+                  <Col
+                    className="webhookTypeWrapper"
+                    xl={4}
+                    lg={8}
+                    md={8}
+                    sm={8}
+                    xs={24}
+                  >
+                    Type:
+                    <span className="webhookType">{webhook.event}</span>
+                  </Col>
+                  <Col
+                    className="webhookStatus"
+                    xl={4}
+                    lg={8}
+                    md={8}
+                    sm={8}
+                    xs={24}
+                  >
+                    <div>{webhook.enabled ? "Active" : "Inactive"}</div>
+                    <Switch
+                      className={webhook.enabled ? "webhookStatusSwitch" : ""}
+                      checked={webhook.enabled}
+                      onChange={() => this.onEnableOrDisableWebhook(index)}
+                      loading={isLoading && selectedWebhookIndex === index}
+                    />
+                  </Col>
+                  <Col
+                    className="webhookButtonWrapper"
+                    xl={4}
+                    lg={8}
+                    md={8}
+                    sm={8}
+                    xs={24}
+                  >
+                    <Button
+                      onClick={() => this.onAddOrEditWebhooks(index)}
+                      className="buttonBlueBorder webhookButtonMargin0"
+                    >
+                      Edit
+                    </Button>
+
+                    <Button
+                      className=" webhookButtonMargin0"
+                      onClick={() => this.onDelete(index)}
+                      loading={isLoading && selectedWebhookIndex === index}
+                    >
+                      Delete
+                    </Button>
+                  </Col>
+                </Row>
+              );
+            }}
+          /> */}
           {this.state.webhooks.map((webhook: any, index: number) => (
             <Row className="webhookListRow" key={index}>
               <Col
@@ -193,9 +278,7 @@ class Webhooks extends React.Component<WebhooksProps, WebhooksState> {
                 </Col>
                 <Col xl={18} lg={18} md={18} sm={18} xs={18}>
                   <div className="webhookTitle">{webhook.name}</div>
-                  <div className="webhookUrl">
-                    {webhook.url} › incoming-webhooks
-                  </div>
+                  <div className="webhookUrl">{webhook.url}</div>
                 </Col>
               </Col>
               <Col
@@ -219,7 +302,7 @@ class Webhooks extends React.Component<WebhooksProps, WebhooksState> {
               >
                 <div>{webhook.enabled ? "Active" : "Inactive"}</div>
                 <Switch
-                  className={webhook.enabled ? "webhookStatusSwitch" : ''}
+                  className={webhook.enabled ? "webhookStatusSwitch" : ""}
                   checked={webhook.enabled}
                   onChange={() => this.onEnableOrDisableWebhook(index)}
                   loading={isLoading && selectedWebhookIndex === index}
@@ -268,7 +351,7 @@ class Webhooks extends React.Component<WebhooksProps, WebhooksState> {
     return (
       <div className="gx-main-content-wrapper">
         <div className="headerWrapper">
-          <label className="headerTitle">Webhooks</label>
+          <label className="webhooksHeaderTitle">Webhooks</label>
           {!isWebhookFormOpen && (
             <Button
               className="webhookButtonMargin0"
@@ -289,16 +372,16 @@ class Webhooks extends React.Component<WebhooksProps, WebhooksState> {
             </div>
           </div>
         ) : (
-            <div className="headerDescWrapper">
-              <div
-                onClick={() => this.onAddOrEditWebhooks()}
-                className="cursorPointer webhookBackButton"
-              >
-                <Icon type="arrow-left" />
-                Back
+          <div className="headerDescWrapper">
+            <div
+              onClick={() => this.onAddOrEditWebhooks()}
+              className="cursorPointer webhookBackButton"
+            >
+              <Icon type="arrow-left" />
+              Back
             </div>
-            </div>
-          )}
+          </div>
+        )}
         {this.renderWebhookList()}
       </div>
     );

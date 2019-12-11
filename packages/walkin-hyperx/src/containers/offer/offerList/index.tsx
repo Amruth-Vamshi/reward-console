@@ -1,4 +1,4 @@
-import { CampaignHeader, InstantSearch, SortableDataTable } from '@walkinsole/shared';
+import { CampaignHeader, InstantSearch, SortableDataTable, WHeader } from '@walkinsole/shared';
 import { Button, Col, Dropdown, Menu } from 'antd';
 import * as jwt from 'jsonwebtoken';
 import React, { Component, Fragment } from 'react';
@@ -7,12 +7,9 @@ import { RouteChildrenProps } from 'react-router';
 import { withRouter } from 'react-router-dom';
 
 import { closeOffer, getOffers, LAUNCH_OFFER } from '../../../query/offer';
-import { NEW_OFFER } from '../../../utils/RouterConstants';
-import { DEFAULT_ACTIVE_STATUS } from '../../../utils';
+import { NEW_OFFER, OFFER_DASHBOARD } from '../../../constants/RouterConstants';
+import { DEFAULT_ACTIVE_STATUS } from '../../../constants';
 import HyperXContainer from '../../../components/atoms/HyperXContainer';
-
-const { org_id, id }: any = jwt.decode(localStorage.getItem("jwt"));
-
 
 interface IProps extends RouteChildrenProps, ApolloProviderProps<any> {
 	refetchOffers
@@ -85,6 +82,13 @@ class OfferList extends Component<IProps, Partial<IState>> {
 		});
 	};
 
+	onViewOffer = record => {
+		this.props.history.push({
+			pathname: `${OFFER_DASHBOARD}/${record.id}`,
+			state: { campaignSelected: record },
+		});
+	}
+
 	onDuplicateContact = record => {
 		// const { history } = this.props;
 		// history.push({
@@ -101,13 +105,15 @@ class OfferList extends Component<IProps, Partial<IState>> {
 					this.onDuplicateContact(record);
 				} else if (e.key === 'CLOSED') {
 					this.onDeleteContact(record);
+				} else if (e.key === 'VIEW') {
+					this.onViewOffer(record);
 				} else this.onLaunchOffer(record)
 			}}
 		>
-			{record.state == "DRAFT" ? <Menu.Item key="LIVE">Launch offer</Menu.Item> :
-				record.state == "LIVE" ? <Menu.Item key="CLOSED">Close offer</Menu.Item> : ''}
+			{record.state == "DRAFT" ? <Menu.Item key="LIVE">Launch Offer</Menu.Item> :
+				record.state == "LIVE" ? <Menu.Item key="CLOSED">Close Offer</Menu.Item> : ''}
 			{/* <Menu.Item key="duplicate">Duplicate</Menu.Item> */}
-			{/* <Menu.Item key="delete">Delete</Menu.Item> */}
+			<Menu.Item key="VIEW">View Offer</Menu.Item>
 		</Menu>
 	);
 
@@ -138,14 +144,14 @@ class OfferList extends Component<IProps, Partial<IState>> {
 
 		const columns = [
 			{
-				title: 'Offer Name',
+				title: 'Name',
 				dataIndex: 'name',
 				key: 'name',
 				sorter: (a, b) => (a.name !== b.name ? (a.name < b.name ? -1 : 1) : 0),
 				sortOrder: sortedInfo.columnKey === 'name' && sortedInfo.order,
 			},
 			{
-				title: 'Offer Type',
+				title: 'Type',
 				dataIndex: 'offerType',
 				key: 'offerType',
 				sorter: (a, b) => a.offerType - b.offerType,
@@ -161,8 +167,9 @@ class OfferList extends Component<IProps, Partial<IState>> {
 			{
 				title: '',
 				key: 'action',
-				render: (text, record) => (
-					<div className="gx-module-contact-right">
+				width: 10,
+				render: (text: any, record: any) => (
+					<div className="gx-module-campaign-right">
 						<Dropdown overlay={this.menus(record)} placement="bottomRight" trigger={['click']}>
 							<i className="gx-icon-btn icon icon-ellipse-v" />
 						</Dropdown>
@@ -172,7 +179,7 @@ class OfferList extends Component<IProps, Partial<IState>> {
 		];
 		return (
 			<Fragment>
-				<div>
+				{/* <div>
 					<CampaignHeader
 						children={
 							<Fragment>
@@ -187,7 +194,8 @@ class OfferList extends Component<IProps, Partial<IState>> {
 							</Fragment>
 						}
 					/>
-				</div>
+				</div> */}
+				<WHeader title='Offers' extra={<Button type="primary" style={{ marginBottom: 0 }} onClick={this.onNewSegment}>CREATE OFFER</Button>} />
 				<HyperXContainer margin='32px' headerHeightInPX={152}>
 					<div className="gx-card">
 						<div className="gx-card-body">
@@ -209,23 +217,29 @@ class OfferList extends Component<IProps, Partial<IState>> {
 
 export default withRouter(
 	graphql(getOffers, {
-		options: (ownProps: any) => ({
-			variables: {
-				organizationId: org_id,
-			},
-			forceFetch: true,
-			fetchPolicy: 'network-only',
-		}),
-		props: ({ data: { loading, error, getOffers, refetch } }: any) => ({
-			loading, getOffers, error,
-			refetchOffers: (props: any) => {
-				refetch({
-					variables: {
-						organization_id: org_id,
-						status: DEFAULT_ACTIVE_STATUS,
-					},
-				});
-			},
-		}),
+		options: (ownProps: any) => {
+			const { org_id }: any = jwt.decode(localStorage.getItem('jwt'))
+			return ({
+				variables: {
+					organizationId: org_id,
+				},
+				forceFetch: true,
+				fetchPolicy: 'network-only',
+			})
+		},
+		props: ({ data: { loading, error, getOffers, refetch } }: any) => {
+			const { org_id }: any = jwt.decode(localStorage.getItem('jwt'))
+			return ({
+				loading, getOffers, error,
+				refetchOffers: (props: any) => {
+					refetch({
+						variables: {
+							organization_id: org_id,
+							status: DEFAULT_ACTIVE_STATUS,
+						},
+					});
+				},
+			})
+		},
 	})(withApollo(OfferList))
 );

@@ -1,199 +1,25 @@
-import React, { Component, Fragment } from 'react';
-import { Col, Alert, message, Radio, Spin, Checkbox, Input } from 'antd';
-import { withRouter } from 'react-router-dom';
-import { withApollo, graphql, compose, ApolloProviderProps } from 'react-apollo';
-import { createRule } from '../../../query/audience';
-import { OFFER_LIST } from '../../../utils/RouterConstants';
-import get from 'lodash/get';
-import { Stepper, CampaignHeader, CampaignFooter } from '@walkinsole/shared';
-import OfferBasicInfoForm from '../../../components/atoms/offerForm/basicInfo';
-import isEmpty from 'lodash/isEmpty';
 import './style.css';
-import OfferRedemptionRulesForm from '../../../components/atoms/offerForm/redemptionRule';
-import { products, categories, subOrganizations, createOffer, updateOffer, launchOffer } from '../../../query/offer';
-import { returnMatchingKeyvalues } from '../../../utils/common/index';
+
+import { CampaignFooter, Stepper, WHeader, OfferRedemptionRulesForm, OfferBasicInfoForm } from '@walkinsole/shared';
+import { Alert, message, Spin } from 'antd';
+import jwt from 'jsonwebtoken';
+import isEmpty from 'lodash/isEmpty';
 import omit from 'lodash/omit';
-import remove from 'lodash/remove';
-import { transposeObject, isValidObject } from '../../../utils/common';
-import jwt from 'jsonwebtoken'
-import { RouteChildrenProps } from "react-router";
-
-const { org_id }: any = jwt.decode(localStorage.getItem('jwt'))
-
-const offerStepData = [
-	{
-		id: 1,
-		route: 'basicInfo',
-		title: 'Basic Info',
-	},
-	{
-		id: 2,
-		title: 'Redemption Rule',
-		route: 'redemptionRule',
-	},
-];
-const couponTypeData = [
-	{
-		id: 1,
-		value: 1,
-		title: 'Static',
-	},
-	{
-		id: 2,
-		value: '2',
-		title: 'No Coupon Code',
-	},
-];
-const offerTypeData = [
-	{
-		id: 1,
-		val: 'PERCENTAGE_DISCOUNT',
-		title: 'Discount on the bill',
-	},
-	{
-		id: 2,
-		val: 'FLATX_DISCOUNT',
-		title: 'Flat Xrs off on the bill',
-	},
-	{
-		id: 3,
-		val: 'PERCENTAGE_CASHBACK',
-		title: '% Cashback on the bill',
-	},
-	{
-		id: 4,
-		val: 'FLATX_CASHBACK',
-		title: 'Flat X Cashback on the bill',
-	},
-	{
-		id: 5,
-		val: 'FREE_ITMES_FROM_LIST',
-		title: 'Any item/items from the list',
-	},
-];
-
-let transactionTimeData = [
-	{
-		id: 1,
-		val: 'frequency',
-		title: 'Frequency',
-	},
-	{
-		id: 2,
-		val: 'dayPart',
-		title: 'Daypart',
-	},
-	{
-		id: 3,
-		val: 'cartValue',
-		title: 'Cart value aka Bill size',
-	},
-];
-
-let productData = [
-	{
-		id: 1,
-		value: 'product_sku',
-		title: 'SKU',
-	},
-	{
-		id: 2,
-		value: 'product_brand',
-		title: 'Brand',
-	},
-	{
-		id: 3,
-		value: 'product_category',
-		title: 'Category',
-	},
-];
-
-let locationData = [
-	{
-		id: 1,
-		value: 'location_city',
-		title: 'City',
-	},
-	{
-		id: 2,
-		value: 'location_state',
-		title: 'State',
-	},
-	{
-		id: 3,
-		value: 'location_pincode',
-		title: 'Pincode',
-	},
-	{
-		id: 4,
-		value: 'location_store',
-		title: 'Store',
-	},
-];
-
-let cartValueConditionData = [
-	{
-		id: 1,
-		val: 'equalTo',
-		title: 'Equal to',
-	},
-	{
-		id: 2,
-		val: 'notEqualTo',
-		title: 'Not Equal to',
-	},
-	{
-		id: 3,
-		val: 'greaterThan',
-		title: 'Greater than',
-	},
-	{
-		id: 4,
-		val: 'equalToOrGreaterThan',
-		title: 'Equal/Greater than',
-	},
-	{
-		id: 5,
-		val: 'equalToOrLessThan',
-		title: 'Equal/Less than',
-	},
-];
-
-let cappingData = [
-	{
-		id: 1,
-		val: 'redemption_cap_max_discount',
-		title: 'Max discount',
-	},
-	{
-		id: 2,
-		val: 'redemption_cap_max_cashback',
-		title: 'Max Cashback',
-	},
-	{
-		id: 3,
-		val: 'redemption_cap_no_of_items',
-		title: 'No. of items',
-	},
-];
-
-const dummyBrandData = [
-	{
-		id: 1,
-		title: 'sample1',
-		val: 'sampleOne',
-	},
-	{
-		id: 3,
-		name: 'sample2',
-		val: 'sampleTwo',
-	},
-];
+import moment from 'moment'
+import React, { Component, Fragment } from 'react';
+import { ApolloProviderProps, compose, graphql, withApollo } from 'react-apollo';
+import { RouteChildrenProps } from 'react-router';
+import { createRule } from '../../../query/audience';
+import { categories, createOffer, products, subOrganizations, UPDATE_OFFER } from '../../../query/offer';
+import { isValidObject, transposeObject } from '../../../utils';
+import { OFFER_LIST } from '../../../constants/RouterConstants';
+import { cappingData, cartValueConditionData, couponTypeData, dummyBrandData, locationData, offerStepData, offerTypeData, productData, transactionTimeData } from '../../../constants/offerData'
+import HyperXContainer from '../../../components/atoms/HyperXContainer';
+import { DEFAULT_RULE_TYPE, DEFAULT_ACTIVE_STATUS } from '../../../constants';
 
 interface IProps extends RouteChildrenProps<any>, ApolloProviderProps<any> {
 	// pauseCampaign: (variables: any) => any
 	loading?, error?, categories?, products?, organizationHierarchy?, subOrganizations?, data?
-
 }
 
 // this.props.history.push({ pathname: '/hyperx/campaigns', tabKey: "2" })
@@ -205,7 +31,9 @@ interface IState {
 	newOfferErrorMessage: '',
 	offerEligibityRule: any,
 	offerType: any,
+	transactionTime: '',
 	couponLableSelected: '',
+	offerRedemptionRuleId: ''
 	productValues: Array<any>,
 	redemptionRule: any,
 	loading1: boolean,
@@ -217,6 +45,7 @@ interface IState {
 	productDropDown: any
 	locationDropDown: any
 	values,
+	timeLimitType
 
 };
 
@@ -231,13 +60,16 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 			couponTypeSelected: null,
 			newOfferErrorMessage: '',
 			offerEligibityRule: {},
-			offerType: {},
+			offerType: '',
 			couponLableSelected: '',
 			productValues: [],
 			redemptionRule: {},
 			loading1: false,
+			transactionTime: '',
 			offerEligibityRuleId: '',
+			offerRedemptionRuleId: '',
 			locationValues: [],
+			timeLimitType: '/day',
 			formValues: {
 				basicForm: {},
 				redemptionForm: {},
@@ -280,17 +112,17 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 				Object.assign(this.state.offerTypeStatus, { showRupee: false, showPercent: true, showList: false })
 			);
 		}
-		if (value === 'FLATX_OFF_ON_BILL') {
+		if (value === 'FLATX_DISCOUNT') {
 			this.setState(
 				Object.assign(this.state.offerTypeStatus, { showRupee: true, showPercent: false, showList: false })
 			);
 		}
-		if (value === 'FREE_ITEMS') {
+		if (value === 'FREE_ITMES_FROM_LIST') {
 			this.setState(
 				Object.assign(this.state.offerTypeStatus, { showList: true, showPercent: false, showRupee: false })
 			);
 		}
-		if (value === 'FLAT_CASHBACK') {
+		if (value === 'FLATX_CASHBACK') {
 			this.setState(
 				Object.assign(this.state.offerTypeStatus, { showList: false, showPercent: false, showRupee: false })
 			);
@@ -300,34 +132,24 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 	onTransactionTimeChange = value => {
 		if (value === 'dayPart') {
 			this.setState(
-				Object.assign(this.state.transactionTimeStatus, {
-					showFrequency: false,
-					showDayPart: true,
-					showCartValue: false,
-				})
+				Object.assign(this.state.transactionTimeStatus, { showFrequency: false, showDayPart: true, showCartValue: false })
 			);
 		}
 		if (value === 'frequency') {
 			this.setState(
-				Object.assign(this.state.transactionTimeStatus, {
-					showFrequency: true,
-					showDayPart: false,
-					showCartValue: false,
-				})
+				Object.assign(this.state.transactionTimeStatus, { showFrequency: true, showDayPart: false, showCartValue: false })
 			);
 		}
 		if (value === 'cartValue') {
 			this.setState(
-				Object.assign(this.state.transactionTimeStatus, {
-					showFrequency: false,
-					showDayPart: false,
-					showCartValue: true,
-				})
+				Object.assign(this.state.transactionTimeStatus, { showFrequency: false, showDayPart: false, showCartValue: true })
 			);
 		}
+		this.setState({ transactionTime: value })
 	};
 
 	onValuesSelected = (value, str, stateValues) => {
+		console.log('value: ', value + ' str: ' + str + ' stateValues: ' + stateValues);
 		if (str === 'product') {
 			if (value === 'product_sku') {
 				this.setState(
@@ -356,237 +178,212 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 					})
 				);
 			}
-			this.setState({
-				productValues: stateValues,
-			});
+			this.setState({ productValues: stateValues });
 		} else {
 			if (value == 'location_city') {
 				this.setState(
 					Object.assign(this.state.locationDropDown, {
-						showCityList: true,
-						showStateList: false,
-						showPincodeList: false,
-						showStoreList: false,
+						showCityList: true, showStateList: false, showPincodeList: false, showStoreList: false,
 					})
 				);
 			}
 			if (value == 'location_state') {
 				this.setState(
 					Object.assign(this.state.locationDropDown, {
-						showCityList: false,
-						showStateList: true,
-						showPincodeList: false,
-						showStoreList: false,
+						showCityList: false, showStateList: true, showPincodeList: false, showStoreList: false,
 					})
 				);
 			}
 			if (value == 'location_pincode') {
 				this.setState(
 					Object.assign(this.state.locationDropDown, {
-						showCityList: false,
-						showStateList: false,
-						showPincodeList: true,
-						showStoreList: false,
+						showCityList: false, showStateList: false, showPincodeList: true, showStoreList: false,
 					})
 				);
 			}
 			if (value == 'location_store') {
 				this.setState(
 					Object.assign(this.state.locationDropDown, {
-						showCityList: false,
-						showStateList: false,
-						showPincodeList: false,
-						showStoreList: true,
+						showCityList: false, showStateList: false, showPincodeList: false, showStoreList: true,
 					})
 				);
 			}
+			this.setState({ locationValues: stateValues });
 		}
 	};
 
-	onBasicInfoSubmit = val => { };
 	saveFormValues = (current, state, ref) => {
 		const form = ref && ref.props.form;
+		let fmValues
 		if (form) {
 			form.validateFields((err, values) => {
-				if (err) {
-					return;
-				} else {
-					this.setState(
-						Object.assign(this.state.formValues, {
-							[state]: values,
-						})
-					);
+				if (err) return;
+				else {
+					fmValues = values;
+					this.setState(Object.assign(this.state.formValues, { [state]: values }));
 				}
 			});
 		}
+		return fmValues
 	};
 
-	goToNextPage = (current: number, e: any) => {
-		let { client } = this.props;
-		const { formValues } = this.state;
-		if (current === 1 && e && e.target.innerText === 'Next') {
-			if (isEmpty(formValues.basicForm) || isValidObject(formValues.basicForm)) {
-				this.saveFormValues(current, 'basicForm', this.basicFormRef);
-				let { productValues, locationValues, formValues } = this.state;
-				let { basicForm } = formValues;
-				let offerType = {};
-				offerType[basicForm.offerType] = parseInt(basicForm.offerTypeValue);
+	createRule = async (rule, type) => {
+		let ruleInput = {
+			name: Math.random().toString(36).substring(7),
+			type: DEFAULT_RULE_TYPE,
+			organizationId: jwt.decode(localStorage.getItem('jwt'))['org_id'],
+			status: DEFAULT_ACTIVE_STATUS,
+			ruleConfiguration: rule,
+		}
+		let ruleId
+		console.log('ruleInput >>> ', JSON.stringify(ruleInput));
+		return this.props.client
+			.mutate({ mutation: createRule, variables: ruleInput })
+			.then(({ data }) => {
+				console.log('created rule', data);
+				ruleId = data.createRule.id
+				this.setState({ [type]: data.createRule.id });
+				return ruleId;
+			}).catch(error => {
+				console.log('error', error);
+				this.setState({ loading1: false })
+			});
+	}
 
-				let combinedArray = productValues.concat(locationValues);
-				let reArrangedObj = {};
-				let arr: Array<{}>;
-				combinedArray.map(val => {
-					reArrangedObj[val.valueOne] = val.valueTwo;
-					arr = transposeObject(reArrangedObj && reArrangedObj, 'in');
-				});
-				let basicFormArray = { rules: arr, combinator: 'and' };
-				this.setState({
-					offerEligibityRule: basicFormArray,
-					offerType: offerType,
-					current: current,
-				});
-			}
-		} else if (e && e.target.innerText === 'Save') {
-			const { formValues } = this.state;
-			if (!isEmpty(formValues.basicForm)) {
-				if (isEmpty(formValues.redemptionForm) || isValidObject(formValues.redemptionForm)) {
-					this.saveFormValues(current, 'redemptionForm', this.redemptionRef);
-					if (this.state.formValues && this.state.formValues.redemptionForm) {
-						let redemptionFormObject = this.state.formValues.redemptionForm;
-						redemptionFormObject[redemptionFormObject.type] = redemptionFormObject.cappingValue;
-						let ommitedObject = omit(redemptionFormObject, ['type', 'cappingValue']);
-						let redemptionArray = { rules: transposeObject(ommitedObject, '='), combinator: 'and' };
-						const { offerEligibityRule, redemptionRule } = this.state;
-						this.setState({ loading1: true })
-						client
-							.mutate({
-								mutation: createRule,
-								variables: {
-									name: Math.random()
-										.toString(36)
-										.substring(7),
-									type: 'SIMPLE',
-									organizationId: org_id,
-									status: 'ACTIVE',
-									ruleConfiguration: JSON.stringify(offerEligibityRule),
-								},
-							})
-							.then(({ data }) => {
-								console.log('created rule', data);
-								this.setState({
-									offerEligibityRuleId: data.createRule.id,
-								});
-								client
-									.mutate({
-										mutation: createRule,
-										variables: {
-											name: Math.random()
-												.toString(36)
-												.substring(7),
-											type: 'SIMPLE',
-											organizationId: org_id,
-											status: 'ACTIVE',
-											ruleConfiguration: JSON.stringify(redemptionArray),
-										},
-									})
-									.then(({ data }) => {
-										console.log('created redemption rule', data);
-										const {
-											offerEligibityRuleId,
-											offerType,
-											formValues,
-											couponLableSelected,
-											couponTypeSelected,
-										} = this.state;
-										client
-											.mutate({
-												mutation: createOffer,
-												variables: {
-													name: formValues.basicForm.offerName,
-													offerType: formValues.basicForm.offerType,
-													reward: JSON.stringify(offerType),
-													organizationId: org_id,
-													offerEligibilityRule: offerEligibityRuleId,
-													offerCategory: couponTypeSelected === 1 ? 'COUPONS' : 'AUTO_APPLY',
-													isCustomCoupon: couponTypeSelected === 1 ? true : false,
-													coupon: couponTypeSelected === 1 ? couponLableSelected : null,
-													rewardRedemptionRule: data.createRule.id,
-												},
-											})
-											.then(({ data }) => {
-												console.log('created offer', data);
-												this.setState({ loading1: false })
-												const { history } = this.props;
-												history.push({
-													pathname: OFFER_LIST,
-												});
+	changePage = current => this.setState({ current })
 
-												message.success('Your changes were saved', 5);
-												// client
-												// 	.mutate({
-												// 		mutation: launchOffer,
-												// 		variables: {
-												// 			id: data.createOffer.id,
-												// 		},
-												// 	})
-												// 	.then(({ data }) => {
-												// 		console.log('created offer', data);
-												// 		const { history } = this.props;
-												// 		history.push({
-												// 			pathname: OFFER_LIST,
-												// 		});
+	goToNextPage = async (current: number, e: any) => {
+		let { formValues } = this.state;
+		const { org_id }: any = jwt.decode(localStorage.getItem('jwt'))
+		if (e && e.target.innerText === 'Next') {
+			if (isValidObject(formValues.basicForm)) {
+				let basicForm: any = this.saveFormValues(current, 'basicForm', this.basicFormRef);
+				if (basicForm) {
+					let { productValues, locationValues } = this.state;
+					let reward = {}, reArrangedObj = {};
 
-												// 		message.success('Your changes were saved', 5);
-												// 	})
-												// 	.catch(error => {
-												// 		console.log('error', error);
-												// 		this.displayError(
-												// 			'newOfferErrorMessage',
-												// 			error && error.graphQLErrors[0]
-												// 				? error.graphQLErrors[0].message
-												// 				: 'Error in submitting the form'
-												// 		);
-												// 	});
-											})
-											.catch(error => {
-												console.log('error', error);
-												this.setState({ loading1: false })
-												this.displayError(
-													'newOfferErrorMessage',
-													error && error.graphQLErrors[0]
-														? error.graphQLErrors[0].message
-														: 'Error in submitting the form'
-												);
-											});
-									})
-									.catch(error => {
-										console.log('error', error);
-										this.setState({ loading1: false })
-										this.displayError(
-											'newOfferErrorMessage',
-											error && error.graphQLErrors[0]
-												? error.graphQLErrors[0].message
-												: 'Error in submitting the form'
-										);
-									});
-							})
-							.catch(error => {
-								console.log('error', error);
-								this.setState({ loading1: false })
-								this.displayError(
-									'newOfferErrorMessage',
-									error && error.graphQLErrors[0]
-										? error.graphQLErrors[0].message
-										: 'Error in submitting the form'
-								);
-							});
+					console.log('PV ', JSON.stringify(productValues) + " Lv " + JSON.stringify(locationValues));
+
+
+					reward[basicForm.offerType] = parseInt(basicForm.offerTypeValue);
+
+					let combinedArray = productValues.concat(locationValues);
+					let arr: Array<{}> = [];
+					combinedArray.map(val => { reArrangedObj[val.valueOne] = val.valueTwo });
+
+
+					console.log('FV', basicForm);
+
+					if (basicForm.transactionTime) {
+						if (basicForm.transactionTime == "cartValue")
+							arr.push({ attributeName: "cartValue", attributeValue: basicForm.cartValue, expressionType: basicForm.cartValueCondition })
+						else if (basicForm.transactionTime == "frequency") {
+							arr.push({ attributeName: "frequency_transaction", attributeValue: basicForm.noOfTransaction, expressionType: "EQUALS" })
+							arr.push({ attributeName: "frequency_days", attributeValue: basicForm.noOfDays, expressionType: "EQUALS" })
+						}
+						else if (basicForm.transactionTime == "dayPart") {
+							arr.push({ attributeName: "dayPart_startTime", attributeValue: moment(basicForm.startTime).format('h:mm:ss a'), expressionType: "EQUALS" })
+							arr.push({ attributeName: "dayPart_endTime", attributeValue: moment(basicForm.endTime).format('h:mm:ss a'), expressionType: "EQUALS" })
+						}
+
 					}
+
+					arr = [...arr, ...transposeObject(reArrangedObj && reArrangedObj, 'IN')]
+
+
+					// return console.log('>>', arr, reArrangedObj);
+
+					let basicFormArray = { rules: arr, combinator: 'AND' };
+
+					this.setState({ offerEligibityRule: basicFormArray, offerType: formValues.basicForm.offerType, loading1: true });
+
+					let ruleId = await this.createRule(basicFormArray, 'offerEligibityRuleId')
+
+					if (!ruleId) return console.log('Error in Rule Creation');
+
+					console.log('ruleInput >>> ', JSON.stringify(basicFormArray), ruleId);
+
+					const { offerEligibityRuleId, couponLableSelected, couponTypeSelected } = this.state;
+					let offerInput = {
+						name: formValues.basicForm.offerName,
+						offerType: formValues.basicForm.offerType,
+						reward: reward,
+						organizationId: org_id,
+						offerEligibilityRule: ruleId,
+						offerCategory: couponTypeSelected === 1 ? 'COUPONS' : 'AUTO_APPLY',
+						isCustomCoupon: couponTypeSelected === 1 ? true : false,
+						coupon: couponTypeSelected === 1 ? couponLableSelected : null,
+						// rewardRedemptionRule: data.createRule.id,
+					}
+
+					console.log('Create Offer Input', offerInput);
+					this.props.client
+						.mutate({ mutation: createOffer, variables: offerInput })
+						.then(({ data }) => {
+							console.log('created offer', data);
+							this.setState({ loading1: false, current, offerId: data.createOffer.id })
+							// this.props.history.push({ pathname: OFFER_LIST });
+							message.success('Your changes were saved', 5);
+						})
+						.catch(error => {
+							console.log('error', error);
+							this.setState({ loading1: false })
+							this.displayError('newOfferErrorMessage',
+								error && error.graphQLErrors[0] ? error.graphQLErrors[0].message : 'Error in submitting the form'
+							);
+						});
+
 				}
 			}
+		} else if (e && e.target.innerText === 'Save') {
+			let { formValues, timeLimitType } = this.state;
+			// if (this.state.offerId) {
+			this.saveFormValues(current, 'redemptionForm', this.redemptionRef);
+			console.log('>>', formValues.redemptionForm);
+			if (!isEmpty(formValues.redemptionForm)) {
+
+				let redemptionFormObject = this.state.formValues.redemptionForm;
+				redemptionFormObject[redemptionFormObject.type] = redemptionFormObject.cappingValue;
+
+				redemptionFormObject.redemption_time_limit = redemptionFormObject.redemption_time_limit + timeLimitType
+
+				let ommitedObject = omit(redemptionFormObject, ['type', 'cappingValue', ""]);
+				let redemptionArray = { rules: transposeObject(ommitedObject, 'EQUALS'), combinator: 'AND' };
+
+
+				// return console.log('>>', redemptionArray, formValues.redemptionForm);
+
+				this.setState({ loading1: true })
+				let ruleId = await this.createRule(redemptionArray, 'offerRedemptionRuleId')
+				if (!ruleId) return console.log('Error in Rule Creation');
+
+				console.log('ruleInput >>> ', JSON.stringify(redemptionArray), ruleId);
+
+				let offerInput = { id: this.state.offerId, rewardRedemptionRule: ruleId }
+
+				console.log('Create Offer Input', offerInput);
+				this.props.client
+					.mutate({ mutation: UPDATE_OFFER, variables: { input: offerInput } })
+					.then(({ data }) => {
+						console.log('Update offer', data);
+						this.setState({ loading1: false })
+						this.props.history.push({ pathname: OFFER_LIST });
+						message.success('Your changes were saved', 5);
+					})
+					.catch(error => {
+						console.log('error', error);
+						this.setState({ loading1: false })
+						// message.warn(error.graphQLErrors[0] ? error.graphQLErrors[0].message : 'Error in submitting the form')
+					});
+
+
+			} else {
+				this.props.history.push({ pathname: OFFER_LIST });
+				message.success('Your changes were saved', 5);
+			}
+			// } else message.warn("Complete and Save Basic Info First")
 		} else {
-			this.setState({
-				current: current,
-			});
+			//this.setState({ current: current });
 		}
 	};
 
@@ -599,88 +396,43 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 	};
 
 	isKeyExists = (obj, key) => {
-		if (obj[key]) {
-			return [obj[key]];
-		} else {
-			return [];
-		}
+		if (obj[key]) return [obj[key]];
+		else return [];
 	};
 
-	onSelectTwoValuesSelected = values => {
-		this.setState({
-			locationValues: values,
-		});
+	onSelectTwoValuesSelected = (values, str) => {
+		this.setState({ [str]: values });
 	};
 
 	onCouponChange = e => {
-		this.setState({
-			couponTypeSelected: e.target.value,
-		});
+		this.setState({ couponTypeSelected: e.target.value });
 	};
 
 	onCouponLabelChange = e => {
-		this.setState({
-			couponLableSelected: e.target.value,
-		});
+		this.setState({ couponLableSelected: e.target.value });
 	};
 
+	timeLimitTypeChange = e => this.setState({ timeLimitType: e })
+
 	render() {
-		const {
-			current,
-			loading1,
-			offerTypeStatus,
-			transactionTimeStatus,
-			productDropDown,
-			locationDropDown,
-			values,
-			newOfferErrorMessage,
-			couponTypeSelected,
-			productValues,
-			locationValues,
-			formValues,
-		} = this.state;
+		const { current, loading1, offerTypeStatus, transactionTimeStatus, productDropDown, locationValues,
+			locationDropDown, newOfferErrorMessage, couponTypeSelected, productValues, values, formValues } = this.state;
 		const { loading, error, categories, products, organizationHierarchy, subOrganizations } = this.props;
-		console.log(
-			'productsproductsproductsproducts',
-			products,
-			org_id,
-			subOrganizations
-		);
-		let productItems;
+
+		// console.log('productsproductsproductsproducts', products, subOrganizations);
+		let productItems = [];
 		if (productDropDown.showProductList == true) {
-			productItems =
-				products &&
-				products.map(el => ({
-					value: el.sku,
-					id: el.id,
-					title: el.name,
-				}));
+			productItems = products && products.map(el => ({ value: el.code, id: el.id, title: el.name }));
 		}
 		if (productDropDown.showCategoryList == true) {
-			productItems =
-				categories &&
-				categories
-					.map(el => ({
-						value: el.code,
-						id: el.id,
-						title: el.name,
-					}))
-					.concat([
-						{
-							value: 'all',
-							id: 'default',
-							title: 'All',
-						},
-					]);
+			productItems = categories && categories
+				.map(el => ({ value: el.code, id: el.id, title: el.name }))
+				.concat([{ value: 'all', id: 'default', title: 'All', }]);
+			// console.log('productItems>>', productItems);
 		}
 		if (productDropDown.showBrandList == true) {
 			productItems =
-				dummyBrandData &&
-				dummyBrandData.map(el => ({
-					value: el.val,
-					id: el.id,
-					title: el.title,
-				}));
+				dummyBrandData && dummyBrandData.map(el => ({ value: el.value, id: el.id, title: el.title }));
 		}
 		let locationArray;
 		if (locationDropDown.showCityList === true) {
@@ -732,89 +484,77 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 				<br /> <br /> <br />
 			</div>
 		}
-		if (error) {
-			return <p>{error}</p>;
-		}
+		// if (error) {
+		// 	return <p>{error}</p>;
+		// }
 		return (
 			<Fragment>
 				<div>
-					<CampaignHeader
-						children={
-							<Fragment>
-								<Col span={12}>
-									<h3 className="gx-text-grey paddingLeftStyle campaignHeaderTitleStyle">
-										Create Offer
-									</h3>
-								</Col>
-								<Col span={12} className="searchInputStyle">
-									<Stepper stepData={offerStepData} current={current} onChange={this.goToNextPage} />
-								</Col>
-							</Fragment>
-						}
-					/>
+					<WHeader title='Create Offer' extra={<Stepper stepData={offerStepData} current={current} onChange={this.changePage}
+					/>} />
 					{/* Each step is different step because the form has to be validated and saved as draft */}
-					<div className="stepperContainer">
-						<div style={{ margin: '10px' }}>
-							{current === 0 && (
-								<Fragment>
-									<div>
-										<h3 className="gx-text-grey subTitlePadding">Basic Information</h3>
-									</div>
-									<div className="offerBasicFormContainer">
-										<OfferBasicInfoForm
-											offerTypeData={offerTypeData}
-											handleOfferTypeChange={this.onOfferTypeChange}
-											offerTypeStatus={offerTypeStatus}
-											transactionTimeData={transactionTimeData}
-											productData={productData}
-											locationData={locationData}
-											handleTransactionTimeChange={this.onTransactionTimeChange}
-											transactionTimeStatus={transactionTimeStatus}
-											cartValueConditionData={cartValueConditionData}
-											wrappedComponentRef={this.saveFormRef}
-											cappingData={cappingData}
-											// handleProductChange={this.onProductChange}
-											productDropDown={productDropDown}
-											location={organizationHierarchy}
-											// handleLocationChange={this.onLocationChange}
-											locationDropDown={locationDropDown}
-											locationArray={locationArray}
-											values={values}
-											productItems={productItems}
-											onSelectOneValuesSelected={this.onValuesSelected}
-											onSelectTwoValuesSelected={this.onSelectTwoValuesSelected}
-											productValues={productValues}
-											locationValues={locationValues}
-											formValues={formValues.basicForm}
-											products={products}
-											couponDefaultValue={1}
-											onCouponChange={this.onCouponChange}
-											couponTypeSelected={couponTypeSelected}
-											couponInputLabel="Enter Coupon label"
-											onCouponLabelChange={this.onCouponLabelChange}
-											// OnNoCouponCodeChange={this.OnNoCouponCodeChange}
-											checked={true}
-											couponTypeData={couponTypeData}
-										/>
-									</div>
-									{newOfferErrorMessage !== '' && <Alert message={newOfferErrorMessage} type="error" />}
-								</Fragment>
-							)}
-							{current === 1 && (
-								<Fragment>
-									<div>
-										<h3 className="gx-text-grey subTitlePadding">Redemption Rules</h3>
-									</div>
-									<div className="offerBasicFormContainer">
-										<OfferRedemptionRulesForm
-											cappingData={cappingData}
-											wrappedComponentRef={this.saveRedemptionFormRef}
-											formValues={formValues.redemptionForm}
-										/>
-									</div>
-								</Fragment>
-							)}
-						</div></div>
+					<HyperXContainer margin='32px' headerHeightInPX={225}>
+						{current === 0 && (
+							<Fragment>
+								<h3 className="gx-text-grey subTitlePadding">Basic Information</h3>
+								<div className="offerBasicFormContainer">
+									<OfferBasicInfoForm
+										offerTypeData={offerTypeData}
+										handleOfferTypeChange={this.onOfferTypeChange}
+										offerTypeStatus={offerTypeStatus}
+										transactionTimeData={transactionTimeData}
+										productData={productData}
+										locationData={locationData}
+										handleTransactionTimeChange={this.onTransactionTimeChange}
+										transactionTimeStatus={transactionTimeStatus}
+										cartValueConditionData={cartValueConditionData}
+										wrappedComponentRef={this.saveFormRef}
+										cappingData={cappingData}
+										// handleProductChange={this.onProductChange}
+										productDropDown={productDropDown}
+										location={organizationHierarchy}
+										// handleLocationChange={this.onLocationChange}
+										locationDropDown={locationDropDown}
+										locationArray={locationArray}
+										values={values}
+										productItems={productItems}
+										onSelectOneValuesSelected={this.onValuesSelected}
+										onSelectTwoValuesSelected={this.onSelectTwoValuesSelected}
+										productValues={productValues}
+										locationValues={locationValues}
+										formValues={formValues.basicForm}
+										products={products}
+										couponDefaultValue={1}
+										onCouponChange={this.onCouponChange}
+										couponTypeSelected={couponTypeSelected}
+										couponInputLabel="Enter Coupon label"
+										onCouponLabelChange={this.onCouponLabelChange}
+										// OnNoCouponCodeChange={this.OnNoCouponCodeChange}
+										checked={true}
+										couponTypeData={couponTypeData}
+									/>
+								</div>
+								{newOfferErrorMessage !== '' && <Alert message={newOfferErrorMessage} type="error" />}
+							</Fragment>
+						)}
+						{current === 1 && (
+							<Fragment>
+								<div>
+									<h3 className="gx-text-grey subTitlePadding">Redemption Rules</h3>
+								</div>
+								<div className="offerBasicFormContainer">
+									<OfferRedemptionRulesForm
+										cappingData={cappingData}
+										wrappedComponentRef={this.saveRedemptionFormRef}
+										formValues={formValues.redemptionForm}
+										timeLimitTypeChange={this.timeLimitTypeChange}
+									/>
+								</div>
+							</Fragment>
+						)}
+
+					</HyperXContainer>
+
 					<div>
 						<div className="gx-card campFooter" style={{ position: 'absolute', width: '100%' }}>
 							<div className="gx-card-body" style={{ background: "#F6F6F6" }}>
@@ -838,39 +578,21 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 export default withApollo(
 	compose(
 		graphql(products, {
-			options: (props: IProps) => ({
-				variables: { organizationId: org_id },
-			}),
-			props: ({ data: { loading, error, products } }: any) => ({
-				loading,
-				products,
-				error,
-			}),
+			options: (props: IProps) => ({ variables: { organizationId: jwt.decode(localStorage.getItem('jwt'))['org_id'] } }),
+			props: ({ data: { loading, error, products } }: any) => ({ loading, products, error }),
 		}),
 		graphql(categories, {
-			options: () => ({
-				variables: {
-					catalogId: '2',
-				},
-			}),
-			props: ({ data: { loading, error, categories } }: any) => ({
-				loading,
-				categories,
-				error,
-			}),
+			options: () => ({ variables: { catalogId: '2' } }),
+			props: ({ data: { loading, error, categories } }: any) => ({ loading, categories, error }),
 		}),
 		graphql(subOrganizations, {
 			options: props => ({
 				variables: {
-					parentId: org_id,
+					parentId: jwt.decode(localStorage.getItem('jwt'))['org_id'],
 					type: 'STORE',
 				},
 			}),
-			props: ({ data: { loading, error, subOrganizations } }: any) => ({
-				loading,
-				subOrganizations,
-				error,
-			}),
+			props: ({ data: { loading, error, subOrganizations } }: any) => ({ loading, subOrganizations, error }),
 		})
 	)(NewOffer)
 );

@@ -16,34 +16,35 @@ const SLUG_TYPE = [
   "JSON"
 ];
 
-
 interface EntityVariablesFormProps {
-  entityExtendField: any,
-  onSave: (input: any) => void,
-  isLoading?: boolean
+  entityExtendField: any;
+  onSave: (input: any) => void;
+  isLoading?: boolean;
 }
 
 interface EntityVariablesFormState {
   entityExtendField: {
-    id?: string,
-    slug?: string,
-    help?: string,
-    label?: string,
-    type?: string,
-    required?: boolean,
-    defaultValue?: string,
-    searchable?: boolean,
-    choices?: any,
-    description?: any
-  }
+    id?: string;
+    slug?: string;
+    help?: string;
+    label?: string;
+    type?: string;
+    required?: boolean;
+    defaultValue?: string;
+    searchable?: boolean;
+    choices?: any;
+    description?: any;
+  };
 }
 
-export default class EntityVariablesForm extends React.Component<EntityVariablesFormProps, EntityVariablesFormState> {
+export default class EntityVariablesForm extends React.Component<
+  EntityVariablesFormProps,
+  EntityVariablesFormState
+> {
   constructor(props: EntityVariablesFormProps) {
     super(props);
     this.state = {
       entityExtendField: {
-        id: '',
         slug: "",
         help: "",
         label: "",
@@ -51,26 +52,33 @@ export default class EntityVariablesForm extends React.Component<EntityVariables
         required: false,
         defaultValue: "",
         searchable: false,
-        choices: '',
-        description: ''
+        choices: [],
+        description: ""
       }
     };
   }
 
   UNSAFE_componentWillMount() {
     let { entityExtendField } = this.props;
+    console.log(entityExtendField, "test");
+
     if (entityExtendField) {
       this.setState({ entityExtendField });
     }
   }
 
   onChange = (type: string, value: any) => {
-    this.setState((prevState: Readonly<EntityVariablesFormState>, props: Readonly<EntityVariablesFormProps>) => {
-      return {
-        ...prevState,
-        [type]: value
+    this.setState(
+      (
+        prevState: Readonly<EntityVariablesFormState>,
+        props: Readonly<EntityVariablesFormProps>
+      ) => {
+        return {
+          ...prevState,
+          [type]: value
+        };
       }
-    });
+    );
   };
 
   onSave = () => {
@@ -94,7 +102,9 @@ export default class EntityVariablesForm extends React.Component<EntityVariables
         >
           <div className="entityVariableFormTitle">{header}</div>
           <div className="entityVariableInputWrapper">
-            <div className="InputLabel">Label</div>
+            <div className="InputLabel">
+              Label<span className="requiredFieldRedColor">*</span>
+            </div>
             <Input
               size="large"
               placeholder="Label"
@@ -113,7 +123,9 @@ export default class EntityVariablesForm extends React.Component<EntityVariables
 
           <div className="entityVariableFlexWrapper">
             <div className="entityVariableInputWrapper width45percent">
-              <div className="InputLabel">Slug</div>
+              <div className="InputLabel">
+                Slug<span className="requiredFieldRedColor">*</span>
+              </div>
 
               <Input
                 size="large"
@@ -130,10 +142,18 @@ export default class EntityVariablesForm extends React.Component<EntityVariables
                 Short description about above field.
               </div>
             </div>
-            <div className="entityVariableInputWrapper width45percent">
-              <div className="InputLabel">Type</div>
+            <div
+              id="EntityInputWrapper"
+              className="entityVariableInputWrapper width45percent"
+            >
+              <div className="InputLabel">
+                Type<span className="requiredFieldRedColor">*</span>
+              </div>
 
               <Select
+                getPopupContainer={() =>
+                  document.getElementById("EntityInputWrapper")
+                }
                 style={{ width: "100%" }}
                 defaultValue={entityExtendField.type}
                 size="large"
@@ -145,7 +165,9 @@ export default class EntityVariablesForm extends React.Component<EntityVariables
                 }}
               >
                 {SLUG_TYPE.map((type, index) => (
-                  <Option value={type}>{type}</Option>
+                  <Option key={`type${index}`} value={type}>
+                    {type}
+                  </Option>
                 ))}
               </Select>
               <div className="inputDesc">
@@ -156,7 +178,7 @@ export default class EntityVariablesForm extends React.Component<EntityVariables
 
           {entityExtendField.type === "CHOICES" && (
             <div className="entityVariableInputWrapper">
-              <div className="InputLabel">Label</div>
+              <div className="InputLabel">List of choices</div>
               <Select
                 size="large"
                 mode="tags"
@@ -169,6 +191,9 @@ export default class EntityVariablesForm extends React.Component<EntityVariables
                     choices: event
                   });
                 }}
+                getPopupContainer={() =>
+                  document.getElementById("EntityInputWrapper")
+                }
               />
               <div className="inputDesc">
                 Short description about above field.
@@ -178,7 +203,9 @@ export default class EntityVariablesForm extends React.Component<EntityVariables
 
           <div className="entityVariableFlexWrapper">
             <div className="entityVariableInputWrapper width45percent">
-              <div className="InputLabel">Default Value</div>
+              <div className="InputLabel">
+                Default Value<span className="requiredFieldRedColor">*</span>
+              </div>
 
               <Input
                 size="large"
@@ -196,7 +223,9 @@ export default class EntityVariablesForm extends React.Component<EntityVariables
               </div>
             </div>
             <div className="entityVariableInputWrapper width45percent">
-              <div className="InputLabel">Description</div>
+              <div className="InputLabel">
+                Description<span className="requiredFieldRedColor">*</span>
+              </div>
 
               <Input
                 size="large"
@@ -254,6 +283,14 @@ export default class EntityVariablesForm extends React.Component<EntityVariables
             </div>
           </div>
           <Button
+            disabled={
+              !(
+                entityExtendField.slug &&
+                entityExtendField.label &&
+                entityExtendField.description &&
+                entityExtendField.defaultValue
+              )
+            }
             className="button"
             type="primary"
             size="large"

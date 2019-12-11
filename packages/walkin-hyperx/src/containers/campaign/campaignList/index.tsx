@@ -1,4 +1,4 @@
-import './style.css';
+import '../styles.css';
 
 import { CampaignHeader, InstantSearch, SortableDataTable } from '@walkinsole/shared';
 import { Widget } from '@walkinsole/walkin-components';
@@ -6,19 +6,20 @@ import { Button, Col, Dropdown, Icon, Menu, Progress, Tabs } from 'antd';
 import jwt from 'jsonwebtoken';
 import moment from 'moment';
 import * as React from 'react';
-import { compose, graphql, withApollo } from 'react-apollo';
+import { compose, graphql, withApollo, ApolloProviderProps } from 'react-apollo';
 import { RouteChildrenProps } from 'react-router';
 import { withRouter } from 'react-router-dom';
 
-import { campaigns, DISABLE_CAMPAIGN } from '../../../query/campaign';
-import { DEFAULT_ACTIVE_STATUS, DEFAULT_HYPERX_CAMPAIGN } from '../../../utils';
-import { CAMPAIGN_DASHBOARD, NEW_CAMPAIGN } from '../../../utils/RouterConstants';
+import { campaigns, DISABLE_CAMPAIGN, VIEW_HYPERX_CAMPAIGNS } from '../../../query/campaign';
+import { DEFAULT_ACTIVE_STATUS, DEFAULT_HYPERX_CAMPAIGN } from '../../../constants';
+import { CAMPAIGN_DASHBOARD, NEW_CAMPAIGN } from '../../../constants/RouterConstants';
 import HyperXContainer from '../../../components/atoms/HyperXContainer';
+import { WHeader } from '@walkinsole/shared/src';
 
-const { org_id, id }: any = jwt.decode(localStorage.getItem("jwt"));
+
 const { TabPane } = Tabs;
 
-interface CampaignListProps extends RouteChildrenProps {
+interface CampaignListProps extends RouteChildrenProps, ApolloProviderProps<any> {
   campaigns?: any
   loading?: any
   disableCampaign?: any
@@ -50,33 +51,47 @@ class CampaignList extends React.Component<CampaignListProps, Partial<CampaignLi
       allCampaigns: null,
       data: null,
       loading: false,
-      key: this.props.location.tabKey ? this.props.location.tabKey : '1'
+      key: this.props.location.state ? this.props.location.state.tabKey ? this.props.location.state.tabKey : '1' : '1'
     };
   }
-  componentDidMount() {
-    const { campaigns, loading } = this.props;
-    this.setState({ loading: loading })
+
+  componentWillMount() {
+    this.setState({ loading: true })
+    this.props.client.query({
+      query: VIEW_HYPERX_CAMPAIGNS,
+      variables: {
+        input: {
+          organizationId: jwt.decode(localStorage.getItem("jwt"))['org_id'],
+          status: DEFAULT_ACTIVE_STATUS,
+          // campaignType: DEFAULT_HYPERX_CAMPAIGN
+        }
+      }, fetchPolicy: 'network-only'
+    }).then(res => {
+
+      let allCampaigns = res.data.viewCampaignsForHyperX.map(c =>
+        ({ ...c.campaign, reached: c.reached, audienceCount: c.audienceCount, redemptionRate: c.redemptionRate }))
+      this.setState({ loading: false, allCampaigns }, () => this.onTabChange(this.state.key));
+
+    }).catch(err => {
+      this.setState({ loading: false });
+      console.log("Failed to get Campaigns" + err);
+    });
   }
 
 
-  componentDidUpdate(preValue: any) {
-    if (this.props.loading !== preValue.loading) {
-      this.setInitialValues()
-      console.log(this.props)
-    }
-  }
-
-  // componentWillReceiveProps = p => {
-  // 	this.setInitialValues()
+  // componentDidUpdate(preValue: any) {
+  //   if (this.props.loading !== preValue.loading) {
+  //     this.setInitialValues()
+  //   }
   // }
 
-  setInitialValues = () => {
-    const { campaigns, loading } = this.props;
-    this.setState({ allCampaigns: campaigns, loading: false }, () => {
-      this.onTabChange(this.state.key)
-    })
+  // setInitialValues = () => {
+  //   const { campaigns, loading } = this.state;
+  //   this.setState({ allCampaigns: campaigns, loading: false }, () => {
+  //     this.onTabChange(this.state.key)
+  //   })
+  // }
 
-  }
   onNewCampaign = () => {
     const { history } = this.props;
     history.push({
@@ -177,9 +192,8 @@ class CampaignList extends React.Component<CampaignListProps, Partial<CampaignLi
     if (!allCampaigns || allCampaigns.length < 1) return
     if (key == 2) {
       let upcomingCampaigns = allCampaigns.filter((val: any) => {
-        if (val.status == 'ACTIVE') {
-          return val.campaignStatus == 'LIVE' && moment(val.startTime).isAfter(moment());
-        }
+        if (val.status == 'ACTIVE')
+          return val.campaignStatus == "PRE_LIVE_PROCESSING" || (val.campaignStatus == 'LIVE' && moment(val.startTime).isAfter(moment()));
       });
       this.setState({ data: upcomingCampaigns, filtered: null });
     }
@@ -187,7 +201,8 @@ class CampaignList extends React.Component<CampaignListProps, Partial<CampaignLi
     if (key == 3) {
       let completedCampaigns = allCampaigns.filter((val: any) => {
         if (val.status == 'ACTIVE') {
-          return moment(val.endTime).isBefore(moment());
+          // return moment(val.endTime).isBefore(moment());
+          return val.campaignStatus == "COMPLETED"
         }
       });
       this.setState({ data: completedCampaigns, filtered: null });
@@ -265,6 +280,20 @@ class CampaignList extends React.Component<CampaignListProps, Partial<CampaignLi
         },
       },
       {
+        title: 'Audience Size',
+        dataIndex: 'audienceCount',
+        key: 'audienceCount',
+      },
+      {
+        title: 'Reached',
+        dataIndex: 'reached',
+        key: 'reached',
+      }, {
+        title: 'Redemption Rate',
+        dataIndex: 'redemptionRate',
+        key: 'redemptionRate',
+      },
+      {
         title: 'Priority',
         dataIndex: 'priority',
         key: 'priority',
@@ -288,20 +317,21 @@ class CampaignList extends React.Component<CampaignListProps, Partial<CampaignLi
     ];
     return (
       <div>
-        <CampaignHeader
+        {/* <CampaignHeader
           children={
             <React.Fragment>
               <Col span={12}>
                 <h3 className="gx-text-grey paddingLeftStyle campaignHeaderTitleStyle">Campaigns</h3>
               </Col>
-              <Col className="searchInputStyle" span={12}>
+              <Col style={{ display: 'flex', justifyContent: 'flex-end' }} span={12}>
                 <Button type="primary" style={{ marginBottom: 0 }} onClick={this.onNewCampaign}>
                   CREATE CAMPAIGN
 								</Button>
               </Col>
             </React.Fragment>
           }
-        />
+        /> */}
+        <WHeader title='Campaigns' extra={<Button type="primary" style={{ marginBottom: 0 }} onClick={this.onNewCampaign}>CREATE CAMPAIGN</Button>} />
         {/* // <div className="gx-card" style={{ margin: '32px' }}>
 					// 	<div className="gx-card-body">
 					// 		<div className="searchInputStyle">
@@ -311,9 +341,9 @@ class CampaignList extends React.Component<CampaignListProps, Partial<CampaignLi
 					// 				onFilteredList={this.onCampaignFilteredList}
 					// 			/>
 					// 		</div> */}
-        <HyperXContainer margin='32px' headerHeightInPX={152}>
+        <HyperXContainer margin='32px' headerHeightInPX={160}>
           <div className="HyperX-campaignList">
-            <Widget title="Campaign List" styleName="gx-card-tabs"
+            <Widget styleName="gx-card-tabs"
               extra={
                 <InstantSearch
                   placeHolder="Search campaign"
@@ -354,30 +384,34 @@ class CampaignList extends React.Component<CampaignListProps, Partial<CampaignLi
 
 export default withRouter(
   compose(
-    graphql(campaigns, {
-      options: () => ({
-        variables: {
-          organization_id: org_id,
-          status: DEFAULT_ACTIVE_STATUS,
-          campaignType: DEFAULT_HYPERX_CAMPAIGN
-        }, fetchPolicy: "network-only",
-        forceFetch: true
-      }),
-      props: ({ data: { loading, error, campaigns, refetch } }: any) => ({
-        loading, campaigns, error,
-        changeStatus: (status: any) => {
-          refetch({
-            variables: {
-              organization_id: org_id,
-              status: DEFAULT_ACTIVE_STATUS,
-              campaignType: DEFAULT_HYPERX_CAMPAIGN
-            }, fetchPolicy: "network-only"
-          });
-        },
-      }),
-    }),
+    // graphql(campaigns, {
+    //   options: () => {
+    //     const { org_id }: any = jwt.decode(localStorage.getItem("jwt"));
+    //     return ({
+    //       variables: {
+    //         organization_id: org_id,
+    //         status: DEFAULT_ACTIVE_STATUS,
+    //         campaignType: DEFAULT_HYPERX_CAMPAIGN
+    //       }, fetchPolicy: "network-only",
+    //       forceFetch: true
+    //     })
+    //   },
+    //   props: ({ data: { loading, error, campaigns, refetch } }: any) => ({
+    //     loading, campaigns, error,
+    //     changeStatus: (status: any) => {
+    //       const { org_id }: any = jwt.decode(localStorage.getItem("jwt"));
+    //       refetch({
+    //         variables: {
+    //           organization_id: org_id,
+    //           status: DEFAULT_ACTIVE_STATUS,
+    //           campaignType: DEFAULT_HYPERX_CAMPAIGN
+    //         }, fetchPolicy: "network-only"
+    //       });
+    //     },
+    //   }),
+    // }),
     graphql(DISABLE_CAMPAIGN, {
       name: "disableCampaign"
     }),
-  )(CampaignList)
+  )(withApollo(CampaignList))
 );

@@ -17,6 +17,8 @@ import HooksListCard from "./HooksListCard";
 // const text = <code></code>
 
 const Option = Select.Option;
+const jwtData: any = jwt.decode(localStorage.getItem("jwt"));
+
 
 const formItemLayout = {
   labelCol: {
@@ -101,7 +103,7 @@ class Hooks extends React.Component<iProps, iState> {
   UNSAFE_componentWillMount() {
     this.getWebhooks();
     this.props.client
-      .query({ query: LIST_WEBHOOK_EVENTS })
+      .query({ query: LIST_WEBHOOK_EVENTS, variables: { org_id: jwtData.org_id, status: "ACTIVE" } })
       .then(res => {
         console.log(res.data.webhookEventTypes);
         this.setState({ eventTypes: res.data.webhookEventTypes });
@@ -111,8 +113,6 @@ class Hooks extends React.Component<iProps, iState> {
 
   getWebhooks = () => {
     this.setState({ spin: true });
-
-    const jwtData: any = jwt.decode(localStorage.getItem("jwt"));
 
     jwtData
       ? this.props.client
@@ -178,7 +178,6 @@ class Hooks extends React.Component<iProps, iState> {
       this.setState({ errors, loading: false });
       console.log("Errors in submition" + Object.keys(errors).length);
     } else {
-      const { org_id }: any = jwt.decode(localStorage.getItem("jwt"));
 
       if (this.state.update) {
         this.props.client
@@ -212,7 +211,7 @@ class Hooks extends React.Component<iProps, iState> {
                 method: this.state.method,
                 url: this.state.url,
                 headers: this.state.headers,
-                organization_id: org_id
+                organization_id: jwtData.org_id
               }
             }
           })
@@ -332,35 +331,23 @@ class Hooks extends React.Component<iProps, iState> {
               <span style={{ color: "Red" }}> {this.state.errors.hookName} </span>
             </Form.Item> */}
 
-            {this.state.update ? (
-              ""
-            ) : (
-                <Form.Item {...formItemLayout} label="Event Type">
-                  <Select
-                    showSearch
-                    size="large"
-                    style={{ width: "100%" }}
-                    placeholder="Select Event Type"
-                    // value = { auth.user.organization.name }
-                    optionFilterProp="children"
-                    onChange={this.onChange}
-                  // onSearch={onSearch}
-                  >
-                    {options}
-                  </Select>
-                  <span style={{ color: "Red" }}>{this.state.errors.event}</span>
-                </Form.Item>
-              )}
+            {this.state.update ? "" :
+              <Form.Item {...formItemLayout} label="Event Type">
+                <Select showSearch size="large" getPopupContainer={(triggerNode: any) => triggerNode.parentNode}
+                  style={{ width: "100%" }} placeholder="Select Event Type" // value = { auth.user.organization.name }
+                  optionFilterProp="children" onChange={this.onChange}
+                // onSearch={onSearch}
+                >
+                  {options}
+                </Select>
+                <span style={{ color: "Red" }}>{this.state.errors.event}</span>
+              </Form.Item>
+            }
 
             <Form.Item {...formItemLayout} label="Method">
-              <Select
-                size="large"
-                style={{ width: "100%" }}
-                placeholder="Select method"
-                optionFilterProp="children"
-                value={this.state.method}
-                onChange={this.onChangeMethod}
-              // onSearch={onSearch}
+              <Select size="large" style={{ width: "100%" }} placeholder="Select method" optionFilterProp="children"
+                value={this.state.method} getPopupContainer={(triggerNode: any) => triggerNode.parentNode}
+                onChange={this.onChangeMethod} // onSearch={onSearch}
               >
                 <Option value="POST">POST</Option>
                 <Option value="GET">GET</Option>

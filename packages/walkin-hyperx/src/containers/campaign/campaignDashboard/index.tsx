@@ -1,12 +1,12 @@
-import React, { Component, Fragment } from 'react'
-import { CampaignHeader } from '@walkinsole/walkin-components'
-import { Button, Row, Col, Spin, message } from 'antd'
-import { campaignOverview as Overview } from "@walkinsole/shared";
-import { GET_CAMPAIGN_DASHBOARD, UPDATE_CAMPAIGN, LAUNCH_CAMPAIGN, PAUSE_CAMPAIGN, UNPAUSE_CAMPAIGN, ABANDON_CAMPAIGN, VIEW_CAMPAIGN, PREPROCESS_LAUNCH_CAMPAIGN } from '../../../query/campaign'
-import { withApollo, graphql, compose, ApolloProviderProps } from 'react-apollo';
-import { withRouter } from 'react-router-dom';
+import { campaignOverview as Overview, WHeader } from '@walkinsole/shared';
+import { message, Spin } from 'antd';
 import moment from 'moment';
-import { RouteChildrenProps, RouteComponentProps } from "react-router";
+import React, { Component } from 'react';
+import { ApolloProviderProps, compose, graphql, withApollo } from 'react-apollo';
+import { RouteChildrenProps } from 'react-router';
+import { withRouter } from 'react-router-dom';
+
+import { ABANDON_CAMPAIGN, PAUSE_CAMPAIGN, PREPROCESS_LAUNCH_CAMPAIGN, UNPAUSE_CAMPAIGN, VIEW_CAMPAIGN } from '../../../query/campaign';
 
 
 interface IProps extends RouteChildrenProps<any>, ApolloProviderProps<any> {
@@ -65,12 +65,16 @@ class CampaignDashboard extends Component<IProps, Partial<IState>> {
         }).then(data => {
             console.log("campaign data..", data);
             message.success('Campaign Launched')
-            moment().isBetween(this.props.location.state.campaignSelected.startTime, this.props.location.state.campaignSelected.endTime) ?
-                this.props.history.push('/hyperx/campaigns')
-                : this.props.history.push({
-                    pathname: '/hyperx/campaigns', //tabKey: "2"
-                    state: { tabKey: "2" }
-                })
+            // moment().isBetween(this.props.location.state.campaignSelected.startTime, this.props.location.state.campaignSelected.endTime) ?
+            //     this.props.history.push('/hyperx/campaigns')
+            //     : this.props.history.push({
+            //         pathname: '/hyperx/campaigns', //tabKey: "2"
+            //         state: { tabKey: "2" }
+            //     })
+            this.props.history.push({
+                pathname: '/hyperx/campaigns', //tabKey: "2"
+                state: { tabKey: "2" }
+            })
         }).catch(err => {
             console.log("Error Update campaign", err)
             this.setState({ loading: false })
@@ -142,15 +146,7 @@ class CampaignDashboard extends Component<IProps, Partial<IState>> {
         let { campaign, audiences, offers, communications } = this.state
         return (
             <div>
-
-                <CampaignHeader
-                    children={
-                        <Col span={12}>
-                            <h2 className="gx-text-grey paddingLeftStyle campaignHeaderTitleStyle">Campaign Dashboard</h2>
-                        </Col>
-                    }
-                />
-                {console.log('>>', this.props.campaign)}
+                <WHeader title='Campaign Dashboard' />
                 {
                     this.state.spin ?
                         <div>

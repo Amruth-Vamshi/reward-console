@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 export const campaigns = gql`
-	query campaigns($status: STATUS!,$campaignType:String,$organization_id:ID) {
+	query campaigns($status: STATUS!,$campaignType:[String],$organization_id:ID) {
 		campaigns(status: $status,campaignType:$campaignType,organization_id: $organization_id) {
 			id name priority
       campaignStatus
@@ -11,6 +11,14 @@ export const campaigns = gql`
 		}
 	}
 `;
+
+export const VIEW_HYPERX_CAMPAIGNS = gql`
+query viewCampaignsForHyperX($input: HyperXCampaignInput){
+  viewCampaignsForHyperX(input: $input){
+    campaign{ id name priority campaignStatus description startTime endTime status }
+    audienceCount reached redemptionRate
+  }
+}`
 
 export const GET_CAMPAIGN = gql`
   query campaign($id: ID!) {

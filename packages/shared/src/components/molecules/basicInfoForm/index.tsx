@@ -21,9 +21,7 @@ const BasicInfoForm = Form.create<iProps>({ name: "form_in_modal" })(
     checkStart = (rule: any, value: any, callback: any): any => {
       const { validateFields } = this.props.form;
       const { edit } = this.props;
-      if (edit) {
-        callback();
-      }
+      if (edit) callback();
       const start = value;
       if (start.valueOf() < moment()) {
         callback("start time should not be less than present time");
@@ -34,31 +32,21 @@ const BasicInfoForm = Form.create<iProps>({ name: "form_in_modal" })(
     };
 
     checkEnd = (rule: any, value: any, callback: any) => {
-      const { edit }: any = this.props;
-      if (edit) {
-        return callback();
-      }
+      if (!value) callback();
+      if (this.props.edit) callback();
       const end = value;
+      console.log('value', value);
       const { getFieldValue } = this.props.form;
       const start = getFieldValue("startTime");
       if (end.valueOf() < start.valueOf()) {
         callback("end time should not be less than start time");
-      } else {
-        callback();
-      }
+      } else callback();
     };
 
     render() {
-      const {
-        form,
-        onFormNext,
-        wrappedComponentRef,
-        formValues = {},
-        text,
-        edit
-      } = this.props;
+      const { form, onFormNext, wrappedComponentRef, formValues = {}, text, edit } = this.props;
       let startTime = moment().add(10, "m");
-      let endTime;
+      let endTime //= moment().add(1, "d");
       if (Object.keys(formValues).length != 0) {
         startTime = moment(formValues.startTime);
         endTime = moment(formValues.endTime);
@@ -77,33 +65,19 @@ const BasicInfoForm = Form.create<iProps>({ name: "form_in_modal" })(
         <Form layout="vertical" ref={wrappedComponentRef} onSubmit={onFormNext}>
           <Form.Item label="Campaign name" {...formItemLayout}>
             {getFieldDecorator("name", {
-
-              initialValue: `${
-                Object.keys(formValues).length != 0
-                  ? formValues.name
-                    ? formValues.name
-                    : ""
-                  : ""
-                }`,
+              initialValue: `${Object.keys(formValues).length != 0 ? formValues.name ? formValues.name : "" : ""}`,
               rules: [{ required: true, message: "Name is required" }]
-            })(<Input value={formValues.name} maxLength={80} size="large" />)}
+            })(<Input maxLength={80} size="large" />)}
           </Form.Item>
+
           <Form.Item label="Description" {...formItemLayout}>
             {getFieldDecorator("description", {
-              initialValue: `${
-                Object.keys(formValues).length != 0
-                  ? formValues.description
-                    ? formValues.description
-                    : ""
-                  : ""
-                }`
+              initialValue: `${Object.keys(formValues).length != 0 ? formValues.description ? formValues.description : "" : ""}`
             })(<Input type="textarea" size="large" />)}
           </Form.Item>
-          <Form.Item
-            style={{ display: "inline-block", width: "calc(50% - 12px)" }}
-            label="Start date"
-            {...dateItemLayout}
-          >
+
+          <Form.Item style={{ display: "inline-block", width: "calc(50% - 12px)" }} label="Start date" {...dateItemLayout} >
+
             {getFieldDecorator("startTime", {
               initialValue: startTime,
               rules: [
@@ -111,18 +85,13 @@ const BasicInfoForm = Form.create<iProps>({ name: "form_in_modal" })(
                   type: "object",
                   required: true,
                   message: "Please select start time!",
-
-                  validator: this.checkStart
-                }
+                }, { validator: this.checkStart }
               ],
 
             })(<DatePicker showTime format="DD-MM-YYYY HH:mm:ss" />)}
           </Form.Item>
-          <Form.Item
-            style={{ display: "inline-block", width: "calc(50% - 12px)" }}
-            label="End date"
-            {...dateItemLayout}
-          >
+
+          <Form.Item style={{ display: "inline-block", width: "calc(50% - 12px)" }} label="End date" {...dateItemLayout}>
             {getFieldDecorator("endTime", {
               initialValue: endTime,
               rules: [
@@ -130,8 +99,8 @@ const BasicInfoForm = Form.create<iProps>({ name: "form_in_modal" })(
                   type: "object",
                   required: true,
                   message: "Please select end time!",
-                  validator: this.checkEnd
-                }]
+                }, { validator: this.checkEnd }
+              ]
             })(<DatePicker showTime format="DD-MM-YYYY HH:mm:ss" />)}
           </Form.Item>
         </Form>

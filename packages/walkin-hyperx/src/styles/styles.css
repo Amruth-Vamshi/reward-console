@@ -13,36 +13,63 @@
   float: left;
 }
 
-.NearX-Main {
+.HyperX-Main {
   min-height: 100%;
-  background-color: #e6e6e6;
+  background-color: #ececec;
   overflow: inherit;
 }
 
 .HyperX-Sidebar .ant-menu-item {
-  font-size: 19px;
-  margin-bottom: 20px;
+  font-size: 20px !important;
+  line-height: 50px !important;
+  height: auto !important;
+  /* margin-bottom: 25px !important; */
 }
 
 .HyperX-Sidebar .ant-menu {
-  padding-top: 20px;
+  padding-top: 20px !important;
 }
 
 .HyperX-Sidebar .ant-menu-inline .ant-menu-item:not(:last-child) {
-  margin-bottom: 5px;
+  margin-bottom: 5px !important;
 }
 
-.HyperX-Logo {
-  background-color: #37474f;
+.HyperX-Logo .anticon{
+  color: #5f5f5f;
 }
+
+.sidebar-icon{
+  color: #ececec;
+}
+
+/* .HyperX-Logo .gx-layout-sider-dark .gx-layout-sider-header{
+  background-color: 'inherit';
+} */
+
+.HyperX-Logo .gx-layout-sider-header{
+  background-color: #ffffff !important;
+}
+
+/* .HyperX-Logo{
+  background-color: #37474f !important;
+} */
 
 .HyperX-Sidebar .ant-menu-dark {
-  background-color: #37474f;
+	background-color: #0e0e5a !important;
+}
+
+.HyperX-Sidebar{
+
+  /* background-color: #37474f !important; */
+  background-color: #0e0e5a !important;
+  overflow: hidden;
 }
 
 .HyperX-Topbar {
-  background-color: #455a64;
-  background-image: linear-gradient(to left, #607d8b, #37474f);
+  /* background-color: #455a64 !important;
+  background-image: linear-gradient(to left, #607d8b, #37474f) !important; */
+
+  background-color: #ffffff !important;
 }
 
 .HyperX-Sidebar .ant-menu-dark .ant-menu-item-selected > a {
@@ -51,3 +78,21 @@
 }
 
 /* background-image: linear-gradient(to right, #052c53 , #4cc3c7); */
+
+.ant-layout{
+  overflow: hidden !important;
+}
+
+.collapseBarStyle{
+  position: absolute !important;
+  bottom: 0px !important;
+  width: 100% !important;
+  background-color: #0b0b4b !important;
+  border: 2px solid #5a5a5a;
+  overflow: hidden;
+  border-width: 1px 0 0 0;
+}
+
+.collapseBarStyle .gx-text-white {
+  font-size: large !important;
+}

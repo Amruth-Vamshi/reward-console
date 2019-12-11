@@ -1,5 +1,5 @@
 import * as React from "react";
-import { CampaignHeader, Popup } from "@walkinsole/walkin-components";
+import { CampaignHeader, Popup } from "@walkinsole/shared";
 import { Col, Button, Alert, Breadcrumb, Modal, Spin, Icon } from "antd";
 import OrgCardDetails from "../../components/orgCardDetails";
 import { Query, withApollo, ApolloProviderProps } from "react-apollo";
@@ -23,7 +23,7 @@ interface OrganizationCacheProps {
 
 interface OrganizationInfoProps
   extends ApolloProviderProps<OrganizationCacheProps>,
-    RouteComponentProps<OrganizationRouterProps> {
+  RouteComponentProps<OrganizationRouterProps> {
   organization: object;
   loading: boolean;
   error: string;
@@ -41,7 +41,7 @@ interface OrganizationInfoState {
 class OrganizationInfo extends React.Component<
   OrganizationInfoProps,
   OrganizationInfoState
-> {
+  > {
   formRef: any;
   constructor(props: OrganizationInfoProps) {
     super(props);
@@ -170,7 +170,7 @@ class OrganizationInfo extends React.Component<
       // 	</Fragment>
       // ),
       onOk() {
-        return new Promise((resolve, reject) => {}).catch(() =>
+        return new Promise((resolve, reject) => { }).catch(() =>
           console.log("Oops errors!")
         );
 
@@ -193,7 +193,7 @@ class OrganizationInfo extends React.Component<
         // 		);
         // 	});
       },
-      onCancel() {}
+      onCancel() { }
     });
   }
   render() {

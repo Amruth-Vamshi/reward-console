@@ -1,10 +1,22 @@
-.QuestionnaireArea {
-  height: calc(100vh - 300px);
-}
 
-.divCenter {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	height: 100%;
-}
+/* for questionnaire div height use min-height always */
+
+.QuestionnaireArea {
+	min-height: calc(100vh - 300px) !important;
+  }
+  
+  .divCenter {
+	  display: flex !important;
+	  justify-content: center !important;
+	  align-items: center !important;
+	  height: 100% !important;
+  }
+  
+  .QuestionType {
+	  min-height: calc(100vh - 100px) !important;
+  }
+
+  .QuestionTypeLoader {
+	  margin-top: 20px;
+  }
+  

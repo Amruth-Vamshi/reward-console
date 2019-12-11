@@ -28,5 +28,8 @@
   },
   "workspaces": [
     "packages/*"
-  ]
+  ],
+  "dependencies": {
+    "node": "^13.1.0"
+  }
 }

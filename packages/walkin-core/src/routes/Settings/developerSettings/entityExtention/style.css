@@ -8,7 +8,7 @@
   color: #333333;
   margin-bottom: 20px;
 }
-.headerTitle {
+.entityExtentionheaderTitle {
   font-size: 30px;
   letter-spacing: 0;
 }
@@ -46,7 +46,9 @@
 .boxborder1 {
   border: 1px solid #cccccc;
 }
-
+.requiredFieldRedColor {
+  color: red;
+}
 /* Entity variable form */
 
 .width75percent {
@@ -77,6 +79,7 @@
 }
 .entityVariableInputWrapper {
   margin: 20px 0;
+  position: relative;
 }
 
 .alignCenter {
@@ -103,7 +106,7 @@
 }
 
 .noHeightTable .ant-table-content {
-  height: 0;
+  display: none;
 }
 .entityExtendcolumn {
   text-align: left;

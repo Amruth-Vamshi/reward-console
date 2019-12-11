@@ -1,14 +1,12 @@
 import "./Create.css";
 import * as React from "react";
-import { Row, Col, Button } from "antd";
+import { Row, Col, Button  , message} from "antd";
 import CampaignConfig from "../Edit/Campaign";
 // import Audience from "./Audience";
 import Audience from "@walkinsole/shared/src/components/campaignCreation/audience";
 import {
-  CampaignFooter,
-  CampaignHeader,
-  CircularProgress
-} from "@walkinsole/walkin-components";
+  CampaignFooter
+} from "@walkinsole/shared";
 import "@walkinsole/shared/src/components/campaignCreation/audience/style.css";
 import Comm from "@walkinsole/shared/src/components/campaignCreation/communication";
 // import Communication from "../Edit/Communication";
@@ -161,9 +159,8 @@ class CreateCampaign extends React.Component<CreateCampaignProps,CreateCampaignS
           formName: formName
         }
       });
-      return createFeedbackForm;
-
       console.log(createFeedbackForm);
+      return createFeedbackForm;
     } catch (err) {
       console.log(err);
     }
@@ -225,6 +222,28 @@ class CreateCampaign extends React.Component<CreateCampaignProps,CreateCampaignS
       const form =
         this.formRef && this.formRef.props && this.formRef.props.form;
       if (form) {
+        
+        let name = form.getFieldValue("name")
+        let startTime = form.getFieldValue("startTime")
+        let endTime =  form.getFieldValue("endTime")
+
+        if((name.length === 0 || name === undefined || name === null))
+        {
+            message.warning("Survey name is mandatory")
+            return
+        }
+        if(startTime === undefined || startTime === null)
+        {
+          message.warning("Start Date is mandatory")
+          return
+        }
+
+        if(endTime === undefined || endTime === null)
+        {
+          message.warning("End Date is mandatory")
+          return
+        }
+
         form.validateFields(async (err, values) => {
           if (err) {
             return;
@@ -518,26 +537,24 @@ class CreateCampaign extends React.Component<CreateCampaignProps,CreateCampaignS
         }
         />
         <div className="stepperContainer">
-        <div style={{ margin: '30px 30px 30px 10px', height: '60vh' }}>
+        <div style={{ margin: '20px 20px 20px 30px', height: '68vh' }}>
          {this.getContainer()}
         </div>
          
         </div>
        
-         
-        <div style={{}}>
-        <div className="gx-card campFooter" style={{ position: 'absolute', width: '100%' }}>
-        <div className="gx-card-body" style={{ background: "#F6F6F6" }}>
-        <CampaignFooter
-            loading={this.state.loading}
-            nextButtonText={current>=5?"Launch" : 'Save and Next'}
-            saveDraftText={current === 0 ? "" : 'Save Draft'}
-            saveDraft={()=>console.log("save to draft")}
-            goToPage2={this.goToNextPage.bind(this, current + 1)}
-          />
-        </div>
-        </div>
-          </div>
+        <div className="campFooterRefinex" style={{ position: 'absolute', width: '100%' }}>
+						<div className="gx-card-body" style={{ background: "#FFFFFF" }}>
+							<CampaignFooter
+								loading={this.state.loading}
+								nextButtonText={current > 4 ? 'Launch' : 'Save and Next'}
+								saveDraftText={current === 0 ? "" : 'Save Draft'}
+								saveDraft={()=>console.log("save to draft")}
+								goToPage2={this.goToNextPage.bind(this, current + 1)}
+							/>
+						</div>
+					</div>
+        
           </div>
     );
   }

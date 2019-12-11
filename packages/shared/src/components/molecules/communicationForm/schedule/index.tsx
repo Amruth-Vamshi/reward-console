@@ -138,7 +138,7 @@ class Schedule extends React.Component<iProps, Partial<iState>> {
         return (
             <div>
                 <Card className="scheduleCard">
-                    <Row><p style={{ fontSize: 18 }}>Schedule</p></Row>
+                    <Row><p style={{ fontSize: 20 }}>Schedule</p></Row>
                     {this.props.campaign &&
                         <p className="campDate"> Campaign Date: &nbsp;  <b>{moment(campaign.startTime).format("DD MMM YY HH:mm") + ' - ' +
                             moment(campaign.endTime).format("DD MMM YY HH:mm")} </b></p>}
@@ -146,7 +146,7 @@ class Schedule extends React.Component<iProps, Partial<iState>> {
                     <Form ref={this.props.wrappedComponentRef} onSubmit={this.props.submit}>
                         <Form.Item label="Repeat Every" {...formItemLayout}>
                             <Select
-                                // getPopupContainer={() => document.getElementById('OffArea')}
+                                getPopupContainer={(triggerNode: any) => triggerNode.parentNode}
                                 value={this.state.repeatType} className="scheduleType"
                                 placeholder="Select Type" optionFilterProp="children"
                                 onChange={e => this.handleTypeChange(e)}
@@ -181,7 +181,7 @@ class Schedule extends React.Component<iProps, Partial<iState>> {
 
                         <Form.Item style={{ marginTop: 5 }} label="Ends" {...formItemLayout}>
                             <Select
-                                // getPopupContainer={() => document.getElementById('OffArea')}
+                                getPopupContainer={(triggerNode: any) => triggerNode.parentNode}
                                 value={this.state.end} className="scheduleEnd"
                                 placeholder="Select Type" optionFilterProp="children"
                                 onChange={e => this.handleOnEndChange(e)}

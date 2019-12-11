@@ -4,13 +4,12 @@ import { withRouter } from 'react-router-dom';
 import { withApollo, graphql, compose, ApolloProviderProps } from 'react-apollo';
 import { RULE_ATTRIBUTES, CREATE_RULE, createRule, createSegment, UPDATE_RULE, UPDATE_SEGMENT } from '../../../query/audience';
 import './style.css';
-import { SEGMENT_LIST } from '../../../utils/RouterConstants';
-import { WalkinQueryBuilder, CampaignHeader } from '@walkinsole/shared';
+import { SEGMENT_LIST } from '../../../constants/RouterConstants';
+import { WalkinQueryBuilder, CampaignHeader, WHeader } from '@walkinsole/shared';
 import * as jwt from "jsonwebtoken";
 import { GET_ALL_APPS_OF_ORGANIZATION } from "@walkinsole/walkin-core/src/PlatformQueries";
 import { RouteChildrenProps } from "react-router";
-
-const { org_id, id }: any = jwt.decode(localStorage.getItem("jwt"));
+import { strToRule } from '../../../utils';
 
 interface IProps extends RouteChildrenProps, ApolloProviderProps<any> {
 	allApplications: any
@@ -48,6 +47,7 @@ class NewSegment extends Component<IProps, Partial<IState>> {
 			query: query,
 			newSegmentError: false,
 		});
+		console.log(query);
 	};
 	onChange = (e: any) => {
 		this.state.errors.name = ''
@@ -66,6 +66,7 @@ class NewSegment extends Component<IProps, Partial<IState>> {
 		let errors: any = {}
 		const { value, query } = this.state;
 		let { client } = this.props;
+		let { org_id }: any = jwt.decode(localStorage.getItem('jwt'))
 		if (!this.state.value || this.state.value.trim() == '') errors.name = "* this field is mandatory"
 		if (!this.state.query.rules || this.state.query.rules.length < 1) errors.rule = "* this field is mandatory"
 		else if (!this.state.query.rules[0] || this.state.query.rules[0].attributeValue == '') errors.rule = "* enter rule value"
@@ -80,7 +81,7 @@ class NewSegment extends Component<IProps, Partial<IState>> {
 			console.log("update segment/rule...")
 			let id = this.props.location.state.segmentSelected.rule.id;
 			let input = {
-				ruleConfiguration: JSON.stringify(query)
+				ruleConfiguration: query
 			};
 			console.log("input..", input)
 			console.log("input id..", id)
@@ -118,6 +119,8 @@ class NewSegment extends Component<IProps, Partial<IState>> {
 				console.log("Error whilw updating..", err)
 			})
 		} else {
+
+			console.log('>>>', this.state.query);
 			client
 				.mutate({
 					mutation: createRule,
@@ -129,7 +132,7 @@ class NewSegment extends Component<IProps, Partial<IState>> {
 						type: 'SIMPLE',
 						organizationId: org_id,
 						status: 'ACTIVE',
-						ruleConfiguration: JSON.stringify(query),
+						ruleConfiguration: query,
 					},
 				})
 				.then(({ data }) => {
@@ -174,20 +177,7 @@ class NewSegment extends Component<IProps, Partial<IState>> {
 			if (location.state.update) this.setState({ update: true });
 			if (location.state.segmentSelected) {
 				let str = location.state.segmentSelected.rule.ruleConfiguration;
-				var mapObj: any = {
-					// ruleAttributeId: 'field',
-					attributeName: 'field',
-					attributeValue: 'value',
-					expressionType: 'operator',
-				};
-				console.log(str);
-				if (typeof str != 'string') {
-					str = JSON.stringify(str);
-				}
-				str = str.replace(/attributeName|attributeValue|expressionType/gi, function (matched) {
-					return mapObj[matched];
-				});
-				this.setState({ query: JSON.parse(str) });
+				this.setState({ query: strToRule(str) });
 				if (!location.state.update) {
 					this.setState({
 						value: location.state.segmentSelected.name + ' ' + 'copy',
@@ -219,9 +209,10 @@ class NewSegment extends Component<IProps, Partial<IState>> {
 					label: el.attributeName,
 				}));
 		else this.state.errors.rule = 'you dont have any rule attributes'
+		console.log(attributeData);
 		return (
 			<Fragment>
-				<div>
+				{/* <div>
 					<CampaignHeader>
 						<Col span={12}>
 							<h3 className="gx-text-grey paddingLeftStyle campaignHeaderTitleStyle">
@@ -229,7 +220,8 @@ class NewSegment extends Component<IProps, Partial<IState>> {
 							</h3>
 						</Col>
 					</CampaignHeader>
-				</div>
+				</div> */}
+				<WHeader title={isDuplicateSegment ? 'Duplicate segment' : 'New Segment'} />
 				<div style={{ margin: '32px' }}>
 					<div style={{ width: '50%', marginBottom: '40px' }}>
 						<div style={{ marginBottom: '10px' }}>
@@ -262,6 +254,7 @@ export default withRouter(
 	compose(
 		graphql(RULE_ATTRIBUTES, {
 			options: props => {
+				let { org_id }: any = jwt.decode(localStorage.getItem('jwt'))
 				return {
 					variables: {
 						input: {
@@ -282,6 +275,7 @@ export default withRouter(
 		graphql(GET_ALL_APPS_OF_ORGANIZATION, {
 			name: "allApplications",
 			options: props => {
+				let { org_id }: any = jwt.decode(localStorage.getItem('jwt'))
 				return {
 					variables: {
 						id: org_id

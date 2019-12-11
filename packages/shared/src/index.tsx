@@ -1,7 +1,7 @@
 // export all components here
 
 import ManageCampaignCard from "./components/Cards/ManageCampaignCard";
-import CampaignPriority from "./components/molecules/campaignPriority";
+import { CampaignPriority } from "./components/molecules/campaignPriority";
 import BasicInfoForm from "./components/molecules/basicInfoForm";
 import BasicSlider from "./components/atoms/testAndControlSlider";
 import Popup from "./components/atoms/popup";
@@ -43,20 +43,14 @@ import CustomList from "./components/General/List/List";
 import Image from "./components/General/Image/Image";
 import Header from "./components/General/Header/Header";
 
+import WHeader from "./components/molecules/wHeader/WHeader";
+import FileUploader from "./components/molecules/fileUpload/FileUpload";
+// import FileUploader from "./components/molecules/FileUpload/newFileUpload"
+import OfferBasicInfoForm from "./components/molecules/offerForm/basicInfo";
+import OfferRedemptionRulesForm from "./components/molecules/offerForm/redemptionRule";
+import CollapseSidebar from "./components/atoms/CollapseSidebar";
+
 export {
-  ManageCampaignCard,
-  CampaignPriority,
-  BasicInfoForm,
-  BasicSlider,
-  Popup,
-  AddAndDeleteSelectDynamically,
-  WalkinQueryBuilder,
-  SortableDataTable,
-  InstantSearch,
-  CampaignHeader,
-  CampaignFooter,
-  Stepper,
-  campaignOverview,
   CustomButton,
   CustomIcon,
   CustomParagraph,
@@ -85,5 +79,24 @@ export {
   InfoText,
   CustomList,
   Image,
-  Header
+  Header,
+  ManageCampaignCard,
+  CampaignPriority,
+  CollapseSidebar,
+  BasicInfoForm,
+  BasicSlider,
+  FileUploader,
+  // FileUploader,
+  Popup,
+  AddAndDeleteSelectDynamically,
+  WalkinQueryBuilder,
+  SortableDataTable,
+  InstantSearch,
+  CampaignHeader,
+  CampaignFooter,
+  Stepper,
+  campaignOverview,
+  WHeader,
+  OfferBasicInfoForm,
+  OfferRedemptionRulesForm
 };

@@ -1,0 +1,27 @@
+.viewOffer .ant-divider{
+    border-top: 1px solid #c5c5c5 !important;
+}
+
+.viewOffer .labelCol{
+    padding-left: 30px;
+    color: #8f8f8f;
+}
+
+.viewOffer .ant-row{
+    margin-bottom: 15px;
+}
+
+.viewOffer h4{
+    margin-bottom: 25px;
+}
+
+.viewOffer .inputRow input{
+    cursor: auto !important;
+    color: #5f5f5f;
+    height: auto;
+    padding: 12px;
+}
+
+/* .viewOffer .ant-checkbox-input{
+    size: 20px;
+} */

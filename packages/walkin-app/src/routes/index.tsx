@@ -13,7 +13,6 @@ const Core = React.lazy(() => import("@walkinsole/walkin-core"));
 const NearX = React.lazy(() => import("@walkinsole/walkin-nearx"));
 const RewardX = React.lazy(() => import("@walkinsole/walkin-rewardx"));
 const App = () => (
-  // <div className="gx-main-content-wrapper">
   <Suspense fallback={<div>Loading...</div>}>
     <Switch>
       <Route path="/home" component={Home} />
@@ -29,7 +28,6 @@ const App = () => (
       <Route component={ErrorPage} />
     </Switch>
   </Suspense>
-  // </div>
 );
 
 export default App;

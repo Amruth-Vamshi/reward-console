@@ -10,37 +10,27 @@ import {
   ADD_ENTITY_EXTEND_FIELD
 } from "./../../../../PlatformQueries";
 import "./style.css";
-import {
-  Button,
-  Spin,
-  Icon,
-  Select,
-  Table
-} from "antd";
-
+import { Button, Spin, Icon, Select, Table } from "antd";
 
 interface EntityExtentionState {
-  isLoading: boolean,
-  isBasicEntityTableLoading: boolean,
-  isEntityExtendTableLoading: boolean,
+  isLoading: boolean;
+  isBasicEntityTableLoading: boolean;
+  isEntityExtendTableLoading: boolean;
 
-  isEntityVariablesFormOpen: boolean,
-  entities: any,
-  selectedEntity: any,
-  basicEntityFields: any,
+  isEntityVariablesFormOpen: boolean;
+  entities: any;
+  selectedEntity: any;
+  basicEntityFields: any;
   entityExtendFields: {
-    id?: string,
-    fields: any
-  },
-  selectedRowIndex: any,
-  hideBasicDetailsTable: boolean,
-  org_id: string
+    id?: string;
+    fields: any;
+  };
+  selectedRowIndex: any;
+  hideBasicDetailsTable: boolean;
+  org_id: string;
 }
 
-interface EntityExtentionProps extends ApolloProviderProps<any> {
-
-}
-
+interface EntityExtentionProps extends ApolloProviderProps<any> {}
 
 const columns = [
   {
@@ -78,8 +68,8 @@ const columns = [
       return text ? (
         <div style={{ color: "#46CB92" }}>Yes</div>
       ) : (
-          <div style={{ color: "#E96B81" }}>No</div>
-        );
+        <div style={{ color: "#E96B81" }}>No</div>
+      );
     },
     className: "entityExtendcolumn"
   },
@@ -93,19 +83,21 @@ const columns = [
       return text ? (
         <div style={{ color: "#46CB92" }}>Yes</div>
       ) : (
-          <div style={{ color: "#E96B81" }}>No</div>
-        );
+        <div style={{ color: "#E96B81" }}>No</div>
+      );
     },
     className: "entityExtendcolumn"
   }
 ];
 
-
-class EntityExtention extends React.Component<EntityExtentionProps, EntityExtentionState> {
+class EntityExtention extends React.Component<
+  EntityExtentionProps,
+  EntityExtentionState
+> {
   constructor(props: EntityExtentionProps) {
     super(props);
     this.state = {
-      org_id: '',
+      org_id: "",
       isLoading: true,
       isBasicEntityTableLoading: true,
       isEntityExtendTableLoading: true,
@@ -115,7 +107,7 @@ class EntityExtention extends React.Component<EntityExtentionProps, EntityExtent
       selectedEntity: null,
       basicEntityFields: [],
       entityExtendFields: {
-        id: '',
+        id: "",
         fields: []
       },
       selectedRowIndex: null,
@@ -128,7 +120,7 @@ class EntityExtention extends React.Component<EntityExtentionProps, EntityExtent
   }
 
   getEntities = () => {
-    const jwtToken: any = localStorage.getItem("jwt")
+    const jwtToken: any = localStorage.getItem("jwt");
     const { org_id }: any = jwt.decode(jwtToken);
     this.props.client
       .query({
@@ -299,9 +291,12 @@ class EntityExtention extends React.Component<EntityExtentionProps, EntityExtent
       const { Option } = Select;
       return (
         <div className="entityVariablesListWrapper">
-          <div className="entityVariableInputWrapper">
+          <div id="EntityInputWrapper" className="entityVariableInputWrapper">
             <div className="InputLabel">Label</div>
             <Select
+              getPopupContainer={() =>
+                document.getElementById("EntityInputWrapper")
+              }
               size="large"
               defaultValue={selectedEntity}
               style={{ width: "50%" }}
@@ -357,13 +352,13 @@ class EntityExtention extends React.Component<EntityExtentionProps, EntityExtent
                       }}
                     />
                   ) : (
-                      <Icon
-                        type="caret-up"
-                        onClick={() => {
-                          this.setState({ hideBasicDetailsTable: true });
-                        }}
-                      />
-                    )}
+                    <Icon
+                      type="caret-up"
+                      onClick={() => {
+                        this.setState({ hideBasicDetailsTable: true });
+                      }}
+                    />
+                  )}
                 </div>
               )}
               columns={columns}
@@ -394,7 +389,7 @@ class EntityExtention extends React.Component<EntityExtentionProps, EntityExtent
               columns={columns}
               dataSource={entityExtendFields.fields}
               size="middle"
-            // pagination={false}
+              // pagination={false}
             />
           </div>
 
@@ -423,7 +418,9 @@ class EntityExtention extends React.Component<EntityExtentionProps, EntityExtent
     return (
       <div className="gx-main-content-wrapper">
         <div className="headerWrapper">
-          <label className="headerTitle">Entity Extension Management</label>
+          <label className="entityExtentionheaderTitle">
+            Entity Extension Management
+          </label>
         </div>
         {!isEntityVariablesFormOpen ? (
           <div className="headerDescWrapper">
@@ -434,16 +431,16 @@ class EntityExtention extends React.Component<EntityExtentionProps, EntityExtent
             </div>
           </div>
         ) : (
-            <div className="headerDescWrapper">
-              <div
-                onClick={() => this.onAddOrEditVariables()}
-                className="cursorPointer entityExtendBackButton"
-              >
-                <Icon type="arrow-left" />
-                Back
+          <div className="headerDescWrapper">
+            <div
+              onClick={() => this.onAddOrEditVariables()}
+              className="cursorPointer entityExtendBackButton"
+            >
+              <Icon type="arrow-left" />
+              Back
             </div>
-            </div>
-          )}
+          </div>
+        )}
 
         {this.renderEntityExtentionList()}
       </div>

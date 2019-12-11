@@ -1,4 +1,4 @@
-import { CampaignHeader, InstantSearch, SortableDataTable } from '@walkinsole/shared';
+import { CampaignHeader, InstantSearch, SortableDataTable, WHeader } from '@walkinsole/shared';
 import { Button, Col, Dropdown, Icon, Menu } from 'antd';
 import { History } from 'history';
 import * as jwt from 'jsonwebtoken';
@@ -8,11 +8,9 @@ import { RouteChildrenProps } from 'react-router';
 import { withRouter } from 'react-router-dom';
 
 import { allSegments, disableSegment } from '../../../query/audience';
-import { NEW_SEGMENT } from '../../../utils/RouterConstants';
-import { DEFAULT_ACTIVE_STATUS } from '../../../utils';
+import { NEW_SEGMENT } from '../../../constants/RouterConstants';
+import { DEFAULT_ACTIVE_STATUS } from '../../../constants';
 import HyperXContainer from '../../../components/atoms/HyperXContainer';
-
-const { org_id, id }: any = jwt.decode(localStorage.getItem("jwt"));
 
 interface IProps extends RouteChildrenProps, ApolloProviderProps<any> {
 	history: History
@@ -240,7 +238,7 @@ class SegmentList extends Component<IProps, IState> {
 		];
 		return (
 			<Fragment>
-				<CampaignHeader
+				{/* <CampaignHeader
 					children={
 						<Fragment>
 							<Col span={12}>
@@ -253,7 +251,8 @@ class SegmentList extends Component<IProps, IState> {
 							</Col>
 						</Fragment>
 					}
-				/>
+				/> */}
+				<WHeader title='Segments' extra={<Button type="primary" style={{ marginBottom: 0 }} onClick={this.onNewSegment}>CREATE SEGMENT</Button>} />
 				<HyperXContainer margin='32px' headerHeightInPX={152}>
 					<div className="gx-card">
 						<div className="gx-card-body">
@@ -275,19 +274,23 @@ class SegmentList extends Component<IProps, IState> {
 
 export default withRouter(
 	graphql(allSegments, {
-		options: (ownProps: IProps) => ({
-			variables: {
-				organization_id: org_id,
-				status: DEFAULT_ACTIVE_STATUS,
-			},
-			forceFetch: true,
-			fetchPolicy: 'network-only',
-		}),
+		options: (ownProps: IProps) => {
+			let { org_id }: any = jwt.decode(localStorage.getItem('jwt'));
+			return {
+				variables: {
+					organization_id: org_id,
+					status: DEFAULT_ACTIVE_STATUS,
+				},
+				forceFetch: true,
+				fetchPolicy: 'network-only',
+			}
+		},
 		props: ({ data: { loading, error, segments, refetch } }: any) => ({
 			loading,
 			segments,
 			error,
 			refetchSegments: (ownProps: IProps) => {
+				let { org_id }: any = jwt.decode(localStorage.getItem('jwt'))
 				refetch({
 					variables: {
 						organization_id: org_id,
