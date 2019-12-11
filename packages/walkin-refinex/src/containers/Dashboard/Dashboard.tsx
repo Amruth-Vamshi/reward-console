@@ -138,27 +138,43 @@ class Landing extends React.Component<LandingProps, Partial<LandingState>> {
                                 Dashboard
                             </span>
                         </Col>
-                        <Col sm={0} md={6} xl={4}>
+                        <Col sm={0} md={6} xl={4} style={{ textAlign: "end" }}>
                             <Button type={"primary"} onClick={() => { this.createSurvey() }}>Create Survey</Button>
                         </Col>
                     </Row>
                     <Row style={{ paddingBottom: "20px" }}>
-                        <Col xl={6} lg={6} md={6} sm={12} xs={12}>
-                            <CounterCard titleColor="#545454" subtitleColor={"#999999"} title={"+37"} subTitle="Net Promoter Score" />
+                        <Col span={12}>
+                            <Row>
+                                <Col xl={12} lg={12} md={12} sm={24} xs={24}>
+                                    <CounterCard titleColor="#545454" subtitleColor={"#999999"} title={"+37"} subTitle="Net Promoter Score" />
+                                </Col>
+                                <Col xl={12} lg={12} md={12} sm={24} xs={24}>
+                                    <MultipleCounterCard textColor={"#999999"} valueColor={"#000"} title={"NPS"} counterArray={[{ title: "New Customers", value: "+3" }, { title: "Existing Customers", value: "+5" }]} />
+                                </Col>
+                            </Row>
                         </Col>
-                        <Col xl={6} lg={6} md={6} sm={12} xs={12}>
-                            <MultipleCounterCard textColor={"#999999"} valueColor={"#000"} title={"NPS"} counterArray={[{ title: "New Customers", value: "+3" }, { title: "Existing Customers", value: "+5" }]} />
-                        </Col>
-                        <Col xl={6} lg={6} md={6} sm={12} xs={12}>
-                            <CounterCard titleColor="#545454" subtitleColor={"#999999"} title={"06.36"} subTitle="Customer Satisfaction Score" />
-                        </Col>
-                        <Col xl={6} lg={6} md={6} sm={12} xs={12}>
-                            <MultipleCounterCard textColor={"#999999"} valueColor={"#000"} title={"CSAT"} counterArray={[{ title: "New Customers", value: "0.35" }, { title: "Existing Customers", value: "0.20" }]} />
+                        <Col span={12}>
+                            <Row>
+                                <Col xl={12} lg={12} md={12} sm={24} xs={24}>
+                                    <CounterCard titleColor="#545454" subtitleColor={"#999999"} title={"06.36"} subTitle="Customer Satisfaction Score" />
+                                </Col>
+                                <Col xl={12} lg={12} md={12} sm={24} xs={24}>
+                                    <MultipleCounterCard textColor={"#999999"} valueColor={"#000"} title={"CSAT"} counterArray={[{ title: "New Customers", value: "0.35" }, { title: "Existing Customers", value: "0.20" }]} />
+                                </Col>
+                            </Row>
                         </Col>
                     </Row>
-                    <Row style={{ height: "20px", marginLeft: "1px", marginRight: "1px" }}>
-                        <Col span={11} style={{ backgroundColor: "#FFF" }} ></Col>
-                        <Col span={11} offset={2} style={{ backgroundColor: "#FFF" }} ></Col>
+                    <Row style={{ marginLeft: "1px", marginRight: "1px" }}>
+                        <Col span={12}>
+                            <Row style={{ height: "20px", backgroundColor: "#FFF", marginRight: "1px" }} >
+
+                            </Row>
+                        </Col>
+                        <Col span={12}>
+                            <Row style={{ height: "20px", backgroundColor: "#FFF", marginLeft: "1px" }} >
+
+                            </Row>
+                        </Col>
                     </Row>
                 </div>
             </Auxiliary>
