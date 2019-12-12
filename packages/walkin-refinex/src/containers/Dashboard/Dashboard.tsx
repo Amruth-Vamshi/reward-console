@@ -12,6 +12,7 @@ import PercentageAreaChart from "./Components/PercentAreaChart"
 import LineValueChart from "./Components/LineValueChart"
 import SimpleBarChart from "./Components/SimpleBarChart"
 import LiveSurvey from "./Components/LiveSurvey"
+import ProgressBars from "./Components/ProgressBars"
 
 const dateFormat = 'YYYY/MM/DD';
 
@@ -208,7 +209,8 @@ class Landing extends React.Component<LandingProps, Partial<LandingState>> {
                                 </Row>
                                 <Row style={{ height: "18px", backgroundColor: "#FFF", marginLeft: "1px" }}></Row>
                                 <Row style={{ backgroundColor: "#FFF", marginLeft: "1px", padding: "5px 16px 18px 5px" }} >
-                                    <SimpleBarChart />
+                                    {/* <SimpleBarChart /> */}
+                                    <ProgressBars />
                                 </Row>
                             </div>
                         </Col>
