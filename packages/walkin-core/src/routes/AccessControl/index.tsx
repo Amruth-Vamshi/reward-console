@@ -12,7 +12,7 @@ export default class extends React.Component {
         </Route> */}
 
         <Route exact path={"/core/access-control"} component={RoleList} />
-        <Route path={"/core/access-control/edit"} component={EditRole} />
+        <Route path={"/core/access-control/:id/edit"} component={EditRole} />
       </Switch>
     );
   }

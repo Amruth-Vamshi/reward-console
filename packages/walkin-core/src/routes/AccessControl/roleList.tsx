@@ -14,9 +14,15 @@ import {
 import "./style.css";
 import CreateRoleModal from "./createRoleModal";
 import AddUsersToRoleModal from "./addUsersToRoleModal";
+import DuplicateIcon from "./../../containers/Icons/duplicate";
 
 import { withApollo, ApolloProviderProps } from "react-apollo";
-import { ROLES_LIST, USERS, LINK_USER_TO_ROLE } from "./../../PlatformQueries";
+import {
+  ROLES_LIST,
+  USERS,
+  LINK_USER_TO_ROLE,
+  ADD_ROLE
+} from "./../../PlatformQueries";
 import { History } from "history";
 
 const columns = [
@@ -29,14 +35,12 @@ const columns = [
   {
     title: "Created by",
     className: "access-control-column-title",
-
     dataIndex: "createdBy",
     key: "createdBy"
   },
   {
     title: "Created on",
     className: "access-control-column-title",
-
     dataIndex: "createdOn",
     key: "createdOn"
   }
@@ -55,7 +59,8 @@ interface AccessControlState {
   addUsersToDuplicateRoles: boolean;
   columns: any;
   allUsers: any;
-  selectedRoleIndex: number;
+  selectedRoleIndex: any;
+  isFetching: boolean;
 }
 
 class RoleList extends React.Component<AccessControlProps, AccessControlState> {
@@ -69,7 +74,8 @@ class RoleList extends React.Component<AccessControlProps, AccessControlState> {
       isAddUsersToRoleModalOpen: false,
       newRoleName: "",
       addUsersToDuplicateRoles: false,
-      selectedRoleIndex: 0,
+      selectedRoleIndex: null,
+      isFetching: false,
       columns: [
         {
           title: "Role",
@@ -77,11 +83,18 @@ class RoleList extends React.Component<AccessControlProps, AccessControlState> {
 
           dataIndex: "role",
           key: "role",
-          render: text => (
+          render: (text, record, index) => (
             <span
-              onClick={() =>
-                this.props.history.push("/core/access-control/edit")
-              }
+              onClick={() => {
+                console.log(text, record, index);
+                let selectedRoleId = this.state.roleList[index].key;
+                return this.props.history.push({
+                  pathname: `/core/access-control/${selectedRoleId}/edit`,
+                  state: {
+                    roleId: selectedRoleId
+                  }
+                });
+              }}
             >
               <a>{text}</a>
             </span>
@@ -99,14 +112,20 @@ class RoleList extends React.Component<AccessControlProps, AccessControlState> {
               <span
                 className="access-control-table-content"
                 onClick={() => {
+                  console.log(user, parent);
+
                   this.setState({
                     isAddUsersToRoleModalOpen: true,
                     selectedRoleIndex: parent.roleIndex
                   });
                 }}
               >
-                {user ? user.length : "--"}
-                <a className="access-control-column-title"> +Add User</a>
+                <div style={{ display: "flex" }}>
+                  <span style={{ minWidth: 40 }}>
+                    {user ? user.length : "--"}
+                  </span>
+                  <a className="access-control-column-title"> +Add User</a>
+                </div>
               </span>
             );
           }
@@ -121,7 +140,8 @@ class RoleList extends React.Component<AccessControlProps, AccessControlState> {
                   this.setState({ isDuplicateModalOpen: true });
                 }}
               >
-                <Icon type="diff" />
+                {/* <Icon type="diff" /> */}
+                <DuplicateIcon />
               </span>
             );
           }
@@ -131,6 +151,10 @@ class RoleList extends React.Component<AccessControlProps, AccessControlState> {
   }
 
   UNSAFE_componentWillMount() {
+    this.getRolesList();
+  }
+
+  getRolesList = () => {
     this.props.client
       .query({
         query: ROLES_LIST,
@@ -153,7 +177,7 @@ class RoleList extends React.Component<AccessControlProps, AccessControlState> {
 
         this.setState({ allUsers: allUsers.data.users });
       });
-  }
+  };
 
   populateAccessControlTableData = roles => {
     let roleList = [];
@@ -189,15 +213,40 @@ class RoleList extends React.Component<AccessControlProps, AccessControlState> {
     this.setState({
       isDuplicateModalOpen: false,
       isNewRoleModalOpen: false,
-      isAddUsersToRoleModalOpen: false
+      isAddUsersToRoleModalOpen: false,
+      selectedRoleIndex: null
     });
   };
 
   onCreateRole = data => {
-    this.props.history.push("/core/access-control/edit");
-    this.setState({
-      newRoleName: data.newRoleName,
-      addUsersToDuplicateRoles: data.addUsersToDuplicateRoles
+    console.log(data);
+    this.setState({ isFetching: true }, () => {
+      this.props.client
+        .mutate({
+          mutation: ADD_ROLE,
+          variables: {
+            input: { name: data.newRoleName }
+          }
+        })
+        .then(newRoleResponse => {
+          console.log(newRoleResponse);
+          this.setState(
+            {
+              isFetching: false
+            },
+            () => {
+              this.props.history.push({
+                pathname: `/core/access-control/${newRoleResponse.data.addRole.id}/edit`,
+                state: {
+                  roleId: newRoleResponse.data.addRole.id
+                }
+              });
+            }
+          );
+        })
+        .catch(error => {
+          console.log(error);
+        });
     });
   };
 
@@ -211,11 +260,13 @@ class RoleList extends React.Component<AccessControlProps, AccessControlState> {
         }
       })
       .then(linkUserResponse => {
-        console.log(linkUserResponse.data.linkUserToRole.id);
+        console.log(linkUserResponse);
         if (linkUserResponse.data.linkUserToRole.id) {
-          this.populateAccessControlTableData(
-            linkUserResponse.data.linkUserToRole.roles
-          );
+          //right now the response coming from linkUserToRole api doesnt contain all roles,
+          // this.populateAccessControlTableData(
+          //   linkUserResponse.data.linkUserToRole.roles
+          // );
+          this.getRolesList();
           this.onCloseModal();
         }
       })
@@ -275,14 +326,15 @@ class RoleList extends React.Component<AccessControlProps, AccessControlState> {
           visible={isDuplicateModalOpen || isNewRoleModalOpen}
           onSubmit={this.onCreateRole}
           onClose={this.onCloseModal}
+          loading={this.state.isFetching}
         />
         <AddUsersToRoleModal
           allUsers={this.state.allUsers}
           roleList={roleList}
           modalDetails={modalDetails}
           visible={isAddUsersToRoleModalOpen}
+          onChange={this.onChange}
           selectedRoleIndex={this.state.selectedRoleIndex}
-          // visible={true}
           onSubmit={this.onLinkUserToRole}
           onClose={this.onCloseModal}
         />

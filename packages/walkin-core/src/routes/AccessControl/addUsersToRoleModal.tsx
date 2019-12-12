@@ -1,7 +1,7 @@
-import React, { Component, createRef, useEffect } from "react";
+import React from "react";
 import "./style.css";
 
-import { Modal, Input, Button, Switch, Select, Table, Icon } from "antd";
+import { Modal, Input, Button, Select, Table, Icon } from "antd";
 const { Option } = Select;
 
 interface addUsersToRoleModalProps {
@@ -12,15 +12,14 @@ interface addUsersToRoleModalProps {
   roleList: any;
   allUsers: any;
   selectedRoleIndex: any;
+  onChange: any;
 }
 
 interface addUsersToRoleModalState {
-  addUsersToDuplicateRoles: boolean;
   selectedRowKeys: any;
   loading: boolean;
   searchText: String;
   searchedColumn: String;
-  selectedRoleIndex: number;
 }
 
 export default class extends React.Component<
@@ -32,12 +31,10 @@ export default class extends React.Component<
     super(props);
     this.searchInput = React.createRef();
     this.state = {
-      addUsersToDuplicateRoles: false,
       selectedRowKeys: [], // Check here to configure the default column
       loading: false,
       searchText: "",
-      searchedColumn: "",
-      selectedRoleIndex: this.props.selectedRoleIndex
+      searchedColumn: ""
     };
   }
 
@@ -95,17 +92,6 @@ export default class extends React.Component<
     render: text => text
   });
 
-  //   this.state.searchedColumn === dataIndex ? (
-  //     <Highlighter
-  //       highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
-  //       searchWords={[this.state.searchText]}
-  //       autoEscape
-  //       textToHighlight={text.toString()}
-  //     />
-  //   ) : (
-  //     text
-  //   )
-
   handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
     this.setState({
@@ -133,32 +119,18 @@ export default class extends React.Component<
     );
   };
 
-  //   start = () => {
-  //     this.setState({ loading: true });
-  //     // ajax request after empty completing
-  //     setTimeout(() => {
-  //       this.setState({
-  //         selectedRowKeys: [],
-  //         loading: false
-  //       });
-  //     }, 1000);
-  //   };
-
   onSelectChange = selectedRowKeys => {
     console.log("selectedRowKeys changed: ", selectedRowKeys);
     this.setState({ selectedRowKeys });
   };
 
   render() {
-    let { modalDetails, visible, onClose, roleList } = this.props;
-    let {
-      addUsersToDuplicateRoles,
-      loading,
-      selectedRowKeys,
-      selectedRoleIndex
-    } = this.state;
+    let { visible, onClose, roleList, selectedRoleIndex } = this.props;
+    let { selectedRowKeys } = this.state;
 
-    //tableData
+    if (selectedRoleIndex === null || visible === false) {
+      return null;
+    }
 
     const columns = [
       {
@@ -199,6 +171,7 @@ export default class extends React.Component<
 
     let usersLinkedToCurrentRole = [];
     const data = [];
+    console.log(selectedRoleIndex, roleList[selectedRoleIndex]);
 
     if (roleList.length && roleList[selectedRoleIndex].user)
       roleList[selectedRoleIndex].user.map((linkedUser, index) => {
@@ -232,12 +205,14 @@ export default class extends React.Component<
       onChange: this.onSelectChange
     };
     const hasSelected = selectedRowKeys.length > 0;
+    console.log(usersLinkedToCurrentRole, data, selectedRoleIndex, roleList);
 
     return (
       <Modal
         width={700}
         className="access-control-modal-styles"
         visible={visible}
+        destroyOnClose={true}
         maskClosable={true}
         onCancel={() => {
           onClose();
@@ -270,19 +245,19 @@ export default class extends React.Component<
               Select a role<span className="requiredFieldRedColor">*</span>
             </div>
             <Select
-              defaultValue={
-                roleList.length ? roleList[selectedRoleIndex].role : null
-              }
               style={{ width: "100%" }}
+              value={roleList.length ? roleList[selectedRoleIndex].role : null}
               onChange={(value: any) => {
-                this.setState({ selectedRoleIndex: value });
+                this.props.onChange("selectedRoleIndex", value);
               }}
               placeholder={"select a role"}
             >
               {roleList.map((role, index) => {
-                console.log(role);
-
-                return <Option value={role.roleIndex}>{role.role}</Option>;
+                return (
+                  <Option key={index} value={role.roleIndex}>
+                    {role.role}
+                  </Option>
+                );
               })}
             </Select>
           </div>

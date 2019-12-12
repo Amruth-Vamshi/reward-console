@@ -8,6 +8,7 @@ interface createRoleModalProps {
   modalDetails: any;
   onClose: any;
   onSubmit: any;
+  loading: boolean;
 }
 
 interface createRoleModalState {
@@ -43,7 +44,7 @@ export default class extends React.Component<
 
   render() {
     let { addUsersToDuplicateRoles, newRoleName } = this.state;
-    let { modalDetails, visible, onClose } = this.props;
+    let { modalDetails, visible, onClose, loading } = this.props;
     return (
       <Modal
         className="access-control-modal-styles"
@@ -53,12 +54,13 @@ export default class extends React.Component<
         }}
         footer={[
           <Button
-            disabled={!newRoleName}
+            disabled={!newRoleName || loading}
+            loading={loading}
             type="primary"
             className="submit-button"
             size="large"
             onClick={() => {
-              this.props.onSubmit(newRoleName, addUsersToDuplicateRoles);
+              this.props.onSubmit({ newRoleName, addUsersToDuplicateRoles });
             }}
           >
             {modalDetails.buttonLabel}

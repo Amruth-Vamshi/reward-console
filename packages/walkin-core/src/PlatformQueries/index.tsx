@@ -318,6 +318,40 @@ export const ROLES_LIST = gql`
   }
 `;
 
+export const ROLE = gql`
+  query role($id: ID!) {
+    role(id: $id) {
+      id
+      name
+      description
+      tags
+      users {
+        id
+        email
+        firstName
+        lastName
+      }
+      policies {
+        id
+        effect
+        resource
+        permission
+        type
+        accessLevel
+      }
+    }
+  }
+`;
+
+export const ADD_ROLE = gql`
+  mutation addRole($input: RoleInput!) {
+    addRole(input: $input) {
+      id
+      name
+    }
+  }
+`;
+
 export const LINK_USER_TO_ROLE = gql`
   mutation linkUserToRole($roleId: ID!, $userId: ID!) {
     linkUserToRole(roleId: $roleId, userId: $userId) {
@@ -342,6 +376,19 @@ export const LINK_USER_TO_ROLE = gql`
           accessLevel
         }
       }
+    }
+  }
+`;
+
+export const EDIT_POLICY = gql`
+  mutation editPolicy($input: PolicyEditInput!) {
+    editPolicy(input: $input) {
+      id
+      effect
+      resource
+      permission
+      type
+      accessLevel
     }
   }
 `;
