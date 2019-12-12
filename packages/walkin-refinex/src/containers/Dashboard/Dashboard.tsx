@@ -13,6 +13,7 @@ import LineValueChart from "./Components/LineValueChart"
 import SimpleBarChart from "./Components/SimpleBarChart"
 import LiveSurvey from "./Components/LiveSurvey"
 import ProgressBars from "./Components/ProgressBars"
+import Tables from "./Components/Tables"
 
 const dateFormat = 'YYYY/MM/DD';
 
@@ -84,6 +85,10 @@ class Landing extends React.Component<LandingProps, Partial<LandingState>> {
 
     createSurvey() {
         message.warn("Function not attached yet!")
+    }
+
+    viewDraftedSurvey() {
+        message.warn("Function to view drafted survey's not linked!")
     }
 
     getMetrics = (org_id: any, endDate: any) => {
@@ -209,7 +214,6 @@ class Landing extends React.Component<LandingProps, Partial<LandingState>> {
                                 </Row>
                                 <Row style={{ height: "18px", backgroundColor: "#FFF", marginLeft: "1px" }}></Row>
                                 <Row style={{ backgroundColor: "#FFF", marginLeft: "1px", padding: "5px 16px 18px 5px" }} >
-                                    {/* <SimpleBarChart /> */}
                                     <ProgressBars />
                                 </Row>
                             </div>
@@ -244,6 +248,17 @@ class Landing extends React.Component<LandingProps, Partial<LandingState>> {
                                 </Row>
                             </div>
                         </Col>
+                    </Row>
+                    <Row style={{ marginLeft: "1px", backgroundColor: "#FFF", marginRight: "1px", paddingBottom: "5px" }}>
+                        <Row style={{ backgroundColor: "#FFF", paddingTop: "14px", paddingBottom: "14px", width: "100%", marginLeft: "1px" }} >
+                            <Col span={16} style={{ textAlign: "start", fontWeight: "bold", fontSize: "14px", alignSelf: "center", height: "30px" }}>Survey List</Col>
+                            <Col span={8} style={{ textAlign: "end", alignSelf: "center", height: "30px" }}>
+                                <Button style={{ color: "#E96B81" }} type={"danger"} size={"small"} ghost onClick={() => { this.viewDraftedSurvey() }}>
+                                    4 surveys in draft
+                                </Button>
+                            </Col>
+                        </Row>
+                        <Tables />
                     </Row>
                 </div>
             </Auxiliary>
