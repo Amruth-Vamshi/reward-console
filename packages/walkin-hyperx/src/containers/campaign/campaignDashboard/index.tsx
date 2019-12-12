@@ -7,6 +7,7 @@ import { RouteChildrenProps } from 'react-router';
 import { withRouter } from 'react-router-dom';
 
 import { ABANDON_CAMPAIGN, PAUSE_CAMPAIGN, PREPROCESS_LAUNCH_CAMPAIGN, UNPAUSE_CAMPAIGN, VIEW_CAMPAIGN } from '../../../query/campaign';
+import { TOTAL_AUDIENCE_COUNT } from '../../../query/audience';
 
 
 interface IProps extends RouteChildrenProps<any>, ApolloProviderProps<any> {
@@ -15,7 +16,7 @@ interface IProps extends RouteChildrenProps<any>, ApolloProviderProps<any> {
     abandonCampaign: (variables: any) => any
     unpauseCampaign: (variables: any) => any
     campaign: {}
-
+    totalAudienceCount: any
 }
 
 // this.props.history.push({ pathname: '/hyperx/campaigns', tabKey: "2" })
@@ -137,13 +138,12 @@ class CampaignDashboard extends Component<IProps, Partial<IState>> {
     disableCampaign = () => { }
 
     render() {
-        console.log("this.props....", this.props)
-        console.log("this.state....", this.state)
 
         // let audiences = this.props.allAudiences.audiences;
 
-        let { loading, loading1 } = this.state
-        let { campaign, audiences, offers, communications } = this.state
+        let { totalAudienceCount } = this.props
+        console.log('tac ', totalAudienceCount);
+        let { campaign, audiences, offers, communications, loading, loading1 } = this.state
         return (
             <div>
                 <WHeader title='Campaign Dashboard' />
@@ -162,6 +162,7 @@ class CampaignDashboard extends Component<IProps, Partial<IState>> {
                                     campaign={campaign}
                                     audience={audiences}
                                     offer={offers[0]}
+                                    // totalAudienceCount={this.props.totalAudienceCount}
                                     launchCampaign={this.launchCampaign}
                                     pauseCampaign={this.pauseCampaign}
                                     unpauseCampaign={this.unpauseCampaign}
@@ -195,6 +196,13 @@ export default withRouter(
         //         };
         //     }
         // }), 
+        graphql(TOTAL_AUDIENCE_COUNT, {
+            name: "totalAudienceCount",
+            options: (props: IProps) => ({
+                variables: { campaignId: props.match.params.id },
+                fetchPolicy: "network-only"
+            })
+        }),
         graphql(PREPROCESS_LAUNCH_CAMPAIGN, {
             name: "launchCampaign"
         }),

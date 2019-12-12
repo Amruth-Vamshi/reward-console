@@ -18,6 +18,7 @@ interface iProps {
   loading?: any;
   loading1?: any;
   disableCampaign?
+  totalAudienceCount?
 }
 
 export default class Overview extends React.Component<iProps, {}> {
@@ -30,7 +31,7 @@ export default class Overview extends React.Component<iProps, {}> {
   };
 
   render() {
-    const { campaign, audience, offer, communication, view } = this.props;
+    const { campaign, audience, offer, communication, view, totalAudienceCount } = this.props;
     var now = moment();
     var startDate = moment(campaign.startTime);
     var endDate = moment(campaign.endTime);
@@ -130,7 +131,7 @@ export default class Overview extends React.Component<iProps, {}> {
 
                   <h3>Audience</h3>
                 </Col>
-                <Col>Total Reach : 6412 </Col>
+                <Col>Total Reach : {totalAudienceCount ? totalAudienceCount : '6412'} </Col>
               </Row>
               {audience.map((i: any, n: number) =>
                 <Row key={n} style={{ marginBottom: 10 }}>
