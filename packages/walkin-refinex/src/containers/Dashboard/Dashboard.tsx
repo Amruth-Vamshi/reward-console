@@ -249,7 +249,7 @@ class Landing extends React.Component<LandingProps, Partial<LandingState>> {
                             </div>
                         </Col>
                     </Row>
-                    <Row style={{ marginLeft: "1px", backgroundColor: "#FFF", marginRight: "1px", paddingBottom: "5px" }}>
+                    <Row style={{ marginLeft: "1px", marginRight: "1px", paddingBottom: "20px" }}>
                         <Row style={{ backgroundColor: "#FFF", paddingTop: "14px", paddingBottom: "14px", width: "100%", marginLeft: "1px" }} >
                             <Col span={16} style={{ textAlign: "start", fontWeight: "bold", fontSize: "14px", alignSelf: "center", height: "30px" }}>Survey List</Col>
                             <Col span={8} style={{ textAlign: "end", alignSelf: "center", height: "30px" }}>

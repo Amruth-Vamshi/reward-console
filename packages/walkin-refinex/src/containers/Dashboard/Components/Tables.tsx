@@ -99,8 +99,8 @@ const data = [
 
 const Tables = () => (
 
-    <div style={{ width: "100%" }}>
-        <Table columns={columns} dataSource={data} />
+    <div style={{ width: "100%", backgroundColor: "#FFF" }}>
+        <Table columns={columns} dataSource={data} pagination={false} />
     </div>
 );
 
