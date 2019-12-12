@@ -142,6 +142,7 @@ class CampaignDashboard extends Component<IProps, Partial<IState>> {
         // let audiences = this.props.allAudiences.audiences;
 
         let { totalAudienceCount } = this.props
+        let totalAudience = totalAudienceCount.totalAudienceCountForCampaign ? totalAudienceCount.totalAudienceCountForCampaign.count : 0
         console.log('tac ', totalAudienceCount);
         let { campaign, audiences, offers, communications, loading, loading1 } = this.state
         return (
@@ -162,7 +163,7 @@ class CampaignDashboard extends Component<IProps, Partial<IState>> {
                                     campaign={campaign}
                                     audience={audiences}
                                     offer={offers[0]}
-                                    // totalAudienceCount={this.props.totalAudienceCount}
+                                    totalAudienceCount={totalAudience}
                                     launchCampaign={this.launchCampaign}
                                     pauseCampaign={this.pauseCampaign}
                                     unpauseCampaign={this.unpauseCampaign}
