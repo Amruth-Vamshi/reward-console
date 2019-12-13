@@ -102,7 +102,7 @@ const SMSForm = Form.create<iProps>({
 						{getFieldDecorator('smsTag', {
 							initialValue: `${Object.keys(formValues).length != 0 ? formValues.smsTag ? formValues.smsTag : "" : ""}`,
 							rules: [{ required: true, message: 'SMS tag is required' }],
-						})(<Input />)}
+						})(<Input name='smsTag' onChange={(e: any) => { this.props.formValues.smsTag = e.target.value }} />)}
 					</Item>
 					<Item label="SMS body" {...formItemLayout}>
 						{getFieldDecorator('smsBody', {
