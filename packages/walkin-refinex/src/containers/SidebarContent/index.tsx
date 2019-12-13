@@ -98,8 +98,8 @@ class SidebarContent extends React.Component<SidebarContentProps, SidebarContent
             </Menu.Item>
             <Menu.Item key="apps">
               <Link to="/refinex/apps">
-                <i className="icon icon-apps" />
-                {/* <IntlMessages id="sidebar.samplePage" /> */}
+                {/* <i className="icon icon-apps" /> */}
+                <Icon type={"appstore"} style={{ fontSize: "18px" }} />
                 <span>Apps</span>
               </Link>
             </Menu.Item>

@@ -19,7 +19,8 @@ import FileUploader from "./components/molecules/fileUpload/FileUpload"
 import OfferBasicInfoForm from "./components/molecules/offerForm/basicInfo";
 import OfferRedemptionRulesForm from "./components/molecules/offerForm/redemptionRule";
 import CollapseSidebar from "./components/atoms/CollapseSidebar";
-
+import CounterCard from "./components/atoms/CounterCard/index"
+import MultipleCounterCard from "./components/atoms/MultipleCounterCard/index"
 
 export {
     ManageCampaignCard,
@@ -40,5 +41,7 @@ export {
     campaignOverview,
     WHeader,
     OfferBasicInfoForm,
-    OfferRedemptionRulesForm
+    OfferRedemptionRulesForm,
+    CounterCard,
+    MultipleCounterCard
 };
