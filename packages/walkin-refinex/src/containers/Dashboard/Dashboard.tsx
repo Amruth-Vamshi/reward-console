@@ -169,7 +169,7 @@ class Landing extends React.Component<LandingProps, Partial<LandingState>> {
                         <Col span={12}>
                             <Row>
                                 <Col xl={12} lg={12} md={12} sm={24} xs={24}>
-                                    <CounterCard titleColor="#545454" subtitleColor={"#999999"} title={"+37"} subTitle="Net Promoter Score" />
+                                    <CounterCard showComaprison={false} titleColor="#545454" subtitleColor={"#999999"} title={"+37"} subTitle="Net Promoter Score" />
                                 </Col>
                                 <Col xl={12} lg={12} md={12} sm={24} xs={24}>
                                     <MultipleCounterCard textColor={"#999999"} valueColor={"#000"} title={"NPS"} counterArray={[{ title: "New Customers", value: "+3" }, { title: "Existing Customers", value: "+5" }]} />
@@ -179,7 +179,7 @@ class Landing extends React.Component<LandingProps, Partial<LandingState>> {
                         <Col span={12}>
                             <Row>
                                 <Col xl={12} lg={12} md={12} sm={24} xs={24}>
-                                    <CounterCard titleColor="#545454" subtitleColor={"#999999"} title={"06.36"} subTitle="Customer Satisfaction Score" />
+                                    <CounterCard showComaprison={false} titleColor="#545454" subtitleColor={"#999999"} title={"06.36"} subTitle="Customer Satisfaction Score" />
                                 </Col>
                                 <Col xl={12} lg={12} md={12} sm={24} xs={24}>
                                     <MultipleCounterCard textColor={"#999999"} valueColor={"#000"} title={"CSAT"} counterArray={[{ title: "New Customers", value: "0.35" }, { title: "Existing Customers", value: "0.20" }]} />
@@ -203,14 +203,7 @@ class Landing extends React.Component<LandingProps, Partial<LandingState>> {
                     </Row>
                     <Row style={{ marginLeft: "1px", backgroundColor: "#FFF", marginRight: "1px" }}>
                         <Col span={12}>
-                            <div>
-                                <Row style={{ backgroundColor: "#FFF", marginRight: "1px", paddingTop: "8px", paddingBottom: "8px" }} >
-                                    <Col span={8} style={{ textAlign: "start", fontWeight: "bold", fontSize: "14px" }}>NPS</Col>
-                                </Row>
-                                <Row style={{ backgroundColor: "#FFF", marginRight: "1px", padding: "5px 16px 18px 5px" }} >
-                                    <LineValueChart chartType="nps" strokeColor="#038FDE" />
-                                </Row>
-                            </div>
+                            <LineValueChart chartType="nps" strokeColor="#038FDE" title="NPS" backgroundColor="#FFF" showRange={true} />
                             <div>
                                 <Row style={{ backgroundColor: "#FFF", marginRight: "1px", paddingTop: "8px", paddingBottom: "8px" }} >
                                     <Col span={8} style={{ textAlign: "start", fontWeight: "bold", fontSize: "14px" }}>NPS Distribution %</Col>
@@ -226,41 +219,26 @@ class Landing extends React.Component<LandingProps, Partial<LandingState>> {
                             </div>
                         </Col>
                         <Col span={12}>
-                            <div>
-                                <Row style={{ backgroundColor: "#FFF", marginLeft: "1px", paddingTop: "8px", paddingBottom: "8px" }} >
-                                    <Col span={8} style={{ textAlign: "start", fontWeight: "bold", fontSize: "14px" }}>CSAT</Col>
-                                </Row>
-                                <Row style={{ backgroundColor: "#FFF", marginLeft: "1px", padding: "5px 16px 18px 5px" }} >
-                                    <LineValueChart chartType="csat" strokeColor="#292961" />
-                                </Row>
-                            </div>
-                            <div>
-                                <Row style={{ backgroundColor: "#FFF", marginLeft: "1px", paddingTop: "8px", paddingBottom: "8px" }} >
-                                    <Col span={8} style={{ textAlign: "start", fontWeight: "bold", fontSize: "14px" }}>CSAT</Col>
-                                </Row>
-                                <Row style={{ height: "18px", backgroundColor: "#FFF", marginLeft: "1px" }}></Row>
-                                <Row style={{ backgroundColor: "#FFF", marginLeft: "1px", padding: "5px 16px 18px 5px" }} >
-                                    <ProgressBars />
-                                </Row>
-                            </div>
+                            <LineValueChart chartType="csat" strokeColor="#292961" title="CSAT" backgroundColor="#FFF" showRange={false} />
+                            <ProgressBars title="CSAT" backgroundColor="#FFF" />
                         </Col>
                     </Row>
                     <Row style={{ marginTop: "20px", paddingBottom: "20px" }}>
                         <Col span={12}>
                             <Row>
                                 <Col xl={12} lg={12} md={12} sm={24} xs={24}>
-                                    <CounterCard titleColor="#038FDE" subtitleColor={"#707070"} title={"7"} subTitle="Total Surveys" />
+                                    <CounterCard showComaprison={false} titleColor="#038FDE" subtitleColor={"#707070"} title={"7"} subTitle="Total Surveys" />
                                 </Col>
                                 <Col xl={12} lg={12} md={12} sm={24} xs={24}>
-                                    <CounterCard titleColor="#46CB92" subtitleColor={"#707070"} title={"4"} subTitle="Live Surveys" />
+                                    <CounterCard showComaprison={false} titleColor="#46CB92" subtitleColor={"#707070"} title={"4"} subTitle="Live Surveys" />
                                 </Col>
                             </Row>
                             <Row style={{ marginTop: "21px" }}>
                                 <Col xl={12} lg={12} md={12} sm={24} xs={24}>
-                                    <CounterCard titleColor="#FCAD78" subtitleColor={"#707070"} title={"3"} subTitle="Upcoming Surveys" />
+                                    <CounterCard showComaprison={false} titleColor="#FCAD78" subtitleColor={"#707070"} title={"3"} subTitle="Upcoming Surveys" />
                                 </Col>
                                 <Col xl={12} lg={12} md={12} sm={24} xs={24}>
-                                    <CounterCard titleColor="#2E2E2E" subtitleColor={"#707070"} title={"120"} subTitle="Total Responses" />
+                                    <CounterCard showComaprison={true} titleColor="#2E2E2E" subtitleColor={"#707070"} title={"120"} subTitle="Total Responses" />
                                 </Col>
                             </Row>
                         </Col>
