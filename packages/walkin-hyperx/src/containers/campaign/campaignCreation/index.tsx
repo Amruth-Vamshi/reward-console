@@ -15,8 +15,8 @@ import { Audience, BasicInfo, Communication, Offer } from '@walkinsole/shared/sr
 
 import { strToRule } from '../../../utils';
 import HyperXContainer from '../../../utils/HyperXContainer';
-import { ADD_OFFER_TO_CAMPAIGN, getOffers } from '../../../query/offer';
 import { DEFAULT_ACTIVE_STATUS, DEFAULT_HYPERX_CAMPAIGN } from '../../../constants';
+import { ADD_OFFER_TO_CAMPAIGN, getOffers, UNLINK_OFFER } from '../../../query/offer';
 import { allSegments, AUDIENCE_COUNT, CREATE_AUDIENCE, CREATE_RULE, RULE_ATTRIBUTES, UPDATE_AUDIENCES, UPDATE_RULE, TOTAL_AUDIENCE_COUNT } from '../../../query/audience';
 import { CREATE_CAMPAIGN, CREATE_COMMUNICATION, CREATE_COMMUNICATION_WITH_MESSAGE_TEMPLETE, CREATE_MESSAGE_TEMPLETE, PREPROCESS_LAUNCH_CAMPAIGN, UPDATE_CAMPAIGN, UPDATE_COMMUNICATION_WITH_MESSAGE_TEMPLETE, VIEW_CAMPAIGN } from '../../../query/campaign';
 
@@ -61,6 +61,7 @@ interface IProps extends RouteChildrenProps<any>, ApolloProviderProps<any> {
 	launchCampaign: (variables: any) => any
 	createRule: (variables: any) => any
 	updateCampaign: (variables: any) => any
+	unlinkOffer: (variables: any) => any
 	allApplications: any
 	allAttributes: any
 	segmentList: any
@@ -86,6 +87,7 @@ interface IState {
 	loading: boolean,
 	noOfferRequired: boolean,
 	offer: any,
+	oldOfferId: any
 	audienceFilterRuleId: any,
 	scheduleData: any,
 	smsForm: any,
@@ -242,7 +244,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 					});
 				}
 
-				if (offers && offers.length) this.setState({ offer: offers[0].id, offerData: offers[0] })
+				if (offers && offers.length) this.setState({ offer: offers[0].id, oldOfferId: offers[0].id, offerData: offers[0] })
 				else this.setState({ noOfferRequired: true })
 
 				if (communications && communications.length) {
@@ -359,24 +361,24 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 		let segments = this.state.selectedSegments
 		let current1 = this.state.current
 
-		// if (current1 == 0) {
-		// 	this.createOrUpdateBasicCampaign(current)
-		// } else if (current1 == 1) {
-		// 	if (segments[0] && segments[0] != "") {
-		// 		this.createOrUpdateAudience(current)
-		// 		this.ruleQuery(current)
-		// 	} else {
-		// 		errors.segment = "* this field is mandatory"
-		// 		this.setState({ errors })
-		// 	}
-		// } else if (current1 == 2) {
-		// 	this.linkOffer(current)
-		// } else if (current1 == 3) {
-		// 	this.createComm(current)
-		// } else if (e && e.target.innerText === 'Launch') {
-		// 	this.launchCampaign()
-		// } else
-		this.setState({ current });
+		if (current1 == 0) {
+			this.createOrUpdateBasicCampaign(current)
+		} else if (current1 == 1) {
+			if (segments[0] && segments[0] != "") {
+				this.createOrUpdateAudience(current)
+				this.ruleQuery(current)
+			} else {
+				errors.segment = "* this field is mandatory"
+				this.setState({ errors })
+			}
+		} else if (current1 == 2) {
+			this.linkOffer(current)
+		} else if (current1 == 3) {
+			this.createComm(current)
+		} else if (e && e.target.innerText === 'Launch') {
+			this.launchCampaign()
+		} else
+			this.setState({ current });
 
 	}
 
@@ -435,20 +437,18 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 			id: communication.messageTemplate.id,
 			name: this.state.campaign.name + "_" + communicationSelected,
 			description: "",
-			messageFormat: communicationSelected,
+			// messageFormat: communicationSelected,
 			templateBodyText: communicationSelected == "SMS" ? values.smsBody : communicationSelected == "EMAIL" ? values.email_body : values.notificationBody,
 			templateSubjectText: communicationSelected == "SMS" ? values.smsTag : communicationSelected == "EMAIL" ? values.email_subject : values.notificationTag,
 			templateStyle: "MUSTACHE",
-			organization_id: org_id,
 			status: DEFAULT_ACTIVE_STATUS
 		};
 		var communicationInput: any = {
 			id: communication.id,
 			entityId: this.state.offerData ? this.state.offerData.id : ' ',
-			entityType: "Offer",
+			entityType: this.state.campaignType == 'OFFER' ? 'OFFER' : 'CAMPAIGN',
 			isScheduled: scheduleSaveMark,
 			isRepeatable: scheduleSaveMark,
-			organization_id: org_id,
 			status: DEFAULT_ACTIVE_STATUS,
 			firstScheduleDateTime: this.state.campaign.startTime
 		};
@@ -463,7 +463,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 			variables: { communicationInput: communicationInput, messageTemplateInput: messageTemplateInput }
 		}).then((data: any) => {
 			console.log("Communication data..", data)
-			this.setState({ loading: false, current, communication: data.data.createCommunicationWithMessageTempate })
+			this.setState({ loading: false, current, communication: data.data.updateCommunicationWithMessageTempate })
 		}).catch(err => {
 			this.setState({ loading: false })
 			console.log("Error Updating communication", err)
@@ -569,8 +569,11 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 	// };
 
 	linkOffer = current => {
+		// if (this.state.offerCreated && this.state.update)
+		// 	return this.unlinkOffer(current)
 		this.setState({ loading: true })
 		if (this.state.noOfferRequired) {
+			if (this.state.offerCreated && this.state.update) this.unlinkOffer(current)
 			let campaignInput = { campaignType: "MESSAGING" };
 			this.props.updateCampaign({
 				variables: {
@@ -584,7 +587,8 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 				console.log("Error Update campaign", err)
 				this.setState({ loading: false })
 			});
-		} else if (this.state.offer != "" && !this.state.offerCreated) {
+		} else if (this.state.offer != "") {
+			if (this.state.offerCreated && this.state.update) this.unlinkOffer(current)
 			let { org_id }: any = jwt.decode(localStorage.getItem('jwt'))
 			let input = {
 				campaignId: this.state.campaign.id,
@@ -601,6 +605,25 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 				console.log("Error while creating audience..", err)
 			});
 		}
+	}
+
+	unlinkOffer = current => {
+		this.setState({ loading: true })
+		let { org_id }: any = jwt.decode(localStorage.getItem('jwt'))
+		let input = {
+			campaignId: this.state.campaign.id,
+			offerId: this.state.oldOfferId,
+			organizationId: org_id,
+		};
+		this.props.unlinkOffer({
+			variables: { input: input }
+		}).then(data => {
+			console.log("Remove Offer..", data)
+			this.setState({ loading: false })
+		}).catch(err => {
+			this.setState({ loading: false })
+			console.log("Error while creating audience..", err)
+		});
 	}
 
 	ruleQuery = current => {
@@ -836,7 +859,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 	};
 
 	saveSchedule = scheduleData => {
-		console.log(scheduleData);
+		console.log(scheduleData, moment(scheduleData.time).format('HH:mm:ss'));
 		message.success('schedule saved')
 		this.setState({ scheduleData, scheduleSaveMark: true })
 	}
@@ -1094,6 +1117,8 @@ export default withRouter(
 			name: "updateRule"
 		}), graphql(ADD_OFFER_TO_CAMPAIGN, {
 			name: "addOfferToCampaign"
+		}), graphql(UNLINK_OFFER, {
+			name: "unlinkOffer"
 		}), graphql(UPDATE_CAMPAIGN, {
 			name: "updateCampaign"
 		}), graphql(PREPROCESS_LAUNCH_CAMPAIGN, {
