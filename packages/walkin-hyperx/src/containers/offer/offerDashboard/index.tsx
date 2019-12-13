@@ -7,7 +7,7 @@ import { RouteChildrenProps } from 'react-router';
 import { ApolloProviderProps, compose, graphql, withApollo } from 'react-apollo';
 import { withRouter } from 'react-router-dom';
 
-import HyperXContainer from '../../../components/atoms/HyperXContainer';
+import HyperXContainer from '../../../utils/HyperXContainer';
 import { VIEW_OFFER } from '../../../query/offer';
 import { offerTypeData, cartValueConditionData, transactionTimeData, cappingData } from '../../../constants/offerData';
 import { fieldConvert } from '../../../utils';
@@ -102,7 +102,7 @@ class OfferDashboard extends React.Component<IAppProps, IAppState> {
 
     public render() {
         let { offerType, reward, name, coupon, offerEligibilityRule, rewardRedemptionRule }: any = this.state.offer
-        let { products, location, transactionTime, frequency, cartValue, dayPart, redemption, cappingType } = this.state
+        let { products, location, transactionTime, frequency, cartValue, dayPart, redemption, cappingType, spin } = this.state
         let transactionTimeStr = `6 transaction in 30 days`
 
         if (transactionTime == 'Frequency') transactionTimeStr = `${transactionTime} - ${frequency.transaction} transaction in ${frequency.days} days`
@@ -112,27 +112,21 @@ class OfferDashboard extends React.Component<IAppProps, IAppState> {
 
         return (
             <div>
-                <WHeader title='Offers' />
-                {this.state.spin ?
-                    <div>
-                        <br /> <br /> <br /> <br />
-                        <div className="divCenter">
-                            <Spin size="large" />
-                        </div> <br /> <br /> <br />
-                    </div> :
-                    <HyperXContainer className='viewOffer' margin='40px' headerHeightInPX={152}>
+                <WHeader title='Offer Dashboard' />
+                <HyperXContainer spin={spin} className='viewOffer' margin='40px' headerHeightInPX={152}>
+                    {this.state.spin ? '' :
                         <Row type='flex' justify='center'>
                             <Col sm={24} md={21} lg={18} xl={15} xxl={12}>
                                 <Row type="flex" justify="space-between" align="bottom">
-                                    <Col style={{ fontSize: 22 }} span={18}>
-                                        {name}
-                                    </Col>
+                                    <Col style={{ fontSize: 22 }} span={18}> {name} </Col>
                                     <Col style={{ display: 'flex', justifyContent: 'flex-end' }} span={6} >
                                         <Button style={{ marginBottom: 0 }}>Edit</Button>
                                     </Col>
                                 </Row>
+
                                 <Divider />
                                 <h4>Basic Information</h4>
+
                                 <Row>
                                     <Col {...labelCol}>  Offer Type  </Col>
                                     <Col {...wrapperCol}> {fieldConvert(offerTypeData, offerType, 'value', 'title')} - {reward[offerType]}{fieldConvert(offerTypeData, offerType, 'value', 'extra')} </Col>
@@ -179,15 +173,15 @@ class OfferDashboard extends React.Component<IAppProps, IAppState> {
 
                                 <Row>
                                     <Col {...labelCol}>  User Limit </Col>
-                                    <Col {...wrapperCol}> {redemption.usage_limit ? `${redemption.usage_limit} times` : '  -'}</Col>
+                                    <Col {...wrapperCol}> {redemption.usage_limit ? `${redemption.usage_limit} times` : '  --'}</Col>
                                 </Row>
                                 <Row>
                                     <Col {...labelCol}>  User Limit At Customer Level  </Col>
-                                    <Col {...wrapperCol}> {redemption.usage_limit_at_customer ? `${redemption.usage_limit_at_customer} times` : '  -'}</Col>
+                                    <Col {...wrapperCol}> {redemption.usage_limit_at_customer ? `${redemption.usage_limit_at_customer} times` : '  --'}</Col>
                                 </Row>
                                 <Row>
                                     <Col {...labelCol}>  Time Limit  </Col>
-                                    <Col {...wrapperCol}> {redemption.time_limit ? `${redemption.time_limit}` : '  -'}</Col>
+                                    <Col {...wrapperCol}> {redemption.time_limit ? `${redemption.time_limit}` : '  --'}</Col>
                                 </Row>
 
                                 <Divider />
@@ -195,17 +189,16 @@ class OfferDashboard extends React.Component<IAppProps, IAppState> {
 
                                 {cappingType != '' ? <Row>
                                     <Col {...labelCol}>{fieldConvert(cappingData, cappingType, 'value', 'title')} </Col>
-                                    <Col {...wrapperCol}> {redemption[cappingType.replace('redemption_', '')] ? `${redemption[cappingType.replace('redemption_', '')]}${fieldConvert(cappingData, cappingType, 'value', 'extra')}` : '  -'}</Col>
+                                    <Col {...wrapperCol}> {redemption[cappingType.replace('redemption_', '')] ? `${redemption[cappingType.replace('redemption_', '')]}${fieldConvert(cappingData, cappingType, 'value', 'extra')}` : '  --'}</Col>
                                 </Row> : ''}
 
                                 <Row>
                                     <Col {...labelCol}>  Limit on Sku's  </Col>
-                                    <Col {...wrapperCol}> {redemption.limit_sku_number ? `${redemption.limit_sku_number}` : '  -'} </Col>
+                                    <Col {...wrapperCol}> {redemption.limit_sku_number ? `${redemption.limit_sku_number}` : '  --'} </Col>
                                 </Row>
 
                                 <Divider />
                                 <h4>Coupon Based Offer</h4>
-
 
                                 {coupon ? <Row>
                                     <Col {...labelCol}> Coupon </Col>
@@ -217,13 +210,10 @@ class OfferDashboard extends React.Component<IAppProps, IAppState> {
                                         </Col>
                                     </Row>}
 
-
-
-
                             </Col>
                         </Row>
-                    </HyperXContainer>
-                }
+                    }
+                </HyperXContainer>
             </div>
         );
     }
