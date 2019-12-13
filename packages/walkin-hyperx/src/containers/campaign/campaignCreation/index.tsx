@@ -359,24 +359,24 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 		let segments = this.state.selectedSegments
 		let current1 = this.state.current
 
-		if (current1 == 0) {
-			this.createOrUpdateBasicCampaign(current)
-		} else if (current1 == 1) {
-			if (segments[0] && segments[0] != "") {
-				this.createOrUpdateAudience(current)
-				this.ruleQuery(current)
-			} else {
-				errors.segment = "* this field is mandatory"
-				this.setState({ errors })
-			}
-		} else if (current1 == 2) {
-			this.linkOffer(current)
-		} else if (current1 == 3) {
-			this.createComm(current)
-		} else if (e && e.target.innerText === 'Launch') {
-			this.launchCampaign()
-		} else
-			this.setState({ current });
+		// if (current1 == 0) {
+		// 	this.createOrUpdateBasicCampaign(current)
+		// } else if (current1 == 1) {
+		// 	if (segments[0] && segments[0] != "") {
+		// 		this.createOrUpdateAudience(current)
+		// 		this.ruleQuery(current)
+		// 	} else {
+		// 		errors.segment = "* this field is mandatory"
+		// 		this.setState({ errors })
+		// 	}
+		// } else if (current1 == 2) {
+		// 	this.linkOffer(current)
+		// } else if (current1 == 3) {
+		// 	this.createComm(current)
+		// } else if (e && e.target.innerText === 'Launch') {
+		// 	this.launchCampaign()
+		// } else
+		this.setState({ current });
 
 	}
 
