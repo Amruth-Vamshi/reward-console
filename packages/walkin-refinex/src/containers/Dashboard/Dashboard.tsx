@@ -189,10 +189,10 @@ class Landing extends React.Component<LandingProps, Partial<LandingState>> {
                     </Row>
                     <Row style={{ backgroundColor: "#FFF", height: "40px", marginLeft: "1px", marginRight: "1px" }}>
                         <div style={{ textAlign: "end", width: "100%" }}>
-                            <Select size={"small"} defaultValue="all_customers" value={this.state.filterCustomerValue} style={{ width: 140, padding: "9px" }} onChange={(val) => { this.handleCustomerChange(val) }}>
+                            <Select size={"small"} defaultValue="all_customers" value={this.state.filterCustomerValue} style={{ width: 180, padding: "9px" }} onChange={(val) => { this.handleCustomerChange(val) }}>
                                 <Option value="all_customers">All Customers</Option>
-                                <Option value="recent_50">Recent 50</Option>
-                                <Option value="recent_10">Recent 10</Option>
+                                <Option value="new_customers">New Customers</Option>
+                                <Option value="existing_customers">Existing Customers</Option>
                             </Select>
                             <Select size={"small"} defaultValue="last_week" value={this.state.filterDateValue} style={{ width: 150, padding: "9px" }} onChange={(val) => { this.handleDateChange(val) }}>
                                 <Option value="last_week">Last Week</Option>
