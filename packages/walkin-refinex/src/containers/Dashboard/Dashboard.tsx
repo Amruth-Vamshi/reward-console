@@ -187,7 +187,7 @@ class Landing extends React.Component<LandingProps, Partial<LandingState>> {
                             </Row>
                         </Col>
                     </Row>
-                    <Row style={{ backgroundColor: "#FFF", height: "40px", marginLeft: "1px", marginRight: "1px", marginBottom: "5px" }}>
+                    <Row style={{ backgroundColor: "#FFF", height: "40px", marginLeft: "1px", marginRight: "1px" }}>
                         <div style={{ textAlign: "end", width: "100%" }}>
                             <Select size={"small"} defaultValue="all_customers" value={this.state.filterCustomerValue} style={{ width: 140, padding: "9px" }} onChange={(val) => { this.handleCustomerChange(val) }}>
                                 <Option value="all_customers">All Customers</Option>
