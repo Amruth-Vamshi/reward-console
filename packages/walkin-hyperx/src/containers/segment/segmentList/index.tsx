@@ -10,7 +10,7 @@ import { withRouter } from 'react-router-dom';
 import { allSegments, disableSegment } from '../../../query/audience';
 import { NEW_SEGMENT } from '../../../constants/RouterConstants';
 import { DEFAULT_ACTIVE_STATUS } from '../../../constants';
-import HyperXContainer from '../../../components/atoms/HyperXContainer';
+import HyperXContainer from '../../../utils/HyperXContainer';
 
 interface IProps extends RouteChildrenProps, ApolloProviderProps<any> {
 	history: History

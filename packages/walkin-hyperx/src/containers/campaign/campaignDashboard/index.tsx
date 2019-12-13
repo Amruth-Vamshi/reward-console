@@ -8,6 +8,7 @@ import { withRouter } from 'react-router-dom';
 
 import { ABANDON_CAMPAIGN, PAUSE_CAMPAIGN, PREPROCESS_LAUNCH_CAMPAIGN, UNPAUSE_CAMPAIGN, VIEW_CAMPAIGN } from '../../../query/campaign';
 import { TOTAL_AUDIENCE_COUNT } from '../../../query/audience';
+import HyperXContainer from '../../../utils/HyperXContainer';
 
 
 interface IProps extends RouteChildrenProps<any>, ApolloProviderProps<any> {
@@ -143,37 +144,29 @@ class CampaignDashboard extends Component<IProps, Partial<IState>> {
 
         let { totalAudienceCount } = this.props
         let totalAudience = totalAudienceCount.totalAudienceCountForCampaign ? totalAudienceCount.totalAudienceCountForCampaign.count : 0
-        let { campaign, audiences, offers, communications, loading, loading1 } = this.state
+        let { campaign, audiences, offers, communications, loading, loading1, spin } = this.state
         return (
             <div>
                 <WHeader title='Campaign Dashboard' />
-                {
-                    this.state.spin ?
-                        <div>
-                            <br /> <br /> <br /> <br />
-                            <div className="divCenter">
-                                <Spin size="large" />
-                            </div> <br /> <br /> <br />
-                        </div> :
-                        <div className="gx-card" style={{ margin: 22 }}>
-                            <div className="gx-card-body">
-                                <Overview
-                                    view={true} loading={loading} loading1={loading1}
-                                    campaign={campaign}
-                                    audience={audiences}
-                                    offer={offers[0]}
-                                    totalAudienceCount={totalAudience}
-                                    launchCampaign={this.launchCampaign}
-                                    pauseCampaign={this.pauseCampaign}
-                                    unpauseCampaign={this.unpauseCampaign}
-                                    disableCampaign={this.disableCampaign}
-                                    abandonCampaign={this.abandonCampaign}
-                                    communication={communications[0] ? communications[0].messageTemplate ?
-                                        `${communications[0].messageTemplate.messageFormat} - ${communications[0].messageTemplate.templateSubjectText}` : '' : ''}
-                                />
-                            </div></div>
-                }
-
+                <HyperXContainer spin={spin} className='viewOffer' margin='40px' headerHeightInPX={152}>
+                    <div className="gx-card" style={{ margin: 22 }}>
+                        <div className="gx-card-body">
+                            <Overview
+                                view={true} loading={loading} loading1={loading1}
+                                campaign={campaign ? campaign : {}}
+                                audience={audiences}
+                                offer={offers ? offers[0] : {}}
+                                totalAudienceCount={totalAudience}
+                                launchCampaign={this.launchCampaign}
+                                pauseCampaign={this.pauseCampaign}
+                                unpauseCampaign={this.unpauseCampaign}
+                                disableCampaign={this.disableCampaign}
+                                abandonCampaign={this.abandonCampaign}
+                                communication={communications ? communications[0] ? communications[0].messageTemplate ?
+                                    `${communications[0].messageTemplate.messageFormat} - ${communications[0].messageTemplate.templateSubjectText}` : '' : '' : ''}
+                            />
+                        </div></div>
+                </HyperXContainer>
             </div>
         )
     }

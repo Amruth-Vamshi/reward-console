@@ -14,7 +14,7 @@ import { CampaignFooter, campaignOverview as Overview, Stepper, WHeader } from '
 import { Audience, BasicInfo, Communication, Offer } from '@walkinsole/shared/src/components/campaignCreation';
 
 import { strToRule } from '../../../utils';
-import HyperXContainer from '../../../components/atoms/HyperXContainer';
+import HyperXContainer from '../../../utils/HyperXContainer';
 import { ADD_OFFER_TO_CAMPAIGN, getOffers } from '../../../query/offer';
 import { DEFAULT_ACTIVE_STATUS, DEFAULT_HYPERX_CAMPAIGN } from '../../../constants';
 import { allSegments, AUDIENCE_COUNT, CREATE_AUDIENCE, CREATE_RULE, RULE_ATTRIBUTES, UPDATE_AUDIENCES, UPDATE_RULE, TOTAL_AUDIENCE_COUNT } from '../../../query/audience';
@@ -225,7 +225,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 				console.log('res', res.data.viewCampaignForHyperX);
 				let { campaign, audiences, offers, communications } = res.data.viewCampaignForHyperX
 
-				this.setState({ spin: false, campaign, formValues: campaign, communications, campaignCreated: true });
+				this.setState({ spin: false, campaign, formValues: campaign, communications, campaignCreated: true, priorityChosen: campaign.priority });
 
 				if (audiences && audiences.length) {
 					let selectedSegments: Array<any> = []
@@ -842,7 +842,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 	}
 
 	render() {
-		const { formValues, current, showTestAndControl, testValue, controlValue, testControlSelected, update, scheduleData, communicationSelected } = this.state;
+		const { formValues, current, spin, showTestAndControl, testValue, controlValue, testControlSelected, update, scheduleData, communicationSelected } = this.state;
 		let attributeData = []
 		if (this.props.allAttributes)
 			attributeData = this.props.allAttributes && this.props.allAttributes.ruleAttributes &&
@@ -891,7 +891,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 
 				{/* <div className="HyperXContainer">
 					<div style={{ margin: '40px', height: '60vh' }}> */}
-				<HyperXContainer margin='40px' headerHeightInPX={225} heightInVH={60}>
+				<HyperXContainer margin='40px' spin={spin} headerHeightInPX={225} heightInVH={60}>
 					{current === 0 && (
 						<BasicInfo
 							subTitle="Basic information"
