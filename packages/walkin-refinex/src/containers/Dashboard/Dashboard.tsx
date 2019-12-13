@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Col, Row, message, Button, Icon, Empty, Spin, Table } from "antd";
+import { Col, Row, message, Button, Icon, Select } from "antd";
 import { Auxiliary } from "@walkinsole/walkin-components";
 import moment from 'moment';
 import * as jwt from "jsonwebtoken";
@@ -16,6 +16,7 @@ import ProgressBars from "./Components/ProgressBars"
 import Tables from "./Components/Tables"
 
 const dateFormat = 'YYYY/MM/DD';
+const { Option } = Select;
 
 interface LandingProps extends ApolloProviderProps<any> {
 
@@ -46,7 +47,9 @@ interface LandingState {
     startDate: moment.Moment | string,
     endDate: moment.Moment | string,
     errors: any,
-    spin: boolean
+    spin: boolean,
+    filterCustomerValue: string,
+    filterDateValue: string
 }
 
 class Landing extends React.Component<LandingProps, Partial<LandingState>> {
@@ -67,7 +70,9 @@ class Landing extends React.Component<LandingProps, Partial<LandingState>> {
             startDate: moment().subtract(30, 'months'),
             endDate: moment(),
             errors: {},
-            spin: false
+            spin: false,
+            filterCustomerValue: "all_customers",
+            filterDateValue: "last_month"
         }
     }
 
@@ -89,6 +94,16 @@ class Landing extends React.Component<LandingProps, Partial<LandingState>> {
 
     viewDraftedSurvey() {
         message.warn("Function to view drafted survey's not linked!")
+    }
+
+    handleCustomerChange(value) {
+        console.log(`selected Customer Filter :  ${value}`);
+        this.setState({ filterCustomerValue: value })
+    }
+
+    handleDateChange(value) {
+        console.log(`selected Date Filter :  ${value}`);
+        this.setState({ filterDateValue: value })
     }
 
     getMetrics = (org_id: any, endDate: any) => {
@@ -172,8 +187,19 @@ class Landing extends React.Component<LandingProps, Partial<LandingState>> {
                             </Row>
                         </Col>
                     </Row>
-                    <Row style={{ backgroundColor: "#FFF", height: "30px", marginLeft: "1px", marginRight: "1px", marginBottom: "5px" }}>
-
+                    <Row style={{ backgroundColor: "#FFF", height: "40px", marginLeft: "1px", marginRight: "1px", marginBottom: "5px" }}>
+                        <div style={{ textAlign: "end", width: "100%" }}>
+                            <Select size={"small"} defaultValue="all_customers" value={this.state.filterCustomerValue} style={{ width: 140, padding: "9px" }} onChange={(val) => { this.handleCustomerChange(val) }}>
+                                <Option value="all_customers">All Customers</Option>
+                                <Option value="recent_50">Recent 50</Option>
+                                <Option value="recent_10">Recent 10</Option>
+                            </Select>
+                            <Select size={"small"} defaultValue="last_week" value={this.state.filterDateValue} style={{ width: 150, padding: "9px" }} onChange={(val) => { this.handleDateChange(val) }}>
+                                <Option value="last_week">Last Week</Option>
+                                <Option value="last_month">Last Month</Option>
+                                <Option value="last_6_months">Last 6 Months</Option>
+                            </Select>
+                        </div>
                     </Row>
                     <Row style={{ marginLeft: "1px", backgroundColor: "#FFF", marginRight: "1px" }}>
                         <Col span={12}>
