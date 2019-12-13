@@ -41,8 +41,7 @@ const Audience = ({
 	ruleQuery,
 	audienceCount,
 	errors, showModal, handleCancel,
-	visible, handleOk, fileList,
-	handleUploadChangeProps
+	visible, handleOk, fileList
 
 }: iProps) => {
 	return (

@@ -17,7 +17,7 @@ import { strToRule } from '../../../utils';
 import HyperXContainer from '../../../components/atoms/HyperXContainer';
 import { ADD_OFFER_TO_CAMPAIGN, getOffers } from '../../../query/offer';
 import { DEFAULT_ACTIVE_STATUS, DEFAULT_HYPERX_CAMPAIGN } from '../../../constants';
-import { allSegments, AUDIENCE_COUNT, CREATE_AUDIENCE, CREATE_RULE, RULE_ATTRIBUTES, UPDATE_AUDIENCES, UPDATE_RULE } from '../../../query/audience';
+import { allSegments, AUDIENCE_COUNT, CREATE_AUDIENCE, CREATE_RULE, RULE_ATTRIBUTES, UPDATE_AUDIENCES, UPDATE_RULE, TOTAL_AUDIENCE_COUNT } from '../../../query/audience';
 import { CREATE_CAMPAIGN, CREATE_COMMUNICATION, CREATE_COMMUNICATION_WITH_MESSAGE_TEMPLETE, CREATE_MESSAGE_TEMPLETE, PREPROCESS_LAUNCH_CAMPAIGN, UPDATE_CAMPAIGN, UPDATE_COMMUNICATION_WITH_MESSAGE_TEMPLETE, VIEW_CAMPAIGN } from '../../../query/campaign';
 
 
@@ -107,6 +107,7 @@ interface IState {
 	communications: any
 	campaign: any
 	audiences: any,
+	totalAudienceCount: any
 	offerData: any
 	campaignType: string
 	visible?, fileList?
@@ -125,6 +126,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 			priorityNumberError: false,
 			showTestAndControl: false,
 			testValue: 95,
+			totalAudienceCount: 0,
 			controlValue: 5,
 			testControlSelected: '',
 			communication: '',
@@ -136,7 +138,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 			offer: '',
 			audienceFilterRuleId: '',
 			scheduleData: {},
-			smsForm: {},
+			smsForm: { smsBody: "", smsTag: "" },
 			emailForm: {},
 			pushForm: {},
 			scheduleSaveMark: false,
@@ -157,6 +159,20 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 		};
 
 		// var formRef = useRef<HTMLElement | null>(null);
+	}
+
+	getTotalAudienceCount = () => {
+		console.log('TOTAL AUNDIENCE COUNT', this.state.campaign.id);
+		this.props.client.query({
+			query: TOTAL_AUDIENCE_COUNT,
+			variables: { campaignId: this.state.campaign.id },
+			fetchPolicy: 'network-only'
+		}).then(res => {
+			console.log(res.data.totalAudienceCountForCampaign.count)
+			this.setState({ totalAudienceCount: res.data.totalAudienceCountForCampaign.count });
+		}).catch(err => {
+			console.log("Failed to get Audience Count" + err);
+		});
 	}
 
 
@@ -470,8 +486,8 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 			status: DEFAULT_ACTIVE_STATUS
 		};
 		var communicationInput: any = {
-			entityId: this.state.offerData ? this.state.offerData.id : ' ',
-			entityType: this.state.campaignType,
+			entityId: this.state.offerData ? this.state.offerData.id : this.state.campaign.id,
+			entityType: this.state.campaignType == 'OFFER' ? 'OFFER' : 'CAMPAIGN',
 			campaign_id: this.state.campaign.id,
 			isScheduled: scheduleSaveMark,
 			isRepeatable: scheduleSaveMark,
@@ -756,6 +772,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 		if (audienceChange.audience && audienceChange.rule) {
 			audienceChange = { audience: false, rule: false }
 			this.setState({ current, audienceChange, loading: false })
+			this.getTotalAudienceCount()
 		} else this.setState({ audienceChange })
 	}
 
@@ -805,6 +822,13 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 
 	}
 
+	linkTypeSelect = e => {
+		console.log(e);
+		let { smsForm } = this.state
+		smsForm.smsBody = smsForm.smsBody ? smsForm.smsBody + e : e
+		this.setState({ smsForm })
+	}
+
 
 	logQuery = (audienceFilterRule, ruleQuery) => {
 		console.log('rule', audienceFilterRule);
@@ -836,7 +860,6 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 			},
 		};
 
-		console.log('>>props', this.props);
 
 		return (
 			<div>
@@ -909,7 +932,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 							onValuesSelected={this.onValuesSelected}
 							selectedSegments={this.state.selectedSegments}
 							segmentSelectionData={this.props.segmentList.segments}
-							// uploadCsvText="Upload CSV"
+							uploadCsvText="Upload CSV"
 							visible={this.state.visible} handleOk={this.handleOk} handleCancel={this.handleUploadCancel}
 							fileList={this.state.fileList} uploadProps={props}
 							ruleQuery={this.state.ruleQuery}
@@ -918,6 +941,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 							attributeData={attributeData}
 							logQuery={this.logQuery}
 							errors={this.state.errors}
+							showModal={this.showModal}
 						/>
 					</div>
 					}
@@ -934,6 +958,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 						<Communication
 							subTitle="Communication"
 							schedule={true}
+							linkTypeSelect={this.linkTypeSelect}
 							scheduleData={scheduleData}
 							campaign={this.state.formValues}
 							saveSchedule={this.saveSchedule}
@@ -958,6 +983,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 									campaign={this.state.formValues}
 									audience={this.state.audiences}
 									offer={this.state.offerData}
+									totalAudienceCount={this.state.totalAudienceCount}
 									communication={this.state.communication.messageTemplate ?
 										`${communicationSelected} - ${this.state.communication.messageTemplate.templateSubjectText}` : ''}
 								/>
