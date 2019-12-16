@@ -105,13 +105,11 @@ class UserInfo extends Component<IProps, IState> {
       >
         {firstName ? (
           <div className="gx-flex-row gx-align-items-center gx-pointer">
-            {/* <p
-              style={{ color: "white" }}
-              className="gx-mb-0 gx-d-none gx-d-sm-flex"
-            >
+
+            <p style={{ color: "black" }} className="gx-mb-0 gx-d-none gx-d-sm-flex" >
               {firstName + "  " + `${lastName ? lastName : " "}`}
-            </p> */}
-            &nbsp;
+            </p> &nbsp;
+
             {/* <img className="gx-rounded-circle gx-size-30 gx-mr-2 gx-ml-2" src='https://via.placeholder.com/150x150' alt="" /> */}
             {/*&nbsp; <Avatar src='https://via.placeholder.com/100x100'
                 className="gx-avatar gx-pointer" alt="" /> */}
