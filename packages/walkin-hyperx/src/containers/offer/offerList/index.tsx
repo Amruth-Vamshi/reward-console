@@ -147,6 +147,7 @@ class OfferList extends Component<IProps, Partial<IState>> {
 				title: 'Name',
 				dataIndex: 'name',
 				key: 'name',
+				width: '30%',
 				sorter: (a, b) => (a.name !== b.name ? (a.name < b.name ? -1 : 1) : 0),
 				sortOrder: sortedInfo.columnKey === 'name' && sortedInfo.order,
 			},

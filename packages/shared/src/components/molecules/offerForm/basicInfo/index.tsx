@@ -182,6 +182,8 @@ const OfferBasicInfoForm = Form.create<IProps>({ name: 'offer_basic_info' })(
 							})(
 								<Select showSearch mode="multiple" style={{ width: '100%' }} allowClear placeholder="Please select"
 									getPopupContainer={(triggerNode: any) => triggerNode.parentNode}
+									optionFilterProp="children"
+									filterOption={(input, option: any) => option.props.children.toString().toLowerCase().indexOf(input.toLowerCase()) >= 0}
 								// onChange={this.handleChange}
 								>
 									{products && products.map((el: any, i: any) =>

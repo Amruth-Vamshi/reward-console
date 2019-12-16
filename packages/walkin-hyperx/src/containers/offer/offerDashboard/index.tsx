@@ -123,7 +123,7 @@ class OfferDashboard extends React.Component<IAppProps, IAppState> {
                                         <Row type="flex" justify="space-between" align="bottom">
                                             <Col style={{ fontSize: 22, color: 'black' }} span={18}> {name} </Col>
                                             <Col style={{ display: 'flex', justifyContent: 'flex-end' }} span={6} >
-                                                <Button style={{ marginBottom: 0 }}>Edit</Button>
+                                                <Button disabled style={{ marginBottom: 0 }}>Edit</Button>
                                             </Col>
                                         </Row>
 

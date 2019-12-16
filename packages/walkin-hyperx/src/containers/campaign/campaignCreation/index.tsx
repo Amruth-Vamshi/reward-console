@@ -222,7 +222,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 			client.query({
 				query: VIEW_CAMPAIGN,
 				variables: { campaignId: match.params.id },
-				// fetchPolicy: 'network-only'
+				fetchPolicy: 'network-only'
 			}).then(res => {
 				console.log('res', res.data.viewCampaignForHyperX);
 				let { campaign, audiences, offers, communications } = res.data.viewCampaignForHyperX
@@ -244,7 +244,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 					});
 				}
 
-				if (offers && offers.length) this.setState({ offer: offers[0].id, oldOfferId: offers[0].id, offerData: offers[0] })
+				if (offers && offers.length) this.setState({ offer: offers[0].id, oldOfferId: offers[0].id, offerData: offers[0], offerCreated: true })
 				else this.setState({ noOfferRequired: true })
 
 				if (communications && communications.length) {
@@ -582,7 +582,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 				}
 			}).then(data => {
 				console.log("Update campaign data..", data);
-				this.setState({ current, loading: false, campaignType: "MESSAGING" })
+				this.setState({ current, loading: false, campaignType: "MESSAGING", offerData: {} })
 			}).catch(err => {
 				console.log("Error Update campaign", err)
 				this.setState({ loading: false })
@@ -619,7 +619,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 			variables: { input: input }
 		}).then(data => {
 			console.log("Remove Offer..", data)
-			this.setState({ loading: false })
+			// this.setState({ offerData: {} })
 		}).catch(err => {
 			this.setState({ loading: false })
 			console.log("Error while creating audience..", err)
@@ -819,7 +819,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 		this.setState({ communicationSelected: e.target.value });
 	};
 
-	offerChecked = e => this.setState({ noOfferRequired: e })
+	offerChecked = e => this.setState({ noOfferRequired: e, offer: '' })
 
 	handleOnOfferChange = e => {
 		this.setState({ offer: e });
@@ -886,34 +886,10 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 
 		return (
 			<div>
-				{/* <CampaignHeader
-					children={
-						<Fragment>
-							<Col sm={5} md={8} lg={10} xl={12} xxl={15}>
-								<h3 className="gx-text-grey paddingLeftStyle campaignHeaderTitleStyle">
-									{update ? "Update Campaign" : "Create Campaign"}
-								</h3>
-							</Col>
-							<Col sm={19} md={16} lg={14} xl={12} xxl={9}>
-								<Stepper
-									stepData={stepData}
-									current={current}
-								// onChange={this.goToNextPage.bind(this)}
-								/>
-							</Col>
-						</Fragment>
-					}
-				/> */}
-
 				<WHeader title={update ? "Update Campaign" : "Create Campaign"} extra={<Stepper
 					stepData={stepData} current={current} // onChange={this.goToNextPage.bind(this)}
 				/>} />
 
-
-
-
-				{/* <div className="HyperXContainer">
-					<div style={{ margin: '40px', height: '60vh' }}> */}
 				<HyperXContainer margin='40px' spin={spin} headerHeightInPX={225} heightInVH={60}>
 					{current === 0 && (
 						<BasicInfo
