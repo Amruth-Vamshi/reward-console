@@ -74,6 +74,7 @@ class Topbar extends React.Component<iProps, iState> {
     switch (appName) {
       case "nearx": return "NearX-Topbar";
       case "hyperx": return "HyperX-Topbar";
+      case "core": return "HyperX-Topbar";
       case "refinex": return "RefineX-Topbar";
       default: return "";
     }
