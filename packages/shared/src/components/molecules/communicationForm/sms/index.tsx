@@ -117,11 +117,11 @@ const SMSForm = Form.create<iProps>({
 							</Popover>
 						</div>
 					</Item>
-					{/* <Item style={{ paddingLeft: '16px' }}>
+					<Item style={{ paddingLeft: '16px' }}>
 						<Upload {...props}>
 							<Button>Upload and link file</Button>
 						</Upload>
-					</Item> */}
+					</Item>
 				</Form>
 			);
 		}
