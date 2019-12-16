@@ -19,7 +19,7 @@ import {
   NAV_STYLE_MINI_SIDEBAR
 } from "@walkinsole/walkin-components/src/constants/ThemeSetting";
 import SidebarLogo from "./SidebarLogo";
-import CollapseSidebar from './CollapseSidebar'
+import { CollapseSidebar } from "../../../../shared/src"
 import { compose, graphql } from "react-apollo";
 import gql from "graphql-tag";
 import Dashboard from "../../Icons/IconComponents/dashboard";
@@ -71,7 +71,7 @@ class SidebarContent extends React.Component<SidebarContentProps, SidebarContent
           className="RefineX-Sidebar gx-sidebar-content"
         >
           <Menu
-            style={{ height: "80%" }}
+            style={{ height: "100%" }}
             defaultOpenKeys={[defaultOpenKeys]}
             selectedKeys={[defaultOpenKeys]}
             theme={themeType === THEME_TYPE_LITE ? "light" : "dark"}
@@ -128,7 +128,7 @@ class SidebarContent extends React.Component<SidebarContentProps, SidebarContent
                             </Link>
                         </Menu.Item> */}
           </Menu>
-          <CollapseSidebar />
+          <CollapseSidebar className='collapseBarRefinexStyle' />
           {/* <div className="gx-linebar">
                         <i
                             className={`gx-icon-btn icon icon-${
