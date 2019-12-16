@@ -159,3 +159,11 @@ export const AUDIENCE_COUNT = gql`
 		}
 	}
 `
+
+export const TOTAL_AUDIENCE_COUNT = gql`
+	query totalAudienceCountForCampaign($campaignId:ID!){
+		totalAudienceCountForCampaign(campaignId:$campaignId){
+    		count
+  		}
+	}
+`

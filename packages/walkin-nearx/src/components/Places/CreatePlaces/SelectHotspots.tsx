@@ -21,13 +21,10 @@ export default class SelectHotspots extends React.Component<iProps, {}> {
     return (
       <div>
         <div>
-          <Search
-            placeholder="Search Nearby Hotspots"
-            value={formData.search}
-            size="large"
+          <Search placeholder="Search Nearby Hotspots"
+            value={formData.search} size="large" name="search"
             onSearch={this.props.handleSearchSubmit}
             onPressEnter={this.props.handleSearchSubmit}
-            name="search"
             onChange={c => this.props.handleChange(c)} />
           <span style={{ color: 'Red' }}>{formData.errors.search}</span>
         </div>

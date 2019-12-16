@@ -70,15 +70,6 @@ export const UPDATE_OFFER = gql`
 }`
 
 
-
-
-export const launchOffer = gql`
-	mutation launchOffer($id: ID!) {
-		launchOffer(id: $id) {
-			id
-		}
-	}
-`;
 export const closeOffer = gql`
 	mutation closeOffer($id: ID!) {
 		closeOffer(id: $id) {
@@ -95,6 +86,13 @@ export const LAUNCH_OFFER = gql`
 	}
 `;
 
+export const UNLINK_OFFER = gql`
+	mutation removeOfferFromCampaign($input:updateCampaignOfferInput){
+		removeOfferFromCampaign(input:$input){
+			id status offer{id name} campaign{id name}
+		}
+	}
+`
 
 export const ADD_OFFER_TO_CAMPAIGN = gql`
 mutation addOfferToCampaign($input:CampaignOfferInput){

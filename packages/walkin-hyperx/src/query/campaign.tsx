@@ -12,6 +12,14 @@ export const campaigns = gql`
 	}
 `;
 
+export const VIEW_HYPERX_CAMPAIGNS = gql`
+query viewCampaignsForHyperX($input: HyperXCampaignInput){
+  viewCampaignsForHyperX(input: $input){
+    campaign{ id name priority campaignStatus description startTime endTime status }
+    audienceCount reached redemptionRate
+  }
+}`
+
 export const GET_CAMPAIGN = gql`
   query campaign($id: ID!) {
     campaign(id: $id) {

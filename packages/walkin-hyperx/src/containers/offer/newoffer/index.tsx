@@ -5,16 +5,17 @@ import { Alert, message, Spin } from 'antd';
 import jwt from 'jsonwebtoken';
 import isEmpty from 'lodash/isEmpty';
 import omit from 'lodash/omit';
+import moment from 'moment'
 import React, { Component, Fragment } from 'react';
 import { ApolloProviderProps, compose, graphql, withApollo } from 'react-apollo';
 import { RouteChildrenProps } from 'react-router';
 import { createRule } from '../../../query/audience';
 import { categories, createOffer, products, subOrganizations, UPDATE_OFFER } from '../../../query/offer';
-import { isValidObject, transposeObject } from '../../../utils/common';
-import { OFFER_LIST } from '../../../utils/RouterConstants';
-import { cappingData, cartValueConditionData, couponTypeData, dummyBrandData, locationData, offerStepData, offerTypeData, productData, transactionTimeData } from '../../../utils/offerData'
-import HyperXContainer from '../../../components/atoms/HyperXContainer';
-import { DEFAULT_RULE_TYPE, DEFAULT_ACTIVE_STATUS } from '../../../utils';
+import { isValidObject, transposeObject } from '../../../utils';
+import { OFFER_LIST } from '../../../constants/RouterConstants';
+import { cappingData, cartValueConditionData, couponTypeData, dummyBrandData, locationData, offerStepData, offerTypeData, productData, transactionTimeData } from '../../../constants/offerData'
+import HyperXContainer from '../../../utils/HyperXContainer';
+import { DEFAULT_RULE_TYPE, DEFAULT_ACTIVE_STATUS } from '../../../constants';
 
 interface IProps extends RouteChildrenProps<any>, ApolloProviderProps<any> {
 	// pauseCampaign: (variables: any) => any
@@ -30,6 +31,7 @@ interface IState {
 	newOfferErrorMessage: '',
 	offerEligibityRule: any,
 	offerType: any,
+	transactionTime: '',
 	couponLableSelected: '',
 	offerRedemptionRuleId: ''
 	productValues: Array<any>,
@@ -43,6 +45,7 @@ interface IState {
 	productDropDown: any
 	locationDropDown: any
 	values,
+	timeLimitType
 
 };
 
@@ -62,9 +65,11 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 			productValues: [],
 			redemptionRule: {},
 			loading1: false,
+			transactionTime: '',
 			offerEligibityRuleId: '',
 			offerRedemptionRuleId: '',
 			locationValues: [],
+			timeLimitType: '/day',
 			formValues: {
 				basicForm: {},
 				redemptionForm: {},
@@ -140,6 +145,7 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 				Object.assign(this.state.transactionTimeStatus, { showFrequency: false, showDayPart: false, showCartValue: true })
 			);
 		}
+		this.setState({ transactionTime: value })
 	};
 
 	onValuesSelected = (value, str, stateValues) => {
@@ -254,19 +260,38 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 				let basicForm: any = this.saveFormValues(current, 'basicForm', this.basicFormRef);
 				if (basicForm) {
 					let { productValues, locationValues } = this.state;
-
 					let reward = {}, reArrangedObj = {};
+
+					console.log('PV ', JSON.stringify(productValues) + " Lv " + JSON.stringify(locationValues));
+
+
 					reward[basicForm.offerType] = parseInt(basicForm.offerTypeValue);
 
 					let combinedArray = productValues.concat(locationValues);
-					let arr: Array<{}>;
-					combinedArray.map(val => {
-						console.log(val);
-						reArrangedObj[val.valueOne] = val.valueTwo;
-						arr = transposeObject(reArrangedObj && reArrangedObj, 'IN');
-					});
+					let arr: Array<{}> = [];
+					combinedArray.map(val => { reArrangedObj[val.valueOne] = val.valueTwo });
 
-					// return console.log('>>', arr, locationValues);
+
+					console.log('FV', basicForm);
+
+					if (basicForm.transactionTime) {
+						if (basicForm.transactionTime == "cartValue")
+							arr.push({ attributeName: "cartValue", attributeValue: basicForm.cartValue, expressionType: basicForm.cartValueCondition })
+						else if (basicForm.transactionTime == "frequency") {
+							arr.push({ attributeName: "frequency_transaction", attributeValue: basicForm.noOfTransaction, expressionType: "EQUALS" })
+							arr.push({ attributeName: "frequency_days", attributeValue: basicForm.noOfDays, expressionType: "EQUALS" })
+						}
+						else if (basicForm.transactionTime == "dayPart") {
+							arr.push({ attributeName: "dayPart_startTime", attributeValue: moment(basicForm.startTime).format('h:mm:ss a'), expressionType: "EQUALS" })
+							arr.push({ attributeName: "dayPart_endTime", attributeValue: moment(basicForm.endTime).format('h:mm:ss a'), expressionType: "EQUALS" })
+						}
+
+					}
+
+					arr = [...arr, ...transposeObject(reArrangedObj && reArrangedObj, 'IN')]
+
+
+					// return console.log('>>', arr, reArrangedObj);
 
 					let basicFormArray = { rules: arr, combinator: 'AND' };
 
@@ -311,136 +336,53 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 				}
 			}
 		} else if (e && e.target.innerText === 'Save') {
-			let { formValues } = this.state;
-			if (this.state.offerId) {
-				this.saveFormValues(current, 'redemptionForm', this.redemptionRef);
-				console.log('>>', formValues.redemptionForm);
-				if (!isEmpty(formValues.redemptionForm)) {
+			let { formValues, timeLimitType } = this.state;
+			// if (this.state.offerId) {
+			this.saveFormValues(current, 'redemptionForm', this.redemptionRef);
+			console.log('>>', formValues.redemptionForm);
+			if (!isEmpty(formValues.redemptionForm)) {
 
-					let redemptionFormObject = this.state.formValues.redemptionForm;
-					redemptionFormObject[redemptionFormObject.type] = redemptionFormObject.cappingValue;
+				let redemptionFormObject = this.state.formValues.redemptionForm;
+				redemptionFormObject[redemptionFormObject.type] = redemptionFormObject.cappingValue;
 
-					let ommitedObject = omit(redemptionFormObject, ['type', 'cappingValue', ""]);
-					let redemptionArray = { rules: transposeObject(ommitedObject, 'EQUALS'), combinator: 'AND' };
+				if (redemptionFormObject.redemption_time_limit && redemptionFormObject.redemption_time_limit != "")
+					redemptionFormObject.redemption_time_limit = redemptionFormObject.redemption_time_limit + timeLimitType
 
-					this.setState({ loading1: true })
-					let ruleId = await this.createRule(redemptionArray, 'offerRedemptionRuleId')
-					if (!ruleId) return console.log('Error in Rule Creation');
-
-					console.log('ruleInput >>> ', JSON.stringify(redemptionArray), ruleId);
-
-					let offerInput = { id: this.state.offerId, rewardRedemptionRuleId: ruleId }
-
-					console.log('Create Offer Input', offerInput);
-					this.props.client
-						.mutate({ mutation: UPDATE_OFFER, variables: { input: offerInput } })
-						.then(({ data }) => {
-							console.log('Update offer', data);
-							this.setState({ loading1: false })
-							this.props.history.push({ pathname: OFFER_LIST });
-							message.success('Your changes were saved', 5);
-						})
-						.catch(error => {
-							console.log('error', error);
-							this.setState({ loading1: false })
-							// message.warn(error.graphQLErrors[0] ? error.graphQLErrors[0].message : 'Error in submitting the form')
-						});
+				let ommitedObject = omit(redemptionFormObject, ['type', 'cappingValue', ""]);
+				let redemptionArray = { rules: transposeObject(ommitedObject, 'EQUALS'), combinator: 'AND' };
 
 
-					// client
-					// 	.mutate({ mutation: createRule, variables: ruleInput })
-					// 	.then(({ data }) => {
-					// 		console.log('created rule', data);
-					// 		this.setState({ offerEligibityRuleId: data.createRule.id });
-					// 		client
-					// 			.mutate({ mutation: createRule, variables: ruleInput2 })
-					// 			.then(({ data }) => {
-					// 				console.log('created redemption rule', data);
-					// 				const { offerEligibityRuleId, offerType, formValues, couponLableSelected, couponTypeSelected } = this.state;
-					// 				client
-					// 					.mutate({ mutation: createOffer,
-					// 						variables: {
-					// 							name: formValues.basicForm.offerName,
-					// 							offerType: formValues.basicForm.offerType,
-					// 							reward: offerType,
-					// 							organizationId: org_id,
-					// 							offerEligibilityRule: offerEligibityRuleId,
-					// 							offerCategory: couponTypeSelected === 1 ? 'COUPONS' : 'AUTO_APPLY',
-					// 							isCustomCoupon: couponTypeSelected === 1 ? true : false,
-					// 							coupon: couponTypeSelected === 1 ? couponLableSelected : null,
-					// 							rewardRedemptionRule: data.createRule.id,
-					// 						},
-					// 					})
-					// 					.then(({ data }) => {
-					// 						console.log('created offer', data);
-					// 						this.setState({ loading1: false })
-					// 						const { history } = this.props;
-					// 						history.push({ pathname: OFFER_LIST });
+				// return console.log('>>', redemptionArray, formValues.redemptionForm);
 
-					// 						message.success('Your changes were saved', 5);
-					// 						// client
-					// 						// 	.mutate({
-					// 						// 		mutation: launchOffer,
-					// 						// 		variables: {
-					// 						// 			id: data.createOffer.id,
-					// 						// 		},
-					// 						// 	})
-					// 						// 	.then(({ data }) => {
-					// 						// 		console.log('created offer', data);
-					// 						// 		const { history } = this.props;
-					// 						// 		history.push({
-					// 						// 			pathname: OFFER_LIST,
-					// 						// 		});
+				this.setState({ loading1: true })
+				let ruleId = await this.createRule(redemptionArray, 'offerRedemptionRuleId')
+				if (!ruleId) return console.log('Error in Rule Creation');
 
-					// 						// 		message.success('Your changes were saved', 5);
-					// 						// 	})
-					// 						// 	.catch(error => {
-					// 						// 		console.log('error', error);
-					// 						// 		this.displayError(
-					// 						// 			'newOfferErrorMessage',
-					// 						// 			error && error.graphQLErrors[0]
-					// 						// 				? error.graphQLErrors[0].message
-					// 						// 				: 'Error in submitting the form'
-					// 						// 		);
-					// 						// 	});
-					// 					})
-					// 					.catch(error => {
-					// 						console.log('error', error);
-					// 						this.setState({ loading1: false })
-					// 						this.displayError(
-					// 							'newOfferErrorMessage',
-					// 							error && error.graphQLErrors[0]
-					// 								? error.graphQLErrors[0].message
-					// 								: 'Error in submitting the form'
-					// 						);
-					// 					});
-					// 			})
-					// 			.catch(error => {
-					// 				console.log('error', error);
-					// 				this.setState({ loading1: false })
-					// 				this.displayError(
-					// 					'newOfferErrorMessage',
-					// 					error && error.graphQLErrors[0]
-					// 						? error.graphQLErrors[0].message
-					// 						: 'Error in submitting the form'
-					// 				);
-					// 			});
-					// 	})
-					// 	.catch(error => {
-					// 		console.log('error', error);
-					// 		this.setState({ loading1: false })
-					// 		this.displayError(
-					// 			'newOfferErrorMessage',
-					// 			error && error.graphQLErrors[0]
-					// 				? error.graphQLErrors[0].message
-					// 				: 'Error in submitting the form'
-					// 		);
-					// 	});
-				} else {
-					this.props.history.push({ pathname: OFFER_LIST });
-					message.success('Your changes were saved', 5);
-				}
-			} else message.warn("Complete and Save Basic Info First")
+				console.log('ruleInput >>> ', JSON.stringify(redemptionArray), ruleId);
+
+				let offerInput = { id: this.state.offerId, rewardRedemptionRule: ruleId }
+
+				console.log('Create Offer Input', offerInput);
+				this.props.client
+					.mutate({ mutation: UPDATE_OFFER, variables: { input: offerInput } })
+					.then(({ data }) => {
+						console.log('Update offer', data);
+						this.setState({ loading1: false })
+						this.props.history.push({ pathname: OFFER_LIST });
+						message.success('Your changes were saved', 5);
+					})
+					.catch(error => {
+						console.log('error', error);
+						this.setState({ loading1: false })
+						// message.warn(error.graphQLErrors[0] ? error.graphQLErrors[0].message : 'Error in submitting the form')
+					});
+
+
+			} else {
+				this.props.history.push({ pathname: OFFER_LIST });
+				message.success('Your changes were saved', 5);
+			}
+			// } else message.warn("Complete and Save Basic Info First")
 		} else {
 			//this.setState({ current: current });
 		}
@@ -459,8 +401,8 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 		else return [];
 	};
 
-	onSelectTwoValuesSelected = values => {
-		this.setState({ locationValues: values });
+	onSelectTwoValuesSelected = (values, str) => {
+		this.setState({ [str]: values });
 	};
 
 	onCouponChange = e => {
@@ -470,6 +412,8 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 	onCouponLabelChange = e => {
 		this.setState({ couponLableSelected: e.target.value });
 	};
+
+	timeLimitTypeChange = e => this.setState({ timeLimitType: e })
 
 	render() {
 		const { current, loading1, offerTypeStatus, transactionTimeStatus, productDropDown, locationValues,
@@ -532,24 +476,13 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 				}));
 		}
 
-		if (loading) {
-			return <div>
-				<br /> <br /> <br /> <br /><br /> <br />
-				<div className="divCenter">
-					<Spin size="large" />
-				</div>
-				<br /> <br /> <br />
-			</div>
-		}
-		// if (error) {
-		// 	return <p>{error}</p>;
-		// }
 		return (
 			<Fragment>
 				<div>
-					<WHeader title='Create Offer' extra={<Stepper stepData={offerStepData} current={current} onChange={this.changePage} />} />
+					<WHeader title='Create Offer' extra={<Stepper stepData={offerStepData} current={current} onChange={this.changePage}
+					/>} />
 					{/* Each step is different step because the form has to be validated and saved as draft */}
-					<HyperXContainer margin='32px' headerHeightInPX={225}>
+					<HyperXContainer spin={loading} margin='32px' headerHeightInPX={225}>
 						{current === 0 && (
 							<Fragment>
 								<h3 className="gx-text-grey subTitlePadding">Basic Information</h3>
@@ -603,6 +536,7 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 										cappingData={cappingData}
 										wrappedComponentRef={this.saveRedemptionFormRef}
 										formValues={formValues.redemptionForm}
+										timeLimitTypeChange={this.timeLimitTypeChange}
 									/>
 								</div>
 							</Fragment>
@@ -633,45 +567,21 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 export default withApollo(
 	compose(
 		graphql(products, {
-			options: (props: IProps) => {
-				var { org_id }: any = jwt.decode(localStorage.getItem('jwt'))
-				return ({
-					variables: { organizationId: org_id },
-				})
-			},
-			props: ({ data: { loading, error, products } }: any) => ({
-				loading,
-				products,
-				error,
-			}),
+			options: (props: IProps) => ({ variables: { organizationId: jwt.decode(localStorage.getItem('jwt'))['org_id'] } }),
+			props: ({ data: { loading, error, products } }: any) => ({ loading, products, error }),
 		}),
 		graphql(categories, {
-			options: () => ({
-				variables: {
-					catalogId: '2',
-				},
-			}),
-			props: ({ data: { loading, error, categories } }: any) => ({
-				loading,
-				categories,
-				error,
-			}),
+			options: () => ({ variables: { catalogId: '2' } }),
+			props: ({ data: { loading, error, categories } }: any) => ({ loading, categories, error }),
 		}),
 		graphql(subOrganizations, {
-			options: props => {
-				var { org_id }: any = jwt.decode(localStorage.getItem('jwt'))
-				return ({
-					variables: {
-						parentId: org_id,
-						type: 'STORE',
-					},
-				})
-			},
-			props: ({ data: { loading, error, subOrganizations } }: any) => ({
-				loading,
-				subOrganizations,
-				error,
+			options: props => ({
+				variables: {
+					parentId: jwt.decode(localStorage.getItem('jwt'))['org_id'],
+					type: 'STORE',
+				},
 			}),
+			props: ({ data: { loading, error, subOrganizations } }: any) => ({ loading, subOrganizations, error }),
 		})
 	)(NewOffer)
 );

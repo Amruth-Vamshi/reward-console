@@ -6,20 +6,21 @@ import { Button, Col, Dropdown, Icon, Menu, Progress, Tabs } from 'antd';
 import jwt from 'jsonwebtoken';
 import moment from 'moment';
 import * as React from 'react';
-import { compose, graphql, withApollo } from 'react-apollo';
+import { compose, graphql, withApollo, ApolloProviderProps } from 'react-apollo';
 import { RouteChildrenProps } from 'react-router';
 import { withRouter } from 'react-router-dom';
 
-import { campaigns, DISABLE_CAMPAIGN } from '../../../query/campaign';
-import { DEFAULT_ACTIVE_STATUS, DEFAULT_HYPERX_CAMPAIGN } from '../../../utils';
-import { CAMPAIGN_DASHBOARD, NEW_CAMPAIGN } from '../../../utils/RouterConstants';
-import HyperXContainer from '../../../components/atoms/HyperXContainer';
+import { campaigns, DISABLE_CAMPAIGN, VIEW_HYPERX_CAMPAIGNS } from '../../../query/campaign';
+import { DEFAULT_ACTIVE_STATUS, DEFAULT_HYPERX_CAMPAIGN, SHOULD_EDIT } from '../../../constants';
+import { CAMPAIGN_DASHBOARD, NEW_CAMPAIGN } from '../../../constants/RouterConstants';
+import HyperXContainer from '../../../utils/HyperXContainer';
 import { WHeader } from '@walkinsole/shared/src';
+import { includes } from 'lodash'
 
 
 const { TabPane } = Tabs;
 
-interface CampaignListProps extends RouteChildrenProps {
+interface CampaignListProps extends RouteChildrenProps, ApolloProviderProps<any> {
   campaigns?: any
   loading?: any
   disableCampaign?: any
@@ -54,30 +55,44 @@ class CampaignList extends React.Component<CampaignListProps, Partial<CampaignLi
       key: this.props.location.state ? this.props.location.state.tabKey ? this.props.location.state.tabKey : '1' : '1'
     };
   }
-  componentDidMount() {
-    const { campaigns, loading } = this.props;
-    this.setState({ loading: loading })
+
+  componentWillMount() {
+    this.setState({ loading: true })
+    this.props.client.query({
+      query: VIEW_HYPERX_CAMPAIGNS,
+      variables: {
+        input: {
+          organizationId: jwt.decode(localStorage.getItem("jwt"))['org_id'],
+          status: DEFAULT_ACTIVE_STATUS,
+          // campaignType: DEFAULT_HYPERX_CAMPAIGN
+        }
+      }, fetchPolicy: 'network-only'
+    }).then(res => {
+
+      let allCampaigns = res.data.viewCampaignsForHyperX.map(c =>
+        ({ ...c.campaign, reached: c.reached, audienceCount: c.audienceCount, redemptionRate: c.redemptionRate }))
+      this.setState({ loading: false, allCampaigns }, () => this.onTabChange(this.state.key));
+
+    }).catch(err => {
+      this.setState({ loading: false });
+      console.log("Failed to get Campaigns" + err);
+    });
   }
 
 
-  componentDidUpdate(preValue: any) {
-    if (this.props.loading !== preValue.loading) {
-      this.setInitialValues()
-      console.log(this.props)
-    }
-  }
-
-  // componentWillReceiveProps = p => {
-  // 	this.setInitialValues()
+  // componentDidUpdate(preValue: any) {
+  //   if (this.props.loading !== preValue.loading) {
+  //     this.setInitialValues()
+  //   }
   // }
 
-  setInitialValues = () => {
-    const { campaigns, loading } = this.props;
-    this.setState({ allCampaigns: campaigns, loading: false }, () => {
-      this.onTabChange(this.state.key)
-    })
+  // setInitialValues = () => {
+  //   const { campaigns, loading } = this.state;
+  //   this.setState({ allCampaigns: campaigns, loading: false }, () => {
+  //     this.onTabChange(this.state.key)
+  //   })
+  // }
 
-  }
   onNewCampaign = () => {
     const { history } = this.props;
     history.push({
@@ -159,7 +174,7 @@ class CampaignList extends React.Component<CampaignListProps, Partial<CampaignLi
       }}
     >
       <Menu.Item key="view"><Icon type="eye" /> View</Menu.Item>
-      {/* {_.includes(record.campaignStatus, SHOULD_EDIT) ? <Menu.Item key="edit"><Icon type="edit" /> Edit</Menu.Item> : null} */}
+      {includes(SHOULD_EDIT, record.campaignStatus) ? <Menu.Item key="edit"><Icon type="edit" /> Edit</Menu.Item> : null}
       {/* <Menu.Item key="duplicate"><Icon type="copy" /> Duplicate</Menu.Item> */}
       <Menu.Item key="delete"><Icon type="delete" /> Delete</Menu.Item>
     </Menu>
@@ -266,6 +281,20 @@ class CampaignList extends React.Component<CampaignListProps, Partial<CampaignLi
         },
       },
       {
+        title: 'Audience Size',
+        dataIndex: 'audienceCount',
+        key: 'audienceCount',
+      },
+      {
+        title: 'Reached',
+        dataIndex: 'reached',
+        key: 'reached',
+      }, {
+        title: 'Redemption Rate',
+        dataIndex: 'redemptionRate',
+        key: 'redemptionRate',
+      },
+      {
         title: 'Priority',
         dataIndex: 'priority',
         key: 'priority',
@@ -356,34 +385,34 @@ class CampaignList extends React.Component<CampaignListProps, Partial<CampaignLi
 
 export default withRouter(
   compose(
-    graphql(campaigns, {
-      options: () => {
-        const { org_id }: any = jwt.decode(localStorage.getItem("jwt"));
-        return ({
-          variables: {
-            organization_id: org_id,
-            status: DEFAULT_ACTIVE_STATUS,
-            campaignType: DEFAULT_HYPERX_CAMPAIGN
-          }, fetchPolicy: "network-only",
-          forceFetch: true
-        })
-      },
-      props: ({ data: { loading, error, campaigns, refetch } }: any) => ({
-        loading, campaigns, error,
-        changeStatus: (status: any) => {
-          const { org_id }: any = jwt.decode(localStorage.getItem("jwt"));
-          refetch({
-            variables: {
-              organization_id: org_id,
-              status: DEFAULT_ACTIVE_STATUS,
-              campaignType: DEFAULT_HYPERX_CAMPAIGN
-            }, fetchPolicy: "network-only"
-          });
-        },
-      }),
-    }),
+    // graphql(campaigns, {
+    //   options: () => {
+    //     const { org_id }: any = jwt.decode(localStorage.getItem("jwt"));
+    //     return ({
+    //       variables: {
+    //         organization_id: org_id,
+    //         status: DEFAULT_ACTIVE_STATUS,
+    //         campaignType: DEFAULT_HYPERX_CAMPAIGN
+    //       }, fetchPolicy: "network-only",
+    //       forceFetch: true
+    //     })
+    //   },
+    //   props: ({ data: { loading, error, campaigns, refetch } }: any) => ({
+    //     loading, campaigns, error,
+    //     changeStatus: (status: any) => {
+    //       const { org_id }: any = jwt.decode(localStorage.getItem("jwt"));
+    //       refetch({
+    //         variables: {
+    //           organization_id: org_id,
+    //           status: DEFAULT_ACTIVE_STATUS,
+    //           campaignType: DEFAULT_HYPERX_CAMPAIGN
+    //         }, fetchPolicy: "network-only"
+    //       });
+    //     },
+    //   }),
+    // }),
     graphql(DISABLE_CAMPAIGN, {
       name: "disableCampaign"
     }),
-  )(CampaignList)
+  )(withApollo(CampaignList))
 );

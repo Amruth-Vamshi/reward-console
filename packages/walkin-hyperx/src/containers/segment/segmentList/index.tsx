@@ -1,5 +1,5 @@
 import { CampaignHeader, InstantSearch, SortableDataTable, WHeader } from '@walkinsole/shared';
-import { Button, Col, Dropdown, Icon, Menu } from 'antd';
+import { Button, Col, Dropdown, Icon, Menu, Popconfirm, message } from 'antd';
 import { History } from 'history';
 import * as jwt from 'jsonwebtoken';
 import React, { Component, Fragment } from 'react';
@@ -8,9 +8,9 @@ import { RouteChildrenProps } from 'react-router';
 import { withRouter } from 'react-router-dom';
 
 import { allSegments, disableSegment } from '../../../query/audience';
-import { NEW_SEGMENT } from '../../../utils/RouterConstants';
-import { DEFAULT_ACTIVE_STATUS } from '../../../utils';
-import HyperXContainer from '../../../components/atoms/HyperXContainer';
+import { NEW_SEGMENT } from '../../../constants/RouterConstants';
+import { DEFAULT_ACTIVE_STATUS } from '../../../constants';
+import HyperXContainer from '../../../utils/HyperXContainer';
 
 interface IProps extends RouteChildrenProps, ApolloProviderProps<any> {
 	history: History
@@ -106,6 +106,15 @@ class SegmentList extends Component<IProps, IState> {
 		});
 	}
 
+	confirm = (e, record) => {
+		this.onDeleteContact(record);
+	}
+
+	cancel = (e) => {
+		// console.log(e);
+		// message.error('Click on No');
+	}
+
 	menus = record => (
 		<Menu
 			onClick={e => {
@@ -120,7 +129,12 @@ class SegmentList extends Component<IProps, IState> {
 
 			{/* <Menu.Item key="view"><Icon type="eye" /> View</Menu.Item> */}
 			<Menu.Item key="edit"><Icon type="edit" /> Edit</Menu.Item>
-			<Menu.Item key="delete"><Icon type="delete" /> Delete</Menu.Item>
+			<Menu.Item key="delete">
+				{/* <Popconfirm title="Are you sure delete this segment?"
+					onConfirm={(e) => this.confirm(e, record)} onCancel={this.cancel} okText="Yes" cancelText="No"> */}
+				<Icon type="delete" /> Delete
+				{/* </Popconfirm> */}
+			</Menu.Item>
 			<Menu.Item key="duplicate"><Icon type="copy" /> Duplicate</Menu.Item>
 		</Menu>
 	);
