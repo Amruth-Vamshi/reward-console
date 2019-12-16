@@ -35,7 +35,19 @@ const props = {
 };
 
 
-const SMSForm = Form.create<iProps>({ name: 'form_in_modal' })(
+const SMSForm = Form.create<iProps>({
+	name: 'form_in_modal', mapPropsToFields(props) {
+		return {
+			smsBody: Form.createFormField({
+				value: props.formValues.smsBody
+			}),
+			smsTag: Form.createFormField({
+				value: props.formValues.smsTag
+			}),
+		};
+	},
+
+})(
 	// eslint-disable-next-line
 	class SMSForm extends React.Component<iProps, {}> {
 		state = {
@@ -90,16 +102,13 @@ const SMSForm = Form.create<iProps>({ name: 'form_in_modal' })(
 						{getFieldDecorator('smsTag', {
 							initialValue: `${Object.keys(formValues).length != 0 ? formValues.smsTag ? formValues.smsTag : "" : ""}`,
 							rules: [{ required: true, message: 'SMS tag is required' }],
-						})(<Input />)}
+						})(<Input name='smsTag' onChange={(e: any) => { this.props.formValues.smsTag = e.target.value }} />)}
 					</Item>
 					<Item label="SMS body" {...formItemLayout}>
 						{getFieldDecorator('smsBody', {
 							initialValue: `${Object.keys(formValues).length != 0 ? formValues.smsBody ? formValues.smsBody : "" : ""}`,
-
-							// valuePropName: `${Object.keys(formValues).length != 0 ? formValues.smsBody ? formValues.smsBody : "" : ""}`,
-							// getValueProps: formValues.smsBody,
 							rules: [{ required: true, message: 'SMS body is required' }],
-						})(<TextArea rows={3} name='smsBody' //defaultValue={this.props.formValues.smsBody} value={this.props.formValues.smsBody} onChange={(e: any) => { this.props.formValues.smsBody = e.target.value }} 
+						})(<TextArea rows={3} name='smsBody' onChange={(e: any) => { this.props.formValues.smsBody = e.target.value }} //defaultValue={this.props.formValues.smsBody} value={this.props.formValues.smsBody} 
 						/>)}
 						<div style={{ float: 'right' }}>
 							<Popover title="Select Link Type" trigger="click" content={this.popupContent()}

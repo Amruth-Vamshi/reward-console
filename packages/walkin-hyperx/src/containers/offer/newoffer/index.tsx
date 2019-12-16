@@ -14,7 +14,7 @@ import { categories, createOffer, products, subOrganizations, UPDATE_OFFER } fro
 import { isValidObject, transposeObject } from '../../../utils';
 import { OFFER_LIST } from '../../../constants/RouterConstants';
 import { cappingData, cartValueConditionData, couponTypeData, dummyBrandData, locationData, offerStepData, offerTypeData, productData, transactionTimeData } from '../../../constants/offerData'
-import HyperXContainer from '../../../components/atoms/HyperXContainer';
+import HyperXContainer from '../../../utils/HyperXContainer';
 import { DEFAULT_RULE_TYPE, DEFAULT_ACTIVE_STATUS } from '../../../constants';
 
 interface IProps extends RouteChildrenProps<any>, ApolloProviderProps<any> {
@@ -345,7 +345,8 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 				let redemptionFormObject = this.state.formValues.redemptionForm;
 				redemptionFormObject[redemptionFormObject.type] = redemptionFormObject.cappingValue;
 
-				redemptionFormObject.redemption_time_limit = redemptionFormObject.redemption_time_limit + timeLimitType
+				if (redemptionFormObject.redemption_time_limit && redemptionFormObject.redemption_time_limit != "")
+					redemptionFormObject.redemption_time_limit = redemptionFormObject.redemption_time_limit + timeLimitType
 
 				let ommitedObject = omit(redemptionFormObject, ['type', 'cappingValue', ""]);
 				let redemptionArray = { rules: transposeObject(ommitedObject, 'EQUALS'), combinator: 'AND' };
@@ -475,25 +476,13 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 				}));
 		}
 
-		if (loading) {
-			return <div>
-				<br /> <br /> <br /> <br /><br /> <br />
-				<div className="divCenter">
-					<Spin size="large" />
-				</div>
-				<br /> <br /> <br />
-			</div>
-		}
-		// if (error) {
-		// 	return <p>{error}</p>;
-		// }
 		return (
 			<Fragment>
 				<div>
 					<WHeader title='Create Offer' extra={<Stepper stepData={offerStepData} current={current} onChange={this.changePage}
 					/>} />
 					{/* Each step is different step because the form has to be validated and saved as draft */}
-					<HyperXContainer margin='32px' headerHeightInPX={225}>
+					<HyperXContainer spin={loading} margin='32px' headerHeightInPX={225}>
 						{current === 0 && (
 							<Fragment>
 								<h3 className="gx-text-grey subTitlePadding">Basic Information</h3>
