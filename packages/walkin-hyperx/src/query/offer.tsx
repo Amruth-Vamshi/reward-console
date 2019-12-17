@@ -2,42 +2,28 @@ import gql from 'graphql-tag';
 export const products = gql`
 	query($organizationId: ID!) {
 		products(input: { organizationId: $organizationId }) {
-			id
-			name
-			code
-			sku
+			id name code sku
 		}
 	}
 `;
 export const categories = gql`
 	query($catalogId: ID!) {
 		categories(catalogId: $catalogId) {
-			id
-			name
-			catalogId
-			code
+			id name catalogId code
 		}
 	}
 `;
 export const getOffers = gql`
 	query($organizationId: ID!,$state:String) {
 		getOffers(organizationId: $organizationId,state:$state) {
-			id
-			name
-			offerType
-			offerCategory
-			state
+			id name offerType offerCategory state
 		}
 	}
 `;
 export const subOrganizations = gql`
 	query($parentId: ID!, $type: OrganizationTypeEnum) {
 		subOrganizations(parentId: $parentId, type: $type) {
-			id
-			city
-			state
-			pinCode
-			code
+			id city state pinCode code
 		}
 	}
 `;
@@ -66,40 +52,24 @@ export const createOffer = gql`
 				coupon: $coupon
 			}
 		) {
-			id
-			name
+			id name description offerType offerCategory reward 
+			organization{id name} coupon state stateCode status
+			offerEligibilityRule{id name description status type ruleConfiguration ruleExpression}
+			rewardRedemptionRule{id name description status type ruleConfiguration ruleExpression}
 		}
 	}
 `;
-export const updateOffer = gql`
-	mutation updateOffer(
-		$id: ID!
-		$rewardRedemptionRuleId: ID
-		$isCustomCoupon: Boolean
-		$coupon: String
-		$status: STATUS
-	) {
-		updateOffer(
-			input: {
-				id: $id
-				rewardRedemptionRuleId: $rewardRedemptionRuleId
-				isCustomCoupon: $isCustomCoupon
-				coupon: $coupon
-				status: $status
-			}
-		) {
-			id
-			name
-		}
-	}
-`;
-export const launchOffer = gql`
-	mutation launchOffer($id: ID!) {
-		launchOffer(id: $id) {
-			id
-		}
-	}
-`;
+export const UPDATE_OFFER = gql`
+	mutation updateOffer($input:updateOfferInput){
+	updateOffer(input:$input){
+    id name description offerType offerCategory reward 
+     organization{id name} coupon state stateCode status
+    offerEligibilityRule{id name description status type ruleConfiguration ruleExpression}
+    rewardRedemptionRule{id name description status type ruleConfiguration ruleExpression}
+  }
+}`
+
+
 export const closeOffer = gql`
 	mutation closeOffer($id: ID!) {
 		closeOffer(id: $id) {
@@ -116,6 +86,13 @@ export const LAUNCH_OFFER = gql`
 	}
 `;
 
+export const UNLINK_OFFER = gql`
+	mutation removeOfferFromCampaign($input:updateCampaignOfferInput){
+		removeOfferFromCampaign(input:$input){
+			id status offer{id name} campaign{id name}
+		}
+	}
+`
 
 export const ADD_OFFER_TO_CAMPAIGN = gql`
 mutation addOfferToCampaign($input:CampaignOfferInput){

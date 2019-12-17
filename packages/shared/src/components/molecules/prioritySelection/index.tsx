@@ -43,7 +43,7 @@ class PrioritySelection extends React.Component<iProps, iState> {
 		const { value } = e.target;
 		if ((!Number.isNaN(value) && value > 0 && value <= this.state.maxPriority) || value === '') {
 			this.setState({ priorityChosen: value });
-			this.props.onClick()
+			this.props.onClick(e)
 		} else {
 			this.displayError('priorityNumberError');
 		}

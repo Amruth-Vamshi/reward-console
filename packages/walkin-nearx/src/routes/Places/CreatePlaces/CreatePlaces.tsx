@@ -4,7 +4,7 @@ import { Widget } from "@walkinsole/walkin-components";
 import GooglePlaces from "../../../components/Places/CreatePlaces/GooglePlaces";
 import MalnualCreate from "../../../components/Places/CreatePlaces/CreatePlaceManually";
 import { History } from "history"
-import { FileUpload } from '@walkinsole/shared'
+import { FileUploader } from '@walkinsole/shared'
 
 const TabPane = Tabs.TabPane;
 
@@ -131,7 +131,7 @@ export default class CreatePlaces extends React.Component<iProps, iState> {
           </Tabs>
         </Widget>
 
-        <FileUpload visible={this.state.visible} handleOk={this.handleOk} handleCancel={this.handleCancel}
+        <FileUploader visible={this.state.visible} handleOk={this.handleOk} handleCancel={this.handleCancel}
           fileList={this.state.fileList} uploadProps={props} />
 
         {/* <Modal

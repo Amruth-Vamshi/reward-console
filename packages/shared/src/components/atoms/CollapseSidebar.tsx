@@ -20,7 +20,8 @@ interface iProps {
     navStyle?: any,
     toggleCollapsedSideNav?: any,
     onNavStyleChange?: any,
-
+    style?
+    className?
 }
 
 interface iState {
@@ -35,42 +36,43 @@ class CollapseSidebar extends React.Component<iProps, iState> {
             navStyle = NAV_STYLE_DRAWER;
         }
         return (
-            <div style={{ backgroundColor: "#191958", marginTop: '1px' }} className="gx-layout-sider-header">
+            <div style={this.props.style} className={`gx-layout-sider-header ${this.props.className}`}
+                onClick={() => {
+                    if (navStyle === NAV_STYLE_DRAWER) {
+                        this.props.toggleCollapsedSideNav({
+                            variables: {
+                                navCollapsed: !navCollapsed
+                            }
+                        });
+                    } else if (navStyle === NAV_STYLE_FIXED) {
+                        this.props.onNavStyleChange({
+                            variables: {
+                                navStyle: NAV_STYLE_MINI_SIDEBAR
+                            }
+                        });
+                    } else if (navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR) {
+                        this.props.toggleCollapsedSideNav({
+                            variables: {
+                                navCollapsed: !navCollapsed
+                            }
+                        });
+                    } else {
+                        this.props.onNavStyleChange({
+                            variables: {
+                                navStyle: NAV_STYLE_FIXED
+                            }
+                        });
+                    }
+                }}
+
+            >
                 {navStyle === NAV_STYLE_FIXED || navStyle === NAV_STYLE_MINI_SIDEBAR ? (
                     <div className="gx-linebar">
                         <img
-                            style={navStyle === NAV_STYLE_MINI_SIDEBAR ? { padding: '10px' } : { padding: '5px', marginTop: "5px" }}
+                            style={navStyle === NAV_STYLE_MINI_SIDEBAR ? { padding: '10px' } : { padding: '5px', marginTop: "7px" }}
                             src={navStyle === NAV_STYLE_MINI_SIDEBAR
                                 ? require("@walkinsole/walkin-refinex/src/Icons/ic_right_arrow.png")
                                 : require("@walkinsole/walkin-refinex/src/Icons/ic_left_arrow.png")}
-
-                            onClick={() => {
-                                if (navStyle === NAV_STYLE_DRAWER) {
-                                    this.props.toggleCollapsedSideNav({
-                                        variables: {
-                                            navCollapsed: !navCollapsed
-                                        }
-                                    });
-                                } else if (navStyle === NAV_STYLE_FIXED) {
-                                    this.props.onNavStyleChange({
-                                        variables: {
-                                            navStyle: NAV_STYLE_MINI_SIDEBAR
-                                        }
-                                    });
-                                } else if (navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR) {
-                                    this.props.toggleCollapsedSideNav({
-                                        variables: {
-                                            navCollapsed: !navCollapsed
-                                        }
-                                    });
-                                } else {
-                                    this.props.onNavStyleChange({
-                                        variables: {
-                                            navStyle: NAV_STYLE_FIXED
-                                        }
-                                    });
-                                }
-                            }}
                         />
                     </div>
                 ) : null}
