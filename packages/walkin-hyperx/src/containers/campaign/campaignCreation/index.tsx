@@ -582,7 +582,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 				}
 			}).then(data => {
 				console.log("Update campaign data..", data);
-				this.setState({ current, loading: false, campaignType: "MESSAGING", offerData: {} })
+				this.setState({ current, loading: false, campaignType: "MESSAGING", offerData: undefined })
 			}).catch(err => {
 				console.log("Error Update campaign", err)
 				this.setState({ loading: false })
