@@ -815,7 +815,7 @@ class EditCampaign extends React.Component<EditCampaignProps,Partial<EditCampaig
             testAndControlText="Test & Control"
             promptText="prompt text"
             toolTipText="what is test and control?"
-            prioritySelectionTitle="Campaign Priority"
+            prioritySelectionTitle="Survey Priority"
             priorityButtonText="Custom no"
             testControlTitle="Test & Control"
             testControlPercentage={
