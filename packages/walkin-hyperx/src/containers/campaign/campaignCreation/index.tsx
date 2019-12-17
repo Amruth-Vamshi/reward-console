@@ -486,7 +486,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 			status: DEFAULT_ACTIVE_STATUS
 		};
 		var communicationInput: any = {
-			entityId: this.state.offerData ? this.state.offerData.id : this.state.campaign.id,
+			entityId: this.state.campaignType == 'OFFER' ? this.state.offerData.id : this.state.campaign.id,
 			entityType: this.state.campaignType == 'OFFER' ? 'OFFER' : 'CAMPAIGN',
 			campaign_id: this.state.campaign.id,
 			isScheduled: scheduleSaveMark,
@@ -582,7 +582,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 				}
 			}).then(data => {
 				console.log("Update campaign data..", data);
-				this.setState({ current, loading: false, campaignType: "MESSAGING", offerData: {} })
+				this.setState({ current, loading: false, campaignType: "MESSAGING", offerData: undefined })
 			}).catch(err => {
 				console.log("Error Update campaign", err)
 				this.setState({ loading: false })

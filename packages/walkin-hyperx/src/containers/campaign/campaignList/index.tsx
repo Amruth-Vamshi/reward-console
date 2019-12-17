@@ -252,7 +252,7 @@ class CampaignList extends React.Component<CampaignListProps, Partial<CampaignLi
         title: 'Name',
         dataIndex: 'name',
         key: 'name',
-        width: '30%',
+        width: '22%',
         render: (text: any, row: any) => <div style={{ color: '#292929' }}> {text} </div>,
         sorter: (a: any, b: any) => (a.name !== b.name ? (a.name < b.name ? -1 : 1) : 0),
         sortOrder: sortedInfo.columnKey === 'name' && sortedInfo.order,
@@ -260,6 +260,7 @@ class CampaignList extends React.Component<CampaignListProps, Partial<CampaignLi
       {
         title: 'Start date & end date',
         dataIndex: 'startTime',
+        width: 320,
         key: 'startTime',
         render: (text: any, row: any) => {
           const a: any = moment();
