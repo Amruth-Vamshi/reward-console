@@ -260,6 +260,7 @@ class CampaignList extends React.Component<CampaignListProps, Partial<CampaignLi
       {
         title: 'Start date & end date',
         dataIndex: 'startTime',
+        width: 320,
         key: 'startTime',
         render: (text: any, row: any) => {
           const a: any = moment();
