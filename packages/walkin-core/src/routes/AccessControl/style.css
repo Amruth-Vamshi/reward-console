@@ -64,3 +64,6 @@
   color: #2e2e2e;
   opacity: 1;
 }
+.access-control .ant-table-tbody > tr:hover:not(.ant-table-expanded-row) > td {
+  background: unset !important;
+}
