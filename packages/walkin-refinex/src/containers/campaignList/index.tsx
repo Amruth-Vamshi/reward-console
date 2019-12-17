@@ -331,10 +331,10 @@ class CampaignList extends React.Component<CampaignListProps, Partial<CampaignLi
                     />
                 </div>
                 <div className="RefineX-campaignList">
-                    <Widget title="Campaign List" style={{ margin: '22px' }} styleName="gx-card-tabs"
+                    <Widget title="Survey List" style={{ margin: '22px' }} styleName="gx-card-tabs"
                         extra={
                             <InstantSearch
-                                placeHolder="Search campaign"
+                                placeHolder="Search Survey"
                                 data={data}
                                 onFilteredList={this.onCampaignFilteredList}
                             />}
