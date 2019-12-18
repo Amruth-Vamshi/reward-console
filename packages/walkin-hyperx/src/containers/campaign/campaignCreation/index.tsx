@@ -848,7 +848,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 	linkTypeSelect = e => {
 		console.log(e);
 		let { smsForm } = this.state
-		smsForm.smsBody = smsForm.smsBody ? smsForm.smsBody + e : e
+		smsForm.smsBody = smsForm.smsBody ? smsForm.smsBody + `{{${e}}}` : `{{${e}}}`
 		this.setState({ smsForm })
 	}
 
@@ -957,6 +957,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 						<Communication
 							subTitle="Communication"
 							schedule={true}
+							attributeData={attributeData}
 							linkTypeSelect={this.linkTypeSelect}
 							scheduleData={scheduleData}
 							campaign={this.state.formValues}

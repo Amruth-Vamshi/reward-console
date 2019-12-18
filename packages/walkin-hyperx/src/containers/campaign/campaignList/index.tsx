@@ -176,7 +176,7 @@ class CampaignList extends React.Component<CampaignListProps, Partial<CampaignLi
       <Menu.Item key="view"><Icon type="eye" /> View</Menu.Item>
       {includes(SHOULD_EDIT, record.campaignStatus) ? <Menu.Item key="edit"><Icon type="edit" /> Edit</Menu.Item> : null}
       {/* <Menu.Item key="duplicate"><Icon type="copy" /> Duplicate</Menu.Item> */}
-      <Menu.Item key="delete"><Icon type="delete" /> Delete</Menu.Item>
+      {/* <Menu.Item key="delete"><Icon type="delete" /> Delete</Menu.Item> */}
     </Menu>
   );
 
@@ -285,15 +285,18 @@ class CampaignList extends React.Component<CampaignListProps, Partial<CampaignLi
         title: 'Audience Size',
         dataIndex: 'audienceCount',
         key: 'audienceCount',
+        // align: 'center' as const
       },
       {
         title: 'Reached',
         dataIndex: 'reached',
         key: 'reached',
+        // align: 'center' as const
       }, {
         title: 'Redemption Rate',
         dataIndex: 'redemptionRate',
         key: 'redemptionRate',
+        // align: 'center' as const
       },
       {
         title: 'Priority',
