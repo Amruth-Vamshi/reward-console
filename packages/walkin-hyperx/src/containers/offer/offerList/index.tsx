@@ -9,7 +9,7 @@ import { withRouter } from 'react-router-dom';
 import { closeOffer, getOffers, LAUNCH_OFFER } from '../../../query/offer';
 import { NEW_OFFER, OFFER_DASHBOARD } from '../../../constants/RouterConstants';
 import { DEFAULT_ACTIVE_STATUS } from '../../../constants';
-import HyperXContainer from '../../../components/atoms/HyperXContainer';
+import HyperXContainer from '../../../utils/HyperXContainer';
 
 interface IProps extends RouteChildrenProps, ApolloProviderProps<any> {
 	refetchOffers
@@ -147,6 +147,7 @@ class OfferList extends Component<IProps, Partial<IState>> {
 				title: 'Name',
 				dataIndex: 'name',
 				key: 'name',
+				width: '30%',
 				sorter: (a, b) => (a.name !== b.name ? (a.name < b.name ? -1 : 1) : 0),
 				sortOrder: sortedInfo.columnKey === 'name' && sortedInfo.order,
 			},

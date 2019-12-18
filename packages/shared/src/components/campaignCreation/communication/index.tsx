@@ -1,9 +1,5 @@
 import * as React from "react";
 import { Radio, Row, Col } from "antd";
-// import SMSForm from "../../../../components/atoms/communicationForm/sms";
-// import PushNotificationForm from "../../../../components/atoms/communicationForm/pushNotification";
-// import Email from "../../../../components/atoms/communicationForm/Email";
-// import Schedule from "../../../../components/atoms/communicationForm/schedule";
 import { SMSForm, PushNotificationForm, Email, Schedule } from "../../molecules/communicationForm"
 
 interface iProps {

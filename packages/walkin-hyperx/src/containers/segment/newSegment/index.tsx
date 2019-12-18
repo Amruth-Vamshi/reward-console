@@ -10,6 +10,7 @@ import * as jwt from "jsonwebtoken";
 import { GET_ALL_APPS_OF_ORGANIZATION } from "@walkinsole/walkin-core/src/PlatformQueries";
 import { RouteChildrenProps } from "react-router";
 import { strToRule } from '../../../utils';
+import HyperXContainer from '../../../utils/HyperXContainer';
 
 interface IProps extends RouteChildrenProps, ApolloProviderProps<any> {
 	allApplications: any
@@ -191,7 +192,7 @@ class NewSegment extends Component<IProps, Partial<IState>> {
 	};
 
 	render() {
-		const { loading1, value, newSegmentError, query, isDuplicateSegment } = this.state;
+		const { loading1, value, newSegmentError, query, isDuplicateSegment, update } = this.state;
 		const { loading, error, ruleAttributes } = this.props;
 		if (loading) {
 			return <p>Please wait...</p>;
@@ -209,40 +210,31 @@ class NewSegment extends Component<IProps, Partial<IState>> {
 					label: el.attributeName,
 				}));
 		else this.state.errors.rule = 'you dont have any rule attributes'
-		console.log(attributeData);
+
 		return (
 			<Fragment>
-				{/* <div>
-					<CampaignHeader>
-						<Col span={12}>
-							<h3 className="gx-text-grey paddingLeftStyle campaignHeaderTitleStyle">
-								{isDuplicateSegment ? 'Duplicate segment' : 'New Segment'}
-							</h3>
-						</Col>
-					</CampaignHeader>
-				</div> */}
-				<WHeader title={isDuplicateSegment ? 'Duplicate segment' : 'New Segment'} />
-				<div style={{ margin: '32px' }}>
+				<WHeader title={update ? 'Update segment' : isDuplicateSegment ? 'Duplicate segment' : 'Create Segment'} />
+
+				<HyperXContainer spin={loading} margin='32px' headerHeightInPX={200}>
 					<div style={{ width: '50%', marginBottom: '40px' }}>
 						<div style={{ marginBottom: '10px' }}>
 							<p className="gx-mb-1">Segment Name</p>
-							<Input
-								defaultValue={isDuplicateSegment ? value : 'Enter segment name'}
-								value={value} placeholder="Enter Segment Name"
-								onChange={this.onChange}
-							/>
+							<Input defaultValue={isDuplicateSegment ? value : 'Enter segment name'}
+								value={value} placeholder="Enter Segment Name" onChange={this.onChange} />
 						</div>
 						<span style={{ color: "Red" }}> {this.state.errors.name} </span>
 					</div>
 					<div style={{ marginTop: 10, marginBottom: 10 }}>Segment selection criteria</div>
 					<WalkinQueryBuilder fields={attributeData} onQueryChange={this.logQuery} query={query} />
 					<p style={{ color: "Red", marginTop: 10 }}> {this.state.errors.rule} </p>
-				</div>
-				{newSegmentError && <Alert style={{ margin: '0px 35px' }} message="Not a valid Segment" type="error" />}
+
+					{newSegmentError && <Alert style={{ margin: '0px 35px' }} message="Not a valid Segment" type="error" />}
+				</HyperXContainer>
+
 				<div className="segmentFooterButton">
-					<Button type="primary" //loading={loading1}
+					<Button type="primary" loading={loading1}
 						className="campaignFooterStyle" onClick={this.onNewSegment}>
-						{this.state.update ? 'Update Segment' : 'Create Segment'}
+						{update ? 'Update Segment' : 'Create Segment'}
 					</Button>
 				</div>
 			</Fragment>
