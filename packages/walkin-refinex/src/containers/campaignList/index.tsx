@@ -323,7 +323,7 @@ class CampaignList extends React.Component<CampaignListProps, Partial<CampaignLi
                                 </Col>
                                 <Col className="searchInputStyle" span={12}>
                                     <Button type="primary" onClick={this.onNewCampaign}>
-                                        Create Surveys
+                                        Create Survey
 								</Button>
                                 </Col>
                             </React.Fragment>
