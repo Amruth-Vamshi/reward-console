@@ -24,6 +24,7 @@ interface iProps {
   saveSchedule?: any,
   form?: any
   linkTypeSelect?: any
+  attributeData?
 }
 
 const Communication = ({
@@ -46,6 +47,7 @@ const Communication = ({
   campaign,
   scheduleSaveMark,
   saveSchedule,
+  attributeData,
   linkTypeSelect,
   form
 }: iProps) => {
@@ -74,6 +76,7 @@ const Communication = ({
             wrappedComponentRef={commWrappedComponentRef}
             formValues={communicationFormValues}
             linkTypeSelect={linkTypeSelect}
+            attributeData={attributeData}
             onFormNext={onFormNext} />}
           {value == "PUSH" && <PushNotificationForm
             wrappedComponentRef={pushFormRef}
