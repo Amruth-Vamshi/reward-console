@@ -1032,7 +1032,7 @@ export default withRouter(
 				return ({
 					variables: {
 						input: {
-							entityName: "CustomerSearch",
+							entityName: "Customer",
 							status: DEFAULT_ACTIVE_STATUS,
 							organizationId: org_id,
 						}

@@ -250,7 +250,7 @@ export default withRouter(
 				return {
 					variables: {
 						input: {
-							entityName: "CustomerSearch",
+							entityName: "Customer",
 							status: "ACTIVE",
 							organizationId: org_id
 						}
