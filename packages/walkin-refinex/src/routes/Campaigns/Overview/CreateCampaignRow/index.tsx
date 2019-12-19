@@ -99,14 +99,15 @@ class CreateCampaignRow extends React.Component<CreateCampaignRowProps, CreateCa
                                 </Col>
                                 <Col
                                     span={4}
-                                    onClick={this.createFeedbackCampaign.bind(
-                                        this,
-                                        "product feedback"
-                                    )}
+                                // onClick={this.createFeedbackCampaign.bind(
+                                //     this,
+                                //     "product feedback"
+                                // )}
                                 >
                                     <CardBox
                                         style={{
-                                            cursor: "pointer"
+                                            cursor: "pointer",
+                                            backgroundColor: "#e6e6e6"
                                         }}
                                         styleName={"gx-card-full" + ' ' + (this.state.formName == "product feedback" ? "selected_form" : "not_selected")}
                                         heading={""}
@@ -123,14 +124,15 @@ class CreateCampaignRow extends React.Component<CreateCampaignRowProps, CreateCa
                                 </Col>
                                 <Col
                                     span={4}
-                                    onClick={this.createFeedbackCampaign.bind(
-                                        this,
-                                        "customer survey"
-                                    )}
+                                // onClick={this.createFeedbackCampaign.bind(
+                                //     this,
+                                //     "customer survey"
+                                // )}
                                 >
                                     <CardBox
                                         style={{
-                                            cursor: "pointer"
+                                            cursor: "pointer",
+                                            backgroundColor: "#e6e6e6"
                                         }}
                                         styleName={"gx-card-full" + ' ' + (this.state.formName == "customer survey" ? "selected_form" : "not_selected")}
                                         heading={""}
@@ -146,14 +148,15 @@ class CreateCampaignRow extends React.Component<CreateCampaignRowProps, CreateCa
                                 </Col>
                                 <Col
                                     span={4}
-                                    onClick={this.createFeedbackCampaign.bind(
-                                        this,
-                                        "employee feedback"
-                                    )}
+                                // onClick={this.createFeedbackCampaign.bind(
+                                //     this,
+                                //     "employee feedback"
+                                // )}
                                 >
                                     <CardBox
                                         style={{
-                                            cursor: "pointer"
+                                            cursor: "pointer",
+                                            backgroundColor: "#e6e6e6"
                                         }}
                                         styleName={"gx-card-full" + ' ' + (this.state.formName == "employee feedback" ? "selected_form" : "not_selected")}
                                         heading={""}
@@ -169,14 +172,15 @@ class CreateCampaignRow extends React.Component<CreateCampaignRowProps, CreateCa
                                 </Col>
                                 <Col
                                     span={4}
-                                    onClick={this.createFeedbackCampaign.bind(
-                                        this,
-                                        "user feedback"
-                                    )}
+                                // onClick={this.createFeedbackCampaign.bind(
+                                //     this,
+                                //     "user feedback"
+                                // )}
                                 >
                                     <CardBox
                                         style={{
-                                            cursor: "pointer"
+                                            cursor: "pointer",
+                                            backgroundColor: "#e6e6e6"
                                         }}
                                         styleName={"gx-card-full" + ' ' + (this.state.formName == "user feedback" ? "selected_form" : "not_selected")}
                                         heading={""}

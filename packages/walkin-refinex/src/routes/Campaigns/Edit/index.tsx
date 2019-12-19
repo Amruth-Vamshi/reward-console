@@ -815,7 +815,7 @@ class EditCampaign extends React.Component<EditCampaignProps,Partial<EditCampaig
             testAndControlText="Test & Control"
             promptText="prompt text"
             toolTipText="what is test and control?"
-            prioritySelectionTitle="Campaign Priority"
+            prioritySelectionTitle="Survey Priority"
             priorityButtonText="Custom no"
             testControlTitle="Test & Control"
             testControlPercentage={
@@ -977,8 +977,8 @@ class EditCampaign extends React.Component<EditCampaignProps,Partial<EditCampaig
 						<div className="gx-card-body" style={{ background: "#FFFFFF" }}>
 							<CampaignFooter
 								loading={this.state.loading}
-								nextButtonText={current > 4 ? 'Launch' : 'Save and Next'}
-								saveDraftText={current === 0 ? "" : 'Save Draft'}
+								nextButtonText={current > 4 ? 'Finalize' : 'Save and Next'}
+								saveDraftText={current === 0 || current > 4 ? "" : 'Save Draft'}
 								saveDraft={() => this.saveDraft(current + 1)}
 								goToPage2={this.onFormNext.bind(this, current + 1)}
 							/>
