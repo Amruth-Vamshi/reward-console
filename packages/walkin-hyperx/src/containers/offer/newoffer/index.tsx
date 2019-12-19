@@ -91,9 +91,9 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 			},
 			locationDropDown: {
 				showCityList: false,
-				showStateList: true,
+				showStateList: false,
 				showPincodeList: false,
-				showStoreList: false,
+				showStoreList: true,
 			},
 		};
 	}
@@ -275,9 +275,9 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 					console.log('FV', basicForm);
 
 					if (basicForm.transactionTime) {
-						if (basicForm.transactionTime == "cartValue")
+						if (basicForm.transactionTime == "cartValue" && basicForm.cartValue != "")
 							arr.push({ attributeName: "cartValue", attributeValue: basicForm.cartValue, expressionType: basicForm.cartValueCondition })
-						else if (basicForm.transactionTime == "frequency") {
+						else if (basicForm.transactionTime == "frequency" && basicForm.noOfTransaction && basicForm.noOfDay) {
 							arr.push({ attributeName: "frequency_transaction", attributeValue: basicForm.noOfTransaction, expressionType: "EQUALS" })
 							arr.push({ attributeName: "frequency_days", attributeValue: basicForm.noOfDays, expressionType: "EQUALS" })
 						}
@@ -472,7 +472,7 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 				subOrganizations &&
 				subOrganizations.map(el => ({
 					value: el.code,
-					title: el.code,
+					title: el.name,
 				}));
 		}
 
