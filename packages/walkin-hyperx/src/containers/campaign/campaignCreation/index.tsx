@@ -446,7 +446,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 		var communicationInput: any = {
 			id: communication.id,
 			entityId: this.state.offerData ? this.state.offerData.id : ' ',
-			entityType: this.state.campaignType == 'OFFER' ? 'Offer' : 'CAMPAIGN', //Change to OFFER
+			entityType: this.state.campaignType == 'OFFER' ? 'Offer' : 'Campaine', //Change to UpperCase
 			isScheduled: scheduleSaveMark,
 			isRepeatable: scheduleSaveMark,
 			status: DEFAULT_ACTIVE_STATUS,
@@ -487,7 +487,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 		};
 		var communicationInput: any = {
 			entityId: this.state.campaignType == 'OFFER' ? this.state.offerData.id : this.state.campaign.id,
-			entityType: this.state.campaignType == 'OFFER' ? 'Offer' : 'CAMPAIGN',  //Change to OFFER
+			entityType: this.state.campaignType == 'OFFER' ? 'Offer' : 'Campaine',  //Change to UpperCase
 			campaign_id: this.state.campaign.id,
 			isScheduled: scheduleSaveMark,
 			isRepeatable: scheduleSaveMark,
