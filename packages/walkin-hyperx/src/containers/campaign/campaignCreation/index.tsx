@@ -453,7 +453,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 			firstScheduleDateTime: this.state.campaign.startTime
 		};
 		if (scheduleSaveMark) {
-			let repeatRuleConf: any = { frequency: scheduleData.repeatType, time: moment(scheduleData.time).format('HH:MM:SS') }
+			let repeatRuleConf: any = { frequency: scheduleData.repeatType, time: moment(scheduleData.time).format('HH:mm:ss') }
 			scheduleData.repeatType == "WEEKLY" ? repeatRuleConf.byWeekDay = scheduleData.days : ''
 			scheduleData.hasOwnProperty('endTime') ? repeatRuleConf.endAfter = scheduleData.endTime : repeatRuleConf.noOfOccurances = scheduleData.noOfOccurances
 			communicationInput.repeatRuleConfiguration = repeatRuleConf
@@ -498,7 +498,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 		};
 		if (scheduleSaveMark) {
 			console.log(this.state.scheduleData);
-			let repeatRuleConf: any = { frequency: scheduleData.repeatType, time: moment(scheduleData.time).format('HH:MM:SS') }
+			let repeatRuleConf: any = { frequency: scheduleData.repeatType, time: moment(scheduleData.time).format('HH:mm:ss') }
 			scheduleData.repeatType == "WEEKLY" ? repeatRuleConf.byWeekDay = scheduleData.days : ''
 			scheduleData.hasOwnProperty('endTime') ? repeatRuleConf.endAfter = scheduleData.endTime : repeatRuleConf.noOfOccurances = scheduleData.noOfOccurances
 			communicationInput.repeatRuleConfiguration = repeatRuleConf
@@ -859,7 +859,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 	};
 
 	saveSchedule = scheduleData => {
-		console.log(scheduleData, moment(scheduleData.time).format('HH:mm:ss'));
+		// console.log(scheduleData, moment(scheduleData.time).format('HH:mm:ss'));
 		message.success('schedule saved')
 		this.setState({ scheduleData, scheduleSaveMark: true })
 	}
