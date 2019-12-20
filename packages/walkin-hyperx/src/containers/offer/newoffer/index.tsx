@@ -264,7 +264,7 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 
 
 					reward[basicForm.offerType] = basicForm.offerType == "FREE_ITMES_FROM_LIST" ?
-						basicForm.offerTypeValue : parseInt(basicForm.offerTypeValue);
+						basicForm.offerTypeValue : parseFloat(basicForm.offerTypeValue);
 
 					let combinedArray = productValues.concat(locationValues);
 					let arr: Array<{}> = [];
@@ -304,8 +304,8 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 
 					const { offerEligibityRuleId, couponLableSelected, couponTypeSelected } = this.state;
 					let offerInput = {
-						name: formValues.basicForm.offerName,
-						offerType: formValues.basicForm.offerType,
+						name: basicForm.offerName.trim(),
+						offerType: basicForm.offerType,
 						reward: reward,
 						organizationId: org_id,
 						offerEligibilityRule: ruleId,
@@ -478,7 +478,7 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 		return (
 			<Fragment>
 				<div>
-					<WHeader title='Create Offer' extra={<Stepper stepData={offerStepData} current={current} onChange={this.changePage}
+					<WHeader title='Create Offer' extra={<Stepper stepData={offerStepData} current={current} //onChange={this.changePage}
 					/>} />
 					{/* Each step is different step because the form has to be validated and saved as draft */}
 					<HyperXContainer spin={loading} margin='32px' headerHeightInPX={225}>

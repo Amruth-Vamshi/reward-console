@@ -11,6 +11,7 @@ import { allSegments, disableSegment } from '../../../query/audience';
 import { NEW_SEGMENT } from '../../../constants/RouterConstants';
 import { DEFAULT_ACTIVE_STATUS } from '../../../constants';
 import HyperXContainer from '../../../utils/HyperXContainer';
+import { Widget } from '@walkinsole/walkin-components';
 
 interface IProps extends RouteChildrenProps, ApolloProviderProps<any> {
 	history: History
@@ -252,36 +253,14 @@ class SegmentList extends Component<IProps, IState> {
 		];
 		return (
 			<Fragment>
-				{/* <CampaignHeader
-					children={
-						<Fragment>
-							<Col span={12}>
-								<h3 className="gx-text-grey paddingLeftStyle campaignHeaderTitleStyle">Segments</h3>
-							</Col>
-							<Col style={{ display: 'flex', justifyContent: 'flex-end' }} span={12}>
-								<Button type="primary" style={{ marginBottom: 0 }} onClick={this.onNewSegment}>
-									Create Segment
-									</Button>
-							</Col>
-						</Fragment>
-					}
-				/> */}
 				<WHeader title='Segments' extra={<Button type="primary" style={{ marginBottom: 0 }} onClick={this.onNewSegment}>CREATE SEGMENT</Button>} />
 				<HyperXContainer margin='32px' headerHeightInPX={152}>
-					<div className="gx-card">
-						<div className="gx-card-body">
-							<div style={{ marginBottom: '15px' }}>
-								<InstantSearch
-									placeHolder="Search segment"
-									data={segments}
-									onFilteredList={this.onSegmentFilteredList}
-								/>
-							</div>
-							<SortableDataTable loading={this.props.loading} data={segmentData} pagination={paginationData} onChange={this.handleChange} columns={columns} />
-						</div>
-					</div>
+					<Widget extra={<InstantSearch placeHolder="Search segment" data={segments} onFilteredList={this.onSegmentFilteredList} />} styleName="gx-card-tabs">
+
+						<SortableDataTable loading={this.props.loading} data={segmentData} pagination={paginationData} onChange={this.handleChange} columns={columns} />
+					</Widget>
 				</HyperXContainer>
-			</Fragment>
+			</Fragment >
 		);
 	}
 }
