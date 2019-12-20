@@ -77,11 +77,13 @@ export default class Overview extends React.Component<iProps, {}> {
 
                     // (campaign.campaignStatus == 'LIVE') ?
                     <div>
-                      <Button type="primary" shape="round" onClick={this.changeState}
-                        style={{ width: "140px", letterSpacing: 0, height: 40, fontSize: 17 }}
-                        loading={this.props.loading} >
-                        {(campaign.campaignStatus == "LIVE" || campaign.campaignStatus == "PRE_LIVE_PROCESSING") ? "PAUSE" : "UNPAUSE"}
-                      </Button>
+                      {
+                        campaign.campaignStatus == "LIVE" && <Button type="primary" shape="round" onClick={this.changeState}
+                          style={{ width: "140px", letterSpacing: 0, height: 40, fontSize: 17 }}
+                          loading={this.props.loading} >
+                          {campaign.campaignStatus != "PAUSE" ? "PAUSE" : "UNPAUSE"}
+                        </Button>
+                      }
 
                       {/* <Button type="primary" shape="round" onClick={this.changeState} loading={this.props.loading1}
                         style={{ width: "145px", letterSpacing: 0, height: 40, fontSize: 16 }}>

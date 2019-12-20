@@ -487,7 +487,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 		};
 		var communicationInput: any = {
 			entityId: this.state.campaignType == 'OFFER' ? this.state.offerData.id : this.state.campaign.id,
-			entityType: this.state.campaignType == 'OFFER' ? 'Offer' : 'Campaine',  //Change to UpperCase
+			entityType: this.state.campaignType == 'OFFER' ? 'Offer' : 'Campaign',  //Change to UpperCase
 			campaign_id: this.state.campaign.id,
 			isScheduled: scheduleSaveMark,
 			isRepeatable: scheduleSaveMark,
@@ -1066,14 +1066,11 @@ export default withRouter(
 		// }),
 		graphql(GET_ALL_APPS_OF_ORGANIZATION, {
 			name: "allApplications",
-			options: props => {
-				let { org_id }: any = jwt.decode(localStorage.getItem('jwt'))
-				return {
-					variables: {
-						id: org_id
-					}
-				};
-			}
+			options: props => ({
+				variables: {
+					id: jwt.decode(localStorage.getItem('jwt'))['org_id']
+				}
+			})
 		}),
 		// graphql(COMMUNICATIONS, {
 		// 	name: "allCommunications",

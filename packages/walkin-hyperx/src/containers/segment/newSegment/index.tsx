@@ -109,14 +109,14 @@ class NewSegment extends Component<IProps, Partial<IState>> {
 					console.log("Updating segment..", data)
 					const { history } = this.props;
 					this.setState({ loading1: false })
-					history.push({
-						pathname: SEGMENT_LIST
-					})
+					history.push({ pathname: SEGMENT_LIST })
 
 				}).catch(err => {
+					this.setState({ loading1: false })
 					console.log("Error while segment updating..", err)
 				})
 			}).catch(err => {
+				this.setState({ loading1: false })
 				console.log("Error whilw updating..", err)
 			})
 		} else {

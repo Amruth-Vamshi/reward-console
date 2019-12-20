@@ -10,6 +10,7 @@ import { closeOffer, getOffers, LAUNCH_OFFER } from '../../../query/offer';
 import { NEW_OFFER, OFFER_DASHBOARD } from '../../../constants/RouterConstants';
 import { DEFAULT_ACTIVE_STATUS } from '../../../constants';
 import HyperXContainer from '../../../utils/HyperXContainer';
+import { Widget } from '@walkinsole/walkin-components';
 
 interface IProps extends RouteChildrenProps, ApolloProviderProps<any> {
 	refetchOffers
@@ -129,11 +130,8 @@ class OfferList extends Component<IProps, Partial<IState>> {
 		sortedInfo = sortedInfo || {};
 		filteredInfo = filteredInfo || {};
 		let offerData = [];
-		if (filtered != null) {
-			offerData = filtered;
-		} else {
-			offerData = getOffers;
-		}
+		if (filtered != null) offerData = filtered;
+		else offerData = getOffers;
 
 		const paginationData = {
 			position: "bottom",
@@ -180,36 +178,12 @@ class OfferList extends Component<IProps, Partial<IState>> {
 		];
 		return (
 			<Fragment>
-				{/* <div>
-					<CampaignHeader
-						children={
-							<Fragment>
-								<Col span={12}>
-									<h3 className="gx-text-grey paddingLeftStyle campaignHeaderTitleStyle">Offers</h3>
-								</Col>
-								<Col style={{ display: 'flex', justifyContent: 'flex-end' }} span={12}>
-									<Button type="primary" style={{ marginBottom: 0 }} onClick={this.onNewSegment}>
-										Create Offer
-									</Button>
-								</Col>
-							</Fragment>
-						}
-					/>
-				</div> */}
 				<WHeader title='Offers' extra={<Button type="primary" style={{ marginBottom: 0 }} onClick={this.onNewSegment}>CREATE OFFER</Button>} />
 				<HyperXContainer margin='32px' headerHeightInPX={152}>
-					<div className="gx-card">
-						<div className="gx-card-body">
-							<div style={{ marginBottom: '24px' }}>
-								<InstantSearch
-									placeHolder="Search offer"
-									data={getOffers}
-									onFilteredList={this.onOfferFilteredList}
-								/>
-							</div>
-							<SortableDataTable loading={this.props.loading} pagination={paginationData} data={offerData} onChange={this.handleChange} columns={columns} />
-						</div>
-					</div>
+					<Widget extra={<InstantSearch placeHolder="Search offer" data={getOffers} onFilteredList={this.onOfferFilteredList} />} styleName="gx-card-tabs">
+
+						<SortableDataTable loading={this.props.loading} pagination={paginationData} data={offerData} onChange={this.handleChange} columns={columns} />
+					</Widget>
 				</HyperXContainer>
 			</Fragment>
 		);

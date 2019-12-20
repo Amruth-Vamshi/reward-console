@@ -207,7 +207,7 @@ const OfferBasicInfoForm = Form.create<IProps>({ name: 'offer_basic_info' })(
 					<Form.Item style={{ width: 'calc(100% - 22px)' }} label="Offer Name">
 						{getFieldDecorator('offerName', {
 							initialValue: `${Object.keys(formValues).length != 0 ? formValues.offerName : ''}`,
-							rules: [{ required: true, message: 'Please input offer name!' }],
+							rules: [{ transform: (value) => value.trim() }, { required: true, message: 'Please input offer name!' }],
 						})(<Input />)}
 					</Form.Item>
 
