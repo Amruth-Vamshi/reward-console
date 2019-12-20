@@ -132,7 +132,8 @@ class OfferDashboard extends React.Component<IAppProps, IAppState> {
 
                                         <Row>
                                             <Col {...labelCol}>  Offer Type  </Col>
-                                            <Col {...wrapperCol}> {fieldConvert(offerTypeData, offerType, 'value', 'title')} - {reward[offerType]}{fieldConvert(offerTypeData, offerType, 'value', 'extra')} </Col>
+                                            <Col {...wrapperCol}> {fieldConvert(offerTypeData, offerType, 'value', 'title')} - {reward[offerType] ? reward[offerType].toString() : ''}
+                                                {fieldConvert(offerTypeData, offerType, 'value', 'extra')} </Col>
                                         </Row>
                                         {products.map((p: any) => <div>
                                             <Row>

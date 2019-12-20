@@ -262,10 +262,9 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 					let { productValues, locationValues } = this.state;
 					let reward = {}, reArrangedObj = {};
 
-					console.log('PV ', JSON.stringify(productValues) + " Lv " + JSON.stringify(locationValues));
 
-
-					reward[basicForm.offerType] = parseInt(basicForm.offerTypeValue);
+					reward[basicForm.offerType] = basicForm.offerType == "FREE_ITMES_FROM_LIST" ?
+						basicForm.offerTypeValue : parseInt(basicForm.offerTypeValue);
 
 					let combinedArray = productValues.concat(locationValues);
 					let arr: Array<{}> = [];
@@ -291,7 +290,7 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 					arr = [...arr, ...transposeObject(reArrangedObj && reArrangedObj, 'IN')]
 
 
-					// return console.log('>>', arr, reArrangedObj);
+					// return console.log('>>', basicForm, reward);
 
 					let basicFormArray = { rules: arr, combinator: 'AND' };
 

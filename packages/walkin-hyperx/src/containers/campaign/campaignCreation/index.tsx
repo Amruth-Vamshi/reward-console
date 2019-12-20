@@ -1066,14 +1066,11 @@ export default withRouter(
 		// }),
 		graphql(GET_ALL_APPS_OF_ORGANIZATION, {
 			name: "allApplications",
-			options: props => {
-				let { org_id }: any = jwt.decode(localStorage.getItem('jwt'))
-				return {
-					variables: {
-						id: org_id
-					}
-				};
-			}
+			options: props => ({
+				variables: {
+					id: jwt.decode(localStorage.getItem('jwt'))['org_id']
+				}
+			})
 		}),
 		// graphql(COMMUNICATIONS, {
 		// 	name: "allCommunications",
