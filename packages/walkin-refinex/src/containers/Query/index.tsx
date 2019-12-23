@@ -266,7 +266,7 @@ export const communications = gql`
     }
 `;
 export const audiences = gql`
-query audiences($campaign_id:ID, $organization_id:ID,$segment_id:ID){
+query audiences($campaign_id:ID, $organization_id:ID!,$segment_id:ID){
   audiences(campaign_id:$campaign_id, organization_id:$organization_id,segment_id:$segment_id,status:ACTIVE){
     id
     segment{
@@ -924,3 +924,19 @@ query audiences($campaign_id:ID, $organization_id:ID,$segment_id:ID){
   }
 }
 `;
+
+export const AUDIENCE_COUNT = gql`
+	query audienceCount($segments:[ID], $organizationId:ID!){
+		audienceCount(segments:$segments, organizationId:$organizationId){
+			count
+		}
+	}
+`
+
+export const TOTAL_AUDIENCE_COUNT = gql`
+	query totalAudienceCountForCampaign($campaignId:ID!){
+		totalAudienceCountForCampaign(campaignId:$campaignId){
+    		count
+  		}
+	}
+`

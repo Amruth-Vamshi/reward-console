@@ -33,7 +33,8 @@ import {
   CREATE_EVENT_SUBSCRIPTION,
   UPDATE_EVENT_SUBSCRIPTION,
   LINK_CAMPAIGN_TO_APPLICATION,
-  UNLINK_CAMPAIGN_FROM_APPLICATION
+  UNLINK_CAMPAIGN_FROM_APPLICATION,
+  AUDIENCE_COUNT
 } from "../../../containers/Query";
 import { CustomScrollbars } from "@walkinsole/walkin-components";
 import jwt from "jsonwebtoken";
@@ -73,7 +74,7 @@ interface EditCampaignProps extends RouteComponentProps<RouteParams>,ApolloProvi
   updateRule?:any
   linkCampaignToApplication?:any
   unlinkCampaignFromApplication?:any
-
+  getAudienceCount?:any
 }
 
 interface EditCampaignState {
@@ -104,6 +105,7 @@ interface EditCampaignState {
   eventValues:any
   selectedSegments:any
   communicationId:any,
+  audienceCount: number
 }
 
 const communicationData = [
@@ -144,6 +146,7 @@ class EditCampaign extends React.Component<EditCampaignProps,Partial<EditCampaig
       selectedSegments:[],
       query: {combinator: "and", rules: [] },
       loading:false,
+      audienceCount : 0,
       stepperData: [
         {
           title: "Basic Info"
@@ -289,6 +292,26 @@ class EditCampaign extends React.Component<EditCampaignProps,Partial<EditCampaig
   
   onValuesSelected = selectedSegments =>{
     this.setState({selectedSegments})
+    console.log("Selected Segment : ",selectedSegments)
+    this.setState({ selectedSegments: selectedSegments })
+    
+    // this.getAudience(selectedSegments)
+  }
+
+  getAudience(selectedSegments)
+  {
+    let { org_id }: any = jwt.decode(localStorage.getItem('jwt'))
+    console.log(this.props)
+    this.props.getAudienceCount.refetch({
+      variables:{ 
+        segments: selectedSegments, 
+        organizationId: org_id 
+      }
+    }).then(data => {
+      console.log("Audience Data : ", data)
+    }).catch(err => {
+      console.log("Audience Data Error : ", err)
+    })
   }
 
   onFormNext = current => {
@@ -856,17 +879,21 @@ class EditCampaign extends React.Component<EditCampaignProps,Partial<EditCampaig
               {this.props.segmentList.loading? <Spin/>:<Audience
                 audienceTitle="Audience"
                 segmentSubTitle="Segment"
-                onValuesSelected={this.onValuesSelected}
+                audienceCount={this.state.audienceCount}
+                onValuesSelected={() => this.onValuesSelected}
                 selectedSegments={this.state.selectedSegments}
                 segmentSelectionData={this.props.segmentList.segments}
-                
                 uploadCsvText="Upload CSV"
                 // uploadProps={props}
+                // visible={this.state.visible} handleOk={this.handleOk} handleCancel={this.handleUploadCancel}
+                // fileList={this.state.fileList}
                 segmentFilterText="Filter"
                 segmentFilterSubText="Campaign applies to :"
                 attributeData={attributeData}
                 logQuery={this.logQueryAudience}
                 ruleQuery={this.state.oldQueryAudience ? this.state.oldQueryAudience :audienceRule}
+                // errors={this.state.errors}
+							  // showModal={this.showModal}
               />}
           </CustomScrollbars>
         );
@@ -1080,6 +1107,9 @@ export default compose(
   graphql(UPDATE_EVENT_SUBSCRIPTION,{
     name:"updateEventSubscription"
   }),
+  // graphql(AUDIENCE_COUNT, {
+  //   name:"getAudienceCount"
+  // }),
   graphql(communications,{
     name:"allCommunications",
     options:(props:EditCampaignProps) =>{
@@ -1087,7 +1117,7 @@ export default compose(
       return ({
       variables:{
       entityId:props.match.params.id,
-      entityType:"Campaign",
+      entityType:"CAMPAIGN",
       organization_id:org_id,
       status:DEFAULT_ACTIVE_STATUS
       },
