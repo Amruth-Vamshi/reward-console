@@ -842,6 +842,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 				this.setState({ spin: false });
 				console.log("Failed to get Audience Count" + err);
 			});
+		else this.setState({ audienceCount: 0 });
 
 	}
 
