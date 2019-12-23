@@ -24,7 +24,7 @@ const AppList = ({ apps }: any) => {
           apps.map((app: any, index: string) => (
             <React.Fragment key={index}>
               <Col className="gutter-row" xs={24} sm={12} md={12} lg={8} xl={6}>
-                {app.isProductAccessible == true ?
+                {app.isProductAccessible == true ? (
                   <Link to={app.route}>
                     <Card
                       cover={
@@ -33,7 +33,8 @@ const AppList = ({ apps }: any) => {
 
                           className={`${app.activeIcon} gx-fs-icon-lg appActiveIconStyle `}
                         >
-                          <img src={app.activeIcon} /></i>
+                          <img src={app.activeIcon} />
+                        </i>
                       }
                       className="gx-product-vertical coreAppsCard"
                     >
@@ -44,16 +45,24 @@ const AppList = ({ apps }: any) => {
                         {app.description}
                       </p>
                     </Card>
-                  </Link> :
+                  </Link>
+                ) : (
                   <Card
                     style={{ backgroundColor: "#dedede" }}
                     cover={
                       <React.Fragment>
-                        <Button style={{ marginBottom: 0 }} type="primary">Purchase</Button>
+                        <Button style={{ marginBottom: 0 }} type="primary">
+                          Purchase
+                        </Button>
                         <i
                           style={{ color: "#b9b5b5" }}
                           className={`${app.inactiveIcon} gx-fs-icon-lg appInactiveIconStyle `}
-                        ><img src={app.inactiveIcon} style={{ clip: 'rect(110px)' }} /></i>
+                        >
+                          <img
+                            src={app.inactiveIcon}
+                            style={{ clip: "rect(110px)" }}
+                          />
+                        </i>
                       </React.Fragment>
                     }
                     className="gx-product-vertical coreAppsCard"
@@ -68,7 +77,7 @@ const AppList = ({ apps }: any) => {
                       {app.description}
                     </p>
                   </Card>
-                }
+                )}
               </Col>
             </React.Fragment>
           ))}
