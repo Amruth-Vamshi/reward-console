@@ -604,6 +604,9 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 				this.setState({ loading: false })
 				console.log("Error while creating audience..", err)
 			});
+		} else {
+			this.setState({ loading: false });
+			message.warn('Please Select Offer')
 		}
 	}
 

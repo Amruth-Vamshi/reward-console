@@ -270,7 +270,7 @@ const OfferBasicInfoForm = Form.create<IProps>({ name: 'offer_basic_info' })(
 									initialValue: `${
 										Object.keys(formValues).length != 0 ? formValues.noOfTransaction : ''
 										}`,
-								})(<Input />)}
+								})(<Input type="number" min={0} />)}
 							</Form.Item>
 							<Form.Item style={{ display: 'inline-block', marginTop: '20px', width: 'calc(5% - 12px)' }}>
 								<div style={{ marginTop: 12 }}>In</div>
@@ -281,7 +281,7 @@ const OfferBasicInfoForm = Form.create<IProps>({ name: 'offer_basic_info' })(
 							>
 								{getFieldDecorator('noOfDays', {
 									initialValue: `${Object.keys(formValues).length != 0 ? formValues.noOfDays : ''}`,
-								})(<Input />)}
+								})(<Input type="number" min={0} />)}
 							</Form.Item>
 						</Fragment>
 					)}
@@ -329,7 +329,7 @@ const OfferBasicInfoForm = Form.create<IProps>({ name: 'offer_basic_info' })(
 							<Form.Item style={{ display: 'inline-block', width: 'calc(33.5% - 12px)' }} label="Value">
 								{getFieldDecorator('cartValue', {
 									initialValue: `${Object.keys(formValues).length != 0 && formValues.cartValue ? formValues.cartValue : ''}`,
-								})(<Input />)}
+								})(<Input type="number" min={0} />)}
 							</Form.Item>
 						</Fragment>
 					)}

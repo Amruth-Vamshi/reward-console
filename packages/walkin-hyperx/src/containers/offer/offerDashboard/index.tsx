@@ -177,11 +177,11 @@ class OfferDashboard extends React.Component<IAppProps, IAppState> {
 
                                         <Row>
                                             <Col {...labelCol}>  User Limit </Col>
-                                            <Col {...wrapperCol}> {redemption.usage_limit ? `${redemption.usage_limit} times` : '  --'}</Col>
+                                            <Col {...wrapperCol}> {redemption.usage_limit ? `${redemption.usage_limit}  ${redemption.usage_limit == 1 ? 'time' : 'times'}` : '  --'}</Col>
                                         </Row>
                                         <Row>
                                             <Col {...labelCol}>  User Limit At Customer Level  </Col>
-                                            <Col {...wrapperCol}> {redemption.usage_limit_at_customer ? `${redemption.usage_limit_at_customer} times` : '  --'}</Col>
+                                            <Col {...wrapperCol}> {redemption.usage_limit_at_customer ? `${redemption.usage_limit_at_customer} ${redemption.usage_limit_at_customer == 1 ? 'time' : 'times'}` : '  --'}</Col>
                                         </Row>
                                         <Row>
                                             <Col {...labelCol}>  Time Limit  </Col>
