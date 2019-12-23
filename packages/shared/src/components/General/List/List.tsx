@@ -51,13 +51,27 @@ export default class CustomList extends React.Component<ListProps, ListState> {
   }
 
   renderImage(item: ListItem) {
+    if (item.image) {
+      return (
+        <Col span={this.props.imageSpan}>
+          <Image
+            scaleType={this.props.imageScaleType}
+            height={this.props.imageHeight}
+            width={this.props.imageWidth}
+            source={item.image}
+            alternate_text="image-placeholder"
+            style={this.props.imageStyle}
+          />
+        </Col>
+      );
+    }
     return (
       <Col span={this.props.imageSpan}>
         <Image
           scaleType={this.props.imageScaleType}
           height={this.props.imageHeight}
           width={this.props.imageWidth}
-          source={item.image}
+          source={require("../../../assets/walkin.png")}
           alternate_text="image-placeholder"
           style={this.props.imageStyle}
         />
@@ -68,8 +82,8 @@ export default class CustomList extends React.Component<ListProps, ListState> {
   renderContent(item: ListItem) {
     return (
       <Col span={this.props.contentSpan} style={this.props.contentStyle}>
-        <Row>{item.title}</Row>
-        <Row>{item.subTitle}</Row>
+        <Row>{item.title ? item.title : "Title"}</Row>
+        <Row>{item.subTitle ? item.subTitle : "SubTitle"}</Row>
       </Col>
     );
   }
@@ -91,8 +105,14 @@ export default class CustomList extends React.Component<ListProps, ListState> {
     }
     return (
       <Col span={this.props.actionSpan} style={this.props.actionStyle}>
-        <Row>{item.actionableTitle}</Row>
-        <Row>{item.actionableSubTitle}</Row>
+        <Row>
+          {item.actionableTitle ? item.actionableTitle : "actionableTitle"}
+        </Row>
+        <Row>
+          {item.actionableSubTitle
+            ? item.actionableSubTitle
+            : "actionableSubTitle"}
+        </Row>
       </Col>
     );
   }

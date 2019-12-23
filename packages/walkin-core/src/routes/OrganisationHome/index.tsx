@@ -2,7 +2,10 @@ import React from "react";
 import { Col, Row, Avatar, Table } from "antd";
 import { Image, CustomList, CustomButton, InfoText } from "@walkinsole/shared";
 import "./index.css";
-
+import { withApollo, ApolloProviderProps, Query } from "react-apollo";
+import { RouteComponentProps } from "react-router";
+import { orgDetails, userDetails } from "../../query/organization";
+import jwt from "jsonwebtoken";
 const data = [
   {
     image: require("../../../../shared/src/assets/big_bazaar.png"),
@@ -54,10 +57,38 @@ const data = [
   }
 ];
 
-interface OrganisationHomeProps {}
+interface OrganisationHomeRouterProps {
+  id: string;
+}
 
-class OrganisationHome extends React.Component<OrganisationHomeProps> {
-  renderInfoHeader() {
+interface OrganisationHomeCacheProps {
+  data: object;
+}
+
+interface OrganisationHomeProps
+  extends ApolloProviderProps<OrganisationHomeCacheProps>,
+    RouteComponentProps<OrganisationHomeRouterProps> {}
+
+interface OrganisationHomeState {
+  orgId: string;
+}
+
+class OrganisationHome extends React.Component<
+  OrganisationHomeProps,
+  OrganisationHomeState
+> {
+  constructor(props: OrganisationHomeProps) {
+    super(props);
+    this.state = {
+      orgId:
+        this.props.client &&
+        this.props.client.cache["data"]["data"]["$ROOT_QUERY.auth"]
+          .organizationId
+    };
+  }
+
+  renderInfoHeader(data) {
+    const { firstName, lastName } = data.user;
     return (
       <Row className="rowInfoHeader">
         <Col className="colAvatar">
@@ -67,38 +98,51 @@ class OrganisationHome extends React.Component<OrganisationHomeProps> {
             size={40}
           />
         </Col>
-        <Col className="colName">David Tailor</Col>
-        <Col className="colDesignation">Super Admin</Col>
+        <Col className="colName">{firstName + lastName}</Col>
+        <Col className="colDesignation">Designation NA</Col>
       </Row>
     );
   }
 
-  renderInfo() {
+  renderInfo(data) {
+    console.log("OrganisationHome renderInfo data", data);
+    const {
+      id,
+      name,
+      addressLine1,
+      addressLine2,
+      phoneNumber
+    } = data.user.organization;
+    const { email } = data.user;
+    let finalAddress = addressLine1 + addressLine2;
+    if (!finalAddress) {
+      finalAddress = "Address NA";
+    }
     const dataSource = [
       {
         key: "1",
-        name: "Mike",
-        value: "63782038"
+        name: "OrgId",
+        value: id
       },
       {
         key: "2",
         name: "Name",
-        value: "Big Bazaar"
+        value: name
       },
       {
         key: "3",
         name: "Address",
-        value: "Tower C, 247 Park, LBS Marg, Vikhroli (W), Mumbai - 400 083"
+        value: finalAddress
       },
       {
         key: "4",
         name: "Email",
-        value: "mediarelations@futuregroup.in"
+        value: email
       },
       {
         key: "5",
         name: "Phone",
-        value: "+91-22-6119-000"
+        value: phoneNumber
       }
     ];
 
@@ -128,6 +172,107 @@ class OrganisationHome extends React.Component<OrganisationHomeProps> {
     );
   }
 
+  renderUserDetails() {
+    const token = localStorage.getItem("jwt");
+    const decodedToken: any = jwt.decode(token);
+    const userId = decodedToken.id;
+    return (
+      <div>
+        <Query query={userDetails} variables={{ id: userId }}>
+          {({ data, loading, error, refetch }: any) => {
+            if (loading) {
+              return <div>loading...</div>;
+            }
+            if (error) {
+              return <div>Error</div>;
+            }
+            if (data) {
+              console.log(
+                "OrganisationHome render Query userDetails data",
+                data
+              );
+              return (
+                <div>
+                  <Row className="rowImage">
+                    <Image
+                      source={require("../../../../shared/src/assets/fbb.png")}
+                      width={"100%"}
+                      height={"100%"}
+                      style={{}}
+                      alternate_text="org_logo"
+                      scaleType="contain"
+                    />
+                  </Row>
+                  {this.renderInfoHeader(data)}
+                  {this.renderInfo(data)}
+                </div>
+              );
+            }
+          }}
+        </Query>
+      </div>
+    );
+  }
+
+  renderSubOrgList(imageStyle, contentStyle, actionStyle) {
+    return (
+      <Row>
+        <Query
+          query={orgDetails}
+          variables={{ id: this.props.match.params.id }}
+        >
+          {({ data, loading, error, refetch }: any) => {
+            if (loading) {
+              return <div>loading...</div>;
+            }
+            if (error) {
+              return <div>Error</div>;
+            }
+            if (data) {
+              console.log(
+                "OrganisationHome render Query orgDetails data",
+                data
+              );
+
+              const subOrgArray = [];
+              for (var i = 0; i < data.organization.children.length; i++) {
+                subOrgArray.push({
+                  image: null,
+                  title: data.organization.children[i].name,
+                  subTitle:
+                    data.organization.children[i].addressLine1 +
+                    data.organization.children[i].addressLine2,
+                  actionableTitle: "Status",
+                  actionableSubTitle: data.organization.children[i].status,
+                  actionable: false
+                });
+              }
+
+              return (
+                <div style={{ width: "100%" }}>
+                  <CustomList
+                    data={subOrgArray}
+                    actionableButtonText={"Assign"}
+                    actionableButtonType={"default"}
+                    actionStyle={actionStyle}
+                    actionSpan={4}
+                    imageStyle={imageStyle}
+                    imageSpan={4}
+                    imageHeight={"80px"}
+                    imageWidth={"100px"}
+                    imageScaleType={"contain"}
+                    contentStyle={contentStyle}
+                    contentSpan={16}
+                  />
+                </div>
+              );
+            }
+          }}
+        </Query>
+      </Row>
+    );
+  }
+
   render() {
     const imageStyle = {
       backgroundColor: "transparent",
@@ -150,18 +295,7 @@ class OrganisationHome extends React.Component<OrganisationHomeProps> {
         <Row className="header">Organisation</Row>
         <Row style={{ display: "flex", height: "80vh" }}>
           <Col className="col1 nohoverTableWrapper">
-            <Row className="rowImage">
-              <Image
-                source={require("../../../../shared/src/assets/fbb.png")}
-                width={"100%"}
-                height={"100%"}
-                style={{}}
-                alternate_text="org_logo"
-                scaleType="contain"
-              />
-            </Row>
-            {this.renderInfoHeader()}
-            {this.renderInfo()}
+            {this.renderUserDetails()}
           </Col>
           <Col className="col2">
             <Row className="rowStores">
@@ -177,22 +311,7 @@ class OrganisationHome extends React.Component<OrganisationHomeProps> {
                 </CustomButton>
               </Col>
             </Row>
-            <Row>
-              <CustomList
-                data={data}
-                actionableButtonText={"Assign"}
-                actionableButtonType={"default"}
-                actionStyle={actionStyle}
-                actionSpan={4}
-                imageStyle={imageStyle}
-                imageSpan={4}
-                imageHeight={"80px"}
-                imageWidth={"100px"}
-                imageScaleType={"contain"}
-                contentStyle={contentStyle}
-                contentSpan={16}
-              />
-            </Row>
+            {this.renderSubOrgList(imageStyle, contentStyle, actionStyle)}
           </Col>
         </Row>
       </React.Fragment>
@@ -200,4 +319,4 @@ class OrganisationHome extends React.Component<OrganisationHomeProps> {
   }
 }
 
-export default OrganisationHome;
+export default withApollo(OrganisationHome);
