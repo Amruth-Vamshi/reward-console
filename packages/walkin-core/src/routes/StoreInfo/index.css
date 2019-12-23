@@ -1,0 +1,14 @@
+.rowStoreInfoInstantSearch {
+  display: flex;
+}
+
+.colStoreInfo {
+  width: 50%;
+  padding: 10px;
+}
+
+.colInstantSearch {
+  display: flex;
+  width: 50%;
+  justify-content: flex-end;
+}
