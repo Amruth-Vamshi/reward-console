@@ -2,7 +2,6 @@ import React from "react";
 import Row from "antd/lib/row";
 import Col from "antd/lib/col";
 import Slider from "antd/lib/slider";
-import "antd/dist/antd.css";
 import "./index.css";
 
 interface pgstate {

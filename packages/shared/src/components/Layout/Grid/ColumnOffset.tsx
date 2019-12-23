@@ -2,7 +2,6 @@ import React from "react";
 import Row from "antd/lib/row";
 import Col from "antd/lib/col";
 
-import "antd/dist/antd.css";
 import "./index.css";
 
 export default class ColumnOffsetGrid extends React.Component {
