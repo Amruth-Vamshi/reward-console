@@ -141,7 +141,7 @@ export default class Overview extends React.Component<iProps, {}> {
                     {i.segment.name}
                   </Col>
                   <Col xs={24} sm={8} md={5} xl={4} xxl={3} className="audBg">
-                    users 3422
+                    {/* users 3422 */}
                   </Col>
                 </Row>
               )}
