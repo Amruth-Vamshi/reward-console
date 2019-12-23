@@ -830,15 +830,15 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 		let { org_id }: any = jwt.decode(localStorage.getItem('jwt'))
 		this.setState({ selectedSegments: e })
 		this.state.errors.segment = ''
-		this.props.client.query({
-			query: AUDIENCE_COUNT,
-			variables: { segments: e, organizationId: org_id },
-			fetchPolicy: 'network-only'
-		}).then(res => {
-			console.log(res.data.audienceCount.count)
-			this.setState({ audienceCount: res.data.audienceCount.count });
-		})
-			.catch(err => {
+		if (e && e[0] && e[0] != '')
+			this.props.client.query({
+				query: AUDIENCE_COUNT,
+				variables: { segments: e, organizationId: org_id },
+				fetchPolicy: 'network-only'
+			}).then(res => {
+				console.log(res.data.audienceCount.count)
+				this.setState({ audienceCount: res.data.audienceCount.count });
+			}).catch(err => {
 				this.setState({ spin: false });
 				console.log("Failed to get Audience Count" + err);
 			});
