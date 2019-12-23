@@ -1,7 +1,6 @@
 import React from "react";
 import Layout from "antd/lib/layout";
 
-import "antd/dist/antd.css";
 // import "./index.css";
 
 const { Header, Footer, Sider, Content } = Layout;

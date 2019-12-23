@@ -5,7 +5,6 @@ import Breadcrumb from "antd/lib/breadcrumb";
 import Icon from "antd/lib/icon";
 const { Sider } = Layout;
 
-import "antd/dist/antd.css";
 // import "./index.css";
 const { Header, Footer, Content } = Layout;
 

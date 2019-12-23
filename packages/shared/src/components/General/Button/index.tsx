@@ -1,4 +1,4 @@
-import Button from "antd/lib/button/button";
+import { Button } from "antd";
 import React from "react";
 
 interface ButtonProps {

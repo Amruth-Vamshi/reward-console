@@ -3,7 +3,6 @@ import Layout from "antd/lib/layout";
 import Menu from "antd/lib/menu";
 import Breadcrumb from "antd/lib/breadcrumb";
 
-import "antd/dist/antd.css";
 // import "./index.css";
 const { Header, Footer, Content } = Layout;
 

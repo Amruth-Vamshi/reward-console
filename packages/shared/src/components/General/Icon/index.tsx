@@ -1,4 +1,4 @@
-import Icon from "antd/lib/icon/index";
+import { Icon } from "antd";
 import React from "react";
 
 interface IconProps {

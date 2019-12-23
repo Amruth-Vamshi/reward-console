@@ -2,7 +2,6 @@ import React from "react";
 import Layout from "antd/lib/layout";
 import Breadcrumb from "antd/lib/breadcrumb";
 import Menu from "antd/lib/menu";
-import "antd/dist/antd.css";
 import "./index.css";
 
 const { Header, Footer, Sider, Content } = Layout;
