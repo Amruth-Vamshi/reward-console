@@ -14,6 +14,7 @@ import SimpleBarChart from "./Components/SimpleBarChart"
 import LiveSurvey from "./Components/LiveSurvey"
 import ProgressBars from "./Components/ProgressBars"
 import Tables from "./Components/Tables"
+import TagTree from "../TagTree/index"
 
 const dateFormat = 'YYYY/MM/DD';
 const { Option } = Select;
@@ -263,6 +264,9 @@ class Landing extends React.Component<LandingProps, Partial<LandingState>> {
                             </Col>
                         </Row>
                         <Tables />
+                    </Row>
+                    <Row style={{ marginLeft: "1px", height: "500px", marginRight: "1px", paddingBottom: "20px" }}>
+                        <TagTree />
                     </Row>
                 </div>
             </Auxiliary>
