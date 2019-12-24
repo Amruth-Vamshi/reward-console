@@ -841,7 +841,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 			}).then(res => {
 				console.log(res.data.audienceCount.count)
 				if (res.data.audienceCount.count && res.data.audienceCount.count == "0")
-					message.warn('There are NO CUSTOMERS in this segments')
+					message.warn('There are NO CUSTOMERS in selected segments')
 				this.setState({ audienceCount: res.data.audienceCount.count });
 			}).catch(err => {
 				this.setState({ spin: false });
