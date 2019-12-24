@@ -34,7 +34,7 @@ class SidebarLogo extends React.Component<SidebarLogoProps, {}> {
       <div className="RefineX-Logo">
         <div className="gx-layout-sider-header">
           {width < TAB_SIZE_MAX && width > TAB_SIZE ? (
-            <Link to="/refinex/dashboard" className="gx-pointer">
+            <Link to="/rewardx/dashboard" className="gx-pointer">
               <img
                 alt="fgd"
                 src={require("@walkinsole/walkin-components/src/assets/images/logo_rewardx.png")}
@@ -59,7 +59,7 @@ class SidebarLogo extends React.Component<SidebarLogoProps, {}> {
             </div>
           ) : null}
 
-          <Link to="/refinex/dashboard" className="gx-site-logo">
+          <Link to="/rewardx/dashboard" className="gx-site-logo">
             {navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR &&
             width >= TAB_SIZE ? (
               <img

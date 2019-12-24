@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Menu } from "antd";
+import { Menu, Icon } from "antd";
 import { Link } from "react-router-dom";
 import { withRouter } from "react-router-dom";
 import { compose, graphql } from "react-apollo";
@@ -72,13 +72,15 @@ class SidebarContent extends React.Component<
           >
             <Menu.Item key="dashboard">
               <Link to="/rewardx/dashboard">
+                <Icon type="dashboard" />
                 {/* <Icon component={Dashboard} style={{ fontSize: "18px" }} /> */}
                 <span>Dashboard</span>
               </Link>
             </Menu.Item>
             <Menu.Item key="reports">
               <Link to="/rewardx/reports">
-                {/* <Icon component={Survey} style={{ fontSize: "18px" }} /> */}
+                <Icon type="profile" />
+                {/* <Icon component={Dashboard} style={{ fontSize: "18px" }} /> */}
                 <span>Reports</span>
               </Link>
             </Menu.Item>
