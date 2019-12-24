@@ -85,10 +85,10 @@ export default class Overview extends React.Component<iProps, {}> {
                         </Button>
                       }
 
-                      <Button type="primary" shape="round" onClick={this.changeState} loading={this.props.loading1}
+                      {/* <Button type="primary" shape="round" onClick={this.changeState} loading={this.props.loading1}
                         style={{ width: "145px", letterSpacing: 0, height: 40, fontSize: 16 }}>
                         FORCE STOP
-                        </Button>
+                        </Button> */}
 
                     </div> : ""
                 }

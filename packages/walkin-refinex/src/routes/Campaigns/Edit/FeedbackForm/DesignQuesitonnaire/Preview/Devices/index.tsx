@@ -28,7 +28,7 @@ export default class Device extends React.Component<DeviceProps, {}> {
         super(props)
     }
     warning = () => {
-        message.warning('This is last question');
+        // message.warning('This is last question');
     };
 
     newWarning = () => {

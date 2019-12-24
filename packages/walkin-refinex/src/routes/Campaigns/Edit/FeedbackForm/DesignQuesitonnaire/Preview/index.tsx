@@ -21,7 +21,7 @@ interface ControlsProps {
 
 export default class Controls extends React.Component<ControlsProps, {}> {
     warning = () => {
-        message.warning('This is last question');
+        // message.warning('This is last question');
     };
 
     newWarning = () => {

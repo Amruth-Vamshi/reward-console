@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "lib": ["es5", "es6", "es7", "es2017", "dom"],
+
     "outDir": "./dist/",
     "noImplicitAny": false,
     "module": "commonjs",
@@ -10,18 +12,12 @@
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-    "lib": [
-      "es6",
-      "dom"
-    ],
+
     "typeRoots": [
       "packages/walkin-app/typings/global-fetch.d.ts",
       "packages/walkin-app/typings/index.d.ts"
     ],
-    "types": [
-      "googlemaps",
-      "markerclustererplus"
-    ]
+    "types": ["googlemaps", "markerclustererplus"]
   },
   "exclude": [
     "node_modules",
@@ -32,7 +28,5 @@
     "jest",
     "src/setupTests.ts"
   ],
-  "include": [
-    "packages/*/src/assets"
-  ]
+  "include": ["packages/*/src/assets"]
 }
