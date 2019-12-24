@@ -66,8 +66,8 @@ const BasicInfoForm = Form.create<iProps>({ name: "form_in_modal" })(
           <Form.Item label="Campaign name" {...formItemLayout}>
             {getFieldDecorator("name", {
               initialValue: `${Object.keys(formValues).length != 0 ? formValues.name ? formValues.name : "" : ""}`,
-              rules: [{ required: true, message: "Name is required" }]
-            })(<Input maxLength={80} size="large" />)}
+              rules: [{ transform: (value) => value.trim() }, { required: true, message: "Name is required" }]
+            })(<Input required maxLength={80} size="large" />)}
           </Form.Item>
 
           <Form.Item label="Description" {...formItemLayout}>

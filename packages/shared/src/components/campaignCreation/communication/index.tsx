@@ -1,9 +1,5 @@
 import * as React from "react";
 import { Radio, Row, Col } from "antd";
-// import SMSForm from "../../../../components/atoms/communicationForm/sms";
-// import PushNotificationForm from "../../../../components/atoms/communicationForm/pushNotification";
-// import Email from "../../../../components/atoms/communicationForm/Email";
-// import Schedule from "../../../../components/atoms/communicationForm/schedule";
 import { SMSForm, PushNotificationForm, Email, Schedule } from "../../molecules/communicationForm"
 
 interface iProps {
@@ -27,6 +23,8 @@ interface iProps {
   scheduleSaveMark?: any,
   saveSchedule?: any,
   form?: any
+  linkTypeSelect?: any
+  attributeData?
 }
 
 const Communication = ({
@@ -49,6 +47,8 @@ const Communication = ({
   campaign,
   scheduleSaveMark,
   saveSchedule,
+  attributeData,
+  linkTypeSelect,
   form
 }: iProps) => {
   return (
@@ -75,6 +75,8 @@ const Communication = ({
           {value == "SMS" && <SMSForm
             wrappedComponentRef={commWrappedComponentRef}
             formValues={communicationFormValues}
+            linkTypeSelect={linkTypeSelect}
+            attributeData={attributeData}
             onFormNext={onFormNext} />}
           {value == "PUSH" && <PushNotificationForm
             wrappedComponentRef={pushFormRef}

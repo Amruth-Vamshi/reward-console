@@ -23,6 +23,7 @@ interface NewSegmentState {
     query?: any,
     newSegmentError?: boolean,
     isDuplicateSegment?: boolean,
+    segmentErrorMessage?: string,
 }
 class NewSegment extends React.Component<NewSegmentProps, NewSegmentState> {
     constructor(props: NewSegmentProps) {
@@ -32,6 +33,7 @@ class NewSegment extends React.Component<NewSegmentProps, NewSegmentState> {
             query: { id: '1', combinator: 'and', rules: [] },
             newSegmentError: false,
             isDuplicateSegment: false,
+            segmentErrorMessage: ""
         };
     }
     logQuery = (query: any) => {
@@ -44,10 +46,10 @@ class NewSegment extends React.Component<NewSegmentProps, NewSegmentState> {
         this.setState({ value: e.target.value });
     };
 
-    displayError = (state: any) => {
-        this.setState({ [state]: true }, () => {
+    displayError = (state: any, msg: string) => {
+        this.setState({ [state]: true, segmentErrorMessage: msg }, () => {
             setTimeout(() => {
-                this.setState({ [state]: false });
+                this.setState({ [state]: false, segmentErrorMessage: "" });
             }, 4000);
         });
     };
@@ -55,7 +57,8 @@ class NewSegment extends React.Component<NewSegmentProps, NewSegmentState> {
     onNewSegment = () => {
         const { value, query } = this.state;
         if (value === '') {
-            this.displayError('newSegmentError');
+            this.displayError('newSegmentError', "Please provide a segment name");
+            return
         }
         let { client } = this.props;
         console.log(this.props.allApplications.organization.applications[0])
@@ -98,12 +101,12 @@ class NewSegment extends React.Component<NewSegmentProps, NewSegmentState> {
                         });
                     })
                     .catch(error => {
-                        this.displayError('newSegmentError');
+                        this.displayError('newSegmentError', "Segment name already present");
                     });
             })
             .catch(error => {
-                console.log('error', error);
-                this.displayError('newSegmentError');
+                console.log('error1 : ', error);
+                this.displayError('newSegmentError', "Not a valid segment");
             });
     };
 
@@ -140,7 +143,7 @@ class NewSegment extends React.Component<NewSegmentProps, NewSegmentState> {
 
     render() {
         console.log(this.props)
-        const { value, newSegmentError, query, isDuplicateSegment } = this.state;
+        const { value, newSegmentError, query, isDuplicateSegment, segmentErrorMessage } = this.state;
         const { loading, error, ruleAttributes } = this.props.attributes;
         const antIcon = <Icon type="loading" style={{ fontSize: 100 }} spin />;
         if (loading) {
@@ -184,7 +187,7 @@ class NewSegment extends React.Component<NewSegmentProps, NewSegmentState> {
                         />
                         <WalkinQueryBuilder fields={attributeData} onQueryChange={this.logQuery} query={query} />
                     </div>
-                    {newSegmentError && <Alert message="Not a valid Segment" type="error" />}
+                    {newSegmentError && <Alert message={segmentErrorMessage} type="error" />}
                     <div className="segmentFooterButton">
                         <Button type="primary" className="campaignFooterStyle" onClick={this.onNewSegment}>
                             Create segment

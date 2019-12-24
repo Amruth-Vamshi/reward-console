@@ -23,10 +23,11 @@ export const getOffers = gql`
 export const subOrganizations = gql`
 	query($parentId: ID!, $type: OrganizationTypeEnum) {
 		subOrganizations(parentId: $parentId, type: $type) {
-			id city state pinCode code
+			id name status city state pinCode code addressLine1
 		}
 	}
 `;
+
 export const createOffer = gql`
 	mutation createOffer(
 		$name: String!
@@ -70,15 +71,6 @@ export const UPDATE_OFFER = gql`
 }`
 
 
-
-
-export const launchOffer = gql`
-	mutation launchOffer($id: ID!) {
-		launchOffer(id: $id) {
-			id
-		}
-	}
-`;
 export const closeOffer = gql`
 	mutation closeOffer($id: ID!) {
 		closeOffer(id: $id) {
@@ -95,6 +87,13 @@ export const LAUNCH_OFFER = gql`
 	}
 `;
 
+export const UNLINK_OFFER = gql`
+	mutation removeOfferFromCampaign($input:updateCampaignOfferInput){
+		removeOfferFromCampaign(input:$input){
+			id status offer{id name} campaign{id name}
+		}
+	}
+`
 
 export const ADD_OFFER_TO_CAMPAIGN = gql`
 mutation addOfferToCampaign($input:CampaignOfferInput){

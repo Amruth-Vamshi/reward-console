@@ -164,7 +164,8 @@ class AddAndDeleteComponentsDynamically extends React.Component<IProps, IState> 
                 </Select>
 
                 <Select showSearch mode="multiple" value={valueTwo || ""} onChange={onTwoChange}
-                  getPopupContainer={(triggerNode: any) => triggerNode.parentNode}
+                  getPopupContainer={(triggerNode: any) => triggerNode.parentNode} optionFilterProp="children"
+                  filterOption={(input, option: any) => option.props.children.toString().toLowerCase().indexOf(input.toLowerCase()) >= 0}
                   style={{ display: "inline-block", width: "calc(65% - 12px)", marginBottom: "0px", paddingLeft: 10 }}>
                   {data_2 && data_2.map((val: any, i: any) => <Option key={i} value={val.value}>  {val.title} </Option>)}
                 </Select>

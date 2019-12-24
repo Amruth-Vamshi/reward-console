@@ -18,6 +18,7 @@ interface iProps {
   loading?: any;
   loading1?: any;
   disableCampaign?
+  totalAudienceCount?
 }
 
 export default class Overview extends React.Component<iProps, {}> {
@@ -30,7 +31,7 @@ export default class Overview extends React.Component<iProps, {}> {
   };
 
   render() {
-    const { campaign, audience, offer, communication, view } = this.props;
+    const { campaign, audience, offer, communication, view, totalAudienceCount } = this.props;
     var now = moment();
     var startDate = moment(campaign.startTime);
     var endDate = moment(campaign.endTime);
@@ -76,16 +77,18 @@ export default class Overview extends React.Component<iProps, {}> {
 
                     // (campaign.campaignStatus == 'LIVE') ?
                     <div>
-                      <Button type="primary" shape="round" onClick={this.changeState}
-                        style={{ width: "140px", letterSpacing: 0, height: 40, fontSize: 17 }}
-                        loading={this.props.loading} >
-                        {(campaign.campaignStatus == "LIVE" || campaign.campaignStatus == "PRE_LIVE_PROCESSING") ? "PAUSE" : "UNPAUSE"}
-                      </Button>
+                      {
+                        campaign.campaignStatus == "LIVE" && <Button type="primary" shape="round" onClick={this.changeState}
+                          style={{ width: "140px", letterSpacing: 0, height: 40, fontSize: 17 }}
+                          loading={this.props.loading} >
+                          {campaign.campaignStatus != "PAUSE" ? "PAUSE" : "UNPAUSE"}
+                        </Button>
+                      }
 
-                      <Button type="primary" shape="round" onClick={this.changeState} loading={this.props.loading1}
+                      {/* <Button type="primary" shape="round" onClick={this.changeState} loading={this.props.loading1}
                         style={{ width: "145px", letterSpacing: 0, height: 40, fontSize: 16 }}>
                         FORCE STOP
-                        </Button>
+                        </Button> */}
 
                     </div> : ""
                 }
@@ -130,7 +133,7 @@ export default class Overview extends React.Component<iProps, {}> {
 
                   <h3>Audience</h3>
                 </Col>
-                <Col>Total Reach : 6412 </Col>
+                <Col>Total Reach : {totalAudienceCount ? totalAudienceCount : '6412'} </Col>
               </Row>
               {audience.map((i: any, n: number) =>
                 <Row key={n} style={{ marginBottom: 10 }}>
@@ -138,7 +141,7 @@ export default class Overview extends React.Component<iProps, {}> {
                     {i.segment.name}
                   </Col>
                   <Col xs={24} sm={8} md={5} xl={4} xxl={3} className="audBg">
-                    users 3422
+                    {/* users 3422 */}
                   </Col>
                 </Row>
               )}
