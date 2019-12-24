@@ -155,7 +155,7 @@ class CampaignDashboard extends Component<IProps, Partial<IState>> {
                                 view={true} loading={loading} loading1={loading1}
                                 campaign={campaign ? campaign : {}}
                                 audience={audiences}
-                                offer={offers ? offers[0] : {}}
+                                offer={offers ? offers[0] : undefined}
                                 totalAudienceCount={totalAudience}
                                 launchCampaign={this.launchCampaign}
                                 pauseCampaign={this.pauseCampaign}

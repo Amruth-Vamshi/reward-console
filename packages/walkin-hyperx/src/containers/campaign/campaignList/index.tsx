@@ -176,7 +176,7 @@ class CampaignList extends React.Component<CampaignListProps, Partial<CampaignLi
       <Menu.Item key="view"><Icon type="eye" /> View</Menu.Item>
       {includes(SHOULD_EDIT, record.campaignStatus) ? <Menu.Item key="edit"><Icon type="edit" /> Edit</Menu.Item> : null}
       {/* <Menu.Item key="duplicate"><Icon type="copy" /> Duplicate</Menu.Item> */}
-      <Menu.Item key="delete"><Icon type="delete" /> Delete</Menu.Item>
+      {/* <Menu.Item key="delete"><Icon type="delete" /> Delete</Menu.Item> */}
     </Menu>
   );
 
@@ -252,7 +252,7 @@ class CampaignList extends React.Component<CampaignListProps, Partial<CampaignLi
         title: 'Name',
         dataIndex: 'name',
         key: 'name',
-        width: '30%',
+        width: '22%',
         render: (text: any, row: any) => <div style={{ color: '#292929' }}> {text} </div>,
         sorter: (a: any, b: any) => (a.name !== b.name ? (a.name < b.name ? -1 : 1) : 0),
         sortOrder: sortedInfo.columnKey === 'name' && sortedInfo.order,
@@ -260,6 +260,7 @@ class CampaignList extends React.Component<CampaignListProps, Partial<CampaignLi
       {
         title: 'Start date & end date',
         dataIndex: 'startTime',
+        width: 320,
         key: 'startTime',
         render: (text: any, row: any) => {
           const a: any = moment();
@@ -284,15 +285,18 @@ class CampaignList extends React.Component<CampaignListProps, Partial<CampaignLi
         title: 'Audience Size',
         dataIndex: 'audienceCount',
         key: 'audienceCount',
+        // align: 'center' as const
       },
       {
         title: 'Reached',
         dataIndex: 'reached',
         key: 'reached',
+        // align: 'center' as const
       }, {
         title: 'Redemption Rate',
         dataIndex: 'redemptionRate',
         key: 'redemptionRate',
+        // align: 'center' as const
       },
       {
         title: 'Priority',

@@ -29,11 +29,8 @@ export const configureClient = async () => {
         }
       });
     },
-    clientState: {
-      defaults,
-      resolvers,
-      typeDefs
-    },
+    clientState: { defaults, resolvers, typeDefs },
+    
     onError: ({ graphQLErrors, networkError }) => {
       if (graphQLErrors) {
         console.log(graphQLErrors);

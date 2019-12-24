@@ -14,6 +14,7 @@ interface iProps extends FormComponentProps {
 	formValues?: any,
 	text?: string
 	linkTypeSelect?
+	attributeData?
 }
 
 const props = {
@@ -78,10 +79,7 @@ const SMSForm = Form.create<iProps>({
 				placeholder="Select Type" optionFilterProp="children" //defaultOpen
 				onChange={e => this.handleTypeChange(e)} showSearch
 				filterOption={(input: any, option: any) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}>
-				<Option value="firstName">First Name</Option>
-				<Option value="lastName">Last Name</Option>
-				<Option value="date">Date</Option>
-				<Option value="time">Time</Option>
+				{this.props.attributeData && this.props.attributeData.map(a => <Option value={a.name}>{a.label}</Option>)}
 			</Select>
 		</div>
 
