@@ -6,56 +6,6 @@ import { withApollo, ApolloProviderProps, Query } from "react-apollo";
 import { RouteComponentProps } from "react-router";
 import { orgDetails, userDetails } from "../../query/organization";
 import jwt from "jsonwebtoken";
-const data = [
-  {
-    image: require("../../../../shared/src/assets/big_bazaar.png"),
-    title: "Big Bazaar",
-    subTitle: "Tower C, 247 Park, LBS Marg, Vikhroli (W), Mumbai - 400 083",
-    actionableTitle: "Admin",
-    actionableSubTitle: "Niranjan",
-    actionable: false
-  },
-  {
-    image: require("../../../../shared/src/assets/fbb.png"),
-    title: "FBB Fashion Store",
-    subTitle: "Tower C, 247 Park, LBS Marg, Vikhroli (W), Mumbai - 400 083",
-    actionableTitle: "Admin",
-    actionableSubTitle: "Sreemanth",
-    actionable: false
-  },
-  {
-    image: require("../../../../shared/src/assets/central_mall.png"),
-    title: "Central Mall",
-    subTitle: "Tower C, 247 Park, LBS Marg, Vikhroli (W), Mumbai - 400 083",
-    actionableTitle: "",
-    actionableSubTitle: "",
-    actionable: true
-  },
-  {
-    image: require("../../../../shared/src/assets/nilgiris.png"),
-    title: "Nilgiris Retail",
-    subTitle: "Tower C, 247 Park, LBS Marg, Vikhroli (W), Mumbai - 400 083",
-    actionableTitle: "Admin",
-    actionableSubTitle: "Rahul",
-    actionable: false
-  },
-  {
-    image: require("../../../../shared/src/assets/alltheplussize.png"),
-    title: "All The Plus Size",
-    subTitle: "Tower C, 247 Park, LBS Marg, Vikhroli (W), Mumbai - 400 083",
-    actionableTitle: "Admin",
-    actionableSubTitle: "Suresh",
-    actionable: false
-  },
-  {
-    image: require("../../../../shared/src/assets/easy_day_club.png"),
-    title: "Easy Day club",
-    subTitle: "Tower C, 247 Park, LBS Marg, Vikhroli (W), Mumbai - 400 083",
-    actionableTitle: "Admin",
-    actionableSubTitle: "Surya",
-    actionable: false
-  }
-];
 
 interface OrganisationHomeRouterProps {
   id: string;
