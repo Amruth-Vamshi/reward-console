@@ -281,7 +281,7 @@ export const communications = gql`
   }
 `;
 export const audiences = gql`
-  query audiences($campaign_id: ID, $organization_id: ID, $segment_id: ID) {
+  query audiences($campaign_id: ID, $organization_id: ID!, $segment_id: ID) {
     audiences(
       campaign_id: $campaign_id
       organization_id: $organization_id
@@ -1120,5 +1120,21 @@ export const CREATE_EVENT_SUBSCRIPTIONS = gql`
         description
       }
     }
+  }
+`;
+
+export const SEND_FEEDBACK_MESSAGE = gql`
+  mutation refineXSendFeedbackByInput(
+    $campaignId: String!
+    $customer: EventCustomerInput
+    $forTest: Boolean
+    $customerDevice: EventCustomerDeviceInput
+  ) {
+    refineXSendFeedbackByInput(
+      campaignId: $campaignId
+      customer: $customer
+      forTest: $forTest
+      customerDevice: $customerDevice
+    )
   }
 `;
