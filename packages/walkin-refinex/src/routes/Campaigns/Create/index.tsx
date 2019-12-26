@@ -439,7 +439,7 @@ class CreateCampaign extends React.Component<CreateCampaignProps,CreateCampaignS
             testAndControlText="Test & Control"
             promptText="prompt text"
             toolTipText="what is test and control?"
-            prioritySelectionTitle="Campaign Priority"
+            prioritySelectionTitle="Survey Priority"
             priorityButtonText="Custom no"
             testControlTitle="Test & Control"
             testControlPercentage={

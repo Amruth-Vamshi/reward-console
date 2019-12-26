@@ -91,9 +91,9 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 			},
 			locationDropDown: {
 				showCityList: false,
-				showStateList: true,
+				showStateList: false,
 				showPincodeList: false,
-				showStoreList: false,
+				showStoreList: true,
 			},
 		};
 	}
@@ -262,10 +262,9 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 					let { productValues, locationValues } = this.state;
 					let reward = {}, reArrangedObj = {};
 
-					console.log('PV ', JSON.stringify(productValues) + " Lv " + JSON.stringify(locationValues));
 
-
-					reward[basicForm.offerType] = parseInt(basicForm.offerTypeValue);
+					reward[basicForm.offerType] = basicForm.offerType == "FREE_ITMES_FROM_LIST" ?
+						basicForm.offerTypeValue : parseFloat(basicForm.offerTypeValue);
 
 					let combinedArray = productValues.concat(locationValues);
 					let arr: Array<{}> = [];
@@ -275,9 +274,9 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 					console.log('FV', basicForm);
 
 					if (basicForm.transactionTime) {
-						if (basicForm.transactionTime == "cartValue")
+						if (basicForm.transactionTime == "cartValue" && basicForm.cartValue != "")
 							arr.push({ attributeName: "cartValue", attributeValue: basicForm.cartValue, expressionType: basicForm.cartValueCondition })
-						else if (basicForm.transactionTime == "frequency") {
+						else if (basicForm.transactionTime == "frequency" && basicForm.noOfTransaction && basicForm.noOfDay) {
 							arr.push({ attributeName: "frequency_transaction", attributeValue: basicForm.noOfTransaction, expressionType: "EQUALS" })
 							arr.push({ attributeName: "frequency_days", attributeValue: basicForm.noOfDays, expressionType: "EQUALS" })
 						}
@@ -291,7 +290,7 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 					arr = [...arr, ...transposeObject(reArrangedObj && reArrangedObj, 'IN')]
 
 
-					// return console.log('>>', arr, reArrangedObj);
+					// return console.log('>>', basicForm, reward);
 
 					let basicFormArray = { rules: arr, combinator: 'AND' };
 
@@ -305,8 +304,8 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 
 					const { offerEligibityRuleId, couponLableSelected, couponTypeSelected } = this.state;
 					let offerInput = {
-						name: formValues.basicForm.offerName,
-						offerType: formValues.basicForm.offerType,
+						name: basicForm.offerName.trim(),
+						offerType: basicForm.offerType,
 						reward: reward,
 						organizationId: org_id,
 						offerEligibilityRule: ruleId,
@@ -472,14 +471,14 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 				subOrganizations &&
 				subOrganizations.map(el => ({
 					value: el.code,
-					title: el.code,
+					title: el.name,
 				}));
 		}
 
 		return (
 			<Fragment>
 				<div>
-					<WHeader title='Create Offer' extra={<Stepper stepData={offerStepData} current={current} onChange={this.changePage}
+					<WHeader title='Create Offer' extra={<Stepper stepData={offerStepData} current={current} //onChange={this.changePage}
 					/>} />
 					{/* Each step is different step because the form has to be validated and saved as draft */}
 					<HyperXContainer spin={loading} margin='32px' headerHeightInPX={225}>

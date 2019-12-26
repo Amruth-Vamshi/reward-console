@@ -132,7 +132,8 @@ class OfferDashboard extends React.Component<IAppProps, IAppState> {
 
                                         <Row>
                                             <Col {...labelCol}>  Offer Type  </Col>
-                                            <Col {...wrapperCol}> {fieldConvert(offerTypeData, offerType, 'value', 'title')} - {reward[offerType]}{fieldConvert(offerTypeData, offerType, 'value', 'extra')} </Col>
+                                            <Col {...wrapperCol}> {fieldConvert(offerTypeData, offerType, 'value', 'title')} - {reward[offerType] ? reward[offerType].toString() : ''}
+                                                {fieldConvert(offerTypeData, offerType, 'value', 'extra')} </Col>
                                         </Row>
                                         {products.map((p: any) => <div>
                                             <Row>
@@ -176,11 +177,11 @@ class OfferDashboard extends React.Component<IAppProps, IAppState> {
 
                                         <Row>
                                             <Col {...labelCol}>  User Limit </Col>
-                                            <Col {...wrapperCol}> {redemption.usage_limit ? `${redemption.usage_limit} times` : '  --'}</Col>
+                                            <Col {...wrapperCol}> {redemption.usage_limit ? `${redemption.usage_limit}  ${redemption.usage_limit == 1 ? 'time' : 'times'}` : '  --'}</Col>
                                         </Row>
                                         <Row>
                                             <Col {...labelCol}>  User Limit At Customer Level  </Col>
-                                            <Col {...wrapperCol}> {redemption.usage_limit_at_customer ? `${redemption.usage_limit_at_customer} times` : '  --'}</Col>
+                                            <Col {...wrapperCol}> {redemption.usage_limit_at_customer ? `${redemption.usage_limit_at_customer} ${redemption.usage_limit_at_customer == 1 ? 'time' : 'times'}` : '  --'}</Col>
                                         </Row>
                                         <Row>
                                             <Col {...labelCol}>  Time Limit  </Col>

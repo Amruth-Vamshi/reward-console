@@ -3,14 +3,9 @@ import * as React from "react";
 import { Query, graphql, compose } from "react-apollo";
 import gql from "graphql-tag";
 import {
-  Form,
-  Slider,
-  Button,
-  Input,
   TreeSelect,
   Row,
   Col,
-  Popconfirm,
   message,
   List,
   Card,
@@ -73,6 +68,24 @@ class QuestionTypeSelection extends React.Component<QuestionTypeSelectionProps, 
     }
   }
 
+  onCardClick(item: string) {
+    if (this.unSupportedQuestionType(item)) {
+      message.warn("Sorry, Question Type not supported yet!")
+    }
+    else {
+      this.props.onQuestionTypeSelector(item)
+    }
+  }
+
+  unSupportedQuestionType(item: string) {
+    if (item === "DICHOTOMOUS" || item === "IMAGE" || item === "VIDEO" || item === "AUDIO" || item === "NUMERIC") {
+      return true
+    }
+    else {
+      return false
+    }
+  }
+
   render() {
     const { data } = this.state;
     console.log(this.props)
@@ -97,9 +110,10 @@ class QuestionTypeSelection extends React.Component<QuestionTypeSelectionProps, 
                   <List.Item>
                     <Card
                       style={{
-                        cursor: "pointer"
+                        cursor: "pointer",
+                        backgroundColor: (this.unSupportedQuestionType(item) ? "#e6e6e6" : "#FFF")
                       }}
-                      onClick={e => this.props.onQuestionTypeSelector(item)}
+                      onClick={e => this.onCardClick(item)}
                     >
                       {item.replace("_", " ")}
                     </Card>

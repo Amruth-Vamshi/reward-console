@@ -23,10 +23,11 @@ export const getOffers = gql`
 export const subOrganizations = gql`
 	query($parentId: ID!, $type: OrganizationTypeEnum) {
 		subOrganizations(parentId: $parentId, type: $type) {
-			id city state pinCode code
+			id name status city state pinCode code addressLine1
 		}
 	}
 `;
+
 export const createOffer = gql`
 	mutation createOffer(
 		$name: String!
