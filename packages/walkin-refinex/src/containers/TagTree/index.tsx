@@ -1,17 +1,48 @@
 import * as React from "react";
-import SortableTree, { changeNodeAtPath } from 'react-sortable-tree';
+import SortableTree, { changeNodeAtPath, removeNodeAtPath, addNodeUnderParent } from 'react-sortable-tree';
 import 'react-sortable-tree/style.css';
-import { Select, Row, Col } from "antd"
+import { Select, Row, Col, Button, Modal, Input, Icon } from "antd"
 
 const { Option } = Select
 
 interface iState {
-    treeData?: Array<any>
+    treeData?: Array<any>,
+    nodeTitle?: string,
+    visible?: boolean,
+    nodeData?: any
 }
 
 interface iProps {
 
 }
+
+const data = [
+    {
+        "id": 1,
+        "title": "A",
+        "children": [
+            {
+                "id": 3,
+                "title": "C",
+                "children": [{
+                    "id": 5,
+                    "title": "E",
+                    "children": []
+                }]
+            },
+            {
+                "id": 4,
+                "title": "D",
+                "children": []
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "title": "B",
+        "children": []
+    }
+]
 
 class TagTree extends React.Component<iProps, iState>
 {
@@ -19,54 +50,199 @@ class TagTree extends React.Component<iProps, iState>
         super(props);
 
         this.state = {
-            treeData: [
-                { title: 'Overall Experience', children: [{ title: 'Store', children: [{ title: 'Ambience', children: [{ title: 'color' }] }, { title: "Billing" }] }] }
-            ],
+            treeData: [],
+            nodeTitle: "",
+            visible: false,
+            nodeData: {}
         };
     }
 
-    handleChange(value) {
-        console.log(`selected ${value}`);
+    onTitleChange = ({ target: { value } }) => {
+        this.setState({ nodeTitle: value });
+    };
+
+    onCancelNewNode() {
+        this.setState({
+            visible: false,
+            nodeTitle: ""
+        })
     }
 
-    displaySelect() {
-        return (<Select size={"small"} defaultValue="1" style={{ width: 120, fontSize: "10px", fontWeight: 500 }} onChange={(val) => { this.handleChange(val) }}>
-            <Option value="1">Store</Option>
-            <Option value="2">Stock</Option>
-            <Option value="3"> Manager</Option>
-            <Option value="4">Marketing</Option>
-        </Select>)
+    createNewNode() {
+        const nodeData = this.state.nodeData
+
+        var NEW_NODE = {
+            title: this.state.nodeTitle,
+            isDirectory: true,
+            expanded: true,
+            type: "nodeValue",
+            children: []
+        }
+
+        const replacedTree = changeNodeAtPath({
+            treeData: this.state.treeData,
+            path: nodeData.path,
+            newNode: NEW_NODE,
+            getNodeKey: ({ treeIndex }) => treeIndex,
+            ignoreCollapsed: true,
+        });
+
+        this.setState({ visible: false, nodeTitle: "", nodeData: {}, treeData: replacedTree })
     }
 
-    renderNode(node, path) {
-        console.log("Node : ", node, "Path : ", path)
-        return (
-            <Row>
-                <Col span={10} style={{ fontSize: "12px", paddingTop: "5px" }}>{node.title}</Col>
-                <Col span={14} style={{ paddingRight: "100px" }}>
-                    <span style={{ paddingRight: "10px", paddingLeft: "10px", fontWeight: 400, fontSize: "10px" }}>Assign Role</span>
-                    {this.displaySelect()}
-                </Col>
-            </Row>
-        )
+    convertedNodes() {
+        var newSet = this.convertNodes(data)
+        this.setState({ treeData: newSet })
+    }
+
+    convertNodes(data) {
+        var el = []
+        data.forEach(element => {
+            el.push({
+                id: element.id,
+                title: element.title,
+                type: "nodeValue",
+                expanded: true,
+                children: (element.children.length === 0) ? [] : this.convertNodes(element.children)
+            })
+        })
+        el.push({
+            id: 0,
+            title: "Add Node",
+            type: "newNode",
+            expanded: true,
+            children: []
+        })
+        return el
+    }
+
+    // handleChange(value) {
+    //     console.log(`selected ${value}`);
+    // }
+
+    // displaySelect() {
+    //     return (<Select size={"small"} defaultValue="1" style={{ width: 120, fontSize: "10px", fontWeight: 500 }} onChange={(val) => { this.handleChange(val) }}>
+    //         <Option value="1">Store</Option>
+    //         <Option value="2">Stock</Option>
+    //         <Option value="3"> Manager</Option>
+    //         <Option value="4">Marketing</Option>
+    //     </Select>)
+    // }
+
+    renderNode(nodeInfo) {
+        const { node, path } = nodeInfo
+        // console.log("Node : ", node, "Path : ", path)
+
+        // To be used later when tags can be linked to users 
+        //
+        // return (
+        //     <Row onClick={() => { this.addNewNode(nodeInfo, "newNodeBtn") }}>
+        //         <Col span={10} style={{ fontSize: "12px", paddingTop: "5px" }}>{node.title}</Col>
+        //         <Col span={14} style={{ paddingRight: "100px" }}>
+        //             <span style={{ paddingRight: "10px", paddingLeft: "10px", fontWeight: 400, fontSize: "10px" }}>Assign Role</span>
+        //             {this.displaySelect()}
+        //         </Col>
+        //     </Row>
+        // )
+
+        // To display Original Data
+
+        if (node.type === "nodeValue") {
+            return (
+                <Row>
+                    <Col onClick={() => { this.addNewNode(nodeInfo) }} span={10} style={{ fontSize: "12px", paddingTop: "5px" }}>{node.title}</Col>
+                    <Col span={14} style={{ marginRight: "-227px", paddingLeft: "218px" }} >
+                        <div onClick={() => { this.removeNode(nodeInfo) }}><Icon type="close" /></div>
+                    </Col>
+                </Row>
+            )
+        }
+
+        // To display add node button
+
+        if (node.type === "newNode") {
+            return (
+                <div onClick={() => { this.setState({ nodeData: nodeInfo, visible: true }) }}>
+                    <Col span={24} style={{ fontSize: "12px", paddingTop: "5px", width: "100%" }}>
+                        {node.title}
+                    </Col>
+                </div>
+            )
+        }
+
+    }
+
+    addNewNode(rowInfo) {
+        var stopProcess = false
+
+        var NEW_NODE = {
+            title: 'Add Node',
+            isDirectory: true,
+            expanded: true,
+            type: "newNode",
+            children: []
+        };
+
+        var child = rowInfo.node.children
+
+        child.forEach(element => {
+            if (element.type === "newNode") {
+                stopProcess = true
+            }
+        })
+        if (!stopProcess) {
+            const newTree = addNodeUnderParent({
+                treeData: this.state.treeData,
+                newNode: NEW_NODE,
+                expandParent: true,
+                parentKey: rowInfo ? rowInfo.treeIndex : undefined,
+                getNodeKey: ({ treeIndex }) => treeIndex,
+            });
+            this.setState({ treeData: newTree.treeData })
+        }
+    }
+
+    removeNode(rowInfo) {
+        const { path } = rowInfo;
+        const updatedTree = removeNodeAtPath({
+            treeData: this.state.treeData,
+            path,
+            getNodeKey: ({ treeIndex }) => treeIndex,
+        });
+        this.setState({ treeData: updatedTree })
     }
 
     render() {
-        const getNodeKey = ({ treeIndex }) => treeIndex;
+        const { visible, treeData, nodeTitle } = this.state
         return (
-            <div style={{ height: 300, width: "100%" }}>
+            <div style={{ height: 'auto', width: "100%" }}>
                 <SortableTree
                     canDrag={false}
-                    treeData={this.state.treeData}
+                    treeData={treeData}
                     onChange={treeData => this.setState({ treeData })}
-                    generateNodeProps={({ node, path }) => ({
+                    generateNodeProps={(nodeInfo) => ({
                         title: (
                             <div>
-                                {this.renderNode(node, path)}
+                                {this.renderNode(nodeInfo)}
                             </div>
                         )
                     })}
                 />
+                <Button onClick={() => { this.convertedNodes() }}>Change</Button>
+                <Modal
+                    title={"Enter Tag Name"}
+                    visible={visible}
+                    onCancel={() => { this.onCancelNewNode() }}
+                    onOk={() => this.createNewNode()}
+                    width='500px'
+                >
+                    <Input
+                        placeholder=""
+                        value={nodeTitle}
+                        onChange={this.onTitleChange}
+                        style={{ fontWeight: 300, fontSize: '12px', marginTop: '10px' }}
+                    />
+                </Modal>
             </div>
         );
     }
