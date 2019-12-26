@@ -72,6 +72,7 @@ class TagTree extends React.Component<iProps, iState>
         const nodeData = this.state.nodeData
 
         var NEW_NODE = {
+            id: "Value",
             title: this.state.nodeTitle,
             isDirectory: true,
             expanded: true,
@@ -113,6 +114,26 @@ class TagTree extends React.Component<iProps, iState>
             expanded: true,
             children: []
         })
+        return el
+    }
+
+    getCleanedData() {
+        var d = this.cleanData(this.state.treeData)
+        console.log("Cleaned Data : ", d)
+    }
+
+    cleanData(data) {
+        var el = []
+        data.forEach(element => {
+            if (element.type !== "newNode") {
+                el.push({
+                    id: element.id,
+                    title: element.title,
+                    children: (element.children.length === 0) ? [] : this.cleanData(element.children)
+                })
+            }
+        })
+
         return el
     }
 
@@ -228,7 +249,8 @@ class TagTree extends React.Component<iProps, iState>
                         )
                     })}
                 />
-                <Button onClick={() => { this.convertedNodes() }}>Change</Button>
+                <Button onClick={() => { this.convertedNodes() }}>Reset</Button>
+                <Button onClick={() => { this.getCleanedData() }}>Clean Data</Button>
                 <Modal
                     title={"Enter Tag Name"}
                     visible={visible}
