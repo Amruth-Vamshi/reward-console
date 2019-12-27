@@ -1,7 +1,8 @@
 import * as React from "react";
 import SortableTree, { changeNodeAtPath, removeNodeAtPath, addNodeUnderParent } from 'react-sortable-tree';
 import 'react-sortable-tree/style.css';
-import { Select, Row, Col, Button, Modal, Input, Icon } from "antd"
+import { Select, Row, Col, Button, Modal, Input, Icon, message } from "antd"
+import CustomNodeRenderer from "./customNodeRenderer"
 
 const { Option } = Select
 
@@ -225,6 +226,10 @@ class TagTree extends React.Component<iProps, iState>
 
     removeNode(rowInfo) {
         const { path } = rowInfo;
+        if (path.length === 1) {
+            message.warn("Sorry, You cannot delete parent tag.")
+            return
+        }
         const updatedTree = removeNodeAtPath({
             treeData: this.state.treeData,
             path,
@@ -241,6 +246,7 @@ class TagTree extends React.Component<iProps, iState>
                     canDrag={false}
                     treeData={treeData}
                     onChange={treeData => this.setState({ treeData })}
+                    nodeContentRenderer={CustomNodeRenderer}
                     generateNodeProps={(nodeInfo) => ({
                         title: (
                             <div>
