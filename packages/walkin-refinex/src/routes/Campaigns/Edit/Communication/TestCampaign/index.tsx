@@ -10,7 +10,8 @@ import {
   Input,
   Icon,
   Select,
-  Form
+  Form,
+  message
 } from "antd";
 import { Widget } from "@walkinsole/walkin-components";
 
@@ -71,12 +72,16 @@ export default class TestComponent extends React.Component<
         return this.state.phoneNumber;
     }
   };
-  testComms = () => {
-    this.props.testCommunication(
+  testComms = async () => {
+    const notify = await this.props.testCommunication(
       this.state.phoneNumber,
       this.state.email,
       this.state.fcmToken
     );
+
+    if (notify) {
+      message.success("Communication successfully sent!");
+    }
   };
   render() {
     return (

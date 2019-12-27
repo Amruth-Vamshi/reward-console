@@ -1034,7 +1034,7 @@ export const EVENT_SUBSCRITPION_FOR_EVENT_TYPE = gql`
         application {
           id
           name
-          descrption
+          description
         }
       }
       status
@@ -1053,7 +1053,7 @@ export const EVENT_TYPE_FOR_APPLICATION = gql`
       application {
         id
         name
-        descrption
+        description
       }
     }
   }
@@ -1077,7 +1077,7 @@ export const CREATE_EVENT_TYPE = gql`
       application {
         id
         name
-        descrption
+        description
       }
     }
   }

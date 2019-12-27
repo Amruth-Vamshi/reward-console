@@ -1,6 +1,12 @@
 import * as React from "react";
 import PropTypes from "prop-types";
-import { graphql, compose, ApolloProviderProps } from "react-apollo";
+import {
+  graphql,
+  compose,
+  ApolloProviderProps,
+  withApollo,
+  WithApolloClient
+} from "react-apollo";
 import {
   Col,
   Row,
@@ -23,7 +29,9 @@ import {
 } from "../../../../../containers/Query";
 import { FormProps, FormComponentProps } from "antd/lib/form";
 import Events from "./Events/index";
-interface EventTypeProps extends FormComponentProps, ApolloProviderProps<any> {
+import { ConnectedComponentClass } from "antd/lib/form/interface";
+
+interface EventTypeProps extends FormComponentProps {
   event?: any;
   selectedApplication?: any;
   unlinkCampaignFromApplication?: any;
@@ -37,8 +45,11 @@ interface EventTypeState {
   showEvents: boolean;
   visible: boolean;
 }
-class EventType extends React.Component<EventTypeProps, EventTypeState> {
-  constructor(props: EventTypeProps) {
+class EventType extends React.Component<
+  WithApolloClient<EventTypeProps>,
+  EventTypeState
+> {
+  constructor(props: WithApolloClient<EventTypeProps>) {
     super(props);
     this.state = {
       showEvents: false,
@@ -125,6 +136,7 @@ class EventType extends React.Component<EventTypeProps, EventTypeState> {
   };
 
   render() {
+    console.log("this.props inside app", this.props);
     const { showEvents } = this.state;
     return (
       <React.Fragment>
@@ -156,21 +168,40 @@ class EventType extends React.Component<EventTypeProps, EventTypeState> {
     );
   }
 }
-
-const EventTypeForm = Form.create<EventTypeProps>({
+EventType;
+const EventTypeForm1 = withApollo(EventType);
+export const EventTypeForm = Form.create<EventTypeProps>({
   name: "EventType",
-  onValuesChange(props: EventTypeProps, values) {
+  onValuesChange(props: WithApolloClient<EventTypeProps>, values) {
+    console.log("values", values);
     if (values.event) {
       props.onEventTypeEdited(values);
     } else if (props.selectedApplication !== values.application) {
       props.linkCampaignToApplication(values.application);
+      props.client
+        .query({
+          query: EVENT_TYPES_FOR_APPLICATION,
+          variables: {
+            appId: props.selectedApplication
+          }
+        })
+        .then(data => console.log("data", data))
+        .catch(err => console.log("err", err));
     }
   },
-  mapPropsToFields(props: EventTypeProps) {
-    //const { event, selectedApplication } = props;
-    // if (selectedApplication) {
-    //   props.eventSubscription.refetch()
-    // }
+  mapPropsToFields(props: WithApolloClient<EventTypeProps>) {
+    const { event, selectedApplication } = props;
+    if (selectedApplication) {
+      props.client
+        .query({
+          query: EVENT_TYPES_FOR_APPLICATION,
+          variables: {
+            appId: selectedApplication
+          }
+        })
+        .then(data => console.log("data", data))
+        .catch(err => console.log("err", err));
+    }
     // let eventValue = event.event;
     // if (props.eventSubscription && props.eventSubscription.eventSubscriptions) {
     //   eventValue = props.eventSubscription.eventSubscriptions[0].event_type.type
@@ -184,10 +215,4 @@ const EventTypeForm = Form.create<EventTypeProps>({
     //   }),
     // };
   }
-})(EventType);
-
-export default compose(
-  graphql(EVENT_TYPES_FOR_APPLICATION, {
-    name: "eventType"
-  })
-)(EventTypeForm);
+})(EventTypeForm1);
