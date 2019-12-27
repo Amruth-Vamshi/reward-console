@@ -8,6 +8,7 @@ import Campaign from "./Campaigns"
 import SegementLIst from '../containers/segment/segmentList'
 import NewSegement from '../containers/segment/newSegment'
 import analytics from '../containers/Analytics'
+import IssueTag from "../containers/IssueTags"
 import "./style.css"
 import { RouteChildrenProps } from "react-router";
 
@@ -31,6 +32,10 @@ const RefineXRoutes: React.FunctionComponent<RefineXRoutesProps> = ({ match }) =
                 <Route
                     path={`${match.url}/segment/segmentList`}
                     component={SegementLIst}
+                />
+                <Route
+                    path={`${match.url}/issueTag`}
+                    component={IssueTag}
                 />
                 <Route
                     path={`${match.url}/segment/newSegment`}
