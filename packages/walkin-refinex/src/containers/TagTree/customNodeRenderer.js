@@ -35,7 +35,6 @@ class NodeRendererDefault extends Component {
         const nodeTitle = title || node.title;
         const nodeSubtitle = subtitle || node.subtitle;
         const rowDirectionClass = rowDirection === 'rtl' ? 'rst__rtl' : null;
-        console.log("CNR : ", node)
         const isOriginalNode = (node.type === "nodeValue" ? true : false)
         let handle;
         if (canDrag) {
@@ -133,7 +132,7 @@ class NodeRendererDefault extends Component {
                                     rowDirectionClass
                                 ) : classnames(
                                     'rst__addRowContents',
-                                    !canDrag && 'rst__rowContentsDragDisabled',
+                                    !canDrag && 'rst__addRowContentsDragDisabled',
                                     rowDirectionClass
                                 ))}
                             >

@@ -78,7 +78,7 @@
   height: 100%;
   border: solid #bbb 1px;
   border-left: none;
-  box-shadow: 0 2px 2px -2px;
+  box-shadow: 0 0 0 -0;
   padding: 0 5px 0 10px;
   border-radius: 2px;
   min-width: 230px;
@@ -93,7 +93,7 @@
   position: relative;
   height: 22px;
   border: solid #038FDE 1px;
-  box-shadow: 0 2px 2px -2px;
+  box-shadow: 0 0 0 0;
   padding: 0 5px 0 10px;
   border-radius: 2px;
   flex: 1 0 auto;
@@ -114,6 +114,10 @@
 
 .rst__rowContentsDragDisabled {
   border-left: solid #bbb 1px;
+}
+
+.rst__addRowContentsDragDisabled {
+  border-left: solid #038FDE 1px;
 }
 
 .rst__rtl.rst__rowContentsDragDisabled {
