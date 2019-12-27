@@ -71,6 +71,12 @@ class TagTree extends React.Component<iProps, iState>
 
     createNewNode() {
         const nodeData = this.state.nodeData
+        var path = nodeData.path
+        var isParent = false
+
+        if (path.length === 1) {
+            isParent = true
+        }
 
         var NEW_NODE = {
             id: "Value",
@@ -83,13 +89,27 @@ class TagTree extends React.Component<iProps, iState>
 
         const replacedTree = changeNodeAtPath({
             treeData: this.state.treeData,
-            path: nodeData.path,
+            path: path,
             newNode: NEW_NODE,
             getNodeKey: ({ treeIndex }) => treeIndex,
             ignoreCollapsed: true,
         });
 
-        this.setState({ visible: false, nodeTitle: "", nodeData: {}, treeData: replacedTree })
+        if (isParent) {
+            var arr = replacedTree
+            arr.push({
+                id: "value",
+                title: "Add Node",
+                type: "newNode",
+                expanded: true,
+                children: []
+            })
+            this.setState({ visible: false, nodeTitle: "", nodeData: {}, treeData: arr })
+        }
+        else {
+            this.setState({ visible: false, nodeTitle: "", nodeData: {}, treeData: replacedTree })
+        }
+
     }
 
     convertedNodes() {
