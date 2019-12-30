@@ -2,6 +2,8 @@ import CoreLandingPage from "./routes/CoreLanding";
 import Organization from "./routes/Organization";
 import OrgStoreList from "./routes/Organization/orgStoreList";
 import Settings from "./routes/Settings";
+import BusinessRules from "./routes/BusinessRules";
+import AccessControl from "./routes/AccessControl";
 
 import * as React from "react";
 import { Route, Switch, RouteComponentProps } from "react-router-dom";
@@ -22,6 +24,9 @@ export default class extends React.Component<HomeProps, {}> {
           />
           <Route path={"/core/organization/:id"} component={OrganisationHome} />
           <Route path={"/core/settings/*"} component={Settings} />
+          <Route path={"/core/business-rules"} component={BusinessRules} />
+          <Route path={"/core/access-control"} component={AccessControl} />
+
           <Route path={`${this.props.match.url}/users`} component={Users} />
           {/* <Route path={"/core/orghome/:id"} component={OrganisationHome} /> */}
           <Route path={"/core/storeinfo"} component={StoreInfo} />

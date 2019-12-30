@@ -45,6 +45,7 @@ import Image from "./components/General/Image/Image";
 import Header from "./components/General/Header/Header";
 
 import WHeader from "./components/molecules/wHeader/WHeader";
+import EditableFormTable from "./components/molecules/editableFormTable";
 import FileUploader from "./components/molecules/fileUpload/FileUpload";
 // import FileUploader from "./components/molecules/FileUpload/newFileUpload"
 import OfferBasicInfoForm from "./components/molecules/offerForm/basicInfo";
@@ -90,6 +91,7 @@ export {
   BasicSlider,
   FileUploader,
   // FileUploader,
+  EditableFormTable,
   Popup,
   AddAndDeleteSelectDynamically,
   WalkinQueryBuilder,

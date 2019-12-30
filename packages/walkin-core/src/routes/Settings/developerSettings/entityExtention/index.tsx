@@ -425,9 +425,9 @@ class EntityExtention extends React.Component<
         {!isEntityVariablesFormOpen ? (
           <div className="headerDescWrapper">
             <div className="headerDesc">
-              Outgoing webhooks allow you to send Wcore activity to external
-              services and custom integrations. Check out our Webhook API
-              documentation for details.
+              Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
+              nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
+              erat, sed diam voluptua. At vero.
             </div>
           </div>
         ) : (

@@ -102,7 +102,7 @@
   .ant-table-tbody
   > tr:hover:not(.ant-table-expanded-row)
   > td {
-  background: unset;
+  background: unset !important;
 }
 
 .noHeightTable .ant-table-content {

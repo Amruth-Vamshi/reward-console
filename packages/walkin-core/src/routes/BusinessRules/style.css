@@ -1,0 +1,11 @@
+.justifyContent-center{
+    display: flex;
+    justify-content: center;
+}
+.fontSize-header{
+    font-size:18px
+}
+.avoid-click{
+    pointer-events:none;
+    color:grey;
+}
