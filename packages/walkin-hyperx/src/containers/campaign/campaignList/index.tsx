@@ -287,12 +287,13 @@ class CampaignList extends React.Component<CampaignListProps, Partial<CampaignLi
         key: 'audienceCount',
         // align: 'center' as const
       },
+      // {
+      //   title: 'Reached',
+      //   dataIndex: 'reached',
+      //   key: 'reached',
+      //   // align: 'center' as const
+      // }, 
       {
-        title: 'Reached',
-        dataIndex: 'reached',
-        key: 'reached',
-        // align: 'center' as const
-      }, {
         title: 'Redemption Rate',
         dataIndex: 'redemptionRate',
         key: 'redemptionRate',
