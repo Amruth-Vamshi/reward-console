@@ -156,15 +156,13 @@ class CampaignList extends React.Component<CampaignListProps, Partial<CampaignLi
     };
 
     onTabChange = (key: any) => {
+        this.setState({ key })
         const { allCampaigns } = this.state
-
-        console.log(key)
         if (!allCampaigns || allCampaigns.length < 1) return
         if (key == 2) {
             let upcomingCampaigns = allCampaigns.filter((val: any) => {
-                if (val.status == 'ACTIVE') {
-                    return val.campaignStatus == 'LIVE' && moment(val.startTime).isAfter(moment());
-                }
+                if (val.status == 'ACTIVE')
+                    return val.campaignStatus == "PRE_LIVE_PROCESSING" || (val.campaignStatus == 'LIVE' && moment(val.startTime).isAfter(moment()));
             });
             this.setState({ data: upcomingCampaigns, filtered: null });
         }
@@ -172,7 +170,8 @@ class CampaignList extends React.Component<CampaignListProps, Partial<CampaignLi
         if (key == 3) {
             let completedCampaigns = allCampaigns.filter((val: any) => {
                 if (val.status == 'ACTIVE') {
-                    return moment(val.endTime).isBefore(moment());
+                    // return moment(val.endTime).isBefore(moment());
+                    return val.campaignStatus == "COMPLETED"
                 }
             });
             this.setState({ data: completedCampaigns, filtered: null });
@@ -200,7 +199,6 @@ class CampaignList extends React.Component<CampaignListProps, Partial<CampaignLi
     };
 
     render() {
-        console.log(this.props)
         let { sortedInfo, filteredInfo, filtered, data, loading, showPopUp } = this.state;
         if (showPopUp) {
             this.success()
