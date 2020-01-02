@@ -1,0 +1,71 @@
+.reports-flex-row {
+  display: flex;
+}
+.margin-bottom-30 {
+  margin-bottom: 30px;
+}
+/* .margin-bottom-10 {
+  margin-bottom: 10px;
+} */
+.reports-justify-content-space-between {
+  justify-content: space-between;
+}
+.reports-title {
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: 0;
+  color: #2e2e2e;
+}
+.no-button-bottom-margin {
+  margin-bottom: 0;
+}
+.reports-auto-schedule-button {
+  border: 1px solid #038fde;
+  color: #038fde;
+}
+.reports-list-wrapper {
+  flex-direction: column;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.reports-list-wrapper .ant-input {
+  border: 1px solid #707070;
+}
+
+/* for changing placeholder color */
+.reports-list-wrapper .ant-input::-webkit-input-placeholder {
+  /* Chrome/Opera/Safari */
+  color: #707070;
+}
+.reports-list-wrapper .ant-input::-moz-placeholder {
+  /* Firefox 19+ */
+  color: #707070;
+}
+.reports-list-wrapper .ant-input:-ms-input-placeholder {
+  /* IE 10+ */
+  color: #707070;
+}
+.reports-list-wrapper .ant-input:-moz-placeholder {
+  /* Firefox 18- */
+  color: #707070;
+}
+
+.reports-list-wrapper .ant-calendar-picker-icon {
+  color: #707070;
+}
+
+.reports-name {
+  font: Bold 18px Roboto;
+  letter-spacing: 0;
+  color: #2e2e2e;
+  margin-bottom: 10px;
+  /* margin: 0; */
+}
+.reports-description {
+  font: Medium 14px Roboto;
+  letter-spacing: 0;
+  color: #2e2e2e;
+  margin: 0;
+}

@@ -1,6 +1,6 @@
 .RewardX-Main {
   min-height: 100%;
-  background-color: #ffffff;
+  background-color: #ffffff !important;
   overflow: inherit;
 }
 
@@ -18,19 +18,19 @@
 }
 
 .RewardX-Logo {
-  background-color: #fcfcfc;
+  background-color: #fcfcfc !important;
 }
 
 .RewardX-Logo .gx-layout-sider-header {
-  background-color: #fcfcfc;
+  background-color: #fcfcfc !important;
 }
 
 .RewardX-Sidebar .ant-menu-dark {
-  background-color: #191958;
+  background-color: #191958 !important;
 }
 
 .RewardX-Topbar {
-  background-color: #ffffff;
+  background-color: #ffffff !important;
 }
 
 .RewardX-Sidebar .ant-menu-dark .ant-menu-item-selected > a {

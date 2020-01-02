@@ -11,6 +11,7 @@ import Dashboard from "../containers/Dashboard";
 // import "./style.css"
 import { RouteChildrenProps } from "react-router";
 import LoyaltyCard from "../containers/Dashboard/LoyaltyCard";
+import Reports from "../containers/Reports";
 
 interface RewardXRoutesProps extends RouteChildrenProps {}
 
@@ -28,16 +29,7 @@ const RewardXRoutes: React.FunctionComponent<RewardXRoutesProps> = ({
           path={`${match.url}/dashboard/loyalty_card`}
           component={LoyaltyCard}
         />
-        {/* <Route
-                    path={`${match.url}/segment/segmentList`}
-                    component={SegementLIst}
-                />
-                <Route
-                    path={`${match.url}/segment/newSegment`}
-                    component={NewSegement}
-                />
-                <Route path={`${match.url}/apps`} component={RefineXApps} />
-                <Route path={`${match.url}/analytics`} component={analytics} /> */}
+        <Route exact path={`${match.url}/reports`} component={Reports} />
       </Switch>
     </div>
   );

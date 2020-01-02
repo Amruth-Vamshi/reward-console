@@ -256,6 +256,35 @@ export const ADD_ENTITY_EXTEND_FIELD = gql`
   }
 `;
 
+export const RULES = gql`
+  query rules($input: SearchRuleInput) {
+    rules(input: $input) {
+      id
+      name
+      description
+      status
+      type
+      ruleConfiguration
+      ruleExpression
+      # organization
+    }
+  }
+`;
+
+export const UPDATE_RULE = gql`
+  mutation updateRule($id: ID, $input: UpdateRuleInput!) {
+    updateRule(id: $id, input: $input) {
+      id
+      name
+      description
+      status
+      type
+      ruleConfiguration
+      ruleExpression
+    }
+  }
+`;
+
 export const GENERATE_API_KEY = gql`
   mutation generateAPIKey($id: ID!, $env: String) {
     generateAPIKey(id: $id, environment: $env) {
@@ -269,6 +298,97 @@ export const ROLES_LIST = gql`
     roles {
       id
       name
+      description
+      tags
+      users {
+        id
+        email
+        firstName
+        lastName
+      }
+      policies {
+        id
+        effect
+        resource
+        permission
+        type
+        accessLevel
+      }
+    }
+  }
+`;
+
+export const ROLE = gql`
+  query role($id: ID!) {
+    role(id: $id) {
+      id
+      name
+      description
+      tags
+      users {
+        id
+        email
+        firstName
+        lastName
+      }
+      policies {
+        id
+        effect
+        resource
+        permission
+        type
+        accessLevel
+      }
+    }
+  }
+`;
+
+export const ADD_ROLE = gql`
+  mutation addRole($input: RoleInput!) {
+    addRole(input: $input) {
+      id
+      name
+    }
+  }
+`;
+
+export const LINK_USER_TO_ROLE = gql`
+  mutation linkUserToRole($roleId: ID!, $userId: ID!) {
+    linkUserToRole(roleId: $roleId, userId: $userId) {
+      id
+      roles {
+        id
+        name
+        description
+        tags
+        users {
+          id
+          email
+          firstName
+          lastName
+        }
+        policies {
+          id
+          effect
+          resource
+          permission
+          type
+          accessLevel
+        }
+      }
+    }
+  }
+`;
+
+export const EDIT_POLICY = gql`
+  mutation editPolicy($input: PolicyEditInput!) {
+    editPolicy(input: $input) {
+      id
+      effect
+      resource
+      permission
+      type
+      accessLevel
     }
   }
 `;
@@ -353,6 +473,20 @@ export const GET_ALL_APPS_OF_ORGANIZATION = gql`
   }
 `;
 
+export const USERS = gql`
+  query users {
+    users {
+      id
+      firstName
+      email
+      roles {
+        id
+        name
+      }
+    }
+  }
+`;
+
 export const GET_ALL_USERS_OF_ORGANIZATION = gql`
   query organization($id: ID!) {
     organization(id: $id) {
@@ -387,74 +521,74 @@ export const GET_ALL_USERS_OF_ORGANIZATION = gql`
             id
           }
         }
-      #   children {
-      #     id
-      #     name
-      #     status
-      #     code
-      #     users {
-      #       id
-      #       firstName
-      #       lastName
-      #       status
-      #       email
-      #       roles {
-      #         name
-      #         id
-      #       }
-      #     }
-      #     children {
-      #       id
-      #       name
-      #       status
-      #       code
-      #       users {
-      #         id
-      #         firstName
-      #         lastName
-      #         status
-      #         email
-      #         roles {
-      #           name
-      #           id
-      #         }
-      #       }
-      #       children {
-      #         id
-      #         name
-      #         status
-      #         code
-      #         users {
-      #           id
-      #           firstName
-      #           lastName
-      #           status
-      #           email
-      #           roles {
-      #             name
-      #             id
-      #           }
-      #         }
-      #         children {
-      #           id
-      #           name
-      #           status
-      #           code
-      #           users {
-      #             id
-      #             firstName
-      #             lastName
-      #             status
-      #             email
-      #             roles {
-      #               name
-      #               id
-      #             }
-      #           }
-      #         }
-      #       }
-      #     }
-      #   }
+        #   children {
+        #     id
+        #     name
+        #     status
+        #     code
+        #     users {
+        #       id
+        #       firstName
+        #       lastName
+        #       status
+        #       email
+        #       roles {
+        #         name
+        #         id
+        #       }
+        #     }
+        #     children {
+        #       id
+        #       name
+        #       status
+        #       code
+        #       users {
+        #         id
+        #         firstName
+        #         lastName
+        #         status
+        #         email
+        #         roles {
+        #           name
+        #           id
+        #         }
+        #       }
+        #       children {
+        #         id
+        #         name
+        #         status
+        #         code
+        #         users {
+        #           id
+        #           firstName
+        #           lastName
+        #           status
+        #           email
+        #           roles {
+        #             name
+        #             id
+        #           }
+        #         }
+        #         children {
+        #           id
+        #           name
+        #           status
+        #           code
+        #           users {
+        #             id
+        #             firstName
+        #             lastName
+        #             status
+        #             email
+        #             roles {
+        #               name
+        #               id
+        #             }
+        #           }
+        #         }
+        #       }
+        #     }
+        #   }
       }
     }
   }
