@@ -363,7 +363,7 @@ class EditCampaign extends React.Component<
     }
     //Trigger module
     if (this.state.current == 3) {
-      if (this.state.eventValues.event !== null) {
+      if (this.state.eventValues.event !== undefined) {
         this.createEvenetSubscription();
       }
       //Trigger Rule
