@@ -27,6 +27,7 @@ import ForgotPassword from "../../routes/ForgotPassword";
 import ChangePassword from "../../routes/ForgotPassword/ChangePassword";
 import { Location } from "history";
 import { LocationProps } from "@reach/router";
+import jwt from "jsonwebtoken";
 
 const RestrictedRoute = ({
   setRedirectRoute,
@@ -34,32 +35,27 @@ const RestrictedRoute = ({
   // userId,
   ...rest
 }: any) => (
-  <Route
-    {...rest}
-    render={props => {
-      if (localStorage.getItem("jwt")) {
-        // console.log("Authenticated!");
-
-        return <Component {...props} />;
-      } else {
-        // console.log("Redirecting!");
-        setRedirectRoute({
-          variables: {
-            route: props.location.pathname
-          }
-        });
-        return (
-          <Redirect
-            to={{
-              pathname: "/signin",
-              state: { from: props.location }
-            }}
-          />
-        );
-      }
-    }}
-  />
-);
+    <Route
+      {...rest}
+      render={props => {
+        // if (localStorage.getItem("jwt")) {
+        const jwtData: any = localStorage.getItem("jwt") ? jwt.decode(localStorage.getItem("jwt")) : undefined;
+        if (jwtData && jwtData.org_id && jwtData.id) return <Component {...props} />;
+        // else {
+        //   localStorage.clear();
+        //   setRedirectRoute({ variables: { route: props.location.pathname } });
+        //   return <Redirect to={{ pathname: "/signin", state: { from: props.location } }} />
+        // }
+        // } 
+        else {
+          // console.log("Redirecting!");
+          localStorage.clear();
+          setRedirectRoute({ variables: { route: props.location.pathname } });
+          return <Redirect to={{ pathname: "/signin", state: { from: props.location } }} />
+        }
+      }}
+    />
+  );
 
 interface IProps {
   location?: Location;
@@ -77,7 +73,7 @@ interface IProps {
   setRedirectRoute: any;
 }
 
-interface IState {}
+interface IState { }
 
 class App extends React.Component<IProps, IState> {
   setLayoutType(layoutType: string) {

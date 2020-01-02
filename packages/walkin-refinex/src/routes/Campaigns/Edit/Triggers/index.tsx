@@ -12,29 +12,24 @@ import {
 } from "antd";
 const { Title } = Typography;
 import Delay from "./Delay";
-import EventType from "./EventType";
+import { EventTypeForm } from "./EventType";
 import Filter from "./Filter";
 
 interface TriggersProps {
-  unlinkCampaignFromApplication?: any
-  selectedApplication?: any
-  linkCampaignToApplication?: any
-  applications?: any
-  eventValues?: any
-  onEventTypeEdited?: any
-  query?: any
-  attributeData?: any
-  logQuery?: any
+  unlinkCampaignFromApplication?: any;
+  selectedApplication?: any;
+  linkCampaignToApplication?: any;
+  applications?: any;
+  eventValues?: any;
+  onEventTypeEdited?: any;
+  query?: any;
+  attributeData?: any;
+  logQuery?: any;
 }
 class Triggers extends React.Component<TriggersProps, {}> {
-
-
   constructor(props: TriggersProps) {
     super(props);
-
   }
-
-
 
   render() {
     return (
@@ -55,13 +50,16 @@ class Triggers extends React.Component<TriggersProps, {}> {
         </Row>
         <Divider />
         <Col span={24}>
-          <EventType
-            unlinkCampaignFromApplication={this.props.unlinkCampaignFromApplication}
+          <EventTypeForm
+            unlinkCampaignFromApplication={
+              this.props.unlinkCampaignFromApplication
+            }
             selectedApplication={this.props.selectedApplication}
             linkCampaignToApplication={this.props.linkCampaignToApplication}
             application={this.props.applications}
             event={this.props.eventValues}
-            onEventTypeEdited={this.props.onEventTypeEdited} />
+            onEventTypeEdited={this.props.onEventTypeEdited}
+          />
         </Col>
 
         <Divider />

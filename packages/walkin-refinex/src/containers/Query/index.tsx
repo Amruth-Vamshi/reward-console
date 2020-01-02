@@ -15,25 +15,22 @@ export const allSegments = gql`
   }
 `;
 
-
 export const EVENT_TYPES_FOR_APPLICATION = gql`
-  query eventTypesForApplication($appId:ID!){
-    eventTypesForApplication(appId:$appId){
+  query eventTypesForApplication($appId: ID!) {
+    eventTypesForApplication(appId: $appId) {
       id
-      code 
+      code
       status
-      application{
+      application {
         id
-
       }
-      events{
-          id
-          
-        }
-      eventSubscriptions{
+      events {
+        id
+      }
+      eventSubscriptions {
         id
         triggerAction
-        customAction{
+        customAction {
           id
           request
           response
@@ -42,93 +39,92 @@ export const EVENT_TYPES_FOR_APPLICATION = gql`
       }
     }
   }
-`
+`;
 
 export const ACTION_DEFINATIONS = gql`
-      query actionDefinitions(
-        $organizationId:ID
-       $name:String
-        $type: String
-        $status:String
-      ){
-        actionDefinitions(
-        organizationId:$organizationId
-        name:$name
-        type: $type
-        status:$status
-        ){
-          id
-          name
-          type
-          status
-        }
-      }
-`
-
-
-export const ACTIONS = gql`
-    query actions(
-      $organizationId:ID
-      $actionDefinationName: String
-      $status: String
+  query actionDefinitions(
+    $organizationId: ID
+    $name: String
+    $type: String
+    $status: String
+  ) {
+    actionDefinitions(
+      organizationId: $organizationId
+      name: $name
+      type: $type
+      status: $status
     ) {
-      actions(
-        organizationId:$organizationId
-        actionDefinationName:$actionDefinationName
-        status:$status
-      ){
-        id
-        request
-        response
-        status
-        actionDefination{
-          id
-          name
-          type
-          status
-        }
-        organization{
-          id
-          name
-        }
-      }
-    }
-`
-
-export const CREATE_EVENT_SUBSCRIPTION_ = gql`
-   mutation createEventSubscription(
-      $eventTypeId:ID!
-      $triggerAction:TriggerActionEnum!
-      $customActionId: ID
-    ){
-      createEventSubscription(
-        eventTypeId:$eventTypeId
-        triggerAction:$triggerAction
-        customActionId:$customActionId
-      ){
-        id
-        status
-        sync
-        eventType{
-          id
-          code
-          status
-        }   
-      }
-    }
-`
-
-export const EVENT_TYPES = gql`
-  query eventTypes($status:STATUS!){
-    eventTypes(status:$status){
       id
+      name
       type
-      format
-      schema 
       status
     }
   }
-`
+`;
+
+export const ACTIONS = gql`
+  query actions(
+    $organizationId: ID
+    $actionDefinationName: String
+    $status: String
+  ) {
+    actions(
+      organizationId: $organizationId
+      actionDefinationName: $actionDefinationName
+      status: $status
+    ) {
+      id
+      request
+      response
+      status
+      actionDefination {
+        id
+        name
+        type
+        status
+      }
+      organization {
+        id
+        name
+      }
+    }
+  }
+`;
+
+export const CREATE_EVENT_SUBSCRIPTION_ = gql`
+  mutation createEventSubscription(
+    $eventTypeId: ID!
+    $triggerAction: TriggerActionEnum!
+    $customActionId: ID
+  ) {
+    createEventSubscription(
+      eventTypeId: $eventTypeId
+      triggerAction: $triggerAction
+      customActionId: $customActionId
+    ) {
+      id
+      status
+      sync
+      eventType {
+        id
+        code
+        status
+      }
+    }
+  }
+`;
+
+export const EVENT_TYPES = gql`
+  query eventTypes($status: STATUS!) {
+    eventTypes(status: $status) {
+      id
+      type
+      format
+      schema
+      status
+    }
+  }
+`;
 
 export const disableSegment = gql`
   mutation disableSegment($id: ID!) {
@@ -140,11 +136,11 @@ export const disableSegment = gql`
 `;
 
 export const LINK_CAMPAIGN_TO_APPLICATION = gql`
-  mutation linkCampaignToApplication($campaignId:ID!,$applicationId:ID!){
+  mutation linkCampaignToApplication($campaignId: ID!, $applicationId: ID!) {
     linkCampaignToApplication(
-      campaignId:$campaignId,
-      applicationId:$applicationId
-    ){
+      campaignId: $campaignId
+      applicationId: $applicationId
+    ) {
       id
       name
       description
@@ -152,14 +148,17 @@ export const LINK_CAMPAIGN_TO_APPLICATION = gql`
       endTime
     }
   }
-`
+`;
 
 export const UNLINK_CAMPAIGN_FROM_APPLICATION = gql`
-mutation unlinkCampaignFromApplication($campaignId:ID!,$applicationId:ID!){
-  unlinkCampaignFromApplication(
-      campaignId:$campaignId,
-      applicationId:$applicationId
-    ){
+  mutation unlinkCampaignFromApplication(
+    $campaignId: ID!
+    $applicationId: ID!
+  ) {
+    unlinkCampaignFromApplication(
+      campaignId: $campaignId
+      applicationId: $applicationId
+    ) {
       id
       name
       description
@@ -167,14 +166,21 @@ mutation unlinkCampaignFromApplication($campaignId:ID!,$applicationId:ID!){
       endTime
     }
   }
-`
+`;
 
 export const CREATE_APP = gql`
-mutation createApplication($organizationId:ID!,$input:ApplicationInput!) {
-  createApplication(organizationId:$organizationId  input: $input){
-    id  name platform organization{ id name }
+  mutation createApplication($organizationId: ID!, $input: ApplicationInput!) {
+    createApplication(organizationId: $organizationId, input: $input) {
+      id
+      name
+      platform
+      organization {
+        id
+        name
+      }
+    }
   }
-}`
+`;
 
 export const createSegment = gql`
   mutation createSegment(
@@ -201,27 +207,27 @@ export const createSegment = gql`
   }
 `;
 
-
 export const CREATE_EVENT_SUBSCRIPTION = gql`
- mutation createEventSubscription($input:CreateEventSubscriptionInput){
-  createEventSubscription(input:$input){
-    id
-    name
-    status
+  mutation createEventSubscription($input: CreateEventSubscriptionInput) {
+    createEventSubscription(input: $input) {
+      id
+      name
+      status
+    }
   }
- }
-
-`
+`;
 
 export const UPDATE_EVENT_SUBSCRIPTION = gql`
-mutation updateEventSubscriptionStatus($input:UpdateEventSubscriptionStatusInput){
-  updateEventSubscriptionStatus(input:$input){
-    id
-    name
-    status
+  mutation updateEventSubscriptionStatus(
+    $input: UpdateEventSubscriptionStatusInput
+  ) {
+    updateEventSubscriptionStatus(input: $input) {
+      id
+      name
+      status
+    }
   }
-}
-`
+`;
 
 export const createRule = gql`
   mutation createRule($input: CreateRuleInput!) {
@@ -238,51 +244,64 @@ export const createRule = gql`
 `;
 
 export const updateRule = gql`
-  mutation updateRule($id:ID! ,$input: UpdateRuleInput!) {
-    updateRule(id:$id, input:$input) {
+  mutation updateRule($id: ID!, $input: UpdateRuleInput!) {
+    updateRule(id: $id, input: $input) {
       id
-    name
-    description
-    status
-    type
+      name
+      description
+      status
+      type
     }
   }
 `;
 
 export const communications = gql`
-  query communications($entityId: ID!,$entityType:COMMUNICATION_ENTITY_TYPE,$organization_id: ID!) {
-      communications(entityId: $entityId, entityType:$entityType, organization_id:$organization_id, status: ACTIVE) {
-        id
-        entityId
-        entityType
-        messageTemplate{
-          id
-          name
-          messageFormat
-          templateBodyText
-          templateSubjectText
-        }
-      }
-    }
-`;
-export const audiences = gql`
-query audiences($campaign_id:ID, $organization_id:ID!,$segment_id:ID){
-  audiences(campaign_id:$campaign_id, organization_id:$organization_id,segment_id:$segment_id,status:ACTIVE){
-    id
-    segment{
+  query communications(
+    $entityId: ID!
+    $entityType: COMMUNICATION_ENTITY_TYPE
+    $organization_id: ID!
+  ) {
+    communications(
+      entityId: $entityId
+      entityType: $entityType
+      organization_id: $organization_id
+      status: ACTIVE
+    ) {
       id
-      name
-      rule{
+      entityId
+      entityType
+      messageTemplate {
         id
         name
-        type
+        messageFormat
+        templateBodyText
+        templateSubjectText
       }
-      status
     }
   }
-}
 `;
-
+export const audiences = gql`
+  query audiences($campaign_id: ID, $organization_id: ID!, $segment_id: ID) {
+    audiences(
+      campaign_id: $campaign_id
+      organization_id: $organization_id
+      segment_id: $segment_id
+      status: ACTIVE
+    ) {
+      id
+      segment {
+        id
+        name
+        rule {
+          id
+          name
+          type
+        }
+        status
+      }
+    }
+  }
+`;
 
 export const createCommunication = gql`
   mutation createCommunication($input: CreateCommunicationInput!) {
@@ -301,37 +320,34 @@ export const createCommunication = gql`
 export const updateCommunication = gql`
   mutation updateCommunication($input: UpdateCommunicationInput!) {
     updateCommunication(input: $input) {
-    id
-    entityId
-    entityType
-    isScheduled
-    firstScheduleDateTime
-    isRepeatable
-    lastProcessedDateTime
-    commsChannelName
-    status
+      id
+      entityId
+      entityType
+      isScheduled
+      firstScheduleDateTime
+      isRepeatable
+      lastProcessedDateTime
+      commsChannelName
+      status
     }
   }
 `;
 
 export const LINK_CHOICE_TO_QUESTION = gql`
-  mutation linkChoiceToQuestion($choiceId:ID!,$questionId:ID!){
-    linkChoiceToQuestion(choiceId:$choiceId,questionId:$questionId){
+  mutation linkChoiceToQuestion($choiceId: ID!, $questionId: ID!) {
+    linkChoiceToQuestion(choiceId: $choiceId, questionId: $questionId) {
       id
-      fromQuestion{
+      fromQuestion {
         id
         questionText
         type
-
       }
       choiceText
       rangeStart
       rangeEnd
     }
   }
-
-`
-
+`;
 
 export const createMessageTemplate = gql`
   mutation createMessageTemplate($input: CreateMessageTemplateInput!) {
@@ -348,58 +364,60 @@ export const createMessageTemplate = gql`
 `;
 
 export const updateMessageTemplate = gql`
-mutation updateMessageTemplate($input:UpdateMessageTemplateInput!){
-  updateMessageTemplate(input:$input){
-    id
-    name
-    description
-    messageFormat
-    templateBodyText
-  	templateSubjectText
-    templateStyle
-    status
+  mutation updateMessageTemplate($input: UpdateMessageTemplateInput!) {
+    updateMessageTemplate(input: $input) {
+      id
+      name
+      description
+      messageFormat
+      templateBodyText
+      templateSubjectText
+      templateStyle
+      status
+    }
   }
-}
 `;
 export const createAudience = gql`
-mutation createAudience($input:createAudienceInput!){
-  createAudience(input:$input){
-    id
-    campaign{
+  mutation createAudience($input: createAudienceInput!) {
+    createAudience(input: $input) {
       id
-      name
-      audienceFilterRule{
-        id 
+      campaign {
+        id
         name
+        audienceFilterRule {
+          id
+          name
+        }
       }
+      segment {
+        id
+        name
+        segmentType
+      }
+      status
     }
-    segment{
-      id
-      name
-      segmentType
-    }
-    status
   }
-}`;
+`;
 
 export const updateAudiencesWithCampaignId = gql`
-mutation updateAudiencesWithCampaignId($campaignId:ID, $segments:[ID]!){
-  createAudienceForCampaign(campaignId:$campaignId, segments:$segments){
-    id
-    campaign{
+  mutation updateAudiencesWithCampaignId($campaignId: ID, $segments: [ID]!) {
+    createAudienceForCampaign(campaignId: $campaignId, segments: $segments) {
       id
-    }
-    segment{
-      id
-      name
-      segmentType
+      campaign {
+        id
+      }
+      segment {
+        id
+        name
+        segmentType
+      }
     }
   }
-}`;
+`;
 
 export const attributes = gql`
-  query ruleAttributes($input:SearchRuleAttributeInput!) {
-    ruleAttributes(input:$input) {
+  query ruleAttributes($input: SearchRuleAttributeInput!) {
+    ruleAttributes(input: $input) {
       id
       attributeName
       description
@@ -452,7 +470,7 @@ export const UPDATE_CAMPAIGN = gql`
         id
         title
       }
-      audienceFilterRule{
+      audienceFilterRule {
         id
         name
         description
@@ -460,7 +478,7 @@ export const UPDATE_CAMPAIGN = gql`
         ruleConfiguration
         ruleExpression
       }
-      triggerRule{
+      triggerRule {
         id
         name
         description
@@ -473,74 +491,103 @@ export const UPDATE_CAMPAIGN = gql`
 `;
 
 export const DISABLE_CAMPAIGN = gql`
-  mutation disableCampaign($id:ID!){
-    disableCampaign(id:$id){
+  mutation disableCampaign($id: ID!) {
+    disableCampaign(id: $id) {
       id
       name
       description
     }
   }
-`
-
+`;
 
 export const EVENT_SUBSCRIPTION = gql`
   query eventSubscriptions(
-$event_type: String
-$organization_id: ID
-$application_id: ID
-$status: STATUS
-){
- eventSubscriptions(
-    event_type:$event_type
-    organization_id:$organization_id
-    application_id:$application_id
-    status:$status
-){
-  id
-  name
-  event_type{
-    id
-    type
-    status
+    $event_type: String
+    $organization_id: ID
+    $application_id: ID
+    $status: STATUS
+  ) {
+    eventSubscriptions(
+      event_type: $event_type
+      organization_id: $organization_id
+      application_id: $application_id
+      status: $status
+    ) {
+      id
+      name
+      event_type {
+        id
+        type
+        status
+      }
+    }
   }
-}
-}
-`
+`;
 
 export const campaigns = gql`
-  query campaigns($status: STATUS!,$campaignType:[String],$organization_id:ID) {
-    campaigns(status: $status,campaignType:$campaignType,organization_id:$organization_id) {
-      id name description status campaignStatus
-    startTime endTime campaignType priority
-    createdBy lastModifiedBy createdTime lastModifiedTime
-    organization{ id name } application{id name}
-    audienceFilterRule{ id name ruleConfiguration ruleExpression }
+  query campaigns(
+    $status: STATUS!
+    $campaignType: [String]
+    $organization_id: ID
+  ) {
+    campaigns(
+      status: $status
+      campaignType: $campaignType
+      organization_id: $organization_id
+    ) {
+      id
+      name
+      description
+      status
+      campaignStatus
+      startTime
+      endTime
+      campaignType
+      priority
+      createdBy
+      lastModifiedBy
+      createdTime
+      lastModifiedTime
+      organization {
+        id
+        name
+      }
+      application {
+        id
+        name
+      }
+      audienceFilterRule {
+        id
+        name
+        ruleConfiguration
+        ruleExpression
+      }
     }
   }
 `;
 
 export const UPDATE_FEEDBACK_UI_CONFIG = gql`
   mutation updateFeedbackUIConfig(
-  $feedbackFormId: ID!
-  $feedbackUIConfig: FeedbackUIConfigUpdateInput
-){
-  updateFeedbackUIConfig(
-    feedbackFormId: $feedbackFormId
-    feedbackUIConfig: $feedbackUIConfig
-){
-  id
-  layoutCode
-  backgroundColor
-  accentColor
-  transition
-  logoUrl
-  formStructure
-  headerText
-  exitMessage
-  buttonText
-}
-}
-`
+    $feedbackFormId: ID!
+    $feedbackUIConfig: FeedbackUIConfigUpdateInput
+  ) {
+    updateFeedbackUIConfig(
+      feedbackFormId: $feedbackFormId
+      feedbackUIConfig: $feedbackUIConfig
+    ) {
+      id
+      layoutCode
+      backgroundColor
+      accentColor
+      transition
+      logoUrl
+      formStructure
+      headerText
+      exitMessage
+      buttonText
+    }
+  }
+`;
 
 export const CREATE_CAMPAIGN = gql`
   mutation createCampaign($input: CampaingAddInput) {
@@ -564,18 +611,17 @@ export const GET_CAMPAIGN = gql`
       startTime
       endTime
       status
-      triggerRule{
+      triggerRule {
         id
         name
         status
         ruleConfiguration
       }
-      application{
+      application {
         id
         name
-        
       }
-      audienceFilterRule{
+      audienceFilterRule {
         id
         name
         status
@@ -592,7 +638,7 @@ export const GET_CAMPAIGN = gql`
 `;
 
 export const feedbackForm = gql`
-  query getFeedbackForm ($feedbackFormId:ID!){
+  query getFeedbackForm($feedbackFormId: ID!) {
     getFeedbackForm(feedbackFormId: $feedbackFormId) {
       id
       title
@@ -666,35 +712,32 @@ export const EDIT_QUESTION = gql`
 
 export const ADD_QUESTION = gql`
   mutation addQuestion($choiceId: ID!, $input: QuestionInput) {
-    addQuestion(choiceId:$choiceId,input:$input){
+    addQuestion(choiceId: $choiceId, input: $input) {
       id
-    questionText
-    rangeMin
-    rangeMax
-    type
-    choices{
-      id
-      choiceText
-      rangeStart
-      rangeEnd
+      questionText
+      rangeMin
+      rangeMax
+      type
+      choices {
+        id
+        choiceText
+        rangeStart
+        rangeEnd
+      }
     }
-    }
-    
   }
 `;
 
-
 export const EDIT_CHOICE = gql`
-mutation addChoice($input:EditChoiceInput){
-  editChoice(input:$input){
-    id
+  mutation addChoice($input: EditChoiceInput) {
+    editChoice(input: $input) {
+      id
       choiceText
       rangeStart
       rangeEnd
+    }
   }
-}
-
-`
+`;
 
 export const ADD_CHOICE = gql`
   mutation addChoice($questionId: ID!, $input: ChoiceInput) {
@@ -729,10 +772,10 @@ export const GET_QUESTIONNAIRE = gql`
       type
       rangeMax
       rangeMin
-      fromChoice{
+      fromChoice {
         id
         choiceText
-        
+
         rangeStart
         rangeEnd
       }
@@ -805,16 +848,15 @@ export const GET_CAMPAIGNS = gql`
   }
 `;
 
-
 export const ADD_APPLICATION = gql`
-  mutation addApplication($organizationId:ID!,$input:ApplicationInput!){
-    createApplication(organizationId:$organizationId,input:$input){
+  mutation addApplication($organizationId: ID!, $input: ApplicationInput!) {
+    createApplication(organizationId: $organizationId, input: $input) {
       id
-    name
-    description
+      name
+      description
     }
   }
-`
+`;
 
 export const CREATE_FEEDBACK_FORM = gql`
   mutation createFeedbackForm($campaignId: ID!, $formName: String) {
@@ -847,82 +889,198 @@ export const GET_APPLICATIONS = gql`
   }
 `;
 
-
 export const LAUNCH_CAMPAIGN = gql`
-  mutation launchCampaign($id:ID!) {
-    launchCampaign(id:$id) {
-      id name description
-      startTime endTime
-      status triggerRule { id }
-      campaignType priority
+  mutation launchCampaign($id: ID!) {
+    launchCampaign(id: $id) {
+      id
+      name
+      description
+      startTime
+      endTime
+      status
+      triggerRule {
+        id
+      }
+      campaignType
+      priority
       campaignStatus
     }
   }
 `;
 
 export const PAUSE_CAMPAIGN = gql`
-  mutation pauseCampaign($id:ID!) {
-    pauseCampaign(id:$id) {
-      id name description
-      startTime endTime
-      status triggerRule { id }
-      campaignType priority
+  mutation pauseCampaign($id: ID!) {
+    pauseCampaign(id: $id) {
+      id
+      name
+      description
+      startTime
+      endTime
+      status
+      triggerRule {
+        id
+      }
+      campaignType
+      priority
       campaignStatus
     }
   }
 `;
 
 export const UNPAUSE_CAMPAIGN = gql`
-  mutation unpauseCampaign($id:ID!) {
-    unpauseCampaign(id:$id) {
-      id name description
-      startTime endTime
-      status triggerRule { id }
-      campaignType priority
+  mutation unpauseCampaign($id: ID!) {
+    unpauseCampaign(id: $id) {
+      id
+      name
+      description
+      startTime
+      endTime
+      status
+      triggerRule {
+        id
+      }
+      campaignType
+      priority
       campaignStatus
     }
   }
 `;
 
 export const ABANDON_CAMPAIGN = gql`
-  mutation abandonCampaign($id:ID!) {
-    abandonCampaign(id:$id) {
-      id name description
-      startTime endTime
-      status triggerRule { id }
-      campaignType priority
+  mutation abandonCampaign($id: ID!) {
+    abandonCampaign(id: $id) {
+      id
+      name
+      description
+      startTime
+      endTime
+      status
+      triggerRule {
+        id
+      }
+      campaignType
+      priority
       campaignStatus
     }
   }
 `;
 
 export const GET_CAMPAIGN_DASHBOARD = gql`
-query campaign($id:ID!){
-	campaign( id:$id){
-    id name description status campaignStatus
-    startTime endTime campaignType priority
-    createdBy lastModifiedBy createdTime lastModifiedTime
-    organization{ id name } application{id name}
-    audienceFilterRule{ id name ruleConfiguration ruleExpression }
-  }
-}`;
-
-export const AUDIENCES = gql`
-query audiences($campaign_id:ID, $organization_id:ID,$segment_id:ID){
-  audiences(campaign_id:$campaign_id, organization_id:$organization_id,segment_id:$segment_id,status:ACTIVE){
-    id
-    segment{
+  query campaign($id: ID!) {
+    campaign(id: $id) {
       id
       name
-      rule{
+      description
+      status
+      campaignStatus
+      startTime
+      endTime
+      campaignType
+      priority
+      createdBy
+      lastModifiedBy
+      createdTime
+      lastModifiedTime
+      organization {
         id
         name
-        type
       }
-      status
+      application {
+        id
+        name
+      }
+      audienceFilterRule {
+        id
+        name
+        ruleConfiguration
+        ruleExpression
+      }
     }
   }
-}
+`;
+
+export const AUDIENCES = gql`
+  query audiences($campaign_id: ID, $organization_id: ID, $segment_id: ID) {
+    audiences(
+      campaign_id: $campaign_id
+      organization_id: $organization_id
+      segment_id: $segment_id
+      status: ACTIVE
+    ) {
+      id
+      segment {
+        id
+        name
+        rule {
+          id
+          name
+          type
+        }
+        status
+      }
+    }
+  }
+`;
+
+export const EVENT_SUBSCRITPION_FOR_EVENT_TYPE = gql`
+  query eventSubscriptionsForEventType($eventTypeId: ID!) {
+    eventSubscriptionsForEventType(eventTypeId: $eventTypeId) {
+      id
+      eventType {
+        id
+        code
+        description
+        status
+        application {
+          id
+          name
+          description
+        }
+      }
+      status
+      triggerAction
+    }
+  }
+`;
+
+export const EVENT_TYPE_FOR_APPLICATION = gql`
+  query eventTypesForApplication($appId: ID!) {
+    eventTypesForApplication(appId: $appId) {
+      id
+      code
+      description
+      status
+      application {
+        id
+        name
+        description
+      }
+    }
+  }
+`;
+
+export const CREATE_EVENT_TYPE = gql`
+  mutation createEventType(
+    $code: String!
+    $description: String
+    $applicationId: ID!
+  ) {
+    createEventType(
+      code: $code
+      description: $description
+      applicationId: $applicationId
+    ) {
+      id
+      code
+      description
+      status
+      application {
+        id
+        name
+        description
+      }
+    }
+  }
 `;
 
 export const AUDIENCE_COUNT = gql`
@@ -940,3 +1098,59 @@ export const TOTAL_AUDIENCE_COUNT = gql`
   		}
 	}
 `
+
+export const REFINEX_SEND_TEST_FEEDBACK = gql`
+  mutation refineXSendFeedbackByInput(
+    $campaignId: String!
+    $forTest: Boolean
+    $customer: EventCustomerInput
+    $customerDevice: EventCustomerDeviceInput
+  ) {
+    refineXSendFeedbackByInput(
+      campaignId: $campaignId
+      forTest: $forTest
+      customer: $customer
+      customerDevice: $customerDevice
+    )
+  }
+`;
+
+export const CREATE_EVENT_SUBSCRIPTIONS = gql`
+  mutation createEventSubscription(
+    $eventTypeId: ID!
+    $triggerAction: TriggerActionEnum!
+    $customActionId: ID
+  ) {
+    createEventSubscription(
+      eventTypeId: $eventTypeId
+      triggerAction: $triggerAction
+      customActionId: $customActionId
+    ) {
+      id
+      triggerAction
+      status
+      sync
+      eventType {
+        id
+        code
+        description
+      }
+    }
+  }
+`;
+
+export const SEND_FEEDBACK_MESSAGE = gql`
+  mutation refineXSendFeedbackByInput(
+    $campaignId: String!
+    $customer: EventCustomerInput
+    $forTest: Boolean
+    $customerDevice: EventCustomerDeviceInput
+  ) {
+    refineXSendFeedbackByInput(
+      campaignId: $campaignId
+      customer: $customer
+      forTest: $forTest
+      customerDevice: $customerDevice
+    )
+  }
+`;

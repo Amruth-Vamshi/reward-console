@@ -66,7 +66,7 @@ export default class Offers extends React.Component<iProps, iState> {
 							>
 								{options}
 							</Select>
-							<span style={{ color: "Red" }}> {this.props.errors.name} </span>
+							<span style={{ color: "Red" }}> {this.props.errors.offerName} </span>
 						</Form.Item>
 					</Form>
 				</div>

@@ -453,7 +453,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 			firstScheduleDateTime: this.state.campaign.startTime
 		};
 		if (scheduleSaveMark) {
-			let repeatRuleConf: any = { frequency: scheduleData.repeatType, time: moment(scheduleData.time).format('HH:MM:SS') }
+			let repeatRuleConf: any = { frequency: scheduleData.repeatType, time: moment(scheduleData.time).format('HH:mm:ss') }
 			scheduleData.repeatType == "WEEKLY" ? repeatRuleConf.byWeekDay = scheduleData.days : ''
 			scheduleData.hasOwnProperty('endTime') ? repeatRuleConf.endAfter = scheduleData.endTime : repeatRuleConf.noOfOccurances = scheduleData.noOfOccurances
 			communicationInput.repeatRuleConfiguration = repeatRuleConf
@@ -498,7 +498,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 		};
 		if (scheduleSaveMark) {
 			console.log(this.state.scheduleData);
-			let repeatRuleConf: any = { frequency: scheduleData.repeatType, time: moment(scheduleData.time).format('HH:MM:SS') }
+			let repeatRuleConf: any = { frequency: scheduleData.repeatType, time: moment(scheduleData.time).format('HH:mm:ss') }
 			scheduleData.repeatType == "WEEKLY" ? repeatRuleConf.byWeekDay = scheduleData.days : ''
 			scheduleData.hasOwnProperty('endTime') ? repeatRuleConf.endAfter = scheduleData.endTime : repeatRuleConf.noOfOccurances = scheduleData.noOfOccurances
 			communicationInput.repeatRuleConfiguration = repeatRuleConf
@@ -604,6 +604,9 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 				this.setState({ loading: false })
 				console.log("Error while creating audience..", err)
 			});
+		} else {
+			this.setState({ loading: false });
+			message.warn('Please Select Offer')
 		}
 	}
 
@@ -830,18 +833,21 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 		let { org_id }: any = jwt.decode(localStorage.getItem('jwt'))
 		this.setState({ selectedSegments: e })
 		this.state.errors.segment = ''
-		this.props.client.query({
-			query: AUDIENCE_COUNT,
-			variables: { segments: e, organizationId: org_id },
-			fetchPolicy: 'network-only'
-		}).then(res => {
-			console.log(res.data.audienceCount.count)
-			this.setState({ audienceCount: res.data.audienceCount.count });
-		})
-			.catch(err => {
+		if (e && e[0] && e[0] != '')
+			this.props.client.query({
+				query: AUDIENCE_COUNT,
+				variables: { segments: e, organizationId: org_id },
+				fetchPolicy: 'network-only'
+			}).then(res => {
+				console.log(res.data.audienceCount.count)
+				if (!res.data.audienceCount.count || res.data.audienceCount.count == "0")
+					message.warn('There are NO CUSTOMERS in selected segments')
+				this.setState({ audienceCount: res.data.audienceCount.count });
+			}).catch(err => {
 				this.setState({ spin: false });
 				console.log("Failed to get Audience Count" + err);
 			});
+		else this.setState({ audienceCount: 0 });
 
 	}
 
@@ -859,7 +865,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 	};
 
 	saveSchedule = scheduleData => {
-		console.log(scheduleData, moment(scheduleData.time).format('HH:mm:ss'));
+		// console.log(scheduleData, moment(scheduleData.time).format('HH:mm:ss'));
 		message.success('schedule saved')
 		this.setState({ scheduleData, scheduleSaveMark: true })
 	}
@@ -1032,7 +1038,7 @@ export default withRouter(
 				return ({
 					variables: {
 						input: {
-							entityName: "CustomerSearch",
+							entityName: "Customer",
 							status: DEFAULT_ACTIVE_STATUS,
 							organizationId: org_id,
 						}
@@ -1066,14 +1072,11 @@ export default withRouter(
 		// }),
 		graphql(GET_ALL_APPS_OF_ORGANIZATION, {
 			name: "allApplications",
-			options: props => {
-				let { org_id }: any = jwt.decode(localStorage.getItem('jwt'))
-				return {
-					variables: {
-						id: org_id
-					}
-				};
-			}
+			options: props => ({
+				variables: {
+					id: jwt.decode(localStorage.getItem('jwt'))['org_id']
+				}
+			})
 		}),
 		// graphql(COMMUNICATIONS, {
 		// 	name: "allCommunications",
