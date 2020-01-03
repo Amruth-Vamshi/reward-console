@@ -97,6 +97,7 @@ const OfferRedemptionRulesForm = Form.create<IProps>({ name: 'offer_redemption_r
 					<Form.Item style={{ display: 'inline-block', width: 'calc(35% - 12px)' }} label="Type">
 						{getFieldDecorator('type', {
 							initialValue: `${Object.keys(formValues).length != 0 ? formValues.type : ''}`,
+							rules: [{ required: true, message: 'Please select capping type' }],
 						})(
 							<Select placeholder="Select a type" //onChange={this.handleSelectChange}
 								getPopupContainer={(triggerNode: any) => triggerNode.parentNode}>
