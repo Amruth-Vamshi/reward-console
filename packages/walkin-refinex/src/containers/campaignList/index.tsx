@@ -170,8 +170,8 @@ class CampaignList extends React.Component<CampaignListProps, Partial<CampaignLi
         if (key == 3) {
             let completedCampaigns = allCampaigns.filter((val: any) => {
                 if (val.status == 'ACTIVE') {
-                    // return moment(val.endTime).isBefore(moment());
-                    return val.campaignStatus == "COMPLETED"
+                    return (moment(val.endTime).isBefore(moment()) && (val.campaignStatus == "LIVE"));
+                    // return val.campaignStatus == "COMPLETED"
                 }
             });
             this.setState({ data: completedCampaigns, filtered: null });
