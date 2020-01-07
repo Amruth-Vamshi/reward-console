@@ -3,6 +3,7 @@ import SortableTree, { changeNodeAtPath, removeNodeAtPath, addNodeUnderParent } 
 import 'react-sortable-tree/style.css';
 import { Select, Row, Col, Button, Modal, Input, Icon, message } from "antd"
 import CustomNodeRenderer from "./customNodeRenderer"
+import { HoverText } from '@walkinsole/shared'
 
 const { Option } = Select
 
@@ -20,27 +21,44 @@ interface iProps {
 const data = [
     {
         "id": 1,
-        "title": "A",
+        "title": "Overall Experience",
         "children": [
             {
                 "id": 3,
-                "title": "C",
-                "children": [{
-                    "id": 5,
-                    "title": "E",
-                    "children": []
-                }]
+                "title": "Store",
+                "children": [
+                    {
+                        "id": 5,
+                        "title": "Ambience",
+                        "children": []
+                    },
+                    {
+                        "id": 7,
+                        "title": "Billing",
+                        "children": []
+                    },
+                    {
+                        "id": 8,
+                        "title": "Cleanliness",
+                        "children": []
+                    }
+                ]
             },
             {
                 "id": 4,
-                "title": "D",
+                "title": "Staff",
+                "children": []
+            },
+            {
+                "id": 6,
+                "title": "Stock",
                 "children": []
             }
         ]
     },
     {
         "id": 2,
-        "title": "B",
+        "title": "Service Experience",
         "children": []
     }
 ]
@@ -128,6 +146,9 @@ class TagTree extends React.Component<iProps, iState>
                 children: (element.children.length === 0) ? [] : this.convertNodes(element.children)
             })
         })
+
+        // To add New Node option by default on all childrens
+
         el.push({
             id: 0,
             title: "Add Node",
@@ -192,7 +213,7 @@ class TagTree extends React.Component<iProps, iState>
         if (node.type === "nodeValue") {
             return (
                 <Row>
-                    <Col onClick={() => { this.addNewNode(nodeInfo) }} span={10} style={{ fontSize: "12px", paddingTop: "5px" }}>{node.title}</Col>
+                    <Col onClick={() => { this.addNewNode(nodeInfo) }} span={10} style={{ fontSize: "12px", paddingTop: "5px" }}><HoverText>{node.title}</HoverText></Col>
                     <Col span={14} style={{ marginRight: "-227px", paddingLeft: "218px" }} >
                         <div onClick={() => { this.removeNode(nodeInfo) }}><Icon type="close" /></div>
                     </Col>
