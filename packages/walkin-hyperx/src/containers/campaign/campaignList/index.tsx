@@ -323,30 +323,7 @@ class CampaignList extends React.Component<CampaignListProps, Partial<CampaignLi
     ];
     return (
       <div>
-        {/* <CampaignHeader
-          children={
-            <React.Fragment>
-              <Col span={12}>
-                <h3 className="gx-text-grey paddingLeftStyle campaignHeaderTitleStyle">Campaigns</h3>
-              </Col>
-              <Col style={{ display: 'flex', justifyContent: 'flex-end' }} span={12}>
-                <Button type="primary" style={{ marginBottom: 0 }} onClick={this.onNewCampaign}>
-                  CREATE CAMPAIGN
-								</Button>
-              </Col>
-            </React.Fragment>
-          }
-        /> */}
         <WHeader title='Campaigns' extra={<Button type="primary" style={{ marginBottom: 0 }} onClick={this.onNewCampaign}>CREATE CAMPAIGN</Button>} />
-        {/* // <div className="gx-card" style={{ margin: '32px' }}>
-					// 	<div className="gx-card-body">
-					// 		<div className="searchInputStyle">
-					// 			<InstantSearch
-					// 				placeHolder="Search campaign"
-					// 				data={data}
-					// 				onFilteredList={this.onCampaignFilteredList}
-					// 			/>
-					// 		</div> */}
         <HyperXContainer margin='32px' headerHeightInPX={160}>
           <div className="HyperX-campaignList">
             <Widget styleName="gx-card-tabs"
