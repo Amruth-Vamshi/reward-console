@@ -13,7 +13,6 @@ import { FormComponentProps } from "antd/lib/form";
 interface IProps extends FormComponentProps {
 	offerTypeData?: any;
 	handleOfferTypeChange?: any;
-	cappingData?: any;
 	offerTypeStatus?: any;
 	transactionTimeData?: any;
 	locationData?: any;
