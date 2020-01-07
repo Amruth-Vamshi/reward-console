@@ -85,6 +85,7 @@
 
 .collapseBarStyle{
   position: absolute !important;
+  cursor: pointer !important;
   bottom: 0px !important;
   width: 100% !important;
   background-color: #0b0b4b !important;
