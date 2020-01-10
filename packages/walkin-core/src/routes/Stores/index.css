@@ -1,0 +1,75 @@
+.rowStoreInfoInstantSearch {
+  display: flex;
+}
+
+.colStoreInfo {
+  width: 50%;
+  padding: 20px;
+  font-size: 21px;
+  font-weight: bold;
+}
+
+.colInstantSearch {
+  display: flex;
+  width: 50%;
+  justify-content: flex-end;
+}
+
+/* .width75percent {
+  width: 75%;
+}
+.width45percent {
+  width: 45%;
+}
+.width15percent {
+  width: 15%;
+} */
+
+.storesFormContainer {
+  font-family: "Roboto", sans-serif;
+  justify-content: space-between;
+  display: flex;
+  margin-bottom: 30px;
+}
+.storeFormTitle {
+  display: flex;
+  justify-content: center;
+  font-size: 22px;
+  color: #333333;
+}
+.storeFlexWrapper {
+  display: flex;
+  justify-content: space-between;
+}
+.storeInputWrapper {
+  margin: 20px 0;
+  position: relative;
+}
+
+.alignCenter {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+.storeFlexWrapper .ant-switch-checked {
+  background-color: #55dba2;
+}
+
+.entityFieldTableHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 50px;
+}
+
+.nohoverTableWrapper
+  .ant-table-tbody
+  > tr:hover:not(.ant-table-expanded-row)
+  > td {
+  background: unset !important;
+}
+
+.storeMapWrapper {
+  width: 40%;
+  height: 700px;
+}

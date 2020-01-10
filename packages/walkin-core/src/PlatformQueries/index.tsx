@@ -601,15 +601,30 @@ export const GET_ANALYTICS = gql`
       organization_id: $org_id
       walkinProducts: $product
     ) {
-      name type rows response total
+      name
+      type
+      rows
+      response
+      total
     }
   }
 `;
 
 export const GET_ALL_STORES = gql`
-query {
-  stores{
-    id name STATUS externalStoreId code extend 
-    state city addressLine1 addressLine2 pinCode country
+  query {
+    stores {
+      id
+      name
+      STATUS
+      externalStoreId
+      code
+      extend
+      state
+      city
+      addressLine1
+      addressLine2
+      pinCode
+      country
+    }
   }
-}`
+`;
