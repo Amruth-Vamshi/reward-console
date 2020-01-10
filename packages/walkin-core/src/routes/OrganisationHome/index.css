@@ -20,7 +20,7 @@
 
 .col2 {
   background-color: transparent;
-  width: 65%;
+  width: 64%;
   height: 100%;
   padding: 10px;
 }
@@ -43,6 +43,7 @@
 .rowStores {
   display: flex;
   border-bottom: 0.5px solid lightgrey;
+  margin-left: 0px;
   padding-left: 10px;
   padding-right: 10px;
   padding-bottom: 10px;
@@ -127,4 +128,13 @@
   > tr:hover:not(.ant-table-expanded-row)
   > td {
   background: unset;
+}
+
+.errorContainer {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  margin: 10px;
 }

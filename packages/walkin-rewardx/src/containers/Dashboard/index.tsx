@@ -121,21 +121,24 @@ class AnalyticsManager extends React.Component<DashboardProps, DashboardState> {
             // maxWidth: "50vw" //html css
           }}
         >
-          <Row>
+          <Row style={{ display: "flex", margin: "12px" }}>
             {/*antd*/}
-            <Col sm={0} md={6} xl={8}>
-              <span
-                style={{
-                  margin: 12,
-                  width: "100%",
-                  fontSize: 20,
-                  color: "black"
-                }}
-              >
-                Loyalty Cards
-              </span>
+            <Col
+              style={{
+                width: "50%",
+                fontSize: 20,
+                color: "black"
+              }}
+            >
+              Loyalty Cards
             </Col>
-            <div style={{ margin: "auto" }}>
+            <Col
+              style={{
+                width: "50%",
+                display: "flex",
+                justifyContent: "flex-end"
+              }}
+            >
               <Button
                 type="primary"
                 size={"large"}
@@ -143,7 +146,7 @@ class AnalyticsManager extends React.Component<DashboardProps, DashboardState> {
               >
                 Add new card
               </Button>
-            </div>
+            </Col>
           </Row>
           <Table
             dataSource={this.state.data}

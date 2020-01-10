@@ -1,5 +1,5 @@
 import React from "react";
-import { Col, Row, Avatar, Table } from "antd";
+import { Col, Row, Avatar, Table, Icon } from "antd";
 import { Image, CustomList, CustomButton, InfoText } from "@walkinsole/shared";
 import "./index.css";
 import { withApollo, ApolloProviderProps, Query } from "react-apollo";
@@ -39,6 +39,8 @@ class OrganisationHome extends React.Component<
 
   renderInfoHeader(data) {
     const { firstName, lastName } = data.user;
+    let name = "Name NA";
+    if (firstName && lastName) name = firstName + " " + lastName;
     return (
       <Row className="rowInfoHeader">
         <Col className="colAvatar">
@@ -48,7 +50,7 @@ class OrganisationHome extends React.Component<
             size={40}
           />
         </Col>
-        <Col className="colName">{firstName + lastName}</Col>
+        <Col className="colName">{name}</Col>
         <Col className="colDesignation">Designation NA</Col>
       </Row>
     );
@@ -136,7 +138,7 @@ class OrganisationHome extends React.Component<
             if (error) {
               return <div>Error</div>;
             }
-            if (data) {
+            if (data && data.user) {
               console.log(
                 "OrganisationHome render Query userDetails data",
                 data
@@ -166,7 +168,7 @@ class OrganisationHome extends React.Component<
 
   renderSubOrgList(imageStyle, contentStyle, actionStyle) {
     return (
-      <Row>
+      <Row style={{ width: "100%", height: "100%" }}>
         <Query
           query={orgDetails}
           variables={{ id: this.props.match.params.id }}
@@ -176,46 +178,58 @@ class OrganisationHome extends React.Component<
               return <div>loading...</div>;
             }
             if (error) {
-              return <div>Error</div>;
+              return (
+                <div className="errorContainer">
+                  <Icon type="warning" />
+                  <div style={{ marginLeft: "10px" }}>No data found</div>
+                </div>
+              );
             }
-            if (data) {
+            if (data && data.organization) {
               console.log(
                 "OrganisationHome render Query orgDetails data",
                 data
               );
-
-              const subOrgArray = [];
-              for (var i = 0; i < data.organization.children.length; i++) {
-                subOrgArray.push({
-                  image: null,
-                  title: data.organization.children[i].name,
-                  subTitle:
-                    data.organization.children[i].addressLine1 +
-                    data.organization.children[i].addressLine2,
-                  actionableTitle: "Status",
-                  actionableSubTitle: data.organization.children[i].status,
-                  actionable: false
-                });
+              if (data.organization.children) {
+                const subOrgArray = [];
+                for (var i = 0; i < data.organization.children.length; i++) {
+                  subOrgArray.push({
+                    image: null,
+                    title: data.organization.children[i].name,
+                    subTitle:
+                      data.organization.children[i].addressLine1 +
+                      data.organization.children[i].addressLine2,
+                    actionableTitle: "Status",
+                    actionableSubTitle: data.organization.children[i].status,
+                    actionable: false
+                  });
+                }
+                return (
+                  <div style={{ width: "100%" }}>
+                    <CustomList
+                      data={subOrgArray}
+                      actionableButtonText={"Assign"}
+                      actionableButtonType={"default"}
+                      actionStyle={actionStyle}
+                      actionSpan={4}
+                      imageStyle={imageStyle}
+                      imageSpan={4}
+                      imageHeight={"80px"}
+                      imageWidth={"100px"}
+                      imageScaleType={"contain"}
+                      contentStyle={contentStyle}
+                      contentSpan={16}
+                    />
+                  </div>
+                );
+              } else {
+                return (
+                  <div className="errorContainer">
+                    <Icon type="warning" />
+                    <div style={{ marginLeft: "10px" }}>No data found</div>
+                  </div>
+                );
               }
-
-              return (
-                <div style={{ width: "100%" }}>
-                  <CustomList
-                    data={subOrgArray}
-                    actionableButtonText={"Assign"}
-                    actionableButtonType={"default"}
-                    actionStyle={actionStyle}
-                    actionSpan={4}
-                    imageStyle={imageStyle}
-                    imageSpan={4}
-                    imageHeight={"80px"}
-                    imageWidth={"100px"}
-                    imageScaleType={"contain"}
-                    contentStyle={contentStyle}
-                    contentSpan={16}
-                  />
-                </div>
-              );
             }
           }}
         </Query>

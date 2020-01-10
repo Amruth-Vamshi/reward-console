@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Breadcrumb, Table, Col, Row } from "antd";
+import SearchBox from "./searchBox";
 import "./index.css";
 
 interface StoreInfoProps {}
@@ -129,13 +130,12 @@ class StoreInfo extends React.Component<StoreInfoProps, StoreInfoState> {
         <Row className="rowStoreInfoInstantSearch">
           <Col className="colStoreInfo">StoreInfo</Col>
           <Col className="colInstantSearch">
-            {/* component to be created
-            <ConfigurableSearchBox
+            <SearchBox
               placeHolder="Search"
               data={this.state.dataSource}
               onFilteredList={this.onFilteredList}
               filterOptions={columns}
-            /> */}
+            />
           </Col>
         </Row>
         <Table

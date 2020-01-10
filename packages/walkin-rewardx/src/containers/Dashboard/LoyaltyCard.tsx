@@ -243,8 +243,8 @@ class LoyaltyCard extends React.Component<LoyaltyCardProps, LoyaltyCardState> {
               value={item.value}
             >
               <Card>
-                {item.title} {"   "}Value:
-                {item.value} = Rupee :{item.rupees} {"   "}
+                {item.title} Value:
+                {item.value} = Rupee :{item.rupees}
                 {item.active ? (
                   <span>Active</span>
                 ) : (
@@ -284,16 +284,17 @@ class LoyaltyCard extends React.Component<LoyaltyCardProps, LoyaltyCardState> {
     }
     return (
       <Auxiliary>
-        <Breadcrumb>
+        <Breadcrumb style={{ margin: "10px" }}>
           <Breadcrumb.Item>
             <Link to="/rewardx/Dashboard">Dashboard</Link>
           </Breadcrumb.Item>
           <Breadcrumb.Item>
             {this.props.location.state.record
-              ? "Edit Loylaty Card"
+              ? "Edit Loyalty Card"
               : "Add Loyalty Card"}
           </Breadcrumb.Item>
         </Breadcrumb>
+
         <div
           style={{
             width: "50wv",
@@ -301,21 +302,53 @@ class LoyaltyCard extends React.Component<LoyaltyCardProps, LoyaltyCardState> {
             // maxWidth: "50vw" //html css
           }}
         >
-          <Row style={{ width: "50%", margin: "auto" }}>
+          <Row
+            style={{
+              width: "50%",
+              margin: "auto",
+              padding: "10px",
+              display: "flex",
+              justifyContent: "center",
+              fontSize: "21px",
+              fontWeight: "bold"
+            }}
+          >
             Create a new Loyalty Card
           </Row>
-          <Row style={{ width: "50%", margin: "auto" }}>Name of the card</Row>
-          <Row style={{ width: "50%", margin: "auto" }}>
+          <Row style={{ width: "50%", margin: "auto", paddingTop: "10px" }}>
+            Name of the card
+          </Row>
+          <Row
+            style={{
+              width: "50%",
+              margin: "auto",
+              paddingBottom: "10px",
+              paddingTop: "10px"
+            }}
+          >
             <Input
               placeholder="Enter your loyalty card name"
               value={cardName}
               onChange={this.onChangeInputCardName}
             />
           </Row>
-          <Row style={{ marginTop: 20, width: "50%", margin: "auto" }}>
-            Chooose one currency from the list{" "}
-            <span
-              style={{ float: "right", width: "50%" }}
+          <Row
+            style={{
+              marginTop: 20,
+              width: "50%",
+              margin: "auto",
+              paddingTop: "10px"
+            }}
+          >
+            <Col style={{ width: "50%" }}>
+              Chooose one currency from the list
+            </Col>
+            <Col
+              style={{
+                width: "50%",
+                display: "flex",
+                justifyContent: "flex-end"
+              }}
               onClick={() =>
                 this.setState({
                   isCurrencyModalVisible: true,
@@ -324,12 +357,17 @@ class LoyaltyCard extends React.Component<LoyaltyCardProps, LoyaltyCardState> {
               }
             >
               <a>Add currency</a>
-            </span>
+            </Col>
           </Row>
 
-          <Row style={{ width: "50%", margin: "auto" }}>
+          <Row
+            style={{
+              width: "50%",
+              margin: "auto"
+            }}
+          >
             <Radio.Group
-              style={{ width: "100%", margin: "auto" }}
+              style={{ width: "100%", padding: "10px" }}
               onChange={this.onChangeRadioGroup}
               value={this.state.rgValue}
             >
