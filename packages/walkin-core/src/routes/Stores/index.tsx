@@ -9,6 +9,7 @@ export default class extends React.Component {
       <Switch>
         <Route exact path={"/core/stores"} component={StoreList} />
         <Route path={"/core/stores/:id/edit"} component={EditStore} />
+        <Route path={"/core/stores/create"} component={EditStore} />
       </Switch>
     );
   }

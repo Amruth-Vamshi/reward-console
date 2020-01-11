@@ -13,7 +13,12 @@ import {
 import { IconProps } from "antd/lib/icon";
 import { Auxiliary } from "@walkinsole/walkin-components";
 import HotspotCard from "./HotspotCard";
-import { RADIUS_1_MAX, RADIUS_1_MIN, RADIUS_2_MAX, RADIUS_3_MAX } from "../../../Constants";
+import {
+  RADIUS_1_MAX,
+  RADIUS_1_MIN,
+  RADIUS_2_MAX,
+  RADIUS_3_MAX
+} from "../../../Constants";
 
 const marks = {
   // 0: '0',
@@ -81,17 +86,17 @@ const tailFormItemLayout1 = {
 };
 
 interface iProps extends IconProps {
-  onChangeRadius?: (val1, val2, val3) => any,
-  deleteRedi?: (val) => any,
-  formData?: any,
-  onPlaceSelect?: any,
-  deleteHotspot?: any,
-  handleSubmit?: any,
-  handleOnChange?: (val1, val2) => any,
-  handleCenterChange?: (val1, val2, val3) => any,
-  getloc?: (val) => any,
-  addRadius?: (val) => any,
-  showModal?: any
+  onChangeRadius?: (val1, val2, val3) => any;
+  deleteRedi?: (val) => any;
+  formData?: any;
+  onPlaceSelect?: any;
+  deleteHotspot?: any;
+  handleSubmit?: any;
+  handleOnChange?: (val1, val2) => any;
+  handleCenterChange?: (val1, val2, val3) => any;
+  getloc?: (val) => any;
+  addRadius?: (val) => any;
+  showModal?: any;
 }
 
 export default class CreatePlaceForm extends React.Component<iProps, {}> {
@@ -121,7 +126,6 @@ export default class CreatePlaceForm extends React.Component<iProps, {}> {
             min={n ? formData.places[i].radius[n - 1] : RADIUS_1_MIN}
             // max={n ? (n != 1 ? RADIUS_3_MAX : RADIUS_2_MAX) : RADIUS_1_MAX}
             max={RADIUS_3_MAX}
-
             marks={this.slideMarks(
               n ? formData.places[i].radius[n - 1] : RADIUS_1_MIN,
               // n ? (n != 1 ? RADIUS_3_MAX : RADIUS_2_MAX) : RADIUS_1_MAX
@@ -131,7 +135,9 @@ export default class CreatePlaceForm extends React.Component<iProps, {}> {
             value={
               typeof formData.places[i].radius[n] === "number"
                 ? formData.places[i].radius[n]
-                : n ? formData.places[i].radius[n - 1] : RADIUS_1_MIN
+                : n
+                ? formData.places[i].radius[n - 1]
+                : RADIUS_1_MIN
             }
           />
         </Col>
@@ -145,10 +151,24 @@ export default class CreatePlaceForm extends React.Component<iProps, {}> {
               value={
                 typeof formData.places[i].radius[n] === "number"
                   ? formData.places[i].radius[n]
-                  : n ? formData.places[i].radius[n - 1] : RADIUS_1_MIN
+                  : n
+                  ? formData.places[i].radius[n - 1]
+                  : RADIUS_1_MIN
               }
               onChange={e => this.props.onChangeRadius(e, i, n)}
-            /></div> {n && (n == formData.places[i].radius.length - 1) ? <div style={{ display: "inline-block" }}> <Icon onClick={() => this.props.deleteRedi(i)} type='close' /> </div> : ''}
+            />
+          </div>{" "}
+          {n && n == formData.places[i].radius.length - 1 ? (
+            <div style={{ display: "inline-block" }}>
+              {" "}
+              <Icon
+                onClick={() => this.props.deleteRedi(i)}
+                type="close"
+              />{" "}
+            </div>
+          ) : (
+            ""
+          )}
         </Col>
       </Row>
     </Form.Item>
@@ -177,8 +197,8 @@ export default class CreatePlaceForm extends React.Component<iProps, {}> {
               hp={formData.places1[i]}
             />
           ) : (
-              ""
-            )}
+            ""
+          )}
         </div>
       );
 
@@ -281,9 +301,12 @@ export default class CreatePlaceForm extends React.Component<iProps, {}> {
                       formData
                     )}
 
-
                     {formData.places[0].radius.length >= 3 ||
-                      formData.places[0].radius[formData.places[0].radius.length - 1] == 500 ? "" :
+                    formData.places[0].radius[
+                      formData.places[0].radius.length - 1
+                    ] == 500 ? (
+                      ""
+                    ) : (
                       <Form.Item {...tailFormItemLayout}>
                         <div style={{ float: "right" }}>
                           <p
@@ -294,12 +317,12 @@ export default class CreatePlaceForm extends React.Component<iProps, {}> {
                           </p>
                         </div>
                       </Form.Item>
-                    }
+                    )}
                     <br />
                     <br />
                   </div>
 
-                  {formData.places1.length > 1 ?
+                  {formData.places1.length > 1 ? (
                     <p>
                       <span>
                         <Icon
@@ -309,7 +332,10 @@ export default class CreatePlaceForm extends React.Component<iProps, {}> {
                         />
                         Hotspot
                       </span>
-                    </p> : ''}
+                    </p>
+                  ) : (
+                    ""
+                  )}
 
                   {form}
 

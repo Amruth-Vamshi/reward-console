@@ -3,7 +3,7 @@
 }
 
 .colStoreInfo {
-  width: 50%;
+  width: 20%;
   padding: 20px;
   font-size: 21px;
   font-weight: bold;
@@ -11,8 +11,23 @@
 
 .colInstantSearch {
   display: flex;
-  width: 50%;
+  width: 40%;
   justify-content: flex-end;
+  flex: 1;
+}
+.colCreateStoreButton {
+  display: flex;
+  align-items: center;
+}
+
+.centerAlign {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.colCreateStoreButton button {
+  margin: 0;
 }
 
 /* .width75percent {
@@ -24,6 +39,18 @@
 .width15percent {
   width: 15%;
 } */
+
+.borderWidth1Box {
+  border: 1px solid grey;
+  border-radius: 4px;
+  padding: 0 30px;
+}
+.marginTop0 {
+  margin-top: 0 !important;
+}
+.marginBottom0 {
+  margin-bottom: 0 !important;
+}
 
 .storesFormContainer {
   font-family: "Roboto", sans-serif;

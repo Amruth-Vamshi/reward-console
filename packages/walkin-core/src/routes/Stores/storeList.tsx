@@ -2,8 +2,8 @@ import React from "react";
 import * as jwt from "jsonwebtoken";
 import { Link } from "react-router-dom";
 import { History } from "history";
-
-import { Breadcrumb, Table, Col, Row } from "antd";
+import { InstantSearch } from "@walkinsole/shared";
+import { Breadcrumb, Table, Col, Row, Button, Switch } from "antd";
 import { withApollo, ApolloProviderProps } from "react-apollo";
 import "./index.css";
 
@@ -50,7 +50,8 @@ class StoreList extends React.Component<StoreListProps, StoreListState> {
             name: store.name,
             storeCode: store.externalStoreId,
             address: `${store.addressLine1},${store.addressLine2}`,
-            admin: "NIL"
+            admin: "NIL",
+            STATUS: store.STATUS
           });
         });
 
@@ -64,9 +65,8 @@ class StoreList extends React.Component<StoreListProps, StoreListState> {
   }
   onChange = () => {};
 
-  onFilteredList = newList => {
-    console.log("storeInfo onFilteredList newList", newList);
-    this.setState({ dataSource: newList });
+  onStoreFilteredList = list => {
+    console.log(list);
   };
 
   render() {
@@ -81,7 +81,7 @@ class StoreList extends React.Component<StoreListProps, StoreListState> {
         title: "Name",
         dataIndex: "name",
         key: "name",
-        width: "40%"
+        width: "30%"
       },
       {
         title: "Address",
@@ -93,9 +93,36 @@ class StoreList extends React.Component<StoreListProps, StoreListState> {
         title: "Admin",
         dataIndex: "admin",
         key: "admin",
-        width: "20%"
+        width: "10%"
+      },
+      {
+        title: "Status",
+        dataIndex: "STATUS",
+        key: "STATUS",
+        width: "20%",
+        render: (text: any, record: any) => {
+          // <Switch
+          //   className={webhook.enabled ? "webhookStatusSwitch" : ""}
+          //   checked={webhook.enabled}
+          //   onChange={() => this.onEnableOrDisableWebhook(index)}
+          //   loading={isLoading && selectedWebhookIndex === index}
+          // />
+          return (
+            <div className={"storeFlexWrapper"}>
+              <div>{text === "ACTIVE" ? "Active" : "Inactive"}</div>
+              {/* <Switch
+                checked={text === "ACTIVE"}
+                // onChange={(value: any) => {
+                //   storeDetails.STATUS = value ? "ACTIVE" : "INACTIVE";
+                //   this.onChange("storeDetails", storeDetails);
+                // }}
+              /> */}
+            </div>
+          );
+        }
       }
     ];
+
     console.log("storeInfo render dataSource", this.state.dataSource);
     return (
       <div>
@@ -116,6 +143,25 @@ class StoreList extends React.Component<StoreListProps, StoreListState> {
               onFilteredList={this.onFilteredList}
               filterOptions={columns}
             /> */}
+            {/* <InstantSearch
+              placeHolder="Search stores"
+              data={[{ name: "sidhu" }, { name: "sidhus" }]}
+              onFilteredList={this.onStoreFilteredList}
+            /> */}
+          </Col>
+          <Col className="colCreateStoreButton">
+            <Button
+              disabled={false}
+              className="button"
+              type="primary"
+              size="large"
+              onClick={() => {
+                this.props.history.push("/core/stores/create");
+              }}
+              loading={false}
+            >
+              Create Store
+            </Button>
           </Col>
         </Row>
         <Table
