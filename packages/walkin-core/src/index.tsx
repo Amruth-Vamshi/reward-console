@@ -10,7 +10,8 @@ import { Route, Switch, RouteComponentProps } from "react-router-dom";
 import Users from "./routes/users";
 import OrganisationHome from "./routes/OrganisationHome";
 import StoreInfo from "./routes/StoreInfo";
-interface HomeProps extends RouteComponentProps {}
+import Catalogue from "./routes/Catalogue"
+interface HomeProps extends RouteComponentProps { }
 
 export default class extends React.Component<HomeProps, {}> {
   render() {
@@ -26,6 +27,7 @@ export default class extends React.Component<HomeProps, {}> {
           <Route path={"/core/settings/*"} component={Settings} />
           <Route path={"/core/business-rules"} component={BusinessRules} />
           <Route path={"/core/access-control"} component={AccessControl} />
+          <Route path={"/core/catalogue"} component={Catalogue} />
 
           <Route path={`${this.props.match.url}/users`} component={Users} />
           {/* <Route path={"/core/orghome/:id"} component={OrganisationHome} /> */}
