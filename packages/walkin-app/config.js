@@ -12,7 +12,7 @@ const client = {
         GRAPHQL_URL: "https://dev-api.getwalkin.in/core_dev/graphql",
         NEARX_GRAPHQL_URL: "https://dev-api.getwalkin.in/nearx_dev/graphql",
 
-        // GRAPHQL_URL: "http://104.248.98.253:4000/graphql",
+        // GRAPHQL_URL: "http://206.189.91.111:4000/graphql",
         // NEARX_GRAPHQL_URL: "http://167.99.31.169:3001/graphql",
     },
     production: {

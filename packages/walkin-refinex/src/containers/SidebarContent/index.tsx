@@ -96,6 +96,12 @@ class SidebarContent extends React.Component<SidebarContentProps, SidebarContent
                 <span>Segments</span>
               </Link>
             </Menu.Item>
+            <Menu.Item key="issueTags">
+              <Link to="/refinex/issueTag">
+                <Icon component={Analytics} style={{ fontSize: "18px" }} />
+                <span>Issue Tags</span>
+              </Link>
+            </Menu.Item>
             <Menu.Item key="apps">
               <Link to="/refinex/apps">
                 {/* <i className="icon icon-apps" /> */}

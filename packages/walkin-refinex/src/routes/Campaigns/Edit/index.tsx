@@ -36,6 +36,7 @@ import {
   UPDATE_EVENT_SUBSCRIPTION,
   LINK_CAMPAIGN_TO_APPLICATION,
   UNLINK_CAMPAIGN_FROM_APPLICATION,
+  AUDIENCE_COUNT,
   SEND_FEEDBACK_MESSAGE
 } from "../../../containers/Query";
 import { CustomScrollbars } from "@walkinsole/walkin-components";
@@ -108,6 +109,7 @@ interface EditCampaignState {
   eventValues: any;
   selectedSegments: any;
   communicationId: any;
+  audienceCount: number;
 }
 
 const communicationData = [
@@ -146,11 +148,12 @@ class EditCampaign extends React.Component<
       campaign: {},
       segmentList: {},
       attributeData: {},
-      eventValues: {},
-      formName: "",
-      selectedSegments: [],
-      query: { combinator: "and", rules: [] },
-      loading: false,
+      eventValues:{},
+      formName:"",
+      selectedSegments:[],
+      query: {combinator: "and", rules: [] },
+      loading:false,
+      audienceCount : 0,
       stepperData: [
         {
           title: "Basic Info"
@@ -312,9 +315,30 @@ class EditCampaign extends React.Component<
     this.setState({ query: query, oldQueryAudience: oldQuery });
   };
 
-  onValuesSelected = selectedSegments => {
-    this.setState({ selectedSegments });
-  };
+  
+  onValuesSelected = selectedSegments =>{
+    this.setState({selectedSegments})
+    console.log("Selected Segment : ",selectedSegments)
+    // this.setState({ selectedSegments: selectedSegments })
+    
+    // this.getAudience(selectedSegments)
+  }
+
+  getAudience(selectedSegments)
+  {
+    let { org_id }: any = jwt.decode(localStorage.getItem('jwt'))
+    console.log(this.props)
+    // this.props.getAudienceCount.refetch({
+    //   variables:{ 
+    //     segments: selectedSegments, 
+    //     organizationId: org_id 
+    //   }
+    // }).then(data => {
+    //   console.log("Audience Data : ", data)
+    // }).catch(err => {
+    //   console.log("Audience Data Error : ", err)
+    // })
+  }
 
   onFormNext = current => {
     const { formValues, selectedSegments } = this.state;
@@ -339,7 +363,7 @@ class EditCampaign extends React.Component<
     }
     //Trigger module
     if (this.state.current == 3) {
-      if (this.state.eventValues.event !== null) {
+      if (this.state.eventValues.event !== undefined) {
         this.createEvenetSubscription();
       }
       //Trigger Rule
@@ -1013,11 +1037,14 @@ class EditCampaign extends React.Component<
               <Audience
                 audienceTitle="Audience"
                 segmentSubTitle="Segment"
-                onValuesSelected={this.onValuesSelected}
+                audienceCount={this.state.audienceCount}
+                onValuesSelected={() => this.onValuesSelected}
                 selectedSegments={this.state.selectedSegments}
                 segmentSelectionData={this.props.segmentList.segments}
                 uploadCsvText="Upload CSV"
                 // uploadProps={props}
+                // visible={this.state.visible} handleOk={this.handleOk} handleCancel={this.handleUploadCancel}
+                // fileList={this.state.fileList}
                 segmentFilterText="Filter"
                 segmentFilterSubText="Campaign applies to :"
                 attributeData={attributeData}

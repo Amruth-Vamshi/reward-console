@@ -114,7 +114,7 @@ class NewSegment extends React.Component<NewSegmentProps, NewSegmentState> {
         const { location, match } = this.props;
         if (location && location.state) {
             if (location.state.segmentSelected) {
-                let str = location.state.segmentSelected.rule.ruleConfiguration;
+                let str = JSON.stringify(location.state.segmentSelected.rule.ruleConfiguration);
                 let mapObj: any = {
                     attributeName: 'field',
                     attributeValue: 'value',

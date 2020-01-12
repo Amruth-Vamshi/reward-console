@@ -701,3 +701,52 @@ export const UPDATE_STORE = gql`
     }
   }
 `;
+
+export const GET_PH_CATEGORIES = gql`
+  query categories($catalogId: ID!, $parentCategoryId: ID) {
+    categories(catalogId: $catalogId, parentCategoryId: $parentCategoryId) {
+      id
+      name
+      description
+      code
+      catalogId
+      status
+      products {
+        id
+        name
+        description
+        imageUrl
+        sku
+        type
+        status
+      }
+      parent {
+        id
+        name
+        description
+        status
+        catalog {
+          id
+          name
+          description
+        }
+      }
+      children {
+        id
+        name
+        description
+        status
+        catalog {
+          id
+          name
+          description
+        }
+      }
+      catalog {
+        id
+        name
+        description
+      }
+    }
+  }
+`;

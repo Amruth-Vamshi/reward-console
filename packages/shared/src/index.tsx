@@ -53,6 +53,7 @@ import OfferRedemptionRulesForm from "./components/molecules/offerForm/redemptio
 import CollapseSidebar from "./components/atoms/CollapseSidebar";
 import CounterCard from "./components/atoms/CounterCard/index";
 import MultipleCounterCard from "./components/atoms/MultipleCounterCard/index";
+import HoverText from "./components/atoms/HoverText/index"
 
 export {
   CustomButton,
@@ -105,5 +106,6 @@ export {
   OfferBasicInfoForm,
   OfferRedemptionRulesForm,
   CounterCard,
-  MultipleCounterCard
+  MultipleCounterCard,
+  HoverText
 };

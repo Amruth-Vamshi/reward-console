@@ -78,7 +78,8 @@ export default class Overview extends React.Component<iProps, {}> {
                     // (campaign.campaignStatus == 'LIVE') ?
                     <div>
                       {
-                        campaign.campaignStatus == "LIVE" && <Button type="primary" shape="round" onClick={this.changeState}
+                        (campaign.campaignStatus == "LIVE" || campaign.campaignStatus == "PAUSE") &&
+                        <Button type="primary" shape="round" onClick={this.changeState}
                           style={{ width: "140px", letterSpacing: 0, height: 40, fontSize: 17 }}
                           loading={this.props.loading} >
                           {campaign.campaignStatus != "PAUSE" ? "PAUSE" : "UNPAUSE"}
