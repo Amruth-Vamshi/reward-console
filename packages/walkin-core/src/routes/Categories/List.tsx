@@ -68,6 +68,7 @@ interface iState {
     processedCategoryList: any
     rawData: any
     selectedCategory: any
+    activeCat: string
 }
 
 
@@ -80,7 +81,8 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
             editType: "",
             processedCategoryList: [],
             rawData: {},
-            selectedCategory: null
+            selectedCategory: null,
+            activeCat: ""
         }
 
         // console.log("PRO : ", this.props, this.props.client)
@@ -112,28 +114,37 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
     }
 
     findCategory(value, index) {
-        console.log("Search Term  : ", value)
         const { processedCategoryList, selectedCategoryArr } = this.state
-        console.log(processedCategoryList)
         if (index === 0) {
+            var final = null
             processedCategoryList.forEach((element) => {
-                console.log(element)
-                if (element.name === value) {
-
+                if (element.name == value) {
+                    final = element
                 }
             })
+            return final
         }
         if (index === 1) {
-            console.log(selectedCategoryArr[0])
-            console.log(processedCategoryList[selectedCategoryArr[0]])
-            var data = processedCategoryList[selectedCategoryArr[0]]
-            return data[value]
+            var final = null
+            var term = selectedCategoryArr[0]
+            processedCategoryList.forEach((element) => {
+                if (element.name == term) {
+                    var el = element.children
+                    el.forEach((ele) => {
+                        if (ele.name == value) {
+                            final = ele
+                        }
+                    })
+                }
+            })
+            return final
         }
     }
 
     onCategoryClick(value, index) {
         var data = this.findCategory(value, index)
-        console.log("Found : ", data)
+        console.log("Selected Category : ", data)
+        this.setState({ selectedCategory: data, activeCat: value })
     }
 
     getCategories = () => {
@@ -149,9 +160,9 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
                 })
                 .then(res => {
                     console.log("Category Data Recieved")
-                    console.log("Processed Data : ", res.data.categoriesWithChildren)
+                    // console.log("Raw Data : ", res.data.categoriesWithChildren)
                     var final = this.processData(res.data.categoriesWithChildren)
-                    console.log("Final : ", final)
+                    console.log("Processed Data : ", final)
                     this.setState({ processedCategoryList: final, rawData: res.data.categoriesWithChildren })
                 })
                 .catch(err => {
@@ -164,9 +175,11 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
     };
 
     onChange(value) {
-        console.log("Selected Cat : ", value);
+        var len = (value.length) - 1
         if (value.length > 0) {
-            this.setState({ selectedCategoryArr: value, showForm: true })
+            this.setState({ selectedCategoryArr: value, showForm: true }, () => {
+                this.onCategoryClick(value[len], len)
+            })
         }
         else {
             this.setState({ selectedCategoryArr: value, showForm: false })
@@ -186,9 +199,21 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
         }
     }
 
+    // isSelected(val) {
+    //     const { selectedCategory } = this.state
+
+    //     console.log("S : ", selectedCategory)
+    //     if (selectedCategory.name == val) {
+    //         return true
+    //     }
+    //     else {
+    //         return false
+    //     }
+    // }
+
 
     render() {
-        const { processedCategoryList, selectedCategoryArr, selectedCategory } = this.state
+        const { processedCategoryList, selectedCategoryArr, selectedCategory, activeCat } = this.state
 
         return (<div>
             <div className="cat-header">Categories Management</div>
@@ -214,7 +239,7 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
                             />
                         </Col>
                     </Row>
-                    {((selectedCategory !== null && selectedCategoryArr.length > 0)) || (selectedCategoryArr.length === 0) && <Row>
+                    {((selectedCategory !== null && selectedCategoryArr.length > 0) || (selectedCategoryArr.length === 0)) && <Row>
                         <Col style={{ paddingTop: "6px", fontSize: "12px", color: "#b3b3b3" }} span={5}>Select a category to view/edit</Col>
                         <Col span={5}><Button className="addBtn" size="small" onClick={() => { this.addCategory() }} >{(this.state.selectedCategoryArr.length > 0) ? "Add SubCategory" : "Add Category"}</Button></Col>
                     </Row>}
@@ -222,12 +247,12 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
                 {(this.state.selectedCategoryArr.length > 0) && <div className="selectedDiv">
                     {selectedCategoryArr.map((element, index) => {
                         if (index === 0) {
-                            return <div key={index} onClick={() => { this.onCategoryClick(element, index) }} className="selectedItem">{element}</div>
+                            return <div key={index} onClick={() => { this.onCategoryClick(element, index) }} className={(activeCat == element ? "selectedActiveItem" : "selectedItem")}>{element}</div>
                         }
                         else {
                             return <div key={index}>
                                 <Icon style={{ float: "left", paddingLeft: "10px", paddingRight: "10px", paddingTop: "12px" }} type="caret-right" />
-                                <div onClick={() => { this.onCategoryClick(element, index) }} className="selectedItem">{element}</div>
+                                <div onClick={() => { this.onCategoryClick(element, index) }} className={(activeCat == element ? "selectedActiveItem" : "selectedItem")}>{element}</div>
                             </div>
                         }
                     })}

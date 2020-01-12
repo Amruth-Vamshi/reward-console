@@ -49,6 +49,8 @@
   }
   .selectedItem {
     padding-top: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
     width: auto;
     float: left;
     height: 40px;
@@ -57,6 +59,23 @@
     text-align: center;
     font-weight: 500;
     box-shadow: 1px 1px 10px #e6e6e6;
+    border-radius: 4px;
+  }
+
+  .selectedActiveItem {
+    padding-top: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    width: auto;
+    float: left;
+    height: 40px;
+    background-color: #038FDE;
+    color : #FFF;
+    margin: 2px;
+    text-align: center;
+    font-weight: 500;
+    box-shadow: 1px 1px 10px #cdecfe;
+    border-radius: 4px;
   }
 
   .selectedItem div:hover{
