@@ -1,0 +1,16 @@
+.cat-header{
+    font-size:18px
+}
+.cat-subheader{
+    font-size:10px;
+    padding-top: 4px;
+    color:"#d9d9d9";
+}
+
+.container{
+    margin-top: 30px;
+}
+
+.categoryContainer{
+    width : 500px;
+}

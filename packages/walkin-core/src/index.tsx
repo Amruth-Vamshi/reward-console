@@ -11,6 +11,7 @@ import Users from "./routes/users";
 import OrganisationHome from "./routes/OrganisationHome";
 import StoreInfo from "./routes/StoreInfo";
 import Catalogue from "./routes/Catalogue"
+import Category from "./routes/Categories"
 interface HomeProps extends RouteComponentProps { }
 
 export default class extends React.Component<HomeProps, {}> {
@@ -28,7 +29,7 @@ export default class extends React.Component<HomeProps, {}> {
           <Route path={"/core/business-rules"} component={BusinessRules} />
           <Route path={"/core/access-control"} component={AccessControl} />
           <Route path={"/core/catalogue"} component={Catalogue} />
-
+          <Route path={"/core/categories"} component={Category} />
           <Route path={`${this.props.match.url}/users`} component={Users} />
           {/* <Route path={"/core/orghome/:id"} component={OrganisationHome} /> */}
           <Route path={"/core/storeinfo"} component={StoreInfo} />
