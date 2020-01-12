@@ -127,15 +127,10 @@ class EditStore extends React.Component<EditStoreProps, EditStoreState> {
   };
 
   onCreateStore = () => {
+    let { storeDetails } = this.state;
     let input = {
       parentOrganizationId: this.state.orgID,
-      name: "teststores1",
-      email: "xyz@abc.com",
-      latitude: "12.940508245252833",
-      longitude: "77.61731373162692",
-      wifi: true,
-      addressLine1: "line1",
-      addressLine2: "line2"
+      ...storeDetails
     };
 
     this.props.client
@@ -147,24 +142,17 @@ class EditStore extends React.Component<EditStoreProps, EditStoreState> {
       })
       .then(createStore => {
         console.log(createStore, "ncreateStoreew");
-        if (createStore.data.store.id) {
+        if (createStore.data.createStore.id) {
           this.props.history.push("/core/stores/");
         }
       });
   };
 
   onUpdateStore = () => {
+    let { storeDetails } = this.state;
     let input = {
       parentOrganizationId: this.state.orgID,
-      id: this.state.storeDetails.id,
-
-      name: "teststores1",
-      email: "xyz@abc.com",
-      latitude: "12.940508245252833",
-      longitude: "77.61731373162692",
-      wifi: true,
-      addressLine1: "line1",
-      addressLine2: "line2"
+      ...storeDetails
     };
     this.props.client
       .mutate({
@@ -175,7 +163,7 @@ class EditStore extends React.Component<EditStoreProps, EditStoreState> {
       })
       .then(UpdateStore => {
         console.log(UpdateStore, "ncreateStoreew");
-        if (UpdateStore.data.store.id) {
+        if (UpdateStore.data.updateStore.id) {
           this.props.history.push("/core/stores/");
         }
       });
@@ -500,7 +488,11 @@ class EditStore extends React.Component<EditStoreProps, EditStoreState> {
               type="primary"
               size="large"
               onClick={() => {
-                this.onCreateStore();
+                if (storeDetails.id) {
+                  this.onUpdateStore();
+                } else {
+                  this.onCreateStore();
+                }
               }}
               loading={false}
             >
