@@ -703,8 +703,8 @@ export const UPDATE_STORE = gql`
 `;
 
 export const GET_PH_CATEGORIES = gql`
-  query categories($catalogId: ID!, $parentCategoryId: ID) {
-    categories(catalogId: $catalogId, parentCategoryId: $parentCategoryId) {
+  query categoriesWithChildren($catalogId: ID!, $categoryCode: String) {
+    categoriesWithChildren(catalogId: $catalogId, categoryCode: $categoryCode) {
       id
       name
       description
@@ -736,6 +736,21 @@ export const GET_PH_CATEGORIES = gql`
         name
         description
         status
+        children {
+          id
+          name
+          description
+          status
+        }
+        products {
+          id
+          name
+          description
+          imageUrl
+          sku
+          type
+          status
+        }
         catalog {
           id
           name
@@ -746,6 +761,31 @@ export const GET_PH_CATEGORIES = gql`
         id
         name
         description
+      }
+    }
+  }
+`;
+
+export const GET_PRODUCT_CATEGORIES_BY_CATEGORY_ID = gql`
+  query productCategoriesByCategoryId($categoryId: ID!) {
+    productCategoriesByCategoryId(categoryId: $categoryId) {
+      id
+      product {
+        id
+        name
+        description
+        imageUrl
+        sku
+        type
+        status
+      }
+      category {
+        id
+        name
+        description
+        code
+        catalogId
+        status
       }
     }
   }

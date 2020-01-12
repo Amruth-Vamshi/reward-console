@@ -1,11 +1,21 @@
 import * as React from "react";
 import { Row, Col, Cascader, Button, Input, Icon, Table } from "antd";
+import * as jwt from "jsonwebtoken";
+import { Query, withApollo, ApolloProviderProps } from "react-apollo";
+
 import "./style.css";
 import VariantDetailsForm from "./variantDetailsForm";
+import {
+  GET_PH_CATEGORIES,
+  GET_PRODUCT_CATEGORIES_BY_CATEGORY_ID
+} from "./../../PlatformQueries";
 
-interface iProps {}
+interface iProps extends ApolloProviderProps<any> {}
 
-interface iState {}
+interface iState {
+  processedCategoryList: any;
+  rawData: any;
+}
 
 const options = [
   {
@@ -98,7 +108,88 @@ const data = [
 class ListHome extends React.Component<iProps, iState> {
   constructor(props: iProps) {
     super(props);
-    this.state = {};
+    this.state = { processedCategoryList: [], rawData: [] };
+  }
+
+  UNSAFE_componentWillMount() {
+    this.getCategories();
+  }
+
+  getCategories = () => {
+    const jwtToken = localStorage.getItem("jwt");
+    const { org_id }: any = jwt.decode(jwtToken);
+
+    if (org_id) {
+      this.props.client
+        .query({
+          query: GET_PH_CATEGORIES,
+          variables: { catalogId: "2", categoryCode: "PO_SQUARE" },
+          fetchPolicy: "network-only"
+        })
+        .then(res => {
+          console.log("Category Data Recieved", res);
+          let categoryId = res.data.categoriesWithChildren.id;
+          //   if (categoryId) this.getCategoryProducts(categoryId);
+          //   console.log("Processed Data : ", res.data.categoriesWithChildren);
+          var final = this.processData(res.data.categoriesWithChildren);
+          console.log("Final : ", final);
+          this.setState({
+            processedCategoryList: final,
+            rawData: res.data.categoriesWithChildren
+          });
+        })
+        .catch(err => {
+          //   message.error("ERROR");
+          console.log("Failed to get Category Details" + err);
+        });
+    } else {
+      console.log("Error getting JwtData");
+    }
+  };
+
+  //   getCategoryProducts = (categoryId: string) => {
+  //     this.props.client
+  //       .query({
+  //         query: GET_PRODUCT_CATEGORIES_BY_CATEGORY_ID,
+  //         variables: { categoryId },
+  //         fetchPolicy: "network-only"
+  //       })
+  //       .then(res => {
+  //         console.log("Category product", res);
+  //         //   console.log("Processed Data : ", res.data.categoriesWithChildren);
+  //         var final = this.processData(res.data.categoriesWithChildren);
+  //         console.log("Final : ", final);
+  //         this.setState({
+  //           processedCategoryList: final,
+  //           rawData: res.data.categoriesWithChildren
+  //         });
+  //       })
+  //       .catch(err => {
+  //         //   message.error("ERROR");
+  //         console.log("Failed to get Category Details" + err);
+  //       });
+  //   };
+
+  processData(data) {
+    var arr = [];
+    var el = data.children;
+    el.forEach(element => {
+      var individual = {
+        id: element.id,
+        name: element.name,
+        value: element.name,
+        label: element.name,
+        description: element.description,
+        status: element.status,
+        children: []
+      };
+      if (element.children !== undefined) {
+        individual.children =
+          element.children.length > 0 ? this.processData(element) : [];
+      }
+      arr.push(individual);
+    });
+    return arr;
   }
 
   handleAreaClick = (e, label, option) => {
@@ -114,20 +205,14 @@ class ListHome extends React.Component<iProps, iState> {
     labels.map((label, i) => {
       const option = selectedOptions[i];
       if (i === labels.length - 1) {
-        return (
-          <span key={option.value}>
-            {label} (
-            <a onClick={e => this.handleAreaClick(e, label, option)}>
-              {option.code}
-            </a>
-            )
-          </span>
-        );
+        console.log(labels, selectedOptions);
+        return <span key={option.value}>{label}</span>;
       }
-      return <span key={option.value}>{label} / </span>;
+      return <span key={option.value}>All / {label} / </span>;
     });
 
   render() {
+    let { processedCategoryList } = this.state;
     const columns: any = [
       {
         title: "Name",
@@ -186,8 +271,8 @@ class ListHome extends React.Component<iProps, iState> {
             <Col span={12}>
               <Cascader
                 size="large"
-                options={options}
-                defaultValue={["zhejiang", "hangzhou", "xihu"]}
+                options={processedCategoryList}
+                // defaultValue={["ALL"]}
                 displayRender={this.displayRender}
                 style={{ width: "100%" }}
               />
@@ -231,4 +316,4 @@ class ListHome extends React.Component<iProps, iState> {
   }
 }
 
-export default ListHome;
+export default withApollo(ListHome);
