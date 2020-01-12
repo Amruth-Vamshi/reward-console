@@ -615,8 +615,8 @@ query {
 }`
 
 export const GET_PH_CATEGORIES = gql`
-  query categories($catalogId: ID!, $parentCategoryId: ID) {
-    categories(catalogId : $catalogId , parentCategoryId : $parentCategoryId) {
+  query categoriesWithChildren($catalogId: ID! , $categoryCode: String) {
+    categoriesWithChildren(catalogId : $catalogId , categoryCode:$categoryCode) {
       id
       name
       description
@@ -648,6 +648,21 @@ export const GET_PH_CATEGORIES = gql`
         name
         description
         status
+        children {
+          id
+          name
+          description
+          status
+        }
+        products {
+          id
+          name
+          description
+          imageUrl
+          sku
+          type
+          status
+        }
         catalog {
           id
           name
