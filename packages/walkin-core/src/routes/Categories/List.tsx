@@ -5,7 +5,6 @@ import { Query, withApollo, ApolloProviderProps } from "react-apollo";
 import { RouteComponentProps } from "react-router";
 import * as jwt from 'jsonwebtoken';
 import { GET_PH_CATEGORIES } from '../../PlatformQueries';
-import { element } from "prop-types";
 
 const { Search } = Input;
 
@@ -19,7 +18,14 @@ const options = [
                 value: 'pizza vegan',
                 label: 'Pizza Vegan',
                 data: {},
-                children: [],
+                children: [
+                    {
+                        value: 'mushroom',
+                        label: 'Mushroom',
+                        data: {},
+                        children: []
+                    }
+                ]
             },
         ],
     },
@@ -199,18 +205,18 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
         }
     }
 
-    // isSelected(val) {
-    //     const { selectedCategory } = this.state
-
-    //     console.log("S : ", selectedCategory)
-    //     if (selectedCategory.name == val) {
-    //         return true
-    //     }
-    //     else {
-    //         return false
-    //     }
-    // }
-
+    onFilterChange(value, selectedOptions) {
+        console.log(value, selectedOptions);
+        var len = (value.length) - 1
+        if (value.length > 0) {
+            this.setState({ selectedCategoryArr: value, showForm: true }, () => {
+                this.onCategoryClick(value[len], len)
+            })
+        }
+        else {
+            this.setState({ selectedCategoryArr: value, showForm: false })
+        }
+    }
 
     render() {
         const { processedCategoryList, selectedCategoryArr, selectedCategory, activeCat } = this.state
@@ -220,7 +226,7 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
             <div className="cat-subheader">Search for a category like "pizza" or explore and choose from the category selector.</div>
             <div className="container">
                 <div className="categoryContainer">
-                    <Row>
+                    <Row style={{ paddingBottom: "15px" }}>
                         <Col span={12}>
                             <Cascader
                                 style={{ paddingTop: "6px" }}
@@ -231,11 +237,17 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
                             />
                         </Col>
                         <Col span={10} style={{ paddingTop: "6px" }}>
-                            <Search
+                            {/* <Search
                                 placeholder="Search for a category like 'pizza'"
                                 enterButton="Search"
                                 size="default"
                                 onSearch={value => console.log(value)}
+                            /> */}
+                            <Cascader
+                                options={processedCategoryList}
+                                onChange={(value, selectedOptions) => { this.onFilterChange(value, selectedOptions) }}
+                                placeholder="Search for a category like 'pizza'"
+                                showSearch={{ filter }}
                             />
                         </Col>
                     </Row>
@@ -264,6 +276,10 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
         </div>)
     }
 
+}
+
+function filter(inputValue, path) {
+    return path.some(option => option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1);
 }
 
 export default withApollo(CategoryList)
