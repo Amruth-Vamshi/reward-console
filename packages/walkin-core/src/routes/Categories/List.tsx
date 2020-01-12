@@ -1,10 +1,45 @@
 import * as React from "react";
-import { Row, Col, Button, message } from "antd"
+import { Row, Col, Button, message, Cascader } from "antd"
 import "./style.css"
 import { Query, withApollo, ApolloProviderProps } from "react-apollo";
 import { RouteComponentProps } from "react-router";
 import * as jwt from 'jsonwebtoken';
 import { GET_PH_CATEGORIES } from '../../PlatformQueries';
+
+const options = [
+    {
+        value: 'zhejiang',
+        label: 'Zhejiang',
+        children: [
+            {
+                value: 'hangzhou',
+                label: 'Hangzhou',
+                children: [
+                    {
+                        value: 'xihu',
+                        label: 'West Lake',
+                    },
+                ],
+            },
+        ],
+    },
+    {
+        value: 'jiangsu',
+        label: 'Jiangsu',
+        children: [
+            {
+                value: 'nanjing',
+                label: 'Nanjing',
+                children: [
+                    {
+                        value: 'zhonghuamen',
+                        label: 'Zhong Hua Men',
+                    },
+                ],
+            },
+        ],
+    },
+];
 
 
 interface OrganizationRouterProps {
@@ -65,6 +100,10 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
         }
     };
 
+    onChange(value) {
+        console.log(value);
+    }
+
 
     render() {
         return (<div>
@@ -75,6 +114,9 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
                     <Row>
                         <Col style={{ paddingTop: "6px", fontSize: "12px", color: "#b3b3b3" }} span={12}>CATEGORIES</Col>
                         <Col span={12}><Button size="small" >Add Category</Button></Col>
+                    </Row>
+                    <Row>
+                        {/* <Cascader options={options} onChange={this.onChange} placeholder="Please select" />, */}
                     </Row>
                 </div>
             </div>
