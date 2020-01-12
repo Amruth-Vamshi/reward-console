@@ -141,7 +141,7 @@ class SidebarContent extends React.Component<
             <Menu.Item key="categories">
               <Link to={`/core/items/list`}>
                 <i className="icon icon-inbox" />
-                <span>Items</span>
+                <span>Item Management</span>
               </Link>
             </Menu.Item>
           </Menu>

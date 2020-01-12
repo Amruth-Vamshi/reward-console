@@ -12,7 +12,7 @@ import OrganisationHome from "./routes/OrganisationHome";
 import Stores from "./routes/Stores";
 import Catalogue from "./routes/Catalogue";
 import Category from "./routes/Categories";
-import Items from "./routes/Items";
+import ItemManagement from "./routes/ItemManagement";
 interface HomeProps extends RouteComponentProps {}
 
 export default class extends React.Component<HomeProps, {}> {
@@ -31,7 +31,7 @@ export default class extends React.Component<HomeProps, {}> {
           <Route path={"/core/access-control"} component={AccessControl} />
           <Route path={"/core/catalogue"} component={Catalogue} />
           <Route path={"/core/categories"} component={Category} />
-          <Route path={"/core/items"} component={Items} />
+          <Route path={"/core/items"} component={ItemManagement} />
           <Route path={`${this.props.match.url}/users`} component={Users} />
           {/* <Route path={"/core/orghome/:id"} component={OrganisationHome} /> */}
           <Route path={"/core/stores"} component={Stores} />
