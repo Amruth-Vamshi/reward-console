@@ -7,6 +7,7 @@ import * as jwt from 'jsonwebtoken';
 import { GET_PH_CATEGORIES } from '../../PlatformQueries';
 
 const { Search } = Input;
+const { TextArea } = Input;
 
 const options = [
     {
@@ -243,6 +244,20 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
         console.log("Save Data")
     }
 
+    onNameChange({ target: { value } }) {
+        const { editCategory } = this.state
+        var data = editCategory
+        data.name = value
+        this.setState({ editCategory: data })
+    }
+
+    onDescChange({ target: { value } }) {
+        const { editCategory } = this.state
+        var data = editCategory
+        data.desc = value
+        this.setState({ editCategory: data })
+    }
+
     getBreadCrumb() {
         const { selectedCategoryArr, activeCat, editType } = this.state
 
@@ -339,6 +354,36 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
                         <Col span={8}>
                             <Button className="saveBtn" type="ghost" onClick={() => { this.saveData() }}>Save</Button>
                             <Button className="cancelBtn" type="danger" onClick={() => { this.cancelForm() }}>Cancel</Button>
+                        </Col>
+                    </Row>
+                    <Row className="formDetail">
+                        <Col span={12}>
+                            <div style={{ marginLeft: "15px", paddingBottom: "20px" }}>
+                                <Row className="formTitle">Category Name</Row>
+                                <Row>
+                                    <Input
+                                        value={editCategory.name}
+                                        placeholder=""
+                                        onChange={(val) => { this.onNameChange(val) }}
+                                    />
+                                </Row>
+                            </div>
+                            <div style={{ marginLeft: "15px", paddingBottom: "10px" }}>
+                                <Row className="formTitle">Description</Row>
+                                <Row>
+                                    <TextArea
+                                        value={editCategory.desc}
+                                        onChange={(val) => { this.onDescChange(val) }}
+                                        placeholder=""
+                                        autoSize={{ minRows: 3, maxRows: 5 }}
+                                    />
+                                </Row>
+                            </div>
+                        </Col>
+                        <Col span={12}>
+                            <div style={{ marginLeft: "15px" }}>
+                                <Row className="formTitle">Image</Row>
+                            </div>
                         </Col>
                     </Row>
                 </div>}
