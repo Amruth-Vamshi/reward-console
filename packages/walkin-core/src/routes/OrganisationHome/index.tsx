@@ -1,5 +1,5 @@
 import React from "react";
-import { Col, Row, Avatar, Table, Icon } from "antd";
+import { Col, Row, Avatar, Table, Icon, Spin } from "antd";
 import { Image, CustomList, CustomButton, InfoText } from "@walkinsole/shared";
 import "./index.css";
 import { withApollo, ApolloProviderProps, Query } from "react-apollo";
@@ -133,10 +133,19 @@ class OrganisationHome extends React.Component<
         <Query query={userDetails} variables={{ id: userId }}>
           {({ data, loading, error, refetch }: any) => {
             if (loading) {
-              return <div>loading...</div>;
+              return (
+                <div className="oh-loader-view">
+                  <Spin size="large" />
+                </div>
+              );
             }
             if (error) {
-              return <div>Error</div>;
+              return (
+                <div className="errorContainer">
+                  <Icon type="warning" />
+                  <div style={{ marginLeft: "10px" }}>No data found</div>
+                </div>
+              );
             }
             if (data && data.user) {
               console.log(
@@ -175,7 +184,11 @@ class OrganisationHome extends React.Component<
         >
           {({ data, loading, error, refetch }: any) => {
             if (loading) {
-              return <div>loading...</div>;
+              return (
+                <div className="oh-loader-view">
+                  <Spin size="large" />
+                </div>
+              );
             }
             if (error) {
               return (
