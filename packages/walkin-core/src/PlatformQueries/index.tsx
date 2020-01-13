@@ -601,22 +601,110 @@ export const GET_ANALYTICS = gql`
       organization_id: $org_id
       walkinProducts: $product
     ) {
-      name type rows response total
+      name
+      type
+      rows
+      response
+      total
     }
   }
 `;
 
 export const GET_ALL_STORES = gql`
-query {
-  stores{
-    id name STATUS externalStoreId code extend 
-    state city addressLine1 addressLine2 pinCode country
+  query {
+    stores {
+      id
+      name
+      STATUS
+      externalStoreId
+      code
+      extend
+      state
+      city
+      addressLine1
+      addressLine2
+      pinCode
+      country
+      wifi
+      latitude
+      longitude
+      email
+    }
   }
-}`
+`;
+
+export const STORE = gql`
+  query store($id: ID!) {
+    store(id: $id) {
+      id
+      name
+      STATUS
+      externalStoreId
+      code
+      extend
+      state
+      city
+      addressLine1
+      addressLine2
+      pinCode
+      country
+      wifi
+      latitude
+      longitude
+      email
+    }
+  }
+`;
+
+export const CREATE_STORE = gql`
+  mutation createStore($input: CreateStoreInput!) {
+    createStore(input: $input) {
+      id
+      name
+      STATUS
+      externalStoreId
+      code
+      extend
+      state
+      city
+      addressLine1
+      addressLine2
+      pinCode
+      country
+      wifi
+      latitude
+      longitude
+      email
+    }
+  }
+`;
+
+export const UPDATE_STORE = gql`
+  mutation updateStore($input: UpdateStoreInput!) {
+    updateStore(input: $input) {
+      id
+      name
+      STATUS
+      externalStoreId
+      code
+      extend
+      state
+      city
+      addressLine1
+      addressLine2
+      pinCode
+      country
+      wifi
+      latitude
+      longitude
+      email
+    }
+  }
+`;
 
 export const GET_PH_CATEGORIES = gql`
-  query categoriesWithChildren($catalogId: ID! , $categoryCode: String) {
-    categoriesWithChildren(catalogId : $catalogId , categoryCode:$categoryCode) {
+  query categoriesWithChildren($catalogId: ID!, $categoryCode: String) {
+    categoriesWithChildren(catalogId: $catalogId, categoryCode: $categoryCode) {
       id
       name
       description
@@ -673,6 +761,31 @@ export const GET_PH_CATEGORIES = gql`
         id
         name
         description
+      }
+    }
+  }
+`;
+
+export const GET_PRODUCT_CATEGORIES_BY_CATEGORY_ID = gql`
+  query productCategoriesByCategoryId($categoryId: ID!) {
+    productCategoriesByCategoryId(categoryId: $categoryId) {
+      id
+      product {
+        id
+        name
+        description
+        imageUrl
+        sku
+        type
+        status
+      }
+      category {
+        id
+        name
+        description
+        code
+        catalogId
+        status
       }
     }
   }

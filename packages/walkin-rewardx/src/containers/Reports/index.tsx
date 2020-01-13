@@ -64,7 +64,7 @@ class Reports extends React.Component<ReportsProps, ReportsState> {
           );
         })
         .catch(error => {
-          message.info("Report not found");
+          message.info("Report not available for selected date");
         });
     });
   };
@@ -102,7 +102,7 @@ class Reports extends React.Component<ReportsProps, ReportsState> {
           </Box>
         </div>
       );
-    else if (!this.props.reportConfigs.length)
+    else if (!this.props.reportConfigs && !this.props.reportConfigs.length)
       return (
         <div className={"reports-list-wrapper"}>
           <Box
