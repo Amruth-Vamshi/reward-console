@@ -9,7 +9,7 @@ interface iProps {
 	saveFormRef?: any,
 	formValues?: any,
 	textAndControlText?: string,
-	promptText?: string,
+	promptText?: any,
 	toolTipText?: string,
 	prioritySelectionTitle?: string,
 	priorityButtonText?: string,

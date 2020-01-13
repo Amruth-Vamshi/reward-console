@@ -294,7 +294,7 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 
 					let basicFormArray = { rules: arr, combinator: 'AND' };
 
-					this.setState({ offerEligibityRule: basicFormArray, offerType: formValues.basicForm.offerType, loading1: true });
+					this.setState({ offerEligibityRule: basicFormArray, offerType: basicForm.offerType, loading1: true });
 
 					let ruleId = await this.createRule(basicFormArray, 'offerEligibityRuleId')
 
@@ -342,12 +342,12 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 			if (!isEmpty(formValues.redemptionForm)) {
 
 				let redemptionFormObject = this.state.formValues.redemptionForm;
-				redemptionFormObject[redemptionFormObject.type] = redemptionFormObject.cappingValue;
+				redemptionFormObject[redemptionFormObject.cappingType] = redemptionFormObject.cappingValue;
 
 				if (redemptionFormObject.redemption_time_limit && redemptionFormObject.redemption_time_limit != "")
 					redemptionFormObject.redemption_time_limit = redemptionFormObject.redemption_time_limit + timeLimitType
 
-				let ommitedObject = omit(redemptionFormObject, ['type', 'cappingValue', ""]);
+				let ommitedObject = omit(redemptionFormObject, ['cappingType', 'cappingValue', ""]);
 				let redemptionArray = { rules: transposeObject(ommitedObject, 'EQUALS'), combinator: 'AND' };
 
 
@@ -378,8 +378,8 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 
 
 			} else {
-				this.props.history.push({ pathname: OFFER_LIST });
-				message.success('Your changes were saved', 5);
+				// this.props.history.push({ pathname: OFFER_LIST });
+				// message.success('Your changes were saved', 5);
 			}
 			// } else message.warn("Complete and Save Basic Info First")
 		} else {
@@ -413,6 +413,15 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 	};
 
 	timeLimitTypeChange = e => this.setState({ timeLimitType: e })
+
+	cappingValue = () => {
+		switch (this.state.offerType) {
+			case "PERCENTAGE_DISCOUNT": return "redemption_cap_max_discount"
+			case "PERCENTAGE_CASHBACK": return "redemption_cap_max_cashback"
+			case "FREE_ITMES_FROM_LIST": return "redemption_cap_no_of_items"
+			default: return undefined
+		}
+	}
 
 	render() {
 		const { current, loading1, offerTypeStatus, transactionTimeStatus, productDropDown, locationValues,
@@ -455,16 +464,8 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 			locationArray =
 				subOrganizations &&
 				subOrganizations
-					.map(el => ({
-						value: el.state,
-						title: el.state,
-					}))
-					.concat([
-						{
-							value: 'all',
-							title: 'All',
-						},
-					]);
+					.map(el => ({ value: el.state, title: el.state }))
+					.concat([{ value: 'all', title: 'All', }]);
 		}
 		if (locationDropDown.showStoreList === true) {
 			locationArray =
@@ -497,7 +498,6 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 										transactionTimeStatus={transactionTimeStatus}
 										cartValueConditionData={cartValueConditionData}
 										wrappedComponentRef={this.saveFormRef}
-										cappingData={cappingData}
 										// handleProductChange={this.onProductChange}
 										productDropDown={productDropDown}
 										location={organizationHierarchy}
@@ -532,6 +532,8 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 								</div>
 								<div className="offerBasicFormContainer">
 									<OfferRedemptionRulesForm
+										cappingValue={this.cappingValue()}
+										offerType={this.state.offerType}
 										cappingData={cappingData}
 										wrappedComponentRef={this.saveRedemptionFormRef}
 										formValues={formValues.redemptionForm}

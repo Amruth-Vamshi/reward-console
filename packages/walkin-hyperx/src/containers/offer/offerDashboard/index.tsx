@@ -193,7 +193,7 @@ class OfferDashboard extends React.Component<IAppProps, IAppState> {
 
                                         {cappingType != '' ? <Row>
                                             <Col {...labelCol}>{fieldConvert(cappingData, cappingType, 'value', 'title')} </Col>
-                                            <Col {...wrapperCol}> {redemption[cappingType.replace('redemption_', '')] ? `${redemption[cappingType.replace('redemption_', '')]}${fieldConvert(cappingData, cappingType, 'value', 'extra')}` : '  --'}</Col>
+                                            <Col {...wrapperCol}> {redemption[cappingType.replace('redemption_', '')] ? `${redemption[cappingType.replace('redemption_', '')]}` : '  --'}</Col>
                                         </Row> : ''}
 
                                         <Row>

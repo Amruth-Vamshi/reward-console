@@ -13,7 +13,6 @@ import { FormComponentProps } from "antd/lib/form";
 interface IProps extends FormComponentProps {
 	offerTypeData?: any;
 	handleOfferTypeChange?: any;
-	cappingData?: any;
 	offerTypeStatus?: any;
 	transactionTimeData?: any;
 	locationData?: any;
@@ -191,7 +190,7 @@ const OfferBasicInfoForm = Form.create<IProps>({ name: 'offer_basic_info' })(
 								</Select>
 							)}
 						</Form.Item> :
-						<Form.Item style={{ display: 'inline-block', width: 'calc(20% - 12px)' }} label="Value">
+						<Form.Item style={{ display: 'inline-block', width: 'calc(33.5% - 12px)' }} label="Value">
 							{getFieldDecorator('offerTypeValue', {
 								initialValue: `${Object.keys(formValues).length != 0 ? formValues.offerTypeValue : ''}`,
 								rules: [{ required: true, message: 'Please input offer Value' }],
