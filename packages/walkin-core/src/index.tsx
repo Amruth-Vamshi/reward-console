@@ -9,7 +9,7 @@ import * as React from "react";
 import { Route, Switch, RouteComponentProps } from "react-router-dom";
 import Users from "./routes/users";
 import OrganisationHome from "./routes/OrganisationHome";
-import StoreInfo from "./routes/StoreInfo";
+import Stores from "./routes/Stores";
 interface HomeProps extends RouteComponentProps {}
 
 export default class extends React.Component<HomeProps, {}> {
@@ -29,7 +29,7 @@ export default class extends React.Component<HomeProps, {}> {
 
           <Route path={`${this.props.match.url}/users`} component={Users} />
           {/* <Route path={"/core/orghome/:id"} component={OrganisationHome} /> */}
-          <Route path={"/core/storeinfo"} component={StoreInfo} />
+          <Route path={"/core/stores"} component={Stores} />
           <Route path="/core/*" component={CoreLandingPage} />
         </Switch>
       </div>

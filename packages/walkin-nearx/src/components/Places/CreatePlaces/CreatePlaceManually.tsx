@@ -7,34 +7,37 @@ import { nearXClient as client } from "../../../nearXApollo";
 import { CREATE_PLACE, PLACES_BY_ID } from "../../../queries";
 import AddHotspot from "./AddHotspot";
 import { RADIUS_1_MIN, HOTSPOT_RADIUS } from "../../../Constants";
-import { History } from "history"
+import { History } from "history";
 
 const geolocation: any =
   canUseDOM && navigator.geolocation
     ? navigator.geolocation
     : {
-      getCurrentPosition(success, failure) {
-        failure(`Your browser doesn't support geolocation.`);
-      }
-    };
+        getCurrentPosition(success, failure) {
+          failure(`Your browser doesn't support geolocation.`);
+        }
+      };
 
 interface iProps {
-  history?: History
+  history?: History;
 }
 
 interface iState {
-  places?: Array<any>,
-  places1?: Array<any>,
-  center?: { lat?: any, lng?: any },
-  errors?: any,
-  markerPlace?: number,
-  getLoc?: boolean,
-  visible?: boolean,
-  loading1?: boolean,
-  loading?: boolean
+  places?: Array<any>;
+  places1?: Array<any>;
+  center?: { lat?: any; lng?: any };
+  errors?: any;
+  markerPlace?: number;
+  getLoc?: boolean;
+  visible?: boolean;
+  loading1?: boolean;
+  loading?: boolean;
 }
 
-export default class CreatePlaceManually extends React.Component<iProps, iState> {
+export default class CreatePlaceManually extends React.Component<
+  iProps,
+  iState
+> {
   deleteHotspot: any;
   constructor(props) {
     super(props);
@@ -70,7 +73,6 @@ export default class CreatePlaceManually extends React.Component<iProps, iState>
   }
 
   UNSAFE_componentWillMount() {
-
     sessionStorage.getItem("placeId")
       ? this.getPlaceDetails(JSON.parse(sessionStorage.getItem("placeId")))
       : this.getGeoLocation(0);
@@ -280,10 +282,10 @@ export default class CreatePlaceManually extends React.Component<iProps, iState>
   };
 
   deleteRedi = n => {
-    let { places } = this.state
-    places[n].radius.pop()
-    this.setState({ places })
-  }
+    let { places } = this.state;
+    places[n].radius.pop();
+    this.setState({ places });
+  };
 
   handleOk = () => {
     this.setState({ loading: true });
@@ -324,7 +326,9 @@ export default class CreatePlaceManually extends React.Component<iProps, iState>
           <Col xs={24} sm={12} span={12}>
             {/* <Affix offsetTop={185}> */}
             <div className="gx-card">
-              <div style={{ fontSize: 20 }} className="gx-card-head">Geo Location</div>
+              <div style={{ fontSize: 20 }} className="gx-card-head">
+                Geo Location
+              </div>
               <div className="gx-card-body">
                 <GeofenceMap
                   mapHeight="600px"

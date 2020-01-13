@@ -36,7 +36,7 @@ class BasicSlider extends React.Component<iProps, {}> {
             },
             100: {
               style: { left: "90%", width: "100%" },
-              label: `Control Group: ${controlValue ? controlValue : 5}`
+              label: `Control Group: ${controlValue}`
             }
           }}
           value={testValue ? testValue : 95}

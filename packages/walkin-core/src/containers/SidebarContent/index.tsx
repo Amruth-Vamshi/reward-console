@@ -31,7 +31,10 @@ interface SidebarContentState {
   userId?: any;
 }
 
-class SidebarContent extends React.Component<SidebarContentProps, SidebarContentState> {
+class SidebarContent extends React.Component<
+  SidebarContentProps,
+  SidebarContentState
+> {
   constructor(props: SidebarContentProps) {
     super(props);
     this.state = {
@@ -77,12 +80,17 @@ class SidebarContent extends React.Component<SidebarContentProps, SidebarContent
 
     if (!isSettingsSideBar) {
       return (
-        <div style={{ height: '100%' }} className="HyperX-Sidebar gx-sidebar-content">
-          <Menu style={{ height: "100%" }}
+        <div
+          style={{ height: "100%" }}
+          className="HyperX-Sidebar gx-sidebar-content"
+        >
+          <Menu
+            style={{ height: "100%" }}
             defaultOpenKeys={[]}
             selectedKeys={[]}
             theme={themeType === THEME_TYPE_LITE ? "light" : "dark"}
-            mode="inline">
+            mode="inline"
+          >
             <Menu.Item key="core">
               <Link to="/core">
                 <i className="icon icon-apps" />
@@ -99,7 +107,7 @@ class SidebarContent extends React.Component<SidebarContentProps, SidebarContent
             <Menu.Item key="organizationInfo">
               <Link
                 to={`/core/organization/${orgId ? orgId : ""}`}
-              // to="core/organization"
+                // to="core/organization"
               >
                 <i className="icon icon-inbox" />
                 {/* <IntlMessages id="sidebar.nearx" /> */}
@@ -107,11 +115,17 @@ class SidebarContent extends React.Component<SidebarContentProps, SidebarContent
               </Link>
             </Menu.Item>
             <Menu.Item key="business-rules">
-            <Link to={`/core/business-rules`}>
-              <i className="icon icon-inbox" />
-              <span>Business Rules</span>
-            </Link>
-          </Menu.Item>
+              <Link to={`/core/business-rules`}>
+                <i className="icon icon-inbox" />
+                <span>Business Rules</span>
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="stores">
+              <Link to={`/core/stores`}>
+                <i className="icon icon-inbox" />
+                <span>Store Info</span>
+              </Link>
+            </Menu.Item>
           </Menu>
         </div>
       );
@@ -123,11 +137,17 @@ class SidebarContent extends React.Component<SidebarContentProps, SidebarContent
         defaultOpenKeys={[defaultOpenKeys[2]]}
         selectedKeys={[defaultOpenKeys[3]]}
         // theme={sidebarTheme}
-        mode="inline" >
-
-        <Menu.SubMenu key="profile"
-          title={<span> <i className="icon icon-profile" />  <span>My Profile</span> </span>}>
-        </Menu.SubMenu>
+        mode="inline"
+      >
+        <Menu.SubMenu
+          key="profile"
+          title={
+            <span>
+              {" "}
+              <i className="icon icon-profile" /> <span>My Profile</span>{" "}
+            </span>
+          }
+        ></Menu.SubMenu>
 
         <Menu.SubMenu
           key="account"
@@ -136,8 +156,8 @@ class SidebarContent extends React.Component<SidebarContentProps, SidebarContent
               <i className="icon icon-setting" />
               <span>Account & Privacy Settings</span>
             </span>
-          }>
-        </Menu.SubMenu>
+          }
+        ></Menu.SubMenu>
 
         <Menu.SubMenu
           style={{ backgroundColor: "#F3F3F3" }}
@@ -147,12 +167,15 @@ class SidebarContent extends React.Component<SidebarContentProps, SidebarContent
               <i className="icon icon-setting" />
               <span>Developer Settings</span>
             </span>
-          }>
-
+          }
+        >
           <Menu.Item style={{ backgroundColor: "#F3F3F3" }} key="webhooks">
             <Link to="/core/settings/developer/webhooks">Webhooks</Link>
           </Menu.Item>
-          <Menu.Item style={{ backgroundColor: "#F3F3F3" }} key="entity-extention">
+          <Menu.Item
+            style={{ backgroundColor: "#F3F3F3" }}
+            key="entity-extention"
+          >
             <Link to="/core/settings/developer/entity-extention">
               Entity Management
             </Link>

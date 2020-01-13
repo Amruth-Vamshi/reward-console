@@ -852,7 +852,6 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 	}
 
 	linkTypeSelect = e => {
-		console.log(e);
 		let { smsForm } = this.state
 		smsForm.smsBody = smsForm.smsBody ? smsForm.smsBody + `{{${e}}}` : `{{${e}}}`
 		this.setState({ smsForm })
@@ -860,7 +859,6 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 
 
 	logQuery = (audienceFilterRule, ruleQuery) => {
-		console.log('rule', audienceFilterRule);
 		this.setState({ audienceFilterRule, ruleQuery });
 	};
 
@@ -889,6 +887,8 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 			},
 		};
 
+		const testAndControlText = "You can separate few users as 'CONTROL' for which no offer & its related communication be sent. Comparison can be made against CONTROL users with the ones who got offers (TEST) to evaluate the success of campaign. (The usual ratio of TEST:CONTROL is 95:5 , however this can be modified to suit campaign's needs / business policy)."
+
 
 		return (
 			<div>
@@ -904,7 +904,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 							saveFormRef={this.saveFormRef}
 							formValues={formValues}
 							priorityChosen={this.state.priorityChosen}
-							promptText="prompt text"
+							promptText={testAndControlText}
 							toolTipText="what is test and control?"
 							prioritySelectionTitle="Campaign Priority"
 							priorityButtonText="Custom no"

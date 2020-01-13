@@ -11,7 +11,7 @@ import { RouteChildrenProps } from 'react-router';
 import { withRouter } from 'react-router-dom';
 
 import { campaigns, DISABLE_CAMPAIGN, VIEW_HYPERX_CAMPAIGNS } from '../../../query/campaign';
-import { DEFAULT_ACTIVE_STATUS, DEFAULT_HYPERX_CAMPAIGN, SHOULD_EDIT } from '../../../constants';
+import { DEFAULT_ACTIVE_STATUS, DEFAULT_HYPERX_CAMPAIGN, SHOULD_EDIT, DEFAULT_HYPERX_CAMPAIGN_STATES } from '../../../constants';
 import { CAMPAIGN_DASHBOARD, NEW_CAMPAIGN } from '../../../constants/RouterConstants';
 import HyperXContainer from '../../../utils/HyperXContainer';
 import { WHeader } from '@walkinsole/shared/src';
@@ -19,6 +19,7 @@ import { includes } from 'lodash'
 
 
 const { TabPane } = Tabs;
+const DEFAULT_PAGE_SIZE = 6
 
 interface CampaignListProps extends RouteChildrenProps, ApolloProviderProps<any> {
   campaigns?: any
@@ -36,6 +37,8 @@ interface CampaignListState {
   filtered: any,
   allCampaigns: any,
   data: any,
+  total?
+  current?
   loading: boolean,
   showPopUp: boolean,
   popupmessage: any,
@@ -51,12 +54,15 @@ class CampaignList extends React.Component<CampaignListProps, Partial<CampaignLi
       filtered: null,
       allCampaigns: null,
       data: null,
+      total: 0,
+      current: 1,
       loading: false,
       key: this.props.location.state ? this.props.location.state.tabKey ? this.props.location.state.tabKey : '1' : '1'
     };
   }
 
-  componentWillMount() {
+  getCampaigns = (offset, state) => {
+    console.log('state ', state);
     this.setState({ loading: true })
     this.props.client.query({
       query: VIEW_HYPERX_CAMPAIGNS,
@@ -64,14 +70,17 @@ class CampaignList extends React.Component<CampaignListProps, Partial<CampaignLi
         input: {
           organizationId: jwt.decode(localStorage.getItem("jwt"))['org_id'],
           status: DEFAULT_ACTIVE_STATUS,
+          limit: DEFAULT_PAGE_SIZE,
+          offset: offset,
+          campaignStatus: state,
           // campaignType: DEFAULT_HYPERX_CAMPAIGN
         }
       }, fetchPolicy: 'network-only'
     }).then(res => {
-
-      let allCampaigns = res.data.viewCampaignsForHyperX.map(c =>
+      let data = res.data.viewCampaignsForHyperX
+      let allCampaigns = data.data.map(c =>
         ({ ...c.campaign, reached: c.reached, audienceCount: c.audienceCount, redemptionRate: c.redemptionRate }))
-      this.setState({ loading: false, allCampaigns }, () => this.onTabChange(this.state.key));
+      this.setState({ loading: false, allCampaigns, total: data.total }, () => this.dataManipulation(this.state.key));
 
     }).catch(err => {
       this.setState({ loading: false });
@@ -79,29 +88,16 @@ class CampaignList extends React.Component<CampaignListProps, Partial<CampaignLi
     });
   }
 
+  componentWillMount() {
+    this.getCampaigns(0, "LIVE")
+  }
 
-  // componentDidUpdate(preValue: any) {
-  //   if (this.props.loading !== preValue.loading) {
-  //     this.setInitialValues()
-  //   }
-  // }
-
-  // setInitialValues = () => {
-  //   const { campaigns, loading } = this.state;
-  //   this.setState({ allCampaigns: campaigns, loading: false }, () => {
-  //     this.onTabChange(this.state.key)
-  //   })
-  // }
 
   onNewCampaign = () => {
     const { history } = this.props;
     history.push({
       pathname: NEW_CAMPAIGN,
     });
-  };
-  handleChange = (pagination: any, filters: any, sorter: any) => {
-    console.log(pagination, filters, sorter);
-    this.setState({ sortedInfo: sorter });
   };
 
   onDeleteCampaign = (campaign: any) => {
@@ -180,6 +176,13 @@ class CampaignList extends React.Component<CampaignListProps, Partial<CampaignLi
     </Menu>
   );
 
+  handleChange = (pagination: any, filters: any, sorter: any) => {
+    console.log(pagination, filters, sorter);
+    // let { current } = this.state
+    // current = pagination.current
+    this.setState({ sortedInfo: sorter, current: pagination.current });
+  };
+
   onCampaignFilteredList = (newList: any) => {
     console.log("new list", newList)
     this.setState({
@@ -187,48 +190,36 @@ class CampaignList extends React.Component<CampaignListProps, Partial<CampaignLi
     });
   };
 
-  onTabChange = (key: any) => {
-    this.setState({ key })
+  dataManipulation = (key) => {
     const { allCampaigns } = this.state
     if (!allCampaigns || allCampaigns.length < 1) return
-    if (key == 2) {
-      let upcomingCampaigns = allCampaigns.filter((val: any) => {
-        if (val.status == 'ACTIVE')
-          return val.campaignStatus == "PRE_LIVE_PROCESSING" || (val.campaignStatus == 'LIVE' && moment(val.startTime).isAfter(moment()));
-      });
-      this.setState({ data: upcomingCampaigns, filtered: null });
-    }
-
-    if (key == 3) {
-      let completedCampaigns = allCampaigns.filter((val: any) => {
-        if (val.status == 'ACTIVE') {
-          // return moment(val.endTime).isBefore(moment());
-          return val.campaignStatus == "COMPLETED"
-        }
-      });
-      this.setState({ data: completedCampaigns, filtered: null });
-    }
-    if (key == 4) {
-      let draftCampaigns = allCampaigns.filter((val: any) => {
-        return val.campaignStatus == 'DRAFT';
-      });
-      this.setState({ data: draftCampaigns, filtered: null });
-    }
-    if (key == 5) {
-      let draftCampaigns = allCampaigns.filter((val: any) => {
-        return val.campaignStatus == 'PAUSE';
-      });
-      this.setState({ data: draftCampaigns, filtered: null });
-    }
     if (key == 1) {
-      let liveCampaigns = allCampaigns.filter((val: any) => {
-        if (val.status == 'ACTIVE') {
-          return val.campaignStatus == 'LIVE' && moment().isBetween(val.startTime, val.endTime);
-        }
-      });
+      let liveCampaigns = allCampaigns.filter((val: any) => moment().isBetween(val.startTime, val.endTime));
       this.setState({ data: liveCampaigns, filtered: null });
+    } else if (key == 2) {
+      let upcomingCampaigns = allCampaigns.filter((val: any) => val.campaignStatus == DEFAULT_HYPERX_CAMPAIGN_STATES[1] || (val.campaignStatus == DEFAULT_HYPERX_CAMPAIGN_STATES[0] && moment(val.startTime).isAfter(moment())));
+      this.setState({ data: upcomingCampaigns, filtered: null });
+    } else {
+      let Campaigns = allCampaigns
+      this.setState({ data: Campaigns, filtered: null });
     }
+  }
+
+  onTabChange = (key: any) => {
+    this.setState({ key, data: [], current: 1 })
+
+    if (key == 2) this.getCampaigns(0, [DEFAULT_HYPERX_CAMPAIGN_STATES[0], DEFAULT_HYPERX_CAMPAIGN_STATES[1]])
+    else this.getCampaigns(0, DEFAULT_HYPERX_CAMPAIGN_STATES[key - 1])
+
   };
+
+
+  onTableChange = (e, n) => {
+    if (n) {    // Filter for Pagination Changes
+      // console.log('onChange', e, n)
+      this.getCampaigns(e - 1, DEFAULT_HYPERX_CAMPAIGN_STATES[this.state.key - 1]) 
+    }
+  }
 
   render() {
     let { sortedInfo, filteredInfo, filtered, data, loading, key } = this.state;
@@ -242,8 +233,10 @@ class CampaignList extends React.Component<CampaignListProps, Partial<CampaignLi
     }
     const paginationData = {
       position: "bottom",
-      total: campaignData ? campaignData.length : 0,
-      defaultPageSize: 6,
+      current: this.state.current,
+      onChange: (e, n) => this.onTableChange(e, n),
+      total: this.state.total,
+      defaultPageSize: DEFAULT_PAGE_SIZE,
       showTotal: (total: any, range: any) => `${range[0]}-${range[1]} of ${total} items`
     }
 
@@ -323,30 +316,7 @@ class CampaignList extends React.Component<CampaignListProps, Partial<CampaignLi
     ];
     return (
       <div>
-        {/* <CampaignHeader
-          children={
-            <React.Fragment>
-              <Col span={12}>
-                <h3 className="gx-text-grey paddingLeftStyle campaignHeaderTitleStyle">Campaigns</h3>
-              </Col>
-              <Col style={{ display: 'flex', justifyContent: 'flex-end' }} span={12}>
-                <Button type="primary" style={{ marginBottom: 0 }} onClick={this.onNewCampaign}>
-                  CREATE CAMPAIGN
-								</Button>
-              </Col>
-            </React.Fragment>
-          }
-        /> */}
         <WHeader title='Campaigns' extra={<Button type="primary" style={{ marginBottom: 0 }} onClick={this.onNewCampaign}>CREATE CAMPAIGN</Button>} />
-        {/* // <div className="gx-card" style={{ margin: '32px' }}>
-					// 	<div className="gx-card-body">
-					// 		<div className="searchInputStyle">
-					// 			<InstantSearch
-					// 				placeHolder="Search campaign"
-					// 				data={data}
-					// 				onFilteredList={this.onCampaignFilteredList}
-					// 			/>
-					// 		</div> */}
         <HyperXContainer margin='32px' headerHeightInPX={160}>
           <div className="HyperX-campaignList">
             <Widget styleName="gx-card-tabs"
