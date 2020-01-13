@@ -128,7 +128,7 @@ class ListHome extends React.Component<iProps, iState> {
         })
         .then(res => {
           console.log("Category Data Recieved", res);
-          let categoryId = res.data.categoriesWithChildren.id;
+          //   let productId = res.data.categoriesWithChildren.id;
           //   if (categoryId) this.getCategoryProducts(categoryId);
           //   console.log("Processed Data : ", res.data.categoriesWithChildren);
           var final = this.processData(res.data.categoriesWithChildren);
@@ -147,28 +147,28 @@ class ListHome extends React.Component<iProps, iState> {
     }
   };
 
-  //   getCategoryProducts = (categoryId: string) => {
-  //     this.props.client
-  //       .query({
-  //         query: GET_PRODUCT_CATEGORIES_BY_CATEGORY_ID,
-  //         variables: { categoryId },
-  //         fetchPolicy: "network-only"
-  //       })
-  //       .then(res => {
-  //         console.log("Category product", res);
-  //         //   console.log("Processed Data : ", res.data.categoriesWithChildren);
-  //         var final = this.processData(res.data.categoriesWithChildren);
-  //         console.log("Final : ", final);
-  //         this.setState({
-  //           processedCategoryList: final,
-  //           rawData: res.data.categoriesWithChildren
-  //         });
-  //       })
-  //       .catch(err => {
-  //         //   message.error("ERROR");
-  //         console.log("Failed to get Category Details" + err);
-  //       });
-  //   };
+  getCategoryProducts = (productId: string) => {
+    this.props.client
+      .query({
+        query: GET_PRODUCT_CATEGORIES_BY_CATEGORY_ID,
+        variables: { categoryId: productId },
+        fetchPolicy: "network-only"
+      })
+      .then(res => {
+        console.log("Category product", res);
+        //   console.log("Processed Data : ", res.data.categoriesWithChildren);
+        //   var final = this.processData(res.data.categoriesWithChildren);
+        //   console.log("Final : ", final);
+        //   this.setState({
+        //     processedCategoryList: final,
+        //     rawData: res.data.categoriesWithChildren
+        //   });
+      })
+      .catch(err => {
+        //   message.error("ERROR");
+        console.log("Failed to get Category Details" + err);
+      });
+  };
 
   processData(data) {
     var arr = [];
@@ -197,19 +197,39 @@ class ListHome extends React.Component<iProps, iState> {
     console.log("clicked", label, option);
   };
 
+  onChangeCascader = (value, selectedOptions) => {
+    console.log(value, selectedOptions);
+    let productId = selectedOptions[selectedOptions.length - 1].id;
+    this.getCategoryProducts(productId);
+  };
+
+  loadDataInCascader = selectedOptions => {
+    console.log(selectedOptions, "inside load cascader");
+
+    // const targetOption = selectedOptions[selectedOptions.length - 1];
+    // targetOption.loading = true;
+
+    // let productId = selectedOptions[selectedOptions.length - 1].id;
+    // this.getCategoryProducts(productId);
+  };
+
   onChange = (pagination, filters, sorter, extra) => {
     console.log("params", pagination, filters, sorter, extra);
   };
 
-  displayRender = (labels, selectedOptions) =>
-    labels.map((label, i) => {
-      const option = selectedOptions[i];
-      if (i === labels.length - 1) {
-        console.log(labels, selectedOptions);
-        return <span key={option.value}>{label}</span>;
-      }
-      return <span key={option.value}>All / {label} / </span>;
-    });
+  displayRender = (labels, selectedOptions) => {
+    if (labels.length === 1) {
+      return <span key={selectedOptions[0].value}>All / {labels[0]} </span>;
+    } else {
+      return labels.map((label, i) => {
+        const option = selectedOptions[i];
+        if (i === labels.length - 1) {
+          return <span key={option.value}>{label}</span>;
+        }
+        return <span key={option.value}>All / {label} / </span>;
+      });
+    }
+  };
 
   render() {
     let { processedCategoryList } = this.state;
@@ -272,7 +292,10 @@ class ListHome extends React.Component<iProps, iState> {
               <Cascader
                 size="large"
                 options={processedCategoryList}
-                // defaultValue={["ALL"]}
+                loadData={this.loadDataInCascader}
+                onChange={(val, selectedOptions) => {
+                  this.onChangeCascader(val, selectedOptions);
+                }}
                 displayRender={this.displayRender}
                 style={{ width: "100%" }}
               />

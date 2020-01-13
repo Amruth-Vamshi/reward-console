@@ -778,6 +778,28 @@ export const GET_PRODUCT_CATEGORIES_BY_CATEGORY_ID = gql`
         sku
         type
         status
+        variants {
+          id
+          sku
+          product {
+            id
+            name
+            description
+            imageUrl
+            sku
+            type
+            status
+          }
+          optionValues {
+            id
+            value
+            option {
+              id
+              name
+              description
+            }
+          }
+        }
       }
       category {
         id
