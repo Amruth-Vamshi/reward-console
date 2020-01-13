@@ -138,3 +138,28 @@
     padding-bottom: 8px;
     color: #b3b3b3;
   }
+
+  .catImage{
+    height: 100px;
+    width: 100px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 10px #e6e6e6;
+  }
+
+  .imgLink {
+    margin-right: 50px;
+    margin-bottom: 20px;
+  }
+
+  .imgUpload{
+    width: 115px;
+    border-radius: 2px;
+    border: -1px;
+    border-color: #000;
+  }
+
+  .imgReset{
+    color: #000;
+    font-weight: 500;
+  }
+

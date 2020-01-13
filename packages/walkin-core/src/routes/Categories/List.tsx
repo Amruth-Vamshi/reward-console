@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Row, Col, Button, message, Cascader, Input, Icon, Breadcrumb, Switch } from "antd"
+import { Row, Col, Button, message, Cascader, Input, Icon, Breadcrumb, Switch, Modal } from "antd"
 import "./style.css"
 import { Query, withApollo, ApolloProviderProps } from "react-apollo";
 import { RouteComponentProps } from "react-router";
@@ -302,13 +302,22 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
                 <div className="categoryContainer">
                     <Row style={{ paddingBottom: "15px" }}>
                         <Col span={12}>
-                            <Cascader
+                            {/* <Cascader
                                 style={{ paddingTop: "6px" }}
                                 value={selectedCategoryArr}
                                 className="cascaderStyle"
                                 options={processedCategoryList}
                                 onChange={(val) => { this.onChange(val) }}
                                 placeholder="Please select a category"
+                            /> */}
+                            <Cascader
+                                options={processedCategoryList}
+                                style={{ paddingTop: "6px" }}
+                                className="cascaderStyle"
+                                value={selectedCategoryArr}
+                                onChange={(value, selectedOptions) => { this.onFilterChange(value, selectedOptions) }}
+                                placeholder="Select or Search for a category like 'pizza'"
+                                showSearch={{ filter }}
                             />
                         </Col>
                         <Col span={10} style={{ paddingTop: "6px" }}>
@@ -318,13 +327,13 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
                                 size="default"
                                 onSearch={value => console.log(value)}
                             /> */}
-                            <Cascader
+                            {/* <Cascader
                                 options={processedCategoryList}
                                 // value={selectedCategoryArr}
                                 onChange={(value, selectedOptions) => { this.onFilterChange(value, selectedOptions) }}
                                 placeholder="Search for a category like 'pizza'"
                                 showSearch={{ filter }}
-                            />
+                            /> */}
                         </Col>
                     </Row>
                     {((selectedCategory !== null && selectedCategoryArr.length > 0) || (selectedCategoryArr.length === 0)) && <Row>
@@ -383,6 +392,16 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
                         <Col span={12}>
                             <div style={{ marginLeft: "15px" }}>
                                 <Row className="formTitle">Image</Row>
+                                <Row>
+                                    <Col span={8}>
+                                        <img className="catImage" src={"https://d2q79iu7y748jz.cloudfront.net/s/_squarelogo/fe5765f54a58c837ccd85e879951005a"} />
+                                    </Col>
+                                    <Col span={16}>
+                                        <Row className="imgLink"><Input size="small" placeholder="http//www.google.com" /></Row>
+                                        <Row><Button className="imgUpload" size="small">Upload Image</Button></Row>
+                                        <Row><Button className="imgReset" size="small" type="link">Reset to Default</Button></Row>
+                                    </Col>
+                                </Row>
                             </div>
                         </Col>
                     </Row>
