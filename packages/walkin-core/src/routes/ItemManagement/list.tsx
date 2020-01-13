@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Row, Col, Cascader, Button, Input, Icon, Table } from "antd";
+import { Row, Col, Cascader, Button, Input, Icon, Table, Spin } from "antd";
 import * as jwt from "jsonwebtoken";
 import { Query, withApollo, ApolloProviderProps } from "react-apollo";
 
@@ -14,101 +14,26 @@ interface iProps extends ApolloProviderProps<any> {}
 
 interface iState {
   processedCategoryList: any;
-  rawData: any;
+  categoryRawData: any;
+  productsRawData: any;
+  productsFinalData: any;
+  selectedProductRowIndex: any;
+  isFetching: boolean;
+  isCategorySelected: boolean;
 }
-
-const options = [
-  {
-    value: "zhejiang",
-    label: "Zhejiang",
-    children: [
-      {
-        value: "hangzhou",
-        label: "Hangzhou",
-        children: [
-          {
-            value: "xihu",
-            label: "West Lake",
-            code: 752100
-          }
-        ]
-      }
-    ]
-  },
-  {
-    value: "jiangsu",
-    label: "Jiangsu",
-    children: [
-      {
-        value: "nanjing",
-        label: "Nanjing",
-        children: [
-          {
-            value: "zhonghuamen",
-            label: "Zhong Hua Men",
-            code: 453400
-          }
-        ]
-      }
-    ]
-  }
-];
-
-const data = [
-  {
-    key: "1",
-    name: "John Brown",
-    size: 32,
-    crust: "New York No. 1 Lake Park"
-  },
-  {
-    key: "2",
-    name: "Jim Green",
-    size: 42,
-    crust: "London No. 1 Lake Park"
-  },
-  {
-    key: "3",
-    name: "Joe Black",
-    size: 32,
-    crust: "Sidney No. 1 Lake Park"
-  },
-  {
-    key: "4",
-    name: "Jim Red",
-    size: 32,
-    crust: "London No. 2 Lake Park"
-  },
-  {
-    key: "5",
-    name: "John Brown",
-    size: 32,
-    crust: "New York No. 1 Lake Park"
-  },
-  {
-    key: "6",
-    name: "Jim Green",
-    size: 42,
-    crust: "London No. 1 Lake Park"
-  },
-  {
-    key: "7",
-    name: "Joe Black",
-    size: 32,
-    crust: "Sidney No. 1 Lake Park"
-  },
-  {
-    key: "8",
-    name: "Jim Red",
-    size: 32,
-    crust: "London No. 2 Lake Park"
-  }
-];
 
 class ListHome extends React.Component<iProps, iState> {
   constructor(props: iProps) {
     super(props);
-    this.state = { processedCategoryList: [], rawData: [] };
+    this.state = {
+      processedCategoryList: [],
+      categoryRawData: [],
+      productsRawData: [],
+      productsFinalData: [],
+      selectedProductRowIndex: null,
+      isFetching: true,
+      isCategorySelected: false
+    };
   }
 
   UNSAFE_componentWillMount() {
@@ -128,14 +53,12 @@ class ListHome extends React.Component<iProps, iState> {
         })
         .then(res => {
           console.log("Category Data Recieved", res);
-          //   let productId = res.data.categoriesWithChildren.id;
-          //   if (categoryId) this.getCategoryProducts(categoryId);
-          //   console.log("Processed Data : ", res.data.categoriesWithChildren);
           var final = this.processData(res.data.categoriesWithChildren);
           console.log("Final : ", final);
           this.setState({
             processedCategoryList: final,
-            rawData: res.data.categoriesWithChildren
+            categoryRawData: res.data.categoriesWithChildren,
+            isFetching: false
           });
         })
         .catch(err => {
@@ -148,26 +71,63 @@ class ListHome extends React.Component<iProps, iState> {
   };
 
   getCategoryProducts = (productId: string) => {
-    this.props.client
-      .query({
-        query: GET_PRODUCT_CATEGORIES_BY_CATEGORY_ID,
-        variables: { categoryId: productId },
-        fetchPolicy: "network-only"
-      })
-      .then(res => {
-        console.log("Category product", res);
-        //   console.log("Processed Data : ", res.data.categoriesWithChildren);
-        //   var final = this.processData(res.data.categoriesWithChildren);
-        //   console.log("Final : ", final);
-        //   this.setState({
-        //     processedCategoryList: final,
-        //     rawData: res.data.categoriesWithChildren
-        //   });
-      })
-      .catch(err => {
-        //   message.error("ERROR");
-        console.log("Failed to get Category Details" + err);
-      });
+    this.setState({ isCategorySelected: true, isFetching: true }, () => {
+      this.props.client
+        .query({
+          query: GET_PRODUCT_CATEGORIES_BY_CATEGORY_ID,
+          variables: { categoryId: productId },
+          fetchPolicy: "network-only"
+        })
+        .then(res => {
+          console.log("Category product", res);
+
+          let productsFinalData = [];
+          res.data.productCategoriesByCategoryId.map((product, index) => {
+            productsFinalData.push({
+              key: `${index}-parent`,
+              id: product.product.id,
+              name: product.product.name,
+              size: "(parent)",
+              crust: "(Parent)",
+              parentIndex: index,
+              variantIndex: null
+            });
+            if (product.product.variants.length > 0) {
+              product.product.variants.map((variant, variantIndex) => {
+                productsFinalData.push({
+                  key: `${variantIndex}-variant`,
+                  id: variant.product.id,
+                  name: variant.product.name,
+                  size: variant.optionValues.map(
+                    (optionValue, optionValueIndex) => {
+                      if (optionValue.option.name === "Size")
+                        return optionValue.value;
+                    }
+                  ),
+                  crust: variant.optionValues.map(
+                    (optionValue, optionValueIndex) => {
+                      if (optionValue.option.name === "Base")
+                        return optionValue.value;
+                    }
+                  ),
+                  parentIndex: index,
+                  variantIndex: variantIndex
+                });
+              });
+            }
+          });
+          console.log(productsFinalData);
+          this.setState({
+            productsRawData: res.data.productCategoriesByCategoryId,
+            productsFinalData,
+            isFetching: false
+          });
+        })
+        .catch(err => {
+          //   message.error("ERROR");
+          console.log("Failed to get Category Details" + err);
+        });
+    });
   };
 
   processData(data) {
@@ -199,18 +159,18 @@ class ListHome extends React.Component<iProps, iState> {
 
   onChangeCascader = (value, selectedOptions) => {
     console.log(value, selectedOptions);
-    let productId = selectedOptions[selectedOptions.length - 1].id;
-    this.getCategoryProducts(productId);
-  };
-
-  loadDataInCascader = selectedOptions => {
-    console.log(selectedOptions, "inside load cascader");
-
-    // const targetOption = selectedOptions[selectedOptions.length - 1];
-    // targetOption.loading = true;
-
-    // let productId = selectedOptions[selectedOptions.length - 1].id;
-    // this.getCategoryProducts(productId);
+    if (value.length === 0 && selectedOptions.length === 0) {
+      this.setState({
+        isCategorySelected: false,
+        selectedProductRowIndex: null,
+        productsRawData: [],
+        productsFinalData: []
+      });
+    }
+    if (selectedOptions[selectedOptions.length - 1].children.length === 0) {
+      let productId = selectedOptions[selectedOptions.length - 1].id;
+      this.getCategoryProducts(productId);
+    }
   };
 
   onChange = (pagination, filters, sorter, extra) => {
@@ -231,8 +191,41 @@ class ListHome extends React.Component<iProps, iState> {
     }
   };
 
+  onSelectRow = (record, selected, selectedRows, nativeEvent) => {
+    console.log("row selected", record, selected, selectedRows, nativeEvent);
+  };
+
+  showProductDetailsForm = () => {
+    let selectedFinalProductData = this.state.productsFinalData[
+      this.state.selectedProductRowIndex
+    ];
+    let selectedItemRawData;
+    if (selectedFinalProductData.variantIndex === null) {
+      selectedItemRawData = this.state.productsRawData[
+        selectedFinalProductData.parentIndex
+      ];
+    } else {
+      selectedItemRawData = this.state.productsRawData[
+        selectedFinalProductData.parentIndex
+      ].product.variants[selectedFinalProductData.variantIndex];
+    }
+
+    return (
+      <VariantDetailsForm
+        productDetails={selectedItemRawData}
+        onSave={() => {}}
+      />
+    );
+  };
+
   render() {
-    let { processedCategoryList } = this.state;
+    let {
+      processedCategoryList,
+      isFetching,
+      isCategorySelected,
+      selectedProductRowIndex,
+      productsFinalData
+    } = this.state;
     const columns: any = [
       {
         title: "Name",
@@ -286,54 +279,90 @@ class ListHome extends React.Component<iProps, iState> {
           <h1>List Management</h1>
           <div>Search for an item name, SKU or explore through Categories</div>
         </Col>
-        <Col className="itemManagementBodyWrapper">
-          <Row>
-            <Col span={12}>
-              <Cascader
-                size="large"
-                options={processedCategoryList}
-                loadData={this.loadDataInCascader}
-                onChange={(val, selectedOptions) => {
-                  this.onChangeCascader(val, selectedOptions);
-                }}
-                displayRender={this.displayRender}
-                style={{ width: "100%" }}
-              />
-            </Col>
-            <Col span={10}>
-              <Input
-                size="large"
-                placeholder="Search for a category like Pizza"
-                prefix={
-                  <Icon type="search" style={{ color: "rgba(0,0,0,.25)" }} />
-                }
-              />
-            </Col>
-            <Col span={2}>
-              <Button
-                disabled={false}
-                //   className="button"
-                type="primary"
-                size="large"
-                onClick={() => {
-                  // this.props.history.push("/core/stores/create");
-                }}
-                loading={false}
-              >
-                Search
-              </Button>
-            </Col>
-          </Row>
-          <Table
-            columns={columns}
-            dataSource={data}
-            onChange={this.onChange}
-            pagination={false}
-            scroll={{ y: 300 }}
-          />
-          <Row></Row>
-        </Col>
-        <VariantDetailsForm />
+        {isFetching && processedCategoryList.length === 0 ? (
+          <Col className="itemManagementBodyWrapper alignCenter">
+            <Spin size="large" />
+          </Col>
+        ) : (
+          <Col className="itemManagementBodyWrapper">
+            <Row className="marginBottom20px">
+              <Col span={12}>
+                <Cascader
+                  size="large"
+                  options={processedCategoryList}
+                  onChange={(val, selectedOptions) => {
+                    this.onChangeCascader(val, selectedOptions);
+                  }}
+                  displayRender={this.displayRender}
+                  style={{ width: "100%" }}
+                  changeOnSelect
+                />
+              </Col>
+            </Row>
+            {isCategorySelected && (
+              <div>
+                <Row className="marginBottom20px">
+                  <Col className="alignSelfCenter" span={7}>
+                    <div>Choose an item variant to view or edit</div>
+                  </Col>
+                  <Col span={10}>
+                    <Input
+                      size="large"
+                      placeholder="Search for a category like Pizza"
+                      prefix={
+                        <Icon
+                          type="search"
+                          style={{ color: "rgba(0,0,0,.25)" }}
+                        />
+                      }
+                    />
+                  </Col>
+                  <Col span={2}>
+                    <Button
+                      disabled={false}
+                      className="margin0 blackButton"
+                      size="large"
+                      onClick={() => {
+                        // this.props.history.push("/core/stores/create");
+                      }}
+                      loading={false}
+                    >
+                      Search
+                    </Button>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col span={19}>
+                    <Table
+                      loading={isFetching}
+                      className={"nohoverTableWrapper"}
+                      columns={columns}
+                      rowClassName={(record, index) =>
+                        index === this.state.selectedProductRowIndex
+                          ? "selectedTableRowRed "
+                          : "table-row-dark"
+                      }
+                      dataSource={this.state.productsFinalData}
+                      onChange={this.onChange}
+                      pagination={false}
+                      onRow={(record: any, rowIndex: number) => {
+                        return {
+                          onClick: (event: any) => {
+                            this.setState({
+                              selectedProductRowIndex: rowIndex
+                            });
+                          }
+                        };
+                      }}
+                      scroll={{ y: 300 }}
+                    />
+                  </Col>
+                </Row>
+              </div>
+            )}
+          </Col>
+        )}
+        {selectedProductRowIndex !== null && this.showProductDetailsForm()}
       </div>
     );
   }
