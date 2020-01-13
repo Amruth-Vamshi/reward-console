@@ -1,10 +1,11 @@
 import * as React from "react";
-import { Row, Col, Button, message, Cascader, Input, Icon, Breadcrumb, Switch, Modal } from "antd"
+import { Row, Col, Button, message, Cascader, Input, Icon, Breadcrumb, Switch, Modal, Upload } from "antd"
 import "./style.css"
 import { Query, withApollo, ApolloProviderProps } from "react-apollo";
 import { RouteComponentProps } from "react-router";
 import * as jwt from 'jsonwebtoken';
 import { GET_PH_CATEGORIES } from '../../PlatformQueries';
+import { FILE_UPLOAD } from "../../query/index"
 
 const { Search } = Input;
 const { TextArea } = Input;
@@ -77,6 +78,9 @@ interface iState {
     selectedCategory: any
     activeCat: string
     editCategory: any
+    visible: boolean
+    imageUrl: any
+    loading: boolean
 }
 
 
@@ -97,9 +101,75 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
                 desc: "",
                 image: "",
                 status: true
-            }
+            },
+            visible: false,
+            loading: false,
+            imageUrl: ""
         }
     }
+
+
+    handleOk = e => {
+        console.log(e);
+        this.setState({
+            visible: false,
+        });
+    };
+
+    handleCancel = e => {
+        console.log(e);
+        this.setState({
+            visible: false,
+        });
+    };
+
+    // onCSVUpload = () => {
+    //     this.setState({ visible: true }, async () => {
+    //         if (this.state.csvFile) {
+    //             let file = this.state.csvFile;
+    //             await this.props.client.mutate({
+    //                 mutation: FILE_UPLOAD,
+    //                 variables: { file: file }
+    //             })
+    //                 .then(({ data }) => {
+    //                     console.log("Success : ", data)
+    //                 })
+    //                 .catch(error => {
+    //                     console.log("Image Error : ", error)
+    //                 });
+    //         }
+    //     });
+    // };
+
+    handleChange = info => {
+        if (info.file.status === 'uploading') {
+            this.setState({ loading: true });
+            return;
+        }
+        if (info.file.status === 'done') {
+            // Get this url from response in real world.
+            getBase64(info.file.originFileObj, imageUrl =>
+                this.setState({
+                    imageUrl,
+                    loading: false,
+                }, async () => {
+                    let file = imageUrl;
+                    console.log("Image Data : ", imageUrl)
+                    console.log("Image Details : ", info.file)
+                    await this.props.client.mutate({
+                        mutation: FILE_UPLOAD,
+                        variables: { input: { file: file, description: "test_image", fileSystemId: "6", organizationId: "5d0c0277-2128-48bd-9b46-e3614c0f3141" } }
+                    })
+                        .then(({ data }) => {
+                            console.log("Success : ", data)
+                        })
+                        .catch(error => {
+                            console.log("Image Error : ", error)
+                        })
+                }),
+            );
+        }
+    };
 
     UNSAFE_componentWillMount() {
         this.getCategories()
@@ -154,10 +224,28 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
         }
     }
 
+    populateForm() {
+        const { activeCat, editCategory, editType, selectedCategory } = this.state
+
+        if (editType == "") {
+            var data = editCategory
+            data.id = selectedCategory.id
+            data.name = selectedCategory.name
+            data.desc = selectedCategory.description
+            data.status = (selectedCategory.status === "ACTIVE" ? true : false)
+            this.setState({ editCategory: data })
+        }
+        else {
+
+        }
+    }
+
     onCategoryClick(value, index) {
         var data = this.findCategory(value, index)
         console.log("Selected Category : ", data)
-        this.setState({ selectedCategory: data, activeCat: value })
+        this.setState({ selectedCategory: data, activeCat: value, editType: "" }, () => {
+            this.populateForm()
+        })
     }
 
     getCategories = () => {
@@ -184,17 +272,27 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
         }
     };
 
-    onChange(value) {
-        var len = (value.length) - 1
-        if (value.length > 0) {
-            this.setState({ selectedCategoryArr: value, showForm: true }, () => {
-                this.onCategoryClick(value[len], len)
-            })
-        }
-        else {
-            this.setState({ selectedCategoryArr: value, showForm: false })
-        }
-    }
+    // onChange(value) {
+
+    //     var len = (value.length) - 1
+    //     var data = {
+    //         id: "",
+    //         name: "",
+    //         desc: "",
+    //         image: "",
+    //         status: true
+    //     }
+    //     if (value.length > 0) {
+    //         this.setState({ selectedCategoryArr: value, showForm: true }, () => {
+    //             this.onCategoryClick(value[len], len)
+    //         })
+    //     }
+    //     else {
+    //         this.setState({
+    //             selectedCategoryArr: value, showForm: false, editCategory: data
+    //         })
+    //     }
+    // }
 
     onSwitchChange(val) {
 
@@ -220,13 +318,22 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
 
     onFilterChange(value, selectedOptions) {
         var len = (value.length) - 1
+        var data = {
+            id: "",
+            name: "",
+            desc: "",
+            image: "",
+            status: true
+        }
         if (value.length > 0) {
             this.setState({ selectedCategoryArr: value, showForm: true }, () => {
                 this.onCategoryClick(value[len], len)
             })
         }
         else {
-            this.setState({ selectedCategoryArr: value, showForm: false })
+            this.setState({
+                selectedCategoryArr: value, showForm: false, editCategory: data
+            })
         }
     }
 
@@ -277,6 +384,9 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
             return (
                 <Breadcrumb className="breadCrumbParent">
                     <Breadcrumb.Item>All</Breadcrumb.Item>
+                    {
+                        (editType !== "") && <Breadcrumb.Item key={9890}><span style={{ color: "#038FDE" }}>New Category</span></Breadcrumb.Item>
+                    }
                 </Breadcrumb>
             )
         }
@@ -287,13 +397,23 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
                     {crumbArr.map((element, index) => {
                         return <Breadcrumb.Item key={index + 1}>{element}</Breadcrumb.Item>
                     })}
+                    {
+                        (editType !== "") && <Breadcrumb.Item key={9890}><span style={{ color: "#038FDE" }}>New Category</span></Breadcrumb.Item>
+                    }
                 </Breadcrumb>
             )
         }
     }
 
     render() {
-        const { processedCategoryList, selectedCategoryArr, selectedCategory, activeCat, editCategory } = this.state
+        const { processedCategoryList, selectedCategoryArr, selectedCategory, activeCat, editCategory, imageUrl } = this.state
+
+        const uploadButton = (
+            <div>
+                <Icon type={this.state.loading ? 'loading' : 'plus'} />
+                <div className="ant-upload-text">Upload</div>
+            </div>
+        );
 
         return (<div>
             <div className="cat-header">Categories Management</div>
@@ -398,7 +518,7 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
                                     </Col>
                                     <Col span={16}>
                                         <Row className="imgLink"><Input size="small" placeholder="http//www.google.com" /></Row>
-                                        <Row><Button className="imgUpload" size="small">Upload Image</Button></Row>
+                                        <Row><Button className="imgUpload" size="small" onClick={() => { this.setState({ visible: true }) }}>Upload Image</Button></Row>
                                         <Row><Button className="imgReset" size="small" type="link">Reset to Default</Button></Row>
                                     </Col>
                                 </Row>
@@ -407,9 +527,45 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
                     </Row>
                 </div>}
             </div>
+            <Modal
+                title="Upload Image"
+                visible={this.state.visible}
+                onOk={this.handleOk}
+                onCancel={this.handleCancel}
+            >
+                <Upload
+                    name="avatar"
+                    listType="picture-card"
+                    className="avatar-uploader"
+                    showUploadList={false}
+                    action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                    beforeUpload={beforeUpload}
+                    onChange={this.handleChange}
+                >
+                    {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
+                </Upload>
+            </Modal>
         </div>)
     }
 
+}
+
+function getBase64(img, callback) {
+    const reader = new FileReader();
+    reader.addEventListener('load', () => callback(reader.result));
+    reader.readAsDataURL(img);
+}
+
+function beforeUpload(file) {
+    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+    if (!isJpgOrPng) {
+        message.error('You can only upload JPG/PNG file!');
+    }
+    const isLt2M = file.size / 1024 / 1024 < 2;
+    if (!isLt2M) {
+        message.error('Image must smaller than 2MB!');
+    }
+    return isJpgOrPng && isLt2M;
 }
 
 function filter(inputValue, path) {
