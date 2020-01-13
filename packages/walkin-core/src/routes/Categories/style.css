@@ -82,3 +82,48 @@
       border: #0F0;
       border-radius: 1px;
   }
+
+  .formHeader {
+      padding : 12px
+  }
+
+  .cancelBtn{
+    background-color: #ff8080;
+    float: right;
+    color: #FFF;
+    border-radius: 4px;
+    width: 100px;
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+
+  .saveBtn {
+    background-color: #333333;
+    float: right;
+    color: #FFF;
+    border-radius: 4px;
+    width: 100px;
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+
+  .breadCrumbParent {
+        padding-left: 12px;
+        padding-top: 4px;
+        font-size: 16px;
+        font-weight: 500;
+  }
+
+  .inActiveState{
+    padding-left: 16px;
+    font-size: 12px;
+    padding-top: 2px;
+    color: #8c8c8c;
+  }
+
+  .activeState{
+    padding-left: 16px;
+    font-size: 12px;
+    padding-top: 2px;
+    color: #038FDE;
+  }

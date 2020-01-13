@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Row, Col, Button, message, Cascader, Input, Icon } from "antd"
+import { Row, Col, Button, message, Cascader, Input, Icon, Breadcrumb, Switch } from "antd"
 import "./style.css"
 import { Query, withApollo, ApolloProviderProps } from "react-apollo";
 import { RouteComponentProps } from "react-router";
@@ -75,6 +75,7 @@ interface iState {
     rawData: any
     selectedCategory: any
     activeCat: string
+    editCategory: any
 }
 
 
@@ -88,10 +89,15 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
             processedCategoryList: [],
             rawData: {},
             selectedCategory: null,
-            activeCat: ""
+            activeCat: "",
+            editCategory: {
+                id: "",
+                name: "",
+                desc: "",
+                image: "",
+                status: true
+            }
         }
-
-        // console.log("PRO : ", this.props, this.props.client)
     }
 
     UNSAFE_componentWillMount() {
@@ -165,10 +171,7 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
                     fetchPolicy: 'network-only',
                 })
                 .then(res => {
-                    console.log("Category Data Recieved")
-                    // console.log("Raw Data : ", res.data.categoriesWithChildren)
                     var final = this.processData(res.data.categoriesWithChildren)
-                    console.log("Processed Data : ", final)
                     this.setState({ processedCategoryList: final, rawData: res.data.categoriesWithChildren })
                 })
                 .catch(err => {
@@ -192,6 +195,15 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
         }
     }
 
+    onSwitchChange(val) {
+
+        const { editCategory } = this.state
+        var data = editCategory
+        data.status = val
+        this.setState({ editCategory: data })
+
+    }
+
     addCategory() {
         const { selectedCategoryArr } = this.state
         console.log("Option to add a category clicked")
@@ -206,7 +218,6 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
     }
 
     onFilterChange(value, selectedOptions) {
-        console.log(value, selectedOptions);
         var len = (value.length) - 1
         if (value.length > 0) {
             this.setState({ selectedCategoryArr: value, showForm: true }, () => {
@@ -218,8 +229,56 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
         }
     }
 
+    cancelForm() {
+        this.setState({
+            showForm: false,
+            selectedCategoryArr: [],
+            editType: "",
+            selectedCategory: null,
+            activeCat: ""
+        })
+    }
+
+    saveData() {
+        console.log("Save Data")
+    }
+
+    getBreadCrumb() {
+        const { selectedCategoryArr, activeCat, editType } = this.state
+
+        var crumbArr = []
+        var isPush = true
+        selectedCategoryArr.forEach((element) => {
+            if (isPush) {
+                crumbArr.push(element)
+            }
+            if (element === activeCat) {
+                isPush = false
+            }
+
+        })
+
+        if (selectedCategoryArr.length === 0) {
+            return (
+                <Breadcrumb className="breadCrumbParent">
+                    <Breadcrumb.Item>All</Breadcrumb.Item>
+                </Breadcrumb>
+            )
+        }
+        else {
+            return (
+                <Breadcrumb className="breadCrumbParent">
+                    <Breadcrumb.Item key={0}>All</Breadcrumb.Item>
+                    {crumbArr.map((element, index) => {
+                        return <Breadcrumb.Item key={index + 1}>{element}</Breadcrumb.Item>
+                    })}
+                </Breadcrumb>
+            )
+        }
+    }
+
     render() {
-        const { processedCategoryList, selectedCategoryArr, selectedCategory, activeCat } = this.state
+        const { processedCategoryList, selectedCategoryArr, selectedCategory, activeCat, editCategory } = this.state
 
         return (<div>
             <div className="cat-header">Categories Management</div>
@@ -230,6 +289,7 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
                         <Col span={12}>
                             <Cascader
                                 style={{ paddingTop: "6px" }}
+                                value={selectedCategoryArr}
                                 className="cascaderStyle"
                                 options={processedCategoryList}
                                 onChange={(val) => { this.onChange(val) }}
@@ -245,6 +305,7 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
                             /> */}
                             <Cascader
                                 options={processedCategoryList}
+                                // value={selectedCategoryArr}
                                 onChange={(value, selectedOptions) => { this.onFilterChange(value, selectedOptions) }}
                                 placeholder="Search for a category like 'pizza'"
                                 showSearch={{ filter }}
@@ -270,7 +331,16 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
                     })}
                 </div>}
                 {(this.state.showForm === true) && <div className="categoryForm">
-
+                    <Row className="formHeader">
+                        <Col span={16} style={{ paddingLeft: "35px" }}>
+                            <Row><span style={{ fontSize: "18px", fontWeight: 500 }}>Category :</span> {this.getBreadCrumb()}</Row>
+                            <Row style={{ marginTop: "10px" }}><Switch size="small" checked={editCategory.status} onChange={(val) => { this.onSwitchChange(val) }} /> <p className={(editCategory.status == true ? "activeState" : "inActiveState")}>{(editCategory.status == true ? "Active" : "Inactive")}</p></Row>
+                        </Col>
+                        <Col span={8}>
+                            <Button className="saveBtn" type="ghost" onClick={() => { this.saveData() }}>Save</Button>
+                            <Button className="cancelBtn" type="danger" onClick={() => { this.cancelForm() }}>Cancel</Button>
+                        </Col>
+                    </Row>
                 </div>}
             </div>
         </div>)
