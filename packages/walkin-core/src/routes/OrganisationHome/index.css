@@ -41,15 +41,15 @@
 }
 
 .rowStores {
-  display: flex;
-  border-bottom: 0.5px solid lightgrey;
-  margin-left: 0px;
-  padding-left: 10px;
-  padding-right: 10px;
-  padding-bottom: 10px;
-  font-weight: bold;
-  font-size: 18px;
-  background-color: transparent;
+  display: flex !important;
+  border-bottom: 0.5px solid lightgrey !important;
+  margin-left: 0px !important;
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+  padding-bottom: 10px !important;
+  font-weight: bold !important;
+  font-size: 18px !important;
+  background-color: transparent !important;
   /* align-self: flex-end;
     justify-content: flex-end; */
 }
