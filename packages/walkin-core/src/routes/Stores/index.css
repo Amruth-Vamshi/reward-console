@@ -51,6 +51,9 @@
 .marginBottom0 {
   margin-bottom: 0 !important;
 }
+.alignSelfCenter {
+  align-self: center;
+}
 
 .storesFormContainer {
   font-family: "Roboto", sans-serif;
@@ -70,6 +73,11 @@
 }
 .storeInputWrapper {
   margin: 20px 0;
+  position: relative;
+}
+
+.storeSwitchWrapper {
+  margin: 20px 20px 20px 0;
   position: relative;
 }
 

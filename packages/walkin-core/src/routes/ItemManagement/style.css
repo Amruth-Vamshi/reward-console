@@ -2,6 +2,9 @@
   display: flex;
   justify-content: space-between;
 }
+.displayFlex {
+  display: flex;
+}
 .alignCenter {
   display: flex;
   align-items: center;
@@ -35,6 +38,9 @@
   background-color: #333333 !important;
   border-color: #333333 !important;
   color: white;
+}
+.textColorRed {
+  color: red;
 }
 .selectedTableRowRed {
   background-color: red;

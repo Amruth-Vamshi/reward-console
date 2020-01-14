@@ -4,7 +4,7 @@ import * as jwt from "jsonwebtoken";
 import { withApollo, ApolloProviderProps } from "react-apollo";
 import { History } from "history";
 
-import { Icon, Select, Input, Button, Switch, Spin } from "antd";
+import { Icon, Select, Input, Button, Switch, Spin, message } from "antd";
 import "./index.css";
 import GeofenceMap from "../../../../walkin-nearx/src/components/Places/GeofenceMap";
 const { Option } = Select;
@@ -127,10 +127,12 @@ class EditStore extends React.Component<EditStoreProps, EditStoreState> {
   };
 
   onCreateStore = () => {
-    let { storeDetails } = this.state;
+    let { storeDetails, mapData } = this.state;
     let input = {
       parentOrganizationId: this.state.orgID,
-      ...storeDetails
+      ...storeDetails,
+      latitude: `${mapData.center.lat}`,
+      longitude: `${mapData.center.lng}`
     };
 
     this.props.client
@@ -143,16 +145,20 @@ class EditStore extends React.Component<EditStoreProps, EditStoreState> {
       .then(createStore => {
         console.log(createStore, "ncreateStoreew");
         if (createStore.data.createStore.id) {
+          message.success("store successfully created");
           this.props.history.push("/core/stores/");
         }
       });
   };
 
   onUpdateStore = () => {
-    let { storeDetails } = this.state;
+    let { storeDetails, mapData } = this.state;
+
     let input = {
       parentOrganizationId: this.state.orgID,
-      ...storeDetails
+      ...storeDetails,
+      latitude: `${mapData.center.lat}`,
+      longitude: `${mapData.center.lng}`
     };
     this.props.client
       .mutate({
@@ -164,6 +170,8 @@ class EditStore extends React.Component<EditStoreProps, EditStoreState> {
       .then(UpdateStore => {
         console.log(UpdateStore, "ncreateStoreew");
         if (UpdateStore.data.updateStore.id) {
+          message.success("store successfully updated");
+
           this.props.history.push("/core/stores/");
         }
       });
@@ -223,7 +231,7 @@ class EditStore extends React.Component<EditStoreProps, EditStoreState> {
   };
 
   render() {
-    console.log(this.state.storeDetails);
+    console.log(this.state.storeDetails, this.state.mapData);
 
     let { storeDetails, mapData, isFetching } = this.state;
     let header = "Create Store ";
@@ -460,7 +468,7 @@ class EditStore extends React.Component<EditStoreProps, EditStoreState> {
             </div>
 
             <div className="storeFlexWrapper">
-              <div className="storeInputWrapper width15percent ">
+              <div className="storeSwitchWrapper width15percent ">
                 <Switch
                   checked={storeDetails.wifi}
                   onChange={(value: any) => {
@@ -469,8 +477,10 @@ class EditStore extends React.Component<EditStoreProps, EditStoreState> {
                   }}
                 />
               </div>
-              <div className="storeInputWrapper width75percent">Wifi</div>
-              <div className="storeInputWrapper width15percent ">
+              <div className="storeInputWrapper width75percent alignSelfCenter">
+                Wifi
+              </div>
+              <div className="storeSwitchWrapper width15percent ">
                 <Switch
                   checked={storeDetails.STATUS === "ACTIVE"}
                   onChange={(value: any) => {
@@ -479,7 +489,9 @@ class EditStore extends React.Component<EditStoreProps, EditStoreState> {
                   }}
                 />
               </div>
-              <div className="storeInputWrapper width75percent">Active</div>
+              <div className="storeInputWrapper width75percent alignSelfCenter">
+                Active
+              </div>
             </div>
 
             <Button
