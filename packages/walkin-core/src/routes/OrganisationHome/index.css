@@ -64,7 +64,7 @@
 }
 
 .colCustomButtonAddNewSub {
-  width: 50%;
+  width: 49%;
   display: flex;
   align-content: center;
   /* align-self: center; */
@@ -141,6 +141,7 @@
   justify-content: center;
   align-items: center;
   margin: 10px;
+  /* background-color: blue; */
 }
 
 .oh-loader-view {
@@ -149,5 +150,11 @@
   justify-content: center;
   flex-direction: column;
   flex-wrap: nowrap;
-  /* background-color: red; */
+  /* background-color: yellow; */
+}
+
+.oh-list {
+  height: 100%;
+  width: 100%;
+  margin-left: 20px;
 }

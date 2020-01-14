@@ -51,7 +51,7 @@ class OrganisationHome extends React.Component<
           />
         </Col>
         <Col className="colName">{name}</Col>
-        <Col className="colDesignation">Designation NA</Col>
+        <Col className="colDesignation">Designation</Col>
       </Row>
     );
   }
@@ -198,51 +198,57 @@ class OrganisationHome extends React.Component<
                 </div>
               );
             }
-            if (data && data.organization) {
+            if (data && data.organization && data.organization.children) {
               console.log(
                 "OrganisationHome render Query orgDetails data",
                 data
               );
-              if (data.organization.children) {
-                const subOrgArray = [];
-                for (var i = 0; i < data.organization.children.length; i++) {
-                  subOrgArray.push({
-                    image: null,
-                    title: data.organization.children[i].name,
-                    subTitle:
+              const subOrgArray = [];
+              for (var i = 0; i < data.organization.children.length; i++) {
+                let subTitle = "";
+                if (data.organization.children[i].addressLine1) {
+                  if (data.organization.children[i].addressLine2) {
+                    subTitle =
                       data.organization.children[i].addressLine1 +
-                      data.organization.children[i].addressLine2,
-                    actionableTitle: "Status",
-                    actionableSubTitle: data.organization.children[i].status,
-                    actionable: false
-                  });
+                      data.organization.children[i].addressLine2;
+                  } else {
+                    subTitle = data.organization.children[i].addressLine1;
+                  }
                 }
-                return (
-                  <div style={{ width: "100%" }}>
-                    <CustomList
-                      data={subOrgArray}
-                      actionableButtonText={"Assign"}
-                      actionableButtonType={"default"}
-                      actionStyle={actionStyle}
-                      actionSpan={4}
-                      imageStyle={imageStyle}
-                      imageSpan={4}
-                      imageHeight={"80px"}
-                      imageWidth={"100px"}
-                      imageScaleType={"contain"}
-                      contentStyle={contentStyle}
-                      contentSpan={16}
-                    />
-                  </div>
-                );
-              } else {
-                return (
-                  <div className="errorContainer">
-                    <Icon type="warning" />
-                    <div style={{ marginLeft: "10px" }}>No data found</div>
-                  </div>
-                );
+                subOrgArray.push({
+                  image: null,
+                  title: data.organization.children[i].name,
+                  subTitle: subTitle,
+                  actionableTitle: "Status",
+                  actionableSubTitle: data.organization.children[i].status,
+                  actionable: false
+                });
               }
+              return (
+                <div className="oh-list">
+                  <CustomList
+                    data={subOrgArray}
+                    actionableButtonText={"Assign"}
+                    actionableButtonType={"default"}
+                    actionStyle={actionStyle}
+                    actionSpan={4}
+                    imageStyle={imageStyle}
+                    imageSpan={4}
+                    imageHeight={"80px"}
+                    imageWidth={"100px"}
+                    imageScaleType={"contain"}
+                    contentStyle={contentStyle}
+                    contentSpan={16}
+                  />
+                </div>
+              );
+            } else {
+              return (
+                <div className="errorContainer">
+                  <Icon type="warning" />
+                  <div style={{ marginLeft: "10px" }}>No data found</div>
+                </div>
+              );
             }
           }}
         </Query>
