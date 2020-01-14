@@ -350,24 +350,24 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
                     code: editCategory.code,
                     status: (editCategory.status == true ? "ACTIVE" : "INACTIVE"),
                     organizationId: org_id,
-                    extend: { "extend_image_url": editCategory.image }
+                    extend: JSON.stringify({ "extend_image_url": editCategory.image })
                 }
 
                 console.log("Update Payload : ", updatePayload)
 
-                // this.props.client.mutate({
-                //     mutation: UPDATE_CATEGORY,
-                //     variables: { input: updatePayload }
-                // })
-                //     .then(({ data }) => {
-                //         console.log("Success : ", data)
-                //         message.success("Category Updated!")
-                //         this.getCategories()
-                //     })
-                //     .catch(error => {
-                //         console.log("Update Error : ", error)
-                //         message.error("Error while updating")
-                //     })
+                this.props.client.mutate({
+                    mutation: UPDATE_CATEGORY,
+                    variables: { input: updatePayload }
+                })
+                    .then(({ data }) => {
+                        console.log("Success : ", data)
+                        message.success("Category Updated!")
+                        this.getCategories()
+                    })
+                    .catch(error => {
+                        console.log("Update Error : ", error)
+                        message.error("Error while updating")
+                    })
             }
 
             if (selectedCategory !== null && editType !== "") {
@@ -385,24 +385,24 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
                     code: editCategory.code,
                     catalogId: "2",
                     parentId: selectedCategory.id,
-                    extend: { "extend_image_url": editCategory.image }
+                    extend: JSON.stringify({ "extend_image_url": editCategory.image })
                 }
 
                 console.log("create Subcategory Payload : ", createSubPayload)
 
-                // this.props.client.mutate({
-                //     mutation: CREATE_CATEGORY,
-                //     variables: { input: createSubPayload }
-                // })
-                // .then(({ data }) => {
-                //     console.log("Create Success : ", data)
-                //     message.success("Sub Category Created!")
-                //     this.getCategories()
-                // })
-                // .catch(error => {
-                //     console.log("Create Error : ", error)
-                //     message.error("Error while creating")
-                // })
+                this.props.client.mutate({
+                    mutation: CREATE_CATEGORY,
+                    variables: { input: createSubPayload }
+                })
+                    .then(({ data }) => {
+                        console.log("Create Success : ", data)
+                        message.success("Sub Category Created!")
+                        this.getCategories()
+                    })
+                    .catch(error => {
+                        console.log("Create Error : ", error)
+                        message.error("Error while creating")
+                    })
 
             }
 
@@ -419,24 +419,24 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
                     organizationId: org_id,
                     code: editCategory.code,
                     catalogId: "2",
-                    extend: { "extend_image_url": editCategory.image }
+                    extend: JSON.stringify({ "extend_image_url": editCategory.image })
                 }
 
                 console.log("create Root Category Payload : ", createCategoryPayload)
 
-                // this.props.client.mutate({
-                //     mutation: CREATE_CATEGORY,
-                //     variables: { input: createCategoryPayload }
-                // })
-                // .then(({ data }) => {
-                //     console.log("Create Success : ", data)
-                //     message.success("Sub Category Created!")
-                //     this.getCategories()
-                // })
-                // .catch(error => {
-                //     console.log("Create Error : ", error)
-                //     message.error("Error while creating")
-                // })
+                this.props.client.mutate({
+                    mutation: CREATE_CATEGORY,
+                    variables: { input: createCategoryPayload }
+                })
+                    .then(({ data }) => {
+                        console.log("Create Success : ", data)
+                        message.success("Sub Category Created!")
+                        this.getCategories()
+                    })
+                    .catch(error => {
+                        console.log("Create Error : ", error)
+                        message.error("Error while creating")
+                    })
             }
         }
     }
