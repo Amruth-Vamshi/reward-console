@@ -40,7 +40,18 @@ class OrganisationHome extends React.Component<
   renderInfoHeader(data) {
     const { firstName, lastName } = data.user;
     let name = "Name NA";
-    if (firstName && lastName) name = firstName + " " + lastName;
+    if (firstName) {
+      if (lastName) {
+        name = `${firstName} ${lastName}`;
+      } else {
+        name = firstName;
+      }
+    } else {
+      if (lastName) {
+        name = lastName;
+      }
+    }
+
     return (
       <Row className="rowInfoHeader">
         <Col className="colAvatar">
