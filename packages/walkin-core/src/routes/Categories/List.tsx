@@ -4,7 +4,7 @@ import "./style.css"
 import { Query, withApollo, ApolloProviderProps } from "react-apollo";
 import { RouteComponentProps } from "react-router";
 import * as jwt from 'jsonwebtoken';
-import { GET_PH_CATEGORIES } from '../../PlatformQueries';
+import { GET_PH_CATEGORIES, UPDATE_CATEGORY, CREATE_CATEGORY } from '../../PlatformQueries';
 import { FILE_UPLOAD } from "../../query/index"
 
 const { Search } = Input;
@@ -184,6 +184,7 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
                 name: element.name,
                 value: element.name,
                 label: element.name,
+                code: element.code,
                 description: element.description,
                 status: element.status,
                 children: []
@@ -261,6 +262,7 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
                 })
                 .then(res => {
                     var final = this.processData(res.data.categoriesWithChildren)
+                    console.log("Raw Data : ", res.data.categoriesWithChildren)
                     this.setState({ processedCategoryList: final, rawData: res.data.categoriesWithChildren })
                 })
                 .catch(err => {
@@ -305,14 +307,22 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
 
     addCategory() {
         const { selectedCategoryArr } = this.state
-        console.log("Option to add a category clicked")
+        var data = {
+            id: "",
+            name: "",
+            desc: "",
+            image: "",
+            status: true
+        }
         if (selectedCategoryArr.length > 0) {
-            console.log("Add a sub category")
-            this.setState({ editType: "subcategory", showForm: true })
+            // Add a sub category
+
+            this.setState({ editType: "subcategory", editCategory: data, showForm: true })
         }
         else {
-            console.log("Add a Category")
-            this.setState({ editType: "category", showForm: true })
+            // Add a Category
+
+            this.setState({ editType: "category", editCategory: data, showForm: true })
         }
     }
 
@@ -332,7 +342,7 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
         }
         else {
             this.setState({
-                selectedCategoryArr: value, showForm: false, editCategory: data
+                selectedCategoryArr: value, showForm: false, editCategory: data, selectedCategory: null, activeCat: ""
             })
         }
     }
@@ -349,6 +359,111 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
 
     saveData() {
         console.log("Save Data")
+        const { selectedCategoryArr, activeCat, editType, editCategory, selectedCategory } = this.state
+
+        const jwtToken = localStorage.getItem('jwt')
+        const { org_id }: any = jwt.decode(jwtToken);
+
+        if (org_id) {
+
+            if (selectedCategory !== null && editType == "") {
+
+                // Updating already existing Category or subcategory
+
+                // console.log("Update Category : ", activeCat)
+                // console.log("Saved Data : ", selectedCategory)
+                // console.log("Edited Data : ", editCategory)
+
+                var updatePayload = {
+                    id: selectedCategory.id,
+                    name: editCategory.name,
+                    description: editCategory.desc,
+                    status: (editCategory.status == true ? "ACTIVE" : "INACTIVE"),
+                    organizationId: org_id
+                }
+
+                console.log("Update Payload : ", updatePayload)
+
+                this.props.client.mutate({
+                    mutation: UPDATE_CATEGORY,
+                    variables: { input: updatePayload }
+                })
+                    .then(({ data }) => {
+                        console.log("Success : ", data)
+                        message.success("Category Updated!")
+                        this.getCategories()
+                    })
+                    .catch(error => {
+                        console.log("Update Error : ", error)
+                        message.error("Error while updating")
+                    })
+            }
+
+            if (selectedCategory !== null && editType !== "") {
+                // console.log("Add Sub Category : ", editCategory.name)
+                // console.log("Parent Data : ", selectedCategory)
+                // console.log("New Data : ", editCategory)
+
+                // Creating a subcategory
+
+                var createSubPayload = {
+                    name: editCategory.name,
+                    description: editCategory.desc,
+                    status: (editCategory.status == true ? "ACTIVE" : "INACTIVE"),
+                    organizationId: org_id,
+                    code: "",
+                    catalogId: "2",
+                    parentId: selectedCategory.id
+                }
+
+                console.log("create Subcategory Payload : ", createSubPayload)
+
+                // this.props.client.mutate({
+                //     mutation: CREATE_CATEGORY,
+                //     variables: { input: createSubPayload }
+                // })
+                // .then(({ data }) => {
+                //     console.log("Create Success : ", data)
+                //     message.success("Sub Category Created!")
+                //     this.getCategories()
+                // })
+                // .catch(error => {
+                //     console.log("Create Error : ", error)
+                //     message.error("Error while creating")
+                // })
+
+            }
+
+            if (selectedCategory == null && editType !== "") {
+                // console.log("Add Category : ", editCategory.name)
+                // console.log("New Data : ", editCategory)
+
+                var createCategoryPayload = {
+                    name: editCategory.name,
+                    description: editCategory.desc,
+                    status: (editCategory.status == true ? "ACTIVE" : "INACTIVE"),
+                    organizationId: org_id,
+                    code: "",
+                    catalogId: "2"
+                }
+
+                console.log("create Root Category Payload : ", createCategoryPayload)
+
+                // this.props.client.mutate({
+                //     mutation: CREATE_CATEGORY,
+                //     variables: { input: createCategoryPayload }
+                // })
+                // .then(({ data }) => {
+                //     console.log("Create Success : ", data)
+                //     message.success("Sub Category Created!")
+                //     this.getCategories()
+                // })
+                // .catch(error => {
+                //     console.log("Create Error : ", error)
+                //     message.error("Error while creating")
+                // })
+            }
+        }
     }
 
     onNameChange({ target: { value } }) {
@@ -364,6 +479,15 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
         data.desc = value
         this.setState({ editCategory: data })
     }
+
+    displayRender = (labels, selectedOptions) =>
+        labels.map((label, i) => {
+            const option = selectedOptions[i];
+            if (i === labels.length - 1) {
+                return <span key={option.value}>{label}</span>;
+            }
+            return <span key={option.value}>All / {label} / </span>;
+        });
 
     getBreadCrumb() {
         const { selectedCategoryArr, activeCat, editType } = this.state
@@ -435,6 +559,7 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
                                 style={{ paddingTop: "6px" }}
                                 className="cascaderStyle"
                                 value={selectedCategoryArr}
+                                displayRender={this.displayRender}
                                 onChange={(value, selectedOptions) => { this.onFilterChange(value, selectedOptions) }}
                                 placeholder="Select or Search for a category like 'pizza'"
                                 showSearch={{ filter }}
