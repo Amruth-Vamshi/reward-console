@@ -348,17 +348,40 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
     }
 
     cancelForm() {
-        this.setState({
-            showForm: false,
-            selectedCategoryArr: [],
-            editType: "",
-            selectedCategory: null,
-            activeCat: ""
-        })
+        const { selectedCategoryArr, activeCat, editType, editCategory, selectedCategory } = this.state
+
+        // this.setState({
+        //     showForm: false,
+        //     selectedCategoryArr: [],
+        //     editType: "",
+        //     selectedCategory: null,
+        //     activeCat: ""
+        // })
+
+        var data = {
+            id: "",
+            name: "",
+            desc: "",
+            image: "",
+            status: true
+        }
+
+        if (selectedCategory !== null && editType == "") {
+            this.populateForm()
+        }
+
+        if (selectedCategory !== null && editType !== "") {
+            this.setState({ editCategory: data })
+        }
+
+        if (selectedCategory == null && editType !== "") {
+            this.setState({ editCategory: data })
+        }
+
+
     }
 
     saveData() {
-        console.log("Save Data")
         const { selectedCategoryArr, activeCat, editType, editCategory, selectedCategory } = this.state
 
         const jwtToken = localStorage.getItem('jwt')
@@ -437,6 +460,8 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
             if (selectedCategory == null && editType !== "") {
                 // console.log("Add Category : ", editCategory.name)
                 // console.log("New Data : ", editCategory)
+
+                // Creating a root category
 
                 var createCategoryPayload = {
                     name: editCategory.name,
