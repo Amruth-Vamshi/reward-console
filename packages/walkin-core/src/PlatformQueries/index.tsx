@@ -711,9 +711,11 @@ export const GET_PH_CATEGORIES = gql`
       code
       catalogId
       status
+      extend
       products {
         id
         name
+        extend
         code
         description
         imageUrl
@@ -738,9 +740,11 @@ export const GET_PH_CATEGORIES = gql`
         description
         status
         code
+        extend
         children {
           id
           name
+          extend
           code
           description
           status

@@ -99,6 +99,7 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
                 name: "",
                 desc: "",
                 image: "",
+                code: "",
                 status: true
             },
             visible: false
@@ -136,7 +137,13 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
                 code: element.code,
                 description: element.description,
                 status: element.status,
+                imageUrl: "",
                 children: []
+            }
+            if (element.extend !== null) {
+                if (element.extend.extend_image_url !== undefined) {
+                    individual.imageUrl = element.extend.extend_image_url
+                }
             }
             if (element.children !== undefined) {
                 individual.children = (element.children.length > 0 ? this.processData(element) : [])
@@ -182,6 +189,8 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
             data.id = selectedCategory.id
             data.name = selectedCategory.name
             data.desc = selectedCategory.description
+            data.code = selectedCategory.code
+            data.image = selectedCategory.imageUrl
             data.status = (selectedCategory.status === "ACTIVE" ? true : false)
             this.setState({ editCategory: data })
         }
@@ -239,6 +248,7 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
             name: "",
             desc: "",
             image: "",
+            code: "",
             status: true
         }
         if (selectedCategoryArr.length > 0) {
@@ -260,6 +270,7 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
             name: "",
             desc: "",
             image: "",
+            code: "",
             status: true
         }
         if (value.length > 0) {
@@ -290,6 +301,7 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
             name: "",
             desc: "",
             image: "",
+            code: "",
             status: true
         }
 
@@ -335,25 +347,27 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
                     id: selectedCategory.id,
                     name: editCategory.name,
                     description: editCategory.desc,
+                    code: editCategory.code,
                     status: (editCategory.status == true ? "ACTIVE" : "INACTIVE"),
-                    organizationId: org_id
+                    organizationId: org_id,
+                    extend: { "extend_image_url": editCategory.image }
                 }
 
                 console.log("Update Payload : ", updatePayload)
 
-                this.props.client.mutate({
-                    mutation: UPDATE_CATEGORY,
-                    variables: { input: updatePayload }
-                })
-                    .then(({ data }) => {
-                        console.log("Success : ", data)
-                        message.success("Category Updated!")
-                        this.getCategories()
-                    })
-                    .catch(error => {
-                        console.log("Update Error : ", error)
-                        message.error("Error while updating")
-                    })
+                // this.props.client.mutate({
+                //     mutation: UPDATE_CATEGORY,
+                //     variables: { input: updatePayload }
+                // })
+                //     .then(({ data }) => {
+                //         console.log("Success : ", data)
+                //         message.success("Category Updated!")
+                //         this.getCategories()
+                //     })
+                //     .catch(error => {
+                //         console.log("Update Error : ", error)
+                //         message.error("Error while updating")
+                //     })
             }
 
             if (selectedCategory !== null && editType !== "") {
@@ -368,9 +382,10 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
                     description: editCategory.desc,
                     status: (editCategory.status == true ? "ACTIVE" : "INACTIVE"),
                     organizationId: org_id,
-                    code: "",
+                    code: editCategory.code,
                     catalogId: "2",
-                    parentId: selectedCategory.id
+                    parentId: selectedCategory.id,
+                    extend: { "extend_image_url": editCategory.image }
                 }
 
                 console.log("create Subcategory Payload : ", createSubPayload)
@@ -402,8 +417,9 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
                     description: editCategory.desc,
                     status: (editCategory.status == true ? "ACTIVE" : "INACTIVE"),
                     organizationId: org_id,
-                    code: "",
-                    catalogId: "2"
+                    code: editCategory.code,
+                    catalogId: "2",
+                    extend: { "extend_image_url": editCategory.image }
                 }
 
                 console.log("create Root Category Payload : ", createCategoryPayload)
@@ -453,6 +469,21 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
         data.desc = value
         this.setState({ editCategory: data })
     }
+
+    onImageChange({ target: { value } }) {
+        const { editCategory } = this.state
+        var data = editCategory
+        data.image = value
+        this.setState({ editCategory: data })
+    }
+
+    onCodeChange({ target: { value } }) {
+        const { editCategory } = this.state
+        var data = editCategory
+        data.code = value
+        this.setState({ editCategory: data })
+    }
+
 
     displayRender = (labels, selectedOptions) =>
         labels.map((label, i) => {
@@ -567,6 +598,16 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
                                     />
                                 </Row>
                             </div>
+                            <div style={{ marginLeft: "15px", paddingBottom: "20px" }}>
+                                <Row className="formTitle">Category Code<span className="mandatoryField">*</span></Row>
+                                <Row>
+                                    <Input
+                                        value={editCategory.code}
+                                        placeholder=""
+                                        onChange={(val) => { this.onCodeChange(val) }}
+                                    />
+                                </Row>
+                            </div>
                             <div style={{ marginLeft: "15px", paddingBottom: "10px" }}>
                                 <Row className="formTitle">Description</Row>
                                 <Row>
@@ -588,7 +629,14 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
                                         {editCategory.image == "" && <img className="catImage" src={require('./Assets/add_image.png')} />}
                                     </Col>
                                     <Col span={16}>
-                                        <Row className="imgLink"><Input size="small" placeholder="http//www.google.com" /></Row>
+                                        <Row className="imgLink">
+                                            <Input
+                                                size="small"
+                                                placeholder=""
+                                                value={editCategory.image}
+                                                onChange={(val) => { this.onImageChange(val) }}
+                                            />
+                                        </Row>
                                         <Row>
                                             {/* <Button className="imgUpload" size="small" onClick={() => { this.setState({ visible: true }) }}>Upload Image</Button> */}
                                             <FileUpload uiType={"categoryManagement"} availableImage={0} onImageUpload={this.handleUploadedImage} title="Upload Category Image" />
