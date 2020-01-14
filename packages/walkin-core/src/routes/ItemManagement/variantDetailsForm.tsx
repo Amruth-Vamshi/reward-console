@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Row, Col, Button, Input, Switch, Radio, Divider, Select } from "antd";
 import "./style.css";
+import FileUpload from "./../Categories/Components/FileUpload";
 const { Option } = Select;
 interface iProps {
   productDetails: any;
@@ -33,6 +34,12 @@ class VariantDetailsForm extends React.Component<iProps, iState> {
         [type]: value
       };
     });
+  };
+
+  handleUploadedImage = val => {
+    const { productDetails } = this.state;
+    productDetails.imageUrl = val[0].url;
+    this.setState({ productDetails });
   };
 
   render() {
@@ -175,15 +182,25 @@ class VariantDetailsForm extends React.Component<iProps, iState> {
             <div className="marginBottom20px displayFlex ">
               <div
                 style={{
-                  border: "1px solid red",
                   width: 100,
                   height: 100,
                   marginRight: 20
                 }}
-              ></div>
-              <Button size="small" className="margin0 alignSelfCenter ">
+              >
+                <img className="catImage" src={productDetails.imageUrl} />
+
+                {/* <img className="catImage" src={require('./../Categories/Assets/add_image.png')} /> */}
+              </div>
+
+              {/* <Button size="small" className="margin0 alignSelfCenter ">
                 Upload Image
-              </Button>
+              </Button> */}
+              <FileUpload
+                uiType={"categoryManagement"}
+                availableImage={0}
+                onImageUpload={this.handleUploadedImage}
+                title="Upload Product Image"
+              />
             </div>
           </Col>
         </Row>

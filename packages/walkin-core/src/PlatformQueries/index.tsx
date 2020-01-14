@@ -714,6 +714,7 @@ export const GET_PH_CATEGORIES = gql`
       products {
         id
         name
+        code
         description
         imageUrl
         sku
@@ -736,9 +737,11 @@ export const GET_PH_CATEGORIES = gql`
         name
         description
         status
+        code
         children {
           id
           name
+          code
           description
           status
         }
@@ -778,6 +781,7 @@ export const GET_PRODUCT_CATEGORIES_BY_CATEGORY_ID = gql`
         sku
         type
         status
+        extend
         variants {
           id
           sku
@@ -850,4 +854,30 @@ export const PRODUCT_SEARCH = gql`
   }
 `;
 
+export const UPDATE_CATEGORY = gql`
+  mutation updateCategory($input: UpdateCategoryInput!) {
+    updateCategory(input: $input) {
+      id
+      name
+      catalogId
+      status
+      description
+      code
+      extend
+    }
+  }
+`;
 
+export const CREATE_CATEGORY = gql`
+  mutation createCategory($input: CreateCategoryInput!) {
+    createCategory(input: $input) {
+      id
+      name
+      catalogId
+      status
+      description
+      code
+      extend
+    }
+  }
+`;

@@ -160,6 +160,8 @@ class EditStore extends React.Component<EditStoreProps, EditStoreState> {
       latitude: `${mapData.center.lat}`,
       longitude: `${mapData.center.lng}`
     };
+    delete input["__typename"];
+
     this.props.client
       .mutate({
         mutation: UPDATE_STORE,
