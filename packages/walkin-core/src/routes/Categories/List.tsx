@@ -387,6 +387,13 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
         const jwtToken = localStorage.getItem('jwt')
         const { org_id }: any = jwt.decode(jwtToken);
 
+        var vl = (editCategory.name).trim()
+
+        if (vl == "") {
+            message.warn("Please provide a valid category name to proceed!")
+            return;
+        }
+
         if (org_id) {
 
             if (selectedCategory !== null && editType == "") {
@@ -638,7 +645,7 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
                     <Row className="formDetail">
                         <Col span={12}>
                             <div style={{ marginLeft: "15px", paddingBottom: "20px" }}>
-                                <Row className="formTitle">Category Name</Row>
+                                <Row className="formTitle">Category Name<span className="mandatoryField">*</span></Row>
                                 <Row>
                                     <Input
                                         value={editCategory.name}

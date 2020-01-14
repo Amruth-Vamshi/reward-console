@@ -163,3 +163,8 @@
     font-weight: 500;
   }
 
+  .mandatoryField{
+    color : #F00;
+    padding-left: 2px;
+  }
+
