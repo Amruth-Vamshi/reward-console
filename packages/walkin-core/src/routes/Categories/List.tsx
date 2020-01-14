@@ -6,6 +6,7 @@ import { RouteComponentProps } from "react-router";
 import * as jwt from 'jsonwebtoken';
 import { GET_PH_CATEGORIES, UPDATE_CATEGORY, CREATE_CATEGORY } from '../../PlatformQueries';
 import { FILE_UPLOAD } from "../../query/index"
+import FileUpload from "./Components/FileUpload"
 
 const { Search } = Input;
 const { TextArea } = Input;
@@ -79,8 +80,6 @@ interface iState {
     activeCat: string
     editCategory: any
     visible: boolean
-    imageUrl: any
-    loading: boolean
 }
 
 
@@ -102,9 +101,7 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
                 image: "",
                 status: true
             },
-            visible: false,
-            loading: false,
-            imageUrl: ""
+            visible: false
         }
     }
 
@@ -121,54 +118,6 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
         this.setState({
             visible: false,
         });
-    };
-
-    // onCSVUpload = () => {
-    //     this.setState({ visible: true }, async () => {
-    //         if (this.state.csvFile) {
-    //             let file = this.state.csvFile;
-    //             await this.props.client.mutate({
-    //                 mutation: FILE_UPLOAD,
-    //                 variables: { file: file }
-    //             })
-    //                 .then(({ data }) => {
-    //                     console.log("Success : ", data)
-    //                 })
-    //                 .catch(error => {
-    //                     console.log("Image Error : ", error)
-    //                 });
-    //         }
-    //     });
-    // };
-
-    handleChange = info => {
-        if (info.file.status === 'uploading') {
-            this.setState({ loading: true });
-            return;
-        }
-        if (info.file.status === 'done') {
-            // Get this url from response in real world.
-            getBase64(info.file.originFileObj, imageUrl =>
-                this.setState({
-                    imageUrl,
-                    loading: false,
-                }, async () => {
-                    let file = imageUrl;
-                    console.log("Image Data : ", imageUrl)
-                    console.log("Image Details : ", info.file)
-                    await this.props.client.mutate({
-                        mutation: FILE_UPLOAD,
-                        variables: { input: { file: file, description: "test_image", fileSystemId: "6", organizationId: "5d0c0277-2128-48bd-9b46-e3614c0f3141" } }
-                    })
-                        .then(({ data }) => {
-                            console.log("Success : ", data)
-                        })
-                        .catch(error => {
-                            console.log("Image Error : ", error)
-                        })
-                }),
-            );
-        }
     };
 
     UNSAFE_componentWillMount() {
@@ -273,28 +222,6 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
             console.log('Error getting JwtData');
         }
     };
-
-    // onChange(value) {
-
-    //     var len = (value.length) - 1
-    //     var data = {
-    //         id: "",
-    //         name: "",
-    //         desc: "",
-    //         image: "",
-    //         status: true
-    //     }
-    //     if (value.length > 0) {
-    //         this.setState({ selectedCategoryArr: value, showForm: true }, () => {
-    //             this.onCategoryClick(value[len], len)
-    //         })
-    //     }
-    //     else {
-    //         this.setState({
-    //             selectedCategoryArr: value, showForm: false, editCategory: data
-    //         })
-    //     }
-    // }
 
     onSwitchChange(val) {
 
@@ -498,6 +425,21 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
         }
     }
 
+    handleUploadedImage = (val) => {
+        const { editCategory } = this.state
+        var data = editCategory
+        data.image = val[0].url
+
+        this.setState({ editCategory: data })
+    }
+
+    resetImage() {
+        const { editCategory } = this.state
+        var data = editCategory
+        data.image = ""
+        this.setState({ editCategory: data })
+    }
+
     onNameChange({ target: { value } }) {
         const { editCategory } = this.state
         var data = editCategory
@@ -562,14 +504,7 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
     }
 
     render() {
-        const { processedCategoryList, selectedCategoryArr, selectedCategory, activeCat, editCategory, imageUrl } = this.state
-
-        const uploadButton = (
-            <div>
-                <Icon type={this.state.loading ? 'loading' : 'plus'} />
-                <div className="ant-upload-text">Upload</div>
-            </div>
-        );
+        const { processedCategoryList, selectedCategoryArr, selectedCategory, activeCat, editCategory } = this.state
 
         return (<div>
             <div className="cat-header">Categories Management</div>
@@ -578,14 +513,6 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
                 <div className="categoryContainer">
                     <Row style={{ paddingBottom: "15px" }}>
                         <Col span={12}>
-                            {/* <Cascader
-                                style={{ paddingTop: "6px" }}
-                                value={selectedCategoryArr}
-                                className="cascaderStyle"
-                                options={processedCategoryList}
-                                onChange={(val) => { this.onChange(val) }}
-                                placeholder="Please select a category"
-                            /> */}
                             <Cascader
                                 options={processedCategoryList}
                                 style={{ paddingTop: "6px" }}
@@ -597,21 +524,7 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
                                 showSearch={{ filter }}
                             />
                         </Col>
-                        <Col span={10} style={{ paddingTop: "6px" }}>
-                            {/* <Search
-                                placeholder="Search for a category like 'pizza'"
-                                enterButton="Search"
-                                size="default"
-                                onSearch={value => console.log(value)}
-                            /> */}
-                            {/* <Cascader
-                                options={processedCategoryList}
-                                // value={selectedCategoryArr}
-                                onChange={(value, selectedOptions) => { this.onFilterChange(value, selectedOptions) }}
-                                placeholder="Search for a category like 'pizza'"
-                                showSearch={{ filter }}
-                            /> */}
-                        </Col>
+                        <Col span={10} style={{ paddingTop: "6px" }}></Col>
                     </Row>
                     {((selectedCategory !== null && selectedCategoryArr.length > 0) || (selectedCategoryArr.length === 0)) && <Row>
                         <Col style={{ paddingTop: "6px", fontSize: "12px", color: "#b3b3b3" }} span={5}>Select a category to view/edit</Col>
@@ -671,12 +584,16 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
                                 <Row className="formTitle">Image</Row>
                                 <Row>
                                     <Col span={8}>
-                                        <img className="catImage" src={"https://d2q79iu7y748jz.cloudfront.net/s/_squarelogo/fe5765f54a58c837ccd85e879951005a"} />
+                                        {editCategory.image !== "" && <img className="catImage" src={editCategory.image} />}
+                                        {editCategory.image == "" && <img className="catImage" src={require('./Assets/add_image.png')} />}
                                     </Col>
                                     <Col span={16}>
                                         <Row className="imgLink"><Input size="small" placeholder="http//www.google.com" /></Row>
-                                        <Row><Button className="imgUpload" size="small" onClick={() => { this.setState({ visible: true }) }}>Upload Image</Button></Row>
-                                        <Row><Button className="imgReset" size="small" type="link">Reset to Default</Button></Row>
+                                        <Row>
+                                            {/* <Button className="imgUpload" size="small" onClick={() => { this.setState({ visible: true }) }}>Upload Image</Button> */}
+                                            <FileUpload uiType={"categoryManagement"} availableImage={0} onImageUpload={this.handleUploadedImage} title="Upload Category Image" />
+                                        </Row>
+                                        <Row><Button onClick={() => { this.resetImage() }} className="imgReset" size="small" type="link">Reset to Default</Button></Row>
                                     </Col>
                                 </Row>
                             </div>
@@ -684,45 +601,9 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
                     </Row>
                 </div>}
             </div>
-            <Modal
-                title="Upload Image"
-                visible={this.state.visible}
-                onOk={this.handleOk}
-                onCancel={this.handleCancel}
-            >
-                <Upload
-                    name="avatar"
-                    listType="picture-card"
-                    className="avatar-uploader"
-                    showUploadList={false}
-                    action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                    beforeUpload={beforeUpload}
-                    onChange={this.handleChange}
-                >
-                    {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
-                </Upload>
-            </Modal>
         </div>)
     }
 
-}
-
-function getBase64(img, callback) {
-    const reader = new FileReader();
-    reader.addEventListener('load', () => callback(reader.result));
-    reader.readAsDataURL(img);
-}
-
-function beforeUpload(file) {
-    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-    if (!isJpgOrPng) {
-        message.error('You can only upload JPG/PNG file!');
-    }
-    const isLt2M = file.size / 1024 / 1024 < 2;
-    if (!isLt2M) {
-        message.error('Image must smaller than 2MB!');
-    }
-    return isJpgOrPng && isLt2M;
 }
 
 function filter(inputValue, path) {
