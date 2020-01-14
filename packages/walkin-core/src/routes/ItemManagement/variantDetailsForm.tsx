@@ -2,27 +2,41 @@ import * as React from "react";
 import { Row, Col, Button, Input, Switch, Radio, Divider, Select } from "antd";
 import "./style.css";
 import FileUpload from "./../Categories/Components/FileUpload";
+
 const { Option } = Select;
+
 interface iProps {
-  productDetails: any;
-  onSave: any;
+  productVariantDetails: any;
+  productParentDetails: any;
+  onSaveParentDetails: any;
 }
 
 interface iState {
-  productDetails: any;
+  productVariantDetails?: any;
+  productParentDetails?: any;
 }
 
 class VariantDetailsForm extends React.Component<iProps, iState> {
   constructor(props: iProps) {
     super(props);
-    this.state = {
-      productDetails: {}
-    };
+    this.state = {};
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    console.log(nextProps.productDetails);
-    return { productDetails: nextProps.productDetails.product };
+    console.log(
+      nextProps.productVariantDetails,
+      nextProps.productParentDetails
+    );
+    if (nextProps.productVariantDetails) {
+      return {
+        productVariantDetails: nextProps.productVariantDetails.product,
+        productParentDetails: nextProps.productParentDetails.product
+      };
+    }
+    return {
+      productVariantDetails: null,
+      productParentDetails: nextProps.productParentDetails.product
+    };
   }
 
   handleChange = (type, value) => {};
@@ -37,30 +51,32 @@ class VariantDetailsForm extends React.Component<iProps, iState> {
   };
 
   handleUploadedImage = val => {
-    const { productDetails } = this.state;
-    productDetails.imageUrl = val[0].url;
-    this.setState({ productDetails });
+    const { productParentDetails } = this.state;
+    productParentDetails.imageUrl = val[0].url;
+    this.setState({ productParentDetails });
   };
 
   render() {
-    let { productDetails } = this.state;
+    let { productParentDetails, productVariantDetails } = this.state;
     return (
       <div className="variantDetailsFormContainer">
         <Row className=" marginBottom20px">
           <Col span={20}>
             <h1>
-              Item: {productDetails.name}
-              {productDetails.variants ? " (parent)" : ""}
+              Item: {productParentDetails.name}
+              {productVariantDetails ? "" : " (parent)"}
             </h1>
             <div className="flexWrapper width100px alignSelfCenter">
               <Switch
-                checked={productDetails.status === "ACTIVE"}
+                checked={productParentDetails.status === "ACTIVE"}
                 onChange={(value: any) => {
-                  productDetails.status = value ? "ACTIVE" : "INACTIVE";
-                  this.onChange("productDetails", productDetails);
+                  productParentDetails.status = value ? "ACTIVE" : "INACTIVE";
+                  this.onChange("productParentDetails", productParentDetails);
                 }}
               />
-              <div className="alignSelfCenter">{productDetails.status}</div>
+              <div className="alignSelfCenter">
+                {productParentDetails.status}
+              </div>
             </div>
           </Col>
           <Col span={2} className="alignCenter">
@@ -69,7 +85,7 @@ class VariantDetailsForm extends React.Component<iProps, iState> {
               className="button blackButton"
               size="large"
               onClick={() => {
-                // this.props.history.push("/core/stores/create");
+                this.props.onSaveParentDetails(productParentDetails);
               }}
               loading={false}
             >
@@ -137,10 +153,10 @@ class VariantDetailsForm extends React.Component<iProps, iState> {
               <Input
                 size="large"
                 placeholder="Item name"
-                value={productDetails.name}
+                value={productParentDetails.name}
                 onChange={(e: any) => {
-                  productDetails.name = e.target.value;
-                  this.onChange("productDetails", productDetails);
+                  productParentDetails.name = e.target.value;
+                  this.onChange("productParentDetails", productParentDetails);
                 }}
               />
             </div>
@@ -153,10 +169,10 @@ class VariantDetailsForm extends React.Component<iProps, iState> {
               <Input
                 size="large"
                 placeholder="Image Link"
-                value={productDetails.imageUrl}
+                value={productParentDetails.imageUrl}
                 onChange={(e: any) => {
-                  productDetails.imageUrl = e.target.value;
-                  this.onChange("productDetails", productDetails);
+                  productParentDetails.imageUrl = e.target.value;
+                  this.onChange("productParentDetails", productParentDetails);
                 }}
               />
             </div>
@@ -170,10 +186,10 @@ class VariantDetailsForm extends React.Component<iProps, iState> {
               <Input.TextArea
                 rows={4}
                 placeholder="Description"
-                value={productDetails.description}
+                value={productParentDetails.description}
                 onChange={(e: any) => {
-                  productDetails.description = e.target.value;
-                  this.onChange("productDetails", productDetails);
+                  productParentDetails.description = e.target.value;
+                  this.onChange("productParentDetails", productParentDetails);
                 }}
               />
             </div>
@@ -187,7 +203,7 @@ class VariantDetailsForm extends React.Component<iProps, iState> {
                   marginRight: 20
                 }}
               >
-                <img className="catImage" src={productDetails.imageUrl} />
+                <img className="catImage" src={productParentDetails.imageUrl} />
 
                 {/* <img className="catImage" src={require('./../Categories/Assets/add_image.png')} /> */}
               </div>
@@ -212,10 +228,14 @@ class VariantDetailsForm extends React.Component<iProps, iState> {
               <Input
                 size="large"
                 placeholder="Nutrition value"
-                value={productDetails.nutritionValue}
+                value={
+                  productParentDetails.extend &&
+                  productParentDetails.extend.extend_nutrition_value
+                }
                 onChange={(e: any) => {
-                  productDetails.nutritionValue = e.target.value;
-                  this.onChange("productDetails", productDetails);
+                  productParentDetails.extend.extend_nutrition_value =
+                    e.target.value;
+                  this.onChange("productParentDetails", productParentDetails);
                 }}
               />
             </div>
@@ -226,9 +246,28 @@ class VariantDetailsForm extends React.Component<iProps, iState> {
                 Tag1: Veg/Non-Veg
                 <span className="requiredFieldRedColor">*</span>
               </div>
-              <Radio.Group defaultValue="a" buttonStyle="solid">
-                <Radio.Button value="a">Veg</Radio.Button>
-                <Radio.Button value="b">Non-veg</Radio.Button>
+              <Radio.Group
+                value={
+                  productParentDetails.extend &&
+                  productParentDetails.extend.extend_veg_non_veg
+                    ? productParentDetails.extend.extend_veg_non_veg
+                    : null
+                }
+                onChange={e => {
+                  if (!productParentDetails.extend) {
+                    productParentDetails.extend = {};
+                    productParentDetails.extend.extend_veg_non_veg =
+                      e.target.value;
+                  }
+                  productParentDetails.extend.extend_veg_non_veg =
+                    e.target.value;
+
+                  this.onChange("productParentDetails", productParentDetails);
+                }}
+                buttonStyle="solid"
+              >
+                <Radio.Button value="veg">Veg</Radio.Button>
+                <Radio.Button value="nonVeg">Non-veg</Radio.Button>
               </Radio.Group>
             </div>
           </Col>
@@ -243,10 +282,14 @@ class VariantDetailsForm extends React.Component<iProps, iState> {
               <Input
                 size="large"
                 placeholder="Items prepararion time"
-                value={productDetails.itemsPrepararionTime}
+                value={
+                  productParentDetails.extend &&
+                  productParentDetails.extend.extend_item_preparation_time
+                }
                 onChange={(e: any) => {
-                  productDetails.itemsPrepararionTime = e.target.value;
-                  this.onChange("productDetails", productDetails);
+                  productParentDetails.extend.extend_item_preparation_time =
+                    e.target.value;
+                  this.onChange("productParentDetails", productParentDetails);
                 }}
               />
             </div>
@@ -256,9 +299,26 @@ class VariantDetailsForm extends React.Component<iProps, iState> {
               <div className="marginBottom10px">
                 Tag2: Hot/Cold<span className="requiredFieldRedColor">*</span>
               </div>
-              <Radio.Group defaultValue="a" buttonStyle="solid">
-                <Radio.Button value="a">Hot</Radio.Button>
-                <Radio.Button value="b">Cold</Radio.Button>
+              <Radio.Group
+                value={
+                  productParentDetails.extend &&
+                  productParentDetails.extend.extend_hot_cold
+                    ? productParentDetails.extend.extend_hot_cold
+                    : null
+                }
+                onChange={e => {
+                  if (!productParentDetails.extend) {
+                    productParentDetails.extend = {};
+                    productParentDetails.extend.extend_hot_cold =
+                      e.target.value;
+                  }
+                  productParentDetails.extend.extend_hot_cold = e.target.value;
+                  this.onChange("productParentDetails", productParentDetails);
+                }}
+                buttonStyle="solid"
+              >
+                <Radio.Button value="hot">Hot</Radio.Button>
+                <Radio.Button value="cold">Cold</Radio.Button>
               </Radio.Group>
             </div>
           </Col>
@@ -270,9 +330,84 @@ class VariantDetailsForm extends React.Component<iProps, iState> {
               <div className="marginBottom10px">
                 Ordering Mode<span className="requiredFieldRedColor">*</span>
               </div>
-              <Button>TakeAway</Button>
-              <Button>Have in store</Button>
-              <Button>Delivery</Button>
+              <Button
+                type={
+                  productParentDetails.extend &&
+                  productParentDetails.extend.extend_ordering_mode &&
+                  productParentDetails.extend.extend_ordering_mode.takeAway
+                    ? "primary"
+                    : "default"
+                }
+                onClick={() => {
+                  if (!productParentDetails.extend) {
+                    productParentDetails.extend = {};
+                    productParentDetails.extend.extend_ordering_mode = {};
+                  } else if (
+                    !productParentDetails.extend.extend_ordering_mode
+                  ) {
+                    productParentDetails.extend.extend_ordering_mode = {};
+                  }
+                  productParentDetails.extend.extend_ordering_mode.takeAway = !(
+                    productParentDetails.extend.extend_ordering_mode &&
+                    productParentDetails.extend.extend_ordering_mode.takeAway
+                  );
+                  this.onChange("productParentDetails", productParentDetails);
+                }}
+              >
+                TakeAway
+              </Button>
+              <Button
+                type={
+                  productParentDetails.extend &&
+                  productParentDetails.extend.extend_ordering_mode &&
+                  productParentDetails.extend.extend_ordering_mode.haveInStore
+                    ? "primary"
+                    : "default"
+                }
+                onClick={() => {
+                  if (!productParentDetails.extend) {
+                    productParentDetails.extend = {};
+                    productParentDetails.extend.extend_ordering_mode = {};
+                  } else if (
+                    !productParentDetails.extend.extend_ordering_mode
+                  ) {
+                    productParentDetails.extend.extend_ordering_mode = {};
+                  }
+                  productParentDetails.extend.extend_ordering_mode.haveInStore = !(
+                    productParentDetails.extend.extend_ordering_mode &&
+                    productParentDetails.extend.extend_ordering_mode.haveInStore
+                  );
+                  this.onChange("productParentDetails", productParentDetails);
+                }}
+              >
+                Have in store
+              </Button>
+              <Button
+                type={
+                  productParentDetails.extend &&
+                  productParentDetails.extend.extend_ordering_mode &&
+                  productParentDetails.extend.extend_ordering_mode.delivery
+                    ? "primary"
+                    : "default"
+                }
+                onClick={() => {
+                  if (!productParentDetails.extend) {
+                    productParentDetails.extend = {};
+                    productParentDetails.extend.extend_ordering_mode = {};
+                  } else if (
+                    !productParentDetails.extend.extend_ordering_mode
+                  ) {
+                    productParentDetails.extend.extend_ordering_mode = {};
+                  }
+                  productParentDetails.extend.extend_ordering_mode.delivery = !(
+                    productParentDetails.extend.extend_ordering_mode &&
+                    productParentDetails.extend.extend_ordering_mode.delivery
+                  );
+                  this.onChange("productParentDetails", productParentDetails);
+                }}
+              >
+                Delivery
+              </Button>
             </div>
           </Col>
           <Col span={12}>
@@ -281,10 +416,13 @@ class VariantDetailsForm extends React.Component<iProps, iState> {
               <Input
                 size="large"
                 placeholder="Rating"
-                value={productDetails.rating}
+                value={
+                  productParentDetails.extend &&
+                  productParentDetails.extend.extend_rating
+                }
                 onChange={(e: any) => {
-                  productDetails.rating = e.target.value;
-                  this.onChange("productDetails", productDetails);
+                  productParentDetails.extend.extend_rating = e.target.value;
+                  this.onChange("productParentDetails", productParentDetails);
                 }}
               />
             </div>

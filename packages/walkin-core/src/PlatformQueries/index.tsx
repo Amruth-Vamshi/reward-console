@@ -854,6 +854,43 @@ export const PRODUCT_SEARCH = gql`
   }
 `;
 
+export const UPDATE_PRODUCT = gql`
+  mutation updateProduct($input: UpdateProductInput!) {
+    updateProduct(input: $input) {
+      id
+      code
+      name
+      description
+      imageUrl
+      sku
+      type
+      status
+      variants {
+        id
+        sku
+        product {
+          id
+          name
+          description
+          imageUrl
+          sku
+          type
+          status
+        }
+        optionValues {
+          id
+          value
+          option {
+            id
+            name
+            description
+          }
+        }
+      }
+    }
+  }
+`;
+
 export const UPDATE_CATEGORY = gql`
   mutation updateCategory($input: UpdateCategoryInput!) {
     updateCategory(input: $input) {

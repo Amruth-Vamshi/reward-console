@@ -8,7 +8,8 @@ import VariantDetailsForm from "./variantDetailsForm";
 import {
   GET_PH_CATEGORIES,
   GET_PRODUCT_CATEGORIES_BY_CATEGORY_ID,
-  PRODUCT_SEARCH
+  PRODUCT_SEARCH,
+  UPDATE_PRODUCT
 } from "./../../PlatformQueries";
 
 interface iProps extends ApolloProviderProps<any> {}
@@ -236,25 +237,46 @@ class ListHome extends React.Component<iProps, iState> {
     }
   };
 
+  onSaveParentDetails = input => {
+    console.log(input);
+
+    let parentDetails = input;
+    parentDetails.organizationId = this.state.organizationId;
+    delete parentDetails["variants"];
+    delete parentDetails["__typename"];
+
+    this.props.client
+      .mutate({
+        mutation: UPDATE_PRODUCT,
+        variables: { input: parentDetails }
+      })
+      .then(res => {
+        console.log("Category Data Recieved", res);
+      });
+  };
+
   showProductDetailsForm = () => {
     let selectedFinalProductData = this.state.productsFinalData[
       this.state.selectedProductRowIndex
     ];
-    let selectedItemRawData;
-    if (selectedFinalProductData.variantIndex === null) {
-      selectedItemRawData = this.state.productsRawData[
-        selectedFinalProductData.parentIndex
-      ];
-    } else {
-      selectedItemRawData = this.state.productsRawData[
+    let productVariantDetails = null,
+      productParentDetails = null;
+
+    productParentDetails = this.state.productsRawData[
+      selectedFinalProductData.parentIndex
+    ];
+
+    if (selectedFinalProductData.variantIndex !== null) {
+      productVariantDetails = this.state.productsRawData[
         selectedFinalProductData.parentIndex
       ].product.variants[selectedFinalProductData.variantIndex];
     }
 
     return (
       <VariantDetailsForm
-        productDetails={selectedItemRawData}
-        onSave={() => {}}
+        productVariantDetails={productVariantDetails}
+        productParentDetails={productParentDetails}
+        onSaveParentDetails={this.onSaveParentDetails}
       />
     );
   };
