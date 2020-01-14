@@ -1,5 +1,5 @@
 import React from "react";
-import { Col, Row, Avatar, Table } from "antd";
+import { Col, Row, Avatar, Table, Icon, Spin } from "antd";
 import { Image, CustomList, CustomButton, InfoText } from "@walkinsole/shared";
 import "./index.css";
 import { withApollo, ApolloProviderProps, Query } from "react-apollo";
@@ -39,6 +39,19 @@ class OrganisationHome extends React.Component<
 
   renderInfoHeader(data) {
     const { firstName, lastName } = data.user;
+    let name = "Name NA";
+    if (firstName) {
+      if (lastName) {
+        name = `${firstName} ${lastName}`;
+      } else {
+        name = firstName;
+      }
+    } else {
+      if (lastName) {
+        name = lastName;
+      }
+    }
+
     return (
       <Row className="rowInfoHeader">
         <Col className="colAvatar">
@@ -48,8 +61,8 @@ class OrganisationHome extends React.Component<
             size={40}
           />
         </Col>
-        <Col className="colName">{firstName + lastName}</Col>
-        <Col className="colDesignation">Designation NA</Col>
+        <Col className="colName">{name}</Col>
+        <Col className="colDesignation">Designation</Col>
       </Row>
     );
   }
@@ -131,12 +144,21 @@ class OrganisationHome extends React.Component<
         <Query query={userDetails} variables={{ id: userId }}>
           {({ data, loading, error, refetch }: any) => {
             if (loading) {
-              return <div>loading...</div>;
+              return (
+                <div className="oh-loader-view">
+                  <Spin size="large" />
+                </div>
+              );
             }
             if (error) {
-              return <div>Error</div>;
+              return (
+                <div className="errorContainer">
+                  <Icon type="warning" />
+                  <div style={{ marginLeft: "10px" }}>No data found</div>
+                </div>
+              );
             }
-            if (data) {
+            if (data && data.user) {
               console.log(
                 "OrganisationHome render Query userDetails data",
                 data
@@ -166,40 +188,55 @@ class OrganisationHome extends React.Component<
 
   renderSubOrgList(imageStyle, contentStyle, actionStyle) {
     return (
-      <Row>
+      <Row style={{ width: "100%", height: "100%" }}>
         <Query
           query={orgDetails}
           variables={{ id: this.props.match.params.id }}
         >
           {({ data, loading, error, refetch }: any) => {
             if (loading) {
-              return <div>loading...</div>;
+              return (
+                <div className="oh-loader-view">
+                  <Spin size="large" />
+                </div>
+              );
             }
             if (error) {
-              return <div>Error</div>;
+              return (
+                <div className="errorContainer">
+                  <Icon type="warning" />
+                  <div style={{ marginLeft: "10px" }}>No data found</div>
+                </div>
+              );
             }
-            if (data) {
+            if (data && data.organization && data.organization.children) {
               console.log(
                 "OrganisationHome render Query orgDetails data",
                 data
               );
-
               const subOrgArray = [];
               for (var i = 0; i < data.organization.children.length; i++) {
+                let subTitle = "";
+                if (data.organization.children[i].addressLine1) {
+                  if (data.organization.children[i].addressLine2) {
+                    subTitle =
+                      data.organization.children[i].addressLine1 +
+                      data.organization.children[i].addressLine2;
+                  } else {
+                    subTitle = data.organization.children[i].addressLine1;
+                  }
+                }
                 subOrgArray.push({
                   image: null,
                   title: data.organization.children[i].name,
-                  subTitle:
-                    data.organization.children[i].addressLine1 +
-                    data.organization.children[i].addressLine2,
+                  subTitle: subTitle,
                   actionableTitle: "Status",
                   actionableSubTitle: data.organization.children[i].status,
                   actionable: false
                 });
               }
-
               return (
-                <div style={{ width: "100%" }}>
+                <div className="oh-list">
                   <CustomList
                     data={subOrgArray}
                     actionableButtonText={"Assign"}
@@ -214,6 +251,13 @@ class OrganisationHome extends React.Component<
                     contentStyle={contentStyle}
                     contentSpan={16}
                   />
+                </div>
+              );
+            } else {
+              return (
+                <div className="errorContainer">
+                  <Icon type="warning" />
+                  <div style={{ marginLeft: "10px" }}>No data found</div>
                 </div>
               );
             }
