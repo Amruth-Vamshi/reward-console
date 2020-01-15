@@ -80,6 +80,7 @@ interface iState {
     activeCat: string
     editCategory: any
     visible: boolean
+    showCatBtn: boolean
 }
 
 
@@ -102,7 +103,8 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
                 code: "",
                 status: true
             },
-            visible: false
+            visible: false,
+            showCatBtn: true
         }
     }
 
@@ -201,8 +203,16 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
 
     onCategoryClick(value, index) {
         var data = this.findCategory(value, index)
+        const { selectedCategoryArr } = this.state
         console.log("Selected Category : ", data)
-        this.setState({ selectedCategory: data, activeCat: value, editType: "" }, () => {
+        var showBtn = true
+        if (selectedCategoryArr[selectedCategoryArr.length - 1] == value) {
+            showBtn = false
+        }
+        else {
+            showBtn = true
+        }
+        this.setState({ selectedCategory: data, activeCat: value, editType: "", showCatBtn: showBtn }, () => {
             this.populateForm()
         })
     }
@@ -546,7 +556,7 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
     }
 
     render() {
-        const { processedCategoryList, selectedCategoryArr, selectedCategory, activeCat, editCategory } = this.state
+        const { processedCategoryList, selectedCategoryArr, selectedCategory, activeCat, editCategory, showCatBtn } = this.state
 
         return (<div>
             <div className="cat-header">Categories Management</div>
@@ -568,7 +578,7 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
                         </Col>
                         <Col span={10} style={{ paddingTop: "6px" }}></Col>
                     </Row>
-                    {((selectedCategory !== null && selectedCategoryArr.length > 0) || (selectedCategoryArr.length === 0)) && <Row>
+                    {((selectedCategory !== null && selectedCategoryArr.length > 0 && showCatBtn == true) || (selectedCategoryArr.length === 0)) && <Row>
                         <Col style={{ paddingTop: "6px", fontSize: "12px", color: "#b3b3b3" }} span={5}>Select a category to view/edit</Col>
                         <Col span={5}><Button className="addBtn" size="small" onClick={() => { this.addCategory() }} >{(this.state.selectedCategoryArr.length > 0) ? "Add SubCategory" : "Add Category"}</Button></Col>
                     </Row>}
