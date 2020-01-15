@@ -5,8 +5,10 @@ import DisplayBox from "./Components/DisplayBox"
 import PromoBox from "./Components/PromoBox"
 import DraftBox from "./Components/DraftBox"
 import ExploreBox from "./Components/ExploreBox"
+import { History } from 'history'
 
 interface iProps {
+    history: History
 }
 
 interface iState {
@@ -45,7 +47,8 @@ class CatalogueHome extends React.Component<iProps, iState> {
                                         heading="Categories"
                                         subheading="Manage food categories like Pizzas, Pastas, Desserts etc."
                                         btnText="Manage"
-                                        path=""
+                                        path="/core/categories/list"
+                                        history={this.props.history}
                                     />
                                 </Col>
                                 <Col span={12}>
@@ -54,7 +57,8 @@ class CatalogueHome extends React.Component<iProps, iState> {
                                         heading="Unique Items (SKUs)"
                                         subheading="Search and view specific items to view and manage description, image etc"
                                         btnText="Explore"
-                                        path=""
+                                        path="/core/items/list"
+                                        history={this.props.history}
                                     />
                                 </Col>
                             </Row>
