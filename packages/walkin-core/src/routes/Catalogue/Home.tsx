@@ -27,7 +27,7 @@ class CatalogueHome extends React.Component<iProps, iState> {
             <div className="cat-subheader">This is your Dashboard, you can view your tasks and explore areas of your work.</div>
             <div className="cat-infoHolder">
                 <Row>
-                    <Col span={16}>
+                    <Col>
                         <Col>
                             <Row>
                                 <PromoBox
@@ -60,7 +60,7 @@ class CatalogueHome extends React.Component<iProps, iState> {
                             </Row>
                         </Col>
                     </Col>
-                    <Col span={8}>
+                    {/* <Col span={8}>
                         <Col>
                             <Row><Col span={24}>
                                 <DraftBox
@@ -80,15 +80,15 @@ class CatalogueHome extends React.Component<iProps, iState> {
                                 />
                             </Col></Row>
                         </Col>
-                    </Col>
+                    </Col> */}
                 </Row>
             </div>
-            <div className="explore">Explore:</div>
-            <div className="options">
+            {/* <div className="explore">Explore:</div>
+            <div className=" options">
                 <ExploreBox title="Categories" path="" />
                 <ExploreBox title="Items and modifiers" path="" />
                 <ExploreBox title="Catalogues" path="" />
-            </div>
+            </div> */}
         </div>)
     }
 
