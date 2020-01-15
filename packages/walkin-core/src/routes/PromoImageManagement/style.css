@@ -6,3 +6,27 @@
     padding-top: 4px;
     color:#999999;
 }
+
+.addImage{
+    width: 200px;
+    background-color: #262626;
+    color: #FFF;
+}
+
+.inActiveState{
+    padding-left: 16px;
+    font-size: 12px;
+    padding-top: 2px;
+    color: #8c8c8c;
+  }
+
+  .activeState{
+    padding-left: 16px;
+    font-size: 12px;
+    padding-top: 2px;
+    color: #038FDE;
+  }
+
+  .promoContainer{
+      margin-top: 40px
+  }
