@@ -92,6 +92,12 @@ class SidebarContent extends React.Component<
             theme={themeType === THEME_TYPE_LITE ? "light" : "dark"}
             mode="inline"
           >
+            <Menu.Item key="catalogue">
+              <Link to={`/core/catalogue/home`}>
+                <Icon style={{ fontSize: "18px" }} type="fund" />
+                <span className="sideMenuText">Dashboard</span>
+              </Link>
+            </Menu.Item>
             <Menu.Item key="core">
               <Link to="/core">
                 <Icon style={{ fontSize: "18px" }} type="appstore" theme="filled" />
@@ -127,16 +133,11 @@ class SidebarContent extends React.Component<
                 <span className="sideMenuText">Store Info</span>
               </Link>
             </Menu.Item>
-            <Menu.Item key="catalogue">
-              <Link to={`/core/catalogue/home`}>
-                <Icon style={{ fontSize: "18px" }} type="fund" />
-                <span className="sideMenuText">Dashboard</span>
-              </Link>
-            </Menu.Item>
+
             <Menu.Item key="categories">
               <Link to={`/core/categories/list`}>
                 <Icon style={{ fontSize: "18px" }} type="container" theme="filled" />
-                <span className="sideMenuText">Categories</span>
+                <span className="sideMenuText">Category Management</span>
               </Link>
             </Menu.Item>
             <Menu.Item key="items">

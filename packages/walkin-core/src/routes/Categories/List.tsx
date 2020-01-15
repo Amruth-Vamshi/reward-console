@@ -561,7 +561,7 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
         const { processedCategoryList, selectedCategoryArr, selectedCategory, activeCat, editCategory, showCatBtn } = this.state
 
         return (<div>
-            <div className="cat-header">Categories Management</div>
+            <div className="cat-header">Category Management</div>
             <div className="cat-subheader">Search for a category like "pizza" or explore and choose from the category selector.</div>
             <div className="container">
                 <div className="categoryContainer">
