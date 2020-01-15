@@ -12,6 +12,7 @@ const BASE_URLS = "http://139.59.51.69:4444"
 const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbXBsb3llZUlkIjozODcwLCJpYXQiOjE1Nzg5OTE1OTh9.2It6zl8LfWu4RvSTLmF-fvQcyhKgdrBh3NE7WuLS_PI"
 
 const MAX_UPLOAD_LIMIT = 1
+const maxSizeLimit = '1MB'
 
 
 registerPlugin(FilePondPluginImagePreview, FilePondPluginFileValidateSize)
@@ -178,7 +179,10 @@ class FileUpload extends Component {
 
                     <Col span={24}>
                         <Row style={{ marginTop: '0px', justifyContent: 'flex-end', marginLeft: '1px' }}>
-                            <span style={{ fontWeight: '100', fontSize: '9px', marginTop: '-10px', marginBottom: '11px' }}>Maximum {allowedUpload} files can be uploaded</span>
+                            <span style={{ fontWeight: '100', fontSize: '9px', marginTop: '-10px', marginBottom: '11px' }}>Maximum {allowedUpload} file can be uploaded</span>
+                        </Row>
+                        <Row style={{ marginTop: '0px', justifyContent: 'flex-end', marginLeft: '1px' }}>
+                            <span style={{ fontWeight: '100', fontSize: '9px', marginTop: '-10px', marginBottom: '11px' }}>Maximum file size allowed is {maxSizeLimit} </span>
                         </Row>
                         {
                             (files.length !== 0) && <Row style={{ paddingBottom: '20px', marginLeft: '1px' }}>
@@ -214,11 +218,17 @@ class FileUpload extends Component {
                                     onprocessfile={this.onFileProcess}
                                     onremovefile={this.onRemoveFile}
                                     allowImagePreview={true}
+                                    maxFileSize={maxSizeLimit}
                                     imagePreviewMaxHeight={50}
                                     imagePreviewMaxWidth={50}
                                     allowFileSizeValidation={true}
-                                    maxFileSize={'3MB'}
+                                    labelMaxFileSizeExceeded={"File exceeds permitted size!"}
                                     disabled={disableUploader}
+                                    allowImageValidateSize={true}
+                                    imageValidateSizeMinWidth={50}
+                                    imageValidateSizeMinHeight={50}
+                                    imageValidateSizeMaxWidth={200}
+                                    imageValidateSizeMaxHeight={200}
                                 >
                                 </FilePond>
                             </Col>

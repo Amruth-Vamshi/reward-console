@@ -667,6 +667,9 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
                                         <Row><Button onClick={() => { this.resetImage() }} className="imgReset" size="small" type="link">Reset to Default</Button></Row>
                                     </Col>
                                 </Row>
+                                <Row>
+                                    <Col className="imageDesc">* Maximum file size allowed is 1 MB</Col>
+                                </Row>
                             </div>
                         </Col>
                     </Row>
