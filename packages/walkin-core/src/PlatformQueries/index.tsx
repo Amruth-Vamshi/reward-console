@@ -785,6 +785,29 @@ export const GET_PRODUCT_CATEGORIES_BY_CATEGORY_ID = gql`
         sku
         type
         status
+        extend
+        variants {
+          id
+          sku
+          product {
+            id
+            name
+            description
+            imageUrl
+            sku
+            type
+            status
+          }
+          optionValues {
+            id
+            value
+            option {
+              id
+              name
+              description
+            }
+          }
+        }
       }
       category {
         id
@@ -793,6 +816,80 @@ export const GET_PRODUCT_CATEGORIES_BY_CATEGORY_ID = gql`
         code
         catalogId
         status
+      }
+    }
+  }
+`;
+
+export const PRODUCT_SEARCH = gql`
+  query products($input: ProductSearchInput) {
+    products(input: $input) {
+      id
+      code
+      name
+      description
+      imageUrl
+      sku
+      type
+      status
+      variants {
+        id
+        sku
+        product {
+          id
+          name
+          description
+          imageUrl
+          sku
+          type
+          status
+        }
+        optionValues {
+          id
+          value
+          option {
+            id
+            name
+            description
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const UPDATE_PRODUCT = gql`
+  mutation updateProduct($input: UpdateProductInput!) {
+    updateProduct(input: $input) {
+      id
+      code
+      name
+      description
+      imageUrl
+      sku
+      type
+      status
+      variants {
+        id
+        sku
+        product {
+          id
+          name
+          description
+          imageUrl
+          sku
+          type
+          status
+        }
+        optionValues {
+          id
+          value
+          option {
+            id
+            name
+            description
+          }
+        }
       }
     }
   }

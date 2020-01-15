@@ -2,6 +2,9 @@
   display: flex;
   justify-content: space-between;
 }
+.displayFlex {
+  display: flex;
+}
 .alignCenter {
   display: flex;
   align-items: center;
@@ -19,13 +22,37 @@
 .width400px {
   width: 400px;
 }
+.marginBottom10px {
+  margin-bottom: 10px;
+}
 .marginBottom20px {
   margin-bottom: 20px;
 }
 .marginBottom40px {
   margin-bottom: 40px;
 }
-
+.margin0 {
+  margin: 0;
+}
+.blackButton {
+  background-color: #333333 !important;
+  border-color: #333333 !important;
+  color: white;
+}
+.textColorRed {
+  color: red;
+}
+.selectedTableRowRed {
+  background-color: red;
+  color: white;
+}
+.nohoverTableWrapper
+  .ant-table-tbody
+  > tr:hover:not(.ant-table-expanded-row)
+  > td {
+  background: unset !important;
+  cursor: pointer;
+}
 .variantDetailsFormContainer .button {
   margin: 0;
 }
@@ -38,5 +65,5 @@
   border: 1px solid red;
   border-radius: 4px;
   margin: 30px 0;
-  padding: 10px;
+  padding: 20px 20px;
 }
