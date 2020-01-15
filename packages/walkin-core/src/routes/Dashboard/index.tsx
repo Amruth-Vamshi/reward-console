@@ -6,7 +6,7 @@ export default class extends React.Component {
     render() {
         return (
             <Switch>
-                <Route path={"/core/catalogue/home"} component={Home} />
+                <Route path={"/core/dashboard/home"} component={Home} />
             </Switch>
         );
     }

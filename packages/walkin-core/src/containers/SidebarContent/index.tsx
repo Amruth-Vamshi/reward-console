@@ -93,7 +93,7 @@ class SidebarContent extends React.Component<
             mode="inline"
           >
             <Menu.Item key="catalogue">
-              <Link to={`/core/catalogue/home`}>
+              <Link to={`/core/dashboard/home`}>
                 <Icon style={{ fontSize: "18px" }} type="fund" />
                 <span className="sideMenuText">Dashboard</span>
               </Link>

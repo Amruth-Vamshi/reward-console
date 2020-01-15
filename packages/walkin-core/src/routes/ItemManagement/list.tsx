@@ -22,7 +22,7 @@ import {
   UPDATE_PRODUCT
 } from "./../../PlatformQueries";
 
-interface iProps extends ApolloProviderProps<any> {}
+interface iProps extends ApolloProviderProps<any> { }
 
 interface iState {
   processedCategoryList: any;
@@ -355,7 +355,7 @@ class ListHome extends React.Component<iProps, iState> {
     return (
       <div className="itemsManagementContainer">
         <Col>
-          <h1>List Management</h1>
+          <h1>Item Management</h1>
           <div>Search for an item name, SKU or explore through Categories</div>
         </Col>
         {isFetching && processedCategoryList.length === 0 ? (
@@ -363,85 +363,85 @@ class ListHome extends React.Component<iProps, iState> {
             <Spin size="large" />
           </Col>
         ) : (
-          <Col className="itemManagementBodyWrapper">
-            <Row className="marginBottom20px">
-              <Col span={10}>
-                <Cascader
-                  size="large"
-                  options={processedCategoryList}
-                  onChange={(val, selectedOptions) => {
-                    this.onChangeCascader(val, selectedOptions);
-                  }}
-                  displayRender={this.displayRender}
-                  style={{ width: "100%" }}
-                  changeOnSelect
-                />
-              </Col>
-              <Col span={10}>
-                <Input
-                  size="large"
-                  placeholder="Search for a category like Pizza"
-                  onChange={e => {
-                    this.onChange("searchInput", e.target.value);
-                  }}
-                  prefix={
-                    <Icon type="search" style={{ color: "rgba(0,0,0,.25)" }} />
-                  }
-                />
-              </Col>
-              <Col span={2}>
-                <Button
-                  disabled={false}
-                  className="margin0 blackButton"
-                  size="large"
-                  onClick={() => {
-                    this.onSearchProduct();
-                    // this.props.history.push("/core/stores/create");
-                  }}
-                  loading={false}
-                >
-                  Search
+            <Col className="itemManagementBodyWrapper">
+              <Row className="marginBottom20px">
+                <Col span={10}>
+                  <Cascader
+                    size="large"
+                    options={processedCategoryList}
+                    onChange={(val, selectedOptions) => {
+                      this.onChangeCascader(val, selectedOptions);
+                    }}
+                    displayRender={this.displayRender}
+                    style={{ width: "100%" }}
+                    changeOnSelect
+                  />
+                </Col>
+                <Col span={10}>
+                  <Input
+                    size="large"
+                    placeholder="Search for a category like Pizza"
+                    onChange={e => {
+                      this.onChange("searchInput", e.target.value);
+                    }}
+                    prefix={
+                      <Icon type="search" style={{ color: "rgba(0,0,0,.25)" }} />
+                    }
+                  />
+                </Col>
+                <Col span={2}>
+                  <Button
+                    disabled={false}
+                    className="margin0 blackButton"
+                    size="large"
+                    onClick={() => {
+                      this.onSearchProduct();
+                      // this.props.history.push("/core/stores/create");
+                    }}
+                    loading={false}
+                  >
+                    Search
                 </Button>
-              </Col>
-            </Row>
-            {isCategorySelected && (
-              <div>
-                <Row className="marginBottom20px">
-                  <Col className="alignSelfCenter" span={7}>
-                    <div>Choose an item variant to view or edit</div>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col span={19}>
-                    <Table
-                      loading={isFetching}
-                      className={"nohoverTableWrapper"}
-                      columns={columns}
-                      rowClassName={(record, index) =>
-                        index === this.state.selectedProductRowIndex
-                          ? "selectedTableRowRed "
-                          : "table-row-dark"
-                      }
-                      dataSource={this.state.productsFinalData}
-                      onChange={this.onChangeTable}
-                      pagination={false}
-                      onRow={(record: any, rowIndex: number) => {
-                        return {
-                          onClick: (event: any) => {
-                            this.setState({
-                              selectedProductRowIndex: rowIndex
-                            });
-                          }
-                        };
-                      }}
-                      scroll={{ y: 300 }}
-                    />
-                  </Col>
-                </Row>
-              </div>
-            )}
-          </Col>
-        )}
+                </Col>
+              </Row>
+              {isCategorySelected && (
+                <div>
+                  <Row className="marginBottom20px">
+                    <Col className="alignSelfCenter" span={7}>
+                      <div>Choose an item variant to view or edit</div>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col span={19}>
+                      <Table
+                        loading={isFetching}
+                        className={"nohoverTableWrapper"}
+                        columns={columns}
+                        rowClassName={(record, index) =>
+                          index === this.state.selectedProductRowIndex
+                            ? "selectedTableRowRed "
+                            : "table-row-dark"
+                        }
+                        dataSource={this.state.productsFinalData}
+                        onChange={this.onChangeTable}
+                        pagination={false}
+                        onRow={(record: any, rowIndex: number) => {
+                          return {
+                            onClick: (event: any) => {
+                              this.setState({
+                                selectedProductRowIndex: rowIndex
+                              });
+                            }
+                          };
+                        }}
+                        scroll={{ y: 300 }}
+                      />
+                    </Col>
+                  </Row>
+                </div>
+              )}
+            </Col>
+          )}
         {selectedProductRowIndex !== null && this.showProductDetailsForm()}
       </div>
     );
