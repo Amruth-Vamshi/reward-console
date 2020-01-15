@@ -376,6 +376,8 @@ class EditStore extends React.Component<EditStoreProps, EditStoreState> {
                   value={
                     storeDetails.extend &&
                     storeDetails.extend.extend_phone_number
+                      ? storeDetails.extend.extend_phone_number
+                      : null
                   }
                   onChange={e => {
                     storeDetails.extend.extend_phone_number = e.target.value;
@@ -400,6 +402,12 @@ class EditStore extends React.Component<EditStoreProps, EditStoreState> {
                   storeDetails.extend.extend_admin_user_id = value;
                   this.onChange("storeDetails", storeDetails);
                 }}
+                value={
+                  storeDetails.extend &&
+                  storeDetails.extend.extend_admin_user_id
+                    ? storeDetails.extend.extend_admin_user_id
+                    : null
+                }
                 filterOption={(input, option) =>
                   option.props.children
                     .toString()

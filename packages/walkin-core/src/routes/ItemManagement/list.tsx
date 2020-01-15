@@ -1,5 +1,15 @@
 import * as React from "react";
-import { Row, Col, Cascader, Button, Input, Icon, Table, Spin } from "antd";
+import {
+  Row,
+  Col,
+  Cascader,
+  Button,
+  Input,
+  Icon,
+  Table,
+  Spin,
+  message
+} from "antd";
 import * as jwt from "jsonwebtoken";
 import { Query, withApollo, ApolloProviderProps } from "react-apollo";
 
@@ -238,12 +248,17 @@ class ListHome extends React.Component<iProps, iState> {
   };
 
   onSaveParentDetails = input => {
-    console.log(input);
-
     let parentDetails = input;
     parentDetails.organizationId = this.state.organizationId;
     delete parentDetails["variants"];
     delete parentDetails["__typename"];
+    // parentDetails.extend = JSON.stringify({
+    //   extend_veg_non_veg: "nonVeg",
+    //   extend_rating: 2,
+    // });
+    parentDetails.extend = JSON.stringify(parentDetails.extend);
+
+    console.log(input);
 
     this.props.client
       .mutate({
@@ -252,6 +267,7 @@ class ListHome extends React.Component<iProps, iState> {
       })
       .then(res => {
         console.log("Category Data Recieved", res);
+        message.success("successfully updated");
       });
   };
 

@@ -233,8 +233,8 @@ class VariantDetailsForm extends React.Component<iProps, iState> {
                   productParentDetails.extend.extend_nutrition_value
                 }
                 onChange={(e: any) => {
-                  productParentDetails.extend.extend_nutrition_value =
-                    e.target.value;
+                  productParentDetails.extend.extend_nutrition_value = +e.target
+                    .value;
                   this.onChange("productParentDetails", productParentDetails);
                 }}
               />
@@ -287,8 +287,8 @@ class VariantDetailsForm extends React.Component<iProps, iState> {
                   productParentDetails.extend.extend_item_preparation_time
                 }
                 onChange={(e: any) => {
-                  productParentDetails.extend.extend_item_preparation_time =
-                    e.target.value;
+                  productParentDetails.extend.extend_item_preparation_time = +e
+                    .target.value;
                   this.onChange("productParentDetails", productParentDetails);
                 }}
               />
@@ -351,6 +351,8 @@ class VariantDetailsForm extends React.Component<iProps, iState> {
                     productParentDetails.extend.extend_ordering_mode &&
                     productParentDetails.extend.extend_ordering_mode.takeAway
                   );
+                  console.log(productParentDetails);
+
                   this.onChange("productParentDetails", productParentDetails);
                 }}
               >
@@ -421,7 +423,7 @@ class VariantDetailsForm extends React.Component<iProps, iState> {
                   productParentDetails.extend.extend_rating
                 }
                 onChange={(e: any) => {
-                  productParentDetails.extend.extend_rating = e.target.value;
+                  productParentDetails.extend.extend_rating = +e.target.value;
                   this.onChange("productParentDetails", productParentDetails);
                 }}
               />
