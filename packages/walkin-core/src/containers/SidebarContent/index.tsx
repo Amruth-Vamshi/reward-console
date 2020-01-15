@@ -19,6 +19,7 @@ import gql from "graphql-tag";
 import * as jwt from "jsonwebtoken";
 import { CollapseSidebar } from "@walkinsole/shared";
 // import { MenuTheme } from "antd/lib/menu";
+import "./style.css"
 
 interface SidebarContentProps extends RouteComponentProps {
   themeType: any;
@@ -34,7 +35,7 @@ interface SidebarContentState {
 class SidebarContent extends React.Component<
   SidebarContentProps,
   SidebarContentState
-> {
+  > {
   constructor(props: SidebarContentProps) {
     super(props);
     this.state = {
@@ -94,54 +95,54 @@ class SidebarContent extends React.Component<
             <Menu.Item key="core">
               <Link to="/core">
                 <i className="icon icon-apps" />
-                <span>Core suite</span>
+                <span className="sideMenuText">Core suite</span>
               </Link>
             </Menu.Item>
             <Menu.Item key="core/users">
               <Link to="/core/users">
                 <i className="icon icon-contacts" />
                 {/* <IntlMessages id="sidebar.refinex" /> */}
-                <span>User Info</span>
+                <span className="sideMenuText">User Info</span>
               </Link>
             </Menu.Item>
             <Menu.Item key="organizationInfo">
               <Link
                 to={`/core/organization/${orgId ? orgId : ""}`}
-                // to="core/organization"
+              // to="core/organization"
               >
                 <i className="icon icon-inbox" />
                 {/* <IntlMessages id="sidebar.nearx" /> */}
-                <span>Organization Info</span>
+                <span className="sideMenuText">Organization Info</span>
               </Link>
             </Menu.Item>
             <Menu.Item key="business-rules">
               <Link to={`/core/business-rules`}>
                 <i className="icon icon-inbox" />
-                <span>Business Rules</span>
+                <span className="sideMenuText">Business Rules</span>
               </Link>
             </Menu.Item>
             <Menu.Item key="stores">
               <Link to={`/core/stores`}>
                 <i className="icon icon-inbox" />
-                <span>Store Info</span>
+                <span className="sideMenuText">Store Info</span>
               </Link>
             </Menu.Item>
             <Menu.Item key="catalogue">
               <Link to={`/core/catalogue/home`}>
                 <i className="icon icon-inbox" />
-                <span>Catalogue</span>
+                <span className="sideMenuText">Catalogue</span>
               </Link>
             </Menu.Item>
             <Menu.Item key="categories">
               <Link to={`/core/categories/list`}>
                 <i className="icon icon-inbox" />
-                <span>Categories</span>
+                <span className="sideMenuText">Categories</span>
               </Link>
             </Menu.Item>
             <Menu.Item key="items">
               <Link to={`/core/items/list`}>
                 <i className="icon icon-inbox" />
-                <span>Item Management</span>
+                <span className="sideMenuText">Item Management</span>
               </Link>
             </Menu.Item>
           </Menu>
