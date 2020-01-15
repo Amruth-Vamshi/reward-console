@@ -23,7 +23,7 @@ class CatalogueHome extends React.Component<iProps, iState> {
 
     render() {
         return (<div>
-            <div className="cat-header">Welcome, Ashish</div>
+            <div className="cat-header">Welcome, Aashish</div>
             <div className="cat-subheader">This is your Dashboard, you can view your tasks and explore areas of your work.</div>
             <div className="cat-infoHolder">
                 <Row>
