@@ -33,7 +33,7 @@ class CatalogueHome extends React.Component<iProps, iState> {
                                 <PromoBox
                                     title="Promo Images"
                                     desc="These images show in the app carousel for a defined period of days."
-                                    imageSource="https://res.cloudinary.com/ccdapp/image/upload/c_scale,h_360,q_40,w_720/v1530265376/product-images/new_images/720x360/What_s_New.jpg"
+                                    imageSource="https://res.cloudinary.com/servicex-dev/image/upload/v1579080315/servicex/attachments/attachment_1579080313491_pizza_promo.png.png"
                                     btnText="Edit"
 
                                 />

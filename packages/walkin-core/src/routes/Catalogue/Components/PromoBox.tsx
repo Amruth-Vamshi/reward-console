@@ -7,7 +7,7 @@ const PromoBox = ({ title, desc, btnText, imageSource }) => {
         <div className="promoBox">
             <Row style={{ marginLeft: "0px", marginRight: "0px", height: "170px" }}>
                 <Col span={13}>
-                    <img style={{ height: "170px", borderRadius: "5px 0px 0px 5px", marginLeft: "-15px" }} src={imageSource} />
+                    <img style={{ height: "170px", width: "390px", borderRadius: "5px 0px 0px 5px", marginLeft: "-15px" }} src={imageSource} />
                 </Col>
                 <Col style={{ textAlign: "center", backgroundColor: "#FFF" }} span={10}>
                     <div style={{ marginTop: "14px" }}>
