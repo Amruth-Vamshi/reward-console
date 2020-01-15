@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Menu } from "antd";
+import { Menu, Icon } from "antd";
 import { Link, RouteComponentProps } from "react-router-dom";
 import {
   CustomScrollbars,
@@ -87,20 +87,20 @@ class SidebarContent extends React.Component<
         >
           <Menu
             style={{ height: "100%" }}
-            defaultOpenKeys={[]}
+            defaultOpenKeys={['catalogue']}
             selectedKeys={[]}
             theme={themeType === THEME_TYPE_LITE ? "light" : "dark"}
             mode="inline"
           >
             <Menu.Item key="core">
               <Link to="/core">
-                <i className="icon icon-apps" />
+                <Icon style={{ fontSize: "18px" }} type="appstore" theme="filled" />
                 <span className="sideMenuText">Core suite</span>
               </Link>
             </Menu.Item>
             <Menu.Item key="core/users">
               <Link to="/core/users">
-                <i className="icon icon-contacts" />
+                <Icon style={{ fontSize: "18px" }} type="user" />
                 {/* <IntlMessages id="sidebar.refinex" /> */}
                 <span className="sideMenuText">User Info</span>
               </Link>
@@ -110,38 +110,38 @@ class SidebarContent extends React.Component<
                 to={`/core/organization/${orgId ? orgId : ""}`}
               // to="core/organization"
               >
-                <i className="icon icon-inbox" />
+                <Icon style={{ fontSize: "18px" }} type="home" theme="filled" />
                 {/* <IntlMessages id="sidebar.nearx" /> */}
                 <span className="sideMenuText">Organization Info</span>
               </Link>
             </Menu.Item>
-            <Menu.Item key="business-rules">
+            {/* <Menu.Item key="business-rules">
               <Link to={`/core/business-rules`}>
                 <i className="icon icon-inbox" />
                 <span className="sideMenuText">Business Rules</span>
               </Link>
-            </Menu.Item>
+            </Menu.Item> */}
             <Menu.Item key="stores">
               <Link to={`/core/stores`}>
-                <i className="icon icon-inbox" />
+                <Icon style={{ fontSize: "18px" }} type="shop" theme="filled" />
                 <span className="sideMenuText">Store Info</span>
               </Link>
             </Menu.Item>
             <Menu.Item key="catalogue">
               <Link to={`/core/catalogue/home`}>
-                <i className="icon icon-inbox" />
-                <span className="sideMenuText">Catalogue</span>
+                <Icon style={{ fontSize: "18px" }} type="fund" />
+                <span className="sideMenuText">Dashboard</span>
               </Link>
             </Menu.Item>
             <Menu.Item key="categories">
               <Link to={`/core/categories/list`}>
-                <i className="icon icon-inbox" />
+                <Icon style={{ fontSize: "18px" }} type="container" theme="filled" />
                 <span className="sideMenuText">Categories</span>
               </Link>
             </Menu.Item>
             <Menu.Item key="items">
               <Link to={`/core/items/list`}>
-                <i className="icon icon-inbox" />
+                <Icon style={{ fontSize: "18px" }} type="profile" theme="filled" />
                 <span className="sideMenuText">Item Management</span>
               </Link>
             </Menu.Item>
