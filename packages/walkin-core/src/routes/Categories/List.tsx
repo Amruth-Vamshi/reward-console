@@ -327,9 +327,15 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
         const { org_id }: any = jwt.decode(jwtToken);
 
         var vl = (editCategory.name).trim()
+        var vi = (editCategory.code).trim()
 
         if (vl == "") {
             message.warn("Please provide a valid category name to proceed!")
+            return;
+        }
+
+        if (vi == "") {
+            message.warn("Please provide a valid category code to proceed!")
             return;
         }
 
@@ -450,9 +456,14 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
     }
 
     resetImage() {
-        const { editCategory } = this.state
+        const { editCategory, selectedCategory, editType } = this.state
         var data = editCategory
-        data.image = ""
+        if (selectedCategory !== null && editType == "") {
+            data.image = selectedCategory.imageUrl
+        }
+        else {
+            data.image = ""
+        }
         this.setState({ editCategory: data })
     }
 
