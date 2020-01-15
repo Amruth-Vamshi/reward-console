@@ -30,3 +30,14 @@
   .promoContainer{
       margin-top: 40px
   }
+
+  .promoImage {
+    margin-left: 13px;
+    width: 200px;
+    height: 130px;
+  }
+
+  .imageHeading{
+    font-size: 12px;
+    color: #999999;
+  }
