@@ -125,6 +125,7 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
 
     UNSAFE_componentWillMount() {
         this.getCategories()
+        this.addCategory()
     }
 
     processData(data) {
