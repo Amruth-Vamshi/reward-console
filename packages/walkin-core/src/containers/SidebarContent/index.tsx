@@ -146,6 +146,12 @@ class SidebarContent extends React.Component<
                 <span className="sideMenuText">Item Management</span>
               </Link>
             </Menu.Item>
+            <Menu.Item key="promos">
+              <Link to={`/core/promos/list`}>
+                <Icon style={{ fontSize: "18px" }} type="picture" />
+                <span className="sideMenuText">Promo Images</span>
+              </Link>
+            </Menu.Item>
           </Menu>
         </div>
       );

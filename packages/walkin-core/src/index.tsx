@@ -13,6 +13,7 @@ import Stores from "./routes/Stores";
 import Dashboard from "./routes/Dashboard";
 import Category from "./routes/Categories";
 import ItemManagement from "./routes/ItemManagement";
+import PromoImageManagement from "./routes/PromoImageManagement";
 interface HomeProps extends RouteComponentProps { }
 
 export default class extends React.Component<HomeProps, {}> {
@@ -32,6 +33,7 @@ export default class extends React.Component<HomeProps, {}> {
           <Route path={"/core/dashboard"} component={Dashboard} />
           <Route path={"/core/categories"} component={Category} />
           <Route path={"/core/items"} component={ItemManagement} />
+          <Route path={"/core/promos"} component={PromoImageManagement} />
           <Route path={`${this.props.match.url}/users`} component={Users} />
           {/* <Route path={"/core/orghome/:id"} component={OrganisationHome} /> */}
           <Route path={"/core/stores"} component={Stores} />
