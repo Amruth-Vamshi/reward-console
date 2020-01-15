@@ -331,7 +331,7 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
     }
 
     saveData() {
-        const { selectedCategoryArr, activeCat, editType, editCategory, selectedCategory } = this.state
+        const { selectedCategoryArr, activeCat, editType, editCategory, selectedCategory, rawData } = this.state
 
         const jwtToken = localStorage.getItem('jwt')
         const { org_id }: any = jwt.decode(jwtToken);
@@ -435,6 +435,7 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
                     organizationId: org_id,
                     code: editCategory.code,
                     catalogId: "2",
+                    parentId: rawData.id,
                     extend: JSON.stringify({ "extend_image_url": editCategory.image })
                 }
 
@@ -604,7 +605,7 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
                         </Col>
                         <Col span={8}>
                             <Button className="saveBtn" type="ghost" onClick={() => { this.saveData() }}>Save</Button>
-                            <Button className="cancelBtn" type="danger" onClick={() => { this.cancelForm() }}>Cancel</Button>
+                            <Button className="cancelBtn" type="danger" onClick={() => { this.cancelForm() }}>Reset</Button>
                         </Col>
                     </Row>
                     <Row className="formDetail">
