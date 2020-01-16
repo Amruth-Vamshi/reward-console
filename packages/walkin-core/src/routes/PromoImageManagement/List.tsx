@@ -67,7 +67,24 @@ class PromoHome extends React.Component<iProps, iState> {
     }
 
     saveEditedData(promo, indexValue) {
+        const { totalPromo } = this.state
 
+        var allData = []
+        var total = totalPromo
+        total.map((el, index) => {
+            if (index == indexValue) {
+                var editData = el
+                editData["edited"] = false
+                allData.push(editData)
+            }
+            else {
+                allData.push(el)
+            }
+        })
+
+        this.setState({ totalPromo: allData }, () => {
+            message.success("Promo Updated!")
+        })
     }
 
     deletePromo(indexValue) {
