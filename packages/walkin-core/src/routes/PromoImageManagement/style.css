@@ -1,0 +1,76 @@
+.promo-header{
+    font-size:18px
+}
+.promo-subheader{
+    font-size:10px;
+    padding-top: 4px;
+    color:#999999;
+}
+
+.addImage{
+    width: 200px;
+    background-color: #262626;
+    color: #FFF;
+}
+
+.inActiveState{
+    padding-left: 16px;
+    font-size: 12px;
+    padding-top: 2px;
+    color: #8c8c8c;
+  }
+
+  .activeState{
+    padding-left: 16px;
+    font-size: 12px;
+    padding-top: 2px;
+    color: #038FDE;
+  }
+
+  .promoContainer{
+      margin-top: 20px;
+      margin-bottom: 50px;
+  }
+
+  .promoImage {
+    margin-left: 13px;
+    width: 200px;
+    height: 130px;
+    box-shadow: 1px 1px 10px #cdecfe;
+  }
+
+  .addPromoImage {
+    width: 200px;
+    height: 130px;
+    box-shadow: 1px 1px 10px #cdecfe;
+  }
+
+  .imageHeading{
+    font-size: 12px;
+    color: #999999;
+  }
+
+  .promoItemContainer{
+      padding-top : 10px;
+      padding-bottom: 10px;
+  }
+
+  .promoLine{
+    background-color: #bfbfbf;
+    height: 1px;
+    margin-bottom: 20px;
+  }
+
+  .modalContainer{
+      width : 650px;
+  }
+
+  .rowCover {
+      margin-top: 30px;
+      margin-bottom: 10px;
+  }
+
+.addPromoStatus{
+    padding-left: 70px;
+    padding-top: 5px;
+}

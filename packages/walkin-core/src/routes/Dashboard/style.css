@@ -1,0 +1,77 @@
+
+.cat-header{
+    font-size:18px
+}
+.cat-subheader{
+    font-size:10px;
+    padding-top: 4px;
+    color:"#999999";
+}
+.cat-infoHolder {
+    /* height: 320px;
+    margin-top: 20px;
+    width: auto;
+    margin-left: 70px;
+    margin-right: 70px; */
+    height: 340px;
+    margin-top: 60px;
+    width: auto;
+    margin-right: 10px;
+    margin-left: 100px;
+}
+
+.box {
+    height: 170px;
+    /* width: 250px; */
+    width: 378px;
+    background-color: #FFF;
+    border-radius: 4px;
+    margin:5px;
+    text-align: center;
+    box-shadow: 1px 1px 10px #e6e6e6;
+}
+
+.draftBox {
+    height: 170px;
+    width: 250px;
+    background-color: #FFF;
+    border-radius: 4px;
+    margin:5px;
+    padding-left: 10px;
+    box-shadow: 1px 1px 10px #e6e6e6;
+}
+
+.promoBox {
+    height: 170px;
+    /* width: 540px; */
+    width: 800px;
+    background-color: #FFF;
+    border-radius: 4px;
+    margin-left:20px;
+    margin-top : 5px;
+    margin-bottom: 5px;
+    margin-right : 5px;
+    box-shadow: 1px 1px 10px #e6e6e6;
+
+}
+
+.explore {
+    margin-top: 60px;
+}
+
+.options{
+    margin-top: 35px;
+    margin-left: 70px;
+    margin-right: 70px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: auto;
+}
+
+.optionItem {
+    width: 260px;
+    height: 50px;
+    background: #DAA520;
+    margin-left: 10px;
+    margin-right:10px
+  }

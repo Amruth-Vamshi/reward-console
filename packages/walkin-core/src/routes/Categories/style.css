@@ -1,0 +1,176 @@
+.cat-header{
+    font-size:18px
+}
+.cat-subheader{
+    font-size:10px;
+    padding-top: 4px;
+    color:#999999;
+}
+
+.container{
+    margin-top: 30px;
+}
+
+.categoryContainer{
+    width : 1000px;
+}
+
+.addBtn {
+    color: #FFF;
+    font-size: 10px;
+    background-color: #333333;
+    border-radius: 4px;
+}
+
+.cascaderStyle {
+    padding-top: 2px;
+    font-size: 12px;
+    color: #404040;
+}
+
+.categoryForm {
+    margin-top: 100px;
+    background-color: #FFF;
+    box-shadow: 1px 1px 10px #DAA520;
+    height : 340px
+}
+
+.optionItem {
+    width: 260px;
+    height: 50px;
+    background: #DAA520;
+    margin-left: 10px;
+    margin-right:10px
+  }
+
+  .selectedDiv {
+    width: 100%;
+    margin: 0 auto;
+  }
+  .selectedItem {
+    padding-top: 6px;
+    padding-left: 20px;
+    padding-right: 20px;
+    width: auto;
+    float: left;
+    height: 30px;
+    background-color: #FFF;
+    margin: 2px;
+    text-align: center;
+    font-weight: 500;
+    box-shadow: 1px 1px 10px #e6e6e6;
+    border-radius: 4px;
+  }
+
+  .selectedActiveItem {
+    padding-top: 6px;
+    padding-left: 20px;
+    padding-right: 20px;
+    width: auto;
+    float: left;
+    height: 30px;
+    background-color: #038FDE;
+    color : #FFF;
+    margin: 2px;
+    text-align: center;
+    font-weight: 500;
+    box-shadow: 1px 1px 10px #cdecfe;
+    border-radius: 4px;
+  }
+
+  .selectedItem div:hover{
+      border: #0F0;
+      border-radius: 1px;
+  }
+
+  .formHeader {
+      padding : 12px
+  }
+
+  .cancelBtn{
+    background-color: #ff8080;
+    float: right;
+    color: #FFF;
+    border-radius: 4px;
+    width: 100px;
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+
+  .saveBtn {
+    background-color: #333333;
+    float: right;
+    color: #FFF;
+    border-radius: 4px;
+    width: 100px;
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+
+  .breadCrumbParent {
+        padding-left: 12px;
+        padding-top: 4px;
+        font-size: 16px;
+        font-weight: 500;
+  }
+
+  .inActiveState{
+    padding-left: 16px;
+    font-size: 12px;
+    padding-top: 2px;
+    color: #8c8c8c;
+  }
+
+  .activeState{
+    padding-left: 16px;
+    font-size: 12px;
+    padding-top: 2px;
+    color: #038FDE;
+  }
+
+  .formDetail{
+      margin-left: 1px;
+      margin-right:1px;
+  }
+
+  .formTitle{
+    font-size: 10px;
+    padding-bottom: 8px;
+    color: #b3b3b3;
+  }
+
+  .catImage{
+    height: 100px;
+    width: 100px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 10px #e6e6e6;
+  }
+
+  .imgLink {
+    margin-right: 50px;
+    margin-bottom: 20px;
+  }
+
+  .imgUpload{
+    width: 115px;
+    border-radius: 2px;
+    border: -1px;
+    border-color: #000;
+  }
+
+  .imgReset{
+    color: #000;
+    font-weight: 500;
+  }
+
+  .mandatoryField{
+    color : #F00;
+    padding-left: 2px;
+  }
+
+  .imageDesc {
+    margin-top: 20px;
+    font-size: 10px;
+    color: #a6a6a6;
+  }
+

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Menu } from "antd";
+import { Menu, Icon } from "antd";
 import { Link, RouteComponentProps } from "react-router-dom";
 import {
   CustomScrollbars,
@@ -19,6 +19,7 @@ import gql from "graphql-tag";
 import * as jwt from "jsonwebtoken";
 import { CollapseSidebar } from "@walkinsole/shared";
 // import { MenuTheme } from "antd/lib/menu";
+import "./style.css"
 
 interface SidebarContentProps extends RouteComponentProps {
   themeType: any;
@@ -34,7 +35,7 @@ interface SidebarContentState {
 class SidebarContent extends React.Component<
   SidebarContentProps,
   SidebarContentState
-> {
+  > {
   constructor(props: SidebarContentProps) {
     super(props);
     this.state = {
@@ -86,44 +87,69 @@ class SidebarContent extends React.Component<
         >
           <Menu
             style={{ height: "100%" }}
-            defaultOpenKeys={[]}
+            defaultOpenKeys={['catalogue']}
             selectedKeys={[]}
             theme={themeType === THEME_TYPE_LITE ? "light" : "dark"}
             mode="inline"
           >
+            <Menu.Item key="catalogue">
+              <Link to={`/core/dashboard/home`}>
+                <Icon style={{ fontSize: "18px" }} type="fund" />
+                <span className="sideMenuText">Dashboard</span>
+              </Link>
+            </Menu.Item>
             <Menu.Item key="core">
               <Link to="/core">
-                <i className="icon icon-apps" />
-                <span>Core suite</span>
+                <Icon style={{ fontSize: "18px" }} type="appstore" theme="filled" />
+                <span className="sideMenuText">Core suite</span>
               </Link>
             </Menu.Item>
             <Menu.Item key="core/users">
               <Link to="/core/users">
-                <i className="icon icon-contacts" />
+                <Icon style={{ fontSize: "18px" }} type="user" />
                 {/* <IntlMessages id="sidebar.refinex" /> */}
-                <span>User Info</span>
+                <span className="sideMenuText">User Info</span>
               </Link>
             </Menu.Item>
             <Menu.Item key="organizationInfo">
               <Link
                 to={`/core/organization/${orgId ? orgId : ""}`}
-                // to="core/organization"
+              // to="core/organization"
               >
-                <i className="icon icon-inbox" />
+                <Icon style={{ fontSize: "18px" }} type="home" theme="filled" />
                 {/* <IntlMessages id="sidebar.nearx" /> */}
-                <span>Organization Info</span>
+                <span className="sideMenuText">Organization Info</span>
               </Link>
             </Menu.Item>
-            <Menu.Item key="business-rules">
+            {/* <Menu.Item key="business-rules">
               <Link to={`/core/business-rules`}>
                 <i className="icon icon-inbox" />
-                <span>Business Rules</span>
+                <span className="sideMenuText">Business Rules</span>
               </Link>
-            </Menu.Item>
+            </Menu.Item> */}
             <Menu.Item key="stores">
               <Link to={`/core/stores`}>
-                <i className="icon icon-inbox" />
-                <span>Store Info</span>
+                <Icon style={{ fontSize: "18px" }} type="shop" theme="filled" />
+                <span className="sideMenuText">Store Info</span>
+              </Link>
+            </Menu.Item>
+
+            <Menu.Item key="categories">
+              <Link to={`/core/categories/list`}>
+                <Icon style={{ fontSize: "18px" }} type="container" theme="filled" />
+                <span className="sideMenuText">Category Management</span>
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="items">
+              <Link to={`/core/items/list`}>
+                <Icon style={{ fontSize: "18px" }} type="profile" theme="filled" />
+                <span className="sideMenuText">Item Management</span>
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="promos">
+              <Link to={`/core/promos/list`}>
+                <Icon style={{ fontSize: "18px" }} type="picture" />
+                <span className="sideMenuText">Promo Images</span>
               </Link>
             </Menu.Item>
           </Menu>

@@ -33,7 +33,7 @@ class SidebarLogo extends React.Component<SidebarLogoProps, {}> {
       <div className="HyperX-Logo">
         <div className="gx-layout-sider-header">
           {width < TAB_SIZE_MAX && width > TAB_SIZE ?
-            <Link to="/" className="gx-pointer">
+            <Link to={`/core/dashboard/home`} className="gx-pointer">
               <img alt="fgd" src={require("@walkinsole/walkin-components/src/assets/images/walkin_logo_mini.png")} style={{ maxWidth: 35 }} />
             </Link> : navStyle === NAV_STYLE_FIXED || navStyle === NAV_STYLE_MINI_SIDEBAR ? (
               <div className="gx-linebar">
@@ -64,7 +64,7 @@ class SidebarLogo extends React.Component<SidebarLogoProps, {}> {
               </div>
             ) : null}
 
-          <Link to="/" className="gx-site-logo">
+          <Link to={`/core/dashboard/home`} className="gx-site-logo">
             {navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR &&
               width >= TAB_SIZE ?
               <img alt="" src={require("@walkinsole/walkin-components/src/assets/images/w-logo.png")} /> :

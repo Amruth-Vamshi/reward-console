@@ -17,7 +17,7 @@ const client = {
     },
     production: {
         env: env,
-        GRAPHQL_URL: "https://dev-api.getwalkin.in/core/graphql",
+        GRAPHQL_URL: "https://dev-api.getwalkin.in/core_dev/graphql",
         NEARX_GRAPHQL_URL: "https://dev-api.getwalkin.in/nearx/graphql"
     },
     default: {

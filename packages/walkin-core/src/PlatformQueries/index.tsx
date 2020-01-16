@@ -701,3 +701,224 @@ export const UPDATE_STORE = gql`
     }
   }
 `;
+
+export const GET_PH_CATEGORIES = gql`
+  query categoriesWithChildren($catalogId: ID!, $categoryCode: String) {
+    categoriesWithChildren(catalogId: $catalogId, categoryCode: $categoryCode) {
+      id
+      name
+      description
+      code
+      catalogId
+      status
+      extend
+      products {
+        id
+        name
+        extend
+        code
+        description
+        imageUrl
+        sku
+        type
+        status
+      }
+      parent {
+        id
+        name
+        description
+        status
+        catalog {
+          id
+          name
+          description
+        }
+      }
+      children {
+        id
+        name
+        description
+        status
+        code
+        extend
+        children {
+          id
+          name
+          extend
+          code
+          description
+          status
+        }
+        products {
+          id
+          name
+          description
+          imageUrl
+          sku
+          type
+          status
+        }
+        catalog {
+          id
+          name
+          description
+        }
+      }
+      catalog {
+        id
+        name
+        description
+      }
+    }
+  }
+`;
+
+export const GET_PRODUCT_CATEGORIES_BY_CATEGORY_ID = gql`
+  query productCategoriesByCategoryId($categoryId: ID!) {
+    productCategoriesByCategoryId(categoryId: $categoryId) {
+      id
+      product {
+        id
+        name
+        description
+        imageUrl
+        sku
+        type
+        status
+        extend
+        variants {
+          id
+          sku
+          product {
+            id
+            name
+            description
+            imageUrl
+            sku
+            type
+            status
+          }
+          optionValues {
+            id
+            value
+            option {
+              id
+              name
+              description
+            }
+          }
+        }
+      }
+      category {
+        id
+        name
+        description
+        code
+        catalogId
+        status
+      }
+    }
+  }
+`;
+
+export const PRODUCT_SEARCH = gql`
+  query products($input: ProductSearchInput) {
+    products(input: $input) {
+      id
+      code
+      name
+      description
+      imageUrl
+      sku
+      type
+      status
+      variants {
+        id
+        sku
+        product {
+          id
+          name
+          description
+          imageUrl
+          sku
+          type
+          status
+        }
+        optionValues {
+          id
+          value
+          option {
+            id
+            name
+            description
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const UPDATE_PRODUCT = gql`
+  mutation updateProduct($input: UpdateProductInput!) {
+    updateProduct(input: $input) {
+      id
+      code
+      name
+      description
+      imageUrl
+      sku
+      type
+      status
+      variants {
+        id
+        sku
+        product {
+          id
+          name
+          description
+          imageUrl
+          sku
+          type
+          status
+        }
+        optionValues {
+          id
+          value
+          option {
+            id
+            name
+            description
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const UPDATE_CATEGORY = gql`
+  mutation updateCategory($input: UpdateCategoryInput!) {
+    updateCategory(input: $input) {
+      id
+      name
+      catalogId
+      status
+      description
+      code
+      extend
+    }
+  }
+`;
+
+export const CREATE_CATEGORY = gql`
+  mutation createCategory($input: CreateCategoryInput!) {
+    createCategory(input: $input) {
+      id
+      name
+      catalogId
+      status
+      description
+      code
+      extend
+    }
+  }
+`;
