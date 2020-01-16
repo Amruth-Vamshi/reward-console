@@ -13,7 +13,7 @@ export const campaigns = gql`
 `;
 
 export const VIEW_HYPERX_CAMPAIGNS = gql`
-viewCampaignsForHyperX($input: HyperXCampaignInput,$page:Int!,$perPage:Int!,$sort:SortOptions!){
+query viewCampaignsForHyperX($input: HyperXCampaignInput,$page:Int!,$perPage:Int!,$sort:SortOptions!){
   viewCampaignsForHyperX(input: $input,perPage:$perPage,page:$page,sort:$sort){
     data{
       campaign{ id name priority campaignStatus description startTime endTime status }

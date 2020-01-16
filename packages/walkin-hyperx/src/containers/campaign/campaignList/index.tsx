@@ -90,7 +90,7 @@ class CampaignList extends React.Component<CampaignListProps, Partial<CampaignLi
   }
 
   componentWillMount() {
-    this.getCampaigns(0, "LIVE")
+    this.getCampaigns(1, "LIVE")
   }
 
 
@@ -209,8 +209,8 @@ class CampaignList extends React.Component<CampaignListProps, Partial<CampaignLi
   onTabChange = (key: any) => {
     this.setState({ key, data: [], current: 1 })
 
-    if (key == 2) this.getCampaigns(0, [DEFAULT_HYPERX_CAMPAIGN_STATES[0], DEFAULT_HYPERX_CAMPAIGN_STATES[1]])
-    else this.getCampaigns(0, DEFAULT_HYPERX_CAMPAIGN_STATES[key - 1])
+    if (key == 2) this.getCampaigns(1, [DEFAULT_HYPERX_CAMPAIGN_STATES[0], DEFAULT_HYPERX_CAMPAIGN_STATES[1]])
+    else this.getCampaigns(1, DEFAULT_HYPERX_CAMPAIGN_STATES[key - 1])
 
   };
 
@@ -218,7 +218,7 @@ class CampaignList extends React.Component<CampaignListProps, Partial<CampaignLi
   onTableChange = (e, n) => {
     if (n) {    // Filter for Pagination Changes
       // console.log('onChange', e, n)
-      this.getCampaigns(e - 1, DEFAULT_HYPERX_CAMPAIGN_STATES[this.state.key - 1])
+      this.getCampaigns(e, DEFAULT_HYPERX_CAMPAIGN_STATES[this.state.key - 1])
     }
   }
 
