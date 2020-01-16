@@ -218,7 +218,10 @@ class CampaignList extends React.Component<CampaignListProps, Partial<CampaignLi
   onTableChange = (e, n) => {
     if (n) {    // Filter for Pagination Changes
       // console.log('onChange', e, n)
-      this.getCampaigns(e, DEFAULT_HYPERX_CAMPAIGN_STATES[this.state.key - 1])
+      if (this.state.key == 2) this.getCampaigns(e, [DEFAULT_HYPERX_CAMPAIGN_STATES[0], DEFAULT_HYPERX_CAMPAIGN_STATES[1]])
+      else this.getCampaigns(e, DEFAULT_HYPERX_CAMPAIGN_STATES[this.state.key - 1])
+
+      // this.getCampaigns(e, DEFAULT_HYPERX_CAMPAIGN_STATES[this.state.key - 1])
     }
   }
 

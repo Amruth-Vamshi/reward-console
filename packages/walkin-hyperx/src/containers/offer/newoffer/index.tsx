@@ -275,10 +275,12 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 
 					if (basicForm.transactionTime) {
 						if (basicForm.transactionTime == "cartValue" && basicForm.cartValue != "")
-							arr.push({ attributeName: "cartValue", attributeValue: basicForm.cartValue, expressionType: basicForm.cartValueCondition })
-						else if (basicForm.transactionTime == "frequency" && basicForm.noOfTransaction && basicForm.noOfDay) {
-							arr.push({ attributeName: "frequency_transaction", attributeValue: basicForm.noOfTransaction, expressionType: "EQUALS" })
-							arr.push({ attributeName: "frequency_days", attributeValue: basicForm.noOfDays, expressionType: "EQUALS" })
+							arr.push({ attributeName: "cartValue", attributeValue: parseInt(basicForm.cartValue), expressionType: basicForm.cartValueCondition })
+						else if (basicForm.transactionTime == "frequency" && basicForm.noOfTransaction && basicForm.noOfDays) {
+							console.log('f>>>')
+							arr.push({ attributeName: "frequency_transaction", attributeValue: parseInt(basicForm.noOfTransaction), expressionType: "EQUALS" })
+							arr.push({ attributeName: "frequency_days", attributeValue: parseInt(basicForm.noOfDays), expressionType: "EQUALS" })
+							console.log('f>>', arr);
 						}
 						else if (basicForm.transactionTime == "dayPart") {
 							arr.push({ attributeName: "dayPart_startTime", attributeValue: moment(basicForm.startTime).format('h:mm:ss a'), expressionType: "EQUALS" })
@@ -342,12 +344,18 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 			if (!isEmpty(formValues.redemptionForm)) {
 
 				let redemptionFormObject = this.state.formValues.redemptionForm;
+
+
+				if (redemptionFormObject.redemption_usage_limit) redemptionFormObject.redemption_usage_limit = parseInt(redemptionFormObject.redemption_usage_limit)
+				if (redemptionFormObject.redemption_usage_limit_at_customer) redemptionFormObject.redemption_usage_limit_at_customer = parseInt(redemptionFormObject.redemption_usage_limit_at_customer)
+				if (redemptionFormObject.redemption_limit_sku_number) redemptionFormObject.redemption_limit_sku_number = parseInt(redemptionFormObject.redemption_limit_sku_number)
+
 				redemptionFormObject[redemptionFormObject.cappingType] = redemptionFormObject.cappingValue;
 
 				if (redemptionFormObject.redemption_time_limit && redemptionFormObject.redemption_time_limit != "")
 					redemptionFormObject.redemption_time_limit = redemptionFormObject.redemption_time_limit + timeLimitType
 
-				let ommitedObject = omit(redemptionFormObject, ['cappingType', 'cappingValue', ""]);
+				let ommitedObject = omit(redemptionFormObject, ['cappingType', 'cappingValue', "", "undefined"]);
 				let redemptionArray = { rules: transposeObject(ommitedObject, 'EQUALS'), combinator: 'AND' };
 
 
