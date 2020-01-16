@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Row, Col, Button, Switch, Icon, Input, DatePicker } from "antd"
+import { Row, Col, Button, Switch, Icon, Input, DatePicker, message } from "antd"
 import "./style.css"
 import { History } from 'history'
 import FileUpload from "./Components/FileUpload"
@@ -38,7 +38,13 @@ class PromoHome extends React.Component<iProps, iState> {
     }
 
     addPromo = (val) => {
-        console.log("New Promo Data : ", val)
+        const { totalPromo } = this.state
+        var final = totalPromo
+        var d = val
+        d.id = final.length + 1
+        final.push(d)
+        this.setState({ totalPromo: final })
+        message.success("Promo Added!")
     }
 
     editPromoData(value, type, indexValue) {

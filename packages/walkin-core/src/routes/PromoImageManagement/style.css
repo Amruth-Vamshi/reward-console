@@ -39,6 +39,12 @@
     box-shadow: 1px 1px 10px #cdecfe;
   }
 
+  .addPromoImage {
+    width: 200px;
+    height: 130px;
+    box-shadow: 1px 1px 10px #cdecfe;
+  }
+
   .imageHeading{
     font-size: 12px;
     color: #999999;
@@ -58,3 +64,13 @@
   .modalContainer{
       width : 650px;
   }
+
+  .rowCover {
+      margin-top: 30px;
+      margin-bottom: 10px;
+  }
+
+.addPromoStatus{
+    padding-left: 70px;
+    padding-top: 5px;
+}
