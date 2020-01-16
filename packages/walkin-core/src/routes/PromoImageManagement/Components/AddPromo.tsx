@@ -163,6 +163,7 @@ class AddPromoItem extends React.Component<iProps, iState>
                                 <Row style={{ marginTop: "10px", paddingBottom: "10px" }}>
                                     <DatePicker
                                         style={{ width: "300px" }}
+                                        format="Do MMM, YYYY"
                                         value={(promoStartDate == "" ? null : moment(promoStartDate))}
                                         onChange={(val, stringVal) => { this.onStartDateChange(val, stringVal) }}
                                     />
@@ -173,6 +174,7 @@ class AddPromoItem extends React.Component<iProps, iState>
                                 <Row style={{ marginTop: "10px", paddingBottom: "10px" }}>
                                     <DatePicker
                                         style={{ width: "300px" }}
+                                        format="Do MMM, YYYY"
                                         value={(promoEndDate == "" ? null : moment(promoEndDate))}
                                         onChange={(val, stringVal) => { this.onEndDateChange(val, stringVal) }}
                                     />

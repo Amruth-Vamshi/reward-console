@@ -190,6 +190,7 @@ class PromoHome extends React.Component<iProps, iState> {
                             <Row style={{ marginTop: "10px", paddingBottom: "10px" }}>
                                 <DatePicker
                                     style={{ width: "200px" }}
+                                    format="Do MMM, YYYY"
                                     value={moment(promo.startDate)}
                                     onChange={(val, stringVal) => { this.onStartDateChange(val, stringVal, index) }}
                                 />
@@ -198,6 +199,7 @@ class PromoHome extends React.Component<iProps, iState> {
                             <Row style={{ marginTop: "10px" }}>
                                 <DatePicker
                                     style={{ width: "200px" }}
+                                    format="Do MMM, YYYY"
                                     value={moment(promo.endDate)}
                                     onChange={(val, stringVal) => { this.onEndDateChange(val, stringVal, index) }}
                                 />
