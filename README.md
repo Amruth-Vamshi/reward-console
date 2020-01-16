@@ -64,7 +64,6 @@ Useful VScode Extensions:
 - GraphQL for VSCode
 - Jest
 - Jest Snippets
-- Prettier
 - SQLite
 - Sublime Babel (in VSCode)
 - vscode-digdag

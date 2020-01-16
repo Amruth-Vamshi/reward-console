@@ -70,17 +70,18 @@ class CampaignList extends React.Component<CampaignListProps, Partial<CampaignLi
         input: {
           organizationId: jwt.decode(localStorage.getItem("jwt"))['org_id'],
           status: DEFAULT_ACTIVE_STATUS,
-          limit: DEFAULT_PAGE_SIZE,
-          offset: offset,
           campaignStatus: state,
           // campaignType: DEFAULT_HYPERX_CAMPAIGN
-        }
+        },
+        page: offset,
+        perPage: DEFAULT_PAGE_SIZE,
+        sort: { sortBy: "id", sortOrder: "DESC" }
       }, fetchPolicy: 'network-only'
     }).then(res => {
       let data = res.data.viewCampaignsForHyperX
       let allCampaigns = data.data.map(c =>
         ({ ...c.campaign, reached: c.reached, audienceCount: c.audienceCount, redemptionRate: c.redemptionRate }))
-      this.setState({ loading: false, allCampaigns, total: data.total }, () => this.dataManipulation(this.state.key));
+      this.setState({ loading: false, allCampaigns, total: data.paginationInfo.totalItems }, () => this.dataManipulation(this.state.key));
 
     }).catch(err => {
       this.setState({ loading: false });
@@ -217,7 +218,7 @@ class CampaignList extends React.Component<CampaignListProps, Partial<CampaignLi
   onTableChange = (e, n) => {
     if (n) {    // Filter for Pagination Changes
       // console.log('onChange', e, n)
-      this.getCampaigns(e - 1, DEFAULT_HYPERX_CAMPAIGN_STATES[this.state.key - 1]) 
+      this.getCampaigns(e - 1, DEFAULT_HYPERX_CAMPAIGN_STATES[this.state.key - 1])
     }
   }
 
