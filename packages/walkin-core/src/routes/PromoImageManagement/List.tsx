@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Row, Col, Button, Switch, Icon, Input, DatePicker } from "antd"
+import { Row, Col, Button, Switch, Icon, Input, DatePicker, Modal } from "antd"
 import "./style.css"
 import { History } from 'history'
 import FileUpload from "./Components/FileUpload"
@@ -14,6 +14,7 @@ interface iProps {
 interface iState {
     totalPromo: any
     originalData: any
+    visible: boolean
 }
 
 class PromoHome extends React.Component<iProps, iState> {
@@ -21,7 +22,8 @@ class PromoHome extends React.Component<iProps, iState> {
         super(props);
         this.state = {
             originalData: localData,
-            totalPromo: localData
+            totalPromo: localData,
+            visible: false
         }
 
     }
@@ -37,13 +39,34 @@ class PromoHome extends React.Component<iProps, iState> {
     }
 
     editPromoData(value, type, indexValue) {
+        const { totalPromo, originalData } = this.state
+        var allData = []
+        var total = totalPromo
+        console.log(originalData)
+        total.map((el, index) => {
+            if (index == indexValue) {
+                var editData = el
+                editData[type] = value
+                editData["edited"] = true
+                allData.push(editData)
+            }
+            else {
+                allData.push(el)
+            }
+        })
+
+        this.setState({ totalPromo: allData })
+    }
+
+    saveEditedData(promo, indexValue) {
+
+    }
+
+    deletePromo(indexValue) {
         const { totalPromo } = this.state
         var allData = []
         totalPromo.forEach((el, index) => {
             if (index == indexValue) {
-                var editData = el
-                editData[type] = value
-                allData.push(editData)
             }
             else {
                 allData.push(el)
@@ -67,20 +90,6 @@ class PromoHome extends React.Component<iProps, iState> {
 
     handleUploadedImage = (val, index) => {
         this.editPromoData(val[0].url, "imageUrl", index)
-    }
-
-    deletePromo(indexValue) {
-        const { totalPromo } = this.state
-        var allData = []
-        totalPromo.forEach((el, index) => {
-            if (index == indexValue) {
-            }
-            else {
-                allData.push(el)
-            }
-        })
-
-        this.setState({ totalPromo: allData })
     }
 
     onStartDateChange(date, dateString, index) {
@@ -110,7 +119,10 @@ class PromoHome extends React.Component<iProps, iState> {
                                     </Row>
                                 </Col>
                                 <Col span={12}>
-                                    <div style={{ textAlign: "center" }} onClick={() => { this.deletePromo(index) }}><Icon type="delete" theme="filled" /></div>
+                                    <Row style={{ flexDirection: "row-reverse", marginRight: "10px" }}>
+                                        <div style={{ textAlign: "center", paddingLeft: "10px", paddingRight: "10px" }} onClick={() => { this.deletePromo(index) }}><Icon type="delete" theme="filled" /></div>
+                                        {(promo.edited == true) && <div style={{ textAlign: "center", paddingLeft: "10px", paddingRight: "10px" }} onClick={() => { this.saveEditedData(promo, index) }}><Icon type="save" theme="filled" /></div>}
+                                    </Row>
                                 </Col>
                             </Row>
                         </Col>
