@@ -35,6 +35,7 @@
     margin-left: 13px;
     width: 200px;
     height: 130px;
+    box-shadow: 1px 1px 10px #cdecfe;
   }
 
   .imageHeading{

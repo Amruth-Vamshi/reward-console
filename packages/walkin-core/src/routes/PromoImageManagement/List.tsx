@@ -2,7 +2,7 @@ import * as React from "react";
 import { Row, Col, Button, Switch, Icon, Input, DatePicker } from "antd"
 import "./style.css"
 import { History } from 'history'
-import FileUpload from "../Categories/Components/FileUpload"
+import FileUpload from "./Components/FileUpload"
 import localData from "./data"
 import { element } from "prop-types";
 import moment from "moment"
@@ -12,7 +12,6 @@ interface iProps {
 }
 
 interface iState {
-    editPromo: any
     totalPromo: any
     originalData: any
 }
@@ -21,14 +20,6 @@ class PromoHome extends React.Component<iProps, iState> {
     constructor(props: iProps) {
         super(props);
         this.state = {
-            editPromo: {
-                id: "",
-                name: "",
-                desc: "",
-                image: "",
-                code: "",
-                status: true,
-            },
             originalData: localData,
             totalPromo: localData
         }
@@ -45,39 +36,59 @@ class PromoHome extends React.Component<iProps, iState> {
         // })
     }
 
+    editPromoData(value, type, indexValue) {
+        const { totalPromo } = this.state
+        var allData = []
+        totalPromo.forEach((el, index) => {
+            if (index == indexValue) {
+                var editData = el
+                editData[type] = value
+                allData.push(editData)
+            }
+            else {
+                allData.push(el)
+            }
+        })
+
+        this.setState({ totalPromo: allData })
+    }
+
     onLinkChange({ target: { value } }, index) {
-        console.log(value, index)
+        this.editPromoData(value, "imageUrl", index)
     }
 
     onDeepLinkChange({ target: { value } }, index) {
-        console.log(value, index)
+        this.editPromoData(value, "deepLink", index)
     }
 
     onStatusChange(val, index) {
-        const { editPromo } = this.state
-        var data = editPromo
-        data.status = val
-        this.setState({ editPromo: data })
+        this.editPromoData(val, "status", index)
     }
 
-    handleUploadedImage = (val) => {
-        const { editPromo } = this.state
-        var data = editPromo
-        data.image = val[0].url
-
-        this.setState({ editPromo: data })
+    handleUploadedImage = (val, index) => {
+        this.editPromoData(val[0].url, "imageUrl", index)
     }
 
-    deletePromo(element, index) {
-        console.log("Delete Promo")
+    deletePromo(indexValue) {
+        const { totalPromo } = this.state
+        var allData = []
+        totalPromo.forEach((el, index) => {
+            if (index == indexValue) {
+            }
+            else {
+                allData.push(el)
+            }
+        })
+
+        this.setState({ totalPromo: allData })
     }
 
     onStartDateChange(date, dateString, index) {
-        console.log(date, dateString);
+        this.editPromoData(dateString, "startDate", index)
     }
 
     onEndDateChange(date, dateString, index) {
-        console.log(date, dateString);
+        this.editPromoData(dateString, "startDate", index)
     }
 
 
@@ -99,7 +110,7 @@ class PromoHome extends React.Component<iProps, iState> {
                                     </Row>
                                 </Col>
                                 <Col span={12}>
-                                    <div style={{ textAlign: "center" }} onClick={() => { this.deletePromo(element, index) }}><Icon type="delete" theme="filled" /></div>
+                                    <div style={{ textAlign: "center" }} onClick={() => { this.deletePromo(index) }}><Icon type="delete" theme="filled" /></div>
                                 </Col>
                             </Row>
                         </Col>
@@ -108,7 +119,7 @@ class PromoHome extends React.Component<iProps, iState> {
                         <Col span={18}>
                             <Row>
                                 <Col span={8} style={{ padding: "0px" }}>
-                                    <img className="promoImage" src="https://res.cloudinary.com/servicex-dev/image/upload/v1579080315/servicex/attachments/attachment_1579080313491_pizza_promo.png.png" />
+                                    <img className="promoImage" src={promo.imageUrl} />
                                 </Col>
                                 <Col span={12}>
                                     <Row className="imageHeading">Image Source :</Row>
@@ -121,7 +132,7 @@ class PromoHome extends React.Component<iProps, iState> {
                                             />
                                         </Col>
                                         <Col span={8} style={{ marginTop: "5px" }}>
-                                            <FileUpload uiType={"categoryManagement"} availableImage={0} onImageUpload={this.handleUploadedImage} title="Upload Promo Image" />
+                                            <FileUpload uiType={"categoryManagement"} promoIndex={index} availableImage={0} onImageUpload={this.handleUploadedImage} title="Upload Promo Image" />
                                         </Col>
                                     </Row>
                                     <Row className="imageHeading">Deep Link (Image Click Action)</Row>
