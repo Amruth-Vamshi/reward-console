@@ -44,12 +44,13 @@ class CatalogueHome extends React.Component<iProps, iState> {
     getCategories = () => {
         const jwtToken = localStorage.getItem('jwt')
         const { org_id }: any = jwt.decode(jwtToken);
-
+        // Core : PH_SQUARE_1
+        // Dev : PO_SQUARE
         if (org_id) {
             this.props.client
                 .query({
                     query: GET_PH_CATEGORIES,
-                    variables: { catalogId: "2", categoryCode: "PH_SQUARE_1" },
+                    variables: { catalogId: "2", categoryCode: "PO_SQUARE" },
                     fetchPolicy: 'network-only',
                 })
                 .then(res => {
