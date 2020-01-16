@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Row, Col, Button, message, Cascader, Input, Icon, Breadcrumb, Switch, Modal, Upload } from "antd"
 import "./style.css"
-import { Query, withApollo, ApolloProviderProps } from "react-apollo";
+import { withApollo, ApolloProviderProps } from "react-apollo";
 import { RouteComponentProps } from "react-router";
 import * as jwt from 'jsonwebtoken';
 import { GET_PH_CATEGORIES, UPDATE_CATEGORY, CREATE_CATEGORY } from '../../PlatformQueries';
@@ -207,8 +207,13 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
         const { selectedCategoryArr } = this.state
         console.log("Selected Category : ", data)
         var showBtn = true
-        if (selectedCategoryArr[selectedCategoryArr.length - 1] == value) {
-            showBtn = false
+        if (selectedCategoryArr.length > 1) {
+            if (selectedCategoryArr[selectedCategoryArr.length - 1] == value) {
+                showBtn = false
+            }
+            else {
+                showBtn = true
+            }
         }
         else {
             showBtn = true
@@ -226,7 +231,7 @@ class CategoryList extends React.Component<OrganizationInfoProps, iState> {
             this.props.client
                 .query({
                     query: GET_PH_CATEGORIES,
-                    variables: { catalogId: "2", categoryCode: "PO_SQUARE" },
+                    variables: { catalogId: "2", categoryCode: "PH_SQUARE_1" },
                     fetchPolicy: 'network-only',
                 })
                 .then(res => {

@@ -1,27 +1,69 @@
 import * as React from "react";
-import { Row, Col } from "antd"
+import { Row, Col, message } from "antd"
 import "./style.css"
 import DisplayBox from "./Components/DisplayBox"
 import PromoBox from "./Components/PromoBox"
 import DraftBox from "./Components/DraftBox"
 import ExploreBox from "./Components/ExploreBox"
 import { History } from 'history'
+import { GET_PH_CATEGORIES } from '../../PlatformQueries';
+import * as jwt from 'jsonwebtoken';
+import { withApollo, ApolloProviderProps } from "react-apollo";
+import { RouteComponentProps } from "react-router";
 
-interface iProps {
+
+interface OrganizationRouterProps {
+    id: string;
+}
+
+interface OrganizationCacheProps {
+    data: object;
+}
+
+interface iProps extends ApolloProviderProps<OrganizationCacheProps>, RouteComponentProps<OrganizationRouterProps> {
     history: History
 }
 
 interface iState {
-
+    totalCategory: any
 }
 
 class CatalogueHome extends React.Component<iProps, iState> {
     constructor(props: iProps) {
         super(props);
         this.state = {
+            totalCategory: 0
         }
 
     }
+
+    UNSAFE_componentWillMount() {
+        this.getCategories()
+    }
+
+    getCategories = () => {
+        const jwtToken = localStorage.getItem('jwt')
+        const { org_id }: any = jwt.decode(jwtToken);
+
+        if (org_id) {
+            this.props.client
+                .query({
+                    query: GET_PH_CATEGORIES,
+                    variables: { catalogId: "2", categoryCode: "PH_SQUARE_1" },
+                    fetchPolicy: 'network-only',
+                })
+                .then(res => {
+                    var d = res.data.categoriesWithChildren
+                    this.setState({ totalCategory: d.children.length })
+                })
+                .catch(err => {
+                    message.error('ERROR');
+                    console.log('Failed to get Category Details' + err);
+                });
+        } else {
+            console.log('Error getting JwtData');
+        }
+    };
 
     render() {
         return (<div>
@@ -37,13 +79,14 @@ class CatalogueHome extends React.Component<iProps, iState> {
                                     desc="These images show in the app carousel for a defined period of days."
                                     imageSource="https://res.cloudinary.com/servicex-dev/image/upload/v1579080315/servicex/attachments/attachment_1579080313491_pizza_promo.png.png"
                                     btnText="Edit"
-
+                                    path="/core/promos/list"
+                                    history={this.props.history}
                                 />
                             </Row>
                             <Row>
                                 <Col span={12}>
                                     <DisplayBox
-                                        value="35"
+                                        value={(this.state.totalCategory).toString()}
                                         heading="Categories"
                                         subheading="Manage food categories like Pizzas, Pastas, Desserts etc."
                                         btnText="Manage"
@@ -98,4 +141,4 @@ class CatalogueHome extends React.Component<iProps, iState> {
 
 }
 
-export default CatalogueHome;
+export default withApollo(CatalogueHome);

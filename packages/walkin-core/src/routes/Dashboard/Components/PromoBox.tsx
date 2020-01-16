@@ -2,7 +2,7 @@ import * as React from "react";
 import "../style.css"
 import { Row, Col, Button } from "antd"
 
-const PromoBox = ({ title, desc, btnText, imageSource }) => {
+const PromoBox = ({ title, desc, btnText, imageSource, path, history }) => {
     return (
         <div className="promoBox">
             <Row style={{ marginLeft: "0px", marginRight: "0px", height: "170px" }}>
@@ -13,7 +13,7 @@ const PromoBox = ({ title, desc, btnText, imageSource }) => {
                     <div style={{ marginTop: "14px" }}>
                         <p style={{ paddingTop: "10px", fontSize: "20px", fontWeight: 500, color: "#e3b94f" }}>{title}</p>
                         <p style={{ color: "#a6a6a6", fontSize: "10px" }}>{desc}</p>
-                        <Button size={"small"} style={{ backgroundColor: "#404040", color: "#f2f2f2", borderRadius: "4px", width: "70px", marginTop: "10px" }}>{btnText}</Button>
+                        <Button onClick={() => { history.push(path) }} size={"small"} style={{ backgroundColor: "#404040", color: "#f2f2f2", borderRadius: "4px", width: "70px", marginTop: "10px" }}>{btnText}</Button>
                     </div>
                 </Col>
             </Row>
