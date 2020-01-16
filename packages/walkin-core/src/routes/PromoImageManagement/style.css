@@ -28,7 +28,7 @@
   }
 
   .promoContainer{
-      margin-top: 40px
+      margin-top: 20px
   }
 
   .promoImage {
@@ -40,4 +40,15 @@
   .imageHeading{
     font-size: 12px;
     color: #999999;
+  }
+
+  .promoItemContainer{
+      padding-top : 10px;
+      padding-bottom: 10px;
+  }
+
+  .promoLine{
+    background-color: #bfbfbf;
+    height: 1px;
+    margin-bottom: 20px;
   }
