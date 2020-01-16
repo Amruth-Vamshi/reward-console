@@ -1,11 +1,12 @@
 import * as React from "react";
-import { Row, Col, Button, Switch, Icon, Input, DatePicker, Modal } from "antd"
+import { Row, Col, Button, Switch, Icon, Input, DatePicker } from "antd"
 import "./style.css"
 import { History } from 'history'
 import FileUpload from "./Components/FileUpload"
 import localData from "./data"
 import { element } from "prop-types";
 import moment from "moment"
+import AddPromoItem from "./Components/AddPromo"
 
 interface iProps {
     history: History
@@ -14,7 +15,6 @@ interface iProps {
 interface iState {
     totalPromo: any
     originalData: any
-    visible: boolean
 }
 
 class PromoHome extends React.Component<iProps, iState> {
@@ -22,8 +22,7 @@ class PromoHome extends React.Component<iProps, iState> {
         super(props);
         this.state = {
             originalData: localData,
-            totalPromo: localData,
-            visible: false
+            totalPromo: localData
         }
 
     }
@@ -38,11 +37,14 @@ class PromoHome extends React.Component<iProps, iState> {
         // })
     }
 
+    addPromo = (val) => {
+        console.log("New Promo Data : ", val)
+    }
+
     editPromoData(value, type, indexValue) {
         const { totalPromo, originalData } = this.state
         var allData = []
         var total = totalPromo
-        console.log(originalData)
         total.map((el, index) => {
             if (index == indexValue) {
                 var editData = el
@@ -194,14 +196,13 @@ class PromoHome extends React.Component<iProps, iState> {
                     <div className="promo-subheader">This images show in the app carousel for the defined period of days.</div>
                 </Col>
                 <Col span={6}>
-                    <Button className="addImage">Add Images</Button>
+                    <AddPromoItem onAddPromo={this.addPromo} />
                 </Col>
             </Row>
             <div className="promoContainer">
                 {(totalPromo.length > 0) && this.renderPromoItem()}
                 {(totalPromo.length == 0) && <div style={{ textAlign: "center", height: "200px" }}><p style={{ marginTop: "140px", fontSize: "14px", color: "#808080" }}>No Promo available!</p></div>}
             </div>
-
         </div>)
     }
 
