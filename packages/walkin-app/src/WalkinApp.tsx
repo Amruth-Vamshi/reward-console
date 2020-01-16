@@ -2,7 +2,7 @@ import * as React from "react";
 import { Route, Switch, BrowserRouter } from "react-router-dom";
 
 import "@walkinsole/walkin-components/src/assets/vendors/style";
-import "./styles/wieldy.less";
+// import "./styles/wieldy.less";
 import App from "./containers/App/index";
 import { configureClient } from "./appApollo/client/index";
 import { ApolloProvider, Query, Mutation } from "react-apollo";
