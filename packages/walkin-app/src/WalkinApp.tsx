@@ -3,13 +3,17 @@ import { Route, Switch, BrowserRouter } from "react-router-dom";
 
 import "@walkinsole/walkin-components/src/assets/vendors/style";
 // import "./styles/wieldy.less";
+import "antd/dist/antd.css";
 import App from "./containers/App/index";
 import { configureClient } from "./appApollo/client/index";
 import { ApolloProvider, Query, Mutation } from "react-apollo";
 import { ErrorBoundary, CircularProgress } from "@walkinsole/walkin-components";
 import { ApolloClient } from "apollo-boost";
 
-export class WalkinApp extends React.Component<{}, { client: ApolloClient<any>; }> {
+export class WalkinApp extends React.Component<
+  {},
+  { client: ApolloClient<any> }
+> {
   constructor(props) {
     super(props);
     this.state = {
@@ -37,8 +41,8 @@ export class WalkinApp extends React.Component<{}, { client: ApolloClient<any>; 
         </ApolloProvider>
       </ErrorBoundary>
     ) : (
-        <CircularProgress className="circular" />
-      );
+      <CircularProgress className="circular" />
+    );
   }
 }
 
