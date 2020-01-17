@@ -101,10 +101,10 @@ class Schedule extends React.Component<iProps, Partial<iState>> {
   saveSchedule = () => {
     let errors: any = {};
 
-    if (this.state.repeatType == "WEEKLY") {
-      !this.state.repeatOn.find(i => i)
-        ? (errors.repeatOn = "select atleast one day")
-        : "";
+    if (this.state.repeatType === "WEEKLY") {
+      if (!this.state.repeatOn.find(i => i)) {
+        errors.repeatOn = "select atleast one day";
+      }
     }
 
     if (!this.state.time || this.state.time == "")
