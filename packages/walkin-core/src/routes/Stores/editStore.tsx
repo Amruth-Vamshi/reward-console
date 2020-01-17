@@ -4,7 +4,7 @@ import * as jwt from "jsonwebtoken";
 import { withApollo, ApolloProviderProps } from "react-apollo";
 import { History } from "history";
 
-import { Icon, Select, Input, Button, Switch, Spin, message } from "antd";
+import { Icon, Select, Input, Button, Switch, Spin } from "antd";
 import "./index.css";
 import GeofenceMap from "../../../../walkin-nearx/src/components/Places/GeofenceMap";
 const { Option } = Select;
@@ -83,6 +83,7 @@ class EditStore extends React.Component<EditStoreProps, EditStoreState> {
           fetchPolicy: "network-only"
         })
         .then(storeDetails => {
+          console.log(storeDetails.data.store, "new");
           mapData.places[0].center = {
             lat: storeDetails.data.store.latitude,
             lng: storeDetails.data.store.longitude
@@ -107,6 +108,7 @@ class EditStore extends React.Component<EditStoreProps, EditStoreState> {
           (user, index) => (user.status = "ACTIVE")
         );
         this.setState({ activeUsers, isFetching: false });
+        console.log(activeUsers, "new");
       });
   }
 
@@ -125,12 +127,10 @@ class EditStore extends React.Component<EditStoreProps, EditStoreState> {
   };
 
   onCreateStore = () => {
-    let { storeDetails, mapData } = this.state;
+    let { storeDetails } = this.state;
     let input = {
       parentOrganizationId: this.state.orgID,
-      ...storeDetails,
-      latitude: `${mapData.center.lat}`,
-      longitude: `${mapData.center.lng}`
+      ...storeDetails
     };
 
     this.props.client
@@ -141,25 +141,19 @@ class EditStore extends React.Component<EditStoreProps, EditStoreState> {
         }
       })
       .then(createStore => {
+        console.log(createStore, "ncreateStoreew");
         if (createStore.data.createStore.id) {
-          message.success("store successfully created");
           this.props.history.push("/core/stores/");
         }
       });
   };
 
   onUpdateStore = () => {
-    let { storeDetails, mapData } = this.state;
-
+    let { storeDetails } = this.state;
     let input = {
       parentOrganizationId: this.state.orgID,
-      ...storeDetails,
-      latitude: `${mapData.center.lat}`,
-      longitude: `${mapData.center.lng}`
+      ...storeDetails
     };
-    delete input["__typename"];
-    // delete input["extend"];
-
     this.props.client
       .mutate({
         mutation: UPDATE_STORE,
@@ -168,9 +162,8 @@ class EditStore extends React.Component<EditStoreProps, EditStoreState> {
         }
       })
       .then(UpdateStore => {
+        console.log(UpdateStore, "ncreateStoreew");
         if (UpdateStore.data.updateStore.id) {
-          message.success("store successfully updated");
-
           this.props.history.push("/core/stores/");
         }
       });
@@ -230,7 +223,7 @@ class EditStore extends React.Component<EditStoreProps, EditStoreState> {
   };
 
   render() {
-    console.log(this.state);
+    console.log(this.state.storeDetails);
 
     let { storeDetails, mapData, isFetching } = this.state;
     let header = "Create Store ";
@@ -370,18 +363,13 @@ class EditStore extends React.Component<EditStoreProps, EditStoreState> {
                   Phone number<span className="requiredFieldRedColor">*</span>
                 </div>
                 <Input
-                  // disabled
+                  disabled
                   size="large"
                   placeholder="Enter store phone number address"
-                  value={
-                    storeDetails.extend &&
-                    storeDetails.extend.extend_phone_number
-                      ? storeDetails.extend.extend_phone_number
-                      : null
-                  }
+                  // value={storeDetails.mobileNumber}
                   onChange={e => {
-                    storeDetails.extend.extend_phone_number = e.target.value;
-                    this.onChange("storeDetails", storeDetails);
+                    // storeDetails.mobileNumber = e.target.value;
+                    // this.onChange("storeDetails", storeDetails);
                   }}
                 />
               </div>
@@ -399,15 +387,12 @@ class EditStore extends React.Component<EditStoreProps, EditStoreState> {
                 placeholder="Choose admin"
                 optionFilterProp="children"
                 onChange={value => {
-                  storeDetails.extend.extend_admin_user_id = value;
+                  storeDetails.adminUserId = value;
                   this.onChange("storeDetails", storeDetails);
                 }}
-                value={
-                  storeDetails.extend &&
-                  storeDetails.extend.extend_admin_user_id
-                    ? storeDetails.extend.extend_admin_user_id
-                    : null
-                }
+                // onFocus={onFocus}
+                // onBlur={onBlur}
+                // onSearch={onSearch}
                 filterOption={(input, option) =>
                   option.props.children
                     .toString()
@@ -475,7 +460,7 @@ class EditStore extends React.Component<EditStoreProps, EditStoreState> {
             </div>
 
             <div className="storeFlexWrapper">
-              <div className="storeSwitchWrapper width15percent ">
+              <div className="storeInputWrapper width15percent ">
                 <Switch
                   checked={storeDetails.wifi}
                   onChange={(value: any) => {
@@ -484,10 +469,8 @@ class EditStore extends React.Component<EditStoreProps, EditStoreState> {
                   }}
                 />
               </div>
-              <div className="storeInputWrapper width75percent alignSelfCenter">
-                Wifi
-              </div>
-              <div className="storeSwitchWrapper width15percent ">
+              <div className="storeInputWrapper width75percent">Wifi</div>
+              <div className="storeInputWrapper width15percent ">
                 <Switch
                   checked={storeDetails.STATUS === "ACTIVE"}
                   onChange={(value: any) => {
@@ -496,25 +479,11 @@ class EditStore extends React.Component<EditStoreProps, EditStoreState> {
                   }}
                 />
               </div>
-              <div className="storeInputWrapper width75percent alignSelfCenter">
-                Active
-              </div>
+              <div className="storeInputWrapper width75percent">Active</div>
             </div>
 
             <Button
-              disabled={
-                !storeDetails.name ||
-                !storeDetails.extend.extend_phone_number ||
-                !storeDetails.addressLine1 ||
-                !storeDetails.addressLine2 ||
-                !storeDetails.email ||
-                !storeDetails.pinCode ||
-                !storeDetails.city ||
-                !storeDetails.state ||
-                !storeDetails.country ||
-                !mapData.center.lat ||
-                !mapData.center.lng
-              }
+              disabled={false}
               className="button"
               type="primary"
               size="large"

@@ -10,11 +10,7 @@ import { Route, Switch, RouteComponentProps } from "react-router-dom";
 import Users from "./routes/users";
 import OrganisationHome from "./routes/OrganisationHome";
 import Stores from "./routes/Stores";
-import Dashboard from "./routes/Dashboard";
-import Category from "./routes/Categories";
-import ItemManagement from "./routes/ItemManagement";
-import PromoImageManagement from "./routes/PromoImageManagement";
-interface HomeProps extends RouteComponentProps { }
+interface HomeProps extends RouteComponentProps {}
 
 export default class extends React.Component<HomeProps, {}> {
   render() {
@@ -30,10 +26,7 @@ export default class extends React.Component<HomeProps, {}> {
           <Route path={"/core/settings/*"} component={Settings} />
           <Route path={"/core/business-rules"} component={BusinessRules} />
           <Route path={"/core/access-control"} component={AccessControl} />
-          <Route path={"/core/dashboard"} component={Dashboard} />
-          <Route path={"/core/categories"} component={Category} />
-          <Route path={"/core/items"} component={ItemManagement} />
-          <Route path={"/core/promos"} component={PromoImageManagement} />
+
           <Route path={`${this.props.match.url}/users`} component={Users} />
           {/* <Route path={"/core/orghome/:id"} component={OrganisationHome} /> */}
           <Route path={"/core/stores"} component={Stores} />
