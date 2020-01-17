@@ -570,9 +570,9 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
         frequency: scheduleData.repeatType,
         time: moment(scheduleData.time).format("HH:mm:ss")
       };
-      scheduleData.repeatType == "WEEKLY"
-        ? (repeatRuleConf.byWeekDay = scheduleData.days)
-        : "";
+      if (scheduleData.repeatType === "WEEKLY") {
+        repeatRuleConf.byWeekDay = scheduleData.days;
+      }
       scheduleData.hasOwnProperty("endTime")
         ? (repeatRuleConf.endAfter = scheduleData.endTime)
         : (repeatRuleConf.noOfOccurances = scheduleData.noOfOccurances);
@@ -645,9 +645,10 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
         frequency: scheduleData.repeatType,
         time: moment(scheduleData.time).format("HH:mm:ss")
       };
-      scheduleData.repeatType == "WEEKLY"
-        ? (repeatRuleConf.byWeekDay = scheduleData.days)
-        : "";
+      if (scheduleData.repeatType === "WEEKLY") {
+        repeatRuleConf.byWeekDay = scheduleData.days;
+      }
+
       scheduleData.hasOwnProperty("endTime")
         ? (repeatRuleConf.endAfter = scheduleData.endTime)
         : (repeatRuleConf.noOfOccurances = scheduleData.noOfOccurances);
