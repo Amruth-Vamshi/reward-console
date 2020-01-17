@@ -5,13 +5,15 @@ import Home from "./Home";
 
 const { Suspense } = React;
 
-const RefineX = lazy(() => import("@walkinsole/walkin-refinex"));
-const HyperX = lazy(() => import("@walkinsole/walkin-hyperx"));
+const RefineX = lazy(() => import("@walkinsole/walkin-refinex/src/index"));
+const HyperX = lazy(() => import("@walkinsole/walkin-hyperx/src/index"));
 //const RefineX = lazy(() => import('@walkinsole/walkin-refinex'));
 // const HyperX = lazy(() => import('@walkinsole/walkin-hyperx'));
-const Core = React.lazy(() => import("@walkinsole/walkin-core"));
-const NearX = React.lazy(() => import("@walkinsole/walkin-nearx"));
-const RewardX = React.lazy(() => import("@walkinsole/walkin-rewardx"));
+const Core = React.lazy(() => import("@walkinsole/walkin-core/src/index"));
+const NearX = React.lazy(() => import("@walkinsole/walkin-nearx/src/index"));
+const RewardX = React.lazy(() =>
+  import("@walkinsole/walkin-rewardx/src/index")
+);
 const App = () => (
   <Suspense fallback={<div>Loading...</div>}>
     <Switch>

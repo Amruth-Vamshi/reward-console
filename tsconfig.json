@@ -1,11 +1,11 @@
 {
   "compilerOptions": {
+    "baseUrl": "packages",
+    "paths": {
+      "@walkinsole/*": ["*"]
+    },
     "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -17,9 +17,18 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react"
+    "jsx": "react",
+    "strictNullChecks": false,
+    "noImplicitAny": false
   },
-  "include": [
-    "src"
+  "include": ["packages", "src", "index.d.ts", "packages/*/src/assets"],
+  "types": ["googlemaps", "markerclustererplus"],
+  "exclude": [
+    "node_modules",
+    "build",
+    "scripts",
+    "acceptance-tests",
+    "webpack",
+    "jest"
   ]
 }
