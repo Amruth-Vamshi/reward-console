@@ -1,9 +1,6 @@
 {
   "compilerOptions": {
-    "baseUrl": "packages",
-    "paths": {
-      "@walkinsole/*": ["*"]
-    },
+    "baseUrl": "src",
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
