@@ -5,9 +5,20 @@ export const FILE_UPLOAD = gql`
     mutation uploadFile($input:FileUploadInput!){
         uploadFile(input:$input){
             id
+            name
+            mimetype
+            encoding
             description
+            internalUrl
             publicUrl
             status
+            organization{
+                id
+            }
+            fileSystem{
+                id
+                name
+            }
         }
     }
 
