@@ -125,11 +125,11 @@ export default class CreatePlaceManually extends React.Component<
   getGeoLocation = (i = 0) => {
     geolocation.getCurrentPosition(position => {
       let places = this.state.places;
-      (places[i].center = {
+      places[i].center = {
         lat: position.coords.latitude,
         lng: position.coords.longitude
-      }),
-        this.setState({ places, center: places[0].center });
+      };
+      this.setState({ places, center: places[0].center });
     });
   };
 

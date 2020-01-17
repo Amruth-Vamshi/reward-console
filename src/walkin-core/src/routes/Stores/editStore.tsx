@@ -7,13 +7,13 @@ import { History } from "history";
 import { Icon, Select, Input, Button, Switch, Spin } from "antd";
 import "./index.css";
 import GeofenceMap from "../../../../walkin-nearx/src/components/Places/GeofenceMap";
-const { Option } = Select;
 import {
   GET_ALL_USERS_OF_ORGANIZATION,
   STORE,
   CREATE_STORE,
   UPDATE_STORE
 } from "./../../PlatformQueries";
+const { Option } = Select;
 
 interface EditStoreProps extends ApolloProviderProps<any> {
   history: History;

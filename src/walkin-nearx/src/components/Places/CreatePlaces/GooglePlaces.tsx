@@ -1,5 +1,15 @@
 import * as React from "react";
-import { Row, Col, Card, Affix, message, Modal, Input, Button, Icon } from "antd";
+import {
+  Row,
+  Col,
+  Card,
+  Affix,
+  message,
+  Modal,
+  Input,
+  Button,
+  Icon
+} from "antd";
 import GetGooglePlaces from "./GetGooglePlaces";
 import { Link } from "react-router-dom";
 import { CREATE_GROUP_OF_PLACES } from "../../../queries";
@@ -18,7 +28,7 @@ import {
   RADIUS_1_MIN,
   TYPE
 } from "../../../Constants";
-import { History } from "history"
+import { History } from "history";
 
 // AIzaSyCwRQqzyQuopL0CQ212q97uFVyXn5EMLbs
 
@@ -26,34 +36,34 @@ const geolocation: any =
   canUseDOM && navigator.geolocation
     ? navigator.geolocation
     : {
-      getCurrentPosition(success, failure) {
-        failure(`Your browser doesn't support geolocation.`);
-      }
-    };
+        getCurrentPosition(success, failure) {
+          failure(`Your browser doesn't support geolocation.`);
+        }
+      };
 
 interface iProps {
-  history?: History
+  history?: History;
 }
 
 interface iState {
-  places?: Array<any>,
-  places1?: Array<any>,
-  center?: { lat?: any, lng?: any },
-  mark?: { lat?: any, lng?: any },
-  errors?: any,
-  search?: string,
-  getLoc?: boolean,
-  visible?: boolean,
-  noOfPlaces?: number,
-  markLoc?: boolean,
-  searchRadius?: number,
-  moreOptions?: boolean,
-  selectAll?: boolean,
-  loading?: boolean,
-  loading1?: boolean,
-  defaultRadius?: Array<number>,
-  googleAPIkey?: string,
-  type?: string
+  places?: Array<any>;
+  places1?: Array<any>;
+  center?: { lat?: any; lng?: any };
+  mark?: { lat?: any; lng?: any };
+  errors?: any;
+  search?: string;
+  getLoc?: boolean;
+  visible?: boolean;
+  noOfPlaces?: number;
+  markLoc?: boolean;
+  searchRadius?: number;
+  moreOptions?: boolean;
+  selectAll?: boolean;
+  loading?: boolean;
+  loading1?: boolean;
+  defaultRadius?: Array<number>;
+  googleAPIkey?: string;
+  type?: string;
 }
 
 export default class GooglePlaces extends React.Component<iProps, iState> {
@@ -117,11 +127,11 @@ export default class GooglePlaces extends React.Component<iProps, iState> {
   myloc = () => {
     geolocation.getCurrentPosition(position => {
       var center = this.state.center;
-      (center = {
+      center = {
         lat: position.coords.latitude,
         lng: position.coords.longitude
-      }),
-        this.setState({ center, mark: center, markLoc: true });
+      };
+      this.setState({ center, mark: center, markLoc: true });
     });
   };
 
@@ -171,7 +181,9 @@ export default class GooglePlaces extends React.Component<iProps, iState> {
         url += "&keyword=" + this.state.search;
       }
 
-      this.state.type ? (url += "&type=" + this.state.type) : "";
+      if (this.state.type) {
+        url += "&type=" + this.state.type;
+      }
 
       // console.log(url);
 
@@ -449,7 +461,7 @@ export default class GooglePlaces extends React.Component<iProps, iState> {
               >
                 <Card
                   className="createPlaceCard"
-                // style={{marginBottom:0, position:"absolute",backgroundColor:'#fffffff',padding:24, width:'100%', bottom:0}}
+                  // style={{marginBottom:0, position:"absolute",backgroundColor:'#fffffff',padding:24, width:'100%', bottom:0}}
                 >
                   {this.state.places.length ? (
                     <Row>
@@ -472,48 +484,48 @@ export default class GooglePlaces extends React.Component<iProps, iState> {
                       </Col>
                     </Row>
                   ) : (
-                      <Row>
-                        <Col span={16}>
-                          <div className="divCenterVertical">
-                            {" "}
-                            <span>Select some places to create</span>{" "}
-                          </div>
-                        </Col>
-                        <Col span={8}>
+                    <Row>
+                      <Col span={16}>
+                        <div className="divCenterVertical">
                           {" "}
-                          <Link to="/nearx/places/createplace/manually">
-                            <Button
-                              disabled
-                              className="buttonPrimary"
-                              style={{ float: "right", marginBottom: 0 }}
-                            >
-                              CREATE
+                          <span>Select some places to create</span>{" "}
+                        </div>
+                      </Col>
+                      <Col span={8}>
+                        {" "}
+                        <Link to="/nearx/places/createplace/manually">
+                          <Button
+                            disabled
+                            className="buttonPrimary"
+                            style={{ float: "right", marginBottom: 0 }}
+                          >
+                            CREATE
                           </Button>
-                          </Link>
-                        </Col>
-                      </Row>
-                    )}
+                        </Link>
+                      </Col>
+                    </Row>
+                  )}
                 </Card>
               </Affix>
             ) : (
-                <div className="">
-                  {" "}
-                  <br /> <br /> <br /> <br /> <br />
-                  <div style={{ textAlign: "center" }}>
-                    <Icon
-                      type="environment"
-                      style={{
-                        color: "#CACACA",
-                        fontSize: 150,
-                        marginBottom: 20
-                      }}
-                      theme="filled"
-                    />
-                    <p> Search for restaurants, malls... etc to create place </p>
-                    {/* <Link to='/nearx/places/createplace/manually'> <Button className='buttonPrimary'>CREATE</Button></Link> */}
-                  </div>
+              <div className="">
+                {" "}
+                <br /> <br /> <br /> <br /> <br />
+                <div style={{ textAlign: "center" }}>
+                  <Icon
+                    type="environment"
+                    style={{
+                      color: "#CACACA",
+                      fontSize: 150,
+                      marginBottom: 20
+                    }}
+                    theme="filled"
+                  />
+                  <p> Search for restaurants, malls... etc to create place </p>
+                  {/* <Link to='/nearx/places/createplace/manually'> <Button className='buttonPrimary'>CREATE</Button></Link> */}
                 </div>
-              )}
+              </div>
+            )}
             <div />
           </Col>
 
@@ -536,11 +548,11 @@ export default class GooglePlaces extends React.Component<iProps, iState> {
             {this.state.moreOptions ? (
               ""
             ) : (
-                <div>
-                  {" "}
-                  <br /> <br /> <br /> <br /> <br /> <br />{" "}
-                </div>
-              )}
+              <div>
+                {" "}
+                <br /> <br /> <br /> <br /> <br /> <br />{" "}
+              </div>
+            )}
           </Col>
         </Row>
 

@@ -10,10 +10,10 @@ import {
   Input,
   Button
 } from "antd";
-const { Title } = Typography;
 import Delay from "./Delay";
 import { EventTypeForm } from "./EventType";
 import Filter from "./Filter";
+const { Title } = Typography;
 
 interface TriggersProps {
   unlinkCampaignFromApplication?: any;
