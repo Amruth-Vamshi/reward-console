@@ -21,7 +21,14 @@ import {
 import { TOTAL_AUDIENCE_COUNT } from "../../../query/audience";
 import HyperXContainer from "../../../utils/HyperXContainer";
 
-interface IProps extends RouteChildrenProps<any>, ApolloProviderProps<any> {
+interface IProps
+  extends RouteChildrenProps<
+      { campaignSelected: any; id: string },
+      {
+        campaignSelected: any;
+      }
+    >,
+    ApolloProviderProps<any> {
   pauseCampaign: (variables: any) => any;
   launchCampaign: (variables: any) => any;
   abandonCampaign: (variables: any) => any;

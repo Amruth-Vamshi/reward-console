@@ -22,6 +22,7 @@ import * as jwt from "jsonwebtoken";
 import { RouteComponentProps } from "react-router";
 import { path } from "d3-path";
 import { GraphQLRequest } from "apollo-link";
+import { History, Location } from "history";
 
 interface CampaignDashboardState {
   loading: boolean;
@@ -37,6 +38,9 @@ interface CampaignDashboardProps extends RouteComponentProps<Params> {
   unpauseCampaign?: any;
   abandonCampaign?: any;
   allAudiences?: any;
+  location: Location<{
+    campaignSelected: any;
+  }>;
 }
 
 class CampaignDashboard extends React.Component<

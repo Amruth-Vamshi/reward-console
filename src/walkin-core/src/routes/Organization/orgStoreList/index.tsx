@@ -4,6 +4,7 @@ import { Dropdown, Menu } from "antd";
 import { ApolloProviderProps } from "react-apollo";
 import { RouteComponentProps } from "react-router";
 import { PaginationConfig, SorterResult } from "antd/lib/table";
+import { History, Location } from "history";
 
 interface OrgStoreListState {
   sortedInfo: any;
@@ -18,6 +19,9 @@ interface OrgStoreListProps
   showStoreFilter: string;
   placeholder: string;
   filterData: object;
+  location: Location<{
+    storeDetails: any;
+  }>;
 }
 class OrgStoreList extends React.Component<
   OrgStoreListProps,

@@ -28,6 +28,7 @@ import * as jwt from "jsonwebtoken";
 import * as _ from "lodash";
 import { RouteChildrenProps } from "react-router";
 import { any } from "prop-types";
+import { Location } from "history";
 const { TabPane } = Tabs;
 
 interface CampaignListProps extends RouteChildrenProps {
@@ -35,6 +36,9 @@ interface CampaignListProps extends RouteChildrenProps {
   loading?: any;
   disableCampaign?: any;
   refetch?: any;
+  location: Location<{
+    tabKey: any;
+  }>;
 }
 
 interface CampaignListState {

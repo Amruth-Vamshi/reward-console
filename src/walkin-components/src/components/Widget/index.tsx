@@ -10,7 +10,8 @@ export const Widget = ({
   cover,
   style,
   extra,
-  actions
+  actions,
+  hoverable
 }: {
   title?: any;
   children?: any;
@@ -19,6 +20,7 @@ export const Widget = ({
   style?: any;
   extra?: any;
   actions?: any;
+  hoverable?: any;
 }) => {
   return (
     <Card

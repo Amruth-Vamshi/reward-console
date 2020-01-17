@@ -91,4 +91,4 @@ const GET_AUTH = gql`
 export default graphql(GET_AUTH, {
   props: mapStateToProps,
   name: "auth"
-})(Profile);
+})(Profile as any);

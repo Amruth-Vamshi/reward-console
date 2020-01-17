@@ -23,7 +23,7 @@ class EditableCell extends React.Component<editableCellProps> {
     return <Input />;
   };
 
-  renderCell = ({ getFieldDecorator }) => {
+  renderCell = ({ getFieldDecorator }: any) => {
     const {
       editing,
       dataIndex,

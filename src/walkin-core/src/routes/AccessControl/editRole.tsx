@@ -15,7 +15,7 @@ import {
 import "./style.css";
 import { withApollo, ApolloProviderProps } from "react-apollo";
 import { ROLE, EDIT_POLICY } from "./../../PlatformQueries";
-import { History } from "history";
+import { History, Location } from "history";
 
 // const data = [
 //   {
@@ -65,7 +65,7 @@ import { History } from "history";
 // ];
 
 interface AccessControlProps extends ApolloProviderProps<any> {
-  history: History;
+  history: History<{ roleId: any }>;
 }
 
 interface AccessControlState {

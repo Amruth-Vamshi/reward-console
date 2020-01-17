@@ -5,7 +5,7 @@ import CreateHotspot from "./CreateHotspot";
 import SelectHotspots from "./SelectHotspots";
 import { nearXClient as client } from "../../../nearXApollo";
 import { SEARCH_PLACES, GET_NAERBY_PLACES } from "../../../queries";
-import { withApollo } from "react-apollo";
+import { withApollo, WithApolloClient } from "react-apollo";
 import { HOTSPOT_RADIUS } from "../../../Constants";
 import CustomScrollbars from "../../../util/CustomScrollbars";
 
@@ -13,6 +13,7 @@ const TabPane = Tabs.TabPane;
 
 interface iProps {
   submitHotspots?: (val) => any;
+  formData: any;
 }
 
 interface iState {
@@ -29,7 +30,10 @@ interface iState {
   visible?: boolean;
 }
 
-class AddHotspot extends React.Component<iProps, Partial<iState>> {
+class AddHotspot extends React.Component<
+  WithApolloClient<iProps>,
+  Partial<iState>
+> {
   constructor(props) {
     super(props);
     this.state = {

@@ -331,5 +331,5 @@ export default withRouter(
         });
       }
     })
-  })(withApollo(SegmentList))
+  })(withApollo(SegmentList as any))
 );

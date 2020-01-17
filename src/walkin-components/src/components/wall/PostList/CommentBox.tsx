@@ -19,13 +19,13 @@ interface IProps {
 interface IState {
   isComment: boolean;
   commentData: {
-    id: number;
-    user: any;
-    isLike: boolean;
-    likeCount: number;
-    date: any;
-    commentList: any[];
-    comment: string;
+    id?: number;
+    user?: any;
+    isLike?: boolean;
+    likeCount?: number;
+    date?: any;
+    commentList?: any[];
+    comment?: string;
   };
 }
 class CommentBox extends Component<IProps, IState> {

@@ -20,8 +20,12 @@ import {
 } from "antd";
 import { withRouter, RouteChildrenProps } from "react-router";
 import { Link } from "react-router-dom";
-
-interface LoyaltyCardProps extends RouteChildrenProps {}
+import { Location } from "history";
+interface LoyaltyCardProps extends RouteChildrenProps {
+  location: Location<{
+    record: any;
+  }>;
+}
 
 interface LoyaltyCardState {
   modalCurrencyName: string;

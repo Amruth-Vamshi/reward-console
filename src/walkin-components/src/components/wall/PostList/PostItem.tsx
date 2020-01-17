@@ -8,6 +8,7 @@ import DisplayDate from "../DisplayDate/index";
 interface IProps {
   postData: any;
   user: any;
+  index: number;
 }
 
 interface IState {

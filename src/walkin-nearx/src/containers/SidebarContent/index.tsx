@@ -115,7 +115,7 @@ class SidebarContent extends React.Component<iProps, iState> {
 
 SidebarContent.propTypes = {};
 
-const mapStateToProps = ({ settings, ownProps }) => {
+const mapStateToProps = ({ settings, ownProps }: any) => {
   const { navStyle, themeType, locale } = settings.settings;
   const { pathname } = ownProps.location;
   return { navStyle, themeType, locale, pathname };

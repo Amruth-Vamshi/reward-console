@@ -24,7 +24,9 @@ import { RouteChildrenProps } from "react-router";
 import { strToRule } from "../../../utils";
 import HyperXContainer from "../../../utils/HyperXContainer";
 
-interface IProps extends RouteChildrenProps, ApolloProviderProps<any> {
+interface IProps
+  extends RouteChildrenProps<{}, { segmentSelected: any; update: any }>,
+    ApolloProviderProps<any> {
   allApplications: any;
   ruleAttributes: any;
   loading: any;

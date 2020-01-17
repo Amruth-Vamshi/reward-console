@@ -9,7 +9,7 @@ import Cylinder3DChart from "./Cylinder3DChart";
 import NewPlaceCard from "./NewPlaceCard";
 import * as jwt from "jsonwebtoken";
 import "../../styles/home.css";
-import { withApollo } from "react-apollo";
+import { withApollo, WithApolloClient } from "react-apollo";
 import { Link } from "react-router-dom";
 import { GET_ANALYTICS } from "walkin-core/src/PlatformQueries";
 
@@ -46,7 +46,7 @@ interface iProps {
   client?: any;
 }
 
-class Landing extends React.Component<iProps, iState> {
+class Landing extends React.Component<WithApolloClient<iProps>, iState> {
   constructor(props) {
     super(props);
     this.state = {

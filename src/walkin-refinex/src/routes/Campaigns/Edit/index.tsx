@@ -51,7 +51,7 @@ import { async } from "q";
 import { GET_ALL_APPS_OF_ORGANIZATION } from "walkin-core/src/PlatformQueries";
 import pick from "lodash/pick";
 import { RouteComponentProps } from "react-router";
-import { any } from "prop-types";
+import { Location } from "history";
 
 interface RouteParams {
   id?: string;
@@ -79,6 +79,9 @@ interface EditCampaignProps
   linkCampaignToApplication?: any;
   unlinkCampaignFromApplication?: any;
   sendTestCommunication?: any;
+  location: Location<{
+    current: any;
+  }>;
 }
 
 interface EditCampaignState {

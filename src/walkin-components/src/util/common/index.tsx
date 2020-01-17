@@ -11,7 +11,7 @@ export const removeProp = (obj, propToDelete) => {
     if (typeof obj[property] == "object") {
       let objectToCheck = obj[property];
       delete obj.property;
-      let newJsonData = this.removeProp(obj[property], propToDelete);
+      let newJsonData = removeProp(obj[property], propToDelete);
       obj[property] = newJsonData;
     } else {
       if (property === propToDelete) {

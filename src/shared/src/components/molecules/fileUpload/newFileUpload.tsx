@@ -1,5 +1,5 @@
-import * as React from "./node_modules/react";
-import { Modal, Upload, Button, Icon, Row, Col } from "./node_modules/antd";
+import React from "react";
+import { Modal, Upload, Button, Icon, Row, Col } from "antd";
 import "./index.css";
 
 export interface IAppProps {

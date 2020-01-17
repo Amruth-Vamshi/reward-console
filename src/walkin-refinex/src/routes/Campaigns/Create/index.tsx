@@ -38,7 +38,7 @@ import jwt from "jsonwebtoken";
 import { GET_ALL_APPS_OF_ORGANIZATION } from "walkin-core/src/PlatformQueries";
 import { CustomScrollbars } from "walkin-components";
 import { RouteChildrenProps } from "react-router";
-
+import { Location } from "history";
 const communicationData = [
   { value: "SMS", title: "SMS" },
   // { value: 'push', title: 'Push Notification' },
@@ -57,6 +57,9 @@ interface CreateCampaignProps
   allAttributes?: any;
   segmentList?: any;
   allApplications?: any;
+  location: Location<{
+    campaignSelected: any;
+  }>;
 }
 
 interface CreateCampaignState {

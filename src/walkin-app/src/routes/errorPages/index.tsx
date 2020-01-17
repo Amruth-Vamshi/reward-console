@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
-import asyncComponent from "walkin-components/src/util/asyncComponent";
+import { asyncComponent } from "walkin-components/src/util/asyncComponent";
 
 const ErrorPages = ({ match }: { match: any }) => (
   <Switch>

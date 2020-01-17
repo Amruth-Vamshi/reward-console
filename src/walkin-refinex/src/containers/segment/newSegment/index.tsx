@@ -17,10 +17,13 @@ import * as jwt from "jsonwebtoken";
 import { GET_ALL_APPS_OF_ORGANIZATION } from "walkin-core/src/PlatformQueries";
 import { toNumber } from "walkin-components/src/util/common";
 import { RouteChildrenProps } from "react-router";
-
+import { Location } from "history";
 interface NewSegmentProps extends RouteChildrenProps, ApolloProviderProps<any> {
   allApplications?: any;
   attributes?: any;
+  location: Location<{
+    segmentSelected: any;
+  }>;
 }
 
 interface NewSegmentState {

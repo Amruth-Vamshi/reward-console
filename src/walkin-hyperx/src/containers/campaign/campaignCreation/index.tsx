@@ -94,7 +94,16 @@ const communicationData = [
   { value: "EMAIL", title: "Email" }
 ];
 
-interface IProps extends RouteChildrenProps<any>, ApolloProviderProps<any> {
+interface IProps
+  extends RouteChildrenProps<
+      {
+        id: string;
+      },
+      {
+        update: any;
+      }
+    >,
+    ApolloProviderProps<any> {
   updateRule: (variables: any) => any;
   addOfferToCampaign: (variables: any) => any;
   updateCommunicationWithMessageTemplate: (variables: any) => any;

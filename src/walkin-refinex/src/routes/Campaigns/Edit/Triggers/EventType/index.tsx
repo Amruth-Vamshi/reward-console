@@ -170,49 +170,51 @@ class EventType extends React.Component<
 }
 
 const EventTypeForm1 = withApollo(EventType);
-export const EventTypeForm = Form.create<WithApolloClient<EventTypeProps>>({
-  name: "EventType",
-  onValuesChange: (props: WithApolloClient<EventTypeProps>, values) => {
-    console.log("values", values);
-    if (values.event) {
-      props.onEventTypeEdited(values);
-    } else if (props.selectedApplication !== values.application) {
-      props.linkCampaignToApplication(values.application);
-      props.client
-        .query({
-          query: EVENT_TYPES_FOR_APPLICATION,
-          variables: {
-            appId: props.selectedApplication
-          }
-        })
-        .then(data => console.log("data", data))
-        .catch(err => console.log("err", err));
+export const EventTypeForm: any = Form.create<WithApolloClient<EventTypeProps>>(
+  {
+    name: "EventType",
+    onValuesChange: (props: WithApolloClient<EventTypeProps>, values) => {
+      console.log("values", values);
+      if (values.event) {
+        props.onEventTypeEdited(values);
+      } else if (props.selectedApplication !== values.application) {
+        props.linkCampaignToApplication(values.application);
+        props.client
+          .query({
+            query: EVENT_TYPES_FOR_APPLICATION,
+            variables: {
+              appId: props.selectedApplication
+            }
+          })
+          .then(data => console.log("data", data))
+          .catch(err => console.log("err", err));
+      }
+    },
+    mapPropsToFields(props: WithApolloClient<EventTypeProps>) {
+      const { event, selectedApplication } = props;
+      if (selectedApplication) {
+        props.client
+          .query({
+            query: EVENT_TYPES_FOR_APPLICATION,
+            variables: {
+              appId: selectedApplication
+            }
+          })
+          .then(data => console.log("data", data))
+          .catch(err => console.log("err", err));
+      }
+      // let eventValue = event.event;
+      // if (props.eventSubscription && props.eventSubscription.eventSubscriptions) {
+      //   eventValue = props.eventSubscription.eventSubscriptions[0].event_type.type
+      // }
+      // return {
+      //   event: Form.createFormField({
+      //     value: eventValue
+      //   }),
+      //   application: Form.createFormField({
+      //     value: selectedApplication
+      //   }),
+      // };
     }
-  },
-  mapPropsToFields(props: WithApolloClient<EventTypeProps>) {
-    const { event, selectedApplication } = props;
-    if (selectedApplication) {
-      props.client
-        .query({
-          query: EVENT_TYPES_FOR_APPLICATION,
-          variables: {
-            appId: selectedApplication
-          }
-        })
-        .then(data => console.log("data", data))
-        .catch(err => console.log("err", err));
-    }
-    // let eventValue = event.event;
-    // if (props.eventSubscription && props.eventSubscription.eventSubscriptions) {
-    //   eventValue = props.eventSubscription.eventSubscriptions[0].event_type.type
-    // }
-    // return {
-    //   event: Form.createFormField({
-    //     value: eventValue
-    //   }),
-    //   application: Form.createFormField({
-    //     value: selectedApplication
-    //   }),
-    // };
   }
-})(EventTypeForm1);
+)(EventTypeForm1);

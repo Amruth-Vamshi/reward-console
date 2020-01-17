@@ -23,7 +23,7 @@ import {
   DELETE_WEBHOOK
 } from "walkin-core/src/PlatformQueries";
 import * as jwt from "jsonwebtoken";
-import { withApollo } from "react-apollo";
+import { withApollo, WithApolloClient } from "react-apollo";
 import HooksListCard from "./HooksListCard";
 // import { nearXClient as client } from "../../nearXApollo";
 const { TextArea } = Input;
@@ -68,7 +68,7 @@ interface iState {
   id?: string;
 }
 
-class Hooks extends React.Component<iProps, iState> {
+class Hooks extends React.Component<WithApolloClient<iProps>, iState> {
   constructor(props) {
     super(props);
     this.state = {
