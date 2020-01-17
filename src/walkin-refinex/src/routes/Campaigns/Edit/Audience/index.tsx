@@ -9,18 +9,17 @@ import { WalkinQueryBuilder } from "shared";
 const { Title } = Typography;
 
 interface AudienceProps {
-  allAttributes?: any
-  segmentList?: any
-  logQuery?: any
-  onValuesSelected?: any
+  allAttributes?: any;
+  segmentList?: any;
+  logQuery?: any;
+  onValuesSelected?: any;
 }
 
-
 interface AudienceState {
-  formValues: any,
-  current: any,
-  rows: any,
-  values: any
+  formValues: any;
+  current: any;
+  rows: any;
+  values: any;
 }
 
 class Audience extends React.Component<AudienceProps, AudienceState> {

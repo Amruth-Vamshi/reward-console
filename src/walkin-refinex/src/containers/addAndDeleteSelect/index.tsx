@@ -6,15 +6,18 @@ import * as PropTypes from "prop-types";
 const { Option } = Select;
 
 interface AddAndDeleteSelectDynamicallyProps {
-  onValuesSelected?: (a: any) => void
-  segmentSelectionData: any
+  onValuesSelected?: (a: any) => void;
+  segmentSelectionData: any;
 }
 
 interface AddAndDeleteSelectDynamicallyState {
-  values?: any
+  values?: any;
 }
 
-class AddAndDeleteSelectDynamically extends React.Component<AddAndDeleteSelectDynamicallyProps, AddAndDeleteSelectDynamicallyState> {
+class AddAndDeleteSelectDynamically extends React.Component<
+  AddAndDeleteSelectDynamicallyProps,
+  AddAndDeleteSelectDynamicallyState
+> {
   constructor(props: AddAndDeleteSelectDynamicallyProps) {
     super(props);
     this.state = { values: ["Choose from the list"] };
@@ -74,6 +77,5 @@ class AddAndDeleteSelectDynamically extends React.Component<AddAndDeleteSelectDy
     );
   }
 }
-
 
 export default AddAndDeleteSelectDynamically;

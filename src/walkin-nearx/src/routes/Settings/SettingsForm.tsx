@@ -1,11 +1,29 @@
 import * as React from "react";
-import { Col, Row, Form, Input, Button, Slider, message, InputNumber, Icon } from "antd";
+import {
+  Col,
+  Row,
+  Form,
+  Input,
+  Button,
+  Slider,
+  message,
+  InputNumber,
+  Icon
+} from "antd";
 import Auxiliary from "../../util/Auxiliary";
 import { GET_CONFIGURATION, SET_CONFIGURATION } from "../../queries";
 import { nearXClient as client } from "../../nearXApollo";
 import {
-  GOOGLE_API_KEY, FACEBOOK_API_KEY, RADIUS_1, RADIUS_2, RADIUS_3, TYPE,
-  RADIUS_1_MIN, RADIUS_1_MAX, RADIUS_2_MAX, RADIUS_3_MAX
+  GOOGLE_API_KEY,
+  FACEBOOK_API_KEY,
+  RADIUS_1,
+  RADIUS_2,
+  RADIUS_3,
+  TYPE,
+  RADIUS_1_MIN,
+  RADIUS_1_MAX,
+  RADIUS_2_MAX,
+  RADIUS_3_MAX
 } from "../../Constants/index";
 import axios from "axios";
 
@@ -24,12 +42,14 @@ const radiusLayout = {
   labelCol: {
     xs: { span: 24 },
     sm: { span: 24 },
-    md: { span: 5 }, xl: { span: 6 }
+    md: { span: 5 },
+    xl: { span: 6 }
   },
   wrapperCol: {
     xs: { span: 24 },
     sm: { span: 24 },
-    md: { span: 19 }, xl: { span: 16 }
+    md: { span: 19 },
+    xl: { span: 16 }
   }
 };
 
@@ -53,16 +73,16 @@ const tailFormItemLayout1 = {
 };
 
 interface iProps {
-  handleSubmit?: any
+  handleSubmit?: any;
 }
 
 interface iState {
-  errors?: any,
-  googleAPIkey?: string,
-  facebookAPIkey?: string,
-  radius?: Array<any>,
-  loading?: boolean,
-  loading1?: boolean
+  errors?: any;
+  googleAPIkey?: string;
+  facebookAPIkey?: string;
+  radius?: Array<any>;
+  loading?: boolean;
+  loading1?: boolean;
 }
 
 export default class SettingsForm extends React.Component<iProps, iState> {
@@ -119,10 +139,10 @@ export default class SettingsForm extends React.Component<iProps, iState> {
   };
 
   deleteRedi = n => {
-    let { radius } = this.state
-    radius.pop()
-    this.setState({ radius })
-  }
+    let { radius } = this.state;
+    radius.pop();
+    this.setState({ radius });
+  };
 
   createRadius = (n, x) => (
     <Form.Item key={n} {...radiusLayout} label={`Radius ${n + 1}`}>
@@ -132,7 +152,6 @@ export default class SettingsForm extends React.Component<iProps, iState> {
             min={n ? this.state.radius[n - 1] : RADIUS_1_MIN}
             // max={n ? (n != 1 ? RADIUS_1_MAX : RADIUS_2_MAX) : RADIUS_1_MAX}
             max={RADIUS_3_MAX}
-
             marks={this.slideMarks(
               n ? this.state.radius[n - 1] : RADIUS_1_MIN,
               // n ? (n != 1 ? RADIUS_3_MAX : RADIUS_2_MAX) : RADIUS_1_MAX
@@ -142,7 +161,9 @@ export default class SettingsForm extends React.Component<iProps, iState> {
             value={
               typeof this.state.radius[n] === "number"
                 ? this.state.radius[n]
-                : n ? this.state.radius[n - 1] : RADIUS_1_MIN
+                : n
+                ? this.state.radius[n - 1]
+                : RADIUS_1_MIN
             }
           />
         </Col>
@@ -156,19 +177,30 @@ export default class SettingsForm extends React.Component<iProps, iState> {
               value={
                 typeof this.state.radius[n] === "number"
                   ? this.state.radius[n]
-                  : n ? this.state.radius[n - 1] : RADIUS_1_MIN
+                  : n
+                  ? this.state.radius[n - 1]
+                  : RADIUS_1_MIN
               }
               onChange={e => this.onChangeRadius(e, n)}
-            /></div> {n && (n == x - 1) ? <div style={{ display: "inline-block" }}> &nbsp; &nbsp; &nbsp; &nbsp; <Icon onClick={() => this.deleteRedi(n)} type='close' /> </div> : ''}
+            />
+          </div>{" "}
+          {n && n == x - 1 ? (
+            <div style={{ display: "inline-block" }}>
+              {" "}
+              &nbsp; &nbsp; &nbsp; &nbsp;{" "}
+              <Icon onClick={() => this.deleteRedi(n)} type="close" />{" "}
+            </div>
+          ) : (
+            ""
+          )}
         </Col>
       </Row>
-
     </Form.Item>
   );
 
   keysUpdate = () => {
     let errors: any = {};
-    let keys: Array<any> = []
+    let keys: Array<any> = [];
 
     // if (this.state.googleAPIkey && this.state.googleAPIkey != ' ') {
     this.setState({ loading: true });
@@ -183,48 +215,51 @@ export default class SettingsForm extends React.Component<iProps, iState> {
       "https://cors-anywhere.herokuapp.com/" +
       "https://maps.googleapis.com/maps/api/geocode/json?address=bengaluru&key=" +
       this.state.googleAPIkey;
-    req
-      .get(url)
-      .then(response => {
-        if (
-          response.data.error_message === "The provided API key is invalid."
-        ) {
-          errors.googleAPIkey = "Invalid API key";
-          this.setState({ loading: false, errors });
-          message.warning("Invalid API key");
-        } else {
-          keys = [{ name: GOOGLE_API_KEY, key: this.state.googleAPIkey.trim(), type: TYPE }];
+    req.get(url).then(response => {
+      if (response.data.error_message === "The provided API key is invalid.") {
+        errors.googleAPIkey = "Invalid API key";
+        this.setState({ loading: false, errors });
+        message.warning("Invalid API key");
+      } else {
+        keys = [
+          {
+            name: GOOGLE_API_KEY,
+            key: this.state.googleAPIkey.trim(),
+            type: TYPE
+          }
+        ];
 
-          if (this.state.facebookAPIkey.trim() != '')
-            keys.push({ name: FACEBOOK_API_KEY, key: this.state.facebookAPIkey, type: TYPE })
+        if (this.state.facebookAPIkey.trim() != "")
+          keys.push({
+            name: FACEBOOK_API_KEY,
+            key: this.state.facebookAPIkey,
+            type: TYPE
+          });
 
-          client
-            .mutate({
-              mutation: SET_CONFIGURATION,
-              variables: { input: keys }
-            })
-            .then(res => {
-              message.success("success");
-              this.setState({ loading: false });
-            })
-            .catch(err => {
-              this.setState({ loading: false });
-              console.log("Fail " + err);
-              message.warning("ERROR");
-            });
-
-        }
-      })
+        client
+          .mutate({
+            mutation: SET_CONFIGURATION,
+            variables: { input: keys }
+          })
+          .then(res => {
+            message.success("success");
+            this.setState({ loading: false });
+          })
+          .catch(err => {
+            this.setState({ loading: false });
+            console.log("Fail " + err);
+            message.warning("ERROR");
+          });
+      }
+    });
     // }
-
 
     // let keys = [
     //   { name: GOOGLE_API_KEY, key: this.state.googleAPIkey, type: TYPE },
     //   { name: FACEBOOK_API_KEY, key: this.state.facebookAPIkey, type: TYPE }
     // ];
 
-    // if (Object.entries(errors).length === 0) 
-
+    // if (Object.entries(errors).length === 0)
   };
 
   radiusUpdate = () => {
@@ -265,9 +300,9 @@ export default class SettingsForm extends React.Component<iProps, iState> {
       // if (j) {
       //   if (this.state.radius[j - 1] < this.state.radius[j]) radi.push(this.createRadius(j))
       //   else break
-      // } else 
+      // } else
 
-      radi.push(this.createRadius(j, n))
+      radi.push(this.createRadius(j, n));
     return radi;
   };
 
@@ -283,8 +318,7 @@ export default class SettingsForm extends React.Component<iProps, iState> {
   };
 
   render() {
-
-    let { radius } = this.state
+    let { radius } = this.state;
 
     return (
       <div className="gx-main-content-wrapper">
@@ -318,8 +352,16 @@ export default class SettingsForm extends React.Component<iProps, iState> {
                       <span style={{ color: "Red" }}>
                         {this.state.errors.googleAPIkey}
                       </span>
-                      <div style={{ color: "#34bfe2", margin: 10, float: "right" }} >
-                        <a target="_blank" href="https://developers.google.com/maps/documentation/javascript/get-api-key" > Get Google API key </a>
+                      <div
+                        style={{ color: "#34bfe2", margin: 10, float: "right" }}
+                      >
+                        <a
+                          target="_blank"
+                          href="https://developers.google.com/maps/documentation/javascript/get-api-key"
+                        >
+                          {" "}
+                          Get Google API key{" "}
+                        </a>
                       </div>
                     </Form.Item>
 
@@ -372,7 +414,9 @@ export default class SettingsForm extends React.Component<iProps, iState> {
 
                     {/* {console.log(radius.length >= 3 && radius[radius.length-1]==500)} */}
 
-                    {radius.length >= 3 || radius[radius.length - 1] == 500 ? "" :
+                    {radius.length >= 3 || radius[radius.length - 1] == 500 ? (
+                      ""
+                    ) : (
                       <Form.Item {...tailFormItemLayout}>
                         <span
                           onClick={() => this.addRadius()}
@@ -381,7 +425,7 @@ export default class SettingsForm extends React.Component<iProps, iState> {
                           <a href="#"> +Add Radius </a>
                         </span>
                       </Form.Item>
-                    }
+                    )}
                     <Form.Item {...tailFormItemLayout1}>
                       <Button
                         type="primary"

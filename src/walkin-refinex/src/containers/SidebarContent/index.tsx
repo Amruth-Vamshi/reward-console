@@ -2,11 +2,7 @@ import * as React from "react";
 import { Menu, Icon } from "antd";
 import { Link } from "react-router-dom";
 
-import {
-  CustomScrollbars,
-  Auxiliary,
-  IntlMessages
-} from "walkin-components";
+import { CustomScrollbars, Auxiliary, IntlMessages } from "walkin-components";
 
 import UserProfile from "./UserProfile";
 import AppsNavigation from "./AppsNavigation";
@@ -19,7 +15,7 @@ import {
   NAV_STYLE_MINI_SIDEBAR
 } from "walkin-components/src/constants/ThemeSetting";
 import SidebarLogo from "./SidebarLogo";
-import { CollapseSidebar } from "../../../../shared/src"
+import { CollapseSidebar } from "../../../../shared/src";
 import { compose, graphql } from "react-apollo";
 import gql from "graphql-tag";
 import Dashboard from "../../Icons/IconComponents/dashboard";
@@ -28,18 +24,20 @@ import Segments from "../../Icons/IconComponents/segemnts";
 import Analytics from "../../Icons/IconComponents/analytics";
 import { RouteChildrenProps } from "react-router";
 
-
 interface SidebarContentProps extends RouteChildrenProps {
-  themeType: any,
-  navStyle: any,
-  pathname: any
+  themeType: any;
+  navStyle: any;
+  pathname: any;
 }
 
 interface SidebarContentState {
-  orgId?: any,
-  userId?: any
+  orgId?: any;
+  userId?: any;
 }
-class SidebarContent extends React.Component<SidebarContentProps, SidebarContentState> {
+class SidebarContent extends React.Component<
+  SidebarContentProps,
+  SidebarContentState
+> {
   static propTypes: any;
   static defaultProps: any;
   getNoHeaderClass = (navStyle: any) => {
@@ -134,7 +132,7 @@ class SidebarContent extends React.Component<SidebarContentProps, SidebarContent
                             </Link>
                         </Menu.Item> */}
           </Menu>
-          <CollapseSidebar className='collapseBarRefinexStyle' />
+          <CollapseSidebar className="collapseBarRefinexStyle" />
           {/* <div className="gx-linebar">
                         <i
                             className={`gx-icon-btn icon icon-${

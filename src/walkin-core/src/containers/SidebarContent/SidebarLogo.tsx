@@ -14,12 +14,12 @@ import { compose, graphql } from "react-apollo";
 import gql from "graphql-tag";
 
 interface SidebarLogoProps {
-  width?: any,
-  themeType?: any,
-  navCollapsed?: any,
-  navStyle?: any,
-  toggleCollapsedSideNav?: (a: any) => void
-  onNavStyleChange?: (a: any) => void
+  width?: any;
+  themeType?: any;
+  navCollapsed?: any;
+  navStyle?: any;
+  toggleCollapsedSideNav?: (a: any) => void;
+  onNavStyleChange?: (a: any) => void;
 }
 
 class SidebarLogo extends React.Component<SidebarLogoProps, {}> {
@@ -32,48 +32,67 @@ class SidebarLogo extends React.Component<SidebarLogoProps, {}> {
     return (
       <div className="HyperX-Logo">
         <div className="gx-layout-sider-header">
-          {width < TAB_SIZE_MAX && width > TAB_SIZE ?
+          {width < TAB_SIZE_MAX && width > TAB_SIZE ? (
             <Link to="/" className="gx-pointer">
-              <img alt="fgd" src={require("walkin-components/src/assets/images/walkin_logo_mini.png")} style={{ maxWidth: 35 }} />
-            </Link> : navStyle === NAV_STYLE_FIXED || navStyle === NAV_STYLE_MINI_SIDEBAR ? (
-              <div className="gx-linebar">
-                <i style={{ backgroundColor: 'white' }}
-                  className={`gx-icon-btn icon icon-${
-                    navStyle === NAV_STYLE_MINI_SIDEBAR ? "menu-unfold" : "menu-fold"}
+              <img
+                alt="fgd"
+                src={require("walkin-components/src/assets/images/walkin_logo_mini.png")}
+                style={{ maxWidth: 35 }}
+              />
+            </Link>
+          ) : navStyle === NAV_STYLE_FIXED ||
+            navStyle === NAV_STYLE_MINI_SIDEBAR ? (
+            <div className="gx-linebar">
+              <i
+                style={{ backgroundColor: "white" }}
+                className={`gx-icon-btn icon icon-${
+                  navStyle === NAV_STYLE_MINI_SIDEBAR
+                    ? "menu-unfold"
+                    : "menu-fold"
+                }
                     gx-text-black`}
-                  onClick={() => {
-                    if (navStyle === NAV_STYLE_DRAWER) {
-                      this.props.toggleCollapsedSideNav({
-                        variables: { navCollapsed: !navCollapsed }
-                      });
-                    } else if (navStyle === NAV_STYLE_FIXED) {
-                      this.props.onNavStyleChange({
-                        variables: { navStyle: NAV_STYLE_MINI_SIDEBAR }
-                      });
-                    } else if (navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR) {
-                      this.props.toggleCollapsedSideNav({
-                        variables: { navCollapsed: !navCollapsed }
-                      });
-                    } else {
-                      this.props.onNavStyleChange({
-                        variables: { navStyle: NAV_STYLE_FIXED }
-                      });
-                    }
-                  }}
-                />
-              </div>
-            ) : null}
+                onClick={() => {
+                  if (navStyle === NAV_STYLE_DRAWER) {
+                    this.props.toggleCollapsedSideNav({
+                      variables: { navCollapsed: !navCollapsed }
+                    });
+                  } else if (navStyle === NAV_STYLE_FIXED) {
+                    this.props.onNavStyleChange({
+                      variables: { navStyle: NAV_STYLE_MINI_SIDEBAR }
+                    });
+                  } else if (navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR) {
+                    this.props.toggleCollapsedSideNav({
+                      variables: { navCollapsed: !navCollapsed }
+                    });
+                  } else {
+                    this.props.onNavStyleChange({
+                      variables: { navStyle: NAV_STYLE_FIXED }
+                    });
+                  }
+                }}
+              />
+            </div>
+          ) : null}
 
           <Link to="/" className="gx-site-logo">
             {navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR &&
-              width >= TAB_SIZE ?
-              <img alt="" src={require("walkin-components/src/assets/images/w-logo.png")} /> :
-              themeType === THEME_TYPE_LITE ?
-                <img alt="" src={require("walkin-components/src/assets/images/logo-white.png")} /> :
-                <img style={{ width: 125 }} alt=""
-                  src={require("walkin-components/src/assets/images/walkin_logo_whitebg.jpg")}
-                />
-            }
+            width >= TAB_SIZE ? (
+              <img
+                alt=""
+                src={require("walkin-components/src/assets/images/w-logo.png")}
+              />
+            ) : themeType === THEME_TYPE_LITE ? (
+              <img
+                alt=""
+                src={require("walkin-components/src/assets/images/logo-white.png")}
+              />
+            ) : (
+              <img
+                style={{ width: 125 }}
+                alt=""
+                src={require("walkin-components/src/assets/images/walkin_logo_whitebg.jpg")}
+              />
+            )}
           </Link>
         </div>
       </div>

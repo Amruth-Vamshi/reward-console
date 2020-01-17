@@ -1,22 +1,26 @@
 import "./Create.css";
 import * as React from "react";
-import { Row, Col, Button  , message} from "antd";
+import { Row, Col, Button, message } from "antd";
 import CampaignConfig from "../Edit/Campaign";
 // import Audience from "./Audience";
 import Audience from "shared/src/components/campaignCreation/audience";
-import {
-  CampaignFooter
-} from "shared";
+import { CampaignFooter } from "shared";
 import "shared/src/components/campaignCreation/audience/style.css";
 import Comm from "shared/src/components/campaignCreation/communication";
 // import Communication from "../Edit/Communication";
 import Triggers from "../Edit/Triggers";
-import { campaignOverview as Overview} from "shared";
+import { campaignOverview as Overview } from "shared";
 import FeedbackFormConfig from "../Edit/FeedbackForm";
 import ContainerHeader from "../CampaignHeader";
 import gql from "graphql-tag";
-import { compose, graphql, withApollo, ApolloProviderProps, Query } from "react-apollo";
-import Stepper from "../Stepper"
+import {
+  compose,
+  graphql,
+  withApollo,
+  ApolloProviderProps,
+  Query
+} from "react-apollo";
+import Stepper from "../Stepper";
 import isEmpty from "lodash/isEmpty";
 import {
   CREATE_FEEDBACK_FORM,
@@ -41,50 +45,54 @@ const communicationData = [
   { value: "EMAIL", title: "EMAIL" }
 ];
 
-
-interface CreateCampaignProps extends RouteChildrenProps,ApolloProviderProps<any>{
-  updateCampaign?:any,
-  rule?:any,
-  campaign?:any
-  messageTemplate?:any
-  communication?:any
-  communications?:any
-  allAttributes?:any
-  segmentList?:any
-  allApplications?:any
+interface CreateCampaignProps
+  extends RouteChildrenProps,
+    ApolloProviderProps<any> {
+  updateCampaign?: any;
+  rule?: any;
+  campaign?: any;
+  messageTemplate?: any;
+  communication?: any;
+  communications?: any;
+  allAttributes?: any;
+  segmentList?: any;
+  allApplications?: any;
 }
 
 interface CreateCampaignState {
-  current: number,
-  loading: boolean,
-  priorityChosen: any,
-  priorityNumberError: boolean,
-  showTestAndControl: boolean,
-  testValue: number,
-  controlValue: any,
-  testControlSelected: any,
-  communicationSelected: string,
-  communicationFormValues: any,
-  formValues: any,
-  campaign: any,
-  segmentList: any,
-  attributeData: any,
-  query:any,
-  formName: string,
-  stepperData: any,
-  feedbackForm:any,
-  communications:any,
-  communication:any
+  current: number;
+  loading: boolean;
+  priorityChosen: any;
+  priorityNumberError: boolean;
+  showTestAndControl: boolean;
+  testValue: number;
+  controlValue: any;
+  testControlSelected: any;
+  communicationSelected: string;
+  communicationFormValues: any;
+  formValues: any;
+  campaign: any;
+  segmentList: any;
+  attributeData: any;
+  query: any;
+  formName: string;
+  stepperData: any;
+  feedbackForm: any;
+  communications: any;
+  communication: any;
 }
 
-class CreateCampaign extends React.Component<CreateCampaignProps,CreateCampaignState> {
-  private formRef:any;
-  constructor(props:CreateCampaignProps) {
+class CreateCampaign extends React.Component<
+  CreateCampaignProps,
+  CreateCampaignState
+> {
+  private formRef: any;
+  constructor(props: CreateCampaignProps) {
     super(props);
     this.state = {
-      communication:'',
-      communications:'',
-      feedbackForm:'',
+      communication: "",
+      communications: "",
+      feedbackForm: "",
       current: 0,
       loading: false,
       priorityChosen: 3,
@@ -132,20 +140,19 @@ class CreateCampaign extends React.Component<CreateCampaignProps,CreateCampaignS
     this.setState({ current });
   };
 
-
-  componentDidMount(){
-    const {location}= this.props;
-		if (location && location.state) {
-			if (location.state.campaignSelected) {
-				if (location.state.campaignSelected.name !== '') {
-          const newCampaign={
+  componentDidMount() {
+    const { location } = this.props;
+    if (location && location.state) {
+      if (location.state.campaignSelected) {
+        if (location.state.campaignSelected.name !== "") {
+          const newCampaign = {
             ...location.state.campaignSelected,
-            name:location.state.campaignSelected.name + ' ' + 'copy 1',
-          }
-					this.setState({campaign:newCampaign,formValues:newCampaign})
-				}
-			}
-		}
+            name: location.state.campaignSelected.name + " " + "copy 1"
+          };
+          this.setState({ campaign: newCampaign, formValues: newCampaign });
+        }
+      }
+    }
   }
 
   createFeedbackForm = async campaignId => {
@@ -169,7 +176,7 @@ class CreateCampaign extends React.Component<CreateCampaignProps,CreateCampaignS
   createCampaign = async values => {
     const { client } = this.props;
     const { priorityChosen, controlValue } = this.state;
-    const {org_id}:any=jwt.decode(localStorage.getItem("jwt"));
+    const { org_id }: any = jwt.decode(localStorage.getItem("jwt"));
     const input = {
       ...values,
       priority: parseInt(priorityChosen),
@@ -185,7 +192,7 @@ class CreateCampaign extends React.Component<CreateCampaignProps,CreateCampaignS
           input: input
         }
       });
-      console.log("createCampaign...",createCampaign);
+      console.log("createCampaign...", createCampaign);
       const feedbackForm = await this.createFeedbackForm(
         createCampaign.data.createCampaign.id
       );
@@ -194,15 +201,14 @@ class CreateCampaign extends React.Component<CreateCampaignProps,CreateCampaignS
         campaign: createCampaign.data.createCampaign,
         feedbackForm: feedbackForm.data.createFeedbackForm
       });
-      if(createCampaign.data.createCampaign.id){
+      if (createCampaign.data.createCampaign.id) {
         this.props.history.push({
           pathname: `/refinex/feedback/${createCampaign.data.createCampaign.id}/edit`,
-			state: {
-				current: this.state.current + 1,
-			},
-    }); 
+          state: {
+            current: this.state.current + 1
+          }
+        });
       }
-     
     } catch (err) {
       console.log(err);
     }
@@ -222,37 +228,33 @@ class CreateCampaign extends React.Component<CreateCampaignProps,CreateCampaignS
       const form =
         this.formRef && this.formRef.props && this.formRef.props.form;
       if (form) {
-        
-        let name = form.getFieldValue("name")
-        let startTime = form.getFieldValue("startTime")
-        let endTime =  form.getFieldValue("endTime")
+        let name = form.getFieldValue("name");
+        let startTime = form.getFieldValue("startTime");
+        let endTime = form.getFieldValue("endTime");
 
-        if((name.length === 0 || name === undefined || name === null))
-        {
-            message.warning("Survey name is mandatory")
-            return
+        if (name.length === 0 || name === undefined || name === null) {
+          message.warning("Survey name is mandatory");
+          return;
         }
-        if(startTime === undefined || startTime === null)
-        {
-          message.warning("Start Date is mandatory")
-          return
+        if (startTime === undefined || startTime === null) {
+          message.warning("Start Date is mandatory");
+          return;
         }
 
-        if(endTime === undefined || endTime === null)
-        {
-          message.warning("End Date is mandatory")
-          return
+        if (endTime === undefined || endTime === null) {
+          message.warning("End Date is mandatory");
+          return;
         }
 
         form.validateFields(async (err, values) => {
           if (err) {
             return;
           } else {
-            switch(current){
+            switch (current) {
               case 1:
                 await this.createCampaign(values);
             }
-            
+
             this.setState({
               formValues: values,
               current: current
@@ -268,7 +270,7 @@ class CreateCampaign extends React.Component<CreateCampaignProps,CreateCampaignS
   }
 
   ruleQuery = current => {
-    const {org_id}:any=jwt.decode(localStorage.getItem("jwt"));
+    const { org_id }: any = jwt.decode(localStorage.getItem("jwt"));
     const input = {
       name: Math.random()
         .toString(36)
@@ -310,23 +312,26 @@ class CreateCampaign extends React.Component<CreateCampaignProps,CreateCampaignS
       .catch(err => {
         console.log("Error creating the question", err);
       });
-
   };
 
-  
-
   createCommunicationMutation = (current, values) => {
-    console.log("message format..", this.state.communicationSelected)
-    const {org_id}:any=jwt.decode(localStorage.getItem("jwt"))
+    console.log("message format..", this.state.communicationSelected);
+    const { org_id }: any = jwt.decode(localStorage.getItem("jwt"));
     var input = {
       name: this.props.campaign.campaign.name,
       description: "",
       messageFormat: this.state.communicationSelected,
-      templateBodyText: this.state.communicationSelected == "SMS"?values.smsBody:values.email_body,
-      templateSubjectText: this.state.communicationSelected == "SMS"?values.smsTag:values.email_subject,
+      templateBodyText:
+        this.state.communicationSelected == "SMS"
+          ? values.smsBody
+          : values.email_body,
+      templateSubjectText:
+        this.state.communicationSelected == "SMS"
+          ? values.smsTag
+          : values.email_subject,
       templateStyle: TEMPLATE_STYLE,
       organization_id: org_id,
-      status:"ACTIVE"
+      status: "ACTIVE"
     };
     this.props
       .messageTemplate({
@@ -336,7 +341,7 @@ class CreateCampaign extends React.Component<CreateCampaignProps,CreateCampaignS
       })
       .then(data => {
         console.log("MessageTemplate data..", data);
-        const {org_id}:any=jwt.decode(localStorage.getItem("jwt"))
+        const { org_id }: any = jwt.decode(localStorage.getItem("jwt"));
         let input = {
           entityId: this.props.campaign.campaign.id, // campainId
           entityType: "Campaign",
@@ -353,20 +358,23 @@ class CreateCampaign extends React.Component<CreateCampaignProps,CreateCampaignS
             variables: {
               input: input
             }
-          }).then(data =>{
-            console.log("Communication data..", data)
-            console.log("this.setState...",data.data.createCommunication)
-            this.setState({communications:data.data.createCommunication})
-          }).catch(err =>{
-            console.log("Error creating for communication", err)
           })
-      }).catch(err => {
+          .then(data => {
+            console.log("Communication data..", data);
+            console.log("this.setState...", data.data.createCommunication);
+            this.setState({ communications: data.data.createCommunication });
+          })
+          .catch(err => {
+            console.log("Error creating for communication", err);
+          });
+      })
+      .catch(err => {
         console.log("Error creating for message template", err);
       });
   };
 
   onFormNext = e => {
-    console.log("e",e)
+    console.log("e", e);
     e.preventDefault();
   };
 
@@ -417,7 +425,7 @@ class CreateCampaign extends React.Component<CreateCampaignProps,CreateCampaignS
       feedbackForm,
       formName
     } = this.state;
-    console.log("This.state...", this.state)
+    console.log("This.state...", this.state);
     let attributeData =
       this.props.allAttributes &&
       this.props.allAttributes.ruleAttributes &&
@@ -452,8 +460,8 @@ class CreateCampaign extends React.Component<CreateCampaignProps,CreateCampaignS
             onTestAndControlEdit={this.onTestAndControlEdit}
             showTestAndControl={showTestAndControl}
             popupTitle="Test & Control"
-            handleOk={()=>console.log("okay")}
-            handleCancel={()=>console.log("cancel")}
+            handleOk={() => console.log("okay")}
+            handleCancel={() => console.log("cancel")}
             applyTestControlChange={this.applyTestControlChange}
             popupbodyText="Divide customers selected for a specific audience into local test and local control
             groups"
@@ -469,161 +477,171 @@ class CreateCampaign extends React.Component<CreateCampaignProps,CreateCampaignS
         );
       case 1:
         return (
-          <FeedbackFormConfig 
-          campaign={campaign} 
-          feedbackForm={feedbackForm} />
+          <FeedbackFormConfig campaign={campaign} feedbackForm={feedbackForm} />
         );
       case 2:
         return (
           <CustomScrollbars>
-          <Audience
-            audienceTitle="Audience"
-            segmentSubTitle="Segment"
-            onValuesSelected={()=>console.log("value selected")}
-            segmentSelectionData={this.props.segmentList.segments}
-            uploadCsvText="Upload CSV"
-            // uploadProps={props}
-            segmentFilterText="Filter"
-            segmentFilterSubText="Campaign applies to :"
-            attributeData={attributeData}
-            logQuery={(query)=>console.log(query)}
-          />
+            <Audience
+              audienceTitle="Audience"
+              segmentSubTitle="Segment"
+              onValuesSelected={() => console.log("value selected")}
+              segmentSelectionData={this.props.segmentList.segments}
+              uploadCsvText="Upload CSV"
+              // uploadProps={props}
+              segmentFilterText="Filter"
+              segmentFilterSubText="Campaign applies to :"
+              attributeData={attributeData}
+              logQuery={query => console.log(query)}
+            />
           </CustomScrollbars>
         );
       case 3:
-        return <Triggers 
-        applications={this.props.allApplications.organization.applications}
-        attributeData={attributeData} 
-        logQuery={(query)=>console.log(query)}/>;
+        return (
+          <Triggers
+            applications={this.props.allApplications.organization.applications}
+            attributeData={attributeData}
+            logQuery={query => console.log(query)}
+          />
+        );
       case 4:
-        return <Comm
-        subTitle="Communication"
-        onChange={()=>console.log("communication change")}
-        communicationData={communicationData}
-        defaultValue={this.state.communicationSelected}
-        value={this.state.communicationSelected}
-        commWrappedComponentRef={()=>console.log("reference")}
-        communicationFormValues={this.state.communicationFormValues}
-        emailFormRef={()=>console.log("reference")}
-        emailFormData={this.state.communicationFormValues}
-        // saveFormRef={this.saveComFormRef}
-        onFormNext={this.onFormNext}
-      /> ;
+        return (
+          <Comm
+            subTitle="Communication"
+            onChange={() => console.log("communication change")}
+            communicationData={communicationData}
+            defaultValue={this.state.communicationSelected}
+            value={this.state.communicationSelected}
+            commWrappedComponentRef={() => console.log("reference")}
+            communicationFormValues={this.state.communicationFormValues}
+            emailFormRef={() => console.log("reference")}
+            emailFormData={this.state.communicationFormValues}
+            // saveFormRef={this.saveComFormRef}
+            onFormNext={this.onFormNext}
+          />
+        );
       default:
-        return <Overview campaign={this.state.campaign} communication={this.state.communication}/>;
+        return (
+          <Overview
+            campaign={this.state.campaign}
+            communication={this.state.communication}
+          />
+        );
     }
   };
 
   render() {
     const { current, stepperData, loading } = this.state;
     return (
-        <div>
+      <div>
         <ContainerHeader
-        children={
+          children={
             <React.Fragment>
-                <Col sm={5} md={6} lg={8} xl={8} xxl={13}>
-                    <h3 className="gx-text-grey paddingLeftStyle campaignHeaderTitleStyle">
-                        Create Survey
-                    </h3>
-                </Col>
-                <Col sm={19} md={18} lg={16} xl={16} xxl={11}>
-                    <Stepper
-                    StepperData={stepperData}
-                        current={current}
-                        onChange={this.goToNextPage.bind(this)}
-                    />
-                </Col>
+              <Col sm={5} md={6} lg={8} xl={8} xxl={13}>
+                <h3 className="gx-text-grey paddingLeftStyle campaignHeaderTitleStyle">
+                  Create Survey
+                </h3>
+              </Col>
+              <Col sm={19} md={18} lg={16} xl={16} xxl={11}>
+                <Stepper
+                  StepperData={stepperData}
+                  current={current}
+                  onChange={this.goToNextPage.bind(this)}
+                />
+              </Col>
             </React.Fragment>
-        }
+          }
         />
         <div className="stepperContainer">
-        <div style={{ margin: '20px 20px 20px 30px', height: '68vh' }}>
-         {this.getContainer()}
-        </div>
-         
-        </div>
-       
-        <div className="campFooterRefinex" style={{ position: 'absolute', width: '100%' }}>
-						<div className="gx-card-body" style={{ background: "#FFFFFF" }}>
-							<CampaignFooter
-								loading={this.state.loading}
-								nextButtonText={current > 4 ? 'Launch' : 'Save and Next'}
-								saveDraftText={current === 0 ? "" : 'Save Draft'}
-								saveDraft={()=>console.log("save to draft")}
-								goToPage2={this.goToNextPage.bind(this, current + 1)}
-							/>
-						</div>
-					</div>
-        
+          <div style={{ margin: "20px 20px 20px 30px", height: "68vh" }}>
+            {this.getContainer()}
           </div>
+        </div>
+
+        <div
+          className="campFooterRefinex"
+          style={{ position: "absolute", width: "100%" }}
+        >
+          <div className="gx-card-body" style={{ background: "#FFFFFF" }}>
+            <CampaignFooter
+              loading={this.state.loading}
+              nextButtonText={current > 4 ? "Launch" : "Save and Next"}
+              saveDraftText={current === 0 ? "" : "Save Draft"}
+              saveDraft={() => console.log("save to draft")}
+              goToPage2={this.goToNextPage.bind(this, current + 1)}
+            />
+          </div>
+        </div>
+      </div>
     );
   }
 }
 
 const GET_USER_IDENTITY = gql`
   query auth {
-    auth @client{
+    auth @client {
       userId
       organizationId
     }
   }
 `;
 
-export default
-  compose(
-    graphql(GET_ALL_APPS_OF_ORGANIZATION, {
-      name: "allApplications",
-      options: props =>  {
-        const {org_id}:any=jwt.decode(localStorage.getItem("jwt"));
-        return ({
-          variables: {
-            id: org_id
-          },
-          fetchPolicy: "cache-and-network"
-        })}
-      }
-    ),
-    graphql(allSegments, {
-      name: "segmentList",
-      options: ownProps => {
-        const {org_id}:any=jwt.decode(localStorage.getItem("jwt"));
-        return ({
+export default compose(
+  graphql(GET_ALL_APPS_OF_ORGANIZATION, {
+    name: "allApplications",
+    options: props => {
+      const { org_id }: any = jwt.decode(localStorage.getItem("jwt"));
+      return {
+        variables: {
+          id: org_id
+        },
+        fetchPolicy: "cache-and-network"
+      };
+    }
+  }),
+  graphql(allSegments, {
+    name: "segmentList",
+    options: ownProps => {
+      const { org_id }: any = jwt.decode(localStorage.getItem("jwt"));
+      return {
         variables: {
           org_id: org_id,
           status: "ACTIVE"
         },
         fetchPolicy: "cache-and-network"
-      })}
-    }),
-    graphql(createRule, {
-      name: "rule"
-    }),
-    graphql(UPDATE_CAMPAIGN, {
-      name: "updateCampaign"
-    }),
-    graphql(createCommunication, {
-      name: "communication"
-    }),
-    graphql(createMessageTemplate, {
-      name: "messageTemplate"
-    }),
-    graphql(attributes, {
-      name: "allAttributes",
-      options:props=>{
-        const input= {
-          status: "ACTIVE", 
+      };
+    }
+  }),
+  graphql(createRule, {
+    name: "rule"
+  }),
+  graphql(UPDATE_CAMPAIGN, {
+    name: "updateCampaign"
+  }),
+  graphql(createCommunication, {
+    name: "communication"
+  }),
+  graphql(createMessageTemplate, {
+    name: "messageTemplate"
+  }),
+  graphql(attributes, {
+    name: "allAttributes",
+    options: props => {
+      const input = {
+        status: "ACTIVE",
         organizationId: "577bddb7-17df-4884-b16f-8b5db5b00b95"
+      };
+      const a = {
+        variables: {
+          input: input
         }
-       const a= {
-         variables:{
-          input:input
-        }}
-        return a;
-      }
-    }),
-    graphql(GET_USER_IDENTITY, {
-      name: "auth"
-    }),
-    graphql(ADD_APPLICATION,{name:"addApplication"}),
-    withApollo
+      };
+      return a;
+    }
+  }),
+  graphql(GET_USER_IDENTITY, {
+    name: "auth"
+  }),
+  graphql(ADD_APPLICATION, { name: "addApplication" }),
+  withApollo
 )(CreateCampaign);

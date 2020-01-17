@@ -1,16 +1,17 @@
-import * as  React from "react";
+import * as React from "react";
 import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
 
 import data from "./data";
 import { data03 } from "./data";
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
 class PieChartWithPaddingAngle extends React.Component {
   render() {
     return (
       <ResponsiveContainer width="100%" height={300}>
-        <PieChart >
-          <Pie dataKey="value"
+        <PieChart>
+          <Pie
+            dataKey="value"
             data={data03}
             cx="70%"
             cy="50%"
@@ -21,9 +22,9 @@ class PieChartWithPaddingAngle extends React.Component {
             fill="#003366"
             paddingAngle={0}
           >
-            {
-              data.map((entry, index) => <Cell key={index} fill={COLORS[index % COLORS.length]} />)
-            }
+            {data.map((entry, index) => (
+              <Cell key={index} fill={COLORS[index % COLORS.length]} />
+            ))}
           </Pie>
         </PieChart>
       </ResponsiveContainer>

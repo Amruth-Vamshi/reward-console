@@ -6,10 +6,10 @@ import React, { Fragment } from "react";
 const { Option } = Select;
 
 function logProps(InputComponent: any) {
-  InputComponent.prototype.UNSAFE_componentWillReceiveProps = function (
+  InputComponent.prototype.UNSAFE_componentWillReceiveProps = function(
     nextProps: any
-  ) { };
-  InputComponent.prototype.componentDidMount = function () { };
+  ) {};
+  InputComponent.prototype.componentDidMount = function() {};
   return InputComponent;
 }
 
@@ -29,14 +29,28 @@ interface IState {
   items: any;
 }
 
-class AddAndDeleteComponentsDynamically extends React.Component<IProps, IState> {
+class AddAndDeleteComponentsDynamically extends React.Component<
+  IProps,
+  IState
+> {
   static propTypes: any;
   static defaultProps: any;
   constructor(props: IProps) {
     super(props);
-    const { data_1, data_2, defaultSelectOneValue, defaultSelectTwoValue } = this.props;
-    const defaultValueOne = this.getDefaultSelectedValue(data_1, defaultSelectOneValue);
-    const defaultValueTwo = this.getDefaultSelectedValue(data_2, defaultSelectTwoValue);
+    const {
+      data_1,
+      data_2,
+      defaultSelectOneValue,
+      defaultSelectTwoValue
+    } = this.props;
+    const defaultValueOne = this.getDefaultSelectedValue(
+      data_1,
+      defaultSelectOneValue
+    );
+    const defaultValueTwo = this.getDefaultSelectedValue(
+      data_2,
+      defaultSelectTwoValue
+    );
 
     this.state = {
       selectTwoData: [],
@@ -52,19 +66,28 @@ class AddAndDeleteComponentsDynamically extends React.Component<IProps, IState> 
   }
 
   addClick() {
-    const { data_1, data_2, defaultSelectTwoValue, defaultSelectOneValue } = this.props;
+    const {
+      data_1,
+      data_2,
+      defaultSelectTwoValue,
+      defaultSelectOneValue
+    } = this.props;
     // const defaultValueOne = this.getDefaultSelectedValue(data_1, defaultSelectOneValue);
     // const defaultValueTwo = this.getDefaultSelectedValue(data_2, defaultSelectTwoValue);
 
     let { items } = this.state;
-    (!items.length || items[items.length - 1].valueOne != "") && items.length != data_1.length &&
+    (!items.length || items[items.length - 1].valueOne != "") &&
+      items.length != data_1.length &&
       this.setState({
-        items: [...this.state.items, {
-          valueOne: "",
-          valueTwo: [],
-          onOneChange: this.handleSelectOneChange.bind(this, items.length),
-          onTwoChange: this.handleSelectTwoChange.bind(this, items.length)
-        }]
+        items: [
+          ...this.state.items,
+          {
+            valueOne: "",
+            valueTwo: [],
+            onOneChange: this.handleSelectOneChange.bind(this, items.length),
+            onTwoChange: this.handleSelectTwoChange.bind(this, items.length)
+          }
+        ]
       });
 
     // this.setState(prevState => {
@@ -95,13 +118,12 @@ class AddAndDeleteComponentsDynamically extends React.Component<IProps, IState> 
   }
 
   handleSelectOneChange(index, value) {
-
     console.log(index, value);
 
-    let { items }: any = this.state
+    let { items }: any = this.state;
     if (!items.find(i => i.valueOne == value)) {
-      items[index].valueOne = value
-      items[index].valueTwo = []
+      items[index].valueOne = value;
+      items[index].valueTwo = [];
       this.setState({ items });
       this.props.onSelectOneValuesSelected(value, this.state.items);
     }
@@ -157,24 +179,78 @@ class AddAndDeleteComponentsDynamically extends React.Component<IProps, IState> 
           {map(items, (item: any, index: number) => {
             const { valueOne, valueTwo, onOneChange, onTwoChange } = item;
             return (
-              <div key={`select-${index}`} className="selectSegmentBoxContainer">
-                <Select value={valueOne || ""} onChange={onOneChange} getPopupContainer={(triggerNode: any) => triggerNode.parentNode}
-                  style={{ display: "inline-block", width: "calc(35% - 12px)", marginBottom: "0px", paddingRight: 20 }}>
-                  {data_1 && data_1.map((val: any, i: any) => <Option key={i} value={val.value}>  {val.title} </Option>)}
+              <div
+                key={`select-${index}`}
+                className="selectSegmentBoxContainer"
+              >
+                <Select
+                  value={valueOne || ""}
+                  onChange={onOneChange}
+                  getPopupContainer={(triggerNode: any) =>
+                    triggerNode.parentNode
+                  }
+                  style={{
+                    display: "inline-block",
+                    width: "calc(35% - 12px)",
+                    marginBottom: "0px",
+                    paddingRight: 20
+                  }}
+                >
+                  {data_1 &&
+                    data_1.map((val: any, i: any) => (
+                      <Option key={i} value={val.value}>
+                        {" "}
+                        {val.title}{" "}
+                      </Option>
+                    ))}
                 </Select>
 
-                <Select showSearch mode="multiple" value={valueTwo || ""} onChange={onTwoChange}
-                  getPopupContainer={(triggerNode: any) => triggerNode.parentNode} optionFilterProp="children"
-                  filterOption={(input, option: any) => option.props.children.toString().toLowerCase().indexOf(input.toLowerCase()) >= 0}
-                  style={{ display: "inline-block", width: "calc(65% - 12px)", marginBottom: "0px", paddingLeft: 10 }}>
-                  {data_2 && data_2.map((val: any, i: any) => <Option key={i} value={val.value}>  {val.title} </Option>)}
+                <Select
+                  showSearch
+                  mode="multiple"
+                  value={valueTwo || ""}
+                  onChange={onTwoChange}
+                  getPopupContainer={(triggerNode: any) =>
+                    triggerNode.parentNode
+                  }
+                  optionFilterProp="children"
+                  filterOption={(input, option: any) =>
+                    option.props.children
+                      .toString()
+                      .toLowerCase()
+                      .indexOf(input.toLowerCase()) >= 0
+                  }
+                  style={{
+                    display: "inline-block",
+                    width: "calc(65% - 12px)",
+                    marginBottom: "0px",
+                    paddingLeft: 10
+                  }}
+                >
+                  {data_2 &&
+                    data_2.map((val: any, i: any) => (
+                      <Option key={i} value={val.value}>
+                        {" "}
+                        {val.title}{" "}
+                      </Option>
+                    ))}
                 </Select>
 
-                <Icon type="close" onClick={this.removeClick.bind(this, index)} />
+                <Icon
+                  type="close"
+                  onClick={this.removeClick.bind(this, index)}
+                />
               </div>
-            )
+            );
           })}
-          <Button style={{ margin: "0px", paddingLeft: "0px" }} type="link" onClick={this.addClick.bind(this)}> Add </Button>
+          <Button
+            style={{ margin: "0px", paddingLeft: "0px" }}
+            type="link"
+            onClick={this.addClick.bind(this)}
+          >
+            {" "}
+            Add{" "}
+          </Button>
         </div>
       </Fragment>
     );

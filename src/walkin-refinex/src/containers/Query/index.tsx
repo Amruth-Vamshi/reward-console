@@ -1084,20 +1084,20 @@ export const CREATE_EVENT_TYPE = gql`
 `;
 
 export const AUDIENCE_COUNT = gql`
-	query audienceCount($segments:[ID], $organizationId:ID!){
-		audienceCount(segments:$segments, organizationId:$organizationId){
-			count
-		}
-	}
-`
+  query audienceCount($segments: [ID], $organizationId: ID!) {
+    audienceCount(segments: $segments, organizationId: $organizationId) {
+      count
+    }
+  }
+`;
 
 export const TOTAL_AUDIENCE_COUNT = gql`
-	query totalAudienceCountForCampaign($campaignId:ID!){
-		totalAudienceCountForCampaign(campaignId:$campaignId){
-    		count
-  		}
-	}
-`
+  query totalAudienceCountForCampaign($campaignId: ID!) {
+    totalAudienceCountForCampaign(campaignId: $campaignId) {
+      count
+    }
+  }
+`;
 
 export const REFINEX_SEND_TEST_FEEDBACK = gql`
   mutation refineXSendFeedbackByInput(

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
-import { IntlMessages } from "walkin-components";;
+import { IntlMessages } from "walkin-components";
 
 const Error500 = () => (
   <div className="gx-page-error-container">

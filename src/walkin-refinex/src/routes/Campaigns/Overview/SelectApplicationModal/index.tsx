@@ -1,7 +1,12 @@
 import "./SelectApplicationModal.css";
 import * as React from "react";
 import { Modal, Select, Table, Button, Row, Col, TreeSelect } from "antd";
-import { compose, graphql, withApollo, ApolloProviderProps } from "react-apollo";
+import {
+  compose,
+  graphql,
+  withApollo,
+  ApolloProviderProps
+} from "react-apollo";
 import { Link } from "react-router-dom";
 import {
   GET_CHILD_ORGANIZATIONS,
@@ -47,29 +52,31 @@ const ApplicationList = ({ applications, onSelect }: any) => {
 };
 
 interface SelectApplicationModalProps extends ApolloProviderProps<any> {
-  onConfirm?: (a: any) => void
-  visible?: any,
-  onCancel?: any,
-  getApplications?: any,
-  organizationHierarchy?: any
+  onConfirm?: (a: any) => void;
+  visible?: any;
+  onCancel?: any;
+  getApplications?: any;
+  organizationHierarchy?: any;
 }
 
 interface SelectApplicationModalState {
-  selectedQuestion?: any,
-  selectedOrganization?: any,
-  applications?: Array<any>
+  selectedQuestion?: any;
+  selectedOrganization?: any;
+  applications?: Array<any>;
 }
 
-class SelectApplicationModal extends React.Component<SelectApplicationModalProps, SelectApplicationModalState> {
+class SelectApplicationModal extends React.Component<
+  SelectApplicationModalProps,
+  SelectApplicationModalState
+> {
   constructor(props: SelectApplicationModalProps) {
-    super(props)
+    super(props);
     this.state = {
       selectedQuestion: null,
       selectedOrganization: null,
       applications: []
     };
   }
-
 
   onSelect = (selectedQuestion: any) => {
     this.setState({

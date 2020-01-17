@@ -4,23 +4,22 @@ import FormHeader from "../FormHeader";
 import QuestionForm from "../QuestionForm";
 import ChoiceForm from "../ChoiceForm";
 
-
 interface ShowQuestionProps {
-  onQuestionTypeEdit?: any
-  showButton?: any
-  questionnaire?: any
-  onQuestionEdited?: any
-  onQuestionSubmitted?: any
-  onChoiceEdited?: any
-  questionToEdit?: any
-  addChoice?: any
-  removeChoice?: any
-  addNewQuestion?: any
-  choiceData?: any
-  submitChoice?: any
-  isChoiceLoading?: any
-  isQuestionLoading?: any
-  onLinkChoiceToQuestion?: any
+  onQuestionTypeEdit?: any;
+  showButton?: any;
+  questionnaire?: any;
+  onQuestionEdited?: any;
+  onQuestionSubmitted?: any;
+  onChoiceEdited?: any;
+  questionToEdit?: any;
+  addChoice?: any;
+  removeChoice?: any;
+  addNewQuestion?: any;
+  choiceData?: any;
+  submitChoice?: any;
+  isChoiceLoading?: any;
+  isQuestionLoading?: any;
+  onLinkChoiceToQuestion?: any;
 }
 
 const ShowQuestion: React.FC<ShowQuestionProps> = ({
@@ -39,7 +38,7 @@ const ShowQuestion: React.FC<ShowQuestionProps> = ({
   showButton,
   onQuestionTypeEdit
 }) => {
-  console.log(questionnaire)
+  console.log(questionnaire);
   return (
     <React.Fragment>
       <Row>
@@ -83,6 +82,6 @@ const ShowQuestion: React.FC<ShowQuestionProps> = ({
       </Row>
     </React.Fragment>
   );
-}
+};
 
 export default ShowQuestion;

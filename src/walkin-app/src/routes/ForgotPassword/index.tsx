@@ -11,7 +11,7 @@ interface IProps extends FormComponentProps {
   history?: History;
 }
 
-interface IState { }
+interface IState {}
 
 class ForgotPassword extends React.Component<IProps, IState> {
   UNSAFE_componentWillMount() {

@@ -2,15 +2,13 @@ import * as React from "react";
 import Nprogress from "nprogress";
 import ReactPlaceholder from "react-placeholder";
 import "nprogress/nprogress.css";
-import { } from 'antd'
+import {} from "antd";
 import "react-placeholder/lib/reactPlaceholder.css";
 import { CircularProgress } from "walkin-components";
 
-interface iProps {
-
-}
+interface iProps {}
 interface iState {
-  component?: any
+  component?: any;
 }
 export default function asyncComponent(importComponent) {
   class AsyncFunc extends React.Component<iProps, iState> {

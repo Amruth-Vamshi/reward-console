@@ -2,11 +2,7 @@ import * as React from "react";
 import { Menu } from "antd";
 import { Link } from "react-router-dom";
 
-import {
-  CustomScrollbars,
-  Auxiliary,
-  IntlMessages
-} from "walkin-components";
+import { CustomScrollbars, Auxiliary, IntlMessages } from "walkin-components";
 import SidebarLogo from "./SidebarLogo";
 
 import UserProfile from "./UserProfile";

@@ -35,7 +35,7 @@ class EditableCell extends React.Component<editableCellProps> {
       ...restProps
     } = this.props;
     console.log(this.props);
-    
+
     return (
       <td {...restProps}>
         {editing ? (
@@ -69,7 +69,7 @@ interface editableTableProps extends FormComponentProps {
   loading?: boolean;
   tableHeaders?: any;
   tableData?: any;
-  onChangeData?:any;
+  onChangeData?: any;
 }
 interface editableTableState {
   data: any;
@@ -93,7 +93,8 @@ class EditableTable extends React.Component<
     ) {
       return { data: nextProps.tableData, loading: nextProps.loading };
     } else {
-      return null}
+      return null;
+    }
   }
 
   isEditing = record => record.key === this.state.editingKey;
@@ -115,10 +116,13 @@ class EditableTable extends React.Component<
           ...item,
           ...row
         });
-        this.props.onChangeData({
-          ...item,
-          ...row
-        },index)
+        this.props.onChangeData(
+          {
+            ...item,
+            ...row
+          },
+          index
+        );
         this.setState({ data: newData, editingKey: "" });
       } else {
         newData.push(row);
@@ -161,7 +165,7 @@ class EditableTable extends React.Component<
             </span>
           ) : (
             <a
-              className={editingKey !== ""?"avoid-click":null}
+              className={editingKey !== "" ? "avoid-click" : null}
               onClick={() => this.edit(record.key)}
             >
               Edit
@@ -214,6 +218,4 @@ class EditableTable extends React.Component<
 
 const EditableFormTable = Form.create<editableTableProps>()(EditableTable);
 
-
 export default EditableFormTable;
-

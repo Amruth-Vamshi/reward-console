@@ -31,7 +31,7 @@ import CampaignOverviewGrid from "./CampaignOverviewGrid";
 import { RouteChildrenProps } from "react-router";
 
 interface CampaignOverviewProps extends RouteChildrenProps {
-  auth?: string
+  auth?: string;
 }
 
 class CampaignOverview extends React.Component<CampaignOverviewProps, {}> {
@@ -53,7 +53,7 @@ class CampaignOverview extends React.Component<CampaignOverviewProps, {}> {
 
 const GET_USER_IDENTITY = gql`
   query auth {
-    auth @client{
+    auth @client {
       userId
       organizationId
     }

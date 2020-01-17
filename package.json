@@ -7,7 +7,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "prettify": "yarn prettier --write '**/*.ts'"
+    "prettify": "yarn prettier --write '**/*.tsx'"
   },
   "eslintConfig": {
     "extends": "react-app"

@@ -62,8 +62,7 @@ const PlacesWithStandaloneSearchBox = compose(
         ({ place_id, formatted_address, geometry: { location } }) => (
           <li key={place_id}>
             {formatted_address}
-            {" at "}
-            ({location.lat()}, {location.lng()})
+            {" at "}({location.lat()}, {location.lng()})
           </li>
         )
       )}

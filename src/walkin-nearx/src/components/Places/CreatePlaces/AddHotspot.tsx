@@ -12,21 +12,21 @@ import CustomScrollbars from "../../../util/CustomScrollbars";
 const TabPane = Tabs.TabPane;
 
 interface iProps {
-  submitHotspots?: (val) => any
+  submitHotspots?: (val) => any;
 }
 
 interface iState {
-  places?: Array<any>,
-  places1?: Array<any>,
-  places2: Array<any>,
-  center?: { lat?: any, lng?: any },
-  errors?: any,
-  markerPlace?: number,
-  search?: string,
-  getLoc?: Boolean,
-  totalPlaces?: number,
-  tab?: number,
-  visible?: boolean
+  places?: Array<any>;
+  places1?: Array<any>;
+  places2: Array<any>;
+  center?: { lat?: any; lng?: any };
+  errors?: any;
+  markerPlace?: number;
+  search?: string;
+  getLoc?: Boolean;
+  totalPlaces?: number;
+  tab?: number;
+  visible?: boolean;
 }
 
 class AddHotspot extends React.Component<iProps, Partial<iState>> {
@@ -89,8 +89,7 @@ class AddHotspot extends React.Component<iProps, Partial<iState>> {
     //   })
     //   .catch(err => console.log("Failed to get Nearby Places Details" + err));
 
-    this.getPlacesData(0, 5, '')
-
+    this.getPlacesData(0, 5, "");
   }
 
   getPlacesData = (offset, limit, search) => {
@@ -99,9 +98,9 @@ class AddHotspot extends React.Component<iProps, Partial<iState>> {
       .query({
         query: SEARCH_PLACES,
         variables: { limit: limit, offset: offset, search: search }
-      }).then(res => {
+      })
+      .then(res => {
         var places = [...this.state.places];
-
 
         res.data.Places.places.map(p => {
           if (!places.find(e => p.id === e.id))
@@ -125,7 +124,6 @@ class AddHotspot extends React.Component<iProps, Partial<iState>> {
   pagination = (e, n) => this.getPlacesData((e - 1) * n, n, this.state.search);
 
   onPlaceSelect = (id, e) => {
-
     let { places, places1 } = this.state;
     if (e.target.checked) {
       let place = places1.splice(id, 1);
@@ -202,10 +200,10 @@ class AddHotspot extends React.Component<iProps, Partial<iState>> {
     this.state.markerPlace
       ? this.setState({ places2: places, getLoc: false })
       : this.setState({
-        places2: places,
-        center: places[0].center,
-        getLoc: false
-      });
+          places2: places,
+          center: places[0].center,
+          getLoc: false
+        });
   };
 
   addHotspot = () => {
@@ -284,7 +282,6 @@ class AddHotspot extends React.Component<iProps, Partial<iState>> {
       <div>
         <Row>
           <Col span={12}>
-
             <Tabs onChange={this.onTabChange} defaultActiveKey="1">
               <TabPane tab="Connect To Existing Hotspot" key="1">
                 <SelectHotspots

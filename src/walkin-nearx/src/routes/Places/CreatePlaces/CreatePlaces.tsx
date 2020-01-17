@@ -3,24 +3,24 @@ import { Upload, Modal, Tabs, Icon, Button } from "antd";
 import { Widget } from "walkin-components";
 import GooglePlaces from "../../../components/Places/CreatePlaces/GooglePlaces";
 import MalnualCreate from "../../../components/Places/CreatePlaces/CreatePlaceManually";
-import { History } from "history"
-import { FileUploader } from 'shared'
+import { History } from "history";
+import { FileUploader } from "shared";
 
 const TabPane = Tabs.TabPane;
 
 interface iProps {
-  tab?: string,
-  history: History
+  tab?: string;
+  history: History;
 }
 
 interface iState {
-  tab?: string,
-  visible?: boolean,
-  visible1?: boolean,
-  fileList?: Array<any>,
-  googleAPIkey?: string,
-  loading?: boolean,
-  errors?: any
+  tab?: string;
+  visible?: boolean;
+  visible1?: boolean;
+  fileList?: Array<any>;
+  googleAPIkey?: string;
+  loading?: boolean;
+  errors?: any;
 }
 
 export default class CreatePlaces extends React.Component<iProps, iState> {
@@ -111,11 +111,11 @@ export default class CreatePlaces extends React.Component<iProps, iState> {
         <Widget
           title={<p style={{ fontSize: 23 }}>Create Places</p>}
           styleName="gx-card-tabs headerCard"
-        // extra={
-        //   <Button onClick={this.showModal} type="primary">
-        //     Upload CSV
-        // </Button>
-        // }
+          // extra={
+          //   <Button onClick={this.showModal} type="primary">
+          //     Upload CSV
+          // </Button>
+          // }
         >
           <Tabs
             defaultActiveKey={this.props.tab}
@@ -131,8 +131,13 @@ export default class CreatePlaces extends React.Component<iProps, iState> {
           </Tabs>
         </Widget>
 
-        <FileUploader visible={this.state.visible} handleOk={this.handleOk} handleCancel={this.handleCancel}
-          fileList={this.state.fileList} uploadProps={props} />
+        <FileUploader
+          visible={this.state.visible}
+          handleOk={this.handleOk}
+          handleCancel={this.handleCancel}
+          fileList={this.state.fileList}
+          uploadProps={props}
+        />
 
         {/* <Modal
           width="500px"

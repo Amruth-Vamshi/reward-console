@@ -2,11 +2,11 @@ import * as React from "react";
 import { Row, Col, Tag, Button } from "antd";
 import { Widget } from "walkin-components";
 
-import { History } from 'history'
+import { History } from "history";
 
 interface iProps {
-  history: History,
-  campaign: any
+  history: History;
+  campaign: any;
 }
 
 const ManageCampaignCard = ({ campaign, history }: iProps) => {
@@ -39,8 +39,8 @@ const ManageCampaignCard = ({ campaign, history }: iProps) => {
         justify="center"
       >
         <Col>
-          {
-            campaign.status == "ACTIVE" ? (<Button
+          {campaign.status == "ACTIVE" ? (
+            <Button
               type={"primary"}
               onClick={() => {
                 console.log("clicked");
@@ -48,17 +48,18 @@ const ManageCampaignCard = ({ campaign, history }: iProps) => {
               }}
             >
               Edit
-          </Button>) : <Button
-                type={"primary"}
-                onClick={() => {
-                  console.log("clicked");
-                  history.push("/refinex/campaign/" + campaign.id + "/edit");
-                }}
-              >
-                Continue Editing
-          </Button>
-          }
-
+            </Button>
+          ) : (
+            <Button
+              type={"primary"}
+              onClick={() => {
+                console.log("clicked");
+                history.push("/refinex/campaign/" + campaign.id + "/edit");
+              }}
+            >
+              Continue Editing
+            </Button>
+          )}
         </Col>
       </Row>
     </Widget>

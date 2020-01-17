@@ -6,7 +6,7 @@ import gql from "graphql-tag";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import { Query, compose, ApolloProviderProps, QueryResult } from "react-apollo";
 import { CircularProgress } from "walkin-components";
-import { CustomScrollbars } from "walkin-components"
+import { CustomScrollbars } from "walkin-components";
 import {
   GET_QUESTIONNAIRE,
   GET_FEEDBACK_FORM
@@ -15,22 +15,23 @@ import { ApolloQueryResult, ApolloCurrentQueryResult } from "apollo-client";
 const { TabPane } = Tabs;
 
 interface RouteParams {
-  id?: string
+  id?: string;
 }
 
-interface apolloProps extends ApolloProviderProps<any> {
-
-}
-interface FeedbackFormConfigProps extends RouteComponentProps<RouteParams>, Partial<apolloProps> {
-  campaign?: any
-  feedbackForm?: any
-}
-
-interface FeedbackFormConfigState {
-
+interface apolloProps extends ApolloProviderProps<any> {}
+interface FeedbackFormConfigProps
+  extends RouteComponentProps<RouteParams>,
+    Partial<apolloProps> {
+  campaign?: any;
+  feedbackForm?: any;
 }
 
-class FeedbackFormConfig extends React.Component<FeedbackFormConfigProps, FeedbackFormConfigState> {
+interface FeedbackFormConfigState {}
+
+class FeedbackFormConfig extends React.Component<
+  FeedbackFormConfigProps,
+  FeedbackFormConfigState
+> {
   constructor(props: FeedbackFormConfigProps) {
     super(props);
   }
@@ -51,17 +52,13 @@ class FeedbackFormConfig extends React.Component<FeedbackFormConfigProps, Feedba
           error,
           refetch: refetchFeedbackForm
         }: QueryResult<any>) => {
-
           if (loading) {
             return <CircularProgress />;
           } else if (campaignData && campaignData.campaign) {
-
-
             const feedbackForm =
               campaignData.campaign && campaignData.campaign.feedbackForm
                 ? campaignData.campaign.feedbackForm
                 : {};
-
 
             return (
               <Query
@@ -94,7 +91,7 @@ class FeedbackFormConfig extends React.Component<FeedbackFormConfigProps, Feedba
                           refetchFeedbackForm={refetchFeedbackForm}
                           questionnaire={
                             questionnaireData &&
-                              questionnaireData.questionHierarchy
+                            questionnaireData.questionHierarchy
                               ? questionnaireData.questionHierarchy
                               : []
                           }
@@ -102,20 +99,17 @@ class FeedbackFormConfig extends React.Component<FeedbackFormConfigProps, Feedba
                         />
                       </TabPane>
                       <TabPane tab="Design" key="2">
-
                         <Design
                           feedbackForm={campaignData.campaign.feedbackForm}
                           refetchFeedbackForm={refetchFeedbackForm}
                           questionnaire={
                             questionnaireData &&
-                              questionnaireData.questionHierarchy
+                            questionnaireData.questionHierarchy
                               ? questionnaireData.questionHierarchy
                               : []
                           }
                           refetchQuestionnaire={refetchQuestionnaire}
                         />
-
-
                       </TabPane>
                     </Tabs>
                   );

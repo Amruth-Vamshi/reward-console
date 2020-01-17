@@ -8,32 +8,32 @@ import { GET_CAMPAIGNS } from "../../../../containers/Query";
 import { RouteChildrenProps } from "react-router";
 
 interface CampaignOverviewGridProps extends RouteChildrenProps {
-  campaigns?: any,
-  auth?: any
+  campaigns?: any;
+  auth?: any;
 }
-class CampaignOverviewGrid extends React.Component<Partial<CampaignOverviewGridProps>, {}> {
+class CampaignOverviewGrid extends React.Component<
+  Partial<CampaignOverviewGridProps>,
+  {}
+> {
   constructor(props: CampaignOverviewGridProps) {
-    super(props)
+    super(props);
   }
   campaignList = (campaigns: any) => {
     const { history } = this.props;
 
     return campaigns ? (
       campaigns.map((campaign: any) => {
-
         return (
           <Col span={6} key={campaign.id}>
             <ManageCampaignCard campaign={campaign} history={history} />
           </Col>
-        )
-
-
+        );
       })
     ) : (
-        <Col span={24} offset={10}>
-          <h3>No Campaigns created</h3>
-        </Col>
-      );
+      <Col span={24} offset={10}>
+        <h3>No Campaigns created</h3>
+      </Col>
+    );
   };
 
   render() {
@@ -54,7 +54,7 @@ class CampaignOverviewGrid extends React.Component<Partial<CampaignOverviewGridP
           fetchPolicy="cache-and-network"
         >
           {({ loading, error, data }: any) => {
-            console.log(data)
+            console.log(data);
             if (loading) {
               return <span>Loading</span>;
             } else if (error) {
@@ -75,8 +75,6 @@ class CampaignOverviewGrid extends React.Component<Partial<CampaignOverviewGridP
             }
           }}
         </Query>
-
-
       </div>
     );
   }

@@ -286,9 +286,9 @@ export default class EntityVariablesForm extends React.Component<
             disabled={
               !Boolean(
                 entityExtendField.slug.trim() &&
-                entityExtendField.label.trim() &&
-                entityExtendField.description.trim() &&
-                entityExtendField.defaultValue.trim()
+                  entityExtendField.label.trim() &&
+                  entityExtendField.description.trim() &&
+                  entityExtendField.defaultValue.trim()
               )
             }
             className="button"

@@ -1,34 +1,34 @@
 import * as React from "react";
 import { Col, Row, Dropdown, Menu, Card, Button, Divider } from "antd";
 // import CreatePlaces from '../../routes/Places/CreatePlaces/CreatePlaces';
-import { History } from "history"
+import { History } from "history";
 
-const options = [
-  "Edit",
-  'Delete'
-];
+const options = ["Edit", "Delete"];
 
 interface iProps {
-  history?: History,
-  data?: any,
-  disablePlace?: (val) => any,
-  key?: any
+  history?: History;
+  data?: any;
+  disablePlace?: (val) => any;
+  key?: any;
 }
 export default class placeCard extends React.Component<iProps, {}> {
-
-
-  menus = () => (<Menu onClick={e => {
-    if (e.key === 'Edit') {
-      sessionStorage.setItem("placeId", JSON.stringify(this.props.data.id));
-      this.props.history.push('/nearx/places/createplace/manually')
-    } else if (e.key === 'Delete') {
-      this.props.disablePlace(this.props.data.id)
-    }
-  }}> {options.map(option =>
-    <Menu.Item key={option}>  {option}  </Menu.Item>)}
-  </Menu>);
-
-
+  menus = () => (
+    <Menu
+      onClick={e => {
+        if (e.key === "Edit") {
+          sessionStorage.setItem("placeId", JSON.stringify(this.props.data.id));
+          this.props.history.push("/nearx/places/createplace/manually");
+        } else if (e.key === "Delete") {
+          this.props.disablePlace(this.props.data.id);
+        }
+      }}
+    >
+      {" "}
+      {options.map(option => (
+        <Menu.Item key={option}> {option} </Menu.Item>
+      ))}
+    </Menu>
+  );
 
   render() {
     const { data } = this.props;
@@ -36,22 +36,56 @@ export default class placeCard extends React.Component<iProps, {}> {
       <Card className="placesListCard">
         <Row>
           <Col span={5}>
-            <div className="divCenterVertical"><div>
-              <Row><span style={{ color: 'black', marginBottom: 5 }}>{data.name}</span></Row>
-              <Row><span style={{ color: '#999999' }} >{data.code}</span></Row>
-            </div></div>
+            <div className="divCenterVertical">
+              <div>
+                <Row>
+                  <span style={{ color: "black", marginBottom: 5 }}>
+                    {data.name}
+                  </span>
+                </Row>
+                <Row>
+                  <span style={{ color: "#999999" }}>{data.code}</span>
+                </Row>
+              </div>
+            </div>
           </Col>
-          <Col span={6}> <div className="divCenterVertical"><span>{data.address}</span></div></Col>
+          <Col span={6}>
+            {" "}
+            <div className="divCenterVertical">
+              <span>{data.address}</span>
+            </div>
+          </Col>
           <Col span={5}>
-            <div style={{}} className="divCenterVertical">  <span>Radius: &nbsp;
-                {data.radius ? <span style={{ wordBreak: 'break-word' }}>
-                {data.radius[0] ? <span>{data.radius[0]}m</span> : ''}
-                {data.radius[1] ? <span>&nbsp;|&nbsp;{data.radius[1]}m</span> : ''}
-                {data.radius[2] ? <span>&nbsp;|&nbsp;{data.radius[2]}m</span> : ''} </span> : ''}
-            </span></div>
+            <div style={{}} className="divCenterVertical">
+              {" "}
+              <span>
+                Radius: &nbsp;
+                {data.radius ? (
+                  <span style={{ wordBreak: "break-word" }}>
+                    {data.radius[0] ? <span>{data.radius[0]}m</span> : ""}
+                    {data.radius[1] ? (
+                      <span>&nbsp;|&nbsp;{data.radius[1]}m</span>
+                    ) : (
+                      ""
+                    )}
+                    {data.radius[2] ? (
+                      <span>&nbsp;|&nbsp;{data.radius[2]}m</span>
+                    ) : (
+                      ""
+                    )}{" "}
+                  </span>
+                ) : (
+                  ""
+                )}
+              </span>
+            </div>
           </Col>
           <Col span={2}>
-            <div className='divCenterVertical'><span className="hotspot">{data.hotspots < 10 ? `0${data.hotspots}` : data.hotspots}</span></div>
+            <div className="divCenterVertical">
+              <span className="hotspot">
+                {data.hotspots < 10 ? `0${data.hotspots}` : data.hotspots}
+              </span>
+            </div>
           </Col>
           <Col className="placeCardLocation" span={4}>
             <Row>

@@ -2,8 +2,8 @@ import * as React from "react";
 import ChoiceInput from "./ChoiceInput";
 import { ErrorBoundary, CardBox } from "walkin-components";
 import { Row, Col, Button, Icon, Spin, Modal, Slider, InputNumber } from "antd";
-import Includes from "lodash/includes"
-import "./index.css"
+import Includes from "lodash/includes";
+import "./index.css";
 const ChoiceMap = {
   SINGLE_ANSWER: true,
   MULTIPLE_ANSWER: true,
@@ -15,67 +15,76 @@ const ChoiceMap = {
 };
 
 interface ChoiceFormProps {
-  onLinkChoiceToQuestion?: any
-  questionnaire?: any
-  questionToEdit?: any
-  addChoice?: any
-  removeChoice?: any
-  addNewQuestion?: any
-  choiceData?: any
-  submitChoice?: any
-  isChoiceLoading?: any
-  onChoiceEdited?: any
+  onLinkChoiceToQuestion?: any;
+  questionnaire?: any;
+  questionToEdit?: any;
+  addChoice?: any;
+  removeChoice?: any;
+  addNewQuestion?: any;
+  choiceData?: any;
+  submitChoice?: any;
+  isChoiceLoading?: any;
+  onChoiceEdited?: any;
 }
 
 interface ChoiceFormState {
-  visible: boolean,
-  inputValue: string
+  visible: boolean;
+  inputValue: string;
 }
 
-export default class ChoiceForm extends React.Component<ChoiceFormProps, ChoiceFormState> {
+export default class ChoiceForm extends React.Component<
+  ChoiceFormProps,
+  ChoiceFormState
+> {
   constructor(props: ChoiceFormProps) {
-    super(props)
+    super(props);
     this.state = {
       visible: false,
       inputValue: ""
-    }
+    };
   }
 
   handleClick = e => {
     e.preventDefault();
-    if (Includes(["RATING_SCALE", "OPINION_SCALE", "RANKING"], this.props.questionToEdit.type)) {
-      this.setState({ visible: true })
+    if (
+      Includes(
+        ["RATING_SCALE", "OPINION_SCALE", "RANKING"],
+        this.props.questionToEdit.type
+      )
+    ) {
+      this.setState({ visible: true });
     } else {
       this.props.addChoice();
     }
-
-  }
+  };
 
   onChange = value => {
-    console.log(value)
+    console.log(value);
     this.setState({
-      inputValue: value,
+      inputValue: value
     });
   };
 
   CancelModal = () => {
     this.setState({
-      visible: false,
+      visible: false
     });
-  }
+  };
 
   hideModal = () => {
     const range = {
       rangeStart: this.state.inputValue[0],
       rangeEnd: this.state.inputValue[1]
-    }
+    };
     this.setState({
-      visible: false,
+      visible: false
     });
-    this.props.addChoice(null, range)
+    this.props.addChoice(null, range);
   };
   getChoiceRows = () => {
-    this.props.questionToEdit.choices ? this.props.questionToEdit.choices = this.props.questionToEdit.choices : this.props.questionToEdit.choices = []
+    this.props.questionToEdit.choices
+      ? (this.props.questionToEdit.choices = this.props.questionToEdit.choices)
+      : (this.props.questionToEdit.choices = []);
     return this.props.questionToEdit.choices.map(choice => {
       return (
         <Row
@@ -129,22 +138,24 @@ export default class ChoiceForm extends React.Component<ChoiceFormProps, ChoiceF
                     defaultValue={[0, 5]}
                   />
                 </Col>
-
               </Row>
             </Modal>
             <Col span={24}>
               <h2>Configure choices</h2>
             </Col>
           </Row>
-          {isChoiceLoading ? (<div className="divCenter"><Spin size="large" indicator={antIcon} /> </div>) : this.getChoiceRows()}
+          {isChoiceLoading ? (
+            <div className="divCenter">
+              <Spin size="large" indicator={antIcon} />{" "}
+            </div>
+          ) : (
+            this.getChoiceRows()
+          )}
           <Row>
             <Col span={24}>
               <Row type="flex" justify="center">
                 <Col>
-                  <Button
-                    type="dashed"
-                    onClick={this.handleClick}
-                  >
+                  <Button type="dashed" onClick={this.handleClick}>
                     <Icon type="plus" /> Add Choice
                   </Button>
                 </Col>

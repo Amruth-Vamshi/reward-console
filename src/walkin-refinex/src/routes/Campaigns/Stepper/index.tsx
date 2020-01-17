@@ -4,11 +4,15 @@ import { StepsProps } from "antd/lib/steps";
 const { Step } = Steps;
 
 interface StepperProps extends StepsProps {
-  onChange?: any
-  StepperData?: any
+  onChange?: any;
+  StepperData?: any;
 }
 
-const Stepper: React.FunctionComponent<StepperProps> = ({ current, onChange, StepperData }) => {
+const Stepper: React.FunctionComponent<StepperProps> = ({
+  current,
+  onChange,
+  StepperData
+}) => {
   return (
     <Steps
       current={current}
@@ -21,6 +25,6 @@ const Stepper: React.FunctionComponent<StepperProps> = ({ current, onChange, Ste
       })}
     </Steps>
   );
-}
+};
 
 export default Stepper;

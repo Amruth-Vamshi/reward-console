@@ -1,6 +1,16 @@
 import React, { Component } from "react";
 import { ErrorBoundary, CardBox } from "walkin-components";
-import { Row, Col, Button, Tooltip, Form, Input, Select, Divider, Icon } from "antd";
+import {
+  Row,
+  Col,
+  Button,
+  Tooltip,
+  Form,
+  Input,
+  Select,
+  Divider,
+  Icon
+} from "antd";
 import { FormComponentProps } from "antd/lib/form";
 const { Option } = Select;
 
@@ -13,17 +23,15 @@ const getRatingChoice = () => {
 };
 
 interface ChoiceInputProps extends FormComponentProps {
-  choice?: any
-  questionnaire?: any
-  questionType?: any
-  removeChoice?: any
-  addNewQuestion?: any
-  onChoiceEdited?: any
-  submitChoice?: any
-  onLinkChoiceToQuestion?: any
+  choice?: any;
+  questionnaire?: any;
+  questionType?: any;
+  removeChoice?: any;
+  addNewQuestion?: any;
+  onChoiceEdited?: any;
+  submitChoice?: any;
+  onLinkChoiceToQuestion?: any;
 }
-
-
 
 class ChoiceInput extends Component<ChoiceInputProps, {}> {
   constructor(props: ChoiceInputProps) {
@@ -32,26 +40,24 @@ class ChoiceInput extends Component<ChoiceInputProps, {}> {
   setFieldValues = () => {
     const { choice } = this.props;
     this.props.form.setFieldsValue({
-      choiceText: (choice.choiceText).trim()
+      choiceText: choice.choiceText.trim()
     });
   };
 
   onSubmit = e => {
-    e.preventDefault()
-    console.log("here", this.props.choice)
-    this.props.submitChoice()
-  }
+    e.preventDefault();
+    console.log("here", this.props.choice);
+    this.props.submitChoice();
+  };
 
   onChange = (choice, questionId) => {
-    console.log("choiceId,questionId", choice, questionId)
+    console.log("choiceId,questionId", choice, questionId);
     if (questionId == "addNewQuestion") {
-      this.props.addNewQuestion(choice)
+      this.props.addNewQuestion(choice);
     } else {
-      this.props.onLinkChoiceToQuestion(questionId, choice.id)
+      this.props.onLinkChoiceToQuestion(questionId, choice.id);
     }
-
-
-  }
+  };
 
   componentDidMount() {
     this.setFieldValues();
@@ -76,16 +82,16 @@ class ChoiceInput extends Component<ChoiceInputProps, {}> {
     const { getFieldDecorator, isFieldsTouched } = form;
 
     const { Item } = Form;
-    let props = {}
+    let props = {};
     const { toQuestion } = choice;
     if (toQuestion) {
       props = {
         defaultValue: toQuestion.id
-      }
+      };
     }
     let propsInput = {
       suffix: <span />
-    }
+    };
     if (isFieldsTouched(["choiceText"])) {
       propsInput = {
         suffix: (
@@ -93,18 +99,23 @@ class ChoiceInput extends Component<ChoiceInputProps, {}> {
             onClick={this.onSubmit}
             type="primary"
             style={{ margin: "auto" }}
-            size={"small"}>Update</Button>
+            size={"small"}
+          >
+            Update
+          </Button>
         )
-
-      }
+      };
     }
     return (
       <ErrorBoundary>
         <Row>
           <Col span={10}>
             <Tooltip title="Choice Text">
-              <Form labelCol={{ span: 24 }} wrapperCol={{ span: 24 }} onSubmit={this.onSubmit}>
-
+              <Form
+                labelCol={{ span: 24 }}
+                wrapperCol={{ span: 24 }}
+                onSubmit={this.onSubmit}
+              >
                 <Item>
                   {getFieldDecorator("choiceText", {
                     rules: [
@@ -114,7 +125,6 @@ class ChoiceInput extends Component<ChoiceInputProps, {}> {
                     ]
                   })(<Input size="large" {...propsInput} />)}
                 </Item>
-
               </Form>
             </Tooltip>
           </Col>
@@ -126,33 +136,30 @@ class ChoiceInput extends Component<ChoiceInputProps, {}> {
                 onChange={this.onChange.bind(this, choice)}
                 style={{ width: "100%" }}
                 size="large"
-                dropdownRender={menu => (
-                  <div>
-                    {menu}
-                  </div>
-                )}>
+                dropdownRender={menu => <div>{menu}</div>}
+              >
                 <Option key="addNewQuestion">
-                  <div style={{ padding: '8px', cursor: 'pointer' }}>
-                    <Button style={{ margin: "auto", left: "15%" }} > <Icon type="plus" /> Add new Question </Button>
+                  <div style={{ padding: "8px", cursor: "pointer" }}>
+                    <Button style={{ margin: "auto", left: "15%" }}>
+                      {" "}
+                      <Icon type="plus" /> Add new Question{" "}
+                    </Button>
                   </div>
-                  <Divider style={{ margin: '4px 0' }} />
+                  <Divider style={{ margin: "4px 0" }} />
                 </Option>
-                {
-
-                  questionnaire.map(question => {
-                    return (
-
-                      <Option style={{ marginTop: "2px" }} key={question.id} value={question.id}>{question.questionText}</Option>
-
-
-
-                    )
-                  })
-                }
-
-
+                {questionnaire.map(question => {
+                  return (
+                    <Option
+                      style={{ marginTop: "2px" }}
+                      key={question.id}
+                      value={question.id}
+                    >
+                      {question.questionText}
+                    </Option>
+                  );
+                })}
               </Select>
-              { /*  <Button
+              {/*  <Button
                 onClick={() => addNewQuestion(choice)}
                 type="ghost"
                 shape="circle"

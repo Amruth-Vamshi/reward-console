@@ -11,9 +11,7 @@ const HyperX = lazy(() => import("walkin-hyperx/src/index"));
 // const HyperX = lazy(() => import('walkin-hyperx'));
 const Core = React.lazy(() => import("walkin-core/src/index"));
 const NearX = React.lazy(() => import("walkin-nearx/src/index"));
-const RewardX = React.lazy(() =>
-  import("walkin-rewardx/src/index")
-);
+const RewardX = React.lazy(() => import("walkin-rewardx/src/index"));
 const App = () => (
   <Suspense fallback={<div>Loading...</div>}>
     <Switch>

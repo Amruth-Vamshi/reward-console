@@ -3,7 +3,7 @@ import { Form, Input } from "antd";
 import { FormProps } from "antd/lib/form";
 
 interface CustomFormProps extends FormProps {
-  items?: any
+  items?: any;
 }
 
 const CustomForm: React.FunctionComponent<CustomFormProps> = props => {

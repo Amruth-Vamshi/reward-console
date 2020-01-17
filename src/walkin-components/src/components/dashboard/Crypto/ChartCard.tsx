@@ -3,12 +3,12 @@ import * as React from "react";
 import { Widget } from "../../Widget";
 
 interface ChartCardProps {
-  prize?: string | number,
-  title?: string,
-  children?: React.ReactChildren | React.ReactElement,
-  styleName?: string,
-  desc?: string,
-  icon?: string
+  prize?: string | number;
+  title?: string;
+  children?: React.ReactChildren | React.ReactElement;
+  styleName?: string;
+  desc?: string;
+  icon?: string;
 }
 
 export const ChartCard: React.FunctionComponent<ChartCardProps> = ({
@@ -32,8 +32,8 @@ export const ChartCard: React.FunctionComponent<ChartCardProps> = ({
                 {title}% <i className="icon icon-menu-up gx-fs-sm" />
               </span>
             ) : (
-                ""
-              )}
+              ""
+            )}
           </h2>
           <i
             className={`icon icon-${icon} gx-fs-xl gx-ml-auto gx-text-primary gx-fs-xxxl`}

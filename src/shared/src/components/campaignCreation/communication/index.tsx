@@ -1,30 +1,35 @@
 import * as React from "react";
 import { Radio, Row, Col } from "antd";
-import { SMSForm, PushNotificationForm, Email, Schedule } from "../../molecules/communicationForm"
+import {
+  SMSForm,
+  PushNotificationForm,
+  Email,
+  Schedule
+} from "../../molecules/communicationForm";
 
 interface iProps {
-  subTitle?: string,
-  onChange?: any,
-  communicationData?: any,
-  defaultValue?: any,
-  value?: any,
-  getScheduleData?: any,
-  OnCommunicationFormNext?: any,
-  commWrappedComponentRef?: any,
-  communicationFormValues?: any,
-  pushFormData?: any,
-  pushFormRef?: any,
-  emailFormRef?: any,
-  emailFormData?: any,
-  onFormNext?: any,
-  scheduleData?: any,
-  schedule?: any,
-  campaign?: any,
-  scheduleSaveMark?: any,
-  saveSchedule?: any,
-  form?: any
-  linkTypeSelect?: any
-  attributeData?
+  subTitle?: string;
+  onChange?: any;
+  communicationData?: any;
+  defaultValue?: any;
+  value?: any;
+  getScheduleData?: any;
+  OnCommunicationFormNext?: any;
+  commWrappedComponentRef?: any;
+  communicationFormValues?: any;
+  pushFormData?: any;
+  pushFormRef?: any;
+  emailFormRef?: any;
+  emailFormData?: any;
+  onFormNext?: any;
+  scheduleData?: any;
+  schedule?: any;
+  campaign?: any;
+  scheduleSaveMark?: any;
+  saveSchedule?: any;
+  form?: any;
+  linkTypeSelect?: any;
+  attributeData?;
 }
 
 const Communication = ({
@@ -72,27 +77,41 @@ const Communication = ({
                 </Radio.Button>
               ))}
           </Radio.Group>
-          {value == "SMS" && <SMSForm
-            wrappedComponentRef={commWrappedComponentRef}
-            formValues={communicationFormValues}
-            linkTypeSelect={linkTypeSelect}
-            attributeData={attributeData}
-            onFormNext={onFormNext} />}
-          {value == "PUSH" && <PushNotificationForm
-            wrappedComponentRef={pushFormRef}
-            formValues={pushFormData}
-            onFormNext={onFormNext} />
-          }
-          {value == "EMAIL" && (<Email
-            wrappedComponentRef={emailFormRef}
-            formValues={emailFormData}
-            onFormNext={onFormNext} />)}
+          {value == "SMS" && (
+            <SMSForm
+              wrappedComponentRef={commWrappedComponentRef}
+              formValues={communicationFormValues}
+              linkTypeSelect={linkTypeSelect}
+              attributeData={attributeData}
+              onFormNext={onFormNext}
+            />
+          )}
+          {value == "PUSH" && (
+            <PushNotificationForm
+              wrappedComponentRef={pushFormRef}
+              formValues={pushFormData}
+              onFormNext={onFormNext}
+            />
+          )}
+          {value == "EMAIL" && (
+            <Email
+              wrappedComponentRef={emailFormRef}
+              formValues={emailFormData}
+              onFormNext={onFormNext}
+            />
+          )}
         </Col>
 
         {schedule && (
           <Col sm={24} md={11} lg={11} xl={11} xxl={10}>
             <div style={{ padding: 10 }}>
-              <Schedule saved={scheduleSaveMark} scheduleData={scheduleData} saveSchedule={saveSchedule} campaign={campaign} getScheduleData={getScheduleData} />
+              <Schedule
+                saved={scheduleSaveMark}
+                scheduleData={scheduleData}
+                saveSchedule={saveSchedule}
+                campaign={campaign}
+                getScheduleData={getScheduleData}
+              />
             </div>
           </Col>
         )}

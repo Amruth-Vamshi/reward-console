@@ -12,25 +12,25 @@ import canUseDOM from "can-use-dom";
 const markerIcon = require("walkin-components/src/assets/images/marker-location.png");
 
 interface iProps extends GoogleMapProps {
-  mapData?: any,
-  setlocationDetails?: any,
-  mapHeight?: string,
-  places?: any,
-  myLocation?: any
+  mapData?: any;
+  setlocationDetails?: any;
+  mapHeight?: string;
+  places?: any;
+  myLocation?: any;
 }
 
 interface iState {
-  center?: object
+  center?: object;
 }
 
 const geolocation: any =
   canUseDOM && navigator.geolocation
     ? navigator.geolocation
     : {
-      getCurrentPosition(success, failure) {
-        failure(`Your browser doesn't support geolocation.`);
-      }
-    };
+        getCurrentPosition(success, failure) {
+          failure(`Your browser doesn't support geolocation.`);
+        }
+      };
 
 const Geofences = places => {
   let geoFen = [];
@@ -109,8 +109,8 @@ const GeolocationExampleGoogleMap: any = withGoogleMap((props: iProps) => (
         }
       />
     ) : (
-        ""
-      )}
+      ""
+    )}
 
     {Geofences(props.places ? props.places : props.mapData.places)}
 
@@ -127,8 +127,8 @@ const GeolocationExampleGoogleMap: any = withGoogleMap((props: iProps) => (
         }}
       />
     ) : (
-        ""
-      )}
+      ""
+    )}
 
     {props.mapData.getLoc ? (
       <DrawingManager
@@ -145,8 +145,8 @@ const GeolocationExampleGoogleMap: any = withGoogleMap((props: iProps) => (
         }}
       />
     ) : (
-        ""
-      )}
+      ""
+    )}
   </GoogleMap>
 ));
 

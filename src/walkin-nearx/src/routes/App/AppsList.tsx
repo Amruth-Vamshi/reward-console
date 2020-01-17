@@ -1,5 +1,15 @@
 import * as React from "react";
-import { Col, Row, Timeline, Modal, Spin, Tooltip, Input, Icon, Button } from "antd";
+import {
+  Col,
+  Row,
+  Timeline,
+  Modal,
+  Spin,
+  Tooltip,
+  Input,
+  Icon,
+  Button
+} from "antd";
 import AppListCard from "./AppListCard";
 import {
   GET_ALL_APPS_OF_ORGANIZATION,
@@ -8,23 +18,23 @@ import {
 } from "walkin-core/src/PlatformQueries";
 import * as jwt from "jsonwebtoken";
 import { withApollo, ApolloProviderProps } from "react-apollo";
-import conf from 'walkin-app/config'
-import { History } from "history"
+import conf from "walkin-app/config";
+import { History } from "history";
 // import { nearXClient as client } from "../../nearXApollo";
 const { TextArea } = Input;
 
 // const text = <code></code>
 
 interface iProps extends ApolloProviderProps<any> {
-  history: History,
-  client: any
+  history: History;
+  client: any;
 }
 
 interface iState {
-  appsList?: Array<any>,
-  visible?: any,
-  spin?: boolean,
-  loading?: boolean
+  appsList?: Array<any>;
+  visible?: any;
+  spin?: boolean;
+  loading?: boolean;
 }
 
 class AppsList extends React.Component<iProps, iState> {
@@ -49,17 +59,11 @@ class AppsList extends React.Component<iProps, iState> {
     this.setState({ visible: false });
   };
 
-  handleOk = () => {
+  handleOk = () => {};
 
-  }
+  copy = () => {};
 
-  copy = () => {
-
-  }
-
-  handleSubmit = () => {
-
-  }
+  handleSubmit = () => {};
 
   // activateApp = (appId) => {
   //   client.mutate({
@@ -80,14 +84,14 @@ class AppsList extends React.Component<iProps, iState> {
     const jwtData = jwt.decode(localStorage.getItem("jwt"));
 
     if (jwtData) {
-      this.getAppsList(jwtData)
+      this.getAppsList(jwtData);
     } else {
       this.setState({ spin: false });
       console.log("Error getting JwtData");
     }
   }
 
-  getAppsList = (jwtData) => {
+  getAppsList = jwtData => {
     this.props.client
       .query({
         query: GET_ALL_APPS_OF_ORGANIZATION,
@@ -120,7 +124,7 @@ class AppsList extends React.Component<iProps, iState> {
         this.setState({ spin: false });
         console.log("Failed to get User Details" + err);
       });
-  }
+  };
 
   deleteApp = id => {
     this.props.client
@@ -135,7 +139,7 @@ class AppsList extends React.Component<iProps, iState> {
         this.setState({ spin: false });
         console.log("Failed to Delete App" + err);
       });
-  }
+  };
 
   genereteToken = (i, appId) => {
     this.props.client
@@ -154,8 +158,8 @@ class AppsList extends React.Component<iProps, iState> {
   };
 
   render() {
-    const data = this.state.appsList ? this.state.appsList : []
-    console.log(data)
+    const data = this.state.appsList ? this.state.appsList : [];
+    console.log(data);
     return (
       <div>
         <Row className="headerRow1">
@@ -209,27 +213,27 @@ class AppsList extends React.Component<iProps, iState> {
               />
             ))}
           </div>
-        ) : (<div>
-          {/* <Empty style={{ margin: 50 }} /> */}
+        ) : (
+          <div>
+            {/* <Empty style={{ margin: 50 }} /> */}
 
-          <div style={{ margin: 80, fontSize: 25 }}>
-            <div className="divCenter">
-              <div>No Apps Found</div>
-            </div>
-            <div className="divCenter">
-              <Button
-                onClick={() => this.addApp()}
-                style={{ margin: 22, fontSize: 18 }}
-                className="buttonPrimary"
-              >
-                Create New App
-                      </Button>
-              {/* <div style={{margin:10, fontSize:20}}>Create A new Place</div> */}
+            <div style={{ margin: 80, fontSize: 25 }}>
+              <div className="divCenter">
+                <div>No Apps Found</div>
+              </div>
+              <div className="divCenter">
+                <Button
+                  onClick={() => this.addApp()}
+                  style={{ margin: 22, fontSize: 18 }}
+                  className="buttonPrimary"
+                >
+                  Create New App
+                </Button>
+                {/* <div style={{margin:10, fontSize:20}}>Create A new Place</div> */}
+              </div>
             </div>
           </div>
-
-        </div>
-            )}
+        )}
         <Modal
           width="750px"
           key="model"
@@ -271,8 +275,17 @@ class AppsList extends React.Component<iProps, iState> {
                         Download ARR
                       </Button>
                     </a>
-                    <div >NearX ARR file</div>
-                    <div> Integration reference <a target="_blank" href="https://nearx.getwalk.in/docs/integrations">here</a></div>
+                    <div>NearX ARR file</div>
+                    <div>
+                      {" "}
+                      Integration reference{" "}
+                      <a
+                        target="_blank"
+                        href="https://nearx.getwalk.in/docs/integrations"
+                      >
+                        here
+                      </a>
+                    </div>
                   </div>
                 </div>
               </Col>
@@ -331,7 +344,8 @@ class AppsList extends React.Component<iProps, iState> {
               <br />
               <Row>
                 <Col>
-                  <i style={{ margin: "20px 10px 20px 40px", fontSize: 20 }} //className='gx-text-primary gx-pointer'
+                  <i
+                    style={{ margin: "20px 10px 20px 40px", fontSize: 20 }} //className='gx-text-primary gx-pointer'
                   >
                     Check Now
                   </i>

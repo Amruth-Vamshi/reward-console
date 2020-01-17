@@ -1,12 +1,23 @@
 import * as React from "react";
-import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Legend,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis
+} from "recharts";
 
 import { data05 } from "./data";
 
 const MixBarChart = () => (
   <ResponsiveContainer width="100%" height={200}>
-    <BarChart data={data05}
-      margin={{ top: 10, right: 0, left: -15, bottom: 0 }}>
+    <BarChart
+      data={data05}
+      margin={{ top: 10, right: 0, left: -15, bottom: 0 }}
+    >
       <XAxis dataKey="name" />
       <YAxis />
       <CartesianGrid strokeDasharray="3 3" />

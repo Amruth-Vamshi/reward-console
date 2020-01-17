@@ -15,28 +15,31 @@ const questionWithSlider = {
 };
 
 interface QuestionnaireFormPaneProps {
-  questionToEdit?: any
-  onQuestionSubmitted?: any
-  onChoiceSubmitted?: any
-  addChoice?: any
-  removeChoice?: any
-  choiceData?: any
-  addNewQuestion?: any
-  questionType?: any
-  choiceToAddQuestion?: any
-  isChoiceLoading?: any
-  isQuestionLoading?: any
-  questionnaire?: any
-  onLinkChoiceToQuestion?: any
+  questionToEdit?: any;
+  onQuestionSubmitted?: any;
+  onChoiceSubmitted?: any;
+  addChoice?: any;
+  removeChoice?: any;
+  choiceData?: any;
+  addNewQuestion?: any;
+  questionType?: any;
+  choiceToAddQuestion?: any;
+  isChoiceLoading?: any;
+  isQuestionLoading?: any;
+  questionnaire?: any;
+  onLinkChoiceToQuestion?: any;
 }
 
 interface QuestionnaireFormPaneState {
-  questionToEdit: any,
-  choiceToEdit: any,
-  showButton: boolean
+  questionToEdit: any;
+  choiceToEdit: any;
+  showButton: boolean;
 }
 
-class QuestionnaireFormPane extends React.Component<QuestionnaireFormPaneProps, QuestionnaireFormPaneState> {
+class QuestionnaireFormPane extends React.Component<
+  QuestionnaireFormPaneProps,
+  QuestionnaireFormPaneState
+> {
   constructor(props: QuestionnaireFormPaneProps) {
     super(props);
     this.state = {
@@ -56,18 +59,18 @@ class QuestionnaireFormPane extends React.Component<QuestionnaireFormPaneProps, 
     const assignedValue = {
       ...choice,
       ...values
-    }
+    };
     this.setState({
       choiceToEdit: Object.assign(this.state.choiceToEdit, assignedValue)
     });
   };
 
-  onQuestionTypeEdit = (value) => {
-    console.log("this.state.questionToEdit", this.state.questionToEdit)
+  onQuestionTypeEdit = value => {
+    console.log("this.state.questionToEdit", this.state.questionToEdit);
     const values = {
       ...this.props.questionToEdit,
       type: value
-    }
+    };
     if (questionWithSlider[values.type]) {
       values.rangeMin = 1;
       values.rangeMax = 10;
@@ -82,7 +85,7 @@ class QuestionnaireFormPane extends React.Component<QuestionnaireFormPaneProps, 
     this.props.onQuestionSubmitted(values);
   };
 
-  onQuestionEdited = (values) => {
+  onQuestionEdited = values => {
     if (values.range) {
       values.rangeMin = values.range[0];
       values.rangeMax = values.range[1];
@@ -95,12 +98,12 @@ class QuestionnaireFormPane extends React.Component<QuestionnaireFormPaneProps, 
 
   onChoiceSubmitted = () => {
     const { choiceToEdit } = this.state;
-    console.log("choiceToEdit", choiceToEdit)
-    this.props.onChoiceSubmitted(choiceToEdit)
+    console.log("choiceToEdit", choiceToEdit);
+    this.props.onChoiceSubmitted(choiceToEdit);
   };
 
   onQuestionSubmitted = () => {
-    console.log("questionToEdit", this.state.questionToEdit)
+    console.log("questionToEdit", this.state.questionToEdit);
     console.log(this.state.questionToEdit);
     this.props.onQuestionSubmitted(this.state.questionToEdit);
   };
@@ -148,25 +151,24 @@ class QuestionnaireFormPane extends React.Component<QuestionnaireFormPaneProps, 
               onLinkChoiceToQuestion={onLinkChoiceToQuestion}
             />
           ) : (
-              <ShowQuestion
-                onQuestionTypeEdit={this.onQuestionTypeEdit}
-                showButton={this.state.showButton}
-                questionnaire={questionnaire}
-                onQuestionEdited={this.onQuestionEdited}
-                onQuestionSubmitted={this.onQuestionSubmitted}
-                onChoiceEdited={this.onChoiceEdited}
-                questionToEdit={questionToEdit}
-                addChoice={addChoice}
-                removeChoice={removeChoice}
-                addNewQuestion={addNewQuestion}
-                choiceData={choiceData}
-                submitChoice={this.onChoiceSubmitted}
-                isChoiceLoading={isChoiceLoading}
-                isQuestionLoading={isQuestionLoading}
-                onLinkChoiceToQuestion={onLinkChoiceToQuestion}
-
-              />
-            )}
+            <ShowQuestion
+              onQuestionTypeEdit={this.onQuestionTypeEdit}
+              showButton={this.state.showButton}
+              questionnaire={questionnaire}
+              onQuestionEdited={this.onQuestionEdited}
+              onQuestionSubmitted={this.onQuestionSubmitted}
+              onChoiceEdited={this.onChoiceEdited}
+              questionToEdit={questionToEdit}
+              addChoice={addChoice}
+              removeChoice={removeChoice}
+              addNewQuestion={addNewQuestion}
+              choiceData={choiceData}
+              submitChoice={this.onChoiceSubmitted}
+              isChoiceLoading={isChoiceLoading}
+              isQuestionLoading={isQuestionLoading}
+              onLinkChoiceToQuestion={onLinkChoiceToQuestion}
+            />
+          )}
         </Col>
 
         {/* <Col span={24}>

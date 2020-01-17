@@ -54,7 +54,8 @@ export const data = [
     status: "Active",
     creator: "Devid Tailor",
     Assign: true
-  }, {
+  },
+  {
     image: "https://i.pravatar.cc/54",
     firstName: "Merilyn",
     lastName: "Colombo",
@@ -144,7 +145,8 @@ export const data1 = [
     status: "Active",
     creator: "Devid Tailor",
     Assign: true
-  }, {
+  },
+  {
     image: "https://i.pravatar.cc/70",
     firstName: "Merilyn",
     lastName: "Colombo",

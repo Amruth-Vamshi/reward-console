@@ -5,32 +5,33 @@ import { ErrorBoundary, CardBox } from "walkin-components";
 import { Icon, Row, Col, Button, Spin } from "antd";
 
 interface QuestionsListProps {
-  questionnaire?: any
-  onQuestionSelected?: any
-  addNewQuestion?: any
-  reference?: any
-  createRootQuestionnaire?: any
-  isQuestionLoading?: any
+  questionnaire?: any;
+  onQuestionSelected?: any;
+  addNewQuestion?: any;
+  reference?: any;
+  createRootQuestionnaire?: any;
+  isQuestionLoading?: any;
 }
 
-interface QuestionsListState {
+interface QuestionsListState {}
 
-}
-
-export default class QuestionsList extends React.Component<QuestionsListProps, QuestionsListState> {
+export default class QuestionsList extends React.Component<
+  QuestionsListProps,
+  QuestionsListState
+> {
   constructor(props: QuestionsListProps) {
     super(props);
-
   }
 
   getStyle(oElm, strCssRule) {
     var strValue = "";
-    console.log("oElm", document.defaultView.getComputedStyle(oElm))
+    console.log("oElm", document.defaultView.getComputedStyle(oElm));
     if (document.defaultView && document.defaultView.getComputedStyle) {
-      strValue = document.defaultView.getComputedStyle(oElm).getPropertyValue(strCssRule);
-    }
-    else if (oElm.currentStyle) {
-      strCssRule = strCssRule.replace(/\-(\w)/g, function (strMatch, p1) {
+      strValue = document.defaultView
+        .getComputedStyle(oElm)
+        .getPropertyValue(strCssRule);
+    } else if (oElm.currentStyle) {
+      strCssRule = strCssRule.replace(/\-(\w)/g, function(strMatch, p1) {
         return p1.toUpperCase();
       });
       strValue = oElm.currentStyle[strCssRule];
@@ -38,30 +39,33 @@ export default class QuestionsList extends React.Component<QuestionsListProps, Q
     return strValue;
   }
 
-
   getTextHeightWidth = (text, height, width, index) => {
     const canvas: any = document.createElement("div");
     const creatediv = document.createElement("div");
     creatediv.innerHTML = text;
-    creatediv.setAttribute("style", `width:${width}px`)
-    creatediv.id = `${index}-randomDiv`
+    creatediv.setAttribute("style", `width:${width}px`);
+    creatediv.id = `${index}-randomDiv`;
     canvas.style.width = width;
     canvas.style.opacity = -1;
-    canvas.append(creatediv)
+    canvas.append(creatediv);
     document.body.append(canvas);
     const createdDiv = document.getElementById(`${index}-randomDiv`);
     const styles: any = this.getStyle(createdDiv, "height");
-    canvas.remove()
-    return Math.floor((styles.replace(/[a-zA-Z]+/, "")));
-  }
-
+    canvas.remove();
+    return Math.floor(styles.replace(/[a-zA-Z]+/, ""));
+  };
 
   getItemSize = (height, width, index) => {
     const { questionnaire } = this.props;
-    let itemSize = this.getTextHeightWidth(questionnaire[index].questionText, height, width, index);
-    itemSize < 50 ? itemSize = 80 : itemSize = itemSize + 80;
+    let itemSize = this.getTextHeightWidth(
+      questionnaire[index].questionText,
+      height,
+      width,
+      index
+    );
+    itemSize < 50 ? (itemSize = 80) : (itemSize = itemSize + 80);
     return itemSize;
-  }
+  };
 
   toggleClick = index => {
     const { questionnaire } = this.props;
@@ -135,29 +139,29 @@ export default class QuestionsList extends React.Component<QuestionsListProps, Q
                 </Col>
               </Row>
             ) : (
-                <Row
-                  style={{
-                    height,
-                    width
-                  }}
-                >
-                  <Col span={24}>
-                    <Row type="flex" justify="center">
-                      <Col>
-                        <Button
-                          type="dashed"
-                          onClick={e => {
-                            e.preventDefault();
-                            this.props.addNewQuestion();
-                          }}
-                        >
-                          <Icon type="plus" /> CreateQuestionnaire
-                        </Button>
-                      </Col>
-                    </Row>
-                  </Col>
-                </Row>
-              )
+              <Row
+                style={{
+                  height,
+                  width
+                }}
+              >
+                <Col span={24}>
+                  <Row type="flex" justify="center">
+                    <Col>
+                      <Button
+                        type="dashed"
+                        onClick={e => {
+                          e.preventDefault();
+                          this.props.addNewQuestion();
+                        }}
+                      >
+                        <Icon type="plus" /> CreateQuestionnaire
+                      </Button>
+                    </Col>
+                  </Row>
+                </Col>
+              </Row>
+            )
           }
         </AutorSizer>
       </ErrorBoundary>

@@ -4,11 +4,11 @@ import * as PropTypes from "prop-types";
 import "./style.css";
 
 interface WalkinQueryBuilderProps {
-  onQueryChange?: (a: any) => void
-  translations?: any,
-  operators?: any,
-  fields?: any,
-  handleQueryChange?: any
+  onQueryChange?: (a: any) => void;
+  translations?: any;
+  operators?: any;
+  fields?: any;
+  handleQueryChange?: any;
 }
 
 class WalkinQueryBuilder extends React.Component<WalkinQueryBuilderProps, {}> {
@@ -21,7 +21,7 @@ class WalkinQueryBuilder extends React.Component<WalkinQueryBuilderProps, {}> {
       value: "attributeValue",
       operator: "expressionType"
     };
-    str = str.replace(/field|value|operator/gi, function (matched) {
+    str = str.replace(/field|value|operator/gi, function(matched) {
       return mapObj[matched];
     });
     query = JSON.parse(str);
@@ -66,7 +66,7 @@ WalkinQueryBuilder.propTypes = {
 
 WalkinQueryBuilder.defaultProps = {
   fields: [{ name: "", label: "" }],
-  onQueryChange: () => { },
+  onQueryChange: () => {},
   operators: [
     { name: "EQUALS", label: "Equal to" },
     { name: "NOT_EQUALS", label: "Not equal to" },

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Menu } from "antd";
 import { Link } from "react-router-dom";
-import '../../styles/sidebar.css'
+import "../../styles/sidebar.css";
 import { Auxiliary } from "walkin-components";
 import SidebarLogo from "./SidebarLogo";
 import { withRouter } from "react-router-dom";
@@ -15,13 +15,13 @@ import { compose, graphql } from "react-apollo";
 import gql from "graphql-tag";
 
 interface iProps {
-  themeType?: any,
-  navStyle?: any,
-  pathname?: any
+  themeType?: any;
+  navStyle?: any;
+  pathname?: any;
 }
 
 interface iState {
-  propTypes?: any
+  propTypes?: any;
 }
 
 class SidebarContent extends React.Component<iProps, iState> {

@@ -5,23 +5,23 @@ import QuestionForm from "../QuestionForm";
 import ChoiceForm from "../ChoiceForm";
 
 interface ShowQuestionProps {
-  onQuestionTypeEdit?: any
-  showButton?: any
-  questionnaire?: any
-  onQuestionEdited?: any
-  onQuestionSubmitted?: any
-  onChoiceEdited?: any
-  questionToEdit?: any
-  addChoice?: any
-  removeChoice?: any
-  addNewQuestion?: any
-  choiceData?: any
-  questionType?: any
-  choiceToAddQuestion?: any
-  submitChoice?: any
-  isChoiceLoading?: any
-  isQuestionLoading?: any
-  onLinkChoiceToQuestion?: any
+  onQuestionTypeEdit?: any;
+  showButton?: any;
+  questionnaire?: any;
+  onQuestionEdited?: any;
+  onQuestionSubmitted?: any;
+  onChoiceEdited?: any;
+  questionToEdit?: any;
+  addChoice?: any;
+  removeChoice?: any;
+  addNewQuestion?: any;
+  choiceData?: any;
+  questionType?: any;
+  choiceToAddQuestion?: any;
+  submitChoice?: any;
+  isChoiceLoading?: any;
+  isQuestionLoading?: any;
+  onLinkChoiceToQuestion?: any;
 }
 
 const ShowQuestion: React.FC<ShowQuestionProps> = ({
@@ -41,10 +41,7 @@ const ShowQuestion: React.FC<ShowQuestionProps> = ({
   showButton,
   onQuestionTypeEdit
 }) => {
-  console.log(
-    "new question addition",
-    submitChoice
-  );
+  console.log("new question addition", submitChoice);
   return (
     <React.Fragment>
       <Col span={24}>
@@ -83,6 +80,6 @@ const ShowQuestion: React.FC<ShowQuestionProps> = ({
       </Col>
     </React.Fragment>
   );
-}
+};
 
 export default ShowQuestion;

@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 import { message } from "antd/lib/index";
 
-import { IntlMessages } from "walkin-components";;
+import { IntlMessages } from "walkin-components";
 import { CircularProgress } from "walkin-components";
 import gql from "graphql-tag";
 import { compose, graphql } from "react-apollo";

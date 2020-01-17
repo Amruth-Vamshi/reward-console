@@ -30,7 +30,7 @@ export const configureClient = async () => {
       });
     },
     clientState: { defaults, resolvers, typeDefs },
-    
+
     onError: ({ graphQLErrors, networkError }) => {
       if (graphQLErrors) {
         console.log(graphQLErrors);
@@ -44,10 +44,12 @@ export const configureClient = async () => {
           location.reload();
         }
 
-        if (graphQLErrors[0].message && !includes(ERROR_EXCEPTIONS, graphQLErrors[0].message)) {
+        if (
+          graphQLErrors[0].message &&
+          !includes(ERROR_EXCEPTIONS, graphQLErrors[0].message)
+        ) {
           message.warn(graphQLErrors[0].message);
         }
-
       } else if (networkError) {
         message.error(
           "Hey! Regret to inform that we are experiencing some issues. Please check your internet connection or try again after sometime"

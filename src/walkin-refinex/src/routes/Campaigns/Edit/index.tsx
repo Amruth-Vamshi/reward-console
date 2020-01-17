@@ -148,12 +148,12 @@ class EditCampaign extends React.Component<
       campaign: {},
       segmentList: {},
       attributeData: {},
-      eventValues:{},
-      formName:"",
-      selectedSegments:[],
-      query: {combinator: "and", rules: [] },
-      loading:false,
-      audienceCount : 0,
+      eventValues: {},
+      formName: "",
+      selectedSegments: [],
+      query: { combinator: "and", rules: [] },
+      loading: false,
+      audienceCount: 0,
       stepperData: [
         {
           title: "Basic Info"
@@ -315,23 +315,21 @@ class EditCampaign extends React.Component<
     this.setState({ query: query, oldQueryAudience: oldQuery });
   };
 
-  
-  onValuesSelected = selectedSegments =>{
-    this.setState({selectedSegments})
-    console.log("Selected Segment : ",selectedSegments)
+  onValuesSelected = selectedSegments => {
+    this.setState({ selectedSegments });
+    console.log("Selected Segment : ", selectedSegments);
     // this.setState({ selectedSegments: selectedSegments })
-    
-    // this.getAudience(selectedSegments)
-  }
 
-  getAudience(selectedSegments)
-  {
-    let { org_id }: any = jwt.decode(localStorage.getItem('jwt'))
-    console.log(this.props)
+    // this.getAudience(selectedSegments)
+  };
+
+  getAudience(selectedSegments) {
+    let { org_id }: any = jwt.decode(localStorage.getItem("jwt"));
+    console.log(this.props);
     // this.props.getAudienceCount.refetch({
-    //   variables:{ 
-    //     segments: selectedSegments, 
-    //     organizationId: org_id 
+    //   variables:{
+    //     segments: selectedSegments,
+    //     organizationId: org_id
     //   }
     // }).then(data => {
     //   console.log("Audience Data : ", data)

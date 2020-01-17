@@ -64,13 +64,22 @@ class AddAndDeleteSelectDynamically extends React.Component<iProps, iState> {
         {this.state.values.map((el: any, i: number) => {
           return (
             <div key={i} className="selectSegmentBoxContainer">
-              <Select showSearch placeholder="Choose from the list"
-                value={el ? el : undefined} style={{ width: "50%" }}
+              <Select
+                showSearch
+                placeholder="Choose from the list"
+                value={el ? el : undefined}
+                style={{ width: "50%" }}
                 getPopupContainer={(triggerNode: any) => triggerNode.parentNode}
-                optionFilterProp="children" onChange={this.handleChange.bind(this, i)}
+                optionFilterProp="children"
+                onChange={this.handleChange.bind(this, i)}
               >
                 {segmentSelectionData &&
-                  segmentSelectionData.map((val: any, i: number) => <Option key={i} value={val.id}> {val.name}</Option>)}
+                  segmentSelectionData.map((val: any, i: number) => (
+                    <Option key={i} value={val.id}>
+                      {" "}
+                      {val.name}
+                    </Option>
+                  ))}
               </Select>
               <Icon type="close" onClick={this.removeClick.bind(this, i)} />
             </div>
@@ -79,7 +88,14 @@ class AddAndDeleteSelectDynamically extends React.Component<iProps, iState> {
         <div style={{ color: "Red", marginTop: 10 }}>
           {this.state.errors.segment}{" "}
         </div>
-        <Button className="newSegmentAddButton" type="primary" onClick={this.addClick.bind(this)}> Add </Button>
+        <Button
+          className="newSegmentAddButton"
+          type="primary"
+          onClick={this.addClick.bind(this)}
+        >
+          {" "}
+          Add{" "}
+        </Button>
       </React.Fragment>
     );
   }

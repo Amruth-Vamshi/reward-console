@@ -1,25 +1,21 @@
 import * as React from "react";
 import PropTypes from "prop-types";
 import { Col, Row, Form, Select, Input, Button, Icon } from "antd";
-import {
-  AddAndDeleteSelectDynamically,
-  WalkinQueryBuilder
-} from "shared";
+import { AddAndDeleteSelectDynamically, WalkinQueryBuilder } from "shared";
 import { FormComponentProps } from "antd/lib/form";
 
 let id = 0;
 
 interface FilterProps extends FormComponentProps {
-  handleSubmit?: any
-  query?: any
-  attributeData?: any
-  logQuery?: any
+  handleSubmit?: any;
+  query?: any;
+  attributeData?: any;
+  logQuery?: any;
 }
-
 
 class Filter extends React.Component<FilterProps, {}> {
   constructor(props: FilterProps) {
-    super(props)
+    super(props);
   }
   removeFields = k => {
     const { form } = this.props;
@@ -147,6 +143,5 @@ const FilterForm = Form.create<FilterProps>({
     console.log("values", values);
   }
 })(Filter);
-
 
 export default FilterForm;

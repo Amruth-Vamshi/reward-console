@@ -4,13 +4,12 @@ import { Form, Upload, Icon, Button, Input, Row, Col } from "antd";
 import { FormComponentProps } from "antd/lib/form";
 
 interface EmailFormProps extends FormComponentProps {
-  onFormNext?: any,
-  wrappedComponentRef?: any,
-  formValues?: any,
-  text?: any
+  onFormNext?: any;
+  wrappedComponentRef?: any;
+  formValues?: any;
+  text?: any;
 }
 class EmailForm extends React.Component<EmailFormProps, {}> {
-
   constructor(props: EmailFormProps) {
     super(props);
     this.state = {
@@ -29,13 +28,30 @@ class EmailForm extends React.Component<EmailFormProps, {}> {
   // }
 
   render() {
-    const { form, onFormNext, wrappedComponentRef, formValues, text } = this.props;
+    const {
+      form,
+      onFormNext,
+      wrappedComponentRef,
+      formValues,
+      text
+    } = this.props;
     const { getFieldDecorator } = this.props.form;
     return (
-      <Form style={{ paddingTop: '20px' }} layout="vertical" ref={wrappedComponentRef} onSubmit={onFormNext}>
+      <Form
+        style={{ paddingTop: "20px" }}
+        layout="vertical"
+        ref={wrappedComponentRef}
+        onSubmit={onFormNext}
+      >
         <Form.Item label="Subject">
           {getFieldDecorator("email_subject", {
-            initialValue: `${Object.keys(formValues).length != 0 ? formValues.email_subject ? formValues.email_subject : "" : ""}`,
+            initialValue: `${
+              Object.keys(formValues).length != 0
+                ? formValues.email_subject
+                  ? formValues.email_subject
+                  : ""
+                : ""
+            }`,
             rules: [{ required: true, message: "Please enter Email Subject!" }]
           })(
             <Input
@@ -46,18 +62,19 @@ class EmailForm extends React.Component<EmailFormProps, {}> {
         </Form.Item>
         <Form.Item label="Compose">
           {getFieldDecorator("email_body", {
-            initialValue: `${Object.keys(formValues).length != 0 ? formValues.email_body ? formValues.email_body : "" : ""}`,
+            initialValue: `${
+              Object.keys(formValues).length != 0
+                ? formValues.email_body
+                  ? formValues.email_body
+                  : ""
+                : ""
+            }`,
             rules: [{ required: true, message: "Please enter Email body!" }]
-          })(
-            <Input.TextArea
-              rows={6}
-              placeholder="Enter Email body"
-            />
-          )}
+          })(<Input.TextArea rows={6} placeholder="Enter Email body" />)}
         </Form.Item>
         <Form.Item>
           {getFieldDecorator("upload", {
-            valuePropName: "fileList",
+            valuePropName: "fileList"
           })(
             <Upload name="logo" action="/upload.do" listType="picture">
               <Button>

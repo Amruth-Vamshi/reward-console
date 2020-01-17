@@ -20,7 +20,7 @@ import {
   DownloadMobileApps,
   OrderHistory
 } from "walkin-components";
-import CampaignList from "../../containers/campaignList/index"
+import CampaignList from "../../containers/campaignList/index";
 import { increamentData, lineData } from "./data";
 
 const Dashboard = () => {
@@ -187,7 +187,6 @@ const Dashboard = () => {
           <DownloadMobileApps />
           <OrderHistory />
         </Col> */}
-
     </Auxiliary>
   );
 };

@@ -11,7 +11,7 @@ import { CREATE_APP } from "../../queries";
 import * as jwt from "jsonwebtoken";
 import { withApollo, compose, graphql } from "react-apollo";
 import gql from "graphql-tag";
-import { History } from 'history'
+import { History } from "history";
 
 const Option = Select.Option;
 const formItemLayout = {
@@ -30,25 +30,25 @@ const formItemLayout = {
 };
 
 interface iProps {
-  client?: any,
-  errors?: any,
-  history?: History
+  client?: any;
+  errors?: any;
+  history?: History;
 }
 
 interface iState {
-  organizations?: Array<any>,
-  update?: boolean,
-  id?: string,
-  errors?: any,
-  loading?: boolean,
-  firstName?: string,
-  lastName?: string,
-  appName?: string,
-  description?: string,
-  platform?: string,
-  organizationId?: string,
-  userId?: any,
-  org_id?: any
+  organizations?: Array<any>;
+  update?: boolean;
+  id?: string;
+  errors?: any;
+  loading?: boolean;
+  firstName?: string;
+  lastName?: string;
+  appName?: string;
+  description?: string;
+  platform?: string;
+  organizationId?: string;
+  userId?: any;
+  org_id?: any;
 }
 
 class AppCreation extends React.Component<iProps, iState> {
@@ -69,7 +69,7 @@ class AppCreation extends React.Component<iProps, iState> {
     };
   }
 
-  choosePlatform = (e) => {
+  choosePlatform = e => {
     // console.log(e.target.name, n)
     this.setState({ platform: e.target.name });
   };
@@ -86,7 +86,7 @@ class AppCreation extends React.Component<iProps, iState> {
     });
   };
 
-  componentDidMount() { }
+  componentDidMount() {}
 
   UNSAFE_componentWillMount() {
     const { id, org_id }: any = jwt.decode(localStorage.getItem("jwt"));
@@ -99,47 +99,47 @@ class AppCreation extends React.Component<iProps, iState> {
 
     id
       ? this.props.client
-        .query({
-          query: USER_DATA,
-          variables: { userId: id },
-          fetchPolicy: "cache-first"
-        })
-        .then(res => {
-          console.log(res.data.user);
-          this.setState({
-            firstName: res.data.user.firstName,
-            lastName: res.data.user.lastName
-          });
-        })
-        .catch(err => console.log("Failed to get User Details" + err))
+          .query({
+            query: USER_DATA,
+            variables: { userId: id },
+            fetchPolicy: "cache-first"
+          })
+          .then(res => {
+            console.log(res.data.user);
+            this.setState({
+              firstName: res.data.user.firstName,
+              lastName: res.data.user.lastName
+            });
+          })
+          .catch(err => console.log("Failed to get User Details" + err))
       : console.log("Error getting JwtData");
 
     org_id
       ? this.props.client
-        .query({
-          query: GET_ALL_APPS_OF_ORGANIZATION,
-          variables: { id: org_id },
-          fetchPolicy: "network-only" // skip the cache
-        })
-        .then(res => {
-          console.log(res.data);
-          var orgs = [];
-          let org = res.data.organization;
+          .query({
+            query: GET_ALL_APPS_OF_ORGANIZATION,
+            variables: { id: org_id },
+            fetchPolicy: "network-only" // skip the cache
+          })
+          .then(res => {
+            console.log(res.data);
+            var orgs = [];
+            let org = res.data.organization;
 
-          function recOrg(org, orgs) {
-            orgs.push({ name: org.name, id: org.id });
-            if (org && org.children) org.children.map(ch => recOrg(ch, orgs));
-          }
-          recOrg(org, orgs);
-          this.setState({ organizations: orgs });
-        })
-        .catch(err => {
-          console.log("Failed to get User Details" + err);
-        })
+            function recOrg(org, orgs) {
+              orgs.push({ name: org.name, id: org.id });
+              if (org && org.children) org.children.map(ch => recOrg(ch, orgs));
+            }
+            recOrg(org, orgs);
+            this.setState({ organizations: orgs });
+          })
+          .catch(err => {
+            console.log("Failed to get User Details" + err);
+          })
       : console.log("Error getting JwtData");
   }
 
-  handleOnChange = (e) => {
+  handleOnChange = e => {
     this.setState({ [e.target.name]: e.target.value });
     // console.log(e, n)
   };
@@ -206,12 +206,14 @@ class AppCreation extends React.Component<iProps, iState> {
           .catch(err => {
             console.log("Failed to get Places Details" + err.graphQLErrors);
 
-            console.log(err && err.graphQLErrors
-              ? err.graphQLErrors[0].errorCode
-              : 'Error in submitting the form');
+            console.log(
+              err && err.graphQLErrors
+                ? err.graphQLErrors[0].errorCode
+                : "Error in submitting the form"
+            );
 
             if (err.graphQLErrors[0].message) {
-              message.warn(err.graphQLErrors[0].message)
+              message.warn(err.graphQLErrors[0].message);
             }
             this.setState({ loading: false });
           });
@@ -287,7 +289,9 @@ class AppCreation extends React.Component<iProps, iState> {
                     <Button
                       name="Android"
                       onClick={c => this.choosePlatform(c)}
-                      type={this.state.platform === "Android" ? "primary" : null}
+                      type={
+                        this.state.platform === "Android" ? "primary" : null
+                      }
                     >
                       <Icon type="android" theme="filled" /> Android{" "}
                     </Button>
@@ -307,20 +311,31 @@ class AppCreation extends React.Component<iProps, iState> {
                   {this.state.update ? (
                     ""
                   ) : (
-                      <Form.Item {...formItemLayout} label="Industry">
-                        <Select showSearch size="large" style={{ width: "100%" }} placeholder="Select Industy"
-                          getPopupContainer={(triggerNode: any) => triggerNode.parentNode} // value = { auth.user.organization.name }
-                          optionFilterProp="children" onChange={this.onChange} // onSearch={onSearch}
-                          filterOption={(input: any, option: any) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-                        >
-                          {/* <Option value={auth.user.organization.name}>{auth.user.organization?auth.user.organization.name:''}</Option> */}
-                          {options}
-                        </Select>
-                        <span style={{ color: "Red" }}>
-                          {this.state.errors.organizationId}
-                        </span>
-                      </Form.Item>
-                    )}
+                    <Form.Item {...formItemLayout} label="Industry">
+                      <Select
+                        showSearch
+                        size="large"
+                        style={{ width: "100%" }}
+                        placeholder="Select Industy"
+                        getPopupContainer={(triggerNode: any) =>
+                          triggerNode.parentNode
+                        } // value = { auth.user.organization.name }
+                        optionFilterProp="children"
+                        onChange={this.onChange} // onSearch={onSearch}
+                        filterOption={(input: any, option: any) =>
+                          option.props.children
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        }
+                      >
+                        {/* <Option value={auth.user.organization.name}>{auth.user.organization?auth.user.organization.name:''}</Option> */}
+                        {options}
+                      </Select>
+                      <span style={{ color: "Red" }}>
+                        {this.state.errors.organizationId}
+                      </span>
+                    </Form.Item>
+                  )}
 
                   <Form.Item {...formItemLayout} label="Description (Optional)">
                     <Input
@@ -345,7 +360,7 @@ class AppCreation extends React.Component<iProps, iState> {
                       style={{
                         textAlign: "center",
                         width: "200px",
-                        float: 'none',
+                        float: "none",
                         margin: "25px 30px 20px 0"
                       }}
                     >

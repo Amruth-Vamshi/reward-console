@@ -4,23 +4,22 @@ import TestAndControl from "../../molecules/testAndControl";
 import "./style.css";
 
 interface CampaignPriorityProps {
-  buttons?: any,
-  promptText?: any,
-  tootTipText?: any,
-  prioritySelectionTitle?: any,
-  priorityButtonText?: any,
-  testControlTitle?: any,
-  testControlPercentage?: any,
-  testControlPercentageEditText?: any,
-  priorityNumberInvalidErrorMessage?: any,
-  onTestAndControlEdit?: any,
-  handleChange?: any,
-  priorityChosen?: any,
-  HideTestConstrol?: any,
-  text?: any,
-  onClick?: any
+  buttons?: any;
+  promptText?: any;
+  tootTipText?: any;
+  prioritySelectionTitle?: any;
+  priorityButtonText?: any;
+  testControlTitle?: any;
+  testControlPercentage?: any;
+  testControlPercentageEditText?: any;
+  priorityNumberInvalidErrorMessage?: any;
+  onTestAndControlEdit?: any;
+  handleChange?: any;
+  priorityChosen?: any;
+  HideTestConstrol?: any;
+  text?: any;
+  onClick?: any;
 }
-
 
 export const CampaignPriority: React.FC<CampaignPriorityProps> = ({
   buttons,
@@ -41,7 +40,10 @@ export const CampaignPriority: React.FC<CampaignPriorityProps> = ({
 }) => {
   return (
     <Fragment>
-      <div style={{ padding: 15 }} className="campaignPriorityContainerStyle prioritySection">
+      <div
+        style={{ padding: 15 }}
+        className="campaignPriorityContainerStyle prioritySection"
+      >
         <PrioritySelection
           priorityChosen={priorityChosen}
           prioritySelectionTitle={prioritySelectionTitle}

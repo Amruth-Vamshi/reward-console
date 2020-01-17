@@ -12,18 +12,14 @@ import {
 } from "antd";
 import { FormComponentProps } from "antd/lib/form";
 
-interface DelayProps extends FormComponentProps {
-
-}
+interface DelayProps extends FormComponentProps {}
 
 interface DelayState {
-  delay?: number,
-  delay_type?: string
+  delay?: number;
+  delay_type?: string;
 }
 
 class Delay extends React.Component<DelayProps, DelayState> {
-
-
   constructor(props: DelayProps) {
     super(props);
     this.state = {

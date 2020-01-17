@@ -9,13 +9,13 @@ import Galaxys5 from "./Galaxys5";
 import Lumia920 from "./Lumia920";
 
 export {
-    Iphone5c,
-    IphoneX,
-    Nexus5,
-    Iphone8,
-    Iphone8plus,
-    HtcOne,
-    MacBookPro,
-    Galaxys5,
-    Lumia920
-}
+  Iphone5c,
+  IphoneX,
+  Nexus5,
+  Iphone8,
+  Iphone8plus,
+  HtcOne,
+  MacBookPro,
+  Galaxys5,
+  Lumia920
+};

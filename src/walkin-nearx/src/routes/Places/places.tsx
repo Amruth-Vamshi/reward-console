@@ -8,23 +8,23 @@ import PlaceCard from "../../components/Places/placeCard";
 // import { getAllPlaces } from './data'
 // import { Query } from "react-apollo";
 import { GET_ALL_AND_SEARCH_PLACES, DISABLE_PLACES } from "../../queries";
-import { History } from 'history'
+import { History } from "history";
 import { any } from "prop-types";
 import ApolloClient from "apollo-client";
 
 const Search = Input.Search;
 
 interface iProps {
-  history: History
+  history: History;
 }
 
 interface iState {
-  places?: Array<any>,
-  offset?: number,
-  totalPlaces?: number,
-  search?: string,
-  errors?: any,
-  spin?: boolean
+  places?: Array<any>;
+  offset?: number;
+  totalPlaces?: number;
+  search?: string;
+  errors?: any;
+  spin?: boolean;
 }
 
 export default class Places extends React.Component<iProps, iState> {
@@ -40,11 +40,16 @@ export default class Places extends React.Component<iProps, iState> {
     };
   }
 
-  getPlacesData = (offset: number, limit: number, search: string, fetchPolicy?: any) => {
+  getPlacesData = (
+    offset: number,
+    limit: number,
+    search: string,
+    fetchPolicy?: any
+  ) => {
     this.setState({ spin: true });
     let input: any = { limit: limit, offset: offset };
     if (search && search.trim() !== "") input.search = search.trim();
-    let policy: any = `${fetchPolicy ? fetchPolicy : 'cache-first'}`
+    let policy: any = `${fetchPolicy ? fetchPolicy : "cache-first"}`;
     client
       .query({
         query: GET_ALL_AND_SEARCH_PLACES,
@@ -65,7 +70,8 @@ export default class Places extends React.Component<iProps, iState> {
         });
         // console.log(JSON.stringify(places))
         this.setState({
-          places, spin: false,
+          places,
+          spin: false,
           totalPlaces: res.data.Places.pageInfo.total
         });
       })
@@ -76,7 +82,7 @@ export default class Places extends React.Component<iProps, iState> {
       });
   };
 
-  disablePlace = (id) => {
+  disablePlace = id => {
     client
       .mutate({
         mutation: DISABLE_PLACES,
@@ -84,22 +90,22 @@ export default class Places extends React.Component<iProps, iState> {
       })
       .then(res => {
         console.log(res);
-        this.getPlacesData(this.state.offset * 7, 7, '', 'network-only')
+        this.getPlacesData(this.state.offset * 7, 7, "", "network-only");
       })
       .catch(err => {
         this.setState({ spin: false });
         message.error("ERROR");
         console.log("Failed to get Places Details" + err);
       });
-  }
+  };
 
   UNSAFE_componentWillMount() {
-    this.getPlacesData(0, 7, '', 'network-only')
+    this.getPlacesData(0, 7, "", "network-only");
   }
 
   pagination = (e, n) => {
-    this.getPlacesData((e - 1) * n, n, this.state.search, 'cache-first');
-    this.setState({ offset: e - 1 })
+    this.getPlacesData((e - 1) * n, n, this.state.search, "cache-first");
+    this.setState({ offset: e - 1 });
   };
 
   handleSearchSubmit = () => {
@@ -112,14 +118,13 @@ export default class Places extends React.Component<iProps, iState> {
   };
 
   handleSearchChange = e => {
-    if (e.target.value.trim() == "") this.getPlacesData(0, 7, '');
+    if (e.target.value.trim() == "") this.getPlacesData(0, 7, "");
     this.setState({ [e.target.name]: e.target.value });
   };
 
-
   render() {
     const demoData = this.state.places;
-    console.log(demoData)
+    console.log(demoData);
     return (
       <div style={{ margin: 0 }}>
         <Auxiliary>
@@ -188,30 +193,30 @@ export default class Places extends React.Component<iProps, iState> {
               {demoData.map((data, index) => (
                 <PlaceCard
                   history={this.props.history}
-                  key={index} disablePlace={this.disablePlace}
+                  key={index}
+                  disablePlace={this.disablePlace}
                   data={data}
                 />
               ))}
-
             </div>
           ) : (
-                <div style={{ margin: 80, fontSize: 25 }}>
-                  <div className="divCenter">
-                    <div>No Places Found</div>
-                  </div>
-                  <div className="divCenter">
-                    <Link to="/nearx/places/createplace">
-                      <Button
-                        style={{ margin: 22, fontSize: 18 }}
-                        className="buttonPrimary"
-                      >
-                        Create New Place
-                      </Button>
-                    </Link>
-                    {/* <div style={{margin:10, fontSize:20}}>Create A new Place</div> */}
-                  </div>
-                </div>
-              )}
+            <div style={{ margin: 80, fontSize: 25 }}>
+              <div className="divCenter">
+                <div>No Places Found</div>
+              </div>
+              <div className="divCenter">
+                <Link to="/nearx/places/createplace">
+                  <Button
+                    style={{ margin: 22, fontSize: 18 }}
+                    className="buttonPrimary"
+                  >
+                    Create New Place
+                  </Button>
+                </Link>
+                {/* <div style={{margin:10, fontSize:20}}>Create A new Place</div> */}
+              </div>
+            </div>
+          )}
 
           <div style={{ margin: 20 }} className="divCenter">
             <Pagination

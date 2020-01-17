@@ -5,8 +5,8 @@ import UserCard from "./UserCard";
 const Search = Input.Search;
 
 interface UserInfoProps {
-  data: any
-  spin?: any
+  data: any;
+  spin?: any;
 }
 
 export default class UserInfo extends React.Component<UserInfoProps, {}> {
@@ -47,10 +47,12 @@ export default class UserInfo extends React.Component<UserInfoProps, {}> {
             <br /> <br /> <br />{" "}
           </div>
         ) : this.props.data && this.props.data.length ? (
-          this.props.data.map((user: any, key: any) => <UserCard key={key} data={user} />)
+          this.props.data.map((user: any, key: any) => (
+            <UserCard key={key} data={user} />
+          ))
         ) : (
-              <Empty />
-            )}
+          <Empty />
+        )}
       </div>
     );
   }

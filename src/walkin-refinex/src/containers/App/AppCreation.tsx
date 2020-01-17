@@ -1,5 +1,15 @@
 import * as React from "react";
-import { Col, Card, Row, Select, Form, Input, Button, Icon, message } from "antd";
+import {
+  Col,
+  Card,
+  Row,
+  Select,
+  Form,
+  Input,
+  Button,
+  Icon,
+  message
+} from "antd";
 import "./app.css";
 import {
   GET_ALL_APPS_OF_ORGANIZATION,
@@ -9,7 +19,12 @@ import {
 
 import { CREATE_APP } from "../Query";
 import * as jwt from "jsonwebtoken";
-import { withApollo, compose, graphql, ApolloProviderProps } from "react-apollo";
+import {
+  withApollo,
+  compose,
+  graphql,
+  ApolloProviderProps
+} from "react-apollo";
 import gql from "graphql-tag";
 import { RouteChildrenProps } from "react-router";
 
@@ -30,27 +45,30 @@ const formItemLayout = {
   }
 };
 
-interface AppCreationProps extends RouteChildrenProps, ApolloProviderProps<any> {
-
-}
+interface AppCreationProps
+  extends RouteChildrenProps,
+    ApolloProviderProps<any> {}
 
 interface AppCreationState {
-  organizations: Array<any>,
-  update: boolean,
-  id: string,
-  errors: any,
-  loading: boolean,
-  firstName: string,
-  lastName: string,
-  appName: string,
-  description: string,
-  platform: string,
-  organizationId: string,
-  userId: string,
-  org_id: string
+  organizations: Array<any>;
+  update: boolean;
+  id: string;
+  errors: any;
+  loading: boolean;
+  firstName: string;
+  lastName: string;
+  appName: string;
+  description: string;
+  platform: string;
+  organizationId: string;
+  userId: string;
+  org_id: string;
 }
 
-class AppCreation extends React.Component<AppCreationProps, Partial<AppCreationState>> {
+class AppCreation extends React.Component<
+  AppCreationProps,
+  Partial<AppCreationState>
+> {
   constructor(props: AppCreationProps) {
     super(props);
     this.state = {
@@ -87,7 +105,7 @@ class AppCreation extends React.Component<AppCreationProps, Partial<AppCreationS
     });
   };
 
-  componentDidMount() { }
+  componentDidMount() {}
 
   UNSAFE_componentWillMount() {
     const jwtToken = localStorage.getItem("jwt");
@@ -101,43 +119,44 @@ class AppCreation extends React.Component<AppCreationProps, Partial<AppCreationS
 
     id
       ? this.props.client
-        .query({
-          query: USER_DATA,
-          variables: { userId: id },
-          fetchPolicy: "cache-first"
-        })
-        .then(res => {
-          console.log(res.data.user);
-          this.setState({
-            firstName: res.data.user.firstName,
-            lastName: res.data.user.lastName
-          });
-        })
-        .catch(err => console.log("Failed to get User Details" + err))
+          .query({
+            query: USER_DATA,
+            variables: { userId: id },
+            fetchPolicy: "cache-first"
+          })
+          .then(res => {
+            console.log(res.data.user);
+            this.setState({
+              firstName: res.data.user.firstName,
+              lastName: res.data.user.lastName
+            });
+          })
+          .catch(err => console.log("Failed to get User Details" + err))
       : console.log("Error getting JwtData");
 
     org_id
       ? this.props.client
-        .query({
-          query: GET_ALL_APPS_OF_ORGANIZATION,
-          variables: { id: org_id },
-          fetchPolicy: "network-only" // skip the cache
-        })
-        .then(res => {
-          console.log(res.data);
-          let orgs: Array<any> = [];
-          let org = res.data.organization;
+          .query({
+            query: GET_ALL_APPS_OF_ORGANIZATION,
+            variables: { id: org_id },
+            fetchPolicy: "network-only" // skip the cache
+          })
+          .then(res => {
+            console.log(res.data);
+            let orgs: Array<any> = [];
+            let org = res.data.organization;
 
-          function recOrg(org: any, orgs: Array<any>) {
-            orgs.push({ name: org.name, id: org.id });
-            if (org && org.children) org.children.map((ch: any) => recOrg(ch, orgs));
-          }
-          recOrg(org, orgs);
-          this.setState({ organizations: orgs });
-        })
-        .catch(err => {
-          console.log("Failed to get User Details" + err);
-        })
+            function recOrg(org: any, orgs: Array<any>) {
+              orgs.push({ name: org.name, id: org.id });
+              if (org && org.children)
+                org.children.map((ch: any) => recOrg(ch, orgs));
+            }
+            recOrg(org, orgs);
+            this.setState({ organizations: orgs });
+          })
+          .catch(err => {
+            console.log("Failed to get User Details" + err);
+          })
       : console.log("Error getting JwtData");
   }
 
@@ -211,7 +230,7 @@ class AppCreation extends React.Component<AppCreationProps, Partial<AppCreationS
           .catch(err => {
             if (err.graphQLErrors[0].message) {
               this.setState({ loading: false });
-              message.warn(err.graphQLErrors[0].message)
+              message.warn(err.graphQLErrors[0].message);
             }
             this.setState({ loading: false });
           });
@@ -307,30 +326,30 @@ class AppCreation extends React.Component<AppCreationProps, Partial<AppCreationS
                   {this.state.update ? (
                     ""
                   ) : (
-                      <Form.Item {...formItemLayout} label="Industry">
-                        <Select
-                          showSearch
-                          size="large"
-                          style={{ width: "100%" }}
-                          placeholder="Select Industy"
-                          // value = { auth.user.organization.name }
-                          optionFilterProp="children"
-                          onChange={this.onChange}
-                          // onSearch={onSearch}
-                          filterOption={(input: any, option: any) =>
-                            option.props.children
-                              .toLowerCase()
-                              .indexOf(input.toLowerCase()) >= 0
-                          }
-                        >
-                          {/* <Option value={auth.user.organization.name}>{auth.user.organization?auth.user.organization.name:''}</Option> */}
-                          {options}
-                        </Select>
-                        <span style={{ color: "Red" }}>
-                          {this.state.errors.organizationId}
-                        </span>
-                      </Form.Item>
-                    )}
+                    <Form.Item {...formItemLayout} label="Industry">
+                      <Select
+                        showSearch
+                        size="large"
+                        style={{ width: "100%" }}
+                        placeholder="Select Industy"
+                        // value = { auth.user.organization.name }
+                        optionFilterProp="children"
+                        onChange={this.onChange}
+                        // onSearch={onSearch}
+                        filterOption={(input: any, option: any) =>
+                          option.props.children
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        }
+                      >
+                        {/* <Option value={auth.user.organization.name}>{auth.user.organization?auth.user.organization.name:''}</Option> */}
+                        {options}
+                      </Select>
+                      <span style={{ color: "Red" }}>
+                        {this.state.errors.organizationId}
+                      </span>
+                    </Form.Item>
+                  )}
 
                   <Form.Item {...formItemLayout} label="Description (Optional)">
                     <Input

@@ -3,31 +3,31 @@ import PropTypes from "prop-types";
 import { ErrorBoundary } from "walkin-components";
 import gql from "graphql-tag";
 import { graphql, compose } from "react-apollo";
-import {
-  Form,
-  TreeSelect,
-  Row,
-  Col,
-  Popconfirm
-} from "antd";
+import { Form, TreeSelect, Row, Col, Popconfirm } from "antd";
 import { QUESTION_TYPES } from "../../../../../../../containers/Query";
 import { FormComponentProps, FormItemProps } from "antd/lib/form";
-declare const ValidateStatuses: ["success", "warning", "error", "validating", ""];
+declare const ValidateStatuses: [
+  "success",
+  "warning",
+  "error",
+  "validating",
+  ""
+];
 
 interface FormHeaderProps extends FormComponentProps {
-  onQuestionTypeEdit?: any
-  onQuestionEdited?: any
-  questionToEdit?: any
-  questionType?: any
-  questionTypesQuery?: any
+  onQuestionTypeEdit?: any;
+  onQuestionEdited?: any;
+  questionToEdit?: any;
+  questionType?: any;
+  questionTypesQuery?: any;
 }
 
 interface FormHeaderState {
-  showSubCategory: boolean,
-  subCategory: any,
-  popUpVisible: boolean,
-  newTypeValue: any,
-  validationStatus?: (typeof ValidateStatuses)[number]
+  showSubCategory: boolean;
+  subCategory: any;
+  popUpVisible: boolean;
+  newTypeValue: any;
+  validationStatus?: typeof ValidateStatuses[number];
 }
 
 class FormHeader extends React.Component<FormHeaderProps, FormHeaderState> {
@@ -115,7 +115,7 @@ class FormHeader extends React.Component<FormHeaderProps, FormHeaderState> {
   confirmTypeChange = () => {
     const { newTypeValue } = this.state;
     this.props.form.setFieldsValue({
-      type: newTypeValue,
+      type: newTypeValue
     });
     this.setState({
       popUpVisible: false,
@@ -127,7 +127,7 @@ class FormHeader extends React.Component<FormHeaderProps, FormHeaderState> {
 
   closeTypeChange = () => {
     this.props.form.setFieldsValue({
-      type: this.props.questionToEdit.type,
+      type: this.props.questionToEdit.type
     });
     this.setState({
       popUpVisible: false,
@@ -238,7 +238,6 @@ class FormHeader extends React.Component<FormHeaderProps, FormHeaderState> {
                     )}
                   </Item>
                 </Item>
-
               </Item>
               {/**
                 TODO: UNCOMMENT THE FOLLOWING LINES WHEN WE HAVE SUPPORT CONTROLLING FOR MANDATORY AND BRANCH LOGIC IN BACKEND
@@ -259,7 +258,6 @@ class FormHeader extends React.Component<FormHeaderProps, FormHeaderState> {
                   />
                 </Item> 
               </Item> */}
-
 
               {/* <Col span={12}>
               <Row>
@@ -307,8 +305,6 @@ class FormHeader extends React.Component<FormHeaderProps, FormHeaderState> {
   }
 }
 
-
-
 // const onValuesChange = ({ onQuestionEdited }, __, formValue) => {
 //   onQuestionEdited(formValue);
 // };
@@ -323,4 +319,5 @@ export default compose(
     options: {
       fetchPolicy: "cache-first"
     }
-  }))(FormPane);
+  })
+)(FormPane);

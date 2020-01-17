@@ -1,5 +1,19 @@
 import * as React from "react";
-import { Col, Row, Pagination, Card, Select, Timeline, Form, Modal, Spin, Tooltip, Input, Icon, Button } from "antd";
+import {
+  Col,
+  Row,
+  Pagination,
+  Card,
+  Select,
+  Timeline,
+  Form,
+  Modal,
+  Spin,
+  Tooltip,
+  Input,
+  Icon,
+  Button
+} from "antd";
 // import AppListCard from "./AppListCard";
 import {
   GET_WEBHOOKS,
@@ -19,7 +33,6 @@ import HooksListCard from "./HooksListCard";
 const Option = Select.Option;
 const jwtData: any = jwt.decode(localStorage.getItem("jwt"));
 
-
 const formItemLayout = {
   labelCol: {
     sm: { span: 24 },
@@ -36,23 +49,23 @@ const formItemLayout = {
 };
 
 interface iProps {
-  client?: any
+  client?: any;
 }
 
 interface iState {
-  visible?: boolean,
-  hooksList?: Array<any>,
-  update?: boolean,
-  spin?: boolean,
-  loading?: boolean,
-  eventTypes?: Array<any>,
-  hookName?: string,
-  headers?: string,
-  event?: string,
-  method?: string,
-  url?: string,
-  errors?: any,
-  id?: string
+  visible?: boolean;
+  hooksList?: Array<any>;
+  update?: boolean;
+  spin?: boolean;
+  loading?: boolean;
+  eventTypes?: Array<any>;
+  hookName?: string;
+  headers?: string;
+  event?: string;
+  method?: string;
+  url?: string;
+  errors?: any;
+  id?: string;
 }
 
 class Hooks extends React.Component<iProps, iState> {
@@ -86,24 +99,27 @@ class Hooks extends React.Component<iProps, iState> {
   handleCancel = () => {
     this.state.update
       ? this.setState({
-        visible: false,
-        errors: {},
-        hookName: "",
-        event: "",
-        update: false,
-        id: "",
-        headers: "",
-        url: "",
-        method: "",
-        loading: false
-      })
+          visible: false,
+          errors: {},
+          hookName: "",
+          event: "",
+          update: false,
+          id: "",
+          headers: "",
+          url: "",
+          method: "",
+          loading: false
+        })
       : this.setState({ visible: false, update: false });
   };
 
   UNSAFE_componentWillMount() {
     this.getWebhooks();
     this.props.client
-      .query({ query: LIST_WEBHOOK_EVENTS, variables: { org_id: jwtData.org_id, status: "ACTIVE" } })
+      .query({
+        query: LIST_WEBHOOK_EVENTS,
+        variables: { org_id: jwtData.org_id, status: "ACTIVE" }
+      })
       .then(res => {
         console.log(res.data.webhookEventTypes);
         this.setState({ eventTypes: res.data.webhookEventTypes });
@@ -116,19 +132,19 @@ class Hooks extends React.Component<iProps, iState> {
 
     jwtData
       ? this.props.client
-        .query({
-          query: GET_WEBHOOKS,
-          variables: { org_id: jwtData.org_id, status: "ACTIVE" },
-          fetchPolicy: "network-only"
-        })
-        .then(res => {
-          console.log(res.data.webhooks);
-          this.setState({ hooksList: res.data.webhooks, spin: false });
-        })
-        .catch(err => {
-          this.setState({ spin: false });
-          console.log("Failed to get User Details" + err);
-        })
+          .query({
+            query: GET_WEBHOOKS,
+            variables: { org_id: jwtData.org_id, status: "ACTIVE" },
+            fetchPolicy: "network-only"
+          })
+          .then(res => {
+            console.log(res.data.webhooks);
+            this.setState({ hooksList: res.data.webhooks, spin: false });
+          })
+          .catch(err => {
+            this.setState({ spin: false });
+            console.log("Failed to get User Details" + err);
+          })
       : console.log("Error getting JwtData");
   };
 
@@ -143,7 +159,7 @@ class Hooks extends React.Component<iProps, iState> {
     this.setState({ method: e, errors });
   };
 
-  handleOnChange = (e) => {
+  handleOnChange = e => {
     let { errors } = this.state;
     errors[e.target.name] = "";
     this.setState({ [e.target.name]: e.target.value, errors });
@@ -163,7 +179,7 @@ class Hooks extends React.Component<iProps, iState> {
         this.setState({ loading: false });
         console.log("Failed to Delete Hooks" + err);
       });
-  }
+  };
 
   createHook = () => {
     this.setState({ loading: true });
@@ -178,7 +194,6 @@ class Hooks extends React.Component<iProps, iState> {
       this.setState({ errors, loading: false });
       console.log("Errors in submition" + Object.keys(errors).length);
     } else {
-
       if (this.state.update) {
         this.props.client
           .mutate({
@@ -270,7 +285,6 @@ class Hooks extends React.Component<iProps, iState> {
 
         {this.state.spin ? (
           <div>
-
             <br /> <br /> <br /> <br />
             <div className="divCenter">
               <Spin size="large" />
@@ -297,20 +311,20 @@ class Hooks extends React.Component<iProps, iState> {
             ))}
           </div>
         ) : (
-              <div style={{ margin: 100, fontSize: 25 }}>
-                <div className="divCenter">No Hooks Present</div>
-                <div className="divCenter">
-                  <Button
-                    style={{ margin: 30, fontSize: 18 }}
-                    onClick={() => this.addHook()}
-                    className="buttonPrimary"
-                  >
-                    Create New Hook
+          <div style={{ margin: 100, fontSize: 25 }}>
+            <div className="divCenter">No Hooks Present</div>
+            <div className="divCenter">
+              <Button
+                style={{ margin: 30, fontSize: 18 }}
+                onClick={() => this.addHook()}
+                className="buttonPrimary"
+              >
+                Create New Hook
               </Button>
-                  {/* <div style={{margin:10, fontSize:20}}>Create A new Place</div> */}
-                </div>
-              </div>
-            )}
+              {/* <div style={{margin:10, fontSize:20}}>Create A new Place</div> */}
+            </div>
+          </div>
+        )}
 
         <Modal
           width="600px"
@@ -331,22 +345,36 @@ class Hooks extends React.Component<iProps, iState> {
               <span style={{ color: "Red" }}> {this.state.errors.hookName} </span>
             </Form.Item> */}
 
-            {this.state.update ? "" :
+            {this.state.update ? (
+              ""
+            ) : (
               <Form.Item {...formItemLayout} label="Event Type">
-                <Select showSearch size="large" getPopupContainer={(triggerNode: any) => triggerNode.parentNode}
-                  style={{ width: "100%" }} placeholder="Select Event Type" // value = { auth.user.organization.name }
-                  optionFilterProp="children" onChange={this.onChange}
-                // onSearch={onSearch}
+                <Select
+                  showSearch
+                  size="large"
+                  getPopupContainer={(triggerNode: any) =>
+                    triggerNode.parentNode
+                  }
+                  style={{ width: "100%" }}
+                  placeholder="Select Event Type" // value = { auth.user.organization.name }
+                  optionFilterProp="children"
+                  onChange={this.onChange}
+                  // onSearch={onSearch}
                 >
                   {options}
                 </Select>
                 <span style={{ color: "Red" }}>{this.state.errors.event}</span>
               </Form.Item>
-            }
+            )}
 
             <Form.Item {...formItemLayout} label="Method">
-              <Select size="large" style={{ width: "100%" }} placeholder="Select method" optionFilterProp="children"
-                value={this.state.method} getPopupContainer={(triggerNode: any) => triggerNode.parentNode}
+              <Select
+                size="large"
+                style={{ width: "100%" }}
+                placeholder="Select method"
+                optionFilterProp="children"
+                value={this.state.method}
+                getPopupContainer={(triggerNode: any) => triggerNode.parentNode}
                 onChange={this.onChangeMethod} // onSearch={onSearch}
               >
                 <Option value="POST">POST</Option>

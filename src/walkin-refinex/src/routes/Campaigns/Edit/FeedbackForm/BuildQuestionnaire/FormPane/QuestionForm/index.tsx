@@ -1,6 +1,6 @@
 import * as React from "react";
 import { CardBox, ErrorBoundary } from "walkin-components";
-import throttle from "lodash.throttle"
+import throttle from "lodash.throttle";
 import gql from "graphql-tag";
 import { graphql, compose } from "react-apollo";
 import {
@@ -23,26 +23,34 @@ const QUESTION_WITH_SLIDER = {
   RATING_SCALE: "RATING_SCALE",
   OPINION_SCALE: "OPINION_SCALE"
 };
-declare const ValidateStatuses: ["success", "warning", "error", "validating", ""];
+declare const ValidateStatuses: [
+  "success",
+  "warning",
+  "error",
+  "validating",
+  ""
+];
 interface QuestionFormProps extends FormComponentProps {
-  showButton?: any
-  onQuestionEdited?: any
-  onQuestionSubmitted?: any
-  questionToEdit?: any
-  style?: any
-  questionTypesQuery?: any
+  showButton?: any;
+  onQuestionEdited?: any;
+  onQuestionSubmitted?: any;
+  questionToEdit?: any;
+  style?: any;
+  questionTypesQuery?: any;
 }
-
 
 interface QuestionFormState {
-  popUpVisible: boolean,
-  newTypeValue: any,
-  validationStatus?: (typeof ValidateStatuses)[number],
-  showButton: boolean
+  popUpVisible: boolean;
+  newTypeValue: any;
+  validationStatus?: typeof ValidateStatuses[number];
+  showButton: boolean;
 }
 
-class QuestionForm extends React.Component<QuestionFormProps, QuestionFormState> {
-  private handleClickThrottled
+class QuestionForm extends React.Component<
+  QuestionFormProps,
+  QuestionFormState
+> {
+  private handleClickThrottled;
   constructor(props: QuestionFormProps) {
     super(props);
     this.state = {
@@ -51,7 +59,7 @@ class QuestionForm extends React.Component<QuestionFormProps, QuestionFormState>
       validationStatus: "success",
       showButton: false
     };
-    this.handleClickThrottled = throttle(this.submitQuestion, 1000)
+    this.handleClickThrottled = throttle(this.submitQuestion, 1000);
   }
 
   setCurrentQuestion = () => {
@@ -72,7 +80,7 @@ class QuestionForm extends React.Component<QuestionFormProps, QuestionFormState>
     this.setCurrentQuestion();
   }
   componentWillUnmount() {
-    this.handleClickThrottled.cancel()
+    this.handleClickThrottled.cancel();
   }
 
   componentDidUpdate(preValue) {
@@ -162,18 +170,22 @@ class QuestionForm extends React.Component<QuestionFormProps, QuestionFormState>
     const { TextArea } = Input;
     let props = {
       suffix: <span />
-    }
+    };
     if (isFieldsTouched(["questionText"]) || isFieldsTouched(["range"])) {
       props = {
-        suffix: (<Tooltip title="Update Question">
-          <Button
-            onClick={this.submitQuestion}
-            type="primary"
-            style={{ margin: "auto" }}
-            size={"small"}>Update</Button>
-        </Tooltip>)
-
-      }
+        suffix: (
+          <Tooltip title="Update Question">
+            <Button
+              onClick={this.submitQuestion}
+              type="primary"
+              style={{ margin: "auto" }}
+              size={"small"}
+            >
+              Update
+            </Button>
+          </Tooltip>
+        )
+      };
     }
 
     return (
@@ -224,12 +236,15 @@ class QuestionForm extends React.Component<QuestionFormProps, QuestionFormState>
                   QUESTION_WITH_SLIDER[this.props.questionToEdit.type]
                     ? {}
                     : {
-                      display: "none"
-                    }
+                        display: "none"
+                      }
                 }
               >
                 {getFieldDecorator("range", {
-                  initialValue: [this.props.questionToEdit.rangeMin, this.props.questionToEdit.rangeMax]
+                  initialValue: [
+                    this.props.questionToEdit.rangeMin,
+                    this.props.questionToEdit.rangeMax
+                  ]
                 })(<Slider range />)}
               </Item>
               <Item wrapperCol={{ offset: 18 }}>
@@ -241,7 +256,7 @@ class QuestionForm extends React.Component<QuestionFormProps, QuestionFormState>
             </Form>
           </Col>
         </Row>
-      </ErrorBoundary >
+      </ErrorBoundary>
     );
   }
 }
@@ -263,4 +278,5 @@ export default compose(
     options: {
       fetchPolicy: "cache-first"
     }
-  }))(FormPane);
+  })
+)(FormPane);
