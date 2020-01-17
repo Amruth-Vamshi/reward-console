@@ -163,11 +163,11 @@ export default class GeofenceMap extends React.Component<iProps, iState> {
   UNSAFE_componentWillMount() {
     geolocation.getCurrentPosition(position => {
       var center = this.state.center;
-      (center = {
+      center = {
         lat: position.coords.latitude,
         lng: position.coords.longitude
-      }),
-        this.setState({ center });
+      };
+      this.setState({ center });
       console.log("My Location  " + center);
     });
   }

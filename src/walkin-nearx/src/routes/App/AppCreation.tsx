@@ -92,9 +92,10 @@ class AppCreation extends React.Component<iProps, iState> {
     const { id, org_id }: any = jwt.decode(localStorage.getItem("jwt"));
     this.setState({ userId: id, org_id });
 
-    sessionStorage.getItem("AppData")
-      ? this.getAppDetails(JSON.parse(sessionStorage.getItem("AppData")))
-      : "";
+    if (sessionStorage.getItem("AppData")) {
+      this.getAppDetails(JSON.parse(sessionStorage.getItem("AppData")));
+    }
+
     sessionStorage.removeItem("AppData");
 
     id

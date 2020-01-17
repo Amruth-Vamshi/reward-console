@@ -170,9 +170,9 @@ class EventType extends React.Component<
 }
 
 const EventTypeForm1 = withApollo(EventType);
-export const EventTypeForm = Form.create<EventTypeProps>({
+export const EventTypeForm = Form.create<WithApolloClient<EventTypeProps>>({
   name: "EventType",
-  onValuesChange(props: WithApolloClient<EventTypeProps>, values) {
+  onValuesChange: (props: WithApolloClient<EventTypeProps>, values) => {
     console.log("values", values);
     if (values.event) {
       props.onEventTypeEdited(values);

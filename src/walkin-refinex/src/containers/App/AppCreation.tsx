@@ -112,9 +112,9 @@ class AppCreation extends React.Component<
     const { id, org_id }: any = jwt.decode(jwtToken);
     this.setState({ userId: id, org_id });
 
-    sessionStorage.getItem("AppData")
-      ? this.getAppDetails(JSON.parse(sessionStorage.getItem("AppData")))
-      : "";
+    if (sessionStorage.getItem("AppData")) {
+      this.getAppDetails(JSON.parse(sessionStorage.getItem("AppData")));
+    }
     sessionStorage.removeItem("AppData");
 
     id
