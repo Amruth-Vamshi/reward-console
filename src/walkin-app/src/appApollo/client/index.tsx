@@ -41,6 +41,7 @@ export const configureClient = async () => {
         ) {
           localStorage.clear();
           sessionStorage.clear();
+          // eslint-disable-next-line no-restricted-globals
           location.reload();
         }
 

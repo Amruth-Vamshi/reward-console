@@ -168,7 +168,7 @@ class EventType extends React.Component<
     );
   }
 }
-EventType;
+
 const EventTypeForm1 = withApollo(EventType);
 export const EventTypeForm = Form.create<EventTypeProps>({
   name: "EventType",

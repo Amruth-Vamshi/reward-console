@@ -36,6 +36,7 @@ class UserInfo extends Component<IProps, IState> {
     sessionStorage.clear();
     localStorage.clear();
     // this.props.history.push('/');
+    // eslint-disable-next-line no-restricted-globals
     location.reload();
   };
 

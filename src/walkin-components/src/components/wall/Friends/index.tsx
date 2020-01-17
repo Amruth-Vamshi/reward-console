@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Badge } from "antd";
-
+import { WidgetHeader } from "../../WidgetHeader/index";
 function Status(props) {
   const isType = props.isType;
   if (isType === "online") {
