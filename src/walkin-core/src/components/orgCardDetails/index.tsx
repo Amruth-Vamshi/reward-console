@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Card, Avatar, Row, Col } from "antd";
-const org = require("walkin-components/src/assets/images/org.png");
 import "./style.css";
+const org = require("walkin-components/src/assets/images/org.png");
 
 const OrgCardDetails = ({ orgDetails }: any) => {
   return (

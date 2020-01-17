@@ -12,13 +12,13 @@ import {
   Checkbox,
   TimePicker
 } from "antd";
-const { TextArea } = Input;
 import "./style.css";
 import moment from "moment";
-const Option = Select.Option;
-const { RangePicker } = DatePicker;
 import AddAndDeleteComponentsDynamically from "../../../atoms/addAndDeleteComponentsDynamically";
 import { FormComponentProps } from "antd/lib/form";
+const { TextArea } = Input;
+const Option = Select.Option;
+const { RangePicker } = DatePicker;
 
 interface IProps extends FormComponentProps {
   offerTypeData?: any;

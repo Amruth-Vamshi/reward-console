@@ -1,9 +1,9 @@
 import * as React from "react";
 import * as PropTypes from "prop-types";
 import { Row, Col, Icon, Typography, Progress, Button } from "antd";
-const { Title } = Typography;
 import moment from "moment";
 import "./overViewStyle.css";
+const { Title } = Typography;
 
 interface iProps {
   launchCampaign?: any;

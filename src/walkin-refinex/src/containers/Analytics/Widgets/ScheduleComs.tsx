@@ -42,12 +42,12 @@ import {
 import { graphql, compose, withApollo } from "react-apollo";
 import { GET_ANALYTICS } from "walkin-core/src/PlatformQueries";
 import moment from "moment";
-const dateFormat = "YYYY/MM/DD";
 import * as jwt from "jsonwebtoken";
 import Cylinder3DChart from "walkin-nearx/src/routes/Dashboard/Cylinder3DChart";
 import PieChartWithAngle from "../Charts/PieChartWithPaddingAngle";
 import PieChartActiveShape from "../Charts/CustomActiveShapePieChart";
 import { TableSize } from "antd/lib/table";
+const dateFormat = "YYYY/MM/DD";
 const { Option } = Select;
 
 const FormItem = Form.Item;

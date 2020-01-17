@@ -10,13 +10,13 @@ import {
   Col,
   Switch
 } from "antd";
-const { Header, Content, Footer } = Layout;
 import "./index.css";
 import { CustomScrollbars } from "walkin-components";
 import SingleAnswer from "./Components/Fields/SigleChoice";
 import MultipleAnswer from "./Components/Fields/MultipleChoice";
 import Text from "./Components/Fields/Text";
 import RateScale from "./Components/Fields/RatingScale";
+const { Header, Content, Footer } = Layout;
 
 interface HomeProps {
   color?: any;

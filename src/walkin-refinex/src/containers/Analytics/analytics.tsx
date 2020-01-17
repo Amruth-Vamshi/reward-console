@@ -27,7 +27,6 @@ import {
 } from "react-apollo";
 import { GET_ANALYTICS } from "walkin-core/src/PlatformQueries";
 import moment from "moment";
-const dateFormat = "YYYY/MM/DD";
 import * as jwt from "jsonwebtoken";
 import Cylinder3DChart from "walkin-nearx/src/routes/Dashboard/Cylinder3DChart";
 import PieChartWithAngle from "./Charts/PieChartWithPaddingAngle";
@@ -35,6 +34,7 @@ import PieChartActiveShape from "./Charts/CustomActiveShapePieChart";
 import OverallReportWidget from "./Widgets/OverallReport";
 import IndividualReport from "./Widgets/IndividualReport";
 import ScheduleCommunication from "./Widgets/ScheduleComs";
+const dateFormat = "YYYY/MM/DD";
 const data = [
   {
     name: "How would you rate your experience at CCD today?",

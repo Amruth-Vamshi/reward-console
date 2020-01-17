@@ -1,8 +1,8 @@
 import * as React from "react";
 import { Form, Input, Upload, Button } from "antd";
 import { UploadProps } from "antd/lib/upload";
-const { TextArea } = Input;
 import { FormComponentProps } from "antd/lib/form";
+const { TextArea } = Input;
 
 const props = {
   action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",

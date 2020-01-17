@@ -24,9 +24,9 @@ import {
 } from "walkin-core/src/PlatformQueries";
 import * as jwt from "jsonwebtoken";
 import { withApollo } from "react-apollo";
+import HooksListCard from "./HooksListCard";
 // import { nearXClient as client } from "../../nearXApollo";
 const { TextArea } = Input;
-import HooksListCard from "./HooksListCard";
 
 // const text = <code></code>
 

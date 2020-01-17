@@ -15,9 +15,9 @@ import {
 import SMSForm from "./SMS";
 import EmailForm from "./Email";
 import PushNotification from "./Push";
+import TestComponent from "./TestCampaign/index";
 const { TabPane } = Tabs;
 const { Title } = Typography;
-import TestComponent from "./TestCampaign/index";
 
 interface CommunicationProps {
   subTitle?: any;
