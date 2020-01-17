@@ -2,7 +2,11 @@
   "compilerOptions": {
     "baseUrl": "src",
     "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -18,8 +22,16 @@
     "strictNullChecks": false,
     "noImplicitAny": false
   },
-  "include": ["packages", "src", "index.d.ts", "packages/*/src/assets"],
-  "types": ["googlemaps", "markerclustererplus"],
+  "include": [
+    "packages",
+    "src",
+    "index.d.ts",
+    "packages/*/src/assets"
+  ],
+  "types": [
+    "googlemaps",
+    "markerclustererplus"
+  ],
   "exclude": [
     "node_modules",
     "build",
