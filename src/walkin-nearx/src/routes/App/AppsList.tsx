@@ -145,7 +145,7 @@ class AppsList extends React.Component<iProps, iState> {
     this.props.client
       .mutate({
         mutation: GENERATE_API_KEY,
-        variables: { id: appId, env: conf.env }
+        variables: { id: appId, env: process.env.NODE_ENV }
       })
       .then(res => {
         let { appsList } = this.state;

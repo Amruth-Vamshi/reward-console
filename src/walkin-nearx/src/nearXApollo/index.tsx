@@ -7,7 +7,7 @@ const token = localStorage.getItem("jwt");
 
 export const nearXClient = new ApolloClient({
   cache,
-  uri: process.env.NEARX_URL,
+  uri: process.env.REACT_APP_NEARX_URL,
   credentials: "same-origin",
   // headers: {
   //   api_key: "0X3bmLq5sBImabgEXkDVBfnOyUOkD2WN",

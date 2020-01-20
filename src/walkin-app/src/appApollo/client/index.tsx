@@ -19,7 +19,7 @@ export const configureClient = async () => {
 
   const client = new ApolloClient({
     cache,
-    uri: process.env.WCORE_URL,
+    uri: process.env.REACT_APP_WCORE_URL,
     request: async operation => {
       const token = await localStorage.getItem("jwt");
       operation.setContext({
