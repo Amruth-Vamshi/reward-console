@@ -1,6 +1,5 @@
 import { InMemoryCache } from "apollo-boost";
 import ApolloClient from "apollo-boost";
-import env from "walkin-app/config";
 import { message } from "antd";
 
 const cache = new InMemoryCache();
@@ -8,7 +7,7 @@ const token = localStorage.getItem("jwt");
 
 export const nearXClient = new ApolloClient({
   cache,
-  uri: env.NEARX_GRAPHQL_URL,
+  uri: process.env.NEARX_URL,
   credentials: "same-origin",
   // headers: {
   //   api_key: "0X3bmLq5sBImabgEXkDVBfnOyUOkD2WN",

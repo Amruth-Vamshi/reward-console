@@ -6,7 +6,6 @@ import resolvers from "../resolvers";
 import ApolloClient from "apollo-boost";
 import defaults from "../defaults";
 import { message } from "antd";
-import env from "../../../config";
 import { async } from "q";
 import { includes } from "lodash";
 import { ERROR_EXCEPTIONS } from "shared/src/Constants/constants";
@@ -20,7 +19,7 @@ export const configureClient = async () => {
 
   const client = new ApolloClient({
     cache,
-    uri: env.GRAPHQL_URL,
+    uri: process.env.WCORE_URL,
     request: async operation => {
       const token = await localStorage.getItem("jwt");
       operation.setContext({
