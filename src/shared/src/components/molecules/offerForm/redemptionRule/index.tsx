@@ -106,6 +106,7 @@ const OfferRedemptionRulesForm = Form.create<IProps>({
                 min={0}
                 addonAfter={
                   <Select
+                    disabled
                     getPopupContainer={(triggerNode: any) =>
                       triggerNode.parentNode
                     }
