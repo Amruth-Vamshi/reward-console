@@ -1,32 +1,43 @@
 {
   "compilerOptions": {
-    "lib": ["es5", "es6", "es7", "es2017", "dom"],
-
-    "outDir": "./dist/",
-    "noImplicitAny": false,
-    "module": "commonjs",
+    "baseUrl": "src",
     "target": "es5",
-    "moduleResolution": "node",
-    "jsx": "react",
-    "allowJs": true,
-    "resolveJsonModule": true,
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-
-    "typeRoots": [
-      "packages/walkin-app/typings/global-fetch.d.ts",
-      "packages/walkin-app/typings/index.d.ts"
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
     ],
-    "types": ["googlemaps", "markerclustererplus"]
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react",
+    "strictNullChecks": false,
+    "noImplicitAny": false
   },
+  "include": [
+    "packages",
+    "src",
+    "index.d.ts",
+    "packages/*/src/assets"
+  ],
+  "types": [
+    "googlemaps",
+    "markerclustererplus"
+  ],
   "exclude": [
     "node_modules",
     "build",
     "scripts",
     "acceptance-tests",
     "webpack",
-    "jest",
-    "src/setupTests.ts"
-  ],
-  "include": ["packages/*/src/assets"]
+    "jest"
+  ]
 }
