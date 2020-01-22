@@ -132,7 +132,7 @@ const OfferRedemptionRulesForm = Form.create<IProps>({
           </Form.Item>
           <Form.Item
             style={{ display: "inline-block", width: "calc(35% - 12px)" }}
-            label="Limit on Sku's"
+            label="Minimum SKU"
           >
             {getFieldDecorator("redemption_limit_sku_number", {
               initialValue: `${
