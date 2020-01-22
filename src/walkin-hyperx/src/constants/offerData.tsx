@@ -74,41 +74,41 @@ export var transactionTimeData = [
 export var productData = [
   {
     id: 1,
-    value: "product_sku",
-    title: "SKU"
+    value: "product_category",
+    title: "Category"
   },
   {
     id: 2,
-    value: "product_brand",
-    title: "Brand"
-  },
-  {
-    id: 3,
-    value: "product_category",
-    title: "Category"
+    value: "product_sku",
+    title: "SKU"
   }
+  // {
+  //     id: 3,
+  //     value: 'product_brand',
+  //     title: 'Brand',
+  // },
 ];
 
 export var locationData = [
   {
     id: 1,
+    value: "location_store",
+    title: "Store"
+  },
+  {
+    id: 2,
     value: "location_city",
     title: "City"
   },
   {
-    id: 2,
+    id: 3,
     value: "location_state",
     title: "State"
   },
   {
-    id: 3,
+    id: 4,
     value: "location_pincode",
     title: "Pincode"
-  },
-  {
-    id: 4,
-    value: "location_store",
-    title: "Store"
   }
 ];
 
