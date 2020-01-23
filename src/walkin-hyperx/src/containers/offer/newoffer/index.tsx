@@ -43,6 +43,7 @@ import {
 } from "../../../constants/offerData";
 import HyperXContainer from "../../../utils/HyperXContainer";
 import { DEFAULT_RULE_TYPE, DEFAULT_ACTIVE_STATUS } from "../../../constants";
+// import TestAdd from "./test/DynamicAdd";
 
 interface IProps extends RouteChildrenProps<any>, ApolloProviderProps<any> {
   // pauseCampaign: (variables: any) => any
@@ -64,6 +65,7 @@ interface IState {
   newOfferErrorMessage: "";
   offerEligibityRule: any;
   offerType: any;
+  totalSkuList;
   transactionTime: "";
   couponLableSelected: "";
   offerRedemptionRuleId: "";
@@ -94,6 +96,7 @@ class NewOffer extends Component<IProps, Partial<IState>> {
       newOfferErrorMessage: "",
       offerEligibityRule: {},
       offerType: "",
+      totalSkuList: "",
       couponLableSelected: "",
       productValues: [],
       redemptionRule: {},
@@ -131,6 +134,30 @@ class NewOffer extends Component<IProps, Partial<IState>> {
         showStoreList: true
       }
     };
+  }
+
+  componentWillMount() {
+    // this.props.client.query({
+    // 	query: VIEW_HYPERX_CAMPAIGNS,
+    // 	variables: {
+    // 		input: {
+    // 			organizationId: jwt.decode(localStorage.getItem("jwt"))['org_id'],
+    // 			status: DEFAULT_ACTIVE_STATUS,
+    // 			campaignStatus: state,
+    // 			// campaignType: DEFAULT_HYPERX_CAMPAIGN
+    // 		},
+    // 		page: offset,
+    // 		perPage: DEFAULT_PAGE_SIZE,
+    // 		sort: { sortBy: "id", sortOrder: "DESC" }
+    // 	}, fetchPolicy: 'network-only'
+    // }).then(res => {
+    // 	let data = res.data.viewCampaignsForHyperX
+    // 	let allCampaigns = data.data.map(c =>
+    // 		({ ...c.campaign, reached: c.reached, audienceCount: c.audienceCount, redemptionRate: c.redemptionRate }))
+    // 	this.setState({ allCampaigns, total: data.paginationInfo.totalItems }, () => this.dataManipulation(this.state.key));
+    // }).catch(err => {
+    // 	console.log("Failed to get Campaigns" + err);
+    // });
   }
 
   displayError = (state, message) => {
@@ -373,51 +400,59 @@ class NewOffer extends Component<IProps, Partial<IState>> {
 
           console.log("FV", basicForm);
 
-          if (basicForm.transactionTime) {
-            if (
-              basicForm.transactionTime == "cartValue" &&
-              basicForm.cartValue != ""
-            )
-              arr.push({
-                attributeName: "cartValue",
-                attributeValue: parseInt(basicForm.cartValue),
-                expressionType: basicForm.cartValueCondition
-              });
-            else if (
-              basicForm.transactionTime == "frequency" &&
-              basicForm.noOfTransaction &&
-              basicForm.noOfDays
-            ) {
-              console.log("f>>>");
-              arr.push({
-                attributeName: "frequency_transaction",
-                attributeValue: parseInt(basicForm.noOfTransaction),
-                expressionType: "EQUALS"
-              });
-              arr.push({
-                attributeName: "frequency_days",
-                attributeValue: parseInt(basicForm.noOfDays),
-                expressionType: "EQUALS"
-              });
-              console.log("f>>", arr);
-            } else if (basicForm.transactionTime == "dayPart") {
-              arr.push({
-                attributeName: "dayPart_startTime",
-                attributeValue: moment(basicForm.startTime).format("h:mm:ss a"),
-                expressionType: "EQUALS"
-              });
-              arr.push({
-                attributeName: "dayPart_endTime",
-                attributeValue: moment(basicForm.endTime).format("h:mm:ss a"),
-                expressionType: "EQUALS"
-              });
-            } else if (basicForm.transactionTime == "dayOfWeek") {
-              arr.push({
-                attributeName: "dayOfWeek",
-                attributeValue: this.state.selectedWeekDays,
-                expressionType: "IN"
-              });
-            }
+          // if (basicForm.transactionTime) {
+          // 	if (basicForm.transactionTime == "cartValue" && basicForm.cartValue != "")
+          // 		arr.push({ attributeName: "cartValue", attributeValue: parseInt(basicForm.cartValue), expressionType: basicForm.cartValueCondition })
+          // 	else if (basicForm.transactionTime == "frequency" && basicForm.noOfTransaction && basicForm.noOfDays) {
+          // 		arr.push({ attributeName: "frequency_transaction", attributeValue: parseInt(basicForm.noOfTransaction), expressionType: "EQUALS" })
+          // 		arr.push({ attributeName: "frequency_days", attributeValue: parseInt(basicForm.noOfDays), expressionType: "EQUALS" })
+          // 	}
+          // 	else if (basicForm.transactionTime == "dayPart") {
+          // 		arr.push({ attributeName: "dayPart_startTime", attributeValue: moment(basicForm.startTime).format('h:mm:ss a'), expressionType: "EQUALS" })
+          // 		arr.push({ attributeName: "dayPart_endTime", attributeValue: moment(basicForm.endTime).format('h:mm:ss a'), expressionType: "EQUALS" })
+          // 	}
+          // 	else if (basicForm.transactionTime == "dayOfWeek") {
+          // 		arr.push({ attributeName: "dayOfWeek", attributeValue: this.state.selectedWeekDays, expressionType: "IN" })
+          // 	}
+
+          // }
+
+          if (basicForm.cartValueCondition != "" && basicForm.cartValue != "")
+            arr.push({
+              attributeName: "cartValue",
+              attributeValue: parseInt(basicForm.cartValue),
+              expressionType: basicForm.cartValueCondition
+            });
+          if (basicForm.noOfTransaction && basicForm.noOfDays) {
+            arr.push({
+              attributeName: "frequency_transaction",
+              attributeValue: parseInt(basicForm.noOfTransaction),
+              expressionType: "EQUALS"
+            });
+            arr.push({
+              attributeName: "frequency_days",
+              attributeValue: parseInt(basicForm.noOfDays),
+              expressionType: "EQUALS"
+            });
+          }
+          if (basicForm.startTime && basicForm.endTime) {
+            arr.push({
+              attributeName: "dayPart_startTime",
+              attributeValue: moment(basicForm.startTime).format("h:mm:ss a"),
+              expressionType: "EQUALS"
+            });
+            arr.push({
+              attributeName: "dayPart_endTime",
+              attributeValue: moment(basicForm.endTime).format("h:mm:ss a"),
+              expressionType: "EQUALS"
+            });
+          }
+          if (basicForm.selectedWeekDays.length) {
+            arr.push({
+              attributeName: "dayOfWeek",
+              attributeValue: this.state.selectedWeekDays,
+              expressionType: "IN"
+            });
           }
 
           arr = [
@@ -608,8 +643,17 @@ class NewOffer extends Component<IProps, Partial<IState>> {
     }
   };
 
-  dayOfWeekChanged = selectedWeekDays => {
-    this.setState({ selectedWeekDays });
+  dayOfWeekChanged = selectedWeekDays => this.setState({ selectedWeekDays });
+
+  onValuesSelected1 = (value, str, stateValues) => {
+    console.log(
+      "value: ",
+      value + " str: " + str + " stateValues: " + stateValues
+    );
+  };
+  onSelectTwoValuesSelected1 = (values, str) => {
+    console.log("value: ", values + " str: " + str);
+    // this.setState({ [str]: values });
   };
 
   render() {
@@ -713,6 +757,21 @@ class NewOffer extends Component<IProps, Partial<IState>> {
                   Basic Information
                 </h3>
                 <div className="offerBasicFormContainer">
+                  {/* <TestAdd
+										onSelectOneValuesSelected={(val, state) => {
+											this.onValuesSelected1(val, 'location', state);
+										}}
+										onSelectTwoValuesSelected={(state) => {
+											this.onSelectTwoValuesSelected1(state, 'locationValues');
+										}}
+										// onSelectTwoValuesSelected={onSelectTwoValuesSelected}
+										data_1={locationData}
+										data_2={locationArray}
+										locationValues={locationValues}
+										defaultSelectOneValue="location_store"
+										defaultSelectTwoValue={["all"]}
+									/> */}
+
                   <OfferBasicInfoForm
                     offerTypeData={offerTypeData}
                     handleOfferTypeChange={this.onOfferTypeChange}

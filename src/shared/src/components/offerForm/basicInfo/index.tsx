@@ -1,21 +1,18 @@
-import * as React from "react";
-import { Fragment } from "react";
 import {
+  Checkbox,
+  DatePicker,
   Form,
   Icon,
   Input,
-  Select,
-  Button,
-  Col,
-  DatePicker,
   Radio,
-  Checkbox,
+  Select,
   TimePicker
 } from "antd";
-import "./style.css";
-import moment from "moment";
-import AddAndDeleteComponentsDynamically from "../../atoms/addAndDeleteComponentsDynamically";
 import { FormComponentProps } from "antd/lib/form";
+import * as React from "react";
+import { Fragment } from "react";
+import AddAndDeleteComponentsDynamically from "../../atoms/addAndDeleteComponentsDynamically";
+import "./style.css";
 
 const Option = Select.Option;
 
@@ -205,9 +202,7 @@ const OfferBasicInfoForm = Form.create<IProps>({ name: "offer_basic_info" })(
             {item}{" "}
           </Option>
         ));
-      // const dayOptions = filteredOptions
-      console.log(">>", filteredOptions);
-      // console.log('offerTypeStatus', offerTypeStatus);
+
       return (
         <Form
           className="offerBasicForm"
@@ -241,7 +236,6 @@ const OfferBasicInfoForm = Form.create<IProps>({ name: "offer_basic_info" })(
               </Select>
             )}
           </Form.Item>
-
           {offerTypeStatus.showList ? (
             <Form.Item
               style={{ display: "inline-block", width: "calc(65% - 12px)" }}
@@ -311,7 +305,6 @@ const OfferBasicInfoForm = Form.create<IProps>({ name: "offer_basic_info" })(
               )}
             </Form.Item>
           )}
-
           <Form.Item style={{ width: "calc(100% - 22px)" }} label="Offer Name">
             {getFieldDecorator("offerName", {
               initialValue: `${
@@ -323,7 +316,6 @@ const OfferBasicInfoForm = Form.create<IProps>({ name: "offer_basic_info" })(
               ]
             })(<Input />)}
           </Form.Item>
-
           <Form.Item label="Product">
             <AddAndDeleteComponentsDynamically
               onSelectOneValuesSelected={(val, state) => {
@@ -341,7 +333,6 @@ const OfferBasicInfoForm = Form.create<IProps>({ name: "offer_basic_info" })(
               defaultSelectTwoValue={["all"]}
             />
           </Form.Item>
-
           <Form.Item label="Location">
             <AddAndDeleteComponentsDynamically
               onSelectOneValuesSelected={(val, state) => {
@@ -358,187 +349,6 @@ const OfferBasicInfoForm = Form.create<IProps>({ name: "offer_basic_info" })(
               defaultSelectTwoValue={["all"]}
             />
           </Form.Item>
-          <Form.Item
-            style={{ display: "inline-block", width: "calc(35% - 12px)" }}
-            label="Condition"
-          >
-            {getFieldDecorator("transactionTime", {
-              initialValue: `${
-                Object.keys(formValues).length != 0
-                  ? formValues.transactionTime
-                  : ""
-              }`
-            })(
-              <Select
-                getPopupContainer={(triggerNode: any) => triggerNode.parentNode}
-                placeholder="Select a transaction time"
-                onChange={handleTransactionTimeChange}
-              >
-                {transactionTimeData &&
-                  transactionTimeData.map((el: any, i: any) => (
-                    <Option key={i} value={el.value}>
-                      {" "}
-                      {el.title}{" "}
-                    </Option>
-                  ))}
-              </Select>
-            )}
-          </Form.Item>
-          {transactionTimeStatus &&
-            transactionTimeStatus.showFrequency === true && (
-              <Fragment>
-                <Form.Item
-                  style={{ display: "inline-block", width: "calc(31% - 12px)" }}
-                  label="No. Of Transaction"
-                >
-                  {getFieldDecorator("noOfTransaction", {
-                    initialValue: `${
-                      Object.keys(formValues).length != 0
-                        ? formValues.noOfTransaction
-                        : ""
-                    }`
-                  })(<Input type="number" min={0} />)}
-                </Form.Item>
-                <Form.Item
-                  style={{
-                    display: "inline-block",
-                    marginTop: "20px",
-                    width: "calc(5% - 12px)"
-                  }}
-                >
-                  <div style={{ marginTop: 12 }}>In</div>
-                </Form.Item>
-                <Form.Item
-                  style={{ display: "inline-block", width: "calc(31% - 12px)" }}
-                  label="No. Of Days"
-                >
-                  {getFieldDecorator("noOfDays", {
-                    initialValue: `${
-                      Object.keys(formValues).length != 0
-                        ? formValues.noOfDays
-                        : ""
-                    }`
-                  })(<Input type="number" min={0} />)}
-                </Form.Item>
-              </Fragment>
-            )}
-          {transactionTimeStatus && transactionTimeStatus.showDayPart === true && (
-            // <Fragment>
-            // 	<Form.Item style={{ display: 'inline-block', width: 'calc(65% - 12px)' }} label="Choose Date">
-            // 		{getFieldDecorator('dateRange', {
-            // 			initialValue: Object.keys(formValues).length != 0 ? formValues.dateRange : '',
-            // 		})(<RangePicker showTime format="DD-MM-YYYY HH:mm:ss" />)}
-            // 	</Form.Item>
-            // </Fragment>
-            <Fragment>
-              <Form.Item
-                style={{ display: "inline-block", width: "calc(33% - 12px)" }}
-                label="Start Time"
-              >
-                {getFieldDecorator("startTime", {
-                  initialValue: moment(formValues.startTime)
-                })(
-                  <TimePicker
-                    style={{ width: "100%" }}
-                    use12Hours
-                    format="h:mm:ss a"
-                  />
-                )}
-              </Form.Item>
-              <Form.Item
-                style={{ display: "inline-block", width: "calc(33% - 12px)" }}
-                label="End Time"
-              >
-                {getFieldDecorator("endTime", {
-                  initialValue: moment(formValues.endTime)
-                })(
-                  <TimePicker
-                    style={{ width: "100%" }}
-                    use12Hours
-                    format="h:mm:ss a"
-                  />
-                )}
-              </Form.Item>
-            </Fragment>
-          )}
-          {transactionTimeStatus && transactionTimeStatus.dayOfWeek === true && (
-            <Fragment>
-              <Form.Item
-                style={{ display: "inline-block", width: "calc(66% - 12px)" }}
-                label="Start Time"
-              >
-                {getFieldDecorator("dayOfWeek", {
-                  initialValue: selectedWeekDays
-                })(
-                  <Select
-                    mode="multiple"
-                    placeholder="Enter Week Days"
-                    value={selectedWeekDays}
-                    getPopupContainer={(triggerNode: any) =>
-                      triggerNode.parentNode
-                    }
-                    onChange={e => dayOfWeekChanged(e)}
-                    style={{ width: "100%" }}
-                  >
-                    {/* {filteredOptions.map(item => <Option key={item} value={item}> {item} </Option>)} */}
-                    {filteredOptions}
-                  </Select>
-                )}
-              </Form.Item>
-            </Fragment>
-          )}
-          {transactionTimeStatus &&
-            transactionTimeStatus.showCartValue === true && (
-              <Fragment>
-                <Form.Item
-                  style={{
-                    display: "inline-block",
-                    width: "calc(33.5% - 12px)"
-                  }}
-                  label="Operator"
-                >
-                  {getFieldDecorator("cartValueCondition", {
-                    initialValue: `${
-                      Object.keys(formValues).length != 0 &&
-                      formValues.cartValueCondition
-                        ? formValues.cartValueCondition
-                        : ""
-                    }`
-                  })(
-                    <Select
-                      getPopupContainer={(triggerNode: any) =>
-                        triggerNode.parentNode
-                      }
-                      // onChange={this.handleSelectChange}
-                    >
-                      {cartValueConditionData &&
-                        cartValueConditionData.map((el: any, i: any) => (
-                          <Option key={i} value={el.value}>
-                            {" "}
-                            {el.title}{" "}
-                          </Option>
-                        ))}
-                    </Select>
-                  )}
-                </Form.Item>
-                <Form.Item
-                  style={{
-                    display: "inline-block",
-                    width: "calc(33.5% - 12px)"
-                  }}
-                  label="Value"
-                >
-                  {getFieldDecorator("cartValue", {
-                    initialValue: `${
-                      Object.keys(formValues).length != 0 &&
-                      formValues.cartValue
-                        ? formValues.cartValue
-                        : ""
-                    }`
-                  })(<Input type="number" min={0} />)}
-                </Form.Item>
-              </Fragment>
-            )}
           <Form.Item style={{ width: "calc(35% - 12px)" }} label="Coupon">
             {getFieldDecorator("couponType", {
               initialValue: `${
@@ -591,7 +401,288 @@ const OfferBasicInfoForm = Form.create<IProps>({ name: "offer_basic_info" })(
                 Auto apply coupon code
               </Checkbox>
             </Form.Item>
-          )}
+          )}{" "}
+          <br />
+          <h3>Conditions</h3>
+          {/* <Form.Item label="Condition"
+						style={{ display: 'inline-block', width: 'calc(35% - 12px)' }}
+					>
+						{getFieldDecorator('transactionTime', {
+							initialValue: `${Object.keys(formValues).length != 0 ? formValues.transactionTime : ''}`,
+						})(
+							<Select
+								getPopupContainer={(triggerNode: any) => triggerNode.parentNode}
+								placeholder="Select a transaction time" onChange={handleTransactionTimeChange}>
+								{transactionTimeData && transactionTimeData
+									.map((el: any, i: any) => <Option key={i} value={el.value}> {el.title} </Option>)}
+							</Select>
+						)}
+					</Form.Item> */}
+          <div style={{ width: "100%" }}>
+            {/* <div style={{ display: 'inline-block',  marginTop: '20px', width: 'calc(15% - 12px)' }}>Frequency</div> */}
+
+            <Form.Item
+              style={{
+                display: "inline-block",
+                marginTop: "20px",
+                width: "calc(15% - 12px)"
+              }}
+            >
+              <div style={{ marginTop: 10, fontSize: 16 }}>Frequency</div>
+            </Form.Item>
+
+            <Fragment>
+              <Form.Item
+                style={{ display: "inline-block", width: "calc(30% - 12px)" }}
+                label="No. Of Transaction"
+              >
+                {getFieldDecorator("noOfTransaction", {
+                  initialValue: `${
+                    Object.keys(formValues).length != 0
+                      ? formValues.noOfTransaction
+                      : ""
+                  }`
+                })(<Input type="number" min={0} />)}
+              </Form.Item>
+              <Form.Item
+                style={{
+                  display: "inline-block",
+                  marginTop: "20px",
+                  width: "calc(7% - 12px)"
+                }}
+              >
+                <div style={{ marginTop: 12, textAlign: "center" }}>In</div>
+              </Form.Item>
+              <Form.Item
+                style={{ display: "inline-block", width: "calc(30% - 12px)" }}
+                label="No. Of Days"
+              >
+                {getFieldDecorator("noOfDays", {
+                  initialValue: `${
+                    Object.keys(formValues).length != 0
+                      ? formValues.noOfDays
+                      : ""
+                  }`
+                })(<Input type="number" min={0} />)}
+              </Form.Item>
+            </Fragment>
+          </div>
+          <div style={{ width: "100%" }}>
+            <Form.Item
+              style={{
+                display: "inline-block",
+                marginTop: "20px",
+                width: "calc(15% - 12px)"
+              }}
+            >
+              <div style={{ marginTop: 10, fontSize: 16 }}>Day Part</div>
+            </Form.Item>
+
+            <Fragment>
+              <Form.Item
+                style={{ display: "inline-block", width: "calc(33% - 12px)" }}
+                label="Start Time"
+              >
+                {getFieldDecorator("startTime", {
+                  //initialValue: moment(formValues.startTime),
+                })(
+                  <TimePicker
+                    style={{ width: "100%" }}
+                    use12Hours
+                    format="h:mm:ss a"
+                  />
+                )}
+              </Form.Item>
+              <Form.Item
+                style={{ display: "inline-block", width: "calc(33% - 12px)" }}
+                label="End Time"
+              >
+                {getFieldDecorator("endTime", {
+                  //initialValue: moment(formValues.endTime),
+                })(
+                  <TimePicker
+                    style={{ width: "100%" }}
+                    use12Hours
+                    format="h:mm:ss a"
+                  />
+                )}
+              </Form.Item>
+            </Fragment>
+          </div>
+          <div style={{ width: "100%" }}>
+            <Form.Item
+              style={{
+                display: "inline-block",
+                marginTop: "20px",
+                width: "calc(15% - 12px)"
+              }}
+            >
+              <div style={{ marginTop: 10, fontSize: 16 }}>Day Of Week</div>
+            </Form.Item>
+
+            <Fragment>
+              <Form.Item
+                style={{ display: "inline-block", width: "calc(65% - 12px)" }}
+                label="Start Time"
+              >
+                {getFieldDecorator("dayOfWeek", {
+                  initialValue: selectedWeekDays
+                })(
+                  <Select
+                    mode="multiple"
+                    placeholder="Enter Week Days"
+                    value={selectedWeekDays}
+                    getPopupContainer={(triggerNode: any) =>
+                      triggerNode.parentNode
+                    }
+                    onChange={e => dayOfWeekChanged(e)}
+                    style={{ width: "100%" }}
+                  >
+                    {/* {filteredOptions.map(item => <Option key={item} value={item}> {item} </Option>)} */}
+                    {filteredOptions}
+                  </Select>
+                )}
+              </Form.Item>
+            </Fragment>
+          </div>
+          <div style={{ width: "100%" }}>
+            <Form.Item
+              style={{
+                display: "inline-block",
+                marginTop: "20px",
+                width: "calc(15% - 12px)"
+              }}
+            >
+              <div style={{ marginTop: 10, fontSize: 16 }}>Cart Value</div>
+            </Form.Item>
+
+            <Fragment>
+              <Form.Item
+                style={{ display: "inline-block", width: "calc(33.5% - 12px)" }}
+                label="Operator"
+              >
+                {getFieldDecorator("cartValueCondition", {
+                  initialValue: `${
+                    Object.keys(formValues).length != 0 &&
+                    formValues.cartValueCondition
+                      ? formValues.cartValueCondition
+                      : ""
+                  }`
+                })(
+                  <Select
+                    getPopupContainer={(triggerNode: any) =>
+                      triggerNode.parentNode
+                    }
+                    // onChange={this.handleSelectChange}
+                  >
+                    {cartValueConditionData &&
+                      cartValueConditionData.map((el: any, i: any) => (
+                        <Option key={i} value={el.value}>
+                          {" "}
+                          {el.title}{" "}
+                        </Option>
+                      ))}
+                  </Select>
+                )}
+              </Form.Item>
+              <Form.Item
+                style={{ display: "inline-block", width: "calc(33.5% - 12px)" }}
+                label="Value"
+              >
+                {getFieldDecorator("cartValue", {
+                  initialValue: `${
+                    Object.keys(formValues).length != 0 && formValues.cartValue
+                      ? formValues.cartValue
+                      : ""
+                  }`
+                })(<Input type="number" min={0} />)}
+              </Form.Item>
+            </Fragment>
+          </div>
+          {/* {transactionTimeStatus && transactionTimeStatus.showFrequency === true && (
+						<Fragment>
+							<Form.Item
+								style={{ display: 'inline-block', width: 'calc(40% - 12px)' }}
+								label="No. Of Transaction"
+							>
+								{getFieldDecorator('noOfTransaction', {
+									initialValue: `${
+										Object.keys(formValues).length != 0 ? formValues.noOfTransaction : ''
+										}`,
+								})(<Input type="number" min={0} />)}
+							</Form.Item>
+							<Form.Item style={{ display: 'inline-block', marginTop: '20px', width: 'calc(8% - 12px)' }}>
+								<div style={{ marginTop: 12, textAlign: 'center' }}>In</div>
+							</Form.Item>
+							<Form.Item
+								style={{ display: 'inline-block', width: 'calc(40% - 12px)' }}
+								label="No. Of Days"
+							>
+								{getFieldDecorator('noOfDays', {
+									initialValue: `${Object.keys(formValues).length != 0 ? formValues.noOfDays : ''}`,
+								})(<Input type="number" min={0} />)}
+							</Form.Item>
+						</Fragment>
+					)}
+					{transactionTimeStatus && transactionTimeStatus.showDayPart === true && (
+						<Fragment>
+							<Form.Item style={{ display: 'inline-block', width: 'calc(33% - 12px)' }} label="Start Time">
+								{getFieldDecorator('startTime', {
+									initialValue: moment(formValues.startTime),
+								})(<TimePicker style={{ width: '100%' }} use12Hours format="h:mm:ss a" />)}
+							</Form.Item>
+							<Form.Item style={{ display: 'inline-block', width: 'calc(33% - 12px)' }} label="End Time">
+								{getFieldDecorator('endTime', {
+									initialValue: moment(formValues.endTime),
+								})(<TimePicker style={{ width: '100%' }} use12Hours format="h:mm:ss a" />)}
+							</Form.Item>
+						</Fragment>
+
+					)}
+					{transactionTimeStatus && transactionTimeStatus.dayOfWeek === true && (
+						<Fragment>
+							<Form.Item style={{ display: 'inline-block', width: 'calc(66% - 12px)' }} label="Start Time">
+								{getFieldDecorator('dayOfWeek', {
+									initialValue: selectedWeekDays,
+								})(
+									<Select mode="multiple" placeholder="Enter Week Days" value={selectedWeekDays}
+										getPopupContainer={(triggerNode: any) => triggerNode.parentNode}
+										onChange={(e) => dayOfWeekChanged(e)} style={{ width: '100%' }}
+									>
+										{filteredOptions}
+
+
+									</Select>
+								)}
+							</Form.Item>
+						</Fragment>
+					)}
+					{transactionTimeStatus && transactionTimeStatus.showCartValue === true && (
+						<Fragment>
+							<Form.Item
+								style={{ display: 'inline-block', width: 'calc(33.5% - 12px)' }}
+								label="Operator"
+							>
+								{getFieldDecorator('cartValueCondition', {
+									initialValue: `${Object.keys(formValues).length != 0 && formValues.cartValueCondition ? formValues.cartValueCondition : ''}`
+								})
+									(
+										<Select getPopupContainer={(triggerNode: any) => triggerNode.parentNode}
+										// onChange={this.handleSelectChange}
+										>
+											{cartValueConditionData &&
+												cartValueConditionData.map((el: any, i: any) =>
+													<Option key={i} value={el.value}> {el.title} </Option>)}
+										</Select>
+									)}
+							</Form.Item>
+							<Form.Item style={{ display: 'inline-block', width: 'calc(33.5% - 12px)' }} label="Value">
+								{getFieldDecorator('cartValue', {
+									initialValue: `${Object.keys(formValues).length != 0 && formValues.cartValue ? formValues.cartValue : ''}`,
+								})(<Input type="number" min={0} />)}
+							</Form.Item>
+						</Fragment>
+					)} */}
         </Form>
       );
     }
