@@ -1,6 +1,13 @@
 import "./style.css";
 
-import { Alert, message } from "antd";
+import {
+  CampaignFooter,
+  Stepper,
+  WHeader,
+  OfferRedemptionRulesForm,
+  OfferBasicInfoForm
+} from "shared";
+import { Alert, message, Spin } from "antd";
 import jwt from "jsonwebtoken";
 import isEmpty from "lodash/isEmpty";
 import omit from "lodash/omit";
@@ -13,15 +20,16 @@ import {
   withApollo
 } from "react-apollo";
 import { RouteChildrenProps } from "react-router";
+import { createRule } from "../../../query/audience";
 import {
-  CampaignFooter,
-  OfferBasicInfoForm,
-  OfferRedemptionRulesForm,
-  Stepper,
-  WHeader
-} from "shared";
-
-import { DEFAULT_ACTIVE_STATUS, DEFAULT_RULE_TYPE } from "../../../constants";
+  categories,
+  createOffer,
+  products,
+  subOrganizations,
+  UPDATE_OFFER
+} from "../../../query/offer";
+import { isValidObject, transposeObject } from "../../../utils";
+import { OFFER_LIST } from "../../../constants/RouterConstants";
 import {
   cappingData,
   cartValueConditionData,
@@ -33,18 +41,8 @@ import {
   productData,
   transactionTimeData
 } from "../../../constants/offerData";
-import { OFFER_LIST } from "../../../constants/RouterConstants";
-import { createRule } from "../../../query/audience";
-import {
-  categories,
-  createOffer,
-  products,
-  subOrganizations,
-  UPDATE_OFFER
-} from "../../../query/offer";
-import { isValidObject, transposeObject } from "../../../utils";
 import HyperXContainer from "../../../utils/HyperXContainer";
-
+import { DEFAULT_RULE_TYPE, DEFAULT_ACTIVE_STATUS } from "../../../constants";
 // import TestAdd from "./test/DynamicAdd";
 
 interface IProps extends RouteChildrenProps<any>, ApolloProviderProps<any> {
@@ -261,6 +259,7 @@ class NewOffer extends Component<IProps, Partial<IState>> {
           Object.assign(this.state.productDropDown, {
             showProductList: true,
             showCategoryList: false,
+            showItemList: false,
             showBrandList: false //not available atm
           })
         );
@@ -270,6 +269,7 @@ class NewOffer extends Component<IProps, Partial<IState>> {
           Object.assign(this.state.productDropDown, {
             showProductList: false,
             showCategoryList: true,
+            showItemList: false,
             showBrandList: false //not available atm
           })
         );
@@ -279,7 +279,18 @@ class NewOffer extends Component<IProps, Partial<IState>> {
           Object.assign(this.state.productDropDown, {
             showProductList: false,
             showCategoryList: false,
+            showItemList: false,
             showBrandList: true //not available atm
+          })
+        );
+      }
+      if (value === "product_item") {
+        this.setState(
+          Object.assign(this.state.productDropDown, {
+            showProductList: false,
+            showCategoryList: false,
+            showItemList: true,
+            showBrandList: false //not available atm
           })
         );
       }
@@ -732,6 +743,12 @@ class NewOffer extends Component<IProps, Partial<IState>> {
           title: el.title
         }));
     }
+    if (productDropDown.showItemList == true) {
+      productItems =
+        products &&
+        products.map(el => ({ value: el.code, id: el.id, title: el.name }));
+    }
+
     let locationArray;
     if (locationDropDown.showCityList === true) {
       locationArray =

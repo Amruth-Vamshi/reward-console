@@ -86,6 +86,11 @@ export var productData = [
     id: 2,
     value: "product_sku",
     title: "SKU"
+  },
+  {
+    id: 3,
+    value: "product_item",
+    title: "Item"
   }
   // {
   //     id: 3,
