@@ -1,6 +1,11 @@
 import "../styles.css";
 
-import { CampaignHeader, InstantSearch, SortableDataTable } from "shared";
+import {
+  CampaignHeader,
+  InstantSearch,
+  SortableDataTable,
+  WHeader
+} from "shared";
 import { Widget } from "walkin-components";
 import { Button, Col, Dropdown, Icon, Menu, Progress, Tabs } from "antd";
 import jwt from "jsonwebtoken";
@@ -31,7 +36,6 @@ import {
   NEW_CAMPAIGN
 } from "../../../constants/RouterConstants";
 import HyperXContainer from "../../../utils/HyperXContainer";
-import { WHeader } from "shared/src";
 import { includes } from "lodash";
 
 const { TabPane } = Tabs;
@@ -243,41 +247,35 @@ class CampaignList extends React.Component<
   dataManipulation = key => {
     const { allCampaigns } = this.state;
     if (!allCampaigns || allCampaigns.length < 1) return;
-    if (key == 1) {
-      let liveCampaigns = allCampaigns.filter((val: any) =>
-        moment().isBetween(val.startTime, val.endTime)
-      );
-      this.setState({ data: liveCampaigns, filtered: null });
-    } else if (key == 2) {
-      let upcomingCampaigns = allCampaigns.filter(
-        (val: any) =>
-          val.campaignStatus == DEFAULT_HYPERX_CAMPAIGN_STATES[1] ||
-          (val.campaignStatus == DEFAULT_HYPERX_CAMPAIGN_STATES[0] &&
-            moment(val.startTime).isAfter(moment()))
-      );
-      this.setState({ data: upcomingCampaigns, filtered: null });
-    } else {
-      let Campaigns = allCampaigns;
-      this.setState({ data: Campaigns, filtered: null });
-    }
+    // if (key == 1) {
+    //   let liveCampaigns = allCampaigns.filter((val: any) => moment().isBetween(val.startTime, val.endTime));
+    //   this.setState({ data: liveCampaigns, filtered: null });
+    // } else if (key == 2) {
+    //   let upcomingCampaigns = allCampaigns.filter((val: any) => val.campaignStatus == DEFAULT_HYPERX_CAMPAIGN_STATES[1] || (val.campaignStatus == DEFAULT_HYPERX_CAMPAIGN_STATES[0] && moment(val.startTime).isAfter(moment())));
+    //   this.setState({ data: upcomingCampaigns, filtered: null });
+    // } else {
+    let Campaigns = allCampaigns;
+    this.setState({ data: Campaigns, filtered: null });
+    // }
   };
 
   onTabChange = (key: any) => {
     this.setState({ key, data: [], current: 1 });
 
-    if (key == 2)
-      this.getCampaigns(1, [
-        DEFAULT_HYPERX_CAMPAIGN_STATES[0],
-        DEFAULT_HYPERX_CAMPAIGN_STATES[1]
-      ]);
-    else this.getCampaigns(1, DEFAULT_HYPERX_CAMPAIGN_STATES[key - 1]);
+    // if (key == 2) this.getCampaigns(1, [DEFAULT_HYPERX_CAMPAIGN_STATES[0], DEFAULT_HYPERX_CAMPAIGN_STATES[1]])
+    // else
+    this.getCampaigns(1, DEFAULT_HYPERX_CAMPAIGN_STATES[key - 1]);
   };
 
   onTableChange = (e, n) => {
     if (n) {
       // Filter for Pagination Changes
       // console.log('onChange', e, n)
+      // if (this.state.key == 2) this.getCampaigns(e, [DEFAULT_HYPERX_CAMPAIGN_STATES[0], DEFAULT_HYPERX_CAMPAIGN_STATES[1]])
+      // else
       this.getCampaigns(e, DEFAULT_HYPERX_CAMPAIGN_STATES[this.state.key - 1]);
+
+      // this.getCampaigns(e, DEFAULT_HYPERX_CAMPAIGN_STATES[this.state.key - 1])
     }
   };
 
@@ -475,32 +473,6 @@ class CampaignList extends React.Component<
 
 export default withRouter(
   compose(
-    // graphql(campaigns, {
-    //   options: () => {
-    //     const { org_id }: any = jwt.decode(localStorage.getItem("jwt"));
-    //     return ({
-    //       variables: {
-    //         organization_id: org_id,
-    //         status: DEFAULT_ACTIVE_STATUS,
-    //         campaignType: DEFAULT_HYPERX_CAMPAIGN
-    //       }, fetchPolicy: "network-only",
-    //       forceFetch: true
-    //     })
-    //   },
-    //   props: ({ data: { loading, error, campaigns, refetch } }: any) => ({
-    //     loading, campaigns, error,
-    //     changeStatus: (status: any) => {
-    //       const { org_id }: any = jwt.decode(localStorage.getItem("jwt"));
-    //       refetch({
-    //         variables: {
-    //           organization_id: org_id,
-    //           status: DEFAULT_ACTIVE_STATUS,
-    //           campaignType: DEFAULT_HYPERX_CAMPAIGN
-    //         }, fetchPolicy: "network-only"
-    //       });
-    //     },
-    //   }),
-    // }),
     graphql(DISABLE_CAMPAIGN, {
       name: "disableCampaign"
     })
