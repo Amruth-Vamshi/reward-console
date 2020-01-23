@@ -1,13 +1,6 @@
 import "./style.css";
 
-import {
-  CampaignFooter,
-  Stepper,
-  WHeader,
-  OfferRedemptionRulesForm,
-  OfferBasicInfoForm
-} from "shared";
-import { Alert, message, Spin } from "antd";
+import { Alert, message } from "antd";
 import jwt from "jsonwebtoken";
 import isEmpty from "lodash/isEmpty";
 import omit from "lodash/omit";
@@ -20,16 +13,15 @@ import {
   withApollo
 } from "react-apollo";
 import { RouteChildrenProps } from "react-router";
-import { createRule } from "../../../query/audience";
 import {
-  categories,
-  createOffer,
-  products,
-  subOrganizations,
-  UPDATE_OFFER
-} from "../../../query/offer";
-import { isValidObject, transposeObject } from "../../../utils";
-import { OFFER_LIST } from "../../../constants/RouterConstants";
+  CampaignFooter,
+  OfferBasicInfoForm,
+  OfferRedemptionRulesForm,
+  Stepper,
+  WHeader
+} from "shared";
+
+import { DEFAULT_ACTIVE_STATUS, DEFAULT_RULE_TYPE } from "../../../constants";
 import {
   cappingData,
   cartValueConditionData,
@@ -41,8 +33,18 @@ import {
   productData,
   transactionTimeData
 } from "../../../constants/offerData";
+import { OFFER_LIST } from "../../../constants/RouterConstants";
+import { createRule } from "../../../query/audience";
+import {
+  categories,
+  createOffer,
+  products,
+  subOrganizations,
+  UPDATE_OFFER
+} from "../../../query/offer";
+import { isValidObject, transposeObject } from "../../../utils";
 import HyperXContainer from "../../../utils/HyperXContainer";
-import { DEFAULT_RULE_TYPE, DEFAULT_ACTIVE_STATUS } from "../../../constants";
+
 // import TestAdd from "./test/DynamicAdd";
 
 interface IProps extends RouteChildrenProps<any>, ApolloProviderProps<any> {
@@ -680,12 +682,38 @@ class NewOffer extends Component<IProps, Partial<IState>> {
       subOrganizations
     } = this.props;
 
+    console.log("Paa>>", products);
+
+    let totalSkuList = [];
+
+    if (products && products.length) {
+      products.map(p => {
+        let productName = p.name;
+        p.variants &&
+          p.variants.map(pv => {
+            let skuName = productName;
+            pv.optionValues.map(ov => {
+              skuName += "_" + ov.value;
+              // skuName += '_' + ov.option.name
+            });
+            totalSkuList.push({
+              value: pv.sku,
+              id: pv.id,
+              title: skuName,
+              name: skuName
+            });
+          });
+      });
+    }
+
+    console.log("P>>", totalSkuList);
+
     // console.log('productsproductsproductsproducts', products, subOrganizations);
     let productItems = [];
     if (productDropDown.showProductList == true) {
-      productItems =
-        products &&
-        products.map(el => ({ value: el.code, id: el.id, title: el.name }));
+      // productItems = products && products.map(el => ({ value: el.code, id: el.id, title: el.name }));
+
+      productItems = totalSkuList;
     }
     if (productDropDown.showCategoryList == true) {
       productItems =
@@ -732,7 +760,7 @@ class NewOffer extends Component<IProps, Partial<IState>> {
       locationArray =
         subOrganizations &&
         subOrganizations.map(el => ({
-          value: el.code,
+          value: el.id,
           title: el.name
         }));
     }
@@ -776,6 +804,7 @@ class NewOffer extends Component<IProps, Partial<IState>> {
                     offerTypeData={offerTypeData}
                     handleOfferTypeChange={this.onOfferTypeChange}
                     offerTypeStatus={offerTypeStatus}
+                    totalSkuList={totalSkuList}
                     transactionTimeData={transactionTimeData}
                     productData={productData}
                     locationData={locationData}

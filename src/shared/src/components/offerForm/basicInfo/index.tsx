@@ -1,3 +1,5 @@
+import "./style.css";
+
 import {
   Checkbox,
   DatePicker,
@@ -11,11 +13,12 @@ import {
 import { FormComponentProps } from "antd/lib/form";
 import * as React from "react";
 import { Fragment } from "react";
+
 import AddAndDeleteComponentsDynamically from "../../atoms/addAndDeleteComponentsDynamically";
-import "./style.css";
 
+const { TextArea } = Input;
 const Option = Select.Option;
-
+const { RangePicker } = DatePicker;
 const weekdays = ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY"];
 interface IProps extends FormComponentProps {
   offerTypeData?: any;
@@ -26,6 +29,7 @@ interface IProps extends FormComponentProps {
   productData?: any;
   selectedWeekDays;
   dayOfWeekChanged;
+  totalSkuList;
   handleTransactionTimeChange?: any;
   transactionTimeStatus?: any;
   cartValueConditionData?: any;
@@ -157,6 +161,7 @@ const OfferBasicInfoForm = Form.create<IProps>({ name: "offer_basic_info" })(
         locationData,
         productData,
         handleTransactionTimeChange,
+        totalSkuList,
         transactionTimeStatus,
         cartValueConditionData,
         wrappedComponentRef,
@@ -266,9 +271,9 @@ const OfferBasicInfoForm = Form.create<IProps>({ name: "offer_basic_info" })(
                   }
                   // onChange={this.handleChange}
                 >
-                  {products &&
-                    products.map((el: any, i: any) => (
-                      <Option key={i} value={el.code}>
+                  {totalSkuList &&
+                    totalSkuList.map((el: any, i: any) => (
+                      <Option key={i} value={el.value}>
                         {" "}
                         {el.name}
                       </Option>
