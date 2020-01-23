@@ -26,30 +26,30 @@ export const offerTypeData = [
   {
     id: 1,
     value: "PERCENTAGE_DISCOUNT",
-    title: "Discount on the bill",
+    title: "Percent Discount",
     extra: "%"
   },
   {
     id: 2,
     value: "FLATX_DISCOUNT",
-    title: "Flat Xrs off on the bill",
+    title: "Flat Discount",
     extra: " Rs"
   },
   {
     id: 3,
     value: "PERCENTAGE_CASHBACK",
-    title: "% Cashback on the bill",
+    title: "Percent Cashback",
     extra: "%"
   },
   {
     id: 4,
     value: "FLATX_CASHBACK",
-    title: "Flat X Cashback on the bill"
+    title: "Flat Cashback"
   },
   {
     id: 5,
     value: "FREE_ITMES_FROM_LIST",
-    title: "Any item/items from the list"
+    title: "Free item"
   }
 ];
 
