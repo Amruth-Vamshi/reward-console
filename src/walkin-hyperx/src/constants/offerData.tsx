@@ -84,13 +84,13 @@ export var productData = [
   },
   {
     id: 2,
-    value: "product_sku",
-    title: "SKU"
+    value: "product_item",
+    title: "Item"
   },
   {
     id: 3,
-    value: "product_item",
-    title: "Item"
+    value: "product_sku",
+    title: "SKU"
   }
   // {
   //     id: 3,

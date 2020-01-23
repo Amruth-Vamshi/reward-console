@@ -19,7 +19,15 @@ import AddAndDeleteComponentsDynamically from "../../atoms/addAndDeleteComponent
 const { TextArea } = Input;
 const Option = Select.Option;
 const { RangePicker } = DatePicker;
-const weekdays = ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY"];
+const weekdays = [
+  "SUNDAY",
+  "MONDAY",
+  "TUESDAY",
+  "WEDNESDAY",
+  "THURSDAY",
+  "FRIDAY",
+  "SATURDAY"
+];
 interface IProps extends FormComponentProps {
   offerTypeData?: any;
   handleOfferTypeChange?: any;
@@ -60,7 +68,6 @@ interface IProps extends FormComponentProps {
 
 interface IState {
   values: Array<any>;
-  productDropDown: any;
 }
 
 const OfferBasicInfoForm = Form.create<IProps>({ name: "offer_basic_info" })(
@@ -68,90 +75,12 @@ const OfferBasicInfoForm = Form.create<IProps>({ name: "offer_basic_info" })(
     constructor(props: IProps) {
       super(props);
       this.state = {
-        values: [{ product: "", productItem: "" }],
-        productDropDown: {
-          showProductList: true,
-          showCategoryList: false,
-          showBrandList: false
-        }
+        values: [{ product: "", productItem: "" }]
       };
     }
-    addClick() {
-      let array = this.state.values;
-      array.push({ id: array.length + 1, product: "", productItem: "" });
-      this.setState({ values: array });
-      // const row = {
-      // 	product: '',
-      // 	productItem: [],
-      // };
-      // this.setState({
-      // 	values: [...this.state.values, row],
-      // });
-    }
 
-    handleProductChange(i: any, value: any) {
-      let nextValues = this.state.values.slice();
-      nextValues[i].product = value;
-      this.setState({ values: nextValues });
-      if (value === "sku") {
-        this.setState(
-          Object.assign(this.state.productDropDown, {
-            showProductList: true,
-            showCategoryList: false,
-            showBrandList: false //not available atm
-          })
-        );
-      }
-      if (value === "category") {
-        this.setState(
-          Object.assign(this.state.productDropDown, {
-            showProductList: false,
-            showCategoryList: true,
-            showBrandList: false //not available atm
-          })
-        );
-      }
-      if (value === "brand") {
-        this.setState(
-          Object.assign(this.state.productDropDown, {
-            showProductList: false,
-            showCategoryList: false,
-            showBrandList: true //not available atm
-          })
-        );
-      }
-    }
+    handleProductChange(i: any, value: any) {}
 
-    // handleChangeLocation = (value) => {
-    // 	if (value == "SelectAll") {
-    // 		if (this.state.selectedLocations !== '') this.state.errors.selectedLocations = ''
-    // 		this.setState({
-    // 			selectedLocations: this.state.locationsList.slice(1, this.state.locationsList.length)
-    // 		})
-
-    // 	} else if (value.length == 22) {
-    // 		if (this.state.selectedLocations !== '') this.state.errors.selectedLocations = ''
-    // 		this.setState({ selectedLocations: [] })
-    // 	} else {
-    // 		if (this.state.selectedLocations !== '') this.state.errors.selectedLocations = ''
-    // 		this.setState({ selectedLocations: value })
-    // 	}
-    // }
-
-    handleProductItemChange(i: any, value: any) {
-      let nextValues = this.state.values.slice();
-      nextValues[i].productItem = value;
-      this.setState({ values: nextValues });
-    }
-
-    removeClick(i: any, e: any) {
-      const values = [...this.state.values];
-      values.splice(i, 1);
-      this.setState({ values });
-      // let someArray = this.state.values;
-      // someArray.splice(i, 1);
-      // this.setState({ values: someArray });
-    }
     render() {
       const {
         offerTypeData,
@@ -186,7 +115,6 @@ const OfferBasicInfoForm = Form.create<IProps>({ name: "offer_basic_info" })(
         couponTypeData,
         dayOfWeekChanged
       } = this.props;
-      const { productDropDown } = this.state;
       const { getFieldDecorator } = form;
       const formItemLayout = {
         labelCol: {
@@ -439,7 +367,7 @@ const OfferBasicInfoForm = Form.create<IProps>({ name: "offer_basic_info" })(
             <Fragment>
               <Form.Item
                 style={{ display: "inline-block", width: "calc(30% - 12px)" }}
-                label="No. Of Transaction"
+                label="No. Of Transactions"
               >
                 {getFieldDecorator("noOfTransaction", {
                   initialValue: `${
@@ -528,7 +456,7 @@ const OfferBasicInfoForm = Form.create<IProps>({ name: "offer_basic_info" })(
             <Fragment>
               <Form.Item
                 style={{ display: "inline-block", width: "calc(65% - 12px)" }}
-                label="Start Time"
+                label="Select Days"
               >
                 {getFieldDecorator("dayOfWeek", {
                   initialValue: selectedWeekDays

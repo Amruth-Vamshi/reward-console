@@ -460,14 +460,13 @@ class NewOffer extends Component<IProps, Partial<IState>> {
               expressionType: "EQUALS"
             });
           }
-          if (basicForm.selectedWeekDays.length) {
+          if (this.state.selectedWeekDays.length) {
             arr.push({
               attributeName: "dayOfWeek",
               attributeValue: this.state.selectedWeekDays,
               expressionType: "IN"
             });
           }
-
           arr = [
             ...arr,
             ...transposeObject(reArrangedObj && reArrangedObj, "IN")
@@ -693,8 +692,6 @@ class NewOffer extends Component<IProps, Partial<IState>> {
       subOrganizations
     } = this.props;
 
-    console.log("Paa>>", products);
-
     let totalSkuList = [];
 
     if (products && products.length) {
@@ -716,8 +713,6 @@ class NewOffer extends Component<IProps, Partial<IState>> {
           });
       });
     }
-
-    console.log("P>>", totalSkuList);
 
     // console.log('productsproductsproductsproducts', products, subOrganizations);
     let productItems = [];
