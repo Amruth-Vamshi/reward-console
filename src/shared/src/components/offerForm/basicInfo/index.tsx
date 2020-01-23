@@ -420,6 +420,9 @@ const OfferBasicInfoForm = Form.create<IProps>({ name: "offer_basic_info" })(
                   //initialValue: moment(formValues.startTime),
                 })(
                   <TimePicker
+                    getPopupContainer={(triggerNode: any) =>
+                      triggerNode.parentNode
+                    }
                     style={{ width: "100%" }}
                     use12Hours
                     format="h:mm:ss a"
@@ -434,6 +437,9 @@ const OfferBasicInfoForm = Form.create<IProps>({ name: "offer_basic_info" })(
                   //initialValue: moment(formValues.endTime),
                 })(
                   <TimePicker
+                    getPopupContainer={(triggerNode: any) =>
+                      triggerNode.parentNode
+                    }
                     style={{ width: "100%" }}
                     use12Hours
                     format="h:mm:ss a"

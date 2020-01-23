@@ -109,6 +109,7 @@ class OfferList extends Component<IProps, Partial<IState>> {
   };
   menus = record => (
     <Menu
+      getPopupContainer={(triggerNode: any) => triggerNode.parentNode}
       onClick={e => {
         if (e.key === "duplicate") {
           this.onDuplicateContact(record);

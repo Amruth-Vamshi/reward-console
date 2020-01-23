@@ -149,7 +149,10 @@ const OfferRedemptionRulesForm = Form.create<IProps>({
             className="textPaddingTop"
             style={{ display: "inline-block", width: "calc(65% - 12px)" }}
           >
-            <span>Offer is applicable only on X number of SKU's</span>
+            <span>
+              Minimum units of Product to be present in the bill for offer to be
+              applicable
+            </span>
           </Form.Item>
 
           {/* {offerType != "FLATX_DISCOUNT" && offerType != "FLATX_CASHBACK" ? <span>
