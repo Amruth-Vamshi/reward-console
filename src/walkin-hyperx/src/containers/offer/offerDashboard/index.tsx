@@ -32,8 +32,9 @@ export interface IAppState {
   products: Array<{}>;
   location;
   frequency;
-  transactionTime: string;
+  transactionTimeTypes;
   cartValue;
+  daysOfWeek;
   redemption;
   cappingType;
   dayPart;
@@ -57,8 +58,9 @@ class OfferDashboard extends React.Component<IAppProps, IAppState> {
       offer: {},
       products: [],
       location: [],
-      transactionTime: "",
+      transactionTimeTypes: [],
       frequency: {},
+      daysOfWeek: [],
       cartValue: {},
       dayPart: {},
       redemption: {},
@@ -92,12 +94,13 @@ class OfferDashboard extends React.Component<IAppProps, IAppState> {
     let {
       products,
       location,
-      transactionTime,
+      transactionTimeTypes,
       frequency,
       cartValue,
       dayPart,
       redemption,
-      cappingType
+      cappingType,
+      daysOfWeek
     } = this.state;
     offerEligibilityRule &&
       offerEligibilityRule.ruleConfiguration.rules.map((rule: any) => {
@@ -112,20 +115,23 @@ class OfferDashboard extends React.Component<IAppProps, IAppState> {
             values: rule.attributeValue
           });
         else if (rule.attributeName.includes("frequency_")) {
-          transactionTime = "Frequency";
+          transactionTimeTypes.push("Frequency");
           frequency[rule.attributeName.replace("frequency_", "")] =
             rule.attributeValue;
         } else if (rule.attributeName == "cartValue") {
-          transactionTime = "Cart Value";
+          transactionTimeTypes.push("Cart Value");
           cartValue = {
             name: rule.attributeName,
             value: rule.attributeValue,
             type: rule.expressionType
           };
         } else if (rule.attributeName.includes("dayPart_")) {
-          transactionTime = "DayPart";
+          transactionTimeTypes.push("DayPart");
           dayPart[rule.attributeName.replace("dayPart_", "")] =
             rule.attributeValue;
+        } else if (rule.attributeName.includes("dayOfWeek")) {
+          transactionTimeTypes.push("Days Of Week");
+          daysOfWeek = rule.attributeValue;
         }
       });
 
@@ -140,12 +146,13 @@ class OfferDashboard extends React.Component<IAppProps, IAppState> {
     this.setState({
       products,
       location,
-      transactionTime,
+      transactionTimeTypes,
       frequency,
       cartValue,
       dayPart,
       redemption,
-      cappingType
+      cappingType,
+      daysOfWeek
     });
   };
 
@@ -161,33 +168,57 @@ class OfferDashboard extends React.Component<IAppProps, IAppState> {
     let {
       products,
       location,
-      transactionTime,
+      transactionTimeTypes,
       frequency,
       cartValue,
       dayPart,
       redemption,
       cappingType,
-      spin
+      spin,
+      daysOfWeek
     } = this.state;
     let transactionTimeStr = `6 transaction in 30 days`;
 
-    if (transactionTime == "Frequency")
-      transactionTimeStr = `${transactionTime} - ${frequency.transaction} transaction in ${frequency.days} days`;
-    else if (transactionTime == "Cart Value")
-      transactionTimeStr = `${transactionTime} - 
-        ${fieldConvert(
+    let transactionTimeArr = [];
+
+    console.log(transactionTimeTypes);
+
+    console.log("tt", transactionTimeTypes.includes("DayPart"));
+
+    if (transactionTimeTypes.includes("Frequency"))
+      transactionTimeArr.push({
+        type: "Frequency",
+        value: `${frequency.transaction} transaction(s) in ${frequency.days} day(s)`
+      });
+    if (transactionTimeTypes.includes("Cart Value"))
+      transactionTimeArr.push({
+        type: "Cart Value",
+        value: ` ${fieldConvert(
           transactionTimeData,
           cartValue.name,
           "value",
           "title"
         )} ${fieldConvert(
-        cartValueConditionData,
-        cartValue.type,
-        "value",
-        "title"
-      )}  ${cartValue.value} Rs`;
-    else if (transactionTime == "DayPart")
-      transactionTimeStr = `${transactionTime} - From ${dayPart.startTime} To ${dayPart.endTime}`;
+          cartValueConditionData,
+          cartValue.type,
+          "value",
+          "title"
+        )}  ${cartValue.value} Rs`
+      });
+    if (transactionTimeTypes.includes("DayPart"))
+      transactionTimeArr.push({
+        type: "DayPart",
+        value: ` From ${dayPart.startTime} To ${dayPart.endTime}`
+      });
+    if (transactionTimeTypes.includes("Days Of Week"))
+      transactionTimeArr.push({ type: "Days Of Week", value: daysOfWeek });
+
+    console.log(transactionTimeArr);
+
+    // if (transactionTime == 'Frequency') transactionTimeStr = `${transactionTime} - ${frequency.transaction} transaction(s) in ${frequency.days} day(s)`
+    // else if (transactionTime == 'Cart Value') transactionTimeStr = `${transactionTime} -
+    // ${fieldConvert(transactionTimeData, cartValue.name, 'value', 'title')} ${fieldConvert(cartValueConditionData, cartValue.type, 'value', 'title')}  ${cartValue.value} Rs`
+    // else if (transactionTime == 'DayPart') transactionTimeStr = `${transactionTime} - From ${dayPart.startTime} To ${dayPart.endTime}`
 
     return (
       <div>
@@ -298,12 +329,20 @@ class OfferDashboard extends React.Component<IAppProps, IAppState> {
                                 <Row style={{ padding: '0 25px' }}>
                                     <Input className='inputRow' value='North_india_zone.csv ' disabled addonAfter={<span className='gx-text-primary gx-pointer'>View CSV</span>} />
                                 </Row> */}
-                    {transactionTime != "" && (
-                      <Row>
-                        <Col {...labelCol}> User Transaction Time </Col>
-                        <Col {...wrapperCol}> {transactionTimeStr} </Col>
-                      </Row>
-                    )}
+
+                    {/* {transactionTime != '' && <Row>
+                                            <Col {...labelCol}>  User Transaction Time  </Col>
+                                            <Col {...wrapperCol}> {transactionTimeStr} </Col>
+                                        </Row>} */}
+                    {console.log("Test22", transactionTimeArr)}
+                    {transactionTimeArr.map(t => (
+                      <div>
+                        <Row key={t.type}>
+                          <Col {...labelCol}> {t.type} </Col>
+                          <Col {...wrapperCol}> {t.value} </Col>
+                        </Row>
+                      </div>
+                    ))}
 
                     <Divider />
                     <h4>Redemption Rules</h4>

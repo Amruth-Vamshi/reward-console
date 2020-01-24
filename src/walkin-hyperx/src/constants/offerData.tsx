@@ -13,7 +13,7 @@ export const offerStepData = [
 export const couponTypeData = [
   {
     id: 1,
-    value: 1,
+    value: "1",
     title: "Static"
   },
   {
@@ -48,7 +48,7 @@ export const offerTypeData = [
   },
   {
     id: 5,
-    value: "FREE_ITMES_FROM_LIST",
+    value: "FREE_ITEMS_FROM_LIST",
     title: "Free item"
   }
 ];
