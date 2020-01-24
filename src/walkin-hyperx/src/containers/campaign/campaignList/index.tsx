@@ -1,11 +1,6 @@
 import "../styles.css";
 
-import {
-  CampaignHeader,
-  InstantSearch,
-  SortableDataTable,
-  WHeader
-} from "shared";
+import { CampaignHeader, InstantSearch, SortableDataTable } from "shared";
 import { Widget } from "walkin-components";
 import { Button, Col, Dropdown, Icon, Menu, Progress, Tabs } from "antd";
 import jwt from "jsonwebtoken";
@@ -21,7 +16,6 @@ import { RouteChildrenProps } from "react-router";
 import { withRouter } from "react-router-dom";
 
 import {
-  campaigns,
   DISABLE_CAMPAIGN,
   VIEW_HYPERX_CAMPAIGNS
 } from "../../../query/campaign";
@@ -36,6 +30,7 @@ import {
   NEW_CAMPAIGN
 } from "../../../constants/RouterConstants";
 import HyperXContainer from "../../../utils/HyperXContainer";
+import { WHeader } from "shared/src";
 import { includes } from "lodash";
 
 const { TabPane } = Tabs;
@@ -90,7 +85,7 @@ class CampaignList extends React.Component<
     };
   }
 
-  getCampaigns = (offset, state) => {
+  getCampaigns = (offset, state, key) => {
     console.log("state ", state);
     this.setState({ loading: true });
     this.props.client
@@ -111,20 +106,8 @@ class CampaignList extends React.Component<
       })
       .then(res => {
         let data = res.data.viewCampaignsForHyperX;
-        let allCampaigns = data.data.map(c => ({
-          ...c.campaign,
-          reached: c.reached,
-          audienceCount: c.audienceCount,
-          redemptionRate: c.redemptionRate
-        }));
-        this.setState(
-          {
-            loading: false,
-            allCampaigns,
-            total: data.paginationInfo.totalItems
-          },
-          () => this.dataManipulation(this.state.key)
-        );
+
+        this.dataManipulation(data, key);
       })
       .catch(err => {
         this.setState({ loading: false });
@@ -133,7 +116,13 @@ class CampaignList extends React.Component<
   };
 
   componentWillMount() {
-    this.getCampaigns(1, "LIVE");
+    this.state.key
+      ? this.getCampaigns(
+          1,
+          DEFAULT_HYPERX_CAMPAIGN_STATES[this.state.key - 1],
+          this.state.key
+        )
+      : this.getCampaigns(1, "LIVE", this.state.key);
   }
 
   onNewCampaign = () => {
@@ -244,19 +233,31 @@ class CampaignList extends React.Component<
     });
   };
 
-  dataManipulation = key => {
-    const { allCampaigns } = this.state;
-    if (!allCampaigns || allCampaigns.length < 1) return;
-    // if (key == 1) {
-    //   let liveCampaigns = allCampaigns.filter((val: any) => moment().isBetween(val.startTime, val.endTime));
-    //   this.setState({ data: liveCampaigns, filtered: null });
-    // } else if (key == 2) {
-    //   let upcomingCampaigns = allCampaigns.filter((val: any) => val.campaignStatus == DEFAULT_HYPERX_CAMPAIGN_STATES[1] || (val.campaignStatus == DEFAULT_HYPERX_CAMPAIGN_STATES[0] && moment(val.startTime).isAfter(moment())));
-    //   this.setState({ data: upcomingCampaigns, filtered: null });
-    // } else {
-    let Campaigns = allCampaigns;
-    this.setState({ data: Campaigns, filtered: null });
-    // }
+  dataManipulation = (data, key1) => {
+    const { allCampaigns, key } = this.state;
+    if (key1 == key) {
+      let allCampaigns = data.data.map(c => ({
+        ...c.campaign,
+        reached: c.reached,
+        audienceCount: c.audienceCount,
+        redemptionRate: c.redemptionRate
+      }));
+      // if (!allCampaigns || allCampaigns.length < 1) return
+      // if (key == 1) {
+      //   let liveCampaigns = allCampaigns.filter((val: any) => moment().isBetween(val.startTime, val.endTime));
+      //   this.setState({ data: liveCampaigns, filtered: null });
+      // } else if (key == 2) {
+      //   let upcomingCampaigns = allCampaigns.filter((val: any) => val.campaignStatus == DEFAULT_HYPERX_CAMPAIGN_STATES[1] || (val.campaignStatus == DEFAULT_HYPERX_CAMPAIGN_STATES[0] && moment(val.startTime).isAfter(moment())));
+      //   this.setState({ data: upcomingCampaigns, filtered: null });
+      // } else {
+      this.setState({
+        data: allCampaigns,
+        total: data.paginationInfo.totalItems,
+        filtered: null,
+        loading: false
+      });
+      // }}
+    }
   };
 
   onTabChange = (key: any) => {
@@ -264,7 +265,7 @@ class CampaignList extends React.Component<
 
     // if (key == 2) this.getCampaigns(1, [DEFAULT_HYPERX_CAMPAIGN_STATES[0], DEFAULT_HYPERX_CAMPAIGN_STATES[1]])
     // else
-    this.getCampaigns(1, DEFAULT_HYPERX_CAMPAIGN_STATES[key - 1]);
+    this.getCampaigns(1, DEFAULT_HYPERX_CAMPAIGN_STATES[key - 1], key);
   };
 
   onTableChange = (e, n) => {
@@ -273,7 +274,11 @@ class CampaignList extends React.Component<
       // console.log('onChange', e, n)
       // if (this.state.key == 2) this.getCampaigns(e, [DEFAULT_HYPERX_CAMPAIGN_STATES[0], DEFAULT_HYPERX_CAMPAIGN_STATES[1]])
       // else
-      this.getCampaigns(e, DEFAULT_HYPERX_CAMPAIGN_STATES[this.state.key - 1]);
+      this.getCampaigns(
+        e,
+        DEFAULT_HYPERX_CAMPAIGN_STATES[this.state.key - 1],
+        this.state.key
+      );
 
       // this.getCampaigns(e, DEFAULT_HYPERX_CAMPAIGN_STATES[this.state.key - 1])
     }
