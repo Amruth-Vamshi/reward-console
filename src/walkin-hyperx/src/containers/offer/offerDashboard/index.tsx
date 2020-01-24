@@ -7,7 +7,14 @@ import { RouteChildrenProps } from 'react-router';
 import { withRouter } from 'react-router-dom';
 import { WHeader } from 'shared';
 
-import { cappingData, cartValueConditionData, locationData, offerTypeData, productData, transactionTimeData, } from '../../../constants/offerData';
+import {
+  cappingData,
+  cartValueConditionData,
+  locationData,
+  offerTypeData,
+  productData,
+  transactionTimeData,
+} from '../../../constants/offerData';
 import { VIEW_OFFER } from '../../../query/offer';
 import { fieldConvert } from '../../../utils';
 import HyperXContainer from '../../../utils/HyperXContainer';
@@ -154,7 +161,7 @@ class OfferDashboard extends React.Component<IAppProps, IAppState> {
                       <Col {...wrapperCol}> {fieldConvert(offerTypeData, offerType, 'value', 'title')} - {reward[offerType] ? reward[offerType].toString() : ''}
                         {fieldConvert(offerTypeData, offerType, 'value', 'extra')} </Col>
                     </Row>
-                    {products.map((p: any) => <div>
+                    {products.map((p: any) => (p.values != "") && <div>
                       <Row>
                         <Col {...labelCol}>  Product  </Col>
                         <Col {...wrapperCol}> {fieldConvert(productData, p.type, 'value', 'title')} </Col>
