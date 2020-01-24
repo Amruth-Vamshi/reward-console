@@ -7,14 +7,7 @@ import { RouteChildrenProps } from 'react-router';
 import { withRouter } from 'react-router-dom';
 import { WHeader } from 'shared';
 
-import {
-  cappingData,
-  cartValueConditionData,
-  locationData,
-  offerTypeData,
-  productData,
-  transactionTimeData,
-} from '../../../constants/offerData';
+import { cappingData, cartValueConditionData, locationData, offerTypeData, productData, transactionTimeData } from '../../../constants/offerData';
 import { VIEW_OFFER } from '../../../query/offer';
 import { fieldConvert } from '../../../utils';
 import HyperXContainer from '../../../utils/HyperXContainer';
@@ -223,7 +216,7 @@ class OfferDashboard extends React.Component<IAppProps, IAppState> {
                     </Row>
                     <Row>
                       <Col {...labelCol}>  Time Limit  </Col>
-                      <Col {...wrapperCol}> {redemption.time_limit ? `${redemption.time_limit}` : '  --'}</Col>
+                      <Col {...wrapperCol}> {redemption.time_limit ? `${redemption.time_limit}/day` : '  --'}</Col>
                     </Row>
 
                     <Divider />
