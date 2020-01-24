@@ -105,10 +105,5 @@
     "prettier": "^1.19.1",
     "pretty-quick": "^2.0.1",
     "ts-loader": "^6.2.1"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "pretty-quick --staged"
-    }
   }
 }

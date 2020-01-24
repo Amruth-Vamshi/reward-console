@@ -1,17 +1,17 @@
 import './offerDashboard.css';
 
-import { WHeader } from 'shared';
-import { Button, Checkbox, Col, Divider, Input, Row, Spin, Card } from 'antd';
+import { Button, Checkbox, Col, Divider, Input, Row } from 'antd';
 import * as React from 'react';
+import { ApolloProviderProps, withApollo } from 'react-apollo';
 import { RouteChildrenProps } from 'react-router';
-import { ApolloProviderProps, compose, graphql, withApollo } from 'react-apollo';
 import { withRouter } from 'react-router-dom';
+import { WHeader } from 'shared';
 
-import HyperXContainer from '../../../utils/HyperXContainer';
+import { cappingData, cartValueConditionData, locationData, offerTypeData, productData, transactionTimeData, } from '../../../constants/offerData';
 import { VIEW_OFFER } from '../../../query/offer';
-import { offerTypeData, cartValueConditionData, transactionTimeData, cappingData } from '../../../constants/offerData';
 import { fieldConvert } from '../../../utils';
-import { pickBy, includes } from "lodash";
+import HyperXContainer from '../../../utils/HyperXContainer';
+
 export interface IAppProps extends RouteChildrenProps<any>, ApolloProviderProps<any> {
 }
 
@@ -79,8 +79,8 @@ class OfferDashboard extends React.Component<IAppProps, IAppState> {
     let { offerEligibilityRule, rewardRedemptionRule }: any = data
     let { products, location, transactionTimeTypes, frequency, cartValue, dayPart, redemption, cappingType, daysOfWeek } = this.state
     offerEligibilityRule && offerEligibilityRule.ruleConfiguration.rules.map((rule: any) => {
-      if (rule.attributeName.includes('product_')) products.push({ type: rule.attributeName.replace('product_', ''), values: rule.attributeValue })
-      else if (rule.attributeName.includes('location_')) location.push({ type: rule.attributeName.replace('location_', ''), values: rule.attributeValue })
+      if (rule.attributeName.includes('product_')) products.push({ type: rule.attributeName, values: rule.attributeValue })
+      else if (rule.attributeName.includes('location_')) location.push({ type: rule.attributeName, values: rule.attributeValue })
       else if (rule.attributeName.includes('frequency_')) {
         transactionTimeTypes.push("Frequency")
         frequency[rule.attributeName.replace('frequency_', '')] = rule.attributeValue
@@ -112,9 +112,8 @@ class OfferDashboard extends React.Component<IAppProps, IAppState> {
 
     let transactionTimeArr = []
 
-    console.log(transactionTimeTypes);
 
-    console.log('tt', transactionTimeTypes.includes("DayPart"));
+    console.log('>>>>', offerTypeData)
 
     if (transactionTimeTypes.includes("Frequency"))
       transactionTimeArr.push({ type: 'Frequency', value: `${frequency.transaction} transaction(s) in ${frequency.days} day(s)` })
@@ -124,8 +123,6 @@ class OfferDashboard extends React.Component<IAppProps, IAppState> {
       transactionTimeArr.push({ type: 'DayPart', value: ` From ${dayPart.startTime} To ${dayPart.endTime}` })
     if (transactionTimeTypes.includes("Days Of Week"))
       transactionTimeArr.push({ type: 'Days Of Week', value: daysOfWeek })
-
-    console.log(transactionTimeArr);
 
     // if (transactionTime == 'Frequency') transactionTimeStr = `${transactionTime} - ${frequency.transaction} transaction(s) in ${frequency.days} day(s)`
     // else if (transactionTime == 'Cart Value') transactionTimeStr = `${transactionTime} - 
@@ -160,7 +157,7 @@ class OfferDashboard extends React.Component<IAppProps, IAppState> {
                     {products.map((p: any) => <div>
                       <Row>
                         <Col {...labelCol}>  Product  </Col>
-                        <Col {...wrapperCol}> {p.type} </Col>
+                        <Col {...wrapperCol}> {fieldConvert(productData, p.type, 'value', 'title')} </Col>
                       </Row>
                       <Row style={{ padding: '0 25px' }}>
                         <Input className='inputRow' value={p.values} disabled addonAfter={<span className='gx-text-primary gx-pointer'>View All</span>} />
@@ -171,7 +168,7 @@ class OfferDashboard extends React.Component<IAppProps, IAppState> {
                     {location.map((l: any) => (l.values != "") && <div>
                       <Row>
                         <Col {...labelCol}>  Location  </Col>
-                        <Col {...wrapperCol}> {l.type} </Col>
+                        <Col {...wrapperCol}> {fieldConvert(locationData, l.type, 'value', 'title')} </Col>
                       </Row>
                       <Row style={{ padding: '0 25px' }}>
                         <Input className='inputRow' value={l.values} disabled addonAfter={<span className='gx-text-primary gx-pointer'>View All</span>} />
@@ -198,7 +195,6 @@ class OfferDashboard extends React.Component<IAppProps, IAppState> {
                                             <Col {...labelCol}>  User Transaction Time  </Col>
                                             <Col {...wrapperCol}> {transactionTimeStr} </Col>
                                         </Row>} */}
-                    {console.log('Test22', transactionTimeArr)}
                     {transactionTimeArr.map(t => <div>
                       <Row key={t.type}>
                         <Col {...labelCol}>  {t.type}  </Col>
