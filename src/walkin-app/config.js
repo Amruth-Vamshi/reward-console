@@ -11,7 +11,8 @@ if (process.env.NODE_ENV == "production" || process.env.NODE_ENV == "prod")
 const client = {
   development: {
     env: env,
-    GRAPHQL_URL: "https://dev-api.getwalkin.in/core_dev/graphql",
+    // GRAPHQL_URL: "https://dev-api.getwalkin.in/core_dev/graphql",
+    GRAPHQL_URL: "https://174.138.123.95:4000/graphql",
     NEARX_GRAPHQL_URL: "https://dev-api.getwalkin.in/nearx_dev/graphql"
 
     // GRAPHQL_URL: "http://206.189.91.111:4000/graphql",

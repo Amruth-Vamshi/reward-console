@@ -65,3 +65,105 @@ export const REPORTS = gql`
 //     }
 //   }
 // `;
+
+export const GET_CUSTOMER_DETAILS = gql`
+  query($input: SearchCustomerInput) {
+    customer(input: $input) {
+      id
+      firstName
+      lastName
+      email
+      phoneNumber
+      gender
+      dateOfBirth
+      externalCustomerId
+      customerIdentifier
+      extend
+      onboardSource
+    }
+  }
+`;
+
+// export const GET_LOYALTY_TRANSACTIONS = gql`
+//   query($externalCustomerId: String!, $page: Int, $itemsPerPage: Int) {
+//     getLoyaltyTransactions(
+//       externalCustomerId: $externalCustomerId
+//       page: $page
+//       itemsPerPage: $itemsPerPage
+//     ) {
+//       data {
+//         id
+//         externalCustomerId
+//         loyaltyReferenceId
+//         loyaltyType
+//         status
+//         expiryDate
+//         data
+//         pointsBlocked
+//         pointsIssued
+//         pointsRedeemed
+//         pointsExpired
+//         customerId
+//         balance
+//       }
+//       transactionCount
+//       externalCustomerId
+//       dateStart
+//       dateEnd
+//       page
+//       itemsPerPage
+//       orderBy
+//       startId
+//     }
+//   }
+// `;
+
+// export const GET_CUSTOMER_LEDGER = gql`
+//  query($externalCustomerId: String!, $page: Int, $itemsPerPage: Int) {
+//    getCustomerLedger(
+//      externalCustomerId: $externalCustomerId
+//      page: $page
+//      itemsPerPage: $itemsPerPage
+//    ) {
+//      data {
+//        id
+//        createdTime
+//        lastModifiedTime
+//        loyaltyTransaction {
+//          id
+//          externalCustomerId
+//          loyaltyType
+//          status
+//          expiryDate
+//          data
+//          pointsBlocked
+//          pointsIssued
+//          pointsRedeemed
+//          pointsExpired
+//          customerId
+//          balance
+//        }
+//        loyaltyLedger {
+//          id
+//          points
+//          remarks
+//          referenceId
+//          referenceType
+//          type
+//          loyaltyProgramId
+//          balance
+//          pointsRemaining
+//          expiryDate
+//          details
+//        }
+//      }
+//      ledgerCount
+//      externalCustomerId
+//      dateStart
+//      dateEnd
+//      page
+//      itemsPerPage
+//      orderBy
+//      startId
+//    }
+//  `;
