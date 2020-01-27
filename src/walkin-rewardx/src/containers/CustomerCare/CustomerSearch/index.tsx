@@ -62,6 +62,10 @@ class CustomerSearch extends React.Component<
   }
 
   getCustomerDetails() {
+    console.log(
+      "CustomerSearch getCustomerDetails externalCustomerId",
+      this.state.customerId
+    );
     this.setState({ loading: true });
     this.props.client
       .query({
