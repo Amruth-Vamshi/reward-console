@@ -14,12 +14,12 @@ import {
 } from "antd";
 import "./style.css";
 import moment from "moment";
-import AddAndDeleteComponentsDynamically from "../../../atoms/addAndDeleteComponentsDynamically";
+import AddAndDeleteComponentsDynamically from "../../atoms/addAndDeleteComponentsDynamically";
 import { FormComponentProps } from "antd/lib/form";
-const { TextArea } = Input;
-const Option = Select.Option;
-const { RangePicker } = DatePicker;
 
+const Option = Select.Option;
+
+const weekdays = ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY"];
 interface IProps extends FormComponentProps {
   offerTypeData?: any;
   handleOfferTypeChange?: any;
@@ -27,6 +27,8 @@ interface IProps extends FormComponentProps {
   transactionTimeData?: any;
   locationData?: any;
   productData?: any;
+  selectedWeekDays;
+  dayOfWeekChanged;
   handleTransactionTimeChange?: any;
   transactionTimeStatus?: any;
   cartValueConditionData?: any;
@@ -172,13 +174,15 @@ const OfferBasicInfoForm = Form.create<IProps>({ name: "offer_basic_info" })(
         locationValues,
         productValues,
         couponDefaultValue,
+        selectedWeekDays,
         onCouponChange,
         couponTypeSelected,
         couponInputLabel,
         onCouponLabelChange,
         checked,
         OnNoCouponCodeChange,
-        couponTypeData
+        couponTypeData,
+        dayOfWeekChanged
       } = this.props;
       const { productDropDown } = this.state;
       const { getFieldDecorator } = form;
@@ -192,6 +196,17 @@ const OfferBasicInfoForm = Form.create<IProps>({ name: "offer_basic_info" })(
           sm: { span: 24 }
         }
       };
+
+      const filteredOptions = weekdays
+        .filter(o => !selectedWeekDays.includes(o))
+        .map(item => (
+          <Option key={item} value={item}>
+            {" "}
+            {item}{" "}
+          </Option>
+        ));
+      // const dayOptions = filteredOptions
+      console.log(">>", filteredOptions);
       // console.log('offerTypeStatus', offerTypeStatus);
       return (
         <Form
@@ -442,6 +457,32 @@ const OfferBasicInfoForm = Form.create<IProps>({ name: "offer_basic_info" })(
                     use12Hours
                     format="h:mm:ss a"
                   />
+                )}
+              </Form.Item>
+            </Fragment>
+          )}
+          {transactionTimeStatus && transactionTimeStatus.dayOfWeek === true && (
+            <Fragment>
+              <Form.Item
+                style={{ display: "inline-block", width: "calc(66% - 12px)" }}
+                label="Start Time"
+              >
+                {getFieldDecorator("dayOfWeek", {
+                  initialValue: selectedWeekDays
+                })(
+                  <Select
+                    mode="multiple"
+                    placeholder="Enter Week Days"
+                    value={selectedWeekDays}
+                    getPopupContainer={(triggerNode: any) =>
+                      triggerNode.parentNode
+                    }
+                    onChange={e => dayOfWeekChanged(e)}
+                    style={{ width: "100%" }}
+                  >
+                    {/* {filteredOptions.map(item => <Option key={item} value={item}> {item} </Option>)} */}
+                    {filteredOptions}
+                  </Select>
                 )}
               </Form.Item>
             </Fragment>

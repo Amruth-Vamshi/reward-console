@@ -68,6 +68,11 @@ export var transactionTimeData = [
     id: 3,
     value: "dayPart",
     title: "Daypart"
+  },
+  {
+    id: 4,
+    value: "dayOfWeek",
+    title: "DayOfWeek"
   }
 ];
 
@@ -177,4 +182,41 @@ export const dummyBrandData = [
     name: "sample2",
     value: "sampleTwo"
   }
+];
+
+export const dayOfWeek = [
+  {
+    id: 1,
+    title: "Monday",
+    value: "MONDAY"
+  },
+  {
+    id: 2,
+    title: "Tuesday",
+    value: "TUESDAY"
+  },
+  {
+    id: 3,
+    title: "wednesday",
+    value: "WEDNESDAY"
+  },
+  {
+    id: 4,
+    title: "Thursday",
+    value: "THURSDAY"
+  },
+  {
+    id: 5,
+    title: "Friday",
+    value: "FRIDAY"
+  }
+  // {
+  //     id: 6,
+  //     title: 'sample1',
+  //     value: 'sampleOne',
+  // }, {
+  //     id: 7,
+  //     title: 'sample1',
+  //     value: 'sampleOne',
+  // },
 ];

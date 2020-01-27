@@ -67,6 +67,7 @@ interface IState {
   transactionTime: "";
   couponLableSelected: "";
   offerRedemptionRuleId: "";
+  selectedWeekDays;
   productValues: Array<any>;
   redemptionRule: any;
   loading1: boolean;
@@ -98,6 +99,7 @@ class NewOffer extends Component<IProps, Partial<IState>> {
       redemptionRule: {},
       loading1: false,
       transactionTime: "",
+      selectedWeekDays: [],
       offerEligibityRuleId: "",
       offerRedemptionRuleId: "",
       locationValues: [],
@@ -114,6 +116,7 @@ class NewOffer extends Component<IProps, Partial<IState>> {
       transactionTimeStatus: {
         showFrequency: true,
         showDayPart: false,
+        dayOfWeek: false,
         cartValue: false
       },
       productDropDown: {
@@ -183,25 +186,35 @@ class NewOffer extends Component<IProps, Partial<IState>> {
         Object.assign(this.state.transactionTimeStatus, {
           showFrequency: false,
           showDayPart: true,
+          dayOfWeek: false,
           showCartValue: false
         })
       );
-    }
-    if (value === "frequency") {
+    } else if (value === "frequency") {
       this.setState(
         Object.assign(this.state.transactionTimeStatus, {
           showFrequency: true,
           showDayPart: false,
+          dayOfWeek: false,
           showCartValue: false
         })
       );
-    }
-    if (value === "cartValue") {
+    } else if (value === "cartValue") {
       this.setState(
         Object.assign(this.state.transactionTimeStatus, {
           showFrequency: false,
           showDayPart: false,
+          dayOfWeek: false,
           showCartValue: true
+        })
+      );
+    } else if (value === "dayOfWeek") {
+      this.setState(
+        Object.assign(this.state.transactionTimeStatus, {
+          showFrequency: false,
+          showDayPart: false,
+          dayOfWeek: true,
+          showCartValue: false
         })
       );
     }
@@ -398,6 +411,12 @@ class NewOffer extends Component<IProps, Partial<IState>> {
                 attributeValue: moment(basicForm.endTime).format("h:mm:ss a"),
                 expressionType: "EQUALS"
               });
+            } else if (basicForm.transactionTime == "dayOfWeek") {
+              arr.push({
+                attributeName: "dayOfWeek",
+                attributeValue: this.state.selectedWeekDays,
+                expressionType: "IN"
+              });
             }
           }
 
@@ -589,6 +608,10 @@ class NewOffer extends Component<IProps, Partial<IState>> {
     }
   };
 
+  dayOfWeekChanged = selectedWeekDays => {
+    this.setState({ selectedWeekDays });
+  };
+
   render() {
     const {
       current,
@@ -701,6 +724,7 @@ class NewOffer extends Component<IProps, Partial<IState>> {
                     transactionTimeStatus={transactionTimeStatus}
                     cartValueConditionData={cartValueConditionData}
                     wrappedComponentRef={this.saveFormRef}
+                    selectedWeekDays={this.state.selectedWeekDays}
                     // handleProductChange={this.onProductChange}
                     productDropDown={productDropDown}
                     location={organizationHierarchy}
@@ -708,6 +732,7 @@ class NewOffer extends Component<IProps, Partial<IState>> {
                     locationDropDown={locationDropDown}
                     locationArray={locationArray}
                     values={values}
+                    dayOfWeekChanged={this.dayOfWeekChanged}
                     productItems={productItems}
                     onSelectOneValuesSelected={this.onValuesSelected}
                     onSelectTwoValuesSelected={this.onSelectTwoValuesSelected}

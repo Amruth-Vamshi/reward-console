@@ -69,6 +69,7 @@ const OfferRedemptionRulesForm = Form.create<IProps>({
               collectively by target segment{" "}
             </span>
           </Form.Item>
+
           <Form.Item
             style={{ display: "inline-block", width: "calc(35% - 12px)" }}
             label="Usage Limit At Customer Level"
@@ -90,6 +91,7 @@ const OfferRedemptionRulesForm = Form.create<IProps>({
               cannot use the offer once used
             </span>
           </Form.Item>
+
           <Form.Item
             style={{ display: "inline-block", width: "calc(35% - 12px)" }}
             label="Time Limit"
@@ -130,6 +132,7 @@ const OfferRedemptionRulesForm = Form.create<IProps>({
               Maximum no. of times an offer can be used within a time duration
             </span>
           </Form.Item>
+
           <Form.Item
             style={{ display: "inline-block", width: "calc(35% - 12px)" }}
             label="Minimum SKU"
@@ -148,6 +151,7 @@ const OfferRedemptionRulesForm = Form.create<IProps>({
           >
             <span>Offer is applicable only on X number of SKU's</span>
           </Form.Item>
+
           {/* {offerType != "FLATX_DISCOUNT" && offerType != "FLATX_CASHBACK" ? <span>
 						<Form.Item>
 							<h3 style={{ marginTop: 22 }}>Capping</h3>
@@ -176,8 +180,10 @@ const OfferRedemptionRulesForm = Form.create<IProps>({
 								rules: [{ required: true, message: 'Please select capping value' }],
 							})(<Input type="number" min={0} />)}
 						</Form.Item>
-					</span> : '' */}
-          }{console.log("cappingValue >>>> ", cappingValue)}
+					</span> : '' }*/}
+
+          {console.log("cappingValue >>>> ", cappingValue)}
+
           {cappingValue ? (
             <span>
               <Form.Item>
