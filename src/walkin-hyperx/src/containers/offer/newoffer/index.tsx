@@ -6,7 +6,7 @@ import {
   WHeader,
   OfferRedemptionRulesForm,
   OfferBasicInfoForm
-} from "@walkinsole/shared";
+} from "shared";
 import { Alert, message, Spin } from "antd";
 import jwt from "jsonwebtoken";
 import isEmpty from "lodash/isEmpty";
