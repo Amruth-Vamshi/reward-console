@@ -1,5 +1,4 @@
 import * as React from "react";
-import { Card, Col, Button, Row } from "antd";
 import "./WHead.css";
 
 export interface IAppProps {
@@ -27,8 +26,7 @@ export default class WHeader extends React.Component<IAppProps> {
             lineHeight: 2
           }}
         >
-          {" "}
-          {extra}{" "}
+          {extra}
         </div>
       </div>
     );
