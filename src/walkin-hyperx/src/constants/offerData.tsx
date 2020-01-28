@@ -68,47 +68,52 @@ export var transactionTimeData = [
     id: 3,
     value: "dayPart",
     title: "Daypart"
+  },
+  {
+    id: 4,
+    value: "dayOfWeek",
+    title: "DayOfWeek"
   }
 ];
 
 export var productData = [
   {
     id: 1,
-    value: "product_sku",
-    title: "SKU"
+    value: "product_category",
+    title: "Category"
   },
   {
     id: 2,
-    value: "product_brand",
-    title: "Brand"
-  },
-  {
-    id: 3,
-    value: "product_category",
-    title: "Category"
+    value: "product_sku",
+    title: "SKU"
   }
+  // {
+  //     id: 3,
+  //     value: 'product_brand',
+  //     title: 'Brand',
+  // },
 ];
 
 export var locationData = [
   {
     id: 1,
+    value: "location_store",
+    title: "Store"
+  },
+  {
+    id: 2,
     value: "location_city",
     title: "City"
   },
   {
-    id: 2,
+    id: 3,
     value: "location_state",
     title: "State"
   },
   {
-    id: 3,
+    id: 4,
     value: "location_pincode",
     title: "Pincode"
-  },
-  {
-    id: 4,
-    value: "location_store",
-    title: "Store"
   }
 ];
 
@@ -177,4 +182,41 @@ export const dummyBrandData = [
     name: "sample2",
     value: "sampleTwo"
   }
+];
+
+export const dayOfWeek = [
+  {
+    id: 1,
+    title: "Monday",
+    value: "MONDAY"
+  },
+  {
+    id: 2,
+    title: "Tuesday",
+    value: "TUESDAY"
+  },
+  {
+    id: 3,
+    title: "wednesday",
+    value: "WEDNESDAY"
+  },
+  {
+    id: 4,
+    title: "Thursday",
+    value: "THURSDAY"
+  },
+  {
+    id: 5,
+    title: "Friday",
+    value: "FRIDAY"
+  }
+  // {
+  //     id: 6,
+  //     title: 'sample1',
+  //     value: 'sampleOne',
+  // }, {
+  //     id: 7,
+  //     title: 'sample1',
+  //     value: 'sampleOne',
+  // },
 ];

@@ -3,6 +3,7 @@ import { Menu } from "antd";
 import { Link, RouteComponentProps } from "react-router-dom";
 import { CustomScrollbars, Auxiliary, IntlMessages } from "walkin-components";
 import SidebarLogo from "./SidebarLogo";
+import "walkin-hyperx/src/styles/styles.css";
 import { withRouter } from "react-router-dom";
 
 import {
