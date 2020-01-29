@@ -90,7 +90,11 @@ class SidebarContent extends React.Component<iProps, iState> {
               </Link>
             </Menu.Item> */}
             <Menu.Item key="nearx/documentation">
-              <a target="_blank" href="https://nearx.getwalk.in/docs/overview">
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://nearx.getwalk.in/docs/overview"
+              >
                 <i className="icon icon-timeline-left-align" />
                 {/* <IntlMessages id="sidebar.samplePage" /> */}
                 <span>Documentation</span>
