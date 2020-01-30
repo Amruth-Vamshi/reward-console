@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Widget } from "walkin-components";
-import { Tabs, Modal, Form, Input, Button, Select, message } from "antd";
+import { Tabs, Modal, Form, Input, Button, message } from "antd";
 import { data, data1 } from "./data";
 import UserInfo from "./UserInfo";
 import * as jwt from "jsonwebtoken";
