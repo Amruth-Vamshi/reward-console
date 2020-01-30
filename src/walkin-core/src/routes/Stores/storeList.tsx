@@ -2,7 +2,6 @@ import React from "react";
 import * as jwt from "jsonwebtoken";
 import { Link } from "react-router-dom";
 import { History } from "history";
-import { InstantSearch } from "shared";
 import { Breadcrumb, Table, Col, Row, Button, Switch } from "antd";
 import { withApollo, ApolloProviderProps } from "react-apollo";
 import "./index.css";
@@ -37,20 +36,17 @@ class StoreList extends React.Component<StoreListProps, StoreListState> {
     this.props.client
       .query({
         query: GET_ALL_STORES,
-        // variables: { org_id, status: "ACTIVE" },
         fetchPolicy: "network-only"
       })
       .then(allStoresResponse => {
-        console.log(allStoresResponse, "new");
-
         let dataSource = [];
         allStoresResponse.data.stores.map((store, index) => {
           dataSource.push({
             key: store.id,
             name: store.name,
-            storeCode: store.externalStoreId,
+            // storeCode: store.externalStoreId,
             address: `${store.addressLine1},${store.addressLine2}`,
-            admin: "NIL",
+            // admin: "NIL",
             STATUS: store.STATUS
           });
         });
@@ -65,18 +61,10 @@ class StoreList extends React.Component<StoreListProps, StoreListState> {
   }
   onChange = () => {};
 
-  onStoreFilteredList = list => {
-    console.log(list);
-  };
+  onStoreFilteredList = list => {};
 
   render() {
     const columns = [
-      {
-        title: "Store Code",
-        dataIndex: "storeCode",
-        key: "storeCode",
-        width: "10%"
-      },
       {
         title: "Name",
         dataIndex: "name",
@@ -88,12 +76,6 @@ class StoreList extends React.Component<StoreListProps, StoreListState> {
         dataIndex: "address",
         key: "address",
         width: "30%"
-      },
-      {
-        title: "Admin",
-        dataIndex: "admin",
-        key: "admin",
-        width: "10%"
       },
       {
         title: "Status",
@@ -123,18 +105,17 @@ class StoreList extends React.Component<StoreListProps, StoreListState> {
       }
     ];
 
-    console.log("storeInfo render dataSource", this.state.dataSource);
     return (
       <div>
         <Breadcrumb separator=">">
           <Breadcrumb.Item>
             <Link to="/core/organization">Organisation Home</Link>
           </Breadcrumb.Item>
-          <Breadcrumb.Item>StoreInfo</Breadcrumb.Item>
+          <Breadcrumb.Item>Stores</Breadcrumb.Item>
         </Breadcrumb>
 
         <Row className="rowStoreInfoInstantSearch">
-          <Col className="colStoreInfo">StoreInfo</Col>
+          <Col className="colStoreInfo">Stores</Col>
           <Col className="colInstantSearch">
             {/* component to be created
             <ConfigurableSearchBox
@@ -171,7 +152,6 @@ class StoreList extends React.Component<StoreListProps, StoreListState> {
           onRow={(record: any, rowIndex: number) => {
             return {
               onClick: (event: any) => {
-                console.log(record, rowIndex);
                 this.props.history.push("/core/stores/" + record.key + "/edit");
               }
             };

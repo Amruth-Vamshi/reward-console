@@ -120,7 +120,7 @@ class SidebarContent extends React.Component<
             <Menu.Item key="stores">
               <Link to={`/core/stores`}>
                 <i className="icon icon-inbox" />
-                <span>Store Info</span>
+                <span>Stores</span>
               </Link>
             </Menu.Item>
           </Menu>

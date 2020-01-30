@@ -367,19 +367,19 @@ class EntityExtention extends React.Component<
               pagination={hideBasicDetailsTable ? false : undefined}
             />
           </div>
-          <div className="entityVariableInputWrapper ">
+          <div className="entityVariableInputWrapper nohoverTableWrapper ">
             <Table
               loading={this.state.isEntityExtendTableLoading}
-              onRow={(record: any, rowIndex: number) => {
-                return {
-                  onClick: (event: any) => {
-                    this.setState({
-                      selectedRowIndex: rowIndex,
-                      isEntityVariablesFormOpen: true
-                    });
-                  }
-                };
-              }}
+              // onRow={(record: any, rowIndex: number) => {
+              //   return {
+              //     onClick: (event: any) => {
+              //       this.setState({
+              //         selectedRowIndex: rowIndex,
+              //         isEntityVariablesFormOpen: true
+              //       });
+              //     }
+              //   };
+              // }}
               bordered
               title={() => (
                 <div className={"entityFieldTableHeader"}>
