@@ -701,3 +701,14 @@ export const UPDATE_STORE = gql`
     }
   }
 `;
+
+export const GET_BUSINESS_RULE = gql`
+  query businessRule($id: ID!) {
+    businessRule(id: $id) {
+      id
+      ruleLevel
+      ruleType
+      ruleDefaultValue
+    }
+  }
+`;
