@@ -76,6 +76,8 @@ class Topbar extends React.Component<iProps, iState> {
         return "NearX-Topbar";
       case "hyperx":
         return "HyperX-Topbar";
+      case "rewardx":
+        return "Rewardx-Topbar";
       case "core":
         return "HyperX-Topbar";
       case "refinex":

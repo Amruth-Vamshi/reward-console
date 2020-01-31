@@ -66,14 +66,14 @@ class CustomerSearch extends React.Component<
       "CustomerSearch getCustomerDetails externalCustomerId",
       this.state.customerId
     );
-    this.setState({ loading: true });
+    this.setState({ customer: null, loading: true });
     this.props.client
       .query({
         query: GET_CUSTOMER_DETAILS,
         variables: {
           input: {
             // id: ""
-            externalCustomerId: this.state.customerId
+            externalCustomerId: this.state.phoneNumber
             // organization_id: "5dbe47e1-12db-4004-949f-8d7fe7745264",
             // customerIdentifier: ""
           }
@@ -81,27 +81,33 @@ class CustomerSearch extends React.Component<
       })
       .then((data: any) => {
         console.log("CustomerSearch getCustomerDetails data", data);
-
-        this.setState({ customer: data.data.customer, loading: false });
+        if (data.data.customer) {
+          this.setState({ customer: data.data.customer, loading: false });
+        } else {
+          this.setState({ loading: false });
+          message.error(
+            "Unable to fetch customer data, please check the phone number"
+          );
+        }
       })
       .catch(error => {
-        this.setState({ loading: false });
         console.log("CustomerSearch getCustomerDetails error", error);
+        this.setState({ loading: false });
       });
   }
 
   onClickSearchButton() {
-    if (this.state.customerId && this.state.customerId.length > 0) {
-      this.getCustomerDetails();
-    } else {
-      message.error("Invalid customer id");
-    }
-
-    // if (this.state.phoneNumber && this.state.phoneNumber.length === 10) {
+    // if (this.state.customerId && this.state.customerId.length > 0) {
     //   this.getCustomerDetails();
     // } else {
-    //   message.error("Invalid phone number");
+    //   message.error("Invalid customer id");
     // }
+
+    if (this.state.phoneNumber && this.state.phoneNumber.length === 10) {
+      this.getCustomerDetails();
+    } else {
+      message.error("Invalid phone number");
+    }
   }
 
   onRowClickTransactionTabPane = (event, record, rowIndex) => {
@@ -156,8 +162,13 @@ class CustomerSearch extends React.Component<
         dataIndex: "phoneNumber",
         key: "phoneNumber",
         sorter: (a: any, b: any) =>
-          a.name !== b.name ? (a.name < b.name ? -1 : 1) : 0
+          a.name !== b.name ? (a.name < b.name ? -1 : 1) : 0,
         // sortOrder: sortedInfo.columnKey === "name" && sortedInfo.order
+        render: phoneNumber => (
+          <div>
+            <a className="cc-link">{phoneNumber}</a>
+          </div>
+        )
       },
       {
         title: "Name",
@@ -205,7 +216,7 @@ class CustomerSearch extends React.Component<
               <Row>Phone Number</Row>
               <Row className="cs-input">
                 <Input
-                  disabled={true}
+                  disabled={false}
                   placeholder="Enter number"
                   // value="8985427761"
                   allowClear={true}
@@ -262,7 +273,7 @@ class CustomerSearch extends React.Component<
               <Row className="cs-input">
                 <Input
                   allowClear={true}
-                  disabled={false}
+                  disabled={true}
                   placeholder="Enter number"
                   onChange={event =>
                     this.setState({ customerId: event.target.value })
@@ -308,6 +319,9 @@ class CustomerSearch extends React.Component<
               </div>
             ) : this.state.customer ? (
               <Table
+                title={() => (
+                  <div className="cc-table-header">Last order details</div>
+                )}
                 dataSource={data}
                 onChange={() => {}}
                 columns={columns}

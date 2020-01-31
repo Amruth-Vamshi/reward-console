@@ -16,10 +16,7 @@ import "./index.css";
 import { RouteChildrenProps } from "react-router";
 import { Link } from "react-router-dom";
 import { TableProps } from "antd/lib/table";
-// import {
-//   getCustomerLoyaltyLedger,
-//   getLoyaltyTransactions
-// } from "../../query/customer";
+import { GET_CUSTOMER_LEDGER, GET_LOYALTY_TRANSACTIONS } from "../../../query";
 import { withApollo, ApolloProviderProps, Query } from "react-apollo";
 import { RouteComponentProps } from "react-router";
 import moment from "moment";
@@ -92,63 +89,62 @@ class CustomerCare extends React.Component<
   componentDidMount() {
     console.log("CustomerCare cdm record", this.props.location.state.record);
 
-    // if (this.props.location.state.record.phoneNumber) {
-    //   this.getLoyaltyTransactions();
-    //   this.getCustomerLoyaltyLedger();
-    // } else {
-    //   this.props.history.push({
-    //     pathname: "/core"
-    //     // state: { record: record }
-    //   });
-    // }
+    if (this.props.location.state.record.phoneNumber) {
+      this.getLoyaltyTransactions();
+      this.getCustomerLoyaltyLedger();
+    } else {
+      this.props.history.push({
+        pathname: "/rewardx/customer_search"
+      });
+    }
   }
 
   getLoyaltyTransactions() {
-    // this.setState({ loadingTransactionsTab: true });
-    // this.props.client
-    //   .query({
-    //     query: getLoyaltyTransactions,
-    //     variables: {
-    //       externalCustomerId: this.props.location.state.record.phoneNumber,
-    //       page: this.state.currentPageTransactionTable,
-    //       itemsPerPage: 10
-    //     }
-    //   })
-    //   .then((data: any) => {
-    //     console.log("getLoyaltyTransactions data", data);
-    //     this.setState({
-    //       loyaltyTransactionsData: data.data.getLoyaltyTransactions,
-    //       loadingTransactionsTab: false
-    //     });
-    //   })
-    //   .catch(error => {
-    //     this.setState({ loadingTransactionsTab: false });
-    //     console.log("getLoyaltyTransactions error", error);
-    //   });
+    this.setState({ loadingTransactionsTab: true });
+    this.props.client
+      .query({
+        query: GET_LOYALTY_TRANSACTIONS,
+        variables: {
+          externalCustomerId: this.props.location.state.record.phoneNumber,
+          page: this.state.currentPageTransactionTable,
+          itemsPerPage: 10
+        }
+      })
+      .then((data: any) => {
+        console.log("getLoyaltyTransactions data", data);
+        this.setState({
+          loyaltyTransactionsData: data.data.loyaltyTransaction,
+          loadingTransactionsTab: false
+        });
+      })
+      .catch(error => {
+        this.setState({ loadingTransactionsTab: false });
+        console.log("getLoyaltyTransactions error", error);
+      });
   }
 
   getCustomerLoyaltyLedger() {
-    // this.setState({ loadingLoyaltyTab: true });
-    // this.props.client
-    //   .query({
-    //     query: getCustomerLoyaltyLedger,
-    //     variables: {
-    //       externalCustomerId: this.props.location.state.record.phoneNumber,
-    //       page: this.state.currentPageLoyaltyTable,
-    //       itemsPerPage: 10
-    //     }
-    //   })
-    //   .then((data: any) => {
-    //     console.log("getCustomerLoyaltyLedger data", data);
-    //     this.setState({
-    //       customerLoyaltyLedgerData: data.data.getCustomerLedger,
-    //       loadingLoyaltyTab: false
-    //     });
-    //   })
-    //   .catch(error => {
-    //     console.log("getCustomerLoyaltyLedger error", error);
-    //     this.setState({ loadingLoyaltyTab: false });
-    //   });
+    this.setState({ loadingLoyaltyTab: true });
+    this.props.client
+      .query({
+        query: GET_CUSTOMER_LEDGER,
+        variables: {
+          externalCustomerId: this.props.location.state.record.phoneNumber,
+          page: this.state.currentPageLoyaltyTable,
+          itemsPerPage: 10
+        }
+      })
+      .then((data: any) => {
+        console.log("getCustomerLoyaltyLedger data", data);
+        this.setState({
+          customerLoyaltyLedgerData: data.data.getCustomerLedger,
+          loadingLoyaltyTab: false
+        });
+      })
+      .catch(error => {
+        console.log("getCustomerLoyaltyLedger error", error);
+        this.setState({ loadingLoyaltyTab: false });
+      });
   }
 
   handleOnOkayBillDetailsModal = () => {
@@ -220,7 +216,7 @@ class CustomerCare extends React.Component<
   }
 
   renderTransactionTabPane() {
-    const loyaltyTransactionsData = this.state.loyaltyTransactionsData.data;
+    const loyaltyTransactionsData = this.state.loyaltyTransactionsData;
     console.log(
       "CustomerCare renderTransactionTabPane loyaltyTransactionsData",
       loyaltyTransactionsData
@@ -229,6 +225,7 @@ class CustomerCare extends React.Component<
     let dataSource = [];
 
     for (const transaction of loyaltyTransactionsData) {
+      // const transactionData = transaction.loyaltyLedgers;
       const transactionData =
         typeof transaction.data === "string"
           ? JSON.parse(transaction.data)
@@ -251,7 +248,7 @@ class CustomerCare extends React.Component<
           "h:mm:ss a"
         ),
         totalAmount: transactionData.order.totalAmount,
-        status: transaction.status,
+        status: transaction.statusCode.statusCode,
         pointsIssued: transaction.pointsIssued,
         pointsRedeemed: transaction.pointsRedeemed
       });
@@ -284,7 +281,7 @@ class CustomerCare extends React.Component<
             : 0
       },
       {
-        title: "Fulfillment date",
+        title: "Order date",
         dataIndex: "fulfillmentDate",
         key: "fulfillmentDate",
         sorter: (a: any, b: any) =>
@@ -295,7 +292,7 @@ class CustomerCare extends React.Component<
             : 0
       },
       {
-        title: "Fulfillment time",
+        title: "Order time",
         dataIndex: "fulfillmentTime",
         key: "fulfillmentTime",
         sorter: (a: any, b: any) =>
@@ -318,7 +315,7 @@ class CustomerCare extends React.Component<
         // sortOrder: sortedInfo.columnKey === "name" && sortedInfo.order
       },
       {
-        title: "Status",
+        title: "Earn Status",
         dataIndex: "status",
         key: "status",
         sorter: (a: any, b: any) =>
@@ -403,7 +400,10 @@ class CustomerCare extends React.Component<
     let dataSource = [];
 
     for (const ledger of customerLoyaltyLedgerData) {
+      console.log("CustomerCare renderTransactionTabPane ledger", ledger);
+
       let expiryDate = null;
+      let createdDate = null;
       if (
         moment(ledger.loyaltyLedger.expiryDate).format(
           "YYYY-MM-DD h:mm:ss a"
@@ -415,11 +415,23 @@ class CustomerCare extends React.Component<
           "YYYY-MM-DD h:mm:ss a"
         );
       }
+
+      if (
+        moment(ledger.createdTime).format("YYYY-MM-DD h:mm:ss a") ===
+        "Invalid date"
+      ) {
+        createdDate = "";
+      } else {
+        createdDate = moment(ledger.createdTime).format("YYYY-MM-DD h:mm:ss a");
+      }
+
       dataSource.push({
         key: ledger.id,
-        referenceId: ledger.loyaltyLedger.referenceId,
+        date: createdDate,
+        orderId: ledger.loyaltyTransaction.data.order.externalOrderId,
+        referenceId: ledger.loyaltyLedger.id,
         points: ledger.loyaltyLedger.points,
-        balance: ledger.loyaltyLedger.balance,
+        balance: ledger.loyaltyLedger.balanceSnapshot,
         type: ledger.loyaltyLedger.type,
         expiryDate: expiryDate,
         remarks: ledger.loyaltyLedger.remarks
@@ -437,6 +449,20 @@ class CustomerCare extends React.Component<
               ? -1
               : 1
             : 0
+      },
+      {
+        title: "Date",
+        dataIndex: "date",
+        key: "date",
+        sorter: (a: any, b: any) =>
+          a.date !== b.date ? (a.date < b.date ? -1 : 1) : 0
+      },
+      {
+        title: "OLO ID",
+        dataIndex: "orderId",
+        key: "orderId",
+        sorter: (a: any, b: any) =>
+          a.orderId !== b.orderId ? (a.orderId < b.orderId ? -1 : 1) : 0
       },
       {
         title: "Balance",
@@ -478,8 +504,6 @@ class CustomerCare extends React.Component<
           a.remarks !== b.remarks ? (a.remarks < b.remarks ? -1 : 1) : 0
       }
     ];
-
-    // referenceid, type, expiry date,remarks
 
     return (
       <TabPane tab={"Loyalty"} key={"2"}>
@@ -567,14 +591,14 @@ class CustomerCare extends React.Component<
 
           <Row className="cc-header">Customer Care</Row>
 
-          <Card style={{ width: "35%" }}>
+          <Card style={{ width: "70%" }}>
             {/* <div className="cc-customer-header"> */}
             <Row style={{ alignItems: "center" }}>
               <Avatar icon="user" size="large" style={{ marginRight: 10 }} />
               {customer.name}
             </Row>
             <Row>
-              <Col style={{ width: "55%", paddingTop: 15, paddingLeft: 20 }}>
+              <Col style={{ width: "35%", paddingTop: 15, paddingLeft: 20 }}>
                 <Row>
                   <Col style={{ color: "grey", marginRight: 2 }}>ID : </Col>
                   <Col style={{ color: "black" }}>{customer.phoneNumber}</Col>
@@ -590,10 +614,18 @@ class CustomerCare extends React.Component<
                   <Col style={{ color: "black" }}>{customer.dob}</Col>
                 </Row>
               </Col>
-              <Col style={{ width: "40%", paddingTop: 15 }}>
+              <Col style={{ width: "30%", paddingTop: 15 }}>
                 <Row style={{ color: "grey" }}>Contact Info</Row>
                 <Row style={{ color: "black" }}>M : {customer.phoneNumber}</Row>
                 <Row style={{ color: "black" }}>E : {customer.email}</Row>
+              </Col>
+              {/*  get loyalty balance from loyaltyTransaction->custLoyalty->overAllAmount */}
+              <Col style={{ width: "30%", paddingTop: 15 }}>
+                <Row style={{ color: "grey" }}>Loyalty Program Info</Row>
+                <Row style={{ color: "black" }}>Loyalty Balance :</Row>
+                <Row style={{ color: "black" }}>
+                  Last Loyalty Balance Updated On :
+                </Row>
               </Col>
             </Row>
             {/* </div> */}

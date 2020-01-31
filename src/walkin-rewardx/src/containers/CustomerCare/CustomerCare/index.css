@@ -36,3 +36,14 @@
   flex-wrap: nowrap;
   /* background-color: red; */
 }
+
+.cc-link {
+  text-underline-position: below;
+  text-decoration: underline;
+}
+
+.cc-table-header {
+  width: 100%;
+  /* background-color: red; */
+  text-align: center;
+}
