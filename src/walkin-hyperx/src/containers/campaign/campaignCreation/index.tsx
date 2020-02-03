@@ -96,14 +96,14 @@ const communicationData = [
 
 interface IProps
   extends RouteChildrenProps<
-      {
-        id: string;
-      },
-      {
-        update: any;
-      }
-    >,
-    ApolloProviderProps<any> {
+  {
+    id: string;
+  },
+  {
+    update: any;
+  }
+  >,
+  ApolloProviderProps<any> {
   updateRule: (variables: any) => any;
   addOfferToCampaign: (variables: any) => any;
   updateCommunicationWithMessageTemplate: (variables: any) => any;
@@ -515,8 +515,8 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
       communicationSelected == "SMS"
         ? this.smsForm
         : communicationSelected == "EMAIL"
-        ? this.emailForm
-        : this.pushForm;
+          ? this.emailForm
+          : this.pushForm;
 
     console.log("COMM", formRef, communicationSelected);
     const comForm = formRef && formRef.props && formRef.props.form;
@@ -554,14 +554,14 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
         communicationSelected == "SMS"
           ? values.smsBody
           : communicationSelected == "EMAIL"
-          ? values.email_body
-          : values.notificationBody,
+            ? values.email_body
+            : values.notificationBody,
       templateSubjectText:
         communicationSelected == "SMS"
           ? values.smsTag
           : communicationSelected == "EMAIL"
-          ? values.email_subject
-          : values.notificationTag,
+            ? values.email_subject
+            : values.notificationTag,
       templateStyle: "MUSTACHE",
       status: DEFAULT_ACTIVE_STATUS
     };
@@ -569,7 +569,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
       id: communication.id,
       entityId: this.state.offerData ? this.state.offerData.id : " ",
       entityType: this.state.campaignType == "OFFER" ? "OFFER" : "CAMPAIGN",
-      isScheduled: scheduleSaveMark,
+      isScheduled: true,
       isRepeatable: scheduleSaveMark,
       status: DEFAULT_ACTIVE_STATUS,
       firstScheduleDateTime: this.state.campaign.startTime
@@ -622,14 +622,14 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
         communicationSelected == "SMS"
           ? values.smsBody
           : communicationSelected == "EMAIL"
-          ? values.email_body
-          : values.notificationBody,
+            ? values.email_body
+            : values.notificationBody,
       templateSubjectText:
         communicationSelected == "SMS"
           ? values.smsTag
           : communicationSelected == "EMAIL"
-          ? values.email_subject
-          : values.notificationTag,
+            ? values.email_subject
+            : values.notificationTag,
       templateStyle: "MUSTACHE",
       organization_id: org_id,
       status: DEFAULT_ACTIVE_STATUS
@@ -641,7 +641,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
           : this.state.campaign.id,
       entityType: this.state.campaignType == "OFFER" ? "OFFER" : "CAMPAIGN",
       campaign_id: this.state.campaign.id,
-      isScheduled: scheduleSaveMark,
+      isScheduled: true,
       isRepeatable: scheduleSaveMark,
       organization_id: org_id,
       status: DEFAULT_ACTIVE_STATUS,
