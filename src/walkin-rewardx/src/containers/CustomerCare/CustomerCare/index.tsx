@@ -37,6 +37,7 @@ interface CustomerCareProps
     RouteComponentProps<CustomerCareRouterProps> {
   location: Location<{
     record: any;
+    loyaltyTransactionsData: any;
   }>;
 }
 
@@ -89,8 +90,15 @@ class CustomerCare extends React.Component<
   componentDidMount() {
     console.log("CustomerCare cdm record", this.props.location.state.record);
 
-    if (this.props.location.state.record.phoneNumber) {
-      this.getLoyaltyTransactions();
+    if (
+      this.props.location.state.record.phoneNumber &&
+      this.props.location.state.loyaltyTransactionsData
+    ) {
+      this.setState({
+        loyaltyTransactionsData: this.props.location.state
+          .loyaltyTransactionsData
+      });
+      // this.getLoyaltyTransactions();
       this.getCustomerLoyaltyLedger();
     } else {
       this.props.history.push({
@@ -106,12 +114,18 @@ class CustomerCare extends React.Component<
         query: GET_LOYALTY_TRANSACTIONS,
         variables: {
           externalCustomerId: this.props.location.state.record.phoneNumber,
-          page: this.state.currentPageTransactionTable,
-          itemsPerPage: 10
+          pageOptions: {
+            page: this.state.currentPageTransactionTable,
+            pageSize: 10
+          },
+          sortOptions: {
+            sortBy: "id",
+            sortOrder: "DESC"
+          }
         }
       })
       .then((data: any) => {
-        console.log("getLoyaltyTransactions data", data);
+        console.log("CustomerCare getLoyaltyTransactions data", data);
         this.setState({
           loyaltyTransactionsData: data.data.loyaltyTransaction,
           loadingTransactionsTab: false
@@ -119,7 +133,7 @@ class CustomerCare extends React.Component<
       })
       .catch(error => {
         this.setState({ loadingTransactionsTab: false });
-        console.log("getLoyaltyTransactions error", error);
+        console.log("CustomerCare getLoyaltyTransactions error", error);
       });
   }
 
@@ -216,7 +230,7 @@ class CustomerCare extends React.Component<
   }
 
   renderTransactionTabPane() {
-    const loyaltyTransactionsData = this.state.loyaltyTransactionsData;
+    const loyaltyTransactionsData = this.state.loyaltyTransactionsData.data;
     console.log(
       "CustomerCare renderTransactionTabPane loyaltyTransactionsData",
       loyaltyTransactionsData
@@ -578,6 +592,29 @@ class CustomerCare extends React.Component<
   // TODO add input types
   render() {
     const customer = this.props.location.state.record;
+    const loyaltyTransactionsData = this.props.location.state
+      .loyaltyTransactionsData;
+    let loyaltyBalance = "";
+    let loyaltyBalanceUpdatedOn = "";
+    if (
+      loyaltyTransactionsData &&
+      loyaltyTransactionsData.data &&
+      loyaltyTransactionsData.data.length &&
+      loyaltyTransactionsData.data[0].data
+    ) {
+      loyaltyBalance = loyaltyTransactionsData.data[0].data.totalAmount;
+      if (
+        moment(loyaltyTransactionsData.data[0].data.transactionDate).format(
+          "YYYY-MM-DD"
+        ) === "Invalid date"
+      ) {
+        loyaltyBalanceUpdatedOn = "";
+      } else {
+        loyaltyBalanceUpdatedOn = moment(
+          loyaltyTransactionsData.data[0].data.transactionDate
+        ).format("YYYY-MM-DD");
+      }
+    }
 
     return (
       <React.Fragment>
@@ -591,14 +628,14 @@ class CustomerCare extends React.Component<
 
           <Row className="cc-header">Customer Care</Row>
 
-          <Card style={{ width: "70%" }}>
+          <Card style={{ width: "80%" }}>
             {/* <div className="cc-customer-header"> */}
             <Row style={{ alignItems: "center" }}>
               <Avatar icon="user" size="large" style={{ marginRight: 10 }} />
               {customer.name}
             </Row>
             <Row>
-              <Col style={{ width: "35%", paddingTop: 15, paddingLeft: 20 }}>
+              <Col style={{ width: "30%", paddingTop: 15, paddingLeft: 20 }}>
                 <Row>
                   <Col style={{ color: "grey", marginRight: 2 }}>ID : </Col>
                   <Col style={{ color: "black" }}>{customer.phoneNumber}</Col>
@@ -620,11 +657,13 @@ class CustomerCare extends React.Component<
                 <Row style={{ color: "black" }}>E : {customer.email}</Row>
               </Col>
               {/*  get loyalty balance from loyaltyTransaction->custLoyalty->overAllAmount */}
-              <Col style={{ width: "30%", paddingTop: 15 }}>
+              <Col style={{ width: "35%", paddingTop: 15 }}>
                 <Row style={{ color: "grey" }}>Loyalty Program Info</Row>
-                <Row style={{ color: "black" }}>Loyalty Balance :</Row>
                 <Row style={{ color: "black" }}>
-                  Last Loyalty Balance Updated On :
+                  Loyalty Balance : {loyaltyBalance}
+                </Row>
+                <Row style={{ color: "black" }}>
+                  Last Loyalty Balance Updated On : {loyaltyBalanceUpdatedOn}
                 </Row>
               </Col>
             </Row>

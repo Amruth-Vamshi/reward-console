@@ -5,20 +5,22 @@ import { CustomButton, SortableDataTable } from "shared";
 import "./index.css";
 import { withApollo, ApolloProviderProps, Query } from "react-apollo";
 import { RouteComponentProps } from "react-router";
-import { GET_CUSTOMER_DETAILS } from "../../../query";
+import moment from "moment";
+import { GET_CUSTOMER_DETAILS, GET_LOYALTY_TRANSACTIONS } from "../../../query";
 import { CircularProgress } from "walkin-components";
 
 interface CustomerSearchRouterProps {
   id: string;
 }
 
-interface Customer {
+interface CustomerLastOrder {
   key: string;
   phoneNumber: string;
   name: string;
-  email: string;
-  gender: string;
-  dob: string;
+  loyaltyBalance: string;
+  orderDate: string;
+  orderId: string;
+  loyaltyEarnStatus: string;
 }
 
 interface CustomerSearchCacheProps {
@@ -36,6 +38,7 @@ interface CustomerSearchState {
   loadingTable: boolean;
   phoneNumber: string;
   customerId: string;
+  loyaltyTransactionsData: any;
 }
 
 class CustomerSearch extends React.Component<
@@ -53,7 +56,8 @@ class CustomerSearch extends React.Component<
       loading: true,
       loadingTable: false,
       phoneNumber: null,
-      customerId: null
+      customerId: null,
+      loyaltyTransactionsData: null
     };
   }
 
@@ -82,7 +86,8 @@ class CustomerSearch extends React.Component<
       .then((data: any) => {
         console.log("CustomerSearch getCustomerDetails data", data);
         if (data.data.customer) {
-          this.setState({ customer: data.data.customer, loading: false });
+          this.setState({ customer: data.data.customer });
+          this.getLoyaltyTransactions();
         } else {
           this.setState({ loading: false });
           message.error(
@@ -93,6 +98,34 @@ class CustomerSearch extends React.Component<
       .catch(error => {
         console.log("CustomerSearch getCustomerDetails error", error);
         this.setState({ loading: false });
+      });
+  }
+
+  getLoyaltyTransactions() {
+    this.props.client
+      .query({
+        query: GET_LOYALTY_TRANSACTIONS,
+        variables: {
+          externalCustomerId: this.state.phoneNumber,
+          pageOptions: {
+            page: 1,
+            pageSize: 10
+          },
+          sortOptions: {
+            sortBy: "id",
+            sortOrder: "DESC"
+          }
+        }
+      })
+      .then((data: any) => {
+        console.log("CustomerSearch getLoyaltyTransactions data", data);
+        this.setState({
+          loyaltyTransactionsData: data.data.loyaltyTransaction,
+          loading: false
+        });
+      })
+      .catch(error => {
+        console.log("CustomerSearch getLoyaltyTransactions error", error);
       });
   }
 
@@ -117,19 +150,23 @@ class CustomerSearch extends React.Component<
     // this.setState({ showTransactionModal: true, selectedTransaction: record });
     this.props.history.push({
       pathname: "/rewardx/customer_care",
-      state: { record: record }
+      state: {
+        record: record,
+        loyaltyTransactionsData: this.state.loyaltyTransactionsData
+      }
     });
   };
 
   render() {
-    const { customer } = this.state;
+    const { customer, loyaltyTransactionsData } = this.state;
     console.log("CustomerSearch render customer", customer);
     let id = "id";
     let phoneNumber = "";
     let name = "";
-    let email = "";
-    let gender = "";
-    let dob = "";
+    let loyaltyBalance = "";
+    let orderDate = "";
+    let orderId = "";
+    let loyaltyEarnStatus = "";
 
     if (customer && customer.id) id = customer.id;
     if (customer && customer.phoneNumber) phoneNumber = customer.phoneNumber;
@@ -140,30 +177,54 @@ class CustomerSearch extends React.Component<
         name = customer.firstName;
       }
     }
+    if (
+      loyaltyTransactionsData &&
+      loyaltyTransactionsData.data &&
+      loyaltyTransactionsData.data.length
+    ) {
+      if (loyaltyTransactionsData.data[0].data) {
+        loyaltyBalance = loyaltyTransactionsData.data[0].data.totalAmount;
+      }
+      if (
+        loyaltyTransactionsData.data[0].data &&
+        loyaltyTransactionsData.data[0].data.order
+      ) {
+        orderId = loyaltyTransactionsData.data[0].data.order.externalOrderId;
+        if (
+          moment(loyaltyTransactionsData.data[0].data.order.orderDate).format(
+            "YYYY-MM-DD"
+          ) === "Invalid date"
+        ) {
+          orderDate = "";
+        } else {
+          orderDate = moment(
+            loyaltyTransactionsData.data[0].data.order.orderDate
+          ).format("YYYY-MM-DD");
+        }
+      }
+      if (loyaltyTransactionsData.data[0].statusCode) {
+        loyaltyEarnStatus =
+          loyaltyTransactionsData.data[0].statusCode.statusCode;
+      }
+    }
 
-    if (customer && customer.email) email = customer.email;
-    if (customer && customer.gender) gender = customer.gender;
-    if (customer && customer.dateOfBirth) dob = customer.dateOfBirth;
-
-    const data: Customer[] = [
+    const data: CustomerLastOrder[] = [
       {
         key: id,
         phoneNumber: phoneNumber,
         name: name,
-        email: email,
-        gender: gender,
-        dob: dob
+        loyaltyBalance: loyaltyBalance,
+        orderDate: orderDate,
+        orderId: orderId,
+        loyaltyEarnStatus: loyaltyEarnStatus
       }
     ];
 
-    const columns: ColumnProps<Customer>[] = [
+    const columns: ColumnProps<CustomerLastOrder>[] = [
       {
         title: "Phone Number",
         dataIndex: "phoneNumber",
         key: "phoneNumber",
-        sorter: (a: any, b: any) =>
-          a.name !== b.name ? (a.name < b.name ? -1 : 1) : 0,
-        // sortOrder: sortedInfo.columnKey === "name" && sortedInfo.order
         render: phoneNumber => (
           <div>
             <a className="cc-link">{phoneNumber}</a>
@@ -173,30 +234,27 @@ class CustomerSearch extends React.Component<
       {
         title: "Name",
         dataIndex: "name",
-        key: "name",
-        sorter: (a: any, b: any) =>
-          a.name !== b.name ? (a.name < b.name ? -1 : 1) : 0
+        key: "name"
       },
       {
-        title: "Email",
-        dataIndex: "email",
-        key: "email",
-        sorter: (a: any, b: any) =>
-          a.name !== b.name ? (a.name < b.name ? -1 : 1) : 0
+        title: "Loyalty Balance",
+        dataIndex: "loyaltyBalance",
+        key: "loyaltyBalance"
       },
       {
-        title: "Gender",
-        dataIndex: "gender",
-        key: "gender",
-        sorter: (a: any, b: any) =>
-          a.name !== b.name ? (a.name < b.name ? -1 : 1) : 0
+        title: "Order Date",
+        dataIndex: "orderDate",
+        key: "orderDate"
       },
       {
-        title: "Date of Birth",
-        dataIndex: "dob",
-        key: "dob",
-        sorter: (a: any, b: any) =>
-          a.name !== b.name ? (a.name < b.name ? -1 : 1) : 0
+        title: "Order Id",
+        dataIndex: "orderId",
+        key: "orderId"
+      },
+      {
+        title: "Status",
+        dataIndex: "loyaltyEarnStatus",
+        key: "loyaltyEarnStatus"
       }
     ];
 

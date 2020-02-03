@@ -85,49 +85,62 @@ export const GET_CUSTOMER_DETAILS = gql`
 `;
 
 export const GET_LOYALTY_TRANSACTIONS = gql`
-  query($externalCustomerId: ID!, $page: Int!, $itemsPerPage: Int!) {
+  query(
+    $externalCustomerId: ID!
+    $pageOptions: PageOptions
+    $sortOptions: SortOptions
+  ) {
     loyaltyTransaction(
       externalCustomerId: $externalCustomerId
-      page: $page
-      limit: $itemsPerPage
+      pageOptions: $pageOptions
+      sortOptions: $sortOptions
     ) {
-      id
-      statusCode {
-        statusId
-        statusCode
-        statusType
-        description
-      }
-      pointsBlocked
-      pointsIssued
-      pointsRedeemed
-      loyaltyReferenceId
-      type
-      name
-      data
-      loyaltyLedgers {
+      data {
         id
-        points
-        remarks
-        balanceSnapshot
-        type
-        totalAmount
-        externalStoreId
-        expiryDate
-        pointsRemaining
-        details
-      }
-      customerLoyalty {
-        createdTime
-        externalCustomerId
-        overallPoints
-        burnablePoints
-        overallAmount
-        burnableAmount
+        statusCode {
+          statusId
+          statusCode
+          statusType
+          description
+        }
         pointsBlocked
-        blockedAmount
-        loyaltyCardCode
-        loyaltyEnabled
+        pointsIssued
+        pointsRedeemed
+        loyaltyReferenceId
+        type
+        name
+        data
+        loyaltyLedgers {
+          id
+          points
+          remarks
+          balanceSnapshot
+          type
+          totalAmount
+          externalStoreId
+          expiryDate
+          pointsRemaining
+          details
+        }
+        customerLoyalty {
+          createdTime
+          externalCustomerId
+          overallPoints
+          burnablePoints
+          overallAmount
+          burnableAmount
+          pointsBlocked
+          blockedAmount
+          loyaltyCardCode
+          loyaltyEnabled
+        }
+      }
+      paginationInfo {
+        totalPages
+        totalItems
+        page
+        hasNextPage
+        hasPreviousPage
       }
     }
   }
