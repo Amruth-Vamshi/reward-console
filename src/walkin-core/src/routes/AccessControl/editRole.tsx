@@ -125,6 +125,8 @@ class EditRole extends React.Component<AccessControlProps, AccessControlState> {
         };
       }
     });
+    console.log(tableData, "tableData");
+
     cb(tableData);
   };
 

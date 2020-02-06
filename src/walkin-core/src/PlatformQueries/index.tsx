@@ -93,20 +93,42 @@ export const DELETE_APP = gql`
 `;
 
 export const GET_WEBHOOKS = gql`
-  query webhooks($org_id: ID!, $event: String, $status: STATUS!) {
-    webhooks(organizationId: $org_id, event: $event, status: $status) {
-      id
-      name
-      organization {
+  query webhooks(
+    $org_id: ID!
+    $event: String
+    $status: STATUS!
+    $sortOptions: SortOptions
+    $pageOptions: PageOptions
+  ) {
+    webhooks(
+      organizationId: $org_id
+      event: $event
+      status: $status
+      sortOptions: $sortOptions
+      pageOptions: $pageOptions
+    ) {
+      data {
+        id
         name
-        website
+        organization {
+          name
+          website
+        }
+        event
+        url
+        headers
+        method
+        status
+        enabled
       }
-      event
-      url
-      headers
-      method
-      status
-      enabled
+      paginationInfo {
+        totalPages
+        totalItems
+        page
+        perPage
+        hasNextPage
+        hasPreviousPage
+      }
     }
   }
 `;
@@ -152,10 +174,12 @@ export const UPDATE_WEBHOOK = gql`
 export const LIST_WEBHOOK_EVENTS = gql`
   query webhookEventTypes($org_id: ID!, $status: STATUS!) {
     webhookEventTypes(organizationId: $org_id, status: $status) {
-      event
-      id
-      status
-      description
+      data {
+        event
+        id
+        status
+        description
+      }
     }
   }
 `;
@@ -300,11 +324,20 @@ export const ROLES_LIST = gql`
       name
       description
       tags
+      createdBy
+      lastModifiedBy
+      createdTime
+      lastModifiedTime
       users {
         id
         email
         firstName
         lastName
+        roles {
+          id
+          name
+          # policies { id effect permission resource type }
+        }
       }
       policies {
         id
@@ -355,6 +388,62 @@ export const ADD_ROLE = gql`
 export const LINK_USER_TO_ROLE = gql`
   mutation linkUserToRole($roleId: ID!, $userId: ID!) {
     linkUserToRole(roleId: $roleId, userId: $userId) {
+      id
+      roles {
+        id
+        name
+        description
+        tags
+        users {
+          id
+          email
+          firstName
+          lastName
+        }
+        policies {
+          id
+          effect
+          resource
+          permission
+          type
+          accessLevel
+        }
+      }
+    }
+  }
+`;
+
+export const LINK_USERS_TO_ROLE = gql`
+  mutation linkUsersToRole($roleId: ID!, $userIds: [ID!]!) {
+    linkUsersToRole(roleId: $roleId, userIds: $userIds) {
+      id
+      roles {
+        id
+        name
+        description
+        tags
+        users {
+          id
+          email
+          firstName
+          lastName
+        }
+        policies {
+          id
+          effect
+          resource
+          permission
+          type
+          accessLevel
+        }
+      }
+    }
+  }
+`;
+
+export const UNLINK_USERS_FROM_ROLE = gql`
+  mutation unlinkUsersFromRole($roleId: ID!, $userIds: [ID!]!) {
+    unlinkUsersFromRole(roleId: $roleId, userIds: $userIds) {
       id
       roles {
         id
@@ -474,14 +563,16 @@ export const GET_ALL_APPS_OF_ORGANIZATION = gql`
 `;
 
 export const USERS = gql`
-  query users {
-    users {
-      id
-      firstName
-      email
-      roles {
+  query users($organizationId: String!) {
+    users(organizationId: $organizationId) {
+      data {
         id
-        name
+        firstName
+        email
+        roles {
+          id
+          name
+        }
       }
     }
   }
