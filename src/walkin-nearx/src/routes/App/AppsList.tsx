@@ -51,7 +51,8 @@ class AppsList extends React.Component<iProps, iState> {
     this.props.history.push("/nearx/apps/create");
   };
 
-  test = () => {
+  test = (pf) => {
+    console.log(pf);
     this.setState({ visible: true });
   };
 
@@ -59,11 +60,11 @@ class AppsList extends React.Component<iProps, iState> {
     this.setState({ visible: false });
   };
 
-  handleOk = () => {};
+  handleOk = () => { };
 
-  copy = () => {};
+  copy = () => { };
 
-  handleSubmit = () => {};
+  handleSubmit = () => { };
 
   // activateApp = (appId) => {
   //   client.mutate({
@@ -206,7 +207,7 @@ class AppsList extends React.Component<iProps, iState> {
                 genereteToken={this.genereteToken}
                 history={this.props.history}
                 deleteApp={this.deleteApp}
-                test={this.test}
+                test={() => this.test(item.platform.toLowerCase())}
                 key={i}
                 index={i}
                 data={item}
@@ -214,26 +215,26 @@ class AppsList extends React.Component<iProps, iState> {
             ))}
           </div>
         ) : (
-          <div>
-            {/* <Empty style={{ margin: 50 }} /> */}
+              <div>
+                {/* <Empty style={{ margin: 50 }} /> */}
 
-            <div style={{ margin: 80, fontSize: 25 }}>
-              <div className="divCenter">
-                <div>No Apps Found</div>
-              </div>
-              <div className="divCenter">
-                <Button
-                  onClick={() => this.addApp()}
-                  style={{ margin: 22, fontSize: 18 }}
-                  className="buttonPrimary"
-                >
-                  Create New App
+                <div style={{ margin: 80, fontSize: 25 }}>
+                  <div className="divCenter">
+                    <div>No Apps Found</div>
+                  </div>
+                  <div className="divCenter">
+                    <Button
+                      onClick={() => this.addApp()}
+                      style={{ margin: 22, fontSize: 18 }}
+                      className="buttonPrimary"
+                    >
+                      Create New App
                 </Button>
-                {/* <div style={{margin:10, fontSize:20}}>Create A new Place</div> */}
+                    {/* <div style={{margin:10, fontSize:20}}>Create A new Place</div> */}
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-        )}
+            )}
         <Modal
           width="750px"
           key="model"
@@ -272,13 +273,38 @@ class AppsList extends React.Component<iProps, iState> {
                         className="buttonPrimary"
                         style={{ margin: "0px 30px 10px 20px" }}
                       >
-                        Download ARR
+                        Download Android ARR
                       </Button>
                     </a>
-                    <div>NearX ARR file</div>
+                    {/* <div>NearX ARR file</div> */}
                     <div>
-                      {" "}
-                      Integration reference{" "}
+                      Integration reference
+                      <a
+                        target="_blank"
+                        href="https://nearx.getwalk.in/docs/integrations"
+                      >
+                        here
+                      </a>
+                    </div>
+                  </div>
+                </div> <br />
+                <div style={{ overflow: "hidden", textAlign: "right" }}>
+                  <div style={{ textAlign: "center" }}>
+                    <a
+                      target="_blank"
+                      href="https://cocoapods.org/pods/NearX"
+                    >
+                      <Button
+                        onClick={this.handleSubmit}
+                        loading={this.state.loading}
+                        className="buttonPrimary"
+                        style={{ margin: "0px 30px 10px 20px" }}
+                      >
+                        Download IOS SDK
+                      </Button>
+                    </a>
+                    {/* <div>NearX ARR file</div> */}
+                    <div> Integration reference
                       <a
                         target="_blank"
                         href="https://nearx.getwalk.in/docs/integrations"
