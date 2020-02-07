@@ -407,7 +407,7 @@ class Webhooks extends React.Component<WebhooksProps, WebhooksState> {
   };
 
   render() {
-    let { isWebhookFormOpen } = this.state;
+    let { isWebhookFormOpen, totalPages } = this.state;
     return (
       <div className="gx-main-content-wrapper">
         <div className="headerWrapper">
@@ -443,14 +443,14 @@ class Webhooks extends React.Component<WebhooksProps, WebhooksState> {
           </div>
         )}
         {this.renderWebhookList()}
-        {!isWebhookFormOpen && this.state.webhooks.length ? (
+        {!isWebhookFormOpen && totalPages > 1 ? (
           <Pagination
             onChange={page => {
               this.onLoadMore(page);
               console.log(page, "pageNumber");
             }}
             pageSize={3}
-            total={this.state.totalPages}
+            total={totalPages}
             current={this.state.currentPage}
           />
         ) : null}

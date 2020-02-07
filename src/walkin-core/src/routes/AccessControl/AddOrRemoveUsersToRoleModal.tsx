@@ -13,6 +13,7 @@ interface addOrRemoveUsersToRoleModalProps {
   selectedRoleIndex: any;
   onChange: any;
   type: string;
+  isLoading: boolean;
 }
 
 interface addOrRemoveUsersToRoleModalState {
@@ -120,13 +121,10 @@ export default class extends React.Component<
   };
 
   onSelectChange = selectedRowKeys => {
-    console.log("selectedRowKeys changed: ", selectedRowKeys);
     this.setState({ selectedRowKeys });
   };
 
   populateRolesAssignedToRoles = user => {
-    console.log(user, "user");
-
     let userRoles = "";
     user.roles &&
       user.roles.map((role, rolesIndex) => {
@@ -139,12 +137,27 @@ export default class extends React.Component<
   };
 
   render() {
-    let { visible, onClose, roleList, selectedRoleIndex, type } = this.props;
+    let {
+      visible,
+      onClose,
+      roleList,
+      selectedRoleIndex,
+      type,
+      isLoading
+    } = this.props;
     let { selectedRowKeys } = this.state;
 
-    if (selectedRoleIndex === null || visible === false) {
+    if (selectedRoleIndex === null && visible === false) {
       return null;
     }
+
+    let rolesFilter = [];
+    roleList.map((roleItem, roleIndex) => {
+      rolesFilter.push({
+        text: roleItem.role,
+        value: roleItem.role
+      });
+    });
 
     const columns = [
       {
@@ -167,18 +180,9 @@ export default class extends React.Component<
         className: "access-control-column-title",
         dataIndex: "role",
         key: "role",
-        filters: [
-          {
-            text: "Test",
-            value: "test"
-          },
-          {
-            text: "CCD",
-            value: "CCD"
-          }
-        ],
+        filters: rolesFilter,
         onFilter: (value, record) => {
-          return record.name === value;
+          return record.role.includes(value);
         }
       }
     ];
@@ -263,6 +267,7 @@ export default class extends React.Component<
             <Button
               disabled={!selectedRowKeys.length}
               type="primary"
+              loading={isLoading}
               className="submit-button"
               size="large"
               onClick={() => {
@@ -300,7 +305,7 @@ export default class extends React.Component<
             </Select>
           </div>
           <Table
-            loading={!data.length}
+            loading={isLoading}
             size="small"
             rowSelection={rowSelection}
             columns={columns}

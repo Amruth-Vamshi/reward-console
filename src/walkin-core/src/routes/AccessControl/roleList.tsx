@@ -55,6 +55,7 @@ interface AccessControlState {
   allUsers: any;
   selectedRoleIndex: any;
   isFetching: boolean;
+  isLoading: boolean;
   organizationId?: string;
   isRemoveUsersToRoleModalOpen: boolean;
 }
@@ -73,6 +74,7 @@ class RoleList extends React.Component<AccessControlProps, AccessControlState> {
       addUsersToDuplicateRoles: false,
       selectedRoleIndex: null,
       isFetching: false,
+      isLoading: true,
       columns: [
         {
           title: "Role",
@@ -201,7 +203,7 @@ class RoleList extends React.Component<AccessControlProps, AccessControlState> {
         user: role.users
       });
     });
-    this.setState({ roleList });
+    this.setState({ roleList, isLoading: false });
   };
 
   onChange = (type: string, value: any) => {
@@ -259,47 +261,57 @@ class RoleList extends React.Component<AccessControlProps, AccessControlState> {
   };
 
   onLinkUserToRole = (userIds, roleId) => {
-    this.props.client
-      .mutate({
-        mutation: LINK_USERS_TO_ROLE,
-        variables: {
-          roleId: roleId,
-          userIds: userIds
-        }
-      })
-      .then(linkUserResponse => {
-        //right now the response coming from linkUserToRole api doesnt contain all roles,
-        // this.populateAccessControlTableData(
-        //   linkUserResponse.data.linkUserToRole.roles
-        // );
-        this.getRolesList();
-        this.onCloseModal();
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    this.setState({ isLoading: true }, () => {
+      this.props.client
+        .mutate({
+          mutation: LINK_USERS_TO_ROLE,
+          variables: {
+            roleId: roleId,
+            userIds: userIds
+          }
+        })
+        .then(linkUserResponse => {
+          //right now the response coming from linkUserToRole api doesnt contain all roles,
+          // this.populateAccessControlTableData(
+          //   linkUserResponse.data.linkUserToRole.roles
+          // );
+
+          this.getRolesList();
+          this.onCloseModal();
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    });
   };
 
   onUnlinkUsersToRole = (userIds, roleId) => {
-    this.props.client
-      .mutate({
-        mutation: UNLINK_USERS_FROM_ROLE,
-        variables: {
-          roleId: roleId,
-          userIds: userIds
-        }
-      })
-      .then(unlinkUserResponse => {
-        //right now the response coming from linkUserToRole api doesnt contain all roles,
-        // this.populateAccessControlTableData(
-        //   linkUserResponse.data.linkUserToRole.roles
-        // );
-        this.getRolesList();
-        this.onCloseModal();
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    this.setState({ isLoading: true }, () => {
+      this.props.client
+        .mutate({
+          mutation: UNLINK_USERS_FROM_ROLE,
+          variables: {
+            roleId: roleId,
+            userIds: userIds
+          }
+        })
+        .then(unlinkUserResponse => {
+          //right now the response coming from linkUserToRole api doesnt contain all roles,
+          // this.populateAccessControlTableData(
+          //   linkUserResponse.data.linkUserToRole.roles
+          // );
+
+          this.setState({ isLoading: true }, () => {
+            this.getRolesList();
+            this.onCloseModal();
+          });
+
+          // this.getRolesList();
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    });
   };
 
   render() {
@@ -308,7 +320,8 @@ class RoleList extends React.Component<AccessControlProps, AccessControlState> {
       isNewRoleModalOpen,
       isAddUsersToRoleModalOpen,
       isRemoveUsersToRoleModalOpen,
-      roleList
+      roleList,
+      isLoading
     } = this.state;
 
     let modalDetails = {
@@ -346,7 +359,9 @@ class RoleList extends React.Component<AccessControlProps, AccessControlState> {
         <Table
           columns={this.state.columns}
           dataSource={roleList}
-          loading={!roleList.length}
+          // loading={!roleList.length}
+          loading={isLoading}
+
           // loading={false}
         />
         <CreateRoleModal
@@ -365,6 +380,7 @@ class RoleList extends React.Component<AccessControlProps, AccessControlState> {
           selectedRoleIndex={this.state.selectedRoleIndex}
           onSubmit={this.onLinkUserToRole}
           onClose={this.onCloseModal}
+          isLoading={isLoading}
         />
         <AddOrRemoveUsersToRoleModal
           type="removeUsers"
@@ -374,6 +390,7 @@ class RoleList extends React.Component<AccessControlProps, AccessControlState> {
           selectedRoleIndex={this.state.selectedRoleIndex}
           onSubmit={this.onUnlinkUsersToRole}
           onClose={this.onCloseModal}
+          isLoading={isLoading}
         />
       </div>
     );
