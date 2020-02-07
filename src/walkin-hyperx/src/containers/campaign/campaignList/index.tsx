@@ -16,7 +16,6 @@ import { RouteChildrenProps } from "react-router";
 import { withRouter } from "react-router-dom";
 
 import {
-  campaigns,
   DISABLE_CAMPAIGN,
   VIEW_HYPERX_CAMPAIGNS
 } from "../../../query/campaign";
@@ -86,7 +85,7 @@ class CampaignList extends React.Component<
     };
   }
 
-  getCampaigns = (offset, state) => {
+  getCampaigns = (offset, state, key) => {
     console.log("state ", state);
     this.setState({ loading: true });
     this.props.client
@@ -107,20 +106,8 @@ class CampaignList extends React.Component<
       })
       .then(res => {
         let data = res.data.viewCampaignsForHyperX;
-        let allCampaigns = data.data.map(c => ({
-          ...c.campaign,
-          reached: c.reached,
-          audienceCount: c.audienceCount,
-          redemptionRate: c.redemptionRate
-        }));
-        this.setState(
-          {
-            loading: false,
-            allCampaigns,
-            total: data.paginationInfo.totalItems
-          },
-          () => this.dataManipulation(this.state.key)
-        );
+
+        this.dataManipulation(data, key);
       })
       .catch(err => {
         this.setState({ loading: false });
@@ -129,7 +116,13 @@ class CampaignList extends React.Component<
   };
 
   componentWillMount() {
-    this.getCampaigns(1, "LIVE");
+    this.state.key
+      ? this.getCampaigns(
+          1,
+          DEFAULT_HYPERX_CAMPAIGN_STATES[this.state.key - 1],
+          this.state.key
+        )
+      : this.getCampaigns(1, "LIVE", this.state.key);
   }
 
   onNewCampaign = () => {
@@ -240,44 +233,54 @@ class CampaignList extends React.Component<
     });
   };
 
-  dataManipulation = key => {
-    const { allCampaigns } = this.state;
-    if (!allCampaigns || allCampaigns.length < 1) return;
-    if (key == 1) {
-      let liveCampaigns = allCampaigns.filter((val: any) =>
-        moment().isBetween(val.startTime, val.endTime)
-      );
-      this.setState({ data: liveCampaigns, filtered: null });
-    } else if (key == 2) {
-      let upcomingCampaigns = allCampaigns.filter(
-        (val: any) =>
-          val.campaignStatus == DEFAULT_HYPERX_CAMPAIGN_STATES[1] ||
-          (val.campaignStatus == DEFAULT_HYPERX_CAMPAIGN_STATES[0] &&
-            moment(val.startTime).isAfter(moment()))
-      );
-      this.setState({ data: upcomingCampaigns, filtered: null });
-    } else {
-      let Campaigns = allCampaigns;
-      this.setState({ data: Campaigns, filtered: null });
+  dataManipulation = (data, key1) => {
+    const { allCampaigns, key } = this.state;
+    if (key1 == key) {
+      let allCampaigns = data.data.map(c => ({
+        ...c.campaign,
+        reached: c.reached,
+        audienceCount: c.audienceCount,
+        redemptionRate: c.redemptionRate
+      }));
+      // if (!allCampaigns || allCampaigns.length < 1) return
+      // if (key == 1) {
+      //   let liveCampaigns = allCampaigns.filter((val: any) => moment().isBetween(val.startTime, val.endTime));
+      //   this.setState({ data: liveCampaigns, filtered: null });
+      // } else if (key == 2) {
+      //   let upcomingCampaigns = allCampaigns.filter((val: any) => val.campaignStatus == DEFAULT_HYPERX_CAMPAIGN_STATES[1] || (val.campaignStatus == DEFAULT_HYPERX_CAMPAIGN_STATES[0] && moment(val.startTime).isAfter(moment())));
+      //   this.setState({ data: upcomingCampaigns, filtered: null });
+      // } else {
+      this.setState({
+        data: allCampaigns,
+        total: data.paginationInfo.totalItems,
+        filtered: null,
+        loading: false
+      });
+      // }}
     }
   };
 
   onTabChange = (key: any) => {
     this.setState({ key, data: [], current: 1 });
 
-    if (key == 2)
-      this.getCampaigns(1, [
-        DEFAULT_HYPERX_CAMPAIGN_STATES[0],
-        DEFAULT_HYPERX_CAMPAIGN_STATES[1]
-      ]);
-    else this.getCampaigns(1, DEFAULT_HYPERX_CAMPAIGN_STATES[key - 1]);
+    // if (key == 2) this.getCampaigns(1, [DEFAULT_HYPERX_CAMPAIGN_STATES[0], DEFAULT_HYPERX_CAMPAIGN_STATES[1]])
+    // else
+    this.getCampaigns(1, DEFAULT_HYPERX_CAMPAIGN_STATES[key - 1], key);
   };
 
   onTableChange = (e, n) => {
     if (n) {
       // Filter for Pagination Changes
       // console.log('onChange', e, n)
-      this.getCampaigns(e, DEFAULT_HYPERX_CAMPAIGN_STATES[this.state.key - 1]);
+      // if (this.state.key == 2) this.getCampaigns(e, [DEFAULT_HYPERX_CAMPAIGN_STATES[0], DEFAULT_HYPERX_CAMPAIGN_STATES[1]])
+      // else
+      this.getCampaigns(
+        e,
+        DEFAULT_HYPERX_CAMPAIGN_STATES[this.state.key - 1],
+        this.state.key
+      );
+
+      // this.getCampaigns(e, DEFAULT_HYPERX_CAMPAIGN_STATES[this.state.key - 1])
     }
   };
 
@@ -475,32 +478,6 @@ class CampaignList extends React.Component<
 
 export default withRouter(
   compose(
-    // graphql(campaigns, {
-    //   options: () => {
-    //     const { org_id }: any = jwt.decode(localStorage.getItem("jwt"));
-    //     return ({
-    //       variables: {
-    //         organization_id: org_id,
-    //         status: DEFAULT_ACTIVE_STATUS,
-    //         campaignType: DEFAULT_HYPERX_CAMPAIGN
-    //       }, fetchPolicy: "network-only",
-    //       forceFetch: true
-    //     })
-    //   },
-    //   props: ({ data: { loading, error, campaigns, refetch } }: any) => ({
-    //     loading, campaigns, error,
-    //     changeStatus: (status: any) => {
-    //       const { org_id }: any = jwt.decode(localStorage.getItem("jwt"));
-    //       refetch({
-    //         variables: {
-    //           organization_id: org_id,
-    //           status: DEFAULT_ACTIVE_STATUS,
-    //           campaignType: DEFAULT_HYPERX_CAMPAIGN
-    //         }, fetchPolicy: "network-only"
-    //       });
-    //     },
-    //   }),
-    // }),
     graphql(DISABLE_CAMPAIGN, {
       name: "disableCampaign"
     })

@@ -59,11 +59,16 @@ class AddAndDeleteComponentsDynamically extends React.Component<
           valueOne: defaultValueOne,
           valueTwo: !!defaultValueTwo ? [...defaultValueTwo] : [],
           onOneChange: this.handleSelectOneChange.bind(this, 0),
-          onTwoChange: this.handleSelectTwoChange.bind(this, 0)
+          onTwoChange: this.handleSelectTwoChange.bind(this, 0),
+          valueFocused: this.handleValueFocusChanged.bind(this, 0)
         }
       ]
     };
   }
+
+  handleValueFocusChanged = (e, n, i) => {
+    console.log(e, n, i);
+  };
 
   addClick() {
     const {
@@ -85,23 +90,11 @@ class AddAndDeleteComponentsDynamically extends React.Component<
             valueOne: "",
             valueTwo: [],
             onOneChange: this.handleSelectOneChange.bind(this, items.length),
-            onTwoChange: this.handleSelectTwoChange.bind(this, items.length)
+            onTwoChange: this.handleSelectTwoChange.bind(this, items.length),
+            valueFocused: this.handleValueFocusChanged.bind(this, items.length)
           }
         ]
       });
-
-    // this.setState(prevState => {
-    //   return {
-    //     items: [...prevState.items,
-    //     {
-    //       valueOne: "",
-    //       valueTwo: [],
-    //       onOneChange: this.handleSelectOneChange.bind(this, prevState.items.length),
-    //       onTwoChange: this.handleSelectTwoChange.bind(this, prevState.items.length)
-    //     }
-    //     ]
-    //   };
-    // });
   }
 
   removeClick(i) {
@@ -127,21 +120,6 @@ class AddAndDeleteComponentsDynamically extends React.Component<
       this.setState({ items });
       this.props.onSelectOneValuesSelected(value, this.state.items);
     }
-    // this.setState(
-    //   prevState => {
-    //     return {
-    //       ...prevState,
-    //       items: [
-    //         ...prevState.items.slice(0, index),
-    //         { ...prevState.items[index], valueOne: value },
-    //         ...prevState.items.slice(index + 1)
-    //       ]
-    //     };
-    //   },
-    //   () => {
-    //     this.props.onSelectOneValuesSelected(value, this.state.items);
-    //   }
-    // );
   }
 
   handleSelectTwoChange(index, value) {
@@ -177,7 +155,13 @@ class AddAndDeleteComponentsDynamically extends React.Component<
       <Fragment>
         <div style={{ marginTop: -7 }}>
           {map(items, (item: any, index: number) => {
-            const { valueOne, valueTwo, onOneChange, onTwoChange } = item;
+            const {
+              valueOne,
+              valueTwo,
+              onOneChange,
+              onTwoChange,
+              valueFocused
+            } = item;
             return (
               <div
                 key={`select-${index}`}
@@ -199,8 +183,7 @@ class AddAndDeleteComponentsDynamically extends React.Component<
                   {data_1 &&
                     data_1.map((val: any, i: any) => (
                       <Option key={i} value={val.value}>
-                        {" "}
-                        {val.title}{" "}
+                        {val.title}
                       </Option>
                     ))}
                 </Select>
@@ -208,6 +191,7 @@ class AddAndDeleteComponentsDynamically extends React.Component<
                 <Select
                   showSearch
                   mode="multiple"
+                  onFocus={valueFocused}
                   value={valueTwo || ""}
                   onChange={onTwoChange}
                   getPopupContainer={(triggerNode: any) =>
@@ -248,8 +232,7 @@ class AddAndDeleteComponentsDynamically extends React.Component<
             type="link"
             onClick={this.addClick.bind(this)}
           >
-            {" "}
-            Add{" "}
+            Add
           </Button>
         </div>
       </Fragment>

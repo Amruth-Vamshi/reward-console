@@ -6,6 +6,18 @@ export const products = gql`
       name
       code
       sku
+      variants {
+        id
+        sku
+        optionValues {
+          id
+          value
+          option {
+            id
+            name
+          }
+        }
+      }
     }
   }
 `;

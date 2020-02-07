@@ -1,5 +1,5 @@
 .textPaddingTop {
-  padding-top: 34px;
+  padding-top: 34px !important;
 }
 
 .offerRedemptionForm .ant-form-item-label {

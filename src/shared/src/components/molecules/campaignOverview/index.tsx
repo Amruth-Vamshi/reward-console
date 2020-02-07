@@ -202,8 +202,7 @@ export default class Overview extends React.Component<iProps, {}> {
                   <h3>Audience</h3>
                 </Col>
                 <Col>
-                  Total Reach :{" "}
-                  {totalAudienceCount ? totalAudienceCount : "6412"}{" "}
+                  Total Reach : {totalAudienceCount ? totalAudienceCount : "0"}{" "}
                 </Col>
               </Row>
               {audience.map((i: any, n: number) => (

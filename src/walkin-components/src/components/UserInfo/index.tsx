@@ -49,22 +49,22 @@ class UserInfo extends Component<IProps, IState> {
     this.setState({ userId: id, org_id });
     id
       ? this.props.client
-          .query({
-            query: USER_DATA,
-            variables: { userId: id },
-            fetchPolicy: "cache-first"
-          })
-          .then(res => {
-            // console.log(res.data.user);
-            this.setState({
-              user: res.data.user,
-              firstName: res.data.user.firstName,
-              lastName: res.data.user.lastName
-            });
-          })
-          .catch(err => {
-            console.log("Failed to get User Details" + err);
-          })
+        .query({
+          query: USER_DATA,
+          variables: { userId: id },
+          fetchPolicy: "cache-first"
+        })
+        .then(res => {
+          // console.log(res.data.user);
+          this.setState({
+            user: res.data.user,
+            firstName: res.data.user.firstName,
+            lastName: res.data.user.lastName
+          });
+        })
+        .catch(err => {
+          console.log("Failed to get User Details" + err);
+        })
       : console.log("Error getting JwtData");
   }
 
@@ -102,39 +102,38 @@ class UserInfo extends Component<IProps, IState> {
         overlayClassName="gx-popover-horizantal"
         placement="bottomRight"
         content={userMenuOptions}
-        // trigger="click"
+      // trigger="click"
       >
-        {firstName ? (
+        {firstName ?
           <div className="gx-flex-row gx-align-items-center gx-pointer">
             <p
               style={{ color: "black" }}
               className="gx-mb-0 gx-d-none gx-d-sm-flex"
             >
               {firstName + "  " + `${lastName ? lastName : " "}`}
-            </p>{" "}
+            </p>
             &nbsp;
             {/* <img className="gx-rounded-circle gx-size-30 gx-mr-2 gx-ml-2" src='https://via.placeholder.com/150x150' alt="" /> */}
             {/*&nbsp; <Avatar src='https://via.placeholder.com/100x100'
                 className="gx-avatar gx-pointer" alt="" /> */}
             <div className="gx-ml-2">
-              {user.image === null || user.image === undefined ? (
+              {user.image === null || user.image === undefined ?
                 <Avatar style={{ backgroundColor: "#424e88" }} size="large">
                   <span style={{ fontSize: 22, fontWeight: "normal" }}>
                     {firstName ? firstName.charAt(0).toUpperCase() : ""}
                   </span>
-                </Avatar>
-              ) : (
+                </Avatar> :
                 <Avatar size="large" alt={firstName} src={user.image} />
-              )}
+              }
             </div>
           </div>
-        ) : (
+          :
           <Avatar
             src="https://via.placeholder.com/100x100"
             className="gx-avatar gx-pointer"
             alt=""
           />
-        )}
+        }
       </Popover>
     );
   }

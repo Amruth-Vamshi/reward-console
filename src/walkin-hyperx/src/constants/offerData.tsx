@@ -13,7 +13,7 @@ export const offerStepData = [
 export const couponTypeData = [
   {
     id: 1,
-    value: 1,
+    value: "1",
     title: "Static"
   },
   {
@@ -26,30 +26,30 @@ export const offerTypeData = [
   {
     id: 1,
     value: "PERCENTAGE_DISCOUNT",
-    title: "Discount on the bill",
+    title: "Percent Discount",
     extra: "%"
   },
   {
     id: 2,
     value: "FLATX_DISCOUNT",
-    title: "Flat Xrs off on the bill",
+    title: "Flat Discount",
     extra: " Rs"
   },
   {
     id: 3,
     value: "PERCENTAGE_CASHBACK",
-    title: "% Cashback on the bill",
+    title: "Percent Cashback",
     extra: "%"
   },
   {
     id: 4,
     value: "FLATX_CASHBACK",
-    title: "Flat X Cashback on the bill"
+    title: "Flat Cashback"
   },
   {
     id: 5,
-    value: "FREE_ITMES_FROM_LIST",
-    title: "Any item/items from the list"
+    value: "FREE_ITEMS_FROM_LIST",
+    title: "Free item"
   }
 ];
 
@@ -84,6 +84,11 @@ export var productData = [
   },
   {
     id: 2,
+    value: "product_item",
+    title: "Item"
+  },
+  {
+    id: 3,
     value: "product_sku",
     title: "SKU"
   }
