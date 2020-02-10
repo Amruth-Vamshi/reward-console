@@ -11,7 +11,7 @@ import {
   LIST_WEBHOOK_EVENTS
 } from "./../../../../PlatformQueries/index";
 
-interface WebhooksProps extends ApolloProviderProps<any> {}
+interface WebhooksProps extends ApolloProviderProps<any> { }
 
 interface WebhooksState {
   isWebhookFormOpen: boolean;
@@ -23,6 +23,7 @@ interface WebhooksState {
   org_id: string;
   currentPage: number;
   totalPages: number;
+  totalItems: number
 }
 
 class Webhooks extends React.Component<WebhooksProps, WebhooksState> {
@@ -37,7 +38,8 @@ class Webhooks extends React.Component<WebhooksProps, WebhooksState> {
       isListLoading: false,
       org_id: "",
       currentPage: 1,
-      totalPages: 0
+      totalPages: 0,
+      totalItems: 0
     };
   }
 
@@ -58,7 +60,8 @@ class Webhooks extends React.Component<WebhooksProps, WebhooksState> {
             webhooks: webhooksResponse.data.webhooks.data,
             isLoading: false,
             events: eventsResponse.data.webhookEventTypes.data,
-            totalPages: webhooksResponse.data.webhooks.paginationInfo.totalPages
+            totalPages: webhooksResponse.data.webhooks.paginationInfo.totalPages,
+            totalItems: webhooksResponse.data.webhooks.paginationInfo.totalItems
           });
         });
     });
@@ -432,16 +435,16 @@ class Webhooks extends React.Component<WebhooksProps, WebhooksState> {
             </div>
           </div>
         ) : (
-          <div className="headerDescWrapper">
-            <div
-              onClick={() => this.onAddOrEditWebhooks()}
-              className="cursorPointer webhookBackButton"
-            >
-              <Icon type="arrow-left" />
-              Back
+            <div className="headerDescWrapper">
+              <div
+                onClick={() => this.onAddOrEditWebhooks()}
+                className="cursorPointer webhookBackButton"
+              >
+                <Icon type="arrow-left" />
+                Back
             </div>
-          </div>
-        )}
+            </div>
+          )}
         {this.renderWebhookList()}
         {!isWebhookFormOpen && totalPages > 1 ? (
           <Pagination
@@ -449,8 +452,8 @@ class Webhooks extends React.Component<WebhooksProps, WebhooksState> {
               this.onLoadMore(page);
               console.log(page, "pageNumber");
             }}
-            pageSize={3}
-            total={totalPages}
+            pageSize={5}
+            total={this.state.totalItems}
             current={this.state.currentPage}
           />
         ) : null}
