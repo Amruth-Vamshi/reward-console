@@ -237,14 +237,6 @@ class Webhooks extends React.Component<WebhooksProps, WebhooksState> {
             loading={this.state.isListLoading}
             itemLayout="vertical"
             size="large"
-            // pagination={{
-            //   onChange: page => {
-            //     this.onLoadMore(page)
-            //     console.log(page, "pageNumber");
-            //   },
-            //   pageSize: 3,
-            //   total: this.state.totalPages
-            // }}
             dataSource={this.state.webhooks}
             renderItem={(webhook: any, index: number) => {
               return (
@@ -450,7 +442,6 @@ class Webhooks extends React.Component<WebhooksProps, WebhooksState> {
           <Pagination
             onChange={page => {
               this.onLoadMore(page);
-              console.log(page, "pageNumber");
             }}
             pageSize={5}
             total={this.state.totalItems}
