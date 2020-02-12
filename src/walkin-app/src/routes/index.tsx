@@ -7,8 +7,6 @@ const { Suspense } = React;
 
 const RefineX = lazy(() => import('walkin-refinex/src/index'));
 const HyperX = lazy(() => import('walkin-hyperx/src/index'));
-//const RefineX = lazy(() => import('walkin-refinex'));
-// const HyperX = lazy(() => import('walkin-hyperx'));
 const Core = React.lazy(() => import('walkin-core/src/index'));
 const NearX = React.lazy(() => import('walkin-nearx/src/index'));
 const RewardX = React.lazy(() => import('walkin-rewardx/src/index'));
