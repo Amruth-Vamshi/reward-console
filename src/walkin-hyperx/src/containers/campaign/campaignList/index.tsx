@@ -30,7 +30,7 @@ import {
   NEW_CAMPAIGN
 } from "../../../constants/RouterConstants";
 import HyperXContainer from "../../../utils/HyperXContainer";
-import { WHeader } from "shared/src";
+import { WHeader } from "shared";
 import { includes } from "lodash";
 
 const { TabPane } = Tabs;

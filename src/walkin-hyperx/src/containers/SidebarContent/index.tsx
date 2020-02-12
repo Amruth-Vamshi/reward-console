@@ -27,7 +27,7 @@ import {
   OFFER_LIST,
   OFFER_DASHBOARD
 } from "../../constants/RouterConstants";
-import { CollapseSidebar } from "../../../../shared/src";
+import { CollapseSidebar } from "../../../../shared";
 
 const SubMenu = Menu.SubMenu;
 

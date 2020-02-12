@@ -15,7 +15,7 @@ import {
   NAV_STYLE_MINI_SIDEBAR
 } from "walkin-components/src/constants/ThemeSetting";
 import SidebarLogo from "./SidebarLogo";
-import { CollapseSidebar } from "../../../../shared/src";
+import { CollapseSidebar } from "../../../../shared";
 import { compose, graphql } from "react-apollo";
 import gql from "graphql-tag";
 import Dashboard from "../../Icons/IconComponents/dashboard";

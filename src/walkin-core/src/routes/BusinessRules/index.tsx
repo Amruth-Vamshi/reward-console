@@ -4,7 +4,7 @@ import { Route, Switch, Redirect } from "react-router-dom";
 import { withApollo, ApolloProviderProps } from "react-apollo";
 import * as jwt from "jsonwebtoken";
 
-import { EditableFormTable } from "./../../../../shared/src/index";
+import { EditableFormTable } from "../../../../shared/index";
 import { Tabs, Spin } from "antd";
 import { RULES, UPDATE_RULE } from "./../../PlatformQueries";
 

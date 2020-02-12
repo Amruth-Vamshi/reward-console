@@ -13,7 +13,7 @@ import {
   THEME_TYPE_LITE
 } from "walkin-components/src/constants/ThemeSetting";
 import SidebarLogo from "./SidebarLogo";
-import { CollapseSidebar } from "../../../../shared/src";
+import { CollapseSidebar } from "../../../../shared";
 
 // import Dashboard from "../../Icons/IconComponents/dashboard";
 // import Survey from "../../Icons/IconComponents/survey";
