@@ -1,7 +1,7 @@
-import { Button, Icon, Select } from "antd";
-import findIndex from "lodash/findIndex";
-import map from "lodash/map";
-import React, { Fragment } from "react";
+import { Button, Icon, Select } from 'antd';
+import findIndex from 'lodash/findIndex';
+import map from 'lodash/map';
+import React, { Fragment } from 'react';
 
 const { Option } = Select;
 
@@ -41,7 +41,7 @@ class AddAndDeleteComponentsDynamically extends React.Component<
       data_1,
       data_2,
       defaultSelectOneValue,
-      defaultSelectTwoValue
+      defaultSelectTwoValue,
     } = this.props;
     const defaultValueOne = this.getDefaultSelectedValue(
       data_1,
@@ -60,9 +60,9 @@ class AddAndDeleteComponentsDynamically extends React.Component<
           valueTwo: !!defaultValueTwo ? [...defaultValueTwo] : [],
           onOneChange: this.handleSelectOneChange.bind(this, 0),
           onTwoChange: this.handleSelectTwoChange.bind(this, 0),
-          valueFocused: this.handleValueFocusChanged.bind(this, 0)
-        }
-      ]
+          valueFocused: this.handleValueFocusChanged.bind(this, 0),
+        },
+      ],
     };
   }
 
@@ -75,32 +75,35 @@ class AddAndDeleteComponentsDynamically extends React.Component<
       data_1,
       data_2,
       defaultSelectTwoValue,
-      defaultSelectOneValue
+      defaultSelectOneValue,
     } = this.props;
     // const defaultValueOne = this.getDefaultSelectedValue(data_1, defaultSelectOneValue);
     // const defaultValueTwo = this.getDefaultSelectedValue(data_2, defaultSelectTwoValue);
 
     let { items } = this.state;
-    (!items.length || items[items.length - 1].valueOne != "") &&
+    (!items.length || items[items.length - 1].valueOne != '') &&
       items.length != data_1.length &&
       this.setState({
         items: [
           ...this.state.items,
           {
-            valueOne: "",
+            valueOne: '',
             valueTwo: [],
             onOneChange: this.handleSelectOneChange.bind(this, items.length),
             onTwoChange: this.handleSelectTwoChange.bind(this, items.length),
-            valueFocused: this.handleValueFocusChanged.bind(this, items.length)
-          }
-        ]
+            valueFocused: this.handleValueFocusChanged.bind(this, items.length),
+          },
+        ],
       });
   }
 
   removeClick(i) {
     this.setState(prevState => {
       return {
-        items: [...prevState.items.slice(0, i), ...prevState.items.slice(i + 1)]
+        items: [
+          ...prevState.items.slice(0, i),
+          ...prevState.items.slice(i + 1),
+        ],
       };
     });
   }
@@ -130,8 +133,8 @@ class AddAndDeleteComponentsDynamically extends React.Component<
           items: [
             ...prevState.items.slice(0, index),
             { ...prevState.items[index], valueTwo: value },
-            ...prevState.items.slice(index + 1)
-          ]
+            ...prevState.items.slice(index + 1),
+          ],
         };
       },
       () => {
@@ -160,7 +163,7 @@ class AddAndDeleteComponentsDynamically extends React.Component<
               valueTwo,
               onOneChange,
               onTwoChange,
-              valueFocused
+              valueFocused,
             } = item;
             return (
               <div
@@ -168,16 +171,16 @@ class AddAndDeleteComponentsDynamically extends React.Component<
                 className="selectSegmentBoxContainer"
               >
                 <Select
-                  value={valueOne || ""}
+                  value={valueOne || ''}
                   onChange={onOneChange}
                   getPopupContainer={(triggerNode: any) =>
                     triggerNode.parentNode
                   }
                   style={{
-                    display: "inline-block",
-                    width: "calc(35% - 12px)",
-                    marginBottom: "0px",
-                    paddingRight: 20
+                    display: 'inline-block',
+                    width: 'calc(35% - 12px)',
+                    marginBottom: '0px',
+                    paddingRight: 20,
                   }}
                 >
                   {data_1 &&
@@ -192,7 +195,7 @@ class AddAndDeleteComponentsDynamically extends React.Component<
                   showSearch
                   mode="multiple"
                   onFocus={valueFocused}
-                  value={valueTwo || ""}
+                  value={valueTwo || ''}
                   onChange={onTwoChange}
                   getPopupContainer={(triggerNode: any) =>
                     triggerNode.parentNode
@@ -205,17 +208,17 @@ class AddAndDeleteComponentsDynamically extends React.Component<
                       .indexOf(input.toLowerCase()) >= 0
                   }
                   style={{
-                    display: "inline-block",
-                    width: "calc(65% - 12px)",
-                    marginBottom: "0px",
-                    paddingLeft: 10
+                    display: 'inline-block',
+                    width: 'calc(65% - 12px)',
+                    marginBottom: '0px',
+                    paddingLeft: 10,
                   }}
                 >
                   {data_2 &&
                     data_2.map((val: any, i: any) => (
                       <Option key={i} value={val.value}>
-                        {" "}
-                        {val.title}{" "}
+                        {' '}
+                        {val.title}{' '}
                       </Option>
                     ))}
                 </Select>
@@ -228,7 +231,7 @@ class AddAndDeleteComponentsDynamically extends React.Component<
             );
           })}
           <Button
-            style={{ margin: "0px", paddingLeft: "0px" }}
+            style={{ margin: '0px', paddingLeft: '0px' }}
             type="link"
             onClick={this.addClick.bind(this)}
           >

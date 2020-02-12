@@ -2,20 +2,20 @@ import {
   CampaignHeader,
   InstantSearch,
   SortableDataTable,
-  WHeader
-} from "shared";
-import { Button, Col, Dropdown, Menu } from "antd";
-import * as jwt from "jsonwebtoken";
-import React, { Component, Fragment } from "react";
-import { graphql, withApollo, ApolloProviderProps } from "react-apollo";
-import { RouteChildrenProps } from "react-router";
-import { withRouter } from "react-router-dom";
+  WHeader,
+} from 'shared';
+import { Button, Col, Dropdown, Menu } from 'antd';
+import * as jwt from 'jsonwebtoken';
+import React, { Component, Fragment } from 'react';
+import { graphql, withApollo, ApolloProviderProps } from 'react-apollo';
+import { RouteChildrenProps } from 'react-router';
+import { withRouter } from 'react-router-dom';
 
-import { closeOffer, getOffers, LAUNCH_OFFER } from "../../../query/offer";
-import { NEW_OFFER, OFFER_DASHBOARD } from "../../../constants/RouterConstants";
-import { DEFAULT_ACTIVE_STATUS } from "../../../constants";
-import HyperXContainer from "../../../utils/HyperXContainer";
-import { Widget } from "walkin-components";
+import { closeOffer, getOffers, LAUNCH_OFFER } from '../../../query/offer';
+import { NEW_OFFER, OFFER_DASHBOARD } from '../../../constants/RouterConstants';
+import { DEFAULT_ACTIVE_STATUS } from '../../../constants';
+import HyperXContainer from '../../../utils/HyperXContainer';
+import { Widget } from 'walkin-components';
 
 interface IProps extends RouteChildrenProps, ApolloProviderProps<any> {
   refetchOffers;
@@ -36,20 +36,20 @@ class OfferList extends Component<IProps, Partial<IState>> {
     super(props);
     this.state = {
       sortedInfo: null,
-      filtered: null
+      filtered: null,
     };
   }
 
   handleChange = (pagination, filters, sorter) => {
     this.setState({
-      sortedInfo: sorter
+      sortedInfo: sorter,
     });
   };
 
   onNewSegment = () => {
     const { history } = this.props;
     history.push({
-      pathname: NEW_OFFER
+      pathname: NEW_OFFER,
     });
   };
   onDeleteContact = contact => {
@@ -59,17 +59,17 @@ class OfferList extends Component<IProps, Partial<IState>> {
       .mutate({
         mutation: closeOffer,
         variables: {
-          id: contact.id
-        }
+          id: contact.id,
+        },
       })
       .then(({ data }) => {
-        console.log("close offer", data);
+        console.log('close offer', data);
         const { refetchOffers } = this.props;
         this.setState({ loading: false });
         refetchOffers();
       })
       .catch(error => {
-        console.log("err", error);
+        console.log('err', error);
         this.setState({ loading: false });
       });
   };
@@ -79,22 +79,22 @@ class OfferList extends Component<IProps, Partial<IState>> {
     client
       .mutate({
         mutation: LAUNCH_OFFER,
-        variables: { id: contact.id }
+        variables: { id: contact.id },
       })
       .then(({ data }) => {
-        console.log("close offer", data);
+        console.log('close offer', data);
         const { refetchOffers } = this.props;
         refetchOffers();
       })
       .catch(error => {
-        console.log("err", error);
+        console.log('err', error);
       });
   };
 
   onViewOffer = record => {
     this.props.history.push({
       pathname: `${OFFER_DASHBOARD}/${record.id}`,
-      state: { campaignSelected: record }
+      state: { campaignSelected: record },
     });
   };
 
@@ -111,21 +111,21 @@ class OfferList extends Component<IProps, Partial<IState>> {
     <Menu
       getPopupContainer={(triggerNode: any) => triggerNode.parentNode}
       onClick={e => {
-        if (e.key === "duplicate") {
+        if (e.key === 'duplicate') {
           this.onDuplicateContact(record);
-        } else if (e.key === "CLOSED") {
+        } else if (e.key === 'CLOSED') {
           this.onDeleteContact(record);
-        } else if (e.key === "VIEW") {
+        } else if (e.key === 'VIEW') {
           this.onViewOffer(record);
         } else this.onLaunchOffer(record);
       }}
     >
-      {record.state == "DRAFT" ? (
+      {record.state == 'DRAFT' ? (
         <Menu.Item key="LIVE">Launch Offer</Menu.Item>
-      ) : record.state == "LIVE" ? (
+      ) : record.state == 'LIVE' ? (
         <Menu.Item key="CLOSED">Close Offer</Menu.Item>
       ) : (
-        ""
+        ''
       )}
       {/* <Menu.Item key="duplicate">Duplicate</Menu.Item> */}
       <Menu.Item key="VIEW">View Offer</Menu.Item>
@@ -134,7 +134,7 @@ class OfferList extends Component<IProps, Partial<IState>> {
 
   onOfferFilteredList = newList => {
     this.setState({
-      filtered: newList
+      filtered: newList,
     });
   };
 
@@ -148,51 +148,51 @@ class OfferList extends Component<IProps, Partial<IState>> {
     else offerData = getOffers;
 
     const paginationData = {
-      position: "bottom",
+      position: 'bottom',
       total: offerData ? offerData.length : 0,
       defaultPageSize: 6,
-      showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`
+      showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
     };
 
     const columns = [
       {
-        title: "Name",
-        dataIndex: "name",
-        key: "name",
-        width: "30%",
+        title: 'Name',
+        dataIndex: 'name',
+        key: 'name',
+        width: '30%',
         sorter: (a, b) => (a.name !== b.name ? (a.name < b.name ? -1 : 1) : 0),
-        sortOrder: sortedInfo.columnKey === "name" && sortedInfo.order
+        sortOrder: sortedInfo.columnKey === 'name' && sortedInfo.order,
       },
       {
-        title: "Type",
-        dataIndex: "offerType",
-        key: "offerType",
+        title: 'Type',
+        dataIndex: 'offerType',
+        key: 'offerType',
         sorter: (a, b) => a.offerType - b.offerType,
-        sortOrder: sortedInfo.columnKey === "offerType" && sortedInfo.order
+        sortOrder: sortedInfo.columnKey === 'offerType' && sortedInfo.order,
       },
       {
-        title: "Status",
-        dataIndex: "state",
-        key: "state",
+        title: 'Status',
+        dataIndex: 'state',
+        key: 'state',
         sorter: (a, b) => a.offerType - b.offerType,
-        sortOrder: sortedInfo.columnKey === "state" && sortedInfo.order
+        sortOrder: sortedInfo.columnKey === 'state' && sortedInfo.order,
       },
       {
-        title: "",
-        key: "action",
+        title: '',
+        key: 'action',
         width: 10,
         render: (text: any, record: any) => (
           <div className="gx-module-campaign-right">
             <Dropdown
               overlay={this.menus(record)}
               placement="bottomRight"
-              trigger={["click"]}
+              trigger={['click']}
             >
               <i className="gx-icon-btn icon icon-ellipse-v" />
             </Dropdown>
           </div>
-        )
-      }
+        ),
+      },
     ];
     return (
       <Fragment>
@@ -236,17 +236,17 @@ class OfferList extends Component<IProps, Partial<IState>> {
 export default withRouter(
   graphql(getOffers, {
     options: (ownProps: any) => {
-      const { org_id }: any = jwt.decode(localStorage.getItem("jwt"));
+      const { org_id }: any = jwt.decode(localStorage.getItem('jwt'));
       return {
         variables: {
-          organizationId: org_id
+          organizationId: org_id,
         },
         forceFetch: true,
-        fetchPolicy: "network-only"
+        fetchPolicy: 'network-only',
       };
     },
     props: ({ data: { loading, error, getOffers, refetch } }: any) => {
-      const { org_id }: any = jwt.decode(localStorage.getItem("jwt"));
+      const { org_id }: any = jwt.decode(localStorage.getItem('jwt'));
       return {
         loading,
         getOffers,
@@ -255,11 +255,11 @@ export default withRouter(
           refetch({
             variables: {
               organization_id: org_id,
-              status: DEFAULT_ACTIVE_STATUS
-            }
+              status: DEFAULT_ACTIVE_STATUS,
+            },
           });
-        }
+        },
       };
-    }
+    },
   })(withApollo(OfferList))
 );

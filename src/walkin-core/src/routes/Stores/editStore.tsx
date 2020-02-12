@@ -1,20 +1,20 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import * as jwt from "jsonwebtoken";
-import { withApollo, ApolloProviderProps } from "react-apollo";
-import { History } from "history";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import * as jwt from 'jsonwebtoken';
+import { withApollo, ApolloProviderProps } from 'react-apollo';
+import { History } from 'history';
 
-import { Icon, Select, Input, Button, Switch, Spin, message } from "antd";
-import "./index.css";
-import GeofenceMap from "../../../../walkin-nearx/src/components/Places/GeofenceMap";
+import { Icon, Select, Input, Button, Switch, Spin, message } from 'antd';
+import './index.css';
+import GeofenceMap from '../../../../walkin-nearx/src/components/Places/GeofenceMap';
 // import FileUpload from "./../Categories/Components/FileUpload";
 import {
   GET_ALL_USERS_OF_ORGANIZATION,
   STORE,
   CREATE_STORE,
   UPDATE_STORE,
-  GET_BUSINESS_RULE
-} from "./../../PlatformQueries";
+  GET_BUSINESS_RULE,
+} from './../../PlatformQueries';
 
 const { Option } = Select;
 
@@ -36,67 +36,67 @@ class EditStore extends React.Component<EditStoreProps, EditStoreState> {
 
     this.state = {
       isFetching: true,
-      orgID: "",
+      orgID: '',
       activeUsers: [],
-      storeDetails: { STATUS: "ACTIVE" },
+      storeDetails: { STATUS: 'ACTIVE' },
       storeFormatArray: [],
       mapData: {
         places: [
           {
-            id: "",
-            placeName: "",
-            storeId: "",
+            id: '',
+            placeName: '',
+            storeId: '',
             selected: true,
             mainPlace: true,
-            address: "",
+            address: '',
             radius: [],
             center: {
               lat: null,
-              lng: null
+              lng: null,
             },
-            errors: {}
-          }
+            errors: {},
+          },
         ],
         // places1: [],
 
         center: {
           lat: null,
-          lng: null
+          lng: null,
         },
         // kmlFileUrl:
         //   "https://developers.google.com/kml/documentation/KML_Samples.kml",
-        kmlFileUrl: "",
+        kmlFileUrl: '',
         errors: {},
         // markerPlace: 0,
-        getLoc: false
+        getLoc: false,
         // loading1: false
-      }
+      },
     };
   }
 
   UNSAFE_componentWillMount() {
-    const jwtToken: any = localStorage.getItem("jwt");
+    const jwtToken: any = localStorage.getItem('jwt');
     const { org_id }: any = jwt.decode(jwtToken);
 
     let { mapData } = this.state;
-    let storeId = "";
-    let locationParams = this.props.history.location.pathname.split("/");
-    if (locationParams[locationParams.length - 1] === "edit") {
+    let storeId = '';
+    let locationParams = this.props.history.location.pathname.split('/');
+    if (locationParams[locationParams.length - 1] === 'edit') {
       storeId = locationParams[3];
       this.props.client
         .query({
           query: STORE,
           variables: { id: storeId },
-          fetchPolicy: "network-only"
+          fetchPolicy: 'network-only',
         })
         .then(storeDetails => {
           mapData.places[0].center = {
             lat: +storeDetails.data.store.latitude,
-            lng: +storeDetails.data.store.longitude
+            lng: +storeDetails.data.store.longitude,
           };
           mapData.center = {
             lat: +storeDetails.data.store.latitude,
-            lng: +storeDetails.data.store.longitude
+            lng: +storeDetails.data.store.longitude,
           };
 
           let parsedStoreDetails = { ...storeDetails.data.store };
@@ -110,23 +110,23 @@ class EditStore extends React.Component<EditStoreProps, EditStoreState> {
           this.setState({
             storeDetails: parsedStoreDetails,
             mapData,
-            isFetching: false
+            isFetching: false,
           });
         });
     }
 
-    if (locationParams[locationParams.length - 1] === "create") {
+    if (locationParams[locationParams.length - 1] === 'create') {
       // mapData.places[0].center = {
       //   lat: 25.199514,
       //   lng: 55.277397
       // };
       mapData.center = {
         lat: 25.199514,
-        lng: 55.277397
+        lng: 55.277397,
       };
       // mapData.markerPlace = 0;
       this.setState({
-        mapData
+        mapData,
       });
     }
 
@@ -150,11 +150,11 @@ class EditStore extends React.Component<EditStoreProps, EditStoreState> {
       .query({
         query: GET_ALL_USERS_OF_ORGANIZATION,
         variables: { id: org_id },
-        fetchPolicy: "network-only"
+        fetchPolicy: 'network-only',
       })
       .then(allUsers => {
         let activeUsers = allUsers.data.organization.users.filter(
-          (user, index) => (user.status = "ACTIVE")
+          (user, index) => (user.status = 'ACTIVE')
         );
 
         this.setState({ activeUsers, isFetching: false, orgID: org_id });
@@ -169,7 +169,7 @@ class EditStore extends React.Component<EditStoreProps, EditStoreState> {
       ) => {
         return {
           ...prevState,
-          [type]: value
+          [type]: value,
         };
       }
     );
@@ -183,19 +183,19 @@ class EditStore extends React.Component<EditStoreProps, EditStoreState> {
       parentOrganizationId: this.state.orgID,
       ...storeDetails,
       latitude: `${mapData.center.lat}`,
-      longitude: `${mapData.center.lng}`
+      longitude: `${mapData.center.lng}`,
     };
     this.props.client
       .mutate({
         mutation: CREATE_STORE,
         variables: {
-          input: input
-        }
+          input: input,
+        },
       })
       .then(createStore => {
         if (createStore.data.createStore.id) {
-          message.success("store successfully created");
-          this.props.history.push("/core/stores/");
+          message.success('store successfully created');
+          this.props.history.push('/core/stores/');
         }
       });
   };
@@ -207,34 +207,34 @@ class EditStore extends React.Component<EditStoreProps, EditStoreState> {
       parentOrganizationId: this.state.orgID,
       ...storeDetails,
       latitude: `${mapData.center.lat}`,
-      longitude: `${mapData.center.lng}`
+      longitude: `${mapData.center.lng}`,
     };
-    delete input["__typename"];
+    delete input['__typename'];
     // delete input["extend"];
 
     this.props.client
       .mutate({
         mutation: UPDATE_STORE,
         variables: {
-          input: input
-        }
+          input: input,
+        },
       })
       .then(UpdateStore => {
         if (UpdateStore.data.updateStore.id) {
-          message.success("Store successfully updated");
-          this.props.history.push("/core/stores/");
+          message.success('Store successfully updated');
+          this.props.history.push('/core/stores/');
         }
       });
   };
 
   onFilteredList = newList => {
-    console.log("storeInfo onFilteredList newList", newList);
+    console.log('storeInfo onFilteredList newList', newList);
     // this.setState({ dataSource: newList });
   };
 
   getloc = i =>
     this.setState({
-      mapData: { ...this.state.mapData, getLoc: true, markerPlace: i }
+      mapData: { ...this.state.mapData, getLoc: true, markerPlace: i },
     });
 
   handleCenterChange = (e, i, name) => {
@@ -242,17 +242,17 @@ class EditStore extends React.Component<EditStoreProps, EditStoreState> {
     let lng = places[i].center.lng;
     let lat = places[i].center.lat;
 
-    if (name == "lat") lat = parseFloat(e.target.value);
+    if (name == 'lat') lat = parseFloat(e.target.value);
     else lng = parseFloat(e.target.value);
 
-    if (lat != NaN && lat != null) places[i].errors.latitude = "";
-    if (lng != NaN && lng != null) places[i].errors.longitude = "";
+    if (lat != NaN && lat != null) places[i].errors.latitude = '';
+    if (lng != NaN && lng != null) places[i].errors.longitude = '';
 
     places[i].center = { lat: lat, lng: lng };
     i
       ? this.setState({ mapData: { ...this.state.mapData, places } })
       : this.setState({
-          mapData: { ...this.state.mapData, places, center: places[0].center }
+          mapData: { ...this.state.mapData, places, center: places[0].center },
         });
   };
 
@@ -260,23 +260,23 @@ class EditStore extends React.Component<EditStoreProps, EditStoreState> {
     let places = this.state.mapData.places;
     places[this.state.mapData.markerPlace].center = { lat: lat, lng: lng };
     if (lat != NaN && lat != null)
-      places[this.state.mapData.markerPlace].errors.latitude = "";
+      places[this.state.mapData.markerPlace].errors.latitude = '';
     if (lng != NaN && lng != null)
-      places[this.state.mapData.markerPlace].errors.longitude = "";
+      places[this.state.mapData.markerPlace].errors.longitude = '';
     this.setState({
-      mapData: { ...this.state.mapData, places, getLoc: false }
+      mapData: { ...this.state.mapData, places, getLoc: false },
     });
     this.state.mapData.markerPlace
       ? this.setState({
-          mapData: { ...this.state.mapData, places, getLoc: false }
+          mapData: { ...this.state.mapData, places, getLoc: false },
         })
       : this.setState({
           mapData: {
             ...this.state.mapData,
             places,
             center: places[0].center,
-            getLoc: false
-          }
+            getLoc: false,
+          },
         });
   };
   handleUploadedKML = val => {
@@ -291,16 +291,16 @@ class EditStore extends React.Component<EditStoreProps, EditStoreState> {
         ? storeDetails.extend.extend_store_format.value
         : []
     );
-    let header = "Create Store ";
+    let header = 'Create Store ';
     if (storeDetails.id) {
-      header = "Edit Store";
+      header = 'Edit Store';
     }
     return (
       <div className="storesFormContainer">
         {isFetching ? (
           <div
             style={{
-              width: "50%"
+              width: '50%',
             }}
             className="centerAlign"
           >
@@ -309,12 +309,12 @@ class EditStore extends React.Component<EditStoreProps, EditStoreState> {
         ) : (
           <div
             style={{
-              width: "50%"
+              width: '50%',
             }}
           >
             <div
               onClick={() => {
-                this.props.history.push("/core/stores/");
+                this.props.history.push('/core/stores/');
               }}
               className="cursorPointer webhookBackButton"
             >
@@ -326,10 +326,10 @@ class EditStore extends React.Component<EditStoreProps, EditStoreState> {
             <div className="storeFlexWrapper width300px">
               <div className="storeSwitchWrapper width15percent ">
                 <Switch
-                  checked={storeDetails.STATUS === "ACTIVE"}
+                  checked={storeDetails.STATUS === 'ACTIVE'}
                   onChange={(value: any) => {
-                    storeDetails.STATUS = value ? "ACTIVE" : "INACTIVE";
-                    this.onChange("storeDetails", storeDetails);
+                    storeDetails.STATUS = value ? 'ACTIVE' : 'INACTIVE';
+                    this.onChange('storeDetails', storeDetails);
                   }}
                 />
               </div>
@@ -348,7 +348,7 @@ class EditStore extends React.Component<EditStoreProps, EditStoreState> {
                 value={storeDetails.name}
                 onChange={e => {
                   storeDetails.name = e.target.value;
-                  this.onChange("storeDetails", storeDetails);
+                  this.onChange('storeDetails', storeDetails);
                 }}
               />
             </div>
@@ -360,7 +360,7 @@ class EditStore extends React.Component<EditStoreProps, EditStoreState> {
                 value={storeDetails.email}
                 onChange={e => {
                   storeDetails.email = e.target.value;
-                  this.onChange("storeDetails", storeDetails);
+                  this.onChange('storeDetails', storeDetails);
                 }}
               />
             </div>
@@ -374,7 +374,7 @@ class EditStore extends React.Component<EditStoreProps, EditStoreState> {
                 value={storeDetails.addressLine1}
                 onChange={e => {
                   storeDetails.addressLine1 = e.target.value;
-                  this.onChange("storeDetails", storeDetails);
+                  this.onChange('storeDetails', storeDetails);
                 }}
               />
             </div>
@@ -388,7 +388,7 @@ class EditStore extends React.Component<EditStoreProps, EditStoreState> {
                 value={storeDetails.addressLine2}
                 onChange={e => {
                   storeDetails.addressLine2 = e.target.value;
-                  this.onChange("storeDetails", storeDetails);
+                  this.onChange('storeDetails', storeDetails);
                 }}
               />
             </div>
@@ -404,7 +404,7 @@ class EditStore extends React.Component<EditStoreProps, EditStoreState> {
                   value={storeDetails.city}
                   onChange={e => {
                     storeDetails.city = e.target.value;
-                    this.onChange("storeDetails", storeDetails);
+                    this.onChange('storeDetails', storeDetails);
                   }}
                 />
               </div>
@@ -418,7 +418,7 @@ class EditStore extends React.Component<EditStoreProps, EditStoreState> {
                   value={storeDetails.state}
                   onChange={e => {
                     storeDetails.state = e.target.value;
-                    this.onChange("storeDetails", storeDetails);
+                    this.onChange('storeDetails', storeDetails);
                   }}
                 />
               </div>
@@ -435,7 +435,7 @@ class EditStore extends React.Component<EditStoreProps, EditStoreState> {
                   value={storeDetails.pinCode}
                   onChange={e => {
                     storeDetails.pinCode = e.target.value;
-                    this.onChange("storeDetails", storeDetails);
+                    this.onChange('storeDetails', storeDetails);
                   }}
                 />
               </div>
@@ -450,7 +450,7 @@ class EditStore extends React.Component<EditStoreProps, EditStoreState> {
                   value={storeDetails.country}
                   onChange={e => {
                     storeDetails.country = e.target.value;
-                    this.onChange("storeDetails", storeDetails);
+                    this.onChange('storeDetails', storeDetails);
                   }}
                 />
               </div>
@@ -463,7 +463,7 @@ class EditStore extends React.Component<EditStoreProps, EditStoreState> {
                 disabled
                 mode="multiple"
                 placeholder="Please choose the store format"
-                style={{ width: "100%" }}
+                style={{ width: '100%' }}
                 value={
                   storeDetails.extend && storeDetails.extend.extend_store_format
                     ? storeDetails.extend.extend_store_format.value
@@ -472,14 +472,14 @@ class EditStore extends React.Component<EditStoreProps, EditStoreState> {
                 onChange={value => {
                   if (!storeDetails.extend) {
                     storeDetails.extend = {
-                      extend_store_format: { value: [] }
+                      extend_store_format: { value: [] },
                     };
                   }
                   if (!storeDetails.extend.extend_store_format) {
                     storeDetails.extend.extend_store_format = { value: [] };
                   }
                   storeDetails.extend.extend_store_format.value = value;
-                  this.onChange("storeDetails", storeDetails);
+                  this.onChange('storeDetails', storeDetails);
                 }}
               >
                 {this.state.storeFormatArray.map((format, formatIndex) => {
@@ -508,7 +508,7 @@ class EditStore extends React.Component<EditStoreProps, EditStoreState> {
                     storeDetails.extend = {};
                   }
                   storeDetails.extend.extend_phone_number = e.target.value;
-                  this.onChange("storeDetails", storeDetails);
+                  this.onChange('storeDetails', storeDetails);
                 }}
               />
             </div>
@@ -518,11 +518,11 @@ class EditStore extends React.Component<EditStoreProps, EditStoreState> {
               <Select
                 disabled
                 getPopupContainer={() =>
-                  document.getElementById("EntityInputWrapper")
+                  document.getElementById('EntityInputWrapper')
                 }
                 showSearch
                 size="large"
-                style={{ width: "100%" }}
+                style={{ width: '100%' }}
                 placeholder="Choose admin"
                 optionFilterProp="children"
                 onChange={value => {
@@ -530,7 +530,7 @@ class EditStore extends React.Component<EditStoreProps, EditStoreState> {
                     storeDetails.extend = {};
                   }
                   storeDetails.extend.extend_admin_user_id = value;
-                  this.onChange("storeDetails", storeDetails);
+                  this.onChange('storeDetails', storeDetails);
                 }}
                 value={
                   storeDetails.extend &&
@@ -568,7 +568,7 @@ class EditStore extends React.Component<EditStoreProps, EditStoreState> {
                     name="latitude"
                     value={mapData.places[0].center.lat}
                     onChange={(e: any) => {
-                      this.handleCenterChange(e, 0, "lat");
+                      this.handleCenterChange(e, 0, 'lat');
 
                       // mapData.places[0].center.lat = e.target.value;
                       // this.onChange("mapData", mapData);
@@ -590,7 +590,7 @@ class EditStore extends React.Component<EditStoreProps, EditStoreState> {
                     name="latitude"
                     value={mapData.places[0].center.lng}
                     onChange={(e: any) => {
-                      this.handleCenterChange(e, 0, "lng");
+                      this.handleCenterChange(e, 0, 'lng');
                       // mapData.places[0].center.lng = e.target.value;
                       // this.onChange("mapData", mapData);
                     }}
@@ -599,7 +599,7 @@ class EditStore extends React.Component<EditStoreProps, EditStoreState> {
               </div>
               <p onClick={() => this.getloc(0)}>
                 <i className="gx-pointer gx-text-primary">
-                  <Icon type="plus" /> {"  "}Pick location from map
+                  <Icon type="plus" /> {'  '}Pick location from map
                 </i>
               </p>
             </div>
@@ -618,7 +618,7 @@ class EditStore extends React.Component<EditStoreProps, EditStoreState> {
                   checked={storeDetails.wifi}
                   onChange={(value: any) => {
                     storeDetails.wifi = value;
-                    this.onChange("storeDetails", storeDetails);
+                    this.onChange('storeDetails', storeDetails);
                   }}
                 />
               </div>
@@ -652,12 +652,12 @@ class EditStore extends React.Component<EditStoreProps, EditStoreState> {
               }}
               loading={false}
             >
-              {storeDetails.id ? "Update" : "Create"}
+              {storeDetails.id ? 'Update' : 'Create'}
             </Button>
           </div>
         )}
-        <div style={{ width: 1, border: "1px solid grey ", height: 700 }} />
-        <div className={"storeMapWrapper"}>
+        <div style={{ width: 1, border: '1px solid grey ', height: 700 }} />
+        <div className={'storeMapWrapper'}>
           <GeofenceMap
             mapHeight="100%"
             mapData={this.state.mapData}

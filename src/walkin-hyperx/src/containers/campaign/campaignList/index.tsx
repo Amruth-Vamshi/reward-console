@@ -1,37 +1,37 @@
-import "../styles.css";
+import '../styles.css';
 
-import { CampaignHeader, InstantSearch, SortableDataTable } from "shared";
-import { Widget } from "walkin-components";
-import { Button, Col, Dropdown, Icon, Menu, Progress, Tabs } from "antd";
-import jwt from "jsonwebtoken";
-import moment from "moment";
-import * as React from "react";
+import { CampaignHeader, InstantSearch, SortableDataTable } from 'shared';
+import { Widget } from 'walkin-components';
+import { Button, Col, Dropdown, Icon, Menu, Progress, Tabs } from 'antd';
+import jwt from 'jsonwebtoken';
+import moment from 'moment';
+import * as React from 'react';
 import {
   compose,
   graphql,
   withApollo,
-  ApolloProviderProps
-} from "react-apollo";
-import { RouteChildrenProps } from "react-router";
-import { withRouter } from "react-router-dom";
+  ApolloProviderProps,
+} from 'react-apollo';
+import { RouteChildrenProps } from 'react-router';
+import { withRouter } from 'react-router-dom';
 
 import {
   DISABLE_CAMPAIGN,
-  VIEW_HYPERX_CAMPAIGNS
-} from "../../../query/campaign";
+  VIEW_HYPERX_CAMPAIGNS,
+} from '../../../query/campaign';
 import {
   DEFAULT_ACTIVE_STATUS,
   DEFAULT_HYPERX_CAMPAIGN,
   SHOULD_EDIT,
-  DEFAULT_HYPERX_CAMPAIGN_STATES
-} from "../../../constants";
+  DEFAULT_HYPERX_CAMPAIGN_STATES,
+} from '../../../constants';
 import {
   CAMPAIGN_DASHBOARD,
-  NEW_CAMPAIGN
-} from "../../../constants/RouterConstants";
-import HyperXContainer from "../../../utils/HyperXContainer";
-import { WHeader } from "shared";
-import { includes } from "lodash";
+  NEW_CAMPAIGN,
+} from '../../../constants/RouterConstants';
+import HyperXContainer from '../../../utils/HyperXContainer';
+import { WHeader } from 'shared';
+import { includes } from 'lodash';
 
 const { TabPane } = Tabs;
 const DEFAULT_PAGE_SIZE = 6;
@@ -80,29 +80,29 @@ class CampaignList extends React.Component<
       key: this.props.location.state
         ? this.props.location.state.tabKey
           ? this.props.location.state.tabKey
-          : "1"
-        : "1"
+          : '1'
+        : '1',
     };
   }
 
   getCampaigns = (offset, state, key) => {
-    console.log("state ", state);
+    console.log('state ', state);
     this.setState({ loading: true });
     this.props.client
       .query({
         query: VIEW_HYPERX_CAMPAIGNS,
         variables: {
           input: {
-            organizationId: jwt.decode(localStorage.getItem("jwt"))["org_id"],
+            organizationId: jwt.decode(localStorage.getItem('jwt'))['org_id'],
             status: DEFAULT_ACTIVE_STATUS,
-            campaignStatus: state
+            campaignStatus: state,
             // campaignType: DEFAULT_HYPERX_CAMPAIGN
           },
           page: offset,
           perPage: DEFAULT_PAGE_SIZE,
-          sort: { sortBy: "id", sortOrder: "DESC" }
+          sort: { sortBy: 'id', sortOrder: 'DESC' },
         },
-        fetchPolicy: "network-only"
+        fetchPolicy: 'network-only',
       })
       .then(res => {
         let data = res.data.viewCampaignsForHyperX;
@@ -111,7 +111,7 @@ class CampaignList extends React.Component<
       })
       .catch(err => {
         this.setState({ loading: false });
-        console.log("Failed to get Campaigns" + err);
+        console.log('Failed to get Campaigns' + err);
       });
   };
 
@@ -122,25 +122,25 @@ class CampaignList extends React.Component<
           DEFAULT_HYPERX_CAMPAIGN_STATES[this.state.key - 1],
           this.state.key
         )
-      : this.getCampaigns(1, "LIVE", this.state.key);
+      : this.getCampaigns(1, 'LIVE', this.state.key);
   }
 
   onNewCampaign = () => {
     const { history } = this.props;
     history.push({
-      pathname: NEW_CAMPAIGN
+      pathname: NEW_CAMPAIGN,
     });
   };
 
   onDeleteCampaign = (campaign: any) => {
-    console.log("delete", campaign);
+    console.log('delete', campaign);
   };
 
   onViewCampaign = (campaign: any) => {
-    console.log("View", campaign);
+    console.log('View', campaign);
     this.props.history.push({
       pathname: `${CAMPAIGN_DASHBOARD}/${campaign.id}`,
-      state: { campaignSelected: campaign }
+      state: { campaignSelected: campaign },
     });
   };
   disableCampaign = (campaign: any) => {
@@ -148,12 +148,12 @@ class CampaignList extends React.Component<
     this.props
       .disableCampaign({
         variables: {
-          id: campaign.id
-        }
+          id: campaign.id,
+        },
       })
       .then(({ data }) => {
-        console.log("Data..", data);
-        console.log("Disabled");
+        console.log('Data..', data);
+        console.log('Disabled');
         this.props.changeStatus();
         this.setState(
           { allCampaigns: this.props.campaigns, loading: false },
@@ -164,42 +164,42 @@ class CampaignList extends React.Component<
         this.setState({ loading: false });
       })
       .catch((err: any) => {
-        console.log("ERR", err);
+        console.log('ERR', err);
         this.setState({ loading: false });
       });
   };
 
   onDuplicateCampaign = (campaign: any) => {
-    console.log("dupl", campaign);
+    console.log('dupl', campaign);
     const { history, match } = this.props;
     history.push({
       pathname: `${NEW_CAMPAIGN}/${campaign.id}`,
       state: {
-        campaignSelected: campaign
-      }
+        campaignSelected: campaign,
+      },
     });
   };
 
   onEditCampaign = (campaign: any) => {
-    console.log("edit", campaign);
+    console.log('edit', campaign);
     const { history, match } = this.props;
     history.push({
       pathname: `${NEW_CAMPAIGN}/${campaign.id}`,
-      state: { campaignSelected: campaign, update: true }
+      state: { campaignSelected: campaign, update: true },
     });
   };
 
   menus = record => (
     <Menu
       onClick={e => {
-        if (e.key === "duplicate") {
+        if (e.key === 'duplicate') {
           this.onDuplicateCampaign(record);
-        } else if (e.key === "edit") {
+        } else if (e.key === 'edit') {
           this.onEditCampaign(record);
-        } else if (e.key === "view") {
+        } else if (e.key === 'view') {
           this.onViewCampaign(record);
-        } else if (e.key === "delete") {
-          console.log("DELETE...");
+        } else if (e.key === 'delete') {
+          console.log('DELETE...');
           this.disableCampaign(record);
         } else {
           this.onDeleteCampaign(record);
@@ -227,9 +227,9 @@ class CampaignList extends React.Component<
   };
 
   onCampaignFilteredList = (newList: any) => {
-    console.log("new list", newList);
+    console.log('new list', newList);
     this.setState({
-      filtered: newList
+      filtered: newList,
     });
   };
 
@@ -240,7 +240,7 @@ class CampaignList extends React.Component<
         ...c.campaign,
         reached: c.reached,
         audienceCount: c.audienceCount,
-        redemptionRate: c.redemptionRate
+        redemptionRate: c.redemptionRate,
       }));
       // if (!allCampaigns || allCampaigns.length < 1) return
       // if (key == 1) {
@@ -254,7 +254,7 @@ class CampaignList extends React.Component<
         data: allCampaigns,
         total: data.paginationInfo.totalItems,
         filtered: null,
-        loading: false
+        loading: false,
       });
       // }}
     }
@@ -295,54 +295,54 @@ class CampaignList extends React.Component<
       campaignData = data;
     }
     const paginationData = {
-      position: "bottom",
+      position: 'bottom',
       current: this.state.current,
       onChange: (e, n) => this.onTableChange(e, n),
       total: this.state.total,
       defaultPageSize: DEFAULT_PAGE_SIZE,
       showTotal: (total: any, range: any) =>
-        `${range[0]}-${range[1]} of ${total} items`
+        `${range[0]}-${range[1]} of ${total} items`,
     };
 
     const columns = [
       {
-        title: "Name",
-        dataIndex: "name",
-        key: "name",
-        width: "22%",
+        title: 'Name',
+        dataIndex: 'name',
+        key: 'name',
+        width: '22%',
         render: (text: any, row: any) => (
-          <div style={{ color: "#292929" }}> {text} </div>
+          <div style={{ color: '#292929' }}> {text} </div>
         ),
         sorter: (a: any, b: any) =>
           a.name !== b.name ? (a.name < b.name ? -1 : 1) : 0,
-        sortOrder: sortedInfo.columnKey === "name" && sortedInfo.order
+        sortOrder: sortedInfo.columnKey === 'name' && sortedInfo.order,
       },
       {
-        title: "Start date & end date",
-        dataIndex: "startTime",
+        title: 'Start date & end date',
+        dataIndex: 'startTime',
         width: 320,
-        key: "startTime",
+        key: 'startTime',
         render: (text: any, row: any) => {
           const a: any = moment();
           const b: any = moment(text);
           const c: any = moment(row.endTime);
           return (
             <div>
-              {moment(text).format("DD-MM-YYYY")}
+              {moment(text).format('DD-MM-YYYY')}
               <Progress
-                style={{ width: "35%", margin: "0px 5px 0px 5px" }}
+                style={{ width: '35%', margin: '0px 5px 0px 5px' }}
                 percent={Math.round(((a - b) / (c - b)) * 100)}
                 showInfo={false}
               />
-              {moment(row.endTime).format("DD-MM-YYYY")}
+              {moment(row.endTime).format('DD-MM-YYYY')}
             </div>
           );
-        }
+        },
       },
       {
-        title: "Audience Size",
-        dataIndex: "audienceCount",
-        key: "audienceCount"
+        title: 'Audience Size',
+        dataIndex: 'audienceCount',
+        key: 'audienceCount',
         // align: 'center' as const
       },
       // {
@@ -352,40 +352,40 @@ class CampaignList extends React.Component<
       //   // align: 'center' as const
       // },
       {
-        title: "Redemption Rate",
-        dataIndex: "redemptionRate",
-        key: "redemptionRate"
+        title: 'Redemption Rate',
+        dataIndex: 'redemptionRate',
+        key: 'redemptionRate',
         // align: 'center' as const
       },
       {
-        title: "Priority",
-        dataIndex: "priority",
-        key: "priority",
+        title: 'Priority',
+        dataIndex: 'priority',
+        key: 'priority',
         render: (text: any, row: any) => (
           <div className="priorityTextStyle">
-            {text < 10 ? `0${text}` : text}{" "}
+            {text < 10 ? `0${text}` : text}{' '}
           </div>
         ),
         sorter: (a: any, b: any) =>
           a.priority !== b.priority ? (a.priority < b.priority ? -1 : 1) : 0,
-        sortOrder: sortedInfo.columnKey === "priority" && sortedInfo.order
+        sortOrder: sortedInfo.columnKey === 'priority' && sortedInfo.order,
       },
       {
-        title: "",
-        key: "action",
+        title: '',
+        key: 'action',
         width: 10,
         render: (text: any, record: any) => (
           <div className="gx-module-campaign-right">
             <Dropdown
               overlay={this.menus(record)}
               placement="bottomRight"
-              trigger={["click"]}
+              trigger={['click']}
             >
               <i className="gx-icon-btn icon icon-ellipse-v" />
             </Dropdown>
           </div>
-        )
-      }
+        ),
+      },
     ];
     return (
       <div>
@@ -414,7 +414,7 @@ class CampaignList extends React.Component<
               }
             >
               <Tabs
-                defaultActiveKey={key ? key : "1"}
+                defaultActiveKey={key ? key : '1'}
                 onChange={this.onTabChange}
               >
                 <TabPane tab="Live" key="1">
@@ -479,7 +479,7 @@ class CampaignList extends React.Component<
 export default withRouter(
   compose(
     graphql(DISABLE_CAMPAIGN, {
-      name: "disableCampaign"
+      name: 'disableCampaign',
     })
   )(withApollo(CampaignList))
 );

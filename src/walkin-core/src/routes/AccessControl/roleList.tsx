@@ -1,43 +1,43 @@
-import * as React from "react";
-import * as jwt from "jsonwebtoken";
+import * as React from 'react';
+import * as jwt from 'jsonwebtoken';
 
-import { Table, Button } from "antd";
-import moment from "moment";
-import "./style.css";
+import { Table, Button } from 'antd';
+import moment from 'moment';
+import './style.css';
 
-import CreateRoleModal from "./createRoleModal";
-import AddOrRemoveUsersToRoleModal from "./AddOrRemoveUsersToRoleModal";
-import DuplicateIcon from "./../../containers/Icons/duplicate";
+import CreateRoleModal from './createRoleModal';
+import AddOrRemoveUsersToRoleModal from './AddOrRemoveUsersToRoleModal';
+import DuplicateIcon from './../../containers/Icons/duplicate';
 
-import { withApollo, ApolloProviderProps } from "react-apollo";
+import { withApollo, ApolloProviderProps } from 'react-apollo';
 import {
   ROLES_LIST,
   USERS,
   LINK_USERS_TO_ROLE,
   UNLINK_USERS_FROM_ROLE,
-  ADD_ROLE
-} from "./../../PlatformQueries";
-import { History } from "history";
+  ADD_ROLE,
+} from './../../PlatformQueries';
+import { History } from 'history';
 
 const columns = [
   {
-    title: "Type",
-    className: "access-control-column-title",
-    dataIndex: "type",
-    key: "type"
+    title: 'Type',
+    className: 'access-control-column-title',
+    dataIndex: 'type',
+    key: 'type',
   },
   {
-    title: "Created by",
-    className: "access-control-column-title",
-    dataIndex: "createdBy",
-    key: "createdBy"
+    title: 'Created by',
+    className: 'access-control-column-title',
+    dataIndex: 'createdBy',
+    key: 'createdBy',
   },
   {
-    title: "Created on",
-    className: "access-control-column-title",
-    dataIndex: "createdOn",
-    key: "createdOn"
-  }
+    title: 'Created on',
+    className: 'access-control-column-title',
+    dataIndex: 'createdOn',
+    key: 'createdOn',
+  },
 ];
 
 interface AccessControlProps extends ApolloProviderProps<any> {
@@ -70,18 +70,18 @@ class RoleList extends React.Component<AccessControlProps, AccessControlState> {
       isNewRoleModalOpen: false,
       isAddUsersToRoleModalOpen: false,
       isRemoveUsersToRoleModalOpen: false,
-      newRoleName: "",
+      newRoleName: '',
       addUsersToDuplicateRoles: false,
       selectedRoleIndex: null,
       isFetching: false,
       isLoading: true,
       columns: [
         {
-          title: "Role",
-          className: "access-control-column-title",
+          title: 'Role',
+          className: 'access-control-column-title',
 
-          dataIndex: "role",
-          key: "role",
+          dataIndex: 'role',
+          key: 'role',
           render: (text, record, index) => (
             <span
               onClick={() => {
@@ -89,31 +89,31 @@ class RoleList extends React.Component<AccessControlProps, AccessControlState> {
                 return this.props.history.push({
                   pathname: `/core/access-control/${selectedRoleId}/edit`,
                   state: {
-                    roleId: selectedRoleId
-                  }
+                    roleId: selectedRoleId,
+                  },
                 });
               }}
             >
               <a>{text}</a>
             </span>
-          )
+          ),
         },
         ...columns,
         {
-          title: "User",
-          className: "access-control-column-title",
+          title: 'User',
+          className: 'access-control-column-title',
 
-          key: "user",
-          dataIndex: "user",
+          key: 'user',
+          dataIndex: 'user',
           render: (user, parent) => {
             return (
               <span className="access-control-table-content">
-                <div style={{ display: "flex" }}>
+                <div style={{ display: 'flex' }}>
                   <span
                     onClick={() => {
                       this.setState({
                         isRemoveUsersToRoleModalOpen: true,
-                        selectedRoleIndex: parent.roleIndex
+                        selectedRoleIndex: parent.roleIndex,
                       });
                     }}
                     style={{ minWidth: 40 }}
@@ -124,7 +124,7 @@ class RoleList extends React.Component<AccessControlProps, AccessControlState> {
                     onClick={() => {
                       this.setState({
                         isAddUsersToRoleModalOpen: true,
-                        selectedRoleIndex: parent.roleIndex
+                        selectedRoleIndex: parent.roleIndex,
                       });
                     }}
                     style={{ minWidth: 40 }}
@@ -134,11 +134,11 @@ class RoleList extends React.Component<AccessControlProps, AccessControlState> {
                 </div>
               </span>
             );
-          }
+          },
         },
         {
-          title: "",
-          key: "action",
+          title: '',
+          key: 'action',
           render: ({ action, key }) => {
             return (
               <span
@@ -150,9 +150,9 @@ class RoleList extends React.Component<AccessControlProps, AccessControlState> {
                 <DuplicateIcon />
               </span>
             );
-          }
-        }
-      ]
+          },
+        },
+      ],
     };
   }
 
@@ -161,13 +161,13 @@ class RoleList extends React.Component<AccessControlProps, AccessControlState> {
   }
 
   getRolesList = () => {
-    const jwtToken: any = localStorage.getItem("jwt");
+    const jwtToken: any = localStorage.getItem('jwt');
     const { org_id }: any = jwt.decode(jwtToken);
     this.props.client
       .query({
         query: ROLES_LIST,
         variables: {},
-        fetchPolicy: "network-only"
+        fetchPolicy: 'network-only',
       })
       .then(rolesResponse => {
         this.populateAccessControlTableData(rolesResponse.data.roles);
@@ -177,12 +177,12 @@ class RoleList extends React.Component<AccessControlProps, AccessControlState> {
       .query({
         query: USERS,
         variables: { organizationId: org_id },
-        fetchPolicy: "network-only"
+        fetchPolicy: 'network-only',
       })
       .then(allUsers => {
         this.setState({
           allUsers: allUsers.data.users.data,
-          organizationId: org_id
+          organizationId: org_id,
         });
       });
   };
@@ -194,13 +194,13 @@ class RoleList extends React.Component<AccessControlProps, AccessControlState> {
         roleIndex: index,
         key: role.id,
         role: role.name,
-        type: "--",
+        type: '--',
         createdBy: role.createdBy,
         createdOn: moment
           .unix(role.createdTime)
           .utc()
-          .format("LLLL"),
-        user: role.users
+          .format('LLLL'),
+        user: role.users,
       });
     });
     this.setState({ roleList, isLoading: false });
@@ -214,7 +214,7 @@ class RoleList extends React.Component<AccessControlProps, AccessControlState> {
       ) => {
         return {
           ...prevState,
-          [type]: value
+          [type]: value,
         };
       }
     );
@@ -226,7 +226,7 @@ class RoleList extends React.Component<AccessControlProps, AccessControlState> {
       isNewRoleModalOpen: false,
       isAddUsersToRoleModalOpen: false,
       isRemoveUsersToRoleModalOpen: false,
-      selectedRoleIndex: null
+      selectedRoleIndex: null,
     });
   };
 
@@ -236,20 +236,20 @@ class RoleList extends React.Component<AccessControlProps, AccessControlState> {
         .mutate({
           mutation: ADD_ROLE,
           variables: {
-            input: { name: data.newRoleName }
-          }
+            input: { name: data.newRoleName },
+          },
         })
         .then(newRoleResponse => {
           this.setState(
             {
-              isFetching: false
+              isFetching: false,
             },
             () => {
               this.props.history.push({
                 pathname: `/core/access-control/${newRoleResponse.data.addRole.id}/edit`,
                 state: {
-                  roleId: newRoleResponse.data.addRole.id
-                }
+                  roleId: newRoleResponse.data.addRole.id,
+                },
               });
             }
           );
@@ -267,8 +267,8 @@ class RoleList extends React.Component<AccessControlProps, AccessControlState> {
           mutation: LINK_USERS_TO_ROLE,
           variables: {
             roleId: roleId,
-            userIds: userIds
-          }
+            userIds: userIds,
+          },
         })
         .then(linkUserResponse => {
           //right now the response coming from linkUserToRole api doesnt contain all roles,
@@ -292,8 +292,8 @@ class RoleList extends React.Component<AccessControlProps, AccessControlState> {
           mutation: UNLINK_USERS_FROM_ROLE,
           variables: {
             roleId: roleId,
-            userIds: userIds
-          }
+            userIds: userIds,
+          },
         })
         .then(unlinkUserResponse => {
           //right now the response coming from linkUserToRole api doesnt contain all roles,
@@ -321,20 +321,20 @@ class RoleList extends React.Component<AccessControlProps, AccessControlState> {
       isAddUsersToRoleModalOpen,
       isRemoveUsersToRoleModalOpen,
       roleList,
-      isLoading
+      isLoading,
     } = this.state;
 
     let modalDetails = {
-      headerTitle: "Add New Role",
-      buttonLabel: "CREATE",
-      type: "newRole"
+      headerTitle: 'Add New Role',
+      buttonLabel: 'CREATE',
+      type: 'newRole',
     };
 
     if (isDuplicateModalOpen) {
       modalDetails = {
-        headerTitle: "Duplicate Role",
-        buttonLabel: "CREATE",
-        type: "duplicateRole"
+        headerTitle: 'Duplicate Role',
+        buttonLabel: 'CREATE',
+        type: 'duplicateRole',
       };
     }
 
@@ -349,7 +349,7 @@ class RoleList extends React.Component<AccessControlProps, AccessControlState> {
             size="large"
             onClick={() => {
               this.setState({
-                isNewRoleModalOpen: !this.state.isNewRoleModalOpen
+                isNewRoleModalOpen: !this.state.isNewRoleModalOpen,
               });
             }}
           >

@@ -1,16 +1,16 @@
-import * as React from "react";
-import * as jwt from "jsonwebtoken";
-import { withApollo, ApolloProviderProps } from "react-apollo";
-import EntityVariablesForm from "./entityVariablesForm";
+import * as React from 'react';
+import * as jwt from 'jsonwebtoken';
+import { withApollo, ApolloProviderProps } from 'react-apollo';
+import EntityVariablesForm from './entityVariablesForm';
 import {
   GET_ENTITIES,
   GET_BASIC_ENTITY_FIELDS,
   GET_ENTITY_EXTEND_FIELDS_BY_NAME,
   ADD_ENTITY_EXTEND,
-  ADD_ENTITY_EXTEND_FIELD
-} from "./../../../../PlatformQueries";
-import "./style.css";
-import { Button, Spin, Icon, Select, Table } from "antd";
+  ADD_ENTITY_EXTEND_FIELD,
+} from './../../../../PlatformQueries';
+import './style.css';
+import { Button, Spin, Icon, Select, Table } from 'antd';
 
 interface EntityExtentionState {
   isLoading: boolean;
@@ -35,59 +35,59 @@ interface EntityExtentionProps extends ApolloProviderProps<any> {}
 const columns = [
   {
     title: <div className="entityExtendcolumnTitle">LABEL</div>,
-    dataIndex: "label",
-    className: "entityExtendcolumn"
+    dataIndex: 'label',
+    className: 'entityExtendcolumn',
   },
   {
     title: <div className="entityExtendcolumnTitle">DESCRIPTION</div>,
-    dataIndex: "description",
-    className: "entityExtendcolumn"
+    dataIndex: 'description',
+    className: 'entityExtendcolumn',
   },
   {
     title: <div className="entityExtendcolumnTitle">SLUG</div>,
-    dataIndex: "slug",
-    className: "entityExtendcolumn"
+    dataIndex: 'slug',
+    className: 'entityExtendcolumn',
   },
   {
     title: <div className="entityExtendcolumnTitle">TYPE</div>,
-    dataIndex: "type",
-    className: "entityExtendcolumn"
+    dataIndex: 'type',
+    className: 'entityExtendcolumn',
   },
   {
     title: <div className="entityExtendcolumnTitle">DEFAULT VALUE</div>,
-    dataIndex: "defaultValue",
-    className: "entityExtendcolumn"
+    dataIndex: 'defaultValue',
+    className: 'entityExtendcolumn',
   },
   {
     title: <div className="entityExtendcolumnTitle">REQUIRED</div>,
-    dataIndex: "required",
+    dataIndex: 'required',
     render: (text: any, record: any) => {
-      if (record.__typename === "BasicField") {
-        return text ? "Yes" : "No";
+      if (record.__typename === 'BasicField') {
+        return text ? 'Yes' : 'No';
       }
       return text ? (
-        <div style={{ color: "#46CB92" }}>Yes</div>
+        <div style={{ color: '#46CB92' }}>Yes</div>
       ) : (
-        <div style={{ color: "#E96B81" }}>No</div>
+        <div style={{ color: '#E96B81' }}>No</div>
       );
     },
-    className: "entityExtendcolumn"
+    className: 'entityExtendcolumn',
   },
   {
     title: <div className="entityExtendcolumnTitle">SEARCHABLE</div>,
-    dataIndex: "searchable",
+    dataIndex: 'searchable',
     render: (text: any, record: any) => {
-      if (record.__typename === "BasicField") {
-        return text ? "Yes" : "No";
+      if (record.__typename === 'BasicField') {
+        return text ? 'Yes' : 'No';
       }
       return text ? (
-        <div style={{ color: "#46CB92" }}>Yes</div>
+        <div style={{ color: '#46CB92' }}>Yes</div>
       ) : (
-        <div style={{ color: "#E96B81" }}>No</div>
+        <div style={{ color: '#E96B81' }}>No</div>
       );
     },
-    className: "entityExtendcolumn"
-  }
+    className: 'entityExtendcolumn',
+  },
 ];
 
 class EntityExtention extends React.Component<
@@ -97,7 +97,7 @@ class EntityExtention extends React.Component<
   constructor(props: EntityExtentionProps) {
     super(props);
     this.state = {
-      org_id: "",
+      org_id: '',
       isLoading: true,
       isBasicEntityTableLoading: true,
       isEntityExtendTableLoading: true,
@@ -107,11 +107,11 @@ class EntityExtention extends React.Component<
       selectedEntity: null,
       basicEntityFields: [],
       entityExtendFields: {
-        id: "",
-        fields: []
+        id: '',
+        fields: [],
       },
       selectedRowIndex: null,
-      hideBasicDetailsTable: false
+      hideBasicDetailsTable: false,
     };
   }
 
@@ -120,12 +120,12 @@ class EntityExtention extends React.Component<
   }
 
   getEntities = () => {
-    const jwtToken: any = localStorage.getItem("jwt");
+    const jwtToken: any = localStorage.getItem('jwt');
     const { org_id }: any = jwt.decode(jwtToken);
     this.props.client
       .query({
         query: GET_ENTITIES,
-        fetchPolicy: "network-only"
+        fetchPolicy: 'network-only',
       })
       .then(entitiesResponse => {
         this.setState(
@@ -133,7 +133,7 @@ class EntityExtention extends React.Component<
             org_id,
             entities: entitiesResponse.data.entities,
             selectedEntity: entitiesResponse.data.entities[0],
-            isLoading: false
+            isLoading: false,
           },
           () => {
             this.getBasicEntityFields();
@@ -151,25 +151,25 @@ class EntityExtention extends React.Component<
       .mutate({
         mutation: ADD_ENTITY_EXTEND_FIELD,
         variables: {
-          input
-        }
+          input,
+        },
       })
       .then(entityFieldResponse => {
         let fields = [
           ...this.state.entityExtendFields.fields,
-          entityFieldResponse.data.addEntityExtendField
+          entityFieldResponse.data.addEntityExtendField,
         ];
         this.setState({
           entityExtendFields: { ...this.state.entityExtendFields, fields },
           isEntityVariablesFormOpen: !this.state.isEntityVariablesFormOpen,
           selectedRowIndex: null,
-          isEntityExtendTableLoading: false
+          isEntityExtendTableLoading: false,
         });
       })
       .catch(error => {
         console.log(error);
         this.setState({
-          isEntityExtendTableLoading: false
+          isEntityExtendTableLoading: false,
         });
       });
   };
@@ -179,18 +179,18 @@ class EntityExtention extends React.Component<
       .query({
         query: GET_BASIC_ENTITY_FIELDS,
         variables: { entityName: this.state.selectedEntity },
-        fetchPolicy: "network-only"
+        fetchPolicy: 'network-only',
       })
       .then(basicEntityResponse => {
         this.setState({
           basicEntityFields: basicEntityResponse.data.basicFields,
-          isBasicEntityTableLoading: false
+          isBasicEntityTableLoading: false,
         });
       })
       .catch(error => {
         console.log(error);
         this.setState({
-          isBasicEntityTableLoading: false
+          isBasicEntityTableLoading: false,
         });
       });
   };
@@ -199,7 +199,7 @@ class EntityExtention extends React.Component<
       .query({
         query: GET_ENTITY_EXTEND_FIELDS_BY_NAME,
         variables: { entityName: this.state.selectedEntity },
-        fetchPolicy: "network-only"
+        fetchPolicy: 'network-only',
       })
       .then(entityExtendResponse => {
         if (
@@ -211,13 +211,13 @@ class EntityExtention extends React.Component<
 
         this.setState({
           entityExtendFields: entityExtendResponse.data.entityExtendByName,
-          isEntityExtendTableLoading: false
+          isEntityExtendTableLoading: false,
         });
       })
       .catch(error => {
         console.log(error);
         this.setState({
-          isEntityExtendTableLoading: false
+          isEntityExtendTableLoading: false,
         });
       });
   };
@@ -230,14 +230,14 @@ class EntityExtention extends React.Component<
           input: {
             organization_id: this.state.org_id,
             entity_name: this.state.selectedEntity,
-            description: this.state.selectedEntity
-          }
-        }
+            description: this.state.selectedEntity,
+          },
+        },
       })
       .then(addEntityExtendResponse => {
         this.setState({
           entityExtendFields: addEntityExtendResponse.data.addEntityExtend,
-          isEntityExtendTableLoading: false
+          isEntityExtendTableLoading: false,
         });
       })
       .catch(error => {
@@ -248,7 +248,7 @@ class EntityExtention extends React.Component<
   onAddOrEditVariables = () => {
     this.setState({
       isEntityVariablesFormOpen: !this.state.isEntityVariablesFormOpen,
-      selectedRowIndex: null
+      selectedRowIndex: null,
     });
   };
 
@@ -266,7 +266,7 @@ class EntityExtention extends React.Component<
       basicEntityFields,
       entityExtendFields,
       selectedRowIndex,
-      hideBasicDetailsTable
+      hideBasicDetailsTable,
     } = this.state;
     if (isLoading && !entities.length) {
       return (
@@ -295,11 +295,11 @@ class EntityExtention extends React.Component<
             <div className="InputLabel">Label</div>
             <Select
               getPopupContainer={() =>
-                document.getElementById("EntityInputWrapper")
+                document.getElementById('EntityInputWrapper')
               }
               size="large"
               defaultValue={selectedEntity}
-              style={{ width: "50%" }}
+              style={{ width: '50%' }}
               onChange={(selectedEntity: any) => {
                 this.setState(
                   {
@@ -310,10 +310,10 @@ class EntityExtention extends React.Component<
                     selectedEntity,
                     basicEntityFields: [],
                     entityExtendFields: {
-                      fields: []
+                      fields: [],
                     },
                     selectedRowIndex: null,
-                    hideBasicDetailsTable: false
+                    hideBasicDetailsTable: false,
                   },
                   () => {
                     this.getBasicEntityFields();
@@ -334,15 +334,15 @@ class EntityExtention extends React.Component<
           <div
             className={
               hideBasicDetailsTable
-                ? "entityVariableInputWrapper nohoverTableWrapper noHeightTable"
-                : "entityVariableInputWrapper nohoverTableWrapper"
+                ? 'entityVariableInputWrapper nohoverTableWrapper noHeightTable'
+                : 'entityVariableInputWrapper nohoverTableWrapper'
             }
           >
             <Table
               loading={this.state.isBasicEntityTableLoading}
               bordered
               title={() => (
-                <div className={"entityFieldTableHeader"}>
+                <div className={'entityFieldTableHeader'}>
                   <label style={{ fontSize: 18 }}>Basic Details</label>
                   {hideBasicDetailsTable ? (
                     <Icon
@@ -382,7 +382,7 @@ class EntityExtention extends React.Component<
               // }}
               bordered
               title={() => (
-                <div className={"entityFieldTableHeader"}>
+                <div className={'entityFieldTableHeader'}>
                   <label style={{ fontSize: 18 }}>Extended Details</label>
                 </div>
               )}
