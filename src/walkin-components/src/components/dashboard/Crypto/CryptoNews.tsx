@@ -1,16 +1,16 @@
-import React, { Component } from "react";
-import { Radio } from "antd";
+import React, { Component } from 'react';
+import { Radio } from 'antd';
 
-import { Widget } from "../../Widget/index";
+import { Widget } from '../../Widget/index';
 
-import CryptoNewsItem from "./CryptoNewsItem";
-import { any } from "prop-types";
-import { CircularProgress } from "../../..";
+import CryptoNewsItem from './CryptoNewsItem';
+import { any } from 'prop-types';
+import { CircularProgress } from '../../../..';
 
 export class CryptoNews extends Component {
   state = {
     news: [any],
-    loader: false
+    loader: false,
   };
 
   handleChange = e => {

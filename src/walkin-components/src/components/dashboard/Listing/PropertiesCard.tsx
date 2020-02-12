@@ -1,23 +1,23 @@
-import * as React from "react";
-import { Radio } from "antd";
+import * as React from 'react';
+import { Radio } from 'antd';
 
-import PropertiesItemCard from "./PropertiesItemCard";
-import { CircularProgress } from "../../..";
-import { Widget } from "../../Widget";
+import PropertiesItemCard from './PropertiesItemCard';
+import { CircularProgress } from '../../../..';
+import { Widget } from '../../Widget';
 
 const popularData = [];
 
 class PropertiesCard extends React.Component {
   state = {
     popular: popularData[0],
-    loader: false
+    loader: false,
   };
 
   handleChange = e => {
     const value = e.target.value;
     this.setState({
       popular: popularData[value],
-      loader: true
+      loader: true,
     });
     setTimeout(() => {
       this.setState({ loader: false });
