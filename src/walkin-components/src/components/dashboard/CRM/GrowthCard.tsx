@@ -1,8 +1,8 @@
-import * as React from "react";
-import { Area, AreaChart, ResponsiveContainer, Tooltip } from "recharts";
-import { Col, Row } from "antd";
+import * as React from 'react';
+import { Area, AreaChart, ResponsiveContainer, Tooltip } from 'recharts';
+import { Col, Row } from 'antd';
 
-import Metrics from "../../Metrics";
+import Metrics from '../../Metrics';
 
 const GrowthCard = ({ trafficData }) => {
   return (

@@ -1,20 +1,20 @@
-import * as React from "react";
-import moment from "moment";
+import * as React from 'react';
+import moment from 'moment';
 import {
   withApollo,
   graphql,
   compose,
   Query,
-  ApolloProviderProps
-} from "react-apollo";
+  ApolloProviderProps,
+} from 'react-apollo';
 // import { useQuery } from "@apollo/react-hooks";
-import * as jwt from "jsonwebtoken";
-import { RouteChildrenProps, withRouter } from "react-router";
+import * as jwt from 'jsonwebtoken';
+import { RouteChildrenProps, withRouter } from 'react-router';
 
-import { DatePicker, Button, Spin, message } from "antd";
-import "./style.css";
-import Box from "./Box";
-import { REPORT_CONFIGS, REPORTS } from "./../../query";
+import { DatePicker, Button, Spin, message } from 'antd';
+import './style.css';
+import Box from './Box';
+import { REPORT_CONFIGS, REPORTS } from './../../query';
 
 interface ReportsProps extends RouteChildrenProps, ApolloProviderProps<any> {
   loading?: boolean;
@@ -31,24 +31,24 @@ class Reports extends React.Component<ReportsProps, ReportsState> {
   constructor(props: ReportsProps) {
     super(props);
     this.state = {
-      selectedDates: {}
+      selectedDates: {},
     };
   }
 
   getDownloadLink = reportIndex => {
     this.setState({ isFetching: true, activeReportIndex: reportIndex }, () => {
       let { selectedDates } = this.state;
-      const { org_id }: any = jwt.decode(localStorage.getItem("jwt"));
+      const { org_id }: any = jwt.decode(localStorage.getItem('jwt'));
       let inputVariables = {
         reportDate: selectedDates[reportIndex],
         reportConfigId: this.props.reportConfigs[reportIndex].id,
-        organizationId: org_id
+        organizationId: org_id,
       };
       this.props.client
         .query({
           query: REPORTS,
           variables: inputVariables,
-          fetchPolicy: "network-only"
+          fetchPolicy: 'network-only',
         })
         .then(reportsResponse => {
           this.setState({ isFetching: false, activeReportIndex: null });
@@ -56,7 +56,7 @@ class Reports extends React.Component<ReportsProps, ReportsState> {
             !reportsResponse.data.reports.length &&
             !reportsResponse.data.reports.length[0].reportFile.publicUrl
           ) {
-            message.info("Report not found");
+            message.info('Report not found');
             return;
           }
           this.onDownloadFileFromLink(
@@ -64,16 +64,16 @@ class Reports extends React.Component<ReportsProps, ReportsState> {
           );
         })
         .catch(error => {
-          message.info("Report not available for selected date");
+          message.info('Report not available for selected date');
         });
     });
   };
 
   onDownloadFileFromLink = url => {
-    const link = document.createElement("a");
+    const link = document.createElement('a');
     link.href = url;
-    link.download = "myreport";
-    link.target = "_blank";
+    link.download = 'myreport';
+    link.target = '_blank';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -86,17 +86,17 @@ class Reports extends React.Component<ReportsProps, ReportsState> {
   };
 
   disabledDate = current => {
-    return current && current > moment().endOf("day");
+    return current && current > moment().endOf('day');
   };
 
   rendeReportsList = () => {
     if (this.props.loading)
       return (
-        <div className={"reports-list-wrapper"}>
+        <div className={'reports-list-wrapper'}>
           <Box
-            width={"90%"}
-            justifyContent={"center"}
-            border={"1px solid #707070"}
+            width={'90%'}
+            justifyContent={'center'}
+            border={'1px solid #707070'}
           >
             <Spin size="large" />
           </Box>
@@ -104,11 +104,11 @@ class Reports extends React.Component<ReportsProps, ReportsState> {
       );
     else if (!this.props.reportConfigs && !this.props.reportConfigs.length)
       return (
-        <div className={"reports-list-wrapper"}>
+        <div className={'reports-list-wrapper'}>
           <Box
-            width={"90%"}
-            justifyContent={"center"}
-            border={"1px solid #707070"}
+            width={'90%'}
+            justifyContent={'center'}
+            border={'1px solid #707070'}
             padding={30}
           >
             No Reports yet
@@ -117,15 +117,15 @@ class Reports extends React.Component<ReportsProps, ReportsState> {
       );
     else {
       return (
-        <div className={"reports-list-wrapper"}>
+        <div className={'reports-list-wrapper'}>
           {this.props.reportConfigs.map((item, reportIndex) => (
-            <Box key={reportIndex} width={"90%"} border={"1px solid #707070"}>
+            <Box key={reportIndex} width={'90%'} border={'1px solid #707070'}>
               <Box
                 width="45%"
                 border="0px solid"
                 display="block"
                 padding={0}
-                margin={"0"}
+                margin={'0'}
               >
                 <p className="reports-name">{item.name}</p>
                 <p className="reports-description">{item.description}</p>
@@ -134,7 +134,7 @@ class Reports extends React.Component<ReportsProps, ReportsState> {
                 width="35%"
                 border="0px solid"
                 padding={0}
-                margin={"0"}
+                margin={'0'}
                 minWidth={270}
                 maxWidth={280}
               >
@@ -189,20 +189,20 @@ export default withRouter(
   compose(
     graphql(REPORT_CONFIGS, {
       options: () => {
-        const { org_id }: any = jwt.decode(localStorage.getItem("jwt"));
+        const { org_id }: any = jwt.decode(localStorage.getItem('jwt'));
         return {
           variables: {
-            organizationId: org_id
+            organizationId: org_id,
           },
-          fetchPolicy: "network-only"
+          fetchPolicy: 'network-only',
         };
       },
       props: ({ data: { loading, error, reportConfigs, refetch } }: any) => ({
         loading,
         reportConfigs,
         error,
-        refetch
-      })
+        refetch,
+      }),
     })
   )(withApollo(Reports))
 );

@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 import {
   Col,
   Row,
@@ -12,25 +12,25 @@ import {
   Select,
   Radio,
   Typography,
-  Progress
-} from "antd";
+  Progress,
+} from 'antd';
 import {
   IconWithTextCard,
   Widget,
   ChartCard,
   Auxiliary,
-  WidgetHeader
-} from "walkin-components";
-import { graphql, compose, withApollo } from "react-apollo";
-import { GET_ANALYTICS } from "walkin-core/src/PlatformQueries";
-import moment from "moment";
-import * as jwt from "jsonwebtoken";
-import Cylinder3DChart from "walkin-nearx/src/routes/Dashboard/Cylinder3DChart";
-import PieChartWithAngle from "../Charts/PieChartWithPaddingAngle";
-import PieChartActiveShape from "../Charts/CustomActiveShapePieChart";
-import SimpleRadialBarChart from "../Charts/SimpleRadialBarChart";
-import MixBarChart from "../Charts/StackedBarChart";
-const dateFormat = "YYYY/MM/DD";
+  WidgetHeader,
+} from 'walkin-components';
+import { graphql, compose, withApollo } from 'react-apollo';
+import { GET_ANALYTICS } from 'walkin-core/src/PlatformQueries';
+import moment from 'moment';
+import * as jwt from 'jsonwebtoken';
+import Cylinder3DChart from 'walkin-nearx/src/routes/Dashboard/Cylinder3DChart';
+import PieChartWithAngle from '../Charts/PieChartWithPaddingAngle';
+import PieChartActiveShape from '../Charts/CustomActiveShapePieChart';
+import SimpleRadialBarChart from '../Charts/SimpleRadialBarChart';
+import MixBarChart from '../Charts/StackedBarChart';
+const dateFormat = 'YYYY/MM/DD';
 export default class analytics extends React.Component {
   handleChange = (e: any) => {
     console.log(e);
@@ -43,7 +43,7 @@ export default class analytics extends React.Component {
     for (let i = 10; i < 36; i++) {
       children.push(
         <Option key={i.toString(36) + i} value={i}>
-          {"CCD Feedback" + i}
+          {'CCD Feedback' + i}
         </Option>
       );
     }
@@ -51,8 +51,8 @@ export default class analytics extends React.Component {
       <Widget
         title="Individual Form Report"
         style={{
-          backgroundColor: "white",
-          margin: "0px 30px 0px 30px"
+          backgroundColor: 'white',
+          margin: '0px 30px 0px 30px',
         }}
         styleName="gx-card-tabs"
         extra={
@@ -62,7 +62,7 @@ export default class analytics extends React.Component {
                 <div className="gx-ml-auto">
                   <Text
                     style={{
-                      marginRight: "15px"
+                      marginRight: '15px',
                     }}
                     disabled
                   >
@@ -100,7 +100,7 @@ export default class analytics extends React.Component {
               <Text
                 disabled
                 style={{
-                  marginBottom: "15px"
+                  marginBottom: '15px',
                 }}
               >
                 Choose Form
@@ -109,7 +109,7 @@ export default class analytics extends React.Component {
             <div>
               <Select
                 defaultValue="CCD Feedback 1"
-                style={{ width: "100%" }}
+                style={{ width: '100%' }}
                 onChange={this.handleChange}
               >
                 {children}
@@ -122,7 +122,7 @@ export default class analytics extends React.Component {
             <Row>
               <Col
                 style={{
-                  marginTop: "4rem"
+                  marginTop: '4rem',
                 }}
                 lg={8}
                 md={8}
@@ -136,7 +136,7 @@ export default class analytics extends React.Component {
                 </div>
                 <p
                   style={{
-                    marginTop: "1rem"
+                    marginTop: '1rem',
                   }}
                   className="gx-text-grey"
                 >
@@ -145,7 +145,7 @@ export default class analytics extends React.Component {
               </Col>
               <Col
                 style={{
-                  marginTop: "4rem"
+                  marginTop: '4rem',
                 }}
                 lg={8}
                 md={8}
@@ -159,7 +159,7 @@ export default class analytics extends React.Component {
                 </div>
                 <p
                   style={{
-                    marginTop: "1rem"
+                    marginTop: '1rem',
                   }}
                   className="gx-text-grey"
                 >
@@ -168,7 +168,7 @@ export default class analytics extends React.Component {
               </Col>
               <Col
                 style={{
-                  marginTop: "4rem"
+                  marginTop: '4rem',
                 }}
                 lg={8}
                 md={8}
@@ -182,7 +182,7 @@ export default class analytics extends React.Component {
                 </div>
                 <p
                   style={{
-                    marginTop: "1rem"
+                    marginTop: '1rem',
                   }}
                   className="gx-text-grey"
                 >
@@ -191,7 +191,7 @@ export default class analytics extends React.Component {
               </Col>
               <Col
                 style={{
-                  marginTop: "4rem"
+                  marginTop: '4rem',
                 }}
                 lg={8}
                 md={8}
@@ -205,7 +205,7 @@ export default class analytics extends React.Component {
                 </div>
                 <p
                   style={{
-                    marginTop: "1rem"
+                    marginTop: '1rem',
                   }}
                   className="gx-text-grey"
                 >
@@ -214,7 +214,7 @@ export default class analytics extends React.Component {
               </Col>
               <Col
                 style={{
-                  marginTop: "4rem"
+                  marginTop: '4rem',
                 }}
                 lg={8}
                 md={8}
@@ -228,7 +228,7 @@ export default class analytics extends React.Component {
                 </div>
                 <p
                   style={{
-                    marginTop: "1rem"
+                    marginTop: '1rem',
                   }}
                   className="gx-text-grey"
                 >
@@ -240,7 +240,7 @@ export default class analytics extends React.Component {
           <Col lg={11} md={11} sm={24} xs={24}>
             <div
               style={{
-                marginLeft: "10rem"
+                marginLeft: '10rem',
               }}
             >
               <Progress
@@ -251,9 +251,9 @@ export default class analytics extends React.Component {
                 format={percent => (
                   <React.Fragment>
                     <p></p>
-                    <Text style={{ fontSize: "25px" }}>{percent}</Text>
+                    <Text style={{ fontSize: '25px' }}>{percent}</Text>
                     <br />
-                    <Text style={{ fontSize: "25px" }}>NPS rate</Text>
+                    <Text style={{ fontSize: '25px' }}>NPS rate</Text>
                   </React.Fragment>
                 )}
               />
@@ -263,7 +263,7 @@ export default class analytics extends React.Component {
         </Row>
         <Row
           style={{
-            marginTop: "10px"
+            marginTop: '10px',
           }}
         >
           <Col lg={12} md={13} sm={24} xs={24}>
@@ -283,7 +283,7 @@ export default class analytics extends React.Component {
             <div className="gx-mb-2  gx-pt-2">
               <Text
                 style={{
-                  marginBottom: "15px"
+                  marginBottom: '15px',
                 }}
               >
                 Issue Tag Response

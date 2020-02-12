@@ -1,13 +1,13 @@
-import * as React from "react";
-import URLSearchParams from "url-search-params";
-import { Redirect, Route, Switch } from "react-router-dom";
-import { ConfigProvider } from "antd";
-import { IntlProvider } from "react-intl";
+import * as React from 'react';
+import URLSearchParams from 'url-search-params';
+import { Redirect, Route, Switch } from 'react-router-dom';
+import { ConfigProvider } from 'antd';
+import { IntlProvider } from 'react-intl';
 
-import AppLocale from "../../lngProvider";
-import MainApp from "./MainApp";
-import SignIn from "../../routes/SignIn";
-import SignUp from "../../routes/SignUp";
+import AppLocale from '../../lngProvider';
+import MainApp from './MainApp';
+import SignIn from '../../routes/SignIn';
+import SignUp from '../../routes/SignUp';
 
 import {
   LAYOUT_TYPE_BOXED,
@@ -18,16 +18,16 @@ import {
   NAV_STYLE_DARK_HORIZONTAL,
   NAV_STYLE_DEFAULT_HORIZONTAL,
   NAV_STYLE_INSIDE_HEADER_HORIZONTAL,
-  THEME_TYPE_DARK
-} from "walkin-components/src/constants/ThemeSetting";
+  THEME_TYPE_DARK,
+} from 'walkin-components/src/constants/ThemeSetting';
 
-import gql from "graphql-tag";
-import { graphql, compose, MutationFunc } from "react-apollo";
-import ForgotPassword from "../../routes/ForgotPassword";
-import ChangePassword from "../../routes/ForgotPassword/ChangePassword";
-import { Location } from "history";
-import { LocationProps } from "@reach/router";
-import jwt from "jsonwebtoken";
+import gql from 'graphql-tag';
+import { graphql, compose, MutationFunc } from 'react-apollo';
+import ForgotPassword from '../../routes/ForgotPassword';
+import ChangePassword from '../../routes/ForgotPassword/ChangePassword';
+import { Location } from 'history';
+import { LocationProps } from '@reach/router';
+import jwt from 'jsonwebtoken';
 
 const RestrictedRoute = ({
   setRedirectRoute,
@@ -39,8 +39,8 @@ const RestrictedRoute = ({
     {...rest}
     render={props => {
       // if (localStorage.getItem("jwt")) {
-      const jwtData: any = localStorage.getItem("jwt")
-        ? jwt.decode(localStorage.getItem("jwt"))
+      const jwtData: any = localStorage.getItem('jwt')
+        ? jwt.decode(localStorage.getItem('jwt'))
         : undefined;
       if (jwtData && jwtData.org_id && jwtData.id)
         return <Component {...props} />;
@@ -56,7 +56,7 @@ const RestrictedRoute = ({
         setRedirectRoute({ variables: { route: props.location.pathname } });
         return (
           <Redirect
-            to={{ pathname: "/signin", state: { from: props.location } }}
+            to={{ pathname: '/signin', state: { from: props.location } }}
           />
         );
       }
@@ -85,17 +85,17 @@ interface IState {}
 class App extends React.Component<IProps, IState> {
   setLayoutType(layoutType: string) {
     if (layoutType === LAYOUT_TYPE_FULL) {
-      document.body.classList.remove("boxed-layout");
-      document.body.classList.remove("framed-layout");
-      document.body.classList.add("full-layout");
+      document.body.classList.remove('boxed-layout');
+      document.body.classList.remove('framed-layout');
+      document.body.classList.add('full-layout');
     } else if (layoutType === LAYOUT_TYPE_BOXED) {
-      document.body.classList.remove("full-layout");
-      document.body.classList.remove("framed-layout");
-      document.body.classList.add("boxed-layout");
+      document.body.classList.remove('full-layout');
+      document.body.classList.remove('framed-layout');
+      document.body.classList.add('boxed-layout');
     } else if (layoutType === LAYOUT_TYPE_FRAMED) {
-      document.body.classList.remove("boxed-layout");
-      document.body.classList.remove("full-layout");
-      document.body.classList.add("framed-layout");
+      document.body.classList.remove('boxed-layout');
+      document.body.classList.remove('full-layout');
+      document.body.classList.add('framed-layout');
     }
   }
 
@@ -107,29 +107,29 @@ class App extends React.Component<IProps, IState> {
       navStyle === NAV_STYLE_ABOVE_HEADER ||
       navStyle === NAV_STYLE_BELOW_HEADER
     ) {
-      document.body.classList.add("full-scroll");
-      document.body.classList.add("horizontal-layout");
+      document.body.classList.add('full-scroll');
+      document.body.classList.add('horizontal-layout');
     } else {
-      document.body.classList.remove("full-scroll");
-      document.body.classList.remove("horizontal-layout");
+      document.body.classList.remove('full-scroll');
+      document.body.classList.remove('horizontal-layout');
     }
   }
 
   UNSAFE_componentWillMount() {
     const params = new URLSearchParams(this.props.location.search);
 
-    if (params.has("theme")) {
-      this.props.setThemeType(params.get("theme"));
+    if (params.has('theme')) {
+      this.props.setThemeType(params.get('theme'));
     }
-    if (params.has("nav-style")) {
+    if (params.has('nav-style')) {
       this.props.onNavStyleChange({
         variables: {
-          themeType: params.get("nav-style")
-        }
+          themeType: params.get('nav-style'),
+        },
       });
     }
-    if (params.has("layout-type")) {
-      this.props.onLayoutTypeChange(params.get("layout-type"));
+    if (params.has('layout-type')) {
+      this.props.onLayoutTypeChange(params.get('layout-type'));
     }
   }
 
@@ -142,15 +142,15 @@ class App extends React.Component<IProps, IState> {
       locale,
       userId,
       match,
-      setRedirectRoute
+      setRedirectRoute,
     } = this.props;
 
     if (themeType === THEME_TYPE_DARK) {
-      document.body.classList.add("dark-theme");
+      document.body.classList.add('dark-theme');
     }
 
-    if (location.pathname === "/") {
-      return <Redirect to={"/core"} />;
+    if (location.pathname === '/') {
+      return <Redirect to={'/core'} />;
     }
 
     this.setLayoutType(layoutType);
@@ -243,12 +243,12 @@ const SET_REDIRECT_ROUTE = gql`
 `;
 
 export default compose(
-  graphql(SET_REDIRECT_ROUTE, { name: "setRedirectRoute" }),
-  graphql(SET_THEME_TYPE, { name: "setThemeType" }),
-  graphql(ON_NAV_STYLE_CHANGE, { name: "onNavStyleChange" }),
-  graphql(ON_LAYOUT_TYPE_CHANGE, { name: "onLayoutTypeChange" }),
+  graphql(SET_REDIRECT_ROUTE, { name: 'setRedirectRoute' }),
+  graphql(SET_THEME_TYPE, { name: 'setThemeType' }),
+  graphql(ON_NAV_STYLE_CHANGE, { name: 'onNavStyleChange' }),
+  graphql(ON_LAYOUT_TYPE_CHANGE, { name: 'onLayoutTypeChange' }),
   graphql(GET_SETTINGS, {
     props: mapStateToProps,
-    name: "localData"
+    name: 'localData',
   })
 )(App);

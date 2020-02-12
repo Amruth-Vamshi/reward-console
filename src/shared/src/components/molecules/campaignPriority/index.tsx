@@ -1,7 +1,7 @@
-import React, { Fragment } from "react";
-import PrioritySelection from "../../molecules/prioritySelection";
-import TestAndControl from "../../molecules/testAndControl";
-import "./style.css";
+import React, { Fragment } from 'react';
+import PrioritySelection from '../../molecules/prioritySelection';
+import TestAndControl from '../../molecules/testAndControl';
+import './style.css';
 
 interface CampaignPriorityProps {
   buttons?: any;
@@ -36,7 +36,7 @@ export const CampaignPriority: React.FC<CampaignPriorityProps> = ({
   priorityChosen,
   HideTestConstrol,
   text,
-  onClick
+  onClick,
 }) => {
   return (
     <Fragment>

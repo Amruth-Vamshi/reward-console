@@ -5,7 +5,7 @@ export const toNumber = value => {
 };
 export const removeProp = (obj, propToDelete) => {
   for (var property in obj) {
-    if (typeof obj[property] == "object") {
+    if (typeof obj[property] == 'object') {
       let objectToCheck = obj[property];
       delete obj.property;
       let newJsonData = removeProp(obj[property], propToDelete);
@@ -30,13 +30,13 @@ export const transposeObject = (obj, extraPropValue) => {
   return Object.entries(obj).map(([field, value]) => ({
     attributeName: field,
     attributeValue: value,
-    expressionType: extraPropValue
+    expressionType: extraPropValue,
   }));
 };
 
 export const isValidObject = objToTest => {
   if (null == objToTest) return false;
-  if ("undefined" == typeof objToTest) return false;
+  if ('undefined' == typeof objToTest) return false;
   return true;
 };
 
@@ -44,11 +44,11 @@ export const strToRule = rule => {
   let str = rule;
   var mapObj = {
     // ruleAttributeId: 'field',
-    attributeName: "field",
-    attributeValue: "value",
-    expressionType: "operator"
+    attributeName: 'field',
+    attributeValue: 'value',
+    expressionType: 'operator',
   };
-  if (typeof str != "string") str = JSON.stringify(str);
+  if (typeof str != 'string') str = JSON.stringify(str);
   str = str.replace(
     /attributeName|attributeValue|expressionType/gi,
     matched => mapObj[matched]
@@ -63,5 +63,5 @@ export const fieldConvert = (
   to: string
 ) => {
   let field = jsObjects.find((obj: any) => obj[from] === val);
-  return field ? field[to] : "";
+  return field ? field[to] : '';
 };

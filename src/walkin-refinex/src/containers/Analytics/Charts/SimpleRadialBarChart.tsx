@@ -1,13 +1,13 @@
-import * as React from "react";
+import * as React from 'react';
 import {
   Legend,
   RadialBar,
   RadialBarChart,
   ResponsiveContainer,
-  Label
-} from "recharts";
-import { data04 } from "./data";
-import style from "./style";
+  Label,
+} from 'recharts';
+import { data04 } from './data';
+import style from './style';
 
 const SimpleRadialBarChart = () => (
   <ResponsiveContainer width="100%" height={300}>

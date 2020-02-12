@@ -1,5 +1,5 @@
-import * as React from "react";
-import { Input } from "antd";
+import * as React from 'react';
+import { Input } from 'antd';
 
 const { TextArea } = Input;
 
@@ -14,7 +14,7 @@ const SingleAnswer: React.FC<SingleAnswerProps> = ({
   question,
   value,
   radioStyle,
-  onChange
+  onChange,
 }) => {
   return (
     <TextArea

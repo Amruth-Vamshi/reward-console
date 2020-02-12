@@ -1,14 +1,14 @@
-import { InMemoryCache } from "apollo-boost";
-import ApolloClient from "apollo-boost";
-import { message } from "antd";
+import { InMemoryCache } from 'apollo-boost';
+import ApolloClient from 'apollo-boost';
+import { message } from 'antd';
 
 const cache = new InMemoryCache();
-const token = localStorage.getItem("jwt");
+const token = localStorage.getItem('jwt');
 
 export const nearXClient = new ApolloClient({
   cache,
   uri: process.env.REACT_APP_NEARX_URL,
-  credentials: "same-origin",
+  credentials: 'same-origin',
   // headers: {
   //   api_key: "0X3bmLq5sBImabgEXkDVBfnOyUOkD2WN",
   //   Host: "dev-api.getwalkin.in",
@@ -17,14 +17,14 @@ export const nearXClient = new ApolloClient({
   // },
 
   request: async operation => {
-    const token = await localStorage.getItem("jwt");
+    const token = await localStorage.getItem('jwt');
     operation.setContext({
       headers: {
-        api_key: "0X3bmLq5sBImabgEXkDVBfnOyUOkD2WN",
-        Host: "dev-api.getwalkin.in",
-        "Access-Control-Allow-Origin": "*",
-        token
-      }
+        api_key: '0X3bmLq5sBImabgEXkDVBfnOyUOkD2WN',
+        Host: 'dev-api.getwalkin.in',
+        'Access-Control-Allow-Origin': '*',
+        token,
+      },
     });
   },
 
@@ -36,9 +36,9 @@ export const nearXClient = new ApolloClient({
       }
     } else if (networkError) {
       message.error(
-        "Hey! Regret to inform that we are experiencing some issues. Please check your internet connection or try again after sometime"
+        'Hey! Regret to inform that we are experiencing some issues. Please check your internet connection or try again after sometime'
       );
       console.log(networkError);
     }
-  }
+  },
 });

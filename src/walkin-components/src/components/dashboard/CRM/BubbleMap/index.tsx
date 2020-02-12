@@ -1,20 +1,20 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import {
   ComposableMap,
   Geographies,
   Geography,
   Marker,
   Markers,
-  ZoomableGroup
-} from "react-simple-maps";
-import { scaleLinear } from "d3-scale";
-const cities = require("./static/world-most-populous-cities.json");
-const geography = require("./static/world-50m.json");
+  ZoomableGroup,
+} from 'react-simple-maps';
+import { scaleLinear } from 'd3-scale';
+const cities = require('./static/world-most-populous-cities.json');
+const geography = require('./static/world-50m.json');
 
 const wrapperStyles = {
-  width: "100%",
+  width: '100%',
   maxWidth: 980,
-  margin: "0 auto"
+  margin: '0 auto',
 };
 
 const cityScale = scaleLinear()
@@ -30,8 +30,8 @@ class BubbleMap extends Component {
           width={980}
           height={450}
           style={{
-            width: "100%",
-            height: "auto"
+            width: '100%',
+            height: 'auto',
           }}
         >
           <ZoomableGroup center={[0, 20]} disablePanning>
@@ -39,30 +39,30 @@ class BubbleMap extends Component {
               {(geographies, projection) =>
                 geographies.map(
                   (geography, i) =>
-                    geography.id !== "ATA" && (
+                    geography.id !== 'ATA' && (
                       <Geography
                         key={i}
                         geography={geography}
                         projection={projection}
                         style={{
                           default: {
-                            fill: "#ECEFF1",
-                            stroke: "#607D8B",
+                            fill: '#ECEFF1',
+                            stroke: '#607D8B',
                             strokeWidth: 0.75,
-                            outline: "none"
+                            outline: 'none',
                           },
                           hover: {
-                            fill: "#ECEFF1",
-                            stroke: "#607D8B",
+                            fill: '#ECEFF1',
+                            stroke: '#607D8B',
                             strokeWidth: 0.75,
-                            outline: "none"
+                            outline: 'none',
                           },
                           pressed: {
-                            fill: "#ECEFF1",
-                            stroke: "#607D8B",
+                            fill: '#ECEFF1',
+                            stroke: '#607D8B',
                             strokeWidth: 0.75,
-                            outline: "none"
-                          }
+                            outline: 'none',
+                          },
                         }}
                       />
                     )

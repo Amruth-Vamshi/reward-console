@@ -1,5 +1,5 @@
-import * as React from "react";
-import PropTypes from "prop-types";
+import * as React from 'react';
+import PropTypes from 'prop-types';
 
 export const WidgetHeader = ({ title, extra, styleName }) => {
   return (
@@ -13,10 +13,10 @@ export const WidgetHeader = ({ title, extra, styleName }) => {
 };
 
 WidgetHeader.defaultProps = {
-  styleName: ""
+  styleName: '',
 };
 
 WidgetHeader.propTypes = {
   title: PropTypes.node,
-  extra: PropTypes.node
+  extra: PropTypes.node,
 };

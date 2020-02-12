@@ -1,8 +1,8 @@
-import QueryBuilder from "@walkin-frontend/walkin-react-querybuilder";
-import * as React from "react";
-import * as PropTypes from "prop-types";
-import "./style.css";
-import { Select } from "antd";
+import QueryBuilder from '@walkin-frontend/walkin-react-querybuilder';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
+import './style.css';
+import { Select } from 'antd';
 
 const Option = Select.Option;
 
@@ -24,7 +24,7 @@ class WalkinQueryBuilder extends React.Component<iProps, {}> {
 
   removeProp = (obj: any, propToDelete: string) => {
     for (var property in obj) {
-      if (typeof obj[property] == "object") {
+      if (typeof obj[property] == 'object') {
         let objectToCheck = obj[property];
         delete obj.property;
         let newJsonData = this.removeProp(obj[property], propToDelete);
@@ -41,9 +41,9 @@ class WalkinQueryBuilder extends React.Component<iProps, {}> {
     let str = JSON.stringify(query);
     var mapObj: any = {
       // field: 'ruleAttributeId',
-      field: "attributeName",
-      value: "attributeValue",
-      operator: "expressionType"
+      field: 'attributeName',
+      value: 'attributeValue',
+      operator: 'expressionType',
     };
     str = str.replace(/field|value|operator/gi, function(matched) {
       return mapObj[matched];
@@ -66,7 +66,7 @@ class WalkinQueryBuilder extends React.Component<iProps, {}> {
           <div className="scroll">
             <QueryBuilder
               fields={fields}
-              controlClassnames={{ fields: "form-control" }}
+              controlClassnames={{ fields: 'form-control' }}
               onQueryChange={this.renameQueryProperties}
               operators={operators}
               query={query}
@@ -99,33 +99,33 @@ WalkinQueryBuilder.propTypes = {
   fields: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.string,
-      label: PropTypes.string
+      label: PropTypes.string,
     }).isRequired
   ),
   controlElements: PropTypes.shape({
-    valueEditor: PropTypes.func
+    valueEditor: PropTypes.func,
   }),
   onQueryChange: PropTypes.func,
   operators: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.string.isRequired,
-      label: PropTypes.string.isRequired
+      label: PropTypes.string.isRequired,
     }).isRequired
-  )
+  ),
 };
 
 WalkinQueryBuilder.defaultProps = {
-  fields: [{ name: "", label: "" }],
+  fields: [{ name: '', label: '' }],
   onQueryChange: () => {},
   valueEditor: () => {},
   operators: [
-    { name: "EQUALS", label: "Equal to" },
-    { name: "NOT_EQUALS", label: "Not equal to" },
-    { name: "GREATER_THAN", label: "Greater than" },
-    { name: "LESS_THAN", label: "Less than" },
-    { name: "LESS_THAN_OR_EQUAL", label: "Less than or equal to" },
-    { name: "GREATER_THAN_OR_EQUAL", label: "Greater than or equal to" }
-  ]
+    { name: 'EQUALS', label: 'Equal to' },
+    { name: 'NOT_EQUALS', label: 'Not equal to' },
+    { name: 'GREATER_THAN', label: 'Greater than' },
+    { name: 'LESS_THAN', label: 'Less than' },
+    { name: 'LESS_THAN_OR_EQUAL', label: 'Less than or equal to' },
+    { name: 'GREATER_THAN_OR_EQUAL', label: 'Greater than or equal to' },
+  ],
 };
 
 export default WalkinQueryBuilder;

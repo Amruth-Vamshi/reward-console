@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import {
   Button,
   Dropdown,
@@ -7,21 +7,21 @@ import {
   Menu,
   message,
   Popover,
-  Select
-} from "antd";
-import { CustomScrollbars } from "../../../util/CustomScrollbars";
+  Select,
+} from 'antd';
+import { CustomScrollbars } from '../../../util/CustomScrollbars';
 
-import languageData from "../languageData";
-import SearchBox from "../../../components/SearchBox";
-import UserInfo from "../../../components/UserInfo";
-import AppNotification from "../../../components/AppNotification";
-import MailNotification from "../../../components/MailNotification";
+import languageData from '../languageData';
+import SearchBox from '../../../components/SearchBox';
+import UserInfo from '../../../components/UserInfo';
+import AppNotification from '../../../components/AppNotification';
+import MailNotification from '../../../components/MailNotification';
 
-import HorizontalNav from "../HorizontalNav";
-import { Link } from "react-router-dom";
-import IntlMessages from "../../../util/IntlMessages";
-import gql from "graphql-tag";
-import { compose, graphql } from "react-apollo";
+import HorizontalNav from '../HorizontalNav';
+import { Link } from 'react-router-dom';
+import IntlMessages from '../../../util/IntlMessages';
+import gql from 'graphql-tag';
+import { compose, graphql } from 'react-apollo';
 
 const { Header } = Layout;
 const Option = Select.Option;
@@ -34,7 +34,7 @@ const menu = (
 );
 
 function handleMenuClick(e) {
-  message.info("Click on menu item.");
+  message.info('Click on menu item.');
 }
 
 function handleChange(value) {
@@ -50,7 +50,7 @@ interface IProps {
 interface IState {}
 class HorizontalDefault extends Component<IProps, IState> {
   state = {
-    searchText: ""
+    searchText: '',
   };
 
   languageMenu = () => (
@@ -63,8 +63,8 @@ class HorizontalDefault extends Component<IProps, IState> {
             onClick={e =>
               this.props.switchLanguage({
                 variables: {
-                  locale: language
-                }
+                  locale: language,
+                },
               })
             }
           >
@@ -78,7 +78,7 @@ class HorizontalDefault extends Component<IProps, IState> {
 
   updateSearchChatUser = evt => {
     this.setState({
-      searchText: evt.target.value
+      searchText: evt.target.value,
     });
   };
 
@@ -112,8 +112,8 @@ class HorizontalDefault extends Component<IProps, IState> {
                   onClick={() => {
                     this.props.toggleCollapsedSideNav({
                       variables: {
-                        navCollapsed: !navCollapsed
-                      }
+                        navCollapsed: !navCollapsed,
+                      },
                     });
                   }}
                 />
@@ -124,7 +124,7 @@ class HorizontalDefault extends Component<IProps, IState> {
               >
                 <img
                   alt=""
-                  src={require("../../../assets/images/w-logo.png")}
+                  src={require('../../../assets/images/w-logo.png')}
                 />
               </Link>
               <Link
@@ -133,7 +133,7 @@ class HorizontalDefault extends Component<IProps, IState> {
               >
                 <img
                   alt=""
-                  src={require("../../../assets/images/logo-white.png")}
+                  src={require('../../../assets/images/logo-white.png')}
                 />
               </Link>
               <div className="gx-header-search gx-d-none gx-d-lg-flex">
@@ -289,7 +289,7 @@ const SWITCH_LANGUAGE = gql`
   }
 `;
 export const HorizontalDefaultModule = compose(
-  graphql(GET_SETTINGS, { name: "settings", props: mapStateToProps }),
-  graphql(TOGGLE_COLLAPSED_SIDENAV, { name: "toggleCollapsedSideNav" }),
-  graphql(SWITCH_LANGUAGE, { name: "switchLanguage" })
+  graphql(GET_SETTINGS, { name: 'settings', props: mapStateToProps }),
+  graphql(TOGGLE_COLLAPSED_SIDENAV, { name: 'toggleCollapsedSideNav' }),
+  graphql(SWITCH_LANGUAGE, { name: 'switchLanguage' })
 )(HorizontalDefault);

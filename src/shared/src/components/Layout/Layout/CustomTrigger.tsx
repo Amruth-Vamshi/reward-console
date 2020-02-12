@@ -1,8 +1,8 @@
-import React from "react";
-import Layout from "antd/lib/layout";
-import Menu from "antd/lib/menu";
-import Breadcrumb from "antd/lib/breadcrumb";
-import Icon from "antd/lib/icon";
+import React from 'react';
+import Layout from 'antd/lib/layout';
+import Menu from 'antd/lib/menu';
+import Breadcrumb from 'antd/lib/breadcrumb';
+import Icon from 'antd/lib/icon';
 
 // import "./index.css";
 const { SubMenu } = Menu;
@@ -20,13 +20,13 @@ export default class CustomTriggerLayout extends React.Component<
   constructor(props: siderProps) {
     super(props);
     this.state = {
-      collapsed: false
+      collapsed: false,
     };
   }
 
   toggle = () => {
     this.setState({
-      collapsed: !this.state.collapsed
+      collapsed: !this.state.collapsed,
     });
   };
 
@@ -35,7 +35,7 @@ export default class CustomTriggerLayout extends React.Component<
       <Layout>
         <Sider trigger={null} collapsible collapsed={this.state.collapsed}>
           <div className="logo" />
-          <Menu theme="dark" mode="inline" defaultSelectedKeys={["1"]}>
+          <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
             <Menu.Item key="1">
               <Icon type="user" />
               <span>nav 1</span>
@@ -51,19 +51,19 @@ export default class CustomTriggerLayout extends React.Component<
           </Menu>
         </Sider>
         <Layout>
-          <Header style={{ background: "#fff", padding: 0 }}>
+          <Header style={{ background: '#fff', padding: 0 }}>
             <Icon
               className="trigger"
-              type={this.state.collapsed ? "menu-unfold" : "menu-fold"}
+              type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
               onClick={this.toggle}
             />
           </Header>
           <Content
             style={{
-              margin: "24px 16px",
+              margin: '24px 16px',
               padding: 24,
-              background: "#fff",
-              minHeight: 280
+              background: '#fff',
+              minHeight: 280,
             }}
           >
             Content

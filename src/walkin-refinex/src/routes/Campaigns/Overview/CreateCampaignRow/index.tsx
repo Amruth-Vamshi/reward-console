@@ -1,11 +1,11 @@
-import * as React from "react";
-import { Row, Col, Button, Card, Empty } from "antd";
-import { CardBox, ErrorBoundary } from "walkin-components";
-import SelectApplicationModal from "../SelectApplicationModal";
-import { compose, graphql } from "react-apollo";
-import { CREATE_FEEDBACK_FORM } from "../../../../containers/Query";
-import "./index.css";
-import gql from "graphql-tag";
+import * as React from 'react';
+import { Row, Col, Button, Card, Empty } from 'antd';
+import { CardBox, ErrorBoundary } from 'walkin-components';
+import SelectApplicationModal from '../SelectApplicationModal';
+import { compose, graphql } from 'react-apollo';
+import { CREATE_FEEDBACK_FORM } from '../../../../containers/Query';
+import './index.css';
+import gql from 'graphql-tag';
 
 interface CreateCampaignRowProps {
   setFeedbackForm?: (a: any) => void;
@@ -26,7 +26,7 @@ class CreateCampaignRow extends React.Component<
     super(props);
     this.state = {
       showModal: false,
-      formName: "default"
+      formName: 'default',
     };
   }
 
@@ -83,23 +83,23 @@ class CreateCampaignRow extends React.Component<
               <Row gutter={12} type="flex">
                 <Col
                   span={4}
-                  onClick={this.createFeedbackCampaign.bind(this, "default")}
+                  onClick={this.createFeedbackCampaign.bind(this, 'default')}
                 >
                   <CardBox
                     style={{
-                      cursor: "pointer"
+                      cursor: 'pointer',
                     }}
                     styleName={
-                      "gx-card-full" +
-                      " " +
-                      (this.state.formName == "default"
-                        ? "selected_form"
-                        : "not_selected")
+                      'gx-card-full' +
+                      ' ' +
+                      (this.state.formName == 'default'
+                        ? 'selected_form'
+                        : 'not_selected')
                     }
                   >
                     <Row
                       type="flex"
-                      style={{ height: "8rem" }}
+                      style={{ height: '8rem' }}
                       justify="center"
                     >
                       <Empty description="Blank Feedback" />
@@ -115,21 +115,21 @@ class CreateCampaignRow extends React.Component<
                 >
                   <CardBox
                     style={{
-                      cursor: "pointer",
-                      backgroundColor: "#e6e6e6"
+                      cursor: 'pointer',
+                      backgroundColor: '#e6e6e6',
                     }}
                     styleName={
-                      "gx-card-full" +
-                      " " +
-                      (this.state.formName == "product feedback"
-                        ? "selected_form"
-                        : "not_selected")
+                      'gx-card-full' +
+                      ' ' +
+                      (this.state.formName == 'product feedback'
+                        ? 'selected_form'
+                        : 'not_selected')
                     }
-                    heading={""}
+                    heading={''}
                   >
                     <Row
                       type="flex"
-                      style={{ height: "8rem" }}
+                      style={{ height: '8rem' }}
                       justify="center"
                     >
                       <Empty description="Product Feedback" />
@@ -145,21 +145,21 @@ class CreateCampaignRow extends React.Component<
                 >
                   <CardBox
                     style={{
-                      cursor: "pointer",
-                      backgroundColor: "#e6e6e6"
+                      cursor: 'pointer',
+                      backgroundColor: '#e6e6e6',
                     }}
                     styleName={
-                      "gx-card-full" +
-                      " " +
-                      (this.state.formName == "customer survey"
-                        ? "selected_form"
-                        : "not_selected")
+                      'gx-card-full' +
+                      ' ' +
+                      (this.state.formName == 'customer survey'
+                        ? 'selected_form'
+                        : 'not_selected')
                     }
-                    heading={""}
+                    heading={''}
                   >
                     <Row
                       type="flex"
-                      style={{ height: "8rem" }}
+                      style={{ height: '8rem' }}
                       justify="center"
                     >
                       <Empty description="Customer Survey" />
@@ -175,21 +175,21 @@ class CreateCampaignRow extends React.Component<
                 >
                   <CardBox
                     style={{
-                      cursor: "pointer",
-                      backgroundColor: "#e6e6e6"
+                      cursor: 'pointer',
+                      backgroundColor: '#e6e6e6',
                     }}
                     styleName={
-                      "gx-card-full" +
-                      " " +
-                      (this.state.formName == "employee feedback"
-                        ? "selected_form"
-                        : "not_selected")
+                      'gx-card-full' +
+                      ' ' +
+                      (this.state.formName == 'employee feedback'
+                        ? 'selected_form'
+                        : 'not_selected')
                     }
-                    heading={""}
+                    heading={''}
                   >
                     <Row
                       type="flex"
-                      style={{ height: "8rem" }}
+                      style={{ height: '8rem' }}
                       justify="center"
                     >
                       <Empty description="Employee Feedback" />
@@ -205,21 +205,21 @@ class CreateCampaignRow extends React.Component<
                 >
                   <CardBox
                     style={{
-                      cursor: "pointer",
-                      backgroundColor: "#e6e6e6"
+                      cursor: 'pointer',
+                      backgroundColor: '#e6e6e6',
                     }}
                     styleName={
-                      "gx-card-full" +
-                      " " +
-                      (this.state.formName == "user feedback"
-                        ? "selected_form"
-                        : "not_selected")
+                      'gx-card-full' +
+                      ' ' +
+                      (this.state.formName == 'user feedback'
+                        ? 'selected_form'
+                        : 'not_selected')
                     }
-                    heading={""}
+                    heading={''}
                   >
                     <Row
                       type="flex"
-                      style={{ height: "8rem" }}
+                      style={{ height: '8rem' }}
                       justify="center"
                     >
                       <Empty description="User Feedback" />
@@ -237,6 +237,6 @@ class CreateCampaignRow extends React.Component<
 
 export default compose(
   graphql(CREATE_FEEDBACK_FORM, {
-    name: "createFeedbackForm"
+    name: 'createFeedbackForm',
   })
 )(CreateCampaignRow);

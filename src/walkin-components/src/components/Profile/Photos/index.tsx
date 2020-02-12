@@ -1,5 +1,5 @@
-import * as React from "react";
-import { Widget } from "../../Widget";
+import * as React from 'react';
+import { Widget } from '../../Widget';
 
 const Photos = ({ photoList }) => {
   return (
@@ -13,7 +13,7 @@ const Photos = ({ photoList }) => {
           ))}
         </ul>
         <span className="gx-text-primary gx-fs-md gx-pointer gx-d-block">
-          Go to gallery{" "}
+          Go to gallery{' '}
           <i
             className={`icon icon-long-arrow-right gx-fs-xxl gx-ml-2 gx-d-inline-flex gx-vertical-align-middle`}
           />

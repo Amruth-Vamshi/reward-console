@@ -1,9 +1,9 @@
-import * as React from "react";
-import { Avatar, Badge, Col, DatePicker, Input, Menu, Row } from "antd";
-import Moment from "moment";
+import * as React from 'react';
+import { Avatar, Badge, Col, DatePicker, Input, Menu, Row } from 'antd';
+import Moment from 'moment';
 
-import ConversationCell from "./ConversationCell";
-import { CustomScrollbars } from "../../../util/CustomScrollbars";
+import ConversationCell from './ConversationCell';
+import { CustomScrollbars } from '../../../util/CustomScrollbars';
 
 const { TextArea } = Input;
 
@@ -38,7 +38,7 @@ class ToDoDetail extends React.Component<IProps, IState> {
     this.setState({ userMenu: false, labelMenu: false });
   };
   _handleKeyPress = e => {
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       this.submitComment();
     }
   };
@@ -49,7 +49,7 @@ class ToDoDetail extends React.Component<IProps, IState> {
       this.props.onToDoUpdate(todo);
     }
     this.setState({
-      editTitle: !this.state.editTitle
+      editTitle: !this.state.editTitle,
     });
   };
   handleEditNote = () => {
@@ -59,12 +59,12 @@ class ToDoDetail extends React.Component<IProps, IState> {
       this.props.onToDoUpdate(todo);
     }
     this.setState({
-      editNote: !this.state.editNote
+      editNote: !this.state.editNote,
     });
   };
   handleDueDateChange = date => {
     this.setState({
-      todo: { ...this.state.todo, dueDate: date }
+      todo: { ...this.state.todo, dueDate: date },
     });
   };
   handleChange = event => {
@@ -108,30 +108,30 @@ class ToDoDetail extends React.Component<IProps, IState> {
       labelMenu: false,
       editTitle: false,
       editNote: false,
-      message: "",
-      conversation
+      message: '',
+      conversation,
     };
     this.handleRequestClose = this.handleRequestClose.bind(this);
   }
 
   submitComment() {
-    if (this.state.message !== "") {
+    if (this.state.message !== '') {
       const updatedConversation = this.state.conversation.concat({
         name: this.props.user.name,
         thumb: this.props.user.avatar,
         message: this.state.message,
-        sentAt: Moment().format("ddd DD, YYYY, hh:mm:ss A")
+        sentAt: Moment().format('ddd DD, YYYY, hh:mm:ss A'),
       });
       this.setState({
         conversation: updatedConversation,
-        message: ""
+        message: '',
       });
     }
   }
 
   updateMessageValue(evt) {
     this.setState({
-      message: evt.target.value
+      message: evt.target.value,
     });
   }
 
@@ -144,7 +144,7 @@ class ToDoDetail extends React.Component<IProps, IState> {
       title,
       notes,
       message,
-      conversation
+      conversation,
     } = this.state;
     let user = null;
     if (todo.user > 0)
@@ -178,7 +178,7 @@ class ToDoDetail extends React.Component<IProps, IState> {
                     className="gx-module-date gx-my-1"
                     defaultValue={
                       todo.dueDate !== null
-                        ? Moment(todo.dueDate, "dddd, MMMM DD, YYYY h:mm a")
+                        ? Moment(todo.dueDate, 'dddd, MMMM DD, YYYY h:mm a')
                         : undefined
                     }
                     format="MMMM DD, YYYY"
@@ -322,7 +322,7 @@ class ToDoDetail extends React.Component<IProps, IState> {
             ) : (
               <div className="gx-flex-row gx-align-items-center gx-justify-content-between gx-flex-1 gx-flex-nowrap">
                 <div className="gx-task-des gx-col">
-                  {notes === "" ? "Add note here" : notes}
+                  {notes === '' ? 'Add note here' : notes}
                 </div>
                 <span
                   className="gx-d-block gx-size-40 gx-text-center gx-pointer"

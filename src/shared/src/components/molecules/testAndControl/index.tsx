@@ -1,6 +1,6 @@
-import * as React from "react";
-import { Tooltip, Typography, Button } from "antd";
-import "./style.css";
+import * as React from 'react';
+import { Tooltip, Typography, Button } from 'antd';
+import './style.css';
 
 const { Text } = Typography;
 
@@ -19,7 +19,7 @@ const TestAndControl = ({
   tootTipText,
   testControlPercentage,
   testControlPercentageEditText,
-  onTestAndControlEdit
+  onTestAndControlEdit,
 }: iProps) => {
   return (
     <React.Fragment>

@@ -1,11 +1,11 @@
-import * as React from "react";
-import { Avatar } from "antd";
+import * as React from 'react';
+import { Avatar } from 'antd';
 
 const UserCell = ({ chat, selectedSectionId, onSelectUser }: any) => {
   return (
     <div
       className={`gx-chat-user-item ${
-        selectedSectionId === chat.id ? "active" : ""
+        selectedSectionId === chat.id ? 'active' : ''
       }`}
       onClick={() => {
         onSelectUser(chat);
@@ -22,7 +22,7 @@ const UserCell = ({ chat, selectedSectionId, onSelectUser }: any) => {
         <div className="gx-chat-info">
           <span className="gx-name h4">{chat.name}</span>
           <div className="gx-chat-info-des gx-text-truncate">
-            {chat.lastMessage.substring(0, 25) + "..."}
+            {chat.lastMessage.substring(0, 25) + '...'}
           </div>
           <div className="gx-last-message-time">{chat.lastMessageTime}</div>
         </div>

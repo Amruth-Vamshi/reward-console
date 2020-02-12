@@ -1,7 +1,7 @@
-import * as React from "react";
-import { Row } from "antd";
-import "./style.css";
-import * as PropTypes from "prop-types";
+import * as React from 'react';
+import { Row } from 'antd';
+import './style.css';
+import * as PropTypes from 'prop-types';
 
 const CampaignHeader = ({ children }: any) => {
   return <Row className="campaignHeaderStyle">{children}</Row>;
@@ -9,11 +9,11 @@ const CampaignHeader = ({ children }: any) => {
 
 CampaignHeader.propTypes = {
   isOnlyTitle: PropTypes.bool,
-  children: PropTypes.object
+  children: PropTypes.object,
 };
 
 CampaignHeader.defaultProps = {
   isOnlyTitle: false,
-  children: {}
+  children: {},
 };
 export default CampaignHeader;

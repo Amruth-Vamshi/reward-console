@@ -1,16 +1,16 @@
-import * as React from "react";
-import { Button, Checkbox, Form, Icon, Input } from "antd";
-import { Link } from "react-router-dom";
+import * as React from 'react';
+import { Button, Checkbox, Form, Icon, Input } from 'antd';
+import { Link } from 'react-router-dom';
 
-import { message } from "antd/lib/index";
+import { message } from 'antd/lib/index';
 
-import { IntlMessages } from "walkin-components";
-import { CircularProgress } from "walkin-components";
-import gql from "graphql-tag";
-import { compose, graphql } from "react-apollo";
-import { FormWrappedProps } from "antd/lib/form/interface";
-import { FormComponentProps } from "antd/lib/form";
-import { History } from "history";
+import { IntlMessages } from 'walkin-components';
+import { CircularProgress } from 'walkin-components';
+import gql from 'graphql-tag';
+import { compose, graphql } from 'react-apollo';
+import { FormWrappedProps } from 'antd/lib/form/interface';
+import { FormComponentProps } from 'antd/lib/form';
+import { History } from 'history';
 
 const { create, Item: FormItem } = Form;
 
@@ -29,8 +29,8 @@ interface IState {}
 
 class SignUp extends React.Component<IProps, IState> {
   readonly state = {
-    email: "demo@example.com",
-    password: "demo#123"
+    email: 'demo@example.com',
+    password: 'demo#123',
   };
   constructor(props: IProps) {
     super(props);
@@ -53,7 +53,7 @@ class SignUp extends React.Component<IProps, IState> {
       }, 100);
     }
     if (this.props.userId !== null) {
-      this.props.history.push("/");
+      this.props.history.push('/');
     }
   }
 
@@ -82,7 +82,7 @@ class SignUp extends React.Component<IProps, IState> {
               <div className="gx-app-logo">
                 <img
                   alt="example"
-                  src={require("walkin-components/src/assets/images/logo.png")}
+                  src={require('walkin-components/src/assets/images/logo.png')}
                 />
               </div>
             </div>
@@ -93,35 +93,41 @@ class SignUp extends React.Component<IProps, IState> {
                 className="gx-signup-form gx-form-row0"
               >
                 <FormItem>
-                  {getFieldDecorator("userName", {
+                  {getFieldDecorator('userName', {
                     rules: [
-                      { required: true, message: "Please input your username!" }
-                    ]
+                      {
+                        required: true,
+                        message: 'Please input your username!',
+                      },
+                    ],
                   })(<Input placeholder="Username" />)}
                 </FormItem>
 
                 <FormItem>
-                  {getFieldDecorator("email", {
+                  {getFieldDecorator('email', {
                     rules: [
                       {
                         required: true,
-                        type: "email",
-                        message: "The input is not valid E-mail!"
-                      }
-                    ]
+                        type: 'email',
+                        message: 'The input is not valid E-mail!',
+                      },
+                    ],
                   })(<Input placeholder="Email" />)}
                 </FormItem>
                 <FormItem>
-                  {getFieldDecorator("password", {
+                  {getFieldDecorator('password', {
                     rules: [
-                      { required: true, message: "Please input your Password!" }
-                    ]
+                      {
+                        required: true,
+                        message: 'Please input your Password!',
+                      },
+                    ],
                   })(<Input type="password" placeholder="Password" />)}
                 </FormItem>
                 <FormItem>
-                  {getFieldDecorator("remember", {
-                    valuePropName: "checked",
-                    initialValue: true
+                  {getFieldDecorator('remember', {
+                    valuePropName: 'checked',
+                    initialValue: true,
                   })(
                     <Checkbox>
                       <IntlMessages id="appModule.iAccept" />
@@ -137,7 +143,7 @@ class SignUp extends React.Component<IProps, IState> {
                   </Button>
                   <span>
                     <IntlMessages id="app.userAuth.or" />
-                  </span>{" "}
+                  </span>{' '}
                   <Link to="/signin">
                     <IntlMessages id="app.userAuth.signIn" />
                   </Link>
@@ -232,9 +238,9 @@ const GET_AUTH = gql`
   }
 `;
 export default compose(
-  graphql(GET_AUTH, { name: "localData", props: mapStateToProps }),
-  graphql(USER_SIGN_IN, { name: "userSignIn" }),
-  graphql(HIDE_MESSAGE, { name: "hideMessage" }),
-  graphql(SHOW_AUTH_LOADER, { name: "showAuthLoader" }),
+  graphql(GET_AUTH, { name: 'localData', props: mapStateToProps }),
+  graphql(USER_SIGN_IN, { name: 'userSignIn' }),
+  graphql(HIDE_MESSAGE, { name: 'hideMessage' }),
+  graphql(SHOW_AUTH_LOADER, { name: 'showAuthLoader' }),
   create()
 )(SignUp);

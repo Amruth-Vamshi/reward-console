@@ -1,19 +1,19 @@
-import React from "react";
-import { storiesOf, addParameters } from "@storybook/react";
-import { InstantSearch } from "shared";
+import React from 'react';
+import { storiesOf, addParameters } from '@storybook/react';
+import { InstantSearch } from 'shared';
 
-const stories = storiesOf("Instant Search", module);
+const stories = storiesOf('Instant Search', module);
 
-stories.add("instant search", () => {
+stories.add('instant search', () => {
   const style = {
-    backgroundColor: "#FFF",
-    border: "1px solid #DDD",
+    backgroundColor: '#FFF',
+    border: '1px solid #DDD',
     borderRadius: 2,
     outline: 0,
     fontSize: 15,
-    cursor: "pointer"
+    cursor: 'pointer',
   };
   return (
-    <InstantSearch onFilteredList={""} placeHolder={"placeHolder"} data={{}} />
+    <InstantSearch onFilteredList={''} placeHolder={'placeHolder'} data={{}} />
   );
 });

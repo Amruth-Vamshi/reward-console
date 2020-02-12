@@ -1,6 +1,6 @@
-import * as React from "react";
-import { Widget } from "../../Widget";
-import { Button } from "antd";
+import * as React from 'react';
+import { Widget } from '../../Widget';
+import { Button } from 'antd';
 
 export const RewardCard = () => {
   return (

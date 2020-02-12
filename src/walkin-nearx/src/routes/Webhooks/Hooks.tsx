@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 import {
   Col,
   Row,
@@ -12,40 +12,40 @@ import {
   Tooltip,
   Input,
   Icon,
-  Button
-} from "antd";
+  Button,
+} from 'antd';
 // import AppListCard from "./AppListCard";
 import {
   GET_WEBHOOKS,
   LIST_WEBHOOK_EVENTS,
   CREATE_WEBHOOK,
   UPDATE_WEBHOOK,
-  DELETE_WEBHOOK
-} from "walkin-core/src/PlatformQueries";
-import * as jwt from "jsonwebtoken";
-import { withApollo, WithApolloClient } from "react-apollo";
-import HooksListCard from "./HooksListCard";
+  DELETE_WEBHOOK,
+} from 'walkin-core/src/PlatformQueries';
+import * as jwt from 'jsonwebtoken';
+import { withApollo, WithApolloClient } from 'react-apollo';
+import HooksListCard from './HooksListCard';
 // import { nearXClient as client } from "../../nearXApollo";
 const { TextArea } = Input;
 
 // const text = <code></code>
 
 const Option = Select.Option;
-const jwtData: any = jwt.decode(localStorage.getItem("jwt"));
+const jwtData: any = jwt.decode(localStorage.getItem('jwt'));
 
 const formItemLayout = {
   labelCol: {
     sm: { span: 24 },
     md: { span: 24 },
     lg: { span: 24 },
-    xl: { span: 8 }
+    xl: { span: 8 },
   },
   wrapperCol: {
     sm: { span: 24 },
     md: { span: 24 },
     lg: { span: 24 },
-    xl: { span: 16 }
-  }
+    xl: { span: 16 },
+  },
 };
 
 interface iProps {
@@ -78,20 +78,20 @@ class Hooks extends React.Component<WithApolloClient<iProps>, iState> {
       spin: false,
       loading: false,
       eventTypes: [],
-      hookName: "",
-      headers: "",
-      event: "",
-      method: "",
-      url: "",
-      id: "",
-      errors: {}
+      hookName: '',
+      headers: '',
+      event: '',
+      method: '',
+      url: '',
+      id: '',
+      errors: {},
     };
   }
 
   addHook = () => {
     this.setState({
       visible: true,
-      errors: {} // hookName: '', event:'',
+      errors: {}, // hookName: '', event:'',
       // id: '', headers: '', url: '', method: ''
     });
   };
@@ -101,14 +101,14 @@ class Hooks extends React.Component<WithApolloClient<iProps>, iState> {
       ? this.setState({
           visible: false,
           errors: {},
-          hookName: "",
-          event: "",
+          hookName: '',
+          event: '',
           update: false,
-          id: "",
-          headers: "",
-          url: "",
-          method: "",
-          loading: false
+          id: '',
+          headers: '',
+          url: '',
+          method: '',
+          loading: false,
         })
       : this.setState({ visible: false, update: false });
   };
@@ -118,13 +118,13 @@ class Hooks extends React.Component<WithApolloClient<iProps>, iState> {
     this.props.client
       .query({
         query: LIST_WEBHOOK_EVENTS,
-        variables: { org_id: jwtData.org_id, status: "ACTIVE" }
+        variables: { org_id: jwtData.org_id, status: 'ACTIVE' },
       })
       .then(res => {
         console.log(res.data.webhookEventTypes);
         this.setState({ eventTypes: res.data.webhookEventTypes });
       })
-      .catch(err => console.log("Failed to get Event Types" + err));
+      .catch(err => console.log('Failed to get Event Types' + err));
   }
 
   getWebhooks = () => {
@@ -134,8 +134,8 @@ class Hooks extends React.Component<WithApolloClient<iProps>, iState> {
       ? this.props.client
           .query({
             query: GET_WEBHOOKS,
-            variables: { org_id: jwtData.org_id, status: "ACTIVE" },
-            fetchPolicy: "network-only"
+            variables: { org_id: jwtData.org_id, status: 'ACTIVE' },
+            fetchPolicy: 'network-only',
           })
           .then(res => {
             console.log(res.data.webhooks);
@@ -143,25 +143,25 @@ class Hooks extends React.Component<WithApolloClient<iProps>, iState> {
           })
           .catch(err => {
             this.setState({ spin: false });
-            console.log("Failed to get User Details" + err);
+            console.log('Failed to get User Details' + err);
           })
-      : console.log("Error getting JwtData");
+      : console.log('Error getting JwtData');
   };
 
   onChange = (e, n) => {
     let { errors } = this.state;
-    errors.event = "";
+    errors.event = '';
     this.setState({ event: e, errors });
   };
   onChangeMethod = (e, n) => {
     let { errors } = this.state;
-    errors.method = "";
+    errors.method = '';
     this.setState({ method: e, errors });
   };
 
   handleOnChange = e => {
     let { errors } = this.state;
-    errors[e.target.name] = "";
+    errors[e.target.name] = '';
     this.setState({ [e.target.name]: e.target.value, errors });
   };
 
@@ -169,15 +169,15 @@ class Hooks extends React.Component<WithApolloClient<iProps>, iState> {
     this.props.client
       .mutate({
         mutation: DELETE_WEBHOOK,
-        variables: { input: { id: id } }
+        variables: { input: { id: id } },
       })
       .then(res => {
-        console.log("Results", res);
+        console.log('Results', res);
         this.getWebhooks();
       })
       .catch(err => {
         this.setState({ loading: false });
-        console.log("Failed to Delete Hooks" + err);
+        console.log('Failed to Delete Hooks' + err);
       });
   };
 
@@ -186,13 +186,13 @@ class Hooks extends React.Component<WithApolloClient<iProps>, iState> {
     let errors: any = {};
     // if (this.state.hookName.trim() == "")
     //   errors.hookName = "* this field is mandatory";
-    if (this.state.event == "") errors.event = "* this field is mandatory";
-    if (this.state.url.trim() == "") errors.url = "* this field is mandatory";
-    if (this.state.method == "") errors.method = "* this field is mandatory";
+    if (this.state.event == '') errors.event = '* this field is mandatory';
+    if (this.state.url.trim() == '') errors.url = '* this field is mandatory';
+    if (this.state.method == '') errors.method = '* this field is mandatory';
 
     if (Object.keys(errors).length !== 0) {
       this.setState({ errors, loading: false });
-      console.log("Errors in submition" + Object.keys(errors).length);
+      console.log('Errors in submition' + Object.keys(errors).length);
     } else {
       if (this.state.update) {
         this.props.client
@@ -203,18 +203,18 @@ class Hooks extends React.Component<WithApolloClient<iProps>, iState> {
                 id: this.state.id,
                 method: this.state.method,
                 url: this.state.url,
-                headers: this.state.headers
-              }
-            }
+                headers: this.state.headers,
+              },
+            },
           })
           .then(res => {
-            console.log("Results", res);
+            console.log('Results', res);
             this.handleCancel();
             this.getWebhooks();
           })
           .catch(err => {
             this.setState({ loading: false });
-            console.log("Failed to get Hooks Details" + err);
+            console.log('Failed to get Hooks Details' + err);
           });
       } else {
         this.props.client
@@ -226,18 +226,18 @@ class Hooks extends React.Component<WithApolloClient<iProps>, iState> {
                 method: this.state.method,
                 url: this.state.url,
                 headers: this.state.headers,
-                organization_id: jwtData.org_id
-              }
-            }
+                organization_id: jwtData.org_id,
+              },
+            },
           })
           .then(res => {
-            console.log("Results", res);
+            console.log('Results', res);
             this.setState({ visible: false, loading: false });
             this.getWebhooks();
           })
           .catch(err => {
             this.setState({ loading: false });
-            console.log("Failed to get Places Details" + err);
+            console.log('Failed to get Places Details' + err);
           });
       }
     }
@@ -253,7 +253,7 @@ class Hooks extends React.Component<WithApolloClient<iProps>, iState> {
       id: hook.id,
       headers: JSON.stringify(hook.headers).toString(),
       url: hook.url,
-      method: hook.method
+      method: hook.method,
     });
   };
 
@@ -268,9 +268,9 @@ class Hooks extends React.Component<WithApolloClient<iProps>, iState> {
     return (
       <div>
         <Row className="headerRow1">
-          <div style={{ width: "100%" }}>
+          <div style={{ width: '100%' }}>
             <span style={{ fontSize: 25 }}>Web Hooks</span>
-            <div style={{ float: "right", flexFlow: "right" }}>
+            <div style={{ float: 'right', flexFlow: 'right' }}>
               <Button
                 style={{ margin: 0 }}
                 onClick={() => this.addHook()}
@@ -346,7 +346,7 @@ class Hooks extends React.Component<WithApolloClient<iProps>, iState> {
             </Form.Item> */}
 
             {this.state.update ? (
-              ""
+              ''
             ) : (
               <Form.Item {...formItemLayout} label="Event Type">
                 <Select
@@ -355,7 +355,7 @@ class Hooks extends React.Component<WithApolloClient<iProps>, iState> {
                   getPopupContainer={(triggerNode: any) =>
                     triggerNode.parentNode
                   }
-                  style={{ width: "100%" }}
+                  style={{ width: '100%' }}
                   placeholder="Select Event Type" // value = { auth.user.organization.name }
                   optionFilterProp="children"
                   onChange={this.onChange}
@@ -363,14 +363,14 @@ class Hooks extends React.Component<WithApolloClient<iProps>, iState> {
                 >
                   {options}
                 </Select>
-                <span style={{ color: "Red" }}>{this.state.errors.event}</span>
+                <span style={{ color: 'Red' }}>{this.state.errors.event}</span>
               </Form.Item>
             )}
 
             <Form.Item {...formItemLayout} label="Method">
               <Select
                 size="large"
-                style={{ width: "100%" }}
+                style={{ width: '100%' }}
                 placeholder="Select method"
                 optionFilterProp="children"
                 value={this.state.method}
@@ -382,7 +382,7 @@ class Hooks extends React.Component<WithApolloClient<iProps>, iState> {
                 <Option value="PUT">PUT</Option>
                 <Option value="DELETE">DELETE</Option>
               </Select>
-              <span style={{ color: "Red" }}>{this.state.errors.method}</span>
+              <span style={{ color: 'Red' }}>{this.state.errors.method}</span>
             </Form.Item>
 
             <Form.Item {...formItemLayout} label="Headers (Optional)">
@@ -393,7 +393,7 @@ class Hooks extends React.Component<WithApolloClient<iProps>, iState> {
                 name="headers"
                 onChange={c => this.handleOnChange(c)}
               />
-              <span style={{ color: "Red" }}>{this.state.errors.headers}</span>
+              <span style={{ color: 'Red' }}>{this.state.errors.headers}</span>
             </Form.Item>
 
             <Form.Item {...formItemLayout} label="URL">
@@ -405,21 +405,21 @@ class Hooks extends React.Component<WithApolloClient<iProps>, iState> {
                 name="url"
                 onChange={c => this.handleOnChange(c)}
               />
-              <span style={{ color: "Red" }}>{this.state.errors.url}</span>
+              <span style={{ color: 'Red' }}>{this.state.errors.url}</span>
             </Form.Item>
 
             {/* <p><Button  onClick={this.props.showModal}>Add Hotspot</Button></p> */}
-            <div style={{ overflow: "hidden", textAlign: "center" }}>
+            <div style={{ overflow: 'hidden', textAlign: 'center' }}>
               <Button
                 loading={this.state.loading}
                 // type='primary'
                 onClick={() => this.createHook()}
                 className="buttonPrimary"
                 style={{
-                  textAlign: "center",
-                  width: "200px",
-                  float: "none",
-                  margin: "25px 30px 20px 0"
+                  textAlign: 'center',
+                  width: '200px',
+                  float: 'none',
+                  margin: '25px 30px 20px 0',
                 }}
               >
                 Submit

@@ -1,6 +1,6 @@
-import * as React from "react";
-import { Redirect, Route, Switch } from "react-router-dom";
-import "../styles/styles.css";
+import * as React from 'react';
+import { Redirect, Route, Switch } from 'react-router-dom';
+import '../styles/styles.css';
 import {
   NEW_CAMPAIGN,
   CAMPAIGN_MANAGEMENT,
@@ -9,23 +9,23 @@ import {
   OFFER_LIST,
   NEW_OFFER,
   CAMPAIGN_DASHBOARD,
-  OFFER_DASHBOARD
-} from "../constants/RouterConstants";
-import CampaignList from "./campaign/campaignList";
-import CampaignDashboard from "./campaign/campaignDashboard";
-import CampaignCreation from "./campaign/campaignCreation";
-import SegmentList from "./segment/segmentList";
-import NewSegment from "./segment/newSegment";
-import OfferList from "./offer/offerList";
-import NewOffer from "./offer/newoffer";
-import { RouteChildrenProps } from "react-router";
-import offerDashboard from "./offer/offerDashboard";
+  OFFER_DASHBOARD,
+} from '../constants/RouterConstants';
+import CampaignList from './campaign/campaignList';
+import CampaignDashboard from './campaign/campaignDashboard';
+import CampaignCreation from './campaign/campaignCreation';
+import SegmentList from './segment/segmentList';
+import NewSegment from './segment/newSegment';
+import OfferList from './offer/offerList';
+import NewOffer from './offer/newoffer';
+import { RouteChildrenProps } from 'react-router';
+import offerDashboard from './offer/offerDashboard';
 
 interface HyperXRoutesProps extends RouteChildrenProps {}
 
 export default class extends React.Component<HyperXRoutesProps, {}> {
   render() {
-    console.log("HyperX");
+    console.log('HyperX');
     return (
       <div className="HyperX-Main">
         <Switch>

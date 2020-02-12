@@ -1,15 +1,15 @@
-import React, { Component } from "react";
-import { Menu } from "antd";
-import { Link } from "react-router-dom";
-import IntlMessages from "../../util/IntlMessages";
+import React, { Component } from 'react';
+import { Menu } from 'antd';
+import { Link } from 'react-router-dom';
+import IntlMessages from '../../util/IntlMessages';
 import {
   NAV_STYLE_ABOVE_HEADER,
   NAV_STYLE_BELOW_HEADER,
   NAV_STYLE_DEFAULT_HORIZONTAL,
-  NAV_STYLE_INSIDE_HEADER_HORIZONTAL
-} from "../../constants/ThemeSetting";
-import gql from "graphql-tag";
-import { compose, graphql } from "react-apollo";
+  NAV_STYLE_INSIDE_HEADER_HORIZONTAL,
+} from '../../constants/ThemeSetting';
+import gql from 'graphql-tag';
+import { compose, graphql } from 'react-apollo';
 
 const SubMenu = Menu.SubMenu;
 
@@ -26,22 +26,22 @@ class HorizontalNav extends Component<IProps, IState> {
   getNavStyleSubMenuClass = navStyle => {
     switch (navStyle) {
       case NAV_STYLE_DEFAULT_HORIZONTAL:
-        return "gx-menu-horizontal gx-submenu-popup-curve";
+        return 'gx-menu-horizontal gx-submenu-popup-curve';
       case NAV_STYLE_INSIDE_HEADER_HORIZONTAL:
-        return "gx-menu-horizontal gx-submenu-popup-curve gx-inside-submenu-popup-curve";
+        return 'gx-menu-horizontal gx-submenu-popup-curve gx-inside-submenu-popup-curve';
       case NAV_STYLE_BELOW_HEADER:
-        return "gx-menu-horizontal gx-submenu-popup-curve gx-below-submenu-popup-curve";
+        return 'gx-menu-horizontal gx-submenu-popup-curve gx-below-submenu-popup-curve';
       case NAV_STYLE_ABOVE_HEADER:
-        return "gx-menu-horizontal gx-submenu-popup-curve gx-above-submenu-popup-curve";
+        return 'gx-menu-horizontal gx-submenu-popup-curve gx-above-submenu-popup-curve';
       default:
-        return "gx-menu-horizontal";
+        return 'gx-menu-horizontal';
     }
   };
 
   render() {
     const { pathname, navStyle } = this.props;
     const selectedKeys = pathname.substr(1);
-    const defaultOpenKeys = selectedKeys.split("/")[1];
+    const defaultOpenKeys = selectedKeys.split('/')[1];
     return (
       <Menu
         defaultOpenKeys={[defaultOpenKeys]}
@@ -89,5 +89,5 @@ const GET_SETTINGS = gql`
 `;
 
 export default compose(
-  graphql(GET_SETTINGS, { name: "settings", props: mapStateToProps })
+  graphql(GET_SETTINGS, { name: 'settings', props: mapStateToProps })
 )(HorizontalNav);

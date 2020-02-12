@@ -1,9 +1,9 @@
-import { Button, Form, Icon, Input } from "antd";
-import { FormComponentProps } from "antd/lib/form";
-import gql from "graphql-tag";
-import { History } from "history";
-import * as React from "react";
-import { compose, Mutation, MutationFunc } from "react-apollo";
+import { Button, Form, Icon, Input } from 'antd';
+import { FormComponentProps } from 'antd/lib/form';
+import gql from 'graphql-tag';
+import { History } from 'history';
+import * as React from 'react';
+import { compose, Mutation, MutationFunc } from 'react-apollo';
 
 interface IProps extends FormComponentProps {
   history?: History;
@@ -13,7 +13,7 @@ interface IState {}
 
 class ChangePassword extends React.Component<IProps, IState> {
   state = {
-    confirmDirty: false
+    confirmDirty: false,
   };
 
   // UNSAFE_componentWillMount() {
@@ -26,8 +26,8 @@ class ChangePassword extends React.Component<IProps, IState> {
   };
   compareToFirstPassword = (rule: any, value: any, callback: any) => {
     const { form } = this.props;
-    if (value && value !== form.getFieldValue("password")) {
-      callback("Two passwords that you enter is inconsistent!");
+    if (value && value !== form.getFieldValue('password')) {
+      callback('Two passwords that you enter is inconsistent!');
     } else {
       callback();
     }
@@ -36,9 +36,9 @@ class ChangePassword extends React.Component<IProps, IState> {
   validateToNextPassword = (rule: any, value: any, callback: any) => {
     const { form } = this.props;
     if (value && this.state.confirmDirty) {
-      form.validateFields(["confirm"], { force: true });
+      form.validateFields(['confirm'], { force: true });
     } else if (value && value.length < 6) {
-      callback("Password should contain atleast 6 characters");
+      callback('Password should contain atleast 6 characters');
     } else callback();
   };
 
@@ -68,7 +68,7 @@ class ChangePassword extends React.Component<IProps, IState> {
               <div className="gx-app-logo">
                 <img
                   alt="example"
-                  src={require("walkin-components/src/assets/images/walkin_logo_white.png")}
+                  src={require('walkin-components/src/assets/images/walkin_logo_white.png')}
                   style={{ width: 100 }}
                 />
               </div>
@@ -85,21 +85,21 @@ class ChangePassword extends React.Component<IProps, IState> {
                           const {
                             password,
                             conformPassword,
-                            remember
+                            remember,
                           } = values;
                           const data = await signIn({
                             variables: {
                               input: {
                                 password,
-                                conformPassword
-                              }
-                            }
+                                conformPassword,
+                              },
+                            },
                           });
 
                           if (data && data.data && data.data.signIn) {
-                            history.push("/");
+                            history.push('/');
                           } else {
-                            console.log("/signin");
+                            console.log('/signin');
                           }
                         }
                       });
@@ -107,22 +107,22 @@ class ChangePassword extends React.Component<IProps, IState> {
                     className="login-form"
                   >
                     <Form.Item hasFeedback>
-                      {getFieldDecorator("password", {
+                      {getFieldDecorator('password', {
                         rules: [
                           {
                             required: true,
-                            message: "Please input your password!"
+                            message: 'Please input your password!',
                           },
                           {
-                            validator: this.validateToNextPassword
-                          }
-                        ]
+                            validator: this.validateToNextPassword,
+                          },
+                        ],
                       })(
                         <Input.Password
                           prefix={
                             <Icon
                               type="lock"
-                              style={{ color: "rgba(0,0,0,.25)" }}
+                              style={{ color: 'rgba(0,0,0,.25)' }}
                             />
                           }
                           placeholder="New Password"
@@ -130,22 +130,22 @@ class ChangePassword extends React.Component<IProps, IState> {
                       )}
                     </Form.Item>
                     <Form.Item hasFeedback>
-                      {getFieldDecorator("conform", {
+                      {getFieldDecorator('conform', {
                         rules: [
                           {
                             required: true,
-                            message: "Please confirm your password!"
+                            message: 'Please confirm your password!',
                           },
                           {
-                            validator: this.compareToFirstPassword
-                          }
-                        ]
+                            validator: this.compareToFirstPassword,
+                          },
+                        ],
                       })(
                         <Input.Password
                           prefix={
                             <Icon
                               type="lock"
-                              style={{ color: "rgba(0,0,0,.25)" }}
+                              style={{ color: 'rgba(0,0,0,.25)' }}
                             />
                           }
                           onBlur={this.handleConfirmBlur}
@@ -176,4 +176,4 @@ class ChangePassword extends React.Component<IProps, IState> {
   }
 }
 
-export default compose(Form.create({ name: "vertical_login" }))(ChangePassword);
+export default compose(Form.create({ name: 'vertical_login' }))(ChangePassword);

@@ -1,16 +1,16 @@
-import * as React from "react";
-import { Avatar } from "antd";
-import { Area, AreaChart, ResponsiveContainer } from "recharts";
-import { Widget } from "../Widget";
+import * as React from 'react';
+import { Avatar } from 'antd';
+import { Area, AreaChart, ResponsiveContainer } from 'recharts';
+import { Widget } from '../Widget';
 
 const data = [
-  { name: "Page A", price: 200 },
-  { name: "Page B", price: 800 },
-  { name: "Page C", price: 600 },
-  { name: "Page D", price: 2200 },
-  { name: "Page D", price: 1000 },
-  { name: "Page H", price: 2960 },
-  { name: "Page K", price: 1960 }
+  { name: 'Page A', price: 200 },
+  { name: 'Page B', price: 800 },
+  { name: 'Page C', price: 600 },
+  { name: 'Page D', price: 2200 },
+  { name: 'Page D', price: 1000 },
+  { name: 'Page H', price: 2960 },
+  { name: 'Page K', price: 1960 },
 ];
 
 const Productivity = () => {

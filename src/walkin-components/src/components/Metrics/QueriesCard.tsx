@@ -1,21 +1,21 @@
-import { Col, Row } from "antd";
-import * as React from "react";
-import { Bar, BarChart, ResponsiveContainer, Tooltip } from "recharts";
-import { Widget } from "../Widget";
+import { Col, Row } from 'antd';
+import * as React from 'react';
+import { Bar, BarChart, ResponsiveContainer, Tooltip } from 'recharts';
+import { Widget } from '../Widget';
 
 const data = [
-  { name: "Page A", queries: 400 },
-  { name: "Page B", queries: 600 },
-  { name: "Page C", queries: 800 },
-  { name: "Page D", queries: 1200 },
-  { name: "Page E", queries: 800 },
-  { name: "Page F", queries: 600 },
-  { name: "Page G", queries: 300 },
-  { name: "Page H", queries: 900 },
-  { name: "Page A", queries: 400 },
-  { name: "Page B", queries: 600 },
-  { name: "Page C", queries: 800 },
-  { name: "Page D", queries: 1200 }
+  { name: 'Page A', queries: 400 },
+  { name: 'Page B', queries: 600 },
+  { name: 'Page C', queries: 800 },
+  { name: 'Page D', queries: 1200 },
+  { name: 'Page E', queries: 800 },
+  { name: 'Page F', queries: 600 },
+  { name: 'Page G', queries: 300 },
+  { name: 'Page H', queries: 900 },
+  { name: 'Page A', queries: 400 },
+  { name: 'Page B', queries: 600 },
+  { name: 'Page C', queries: 800 },
+  { name: 'Page D', queries: 1200 },
 ];
 
 const QueriesCard = () => {

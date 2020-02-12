@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import {
   Button,
   Dropdown,
@@ -7,22 +7,22 @@ import {
   Menu,
   message,
   Popover,
-  Select
-} from "antd";
-import { CustomScrollbars } from "../../../util/CustomScrollbars";
+  Select,
+} from 'antd';
+import { CustomScrollbars } from '../../../util/CustomScrollbars';
 
-import languageData from "../languageData";
-import SearchBox from "../../../components/SearchBox";
-import UserInfo from "../../../components/UserInfo";
-import AppNotification from "../../../components/AppNotification";
-import MailNotification from "../../../components/MailNotification";
+import languageData from '../languageData';
+import SearchBox from '../../../components/SearchBox';
+import UserInfo from '../../../components/UserInfo';
+import AppNotification from '../../../components/AppNotification';
+import MailNotification from '../../../components/MailNotification';
 
-import { TAB_SIZE } from "../../../constants/ThemeSetting";
-import HorizontalNav from "../HorizontalNav";
-import { Link } from "react-router-dom";
-import IntlMessages from "../../../util/IntlMessages";
-import gql from "graphql-tag";
-import { compose, graphql } from "react-apollo";
+import { TAB_SIZE } from '../../../constants/ThemeSetting';
+import HorizontalNav from '../HorizontalNav';
+import { Link } from 'react-router-dom';
+import IntlMessages from '../../../util/IntlMessages';
+import gql from 'graphql-tag';
+import { compose, graphql } from 'react-apollo';
 
 const { Header } = Layout;
 
@@ -36,7 +36,7 @@ const menu = (
 );
 
 function handleMenuClick(e) {
-  message.info("Click on menu item.");
+  message.info('Click on menu item.');
 }
 
 function handleChange(value) {
@@ -54,7 +54,7 @@ interface IState {}
 
 class AboveHeader extends Component<IProps, IState> {
   readonly state = {
-    searchText: ""
+    searchText: '',
   };
 
   languageMenu = () => (
@@ -67,8 +67,8 @@ class AboveHeader extends Component<IProps, IState> {
             onClick={e =>
               this.props.switchLanguage({
                 variables: {
-                  locale: language
-                }
+                  locale: language,
+                },
               })
             }
           >
@@ -82,7 +82,7 @@ class AboveHeader extends Component<IProps, IState> {
 
   updateSearchChatUser = evt => {
     this.setState({
-      searchText: evt.target.value
+      searchText: evt.target.value,
     });
   };
 
@@ -155,14 +155,14 @@ class AboveHeader extends Component<IProps, IState> {
               >
                 <img
                   alt=""
-                  src={require("../../../assets/images/w-logo.png")}
+                  src={require('../../../assets/images/w-logo.png')}
                 />
               </Link>
               <Link
                 to="/"
                 className="gx-d-none gx-d-lg-block gx-pointer gx-mr-xs-5 gx-logo"
               >
-                <img alt="" src={require("../../../assets/images/logo.png")} />
+                <img alt="" src={require('../../../assets/images/logo.png')} />
               </Link>
               <div className="gx-header-search gx-d-none gx-d-lg-flex">
                 <SearchBox
@@ -294,10 +294,10 @@ const SWITCH_LANGUAGE = gql`
 `;
 
 export const AboveHeaderModule = compose(
-  graphql(TOGGLE_COLLAPSED_SIDE_NAV, { name: "toggleCollapsedSideNav" }),
-  graphql(SWITCH_LANGUAGE, { name: "switchLanguage" }),
+  graphql(TOGGLE_COLLAPSED_SIDE_NAV, { name: 'toggleCollapsedSideNav' }),
+  graphql(SWITCH_LANGUAGE, { name: 'switchLanguage' }),
   graphql(GET_SETTINGS, {
     props: mapStateToProps,
-    name: "settings"
+    name: 'settings',
   })
 )(AboveHeader);

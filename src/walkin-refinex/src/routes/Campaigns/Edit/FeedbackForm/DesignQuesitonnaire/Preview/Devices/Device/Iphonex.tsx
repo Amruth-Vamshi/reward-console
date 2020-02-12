@@ -1,5 +1,5 @@
-import "../index.css";
-import * as React from "react";
+import '../index.css';
+import * as React from 'react';
 class IphoneX extends React.Component {
   constructor(props) {
     super(props);

@@ -1,6 +1,6 @@
-import * as React from "react";
-import { Route } from "react-router-dom";
-import NearXRoutes from "./routes";
+import * as React from 'react';
+import { Route } from 'react-router-dom';
+import NearXRoutes from './routes';
 
 interface iProps {
   match?: any;

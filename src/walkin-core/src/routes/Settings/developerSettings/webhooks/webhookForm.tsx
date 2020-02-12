@@ -1,6 +1,6 @@
-import * as React from "react";
-import "./style.css";
-import { Select, Input, Button } from "antd";
+import * as React from 'react';
+import './style.css';
+import { Select, Input, Button } from 'antd';
 
 const { Option } = Select;
 
@@ -32,33 +32,33 @@ export default class WebhookForm extends React.Component<
     this.state = {
       headerEntries: [[]],
       webhookDetails: {
-        id: "",
-        event: "",
-        url: "",
-        name: "",
+        id: '',
+        event: '',
+        url: '',
+        name: '',
         headers: {},
-        method: "GET",
-        status: "ACTIVE"
-      }
+        method: 'GET',
+        status: 'ACTIVE',
+      },
     };
   }
 
   UNSAFE_componentWillMount() {
     let { webhookDetails, events } = this.props;
-    let defaultEventValue = events[0] ? events[0].event : "";
+    let defaultEventValue = events[0] ? events[0].event : '';
 
     if (webhookDetails) {
       let headerEntries = Object.entries(webhookDetails.headers);
       this.setState({
         webhookDetails,
-        headerEntries
+        headerEntries,
       });
     } else {
       this.setState({
         webhookDetails: {
           ...this.state.webhookDetails,
-          event: defaultEventValue
-        }
+          event: defaultEventValue,
+        },
       });
     }
   }
@@ -71,7 +71,7 @@ export default class WebhookForm extends React.Component<
       ) => {
         return {
           ...prevState,
-          [type]: value
+          [type]: value,
         };
       }
     );
@@ -98,19 +98,19 @@ export default class WebhookForm extends React.Component<
 
     for (const pair of iter) {
       if (Object(pair) !== pair) {
-        throw new TypeError("iterable for fromEntries should yield objects");
+        throw new TypeError('iterable for fromEntries should yield objects');
       }
 
       // Consistency with Map: contract is that entry has "0" and "1" keys, not
       // that it is an array or iterable.
 
-      const { "0": key, "1": val } = pair;
+      const { '0': key, '1': val } = pair;
 
       Object.defineProperty(obj, key, {
         configurable: true,
         enumerable: true,
         writable: true,
-        value: val
+        value: val,
       });
     }
 
@@ -131,7 +131,7 @@ export default class WebhookForm extends React.Component<
       headers,
       method: webhookDetails.method,
       url: webhookDetails.url,
-      name: webhookDetails.name
+      name: webhookDetails.name,
     };
     //for update webhooks
     if (webhookDetails.id) {
@@ -148,17 +148,17 @@ export default class WebhookForm extends React.Component<
   render() {
     let { webhookDetails, headerEntries } = this.state;
     let { events } = this.props;
-    let header = "Edit Webhook Details";
+    let header = 'Edit Webhook Details';
     if (!webhookDetails.id) {
-      header = "Create New Webhook";
+      header = 'Create New Webhook';
     }
     const selectBefore = (
       <Select
-        getPopupContainer={() => document.getElementById("WebhookInputWrapper")}
+        getPopupContainer={() => document.getElementById('WebhookInputWrapper')}
         onChange={(method: any) => {
-          this.onChange("webhookDetails", {
+          this.onChange('webhookDetails', {
             ...webhookDetails,
-            method
+            method,
           });
         }}
         defaultValue={webhookDetails.method}
@@ -174,13 +174,13 @@ export default class WebhookForm extends React.Component<
     });
     eventTypeDescription = eventTypeDescription[0]
       ? eventTypeDescription[0].description
-      : "--";
+      : '--';
 
     return (
       <div className="webhookFormContainer">
         <div
           style={{
-            width: "60%"
+            width: '60%',
           }}
         >
           <div className="webhookEditTitle">{header}</div>
@@ -191,16 +191,16 @@ export default class WebhookForm extends React.Component<
             <Select
               showSearch
               getPopupContainer={() =>
-                document.getElementById("WebhookInputWrapper")
+                document.getElementById('WebhookInputWrapper')
               }
               disabled={Boolean(webhookDetails.id)}
               defaultValue={webhookDetails.event}
-              style={{ width: "100%" }}
+              style={{ width: '100%' }}
               size="large"
               onChange={(event: any) => {
-                this.onChange("webhookDetails", {
+                this.onChange('webhookDetails', {
                   ...webhookDetails,
-                  event
+                  event,
                 });
               }}
             >
@@ -222,9 +222,9 @@ export default class WebhookForm extends React.Component<
               placeholder="Integration with slack"
               defaultValue={webhookDetails.name}
               onChange={e =>
-                this.onChange("webhookDetails", {
+                this.onChange('webhookDetails', {
                   ...webhookDetails,
-                  name: e.target.value
+                  name: e.target.value,
                 })
               }
             />
@@ -239,9 +239,9 @@ export default class WebhookForm extends React.Component<
               placeholder="https://www.getwalk.in"
               defaultValue={webhookDetails.url}
               onChange={e =>
-                this.onChange("webhookDetails", {
+                this.onChange('webhookDetails', {
                   ...webhookDetails,
-                  url: e.target.value
+                  url: e.target.value,
                 })
               }
             />
@@ -256,7 +256,7 @@ export default class WebhookForm extends React.Component<
                     className="requestHeaderrowWrapper"
                   >
                     <Input
-                      style={{ width: "45%" }}
+                      style={{ width: '45%' }}
                       size="large"
                       defaultValue={headerEntries[index][0]}
                       value={headerEntries[index][0]}
@@ -265,7 +265,7 @@ export default class WebhookForm extends React.Component<
                       }
                     />
                     <Input
-                      style={{ width: "45%" }}
+                      style={{ width: '45%' }}
                       size="large"
                       defaultValue={headerEntries[index][1]}
                       value={headerEntries[index][1]}
@@ -275,16 +275,16 @@ export default class WebhookForm extends React.Component<
                     />
                     <div
                       style={{
-                        marginRight: "2%"
+                        marginRight: '2%',
                       }}
                       onClick={() => {
                         headerEntries.splice(index, 1);
                         this.setState({
-                          headerEntries
+                          headerEntries,
                         });
                       }}
                     >
-                      <label style={{ fontSize: 20, cursor: "pointer" }}>
+                      <label style={{ fontSize: 20, cursor: 'pointer' }}>
                         X
                       </label>
                     </div>

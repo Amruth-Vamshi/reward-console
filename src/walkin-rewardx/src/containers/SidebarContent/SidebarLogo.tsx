@@ -1,5 +1,5 @@
-import * as React from "react";
-import { Link } from "react-router-dom";
+import * as React from 'react';
+import { Link } from 'react-router-dom';
 
 import {
   NAV_STYLE_DRAWER,
@@ -8,11 +8,11 @@ import {
   NAV_STYLE_NO_HEADER_MINI_SIDEBAR,
   TAB_SIZE,
   THEME_TYPE_LITE,
-  TAB_SIZE_MAX
-} from "walkin-components/src/constants/ThemeSetting";
-import { compose, graphql } from "react-apollo";
-import gql from "graphql-tag";
-import { Icon, Row, Col } from "antd";
+  TAB_SIZE_MAX,
+} from 'walkin-components/src/constants/ThemeSetting';
+import { compose, graphql } from 'react-apollo';
+import gql from 'graphql-tag';
+import { Icon, Row, Col } from 'antd';
 
 interface SidebarLogoProps {
   width?: any;
@@ -37,7 +37,7 @@ class SidebarLogo extends React.Component<SidebarLogoProps, {}> {
             <Link to="/rewardx/dashboard" className="gx-pointer">
               <img
                 alt="fgd"
-                src={require("walkin-components/src/assets/images/logo_rewardx.png")}
+                src={require('walkin-components/src/assets/images/logo_rewardx.png')}
                 style={{ maxWidth: 35 }}
               />
             </Link>
@@ -50,9 +50,9 @@ class SidebarLogo extends React.Component<SidebarLogoProps, {}> {
                   theme="filled"
                   className="gx-icon-btn"
                   style={{
-                    padding: "10px",
-                    color: "",
-                    backgroundColor: "#FCFCFC"
+                    padding: '10px',
+                    color: '',
+                    backgroundColor: '#FCFCFC',
                   }}
                 />
               </Link>
@@ -64,17 +64,17 @@ class SidebarLogo extends React.Component<SidebarLogoProps, {}> {
             width >= TAB_SIZE ? (
               <img
                 alt=""
-                src={require("walkin-components/src/assets/images/logo_rewardx.png")}
+                src={require('walkin-components/src/assets/images/logo_rewardx.png')}
               />
             ) : themeType === THEME_TYPE_LITE ? (
               <img
                 alt=""
-                src={require("walkin-components/src/assets/images/logo_rewardx.png")}
+                src={require('walkin-components/src/assets/images/logo_rewardx.png')}
               />
             ) : (
               <img
                 alt=""
-                src={require("walkin-components/src/assets/images/logo_rewardx.png")}
+                src={require('walkin-components/src/assets/images/logo_rewardx.png')}
               />
             )}
           </Link>
@@ -119,7 +119,7 @@ const ON_NAV_STYLE_CHANGE = gql`
 `;
 
 export default compose(
-  graphql(GET_SETTINGS, { name: "settings", props: mapStateToProps }),
-  graphql(TOGGLE_COLLAPSED_SIDENAV, { name: "toggleCollapsedSideNav" }),
-  graphql(ON_NAV_STYLE_CHANGE, { name: "onNavStyleChange" })
+  graphql(GET_SETTINGS, { name: 'settings', props: mapStateToProps }),
+  graphql(TOGGLE_COLLAPSED_SIDENAV, { name: 'toggleCollapsedSideNav' }),
+  graphql(ON_NAV_STYLE_CHANGE, { name: 'onNavStyleChange' })
 )(SidebarLogo);

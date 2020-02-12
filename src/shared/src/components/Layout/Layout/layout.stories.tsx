@@ -1,5 +1,5 @@
-import React from "react";
-import { storiesOf } from "@storybook/react";
+import React from 'react';
+import { storiesOf } from '@storybook/react';
 import {
   BasicLayout,
   HeaderContentFooterLayout,
@@ -9,43 +9,43 @@ import {
   CustomTriggerLayout,
   ResponsiveLayout,
   FixedHeaderLayout,
-  FixedSiderLayout
-} from "shared";
+  FixedSiderLayout,
+} from 'shared';
 
-const stories = storiesOf("Atoms|Antd/Layout/Layout", module);
+const stories = storiesOf('Atoms|Antd/Layout/Layout', module);
 
-stories.add("layout basic", () => {
+stories.add('layout basic', () => {
   return <BasicLayout />;
 });
 
-stories.add("layout header content footer", () => {
+stories.add('layout header content footer', () => {
   return <HeaderContentFooterLayout />;
 });
 
-stories.add("layout header sider ", () => {
+stories.add('layout header sider ', () => {
   return <HeaderSiderLayout />;
 });
 
-stories.add("layout header sider 2", () => {
+stories.add('layout header sider 2', () => {
   return <HeaderSider2Layout />;
 });
 
-stories.add("layout sider", () => {
+stories.add('layout sider', () => {
   return <SiderLayout />;
 });
 
-stories.add("layout custom trigger", () => {
+stories.add('layout custom trigger', () => {
   return <CustomTriggerLayout />;
 });
 
-stories.add("layout responsive", () => {
+stories.add('layout responsive', () => {
   return <ResponsiveLayout />;
 });
 
-stories.add("layout fixed header", () => {
+stories.add('layout fixed header', () => {
   return <FixedHeaderLayout />;
 });
 
-stories.add("layout fixed sider", () => {
+stories.add('layout fixed sider', () => {
   return <FixedSiderLayout />;
 });

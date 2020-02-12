@@ -8,7 +8,7 @@ export const toNumber = value => {
 };
 export const removeProp = (obj, propToDelete) => {
   for (var property in obj) {
-    if (typeof obj[property] == "object") {
+    if (typeof obj[property] == 'object') {
       let objectToCheck = obj[property];
       delete obj.property;
       let newJsonData = removeProp(obj[property], propToDelete);

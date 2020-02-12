@@ -1,6 +1,6 @@
-import * as React from "react";
-import { Input, Button, Pagination } from "antd";
-import HotspotCard from "./HotspotCard";
+import * as React from 'react';
+import { Input, Button, Pagination } from 'antd';
+import HotspotCard from './HotspotCard';
 
 const Search = Input.Search;
 
@@ -29,7 +29,7 @@ export default class SelectHotspots extends React.Component<iProps, {}> {
             onPressEnter={this.props.handleSearchSubmit}
             onChange={c => this.props.handleChange(c)}
           />
-          <span style={{ color: "Red" }}>{formData.errors.search}</span>
+          <span style={{ color: 'Red' }}>{formData.errors.search}</span>
         </div>
 
         {this.props.formData.places1.map((place, index) => (
@@ -52,19 +52,19 @@ export default class SelectHotspots extends React.Component<iProps, {}> {
               />
             </div>
 
-            <div style={{ overflow: "hidden", marginTop: -10 }}>
+            <div style={{ overflow: 'hidden', marginTop: -10 }}>
               {/* <Button htmlType='submit' type="primary" style={{float:"right",marginRight:20}}>CREATE</Button> */}
               <Button
                 onClick={this.props.handleSubmit1}
                 className="buttonPrimary"
-                style={{ float: "right", marginRight: 20 }}
+                style={{ float: 'right', marginRight: 20 }}
               >
                 CREATE
               </Button>
             </div>
           </div>
         ) : (
-          ""
+          ''
         )}
       </div>
     );

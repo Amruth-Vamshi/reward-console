@@ -1,11 +1,11 @@
-import "./BuildQuestionnaire.css";
-import * as React from "react";
-import FormPane from "./FormPane";
-import { Query, graphql, compose } from "react-apollo";
-import gql from "graphql-tag";
-import { Row, Col, Spin, Icon, message } from "antd";
-import QuestionsList from "./QuestionsList";
-import QuestionTypeSelector from "./QuestionTypeSelection";
+import './BuildQuestionnaire.css';
+import * as React from 'react';
+import FormPane from './FormPane';
+import { Query, graphql, compose } from 'react-apollo';
+import gql from 'graphql-tag';
+import { Row, Col, Spin, Icon, message } from 'antd';
+import QuestionsList from './QuestionsList';
+import QuestionTypeSelector from './QuestionTypeSelection';
 import {
   CREAT_BLANK_QUESITON,
   EDIT_QUESTION,
@@ -13,11 +13,11 @@ import {
   REMOVE_CHOICE,
   ADD_QUESTION,
   EDIT_CHOICE,
-  LINK_CHOICE_TO_QUESTION
-} from "../../../../../containers/Query";
-import { Card } from "antd";
-import { isEmptyStatement } from "@babel/types";
-import isEmpty from "lodash/isEmpty";
+  LINK_CHOICE_TO_QUESTION,
+} from '../../../../../containers/Query';
+import { Card } from 'antd';
+import { isEmptyStatement } from '@babel/types';
+import isEmpty from 'lodash/isEmpty';
 
 interface QuestionnaireProps {
   questionnaire?: any;
@@ -65,12 +65,12 @@ class Questionnaire extends React.Component<
       questionnaire: null,
       isChoiceLoading: false,
       isQuestionLoading: false,
-      questionData: null
+      questionData: null,
     };
   }
 
   componentDidUpdate(prevProps) {
-    console.log("prevProps", prevProps, this.props);
+    console.log('prevProps', prevProps, this.props);
   }
   success = message1 => {
     message.success(message1, 5);
@@ -81,39 +81,39 @@ class Questionnaire extends React.Component<
   };
 
   onQuestionSelected = questionIndex => {
-    console.log("this.props.questionnaire", this.props.questionnaire);
+    console.log('this.props.questionnaire', this.props.questionnaire);
     this.setState(prevState => ({
       questionToEdit: this.props.questionnaire[questionIndex],
       questionIndex,
       addQuestion: false,
       choiceData: null,
       choiceToAddQuestion: null,
-      questionTypeSelector: null
+      questionTypeSelector: null,
     }));
   };
 
   onLinkChoiceToQuestion = (questionId, choiceId) => {
     this.setState({ isChoiceLoading: true, isQuestionLoading: true });
-    console.log("choiceId,QuestionId", choiceId, questionId);
+    console.log('choiceId,QuestionId', choiceId, questionId);
     this.props
       .linkChoieToQuestion({
         variables: {
           choiceId: choiceId,
-          questionId: questionId
-        }
+          questionId: questionId,
+        },
       })
       .then(async data => {
-        this.success("Choice successfully linked to question ");
+        this.success('Choice successfully linked to question ');
         await this.props.refetchQuestionnaire();
-        console.log("questionnaire", this.props.questionnaire);
+        console.log('questionnaire', this.props.questionnaire);
         this.setState({
           isChoiceLoading: false,
           isQuestionLoading: false,
-          questionToEdit: this.props.questionnaire[this.state.questionIndex]
+          questionToEdit: this.props.questionnaire[this.state.questionIndex],
         });
       })
       .catch(err => {
-        this.error("Some error occured while linking! Please try again");
+        this.error('Some error occured while linking! Please try again');
         this.setState({ isChoiceLoading: false, isQuestionLoading: false });
       });
   };
@@ -125,25 +125,25 @@ class Questionnaire extends React.Component<
         variables: {
           choiceId: choiceToAddQuestion.id,
           input: {
-            questionText: "click here to edit",
+            questionText: 'click here to edit',
             type: questionType,
             rangeMax: 10,
-            rangeMin: 1
-          }
-        }
+            rangeMin: 1,
+          },
+        },
       })
       .then(async data => {
         console.log(data);
         this.setState({
           questionTypeSelector: questionType,
           addQuestion: false,
-          questionToEdit: data.data.addQuestion
+          questionToEdit: data.data.addQuestion,
         });
         await this.props.refetchQuestionnaire();
         this.onQuestionSelected(this.state.questionIndex);
       })
       .catch(err => {
-        console.log("Error creating the question", err);
+        console.log('Error creating the question', err);
       });
   };
 
@@ -157,34 +157,34 @@ class Questionnaire extends React.Component<
             variables: {
               choiceId: choiceToAddQuestion.id,
               input: {
-                questionText: "click here to edit",
+                questionText: 'click here to edit',
                 type: questionType,
                 rangeMax: 10,
-                rangeMin: 1
-              }
-            }
+                rangeMin: 1,
+              },
+            },
           })
           .then(async data => {
             console.log(data);
             await this.props.refetchQuestionnaire();
-            if (questionType == "TEXT") {
+            if (questionType == 'TEXT') {
               this.addChoice(data.addQuestion.id, null);
             } else {
               this.setState({
                 isQuestionLoading: false,
-                addQuestion: false
+                addQuestion: false,
               });
             }
           })
           .catch(err => {
             this.setState({ isQuestionLoading: false });
-            console.log("Error creating the question", err);
+            console.log('Error creating the question', err);
           });
       } else {
-        message.error("Please select a question");
+        message.error('Please select a question');
         this.setState({
           isQuestionLoading: false,
-          loading: false
+          loading: false,
         });
       }
     } else {
@@ -200,23 +200,23 @@ class Questionnaire extends React.Component<
         variables: {
           feedbackFormId: feedbackForm.id,
           questionnaireInput: {
-            questionText: "Click here to edit",
+            questionText: 'Click here to edit',
             type: questionType,
             rangeMax: 10,
-            rangeMin: 1
-          }
-        }
+            rangeMin: 1,
+          },
+        },
       });
       console.log(data);
       await this.props.refetchFeedbackForm();
-      if (questionType == "TEXT") {
+      if (questionType == 'TEXT') {
         this.addChoice(data.createQuestionnaire.id, null);
       } else {
         this.setState({ isQuestionLoading: false });
       }
     } catch (e) {
       this.setState({ isQuestionLoading: false });
-      console.log("Error in creating questionnaire", e);
+      console.log('Error in creating questionnaire', e);
       console.log(e);
     }
   };
@@ -226,15 +226,15 @@ class Questionnaire extends React.Component<
     this.props
       .addQuestion({
         variables: {
-          choiceId: "",
+          choiceId: '',
           input: {
-            questionText: "  ",
+            questionText: '  ',
             type: questionData.type,
             rangeMax: 10,
             rangeMin: 1,
-            choices: []
-          }
-        }
+            choices: [],
+          },
+        },
       })
       .then(data => {
         console.log(data);
@@ -244,17 +244,17 @@ class Questionnaire extends React.Component<
           questionTypeSelector: questionData.type,
           addQuestion: false,
           questionData: questionData,
-          questionToEdit: data.data.addQuestion
+          questionToEdit: data.data.addQuestion,
         });
       })
       .catch(err => {
-        console.log("Error creating the question", err);
+        console.log('Error creating the question', err);
       });
   };
 
   onNewChoiceAdd = choiceData => {
     this.setState({
-      choiceData: choiceData
+      choiceData: choiceData,
     });
   };
 
@@ -265,7 +265,7 @@ class Questionnaire extends React.Component<
   // };
 
   onChoiceSubmitted = editedChoice => {
-    console.log("editedChoice", editedChoice);
+    console.log('editedChoice', editedChoice);
     this.setState({ isChoiceLoading: true });
     this.props
       .editChoice({
@@ -274,9 +274,9 @@ class Questionnaire extends React.Component<
             id: editedChoice.id,
             choiceText: editedChoice.choiceText,
             rangeStart: editedChoice.rangeStart,
-            rangeEnd: editedChoice.rangeEnd
-          }
-        }
+            rangeEnd: editedChoice.rangeEnd,
+          },
+        },
       })
       .then(async data => {
         console.log(data);
@@ -298,13 +298,13 @@ class Questionnaire extends React.Component<
       type,
       questionText,
       rangeMax,
-      rangeMin
+      rangeMin,
     };
     this.props
       .editQuestion({
         variables: {
-          editQuestionInput: questionToSave
-        }
+          editQuestionInput: questionToSave,
+        },
       })
       .then(async data => {
         await this.props.refetchQuestionnaire();
@@ -337,11 +337,11 @@ class Questionnaire extends React.Component<
             ? this.state.questionToEdit.id
             : id,
           input: {
-            choiceText: "",
+            choiceText: '',
             rangeStart: rangeStart,
-            rangeEnd: rangeEnd
-          }
-        }
+            rangeEnd: rangeEnd,
+          },
+        },
       })
       .then(async data => {
         console.log(data);
@@ -357,13 +357,13 @@ class Questionnaire extends React.Component<
   };
 
   removeChoice = choice => {
-    console.log("removing choice", choice);
+    console.log('removing choice', choice);
     this.setState({ isChoiceLoading: true });
     this.props
       .removeChoice({
         variables: {
-          id: choice.id
-        }
+          id: choice.id,
+        },
       })
       .then(async mutationData => {
         console.log(mutationData);
@@ -383,14 +383,14 @@ class Questionnaire extends React.Component<
       choiceToAddQuestion,
       questionToEdit,
       isChoiceLoading,
-      isQuestionLoading
+      isQuestionLoading,
     } = this.state;
     return (
       <Row className="QuestionnaireArea">
         <Col span={8}>
           {isQuestionLoading ? (
             <div className="divCenter">
-              <Spin size="large" indicator={antIcon} />{" "}
+              <Spin size="large" indicator={antIcon} />{' '}
             </div>
           ) : (
             <QuestionsList
@@ -454,15 +454,15 @@ class Questionnaire extends React.Component<
 }
 
 export default compose(
-  graphql(EDIT_QUESTION, { name: "editQuestion" }),
+  graphql(EDIT_QUESTION, { name: 'editQuestion' }),
   graphql(CREAT_BLANK_QUESITON, {
-    name: "createQuestionnaire"
+    name: 'createQuestionnaire',
   }),
   graphql(ADD_QUESTION, {
-    name: "addQuestion"
+    name: 'addQuestion',
   }),
-  graphql(ADD_CHOICE, { name: "addChoice" }),
-  graphql(REMOVE_CHOICE, { name: "removeChoice" }),
-  graphql(EDIT_CHOICE, { name: "editChoice" }),
-  graphql(LINK_CHOICE_TO_QUESTION, { name: "linkChoieToQuestion" })
+  graphql(ADD_CHOICE, { name: 'addChoice' }),
+  graphql(REMOVE_CHOICE, { name: 'removeChoice' }),
+  graphql(EDIT_CHOICE, { name: 'editChoice' }),
+  graphql(LINK_CHOICE_TO_QUESTION, { name: 'linkChoieToQuestion' })
 )(Questionnaire);

@@ -1,12 +1,12 @@
-import * as React from "react";
-import PropTypes from "prop-types";
+import * as React from 'react';
+import PropTypes from 'prop-types';
 import {
   graphql,
   compose,
   ApolloProviderProps,
   withApollo,
-  WithApolloClient
-} from "react-apollo";
+  WithApolloClient,
+} from 'react-apollo';
 import {
   Col,
   Row,
@@ -20,16 +20,16 @@ import {
   Switch,
   Popconfirm,
   message,
-  Icon
-} from "antd";
-import jwt from "jsonwebtoken";
+  Icon,
+} from 'antd';
+import jwt from 'jsonwebtoken';
 import {
   EVENT_TYPES_FOR_APPLICATION,
-  EVENT_SUBSCRIPTION
-} from "../../../../../containers/Query";
-import { FormProps, FormComponentProps } from "antd/lib/form";
-import Events from "./Events/index";
-import { ConnectedComponentClass } from "antd/lib/form/interface";
+  EVENT_SUBSCRIPTION,
+} from '../../../../../containers/Query';
+import { FormProps, FormComponentProps } from 'antd/lib/form';
+import Events from './Events/index';
+import { ConnectedComponentClass } from 'antd/lib/form/interface';
 
 interface EventTypeProps extends FormComponentProps {
   event?: any;
@@ -53,7 +53,7 @@ class EventType extends React.Component<
     super(props);
     this.state = {
       showEvents: false,
-      visible: false
+      visible: false,
     };
   }
 
@@ -66,11 +66,11 @@ class EventType extends React.Component<
     if (selectedApplication) {
       this.props.eventType({
         variables: {
-          appId: selectedApplication
-        }
+          appId: selectedApplication,
+        },
       });
       this.setState({
-        showEvents: true
+        showEvents: true,
       });
     }
   }
@@ -85,11 +85,11 @@ class EventType extends React.Component<
       }
 
       this.setState({
-        showEvents: false
+        showEvents: false,
       });
     } else {
       this.setState({
-        showEvents: true
+        showEvents: true,
       });
     }
   };
@@ -105,7 +105,7 @@ class EventType extends React.Component<
   getApplicationOptions = () => {
     return this.props.application.map(app => {
       return (
-        <Select.Option style={{ margin: "13px" }} value={app.id} key={app.id}>
+        <Select.Option style={{ margin: '13px' }} value={app.id} key={app.id}>
           {app.name}
         </Select.Option>
       );
@@ -136,7 +136,7 @@ class EventType extends React.Component<
   };
 
   render() {
-    console.log("this.props inside app", this.props);
+    console.log('this.props inside app', this.props);
     const { showEvents } = this.state;
     return (
       <React.Fragment>
@@ -158,7 +158,7 @@ class EventType extends React.Component<
         <span
           className="gx-text-grey"
           style={{
-            marginLeft: "1rem"
+            marginLeft: '1rem',
           }}
         >
           Enable Triggers/Events for your App
@@ -172,9 +172,9 @@ class EventType extends React.Component<
 const EventTypeForm1 = withApollo(EventType);
 export const EventTypeForm: any = Form.create<WithApolloClient<EventTypeProps>>(
   {
-    name: "EventType",
+    name: 'EventType',
     onValuesChange: (props: WithApolloClient<EventTypeProps>, values) => {
-      console.log("values", values);
+      console.log('values', values);
       if (values.event) {
         props.onEventTypeEdited(values);
       } else if (props.selectedApplication !== values.application) {
@@ -183,11 +183,11 @@ export const EventTypeForm: any = Form.create<WithApolloClient<EventTypeProps>>(
           .query({
             query: EVENT_TYPES_FOR_APPLICATION,
             variables: {
-              appId: props.selectedApplication
-            }
+              appId: props.selectedApplication,
+            },
           })
-          .then(data => console.log("data", data))
-          .catch(err => console.log("err", err));
+          .then(data => console.log('data', data))
+          .catch(err => console.log('err', err));
       }
     },
     mapPropsToFields(props: WithApolloClient<EventTypeProps>) {
@@ -197,11 +197,11 @@ export const EventTypeForm: any = Form.create<WithApolloClient<EventTypeProps>>(
           .query({
             query: EVENT_TYPES_FOR_APPLICATION,
             variables: {
-              appId: selectedApplication
-            }
+              appId: selectedApplication,
+            },
           })
-          .then(data => console.log("data", data))
-          .catch(err => console.log("err", err));
+          .then(data => console.log('data', data))
+          .catch(err => console.log('err', err));
       }
       // let eventValue = event.event;
       // if (props.eventSubscription && props.eventSubscription.eventSubscriptions) {
@@ -215,6 +215,6 @@ export const EventTypeForm: any = Form.create<WithApolloClient<EventTypeProps>>(
       //     value: selectedApplication
       //   }),
       // };
-    }
+    },
   }
 )(EventTypeForm1);

@@ -1,6 +1,6 @@
-import * as React from "react";
-import { Modal, Button } from "antd";
-import "./style.css";
+import * as React from 'react';
+import { Modal, Button } from 'antd';
+import './style.css';
 
 interface iProps {
   title?: string;
@@ -19,7 +19,7 @@ const Popup = ({
   handleOk,
   popupContent,
   buttonText,
-  handleOnClick
+  handleOnClick,
 }: iProps) => {
   return (
     <Modal
@@ -37,7 +37,7 @@ const Popup = ({
           >
             {buttonText}
           </Button>
-        </div>
+        </div>,
       ]}
     >
       {popupContent}

@@ -1,5 +1,5 @@
-import * as React from "react";
-import { Widget } from "../Widget";
+import * as React from 'react';
+import { Widget } from '../Widget';
 
 const ChartCard = ({ title, children, styleName, desc }) => {
   return (

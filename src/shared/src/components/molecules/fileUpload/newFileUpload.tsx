@@ -1,6 +1,6 @@
-import React from "react";
-import { Modal, Upload, Button, Icon, Row, Col } from "antd";
-import "./index.css";
+import React from 'react';
+import { Modal, Upload, Button, Icon, Row, Col } from 'antd';
+import './index.css';
 
 export interface IAppProps {
   visible?: any;
@@ -27,12 +27,12 @@ export default class FileUpload extends React.Component<IAppProps, IAppState> {
       handleCancel,
       fileList,
       handleUploadChangeProps,
-      title
+      title,
     } = this.props;
     const props = {
-      action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
+      action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
       onChange: handleUploadChangeProps,
-      multiple: false
+      multiple: false,
     };
     return (
       <div>

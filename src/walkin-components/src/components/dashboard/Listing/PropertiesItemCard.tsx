@@ -1,5 +1,5 @@
-import * as React from "react";
-import { Tag } from "antd";
+import * as React from 'react';
+import { Tag } from 'antd';
 
 function PropertiesItemCard({ data }) {
   const {
@@ -14,7 +14,7 @@ function PropertiesItemCard({ data }) {
     bedrooms,
     baths,
     area,
-    more
+    more,
   } = data;
   return (
     <div className="gx-media gx-featured-item">
@@ -49,7 +49,7 @@ function PropertiesItemCard({ data }) {
               <span className="gx-text-grey">Area:</span> {area}
             </p>
             <a className="gx-text-grey gx-text-underline gx-mb-2" href="#/">
-              {" "}
+              {' '}
               + {more} more
             </a>
           </div>
@@ -76,7 +76,7 @@ function PropertiesItemCard({ data }) {
             <p className="gx-text-grey gx-fs-sm">{sqft}</p>
           </div>
           <p className="gx-text-primary gx-text-truncate gx-mt-auto gx-mb-0 gx-pointer">
-            Check in detail{" "}
+            Check in detail{' '}
             <i
               className={`icon icon-long-arrow-right gx-fs-xxl gx-ml-2 gx-d-inline-flex gx-vertical-align-middle`}
             />

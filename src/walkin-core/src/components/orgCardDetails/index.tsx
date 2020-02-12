@@ -1,11 +1,11 @@
-import * as React from "react";
-import { Card, Avatar, Row, Col } from "antd";
-import "./style.css";
-const org = require("walkin-components/src/assets/images/org.png");
+import * as React from 'react';
+import { Card, Avatar, Row, Col } from 'antd';
+import './style.css';
+const org = require('walkin-components/src/assets/images/org.png');
 
 const OrgCardDetails = ({ orgDetails }: any) => {
   return (
-    <Card className="gx-product-item " style={{ marginTop: "10px" }}>
+    <Card className="gx-product-item " style={{ marginTop: '10px' }}>
       <Row>
         <Col span={2}>
           <Avatar size={64} shape="square" src={org} icon="user" />
@@ -25,17 +25,17 @@ const OrgCardDetails = ({ orgDetails }: any) => {
               <Col span={12}>
                 {orgDetails.org.addressLine1
                   ? orgDetails.org.addressLine1
-                  : "" + ", " + orgDetails.org.addressLine2
+                  : '' + ', ' + orgDetails.org.addressLine2
                   ? orgDetails.org.addressLine2
-                  : "" + ", " + orgDetails.org.city
+                  : '' + ', ' + orgDetails.org.city
                   ? orgDetails.org.city
-                  : "" + ", " + orgDetails.org.state
+                  : '' + ', ' + orgDetails.org.state
                   ? orgDetails.org.state
-                  : "" + ", " + orgDetails.org.country
+                  : '' + ', ' + orgDetails.org.country
                   ? orgDetails.org.country
-                  : "" + ", " + orgDetails.org.pinCode
+                  : '' + ', ' + orgDetails.org.pinCode
                   ? orgDetails.org.pinCode
-                  : ""}
+                  : ''}
               </Col>
             </Row>
             <Row className="orgCardTitleStyle">

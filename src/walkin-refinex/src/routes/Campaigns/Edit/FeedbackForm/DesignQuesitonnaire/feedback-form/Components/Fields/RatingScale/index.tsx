@@ -1,5 +1,5 @@
-import * as React from "react";
-import { Rate, Row, Col, Icon } from "antd";
+import * as React from 'react';
+import { Rate, Row, Col, Icon } from 'antd';
 
 interface RateScaleProps {
   question?: any;
@@ -14,16 +14,16 @@ const RateScale: React.FC<RateScaleProps> = ({
   value,
   radioStyle,
   onChange,
-  character
+  character,
 }) => {
-  const desc = ["terrible", "bad", "normal", "good", "wonderful"];
+  const desc = ['terrible', 'bad', 'normal', 'good', 'wonderful'];
   return (
     <Row>
       <Col span={24}>
         <span>
           <Rate
             character={
-              <Icon type={character ? character : "star"} theme="filled" />
+              <Icon type={character ? character : 'star'} theme="filled" />
             }
             tooltips={desc}
             onChange={onChange}

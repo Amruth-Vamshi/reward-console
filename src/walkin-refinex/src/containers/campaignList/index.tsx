@@ -1,6 +1,6 @@
-import * as React from "react";
-import { withRouter } from "react-router-dom";
-import { campaigns, DISABLE_CAMPAIGN } from "../Query/index";
+import * as React from 'react';
+import { withRouter } from 'react-router-dom';
+import { campaigns, DISABLE_CAMPAIGN } from '../Query/index';
 import {
   Card,
   Menu,
@@ -10,25 +10,25 @@ import {
   Progress,
   Tabs,
   message,
-  Icon
-} from "antd";
-import moment from "moment";
-import { withApollo, graphql, compose } from "react-apollo";
-import { SortableDataTable, InstantSearch, CampaignHeader } from "shared";
-import { CircularProgress, Widget } from "walkin-components";
-import "./style.css";
+  Icon,
+} from 'antd';
+import moment from 'moment';
+import { withApollo, graphql, compose } from 'react-apollo';
+import { SortableDataTable, InstantSearch, CampaignHeader } from 'shared';
+import { CircularProgress, Widget } from 'walkin-components';
+import './style.css';
 import {
   DEFAULT_ACTIVE_STATUS,
   DEFAULT_REFINEX_CAMPAIGN,
   NEW_CAMPAIGN,
   CAMPAIGN_DASHBOARD,
-  SHOULD_EDIT
-} from "../../Utils";
-import * as jwt from "jsonwebtoken";
-import * as _ from "lodash";
-import { RouteChildrenProps } from "react-router";
-import { any } from "prop-types";
-import { Location } from "history";
+  SHOULD_EDIT,
+} from '../../Utils';
+import * as jwt from 'jsonwebtoken';
+import * as _ from 'lodash';
+import { RouteChildrenProps } from 'react-router';
+import { any } from 'prop-types';
+import { Location } from 'history';
 const { TabPane } = Tabs;
 
 interface CampaignListProps extends RouteChildrenProps {
@@ -59,21 +59,21 @@ class CampaignList extends React.Component<
   constructor(props: CampaignListProps) {
     super(props);
     this.state = {
-      filteredInfo: "",
+      filteredInfo: '',
       sortedInfo: null,
       filtered: null,
       allCampaigns: null,
       data: null,
       loading: false,
       showPopUp: false,
-      popupmessage: "",
-      key: this.props.location.state ? this.props.location.state.tabKey : "1"
+      popupmessage: '',
+      key: this.props.location.state ? this.props.location.state.tabKey : '1',
     };
   }
 
   success = () => {
     message.success(this.state.popupmessage, 5);
-    this.setState({ showPopUp: false, popupmessage: "" });
+    this.setState({ showPopUp: false, popupmessage: '' });
   };
   componentDidMount() {
     const { campaigns, loading } = this.props;
@@ -96,22 +96,22 @@ class CampaignList extends React.Component<
   onNewCampaign = () => {
     const { history } = this.props;
     history.push({
-      pathname: NEW_CAMPAIGN
+      pathname: NEW_CAMPAIGN,
     });
   };
   handleChange = (pagination: any, filters: any, sorter: any) => {
     this.setState({
-      sortedInfo: sorter
+      sortedInfo: sorter,
     });
   };
 
   onDeleteContact = async (contact: any) => {
-    console.log("delete", contact);
+    console.log('delete', contact);
     this.setState({ loading: true });
     await this.props.disableCampaign({
       variables: {
-        id: contact.id
-      }
+        id: contact.id,
+      },
     });
     try {
       await this.props.refetch();
@@ -122,35 +122,35 @@ class CampaignList extends React.Component<
     }
   };
   onDuplicateContact = (contact: any) => {
-    console.log("dupl", contact);
+    console.log('dupl', contact);
     const { history, match } = this.props;
     console.log(this.props);
     history.push({
       pathname: `${NEW_CAMPAIGN}/${contact.id}`,
       state: {
-        campaignSelected: contact
-      }
+        campaignSelected: contact,
+      },
     });
   };
 
   showMatrics = (record: any) => {
-    console.log("matrics", record);
+    console.log('matrics', record);
     this.props.history.push({
       pathname: `${CAMPAIGN_DASHBOARD}/${record.id}`,
-      state: { campaignSelected: record }
+      state: { campaignSelected: record },
     });
   };
   menus = (record: any) => {
-    console.log("record", record);
+    console.log('record', record);
     const { Item } = Menu;
     return (
       <Menu
         onClick={e => {
-          if (e.key === "duplicate") {
+          if (e.key === 'duplicate') {
             this.onDuplicateContact(record);
-          } else if (e.key === "edit") {
+          } else if (e.key === 'edit') {
             this.props.history.push(`/refinex/feedback/${record.id}/edit`);
-          } else if (e.key === "view") {
+          } else if (e.key === 'view') {
             this.showMatrics(record);
           } else {
             this.onDeleteContact(record);
@@ -176,9 +176,9 @@ class CampaignList extends React.Component<
   };
 
   onCampaignFilteredList = (newList: any) => {
-    console.log("new list", newList);
+    console.log('new list', newList);
     this.setState({
-      filtered: newList
+      filtered: newList,
     });
   };
 
@@ -188,10 +188,10 @@ class CampaignList extends React.Component<
     if (!allCampaigns || allCampaigns.length < 1) return;
     if (key == 2) {
       let upcomingCampaigns = allCampaigns.filter((val: any) => {
-        if (val.status == "ACTIVE")
+        if (val.status == 'ACTIVE')
           return (
-            val.campaignStatus == "PRE_LIVE_PROCESSING" ||
-            (val.campaignStatus == "LIVE" &&
+            val.campaignStatus == 'PRE_LIVE_PROCESSING' ||
+            (val.campaignStatus == 'LIVE' &&
               moment(val.startTime).isAfter(moment()))
           );
       });
@@ -200,10 +200,10 @@ class CampaignList extends React.Component<
 
     if (key == 3) {
       let completedCampaigns = allCampaigns.filter((val: any) => {
-        if (val.status == "ACTIVE") {
+        if (val.status == 'ACTIVE') {
           return (
             moment(val.endTime).isBefore(moment()) &&
-            val.campaignStatus == "LIVE"
+            val.campaignStatus == 'LIVE'
           );
           // return val.campaignStatus == "COMPLETED"
         }
@@ -212,21 +212,21 @@ class CampaignList extends React.Component<
     }
     if (key == 4) {
       let draftCampaigns = allCampaigns.filter((val: any) => {
-        return val.campaignStatus == "DRAFT";
+        return val.campaignStatus == 'DRAFT';
       });
       this.setState({ data: draftCampaigns, filtered: null });
     }
     if (key == 5) {
       let draftCampaigns = allCampaigns.filter((val: any) => {
-        return val.campaignStatus == "PAUSE";
+        return val.campaignStatus == 'PAUSE';
       });
       this.setState({ data: draftCampaigns, filtered: null });
     }
     if (key == 1) {
       let liveCampaigns = allCampaigns.filter((val: any) => {
-        if (val.status == "ACTIVE") {
+        if (val.status == 'ACTIVE') {
           return (
-            val.campaignStatus == "LIVE" &&
+            val.campaignStatus == 'LIVE' &&
             moment().isBetween(val.startTime, val.endTime)
           );
         }
@@ -242,7 +242,7 @@ class CampaignList extends React.Component<
       filtered,
       data,
       loading,
-      showPopUp
+      showPopUp,
     } = this.state;
     if (showPopUp) {
       this.success();
@@ -256,42 +256,42 @@ class CampaignList extends React.Component<
       campaignData = data;
     }
     const paginationData = {
-      position: "bottom",
+      position: 'bottom',
       total: campaignData ? campaignData.length : 0,
       defaultPageSize: 5,
       showTotal: (total: any, range: any) =>
-        `${range[0]}-${range[1]} of ${total} items`
+        `${range[0]}-${range[1]} of ${total} items`,
     };
 
     const columns = [
       {
-        title: "Name",
-        dataIndex: "name",
-        key: "name",
+        title: 'Name',
+        dataIndex: 'name',
+        key: 'name',
         sorter: (a: any, b: any) =>
           a.name !== b.name ? (a.name < b.name ? -1 : 1) : 0,
-        sortOrder: sortedInfo.columnKey === "name" && sortedInfo.order
+        sortOrder: sortedInfo.columnKey === 'name' && sortedInfo.order,
       },
       {
-        title: "Start date & end date",
-        dataIndex: "startTime",
-        key: "startTime",
+        title: 'Start date & end date',
+        dataIndex: 'startTime',
+        key: 'startTime',
         render: (text: any, row: any) => {
           const a: any = moment();
           const b: any = moment(text);
           const c: any = moment(row.endTime);
           return (
             <div>
-              {moment(text).format("DD-MM-YYYY")}
+              {moment(text).format('DD-MM-YYYY')}
               <Progress
-                style={{ width: "35%", margin: "0px 5px 0px 5px" }}
+                style={{ width: '35%', margin: '0px 5px 0px 5px' }}
                 percent={Math.round(((a - b) / (c - b)) * 100)}
                 showInfo={false}
               />
-              {moment(row.endTime).format("DD-MM-YYYY")}
+              {moment(row.endTime).format('DD-MM-YYYY')}
             </div>
           );
-        }
+        },
       },
       // {
       //     title: 'Views/Visits',
@@ -338,26 +338,26 @@ class CampaignList extends React.Component<
       //     ),
       // },
       {
-        title: "",
-        key: "action",
+        title: '',
+        key: 'action',
         render: (text: any, record: any) => (
           <div className="gx-module-contact-right">
             <Dropdown
               overlay={this.menus(record)}
               placement="bottomRight"
-              trigger={["click"]}
+              trigger={['click']}
             >
               <i className="gx-icon-btn icon icon-ellipse-v" />
             </Dropdown>
           </div>
-        )
-      }
+        ),
+      },
     ];
     return (
       <div
         style={{
-          minHeight: "100vh",
-          margin: "1 2px"
+          minHeight: '100vh',
+          margin: '1 2px',
         }}
       >
         <div>
@@ -381,7 +381,7 @@ class CampaignList extends React.Component<
         <div className="RefineX-campaignList">
           <Widget
             title="Survey List"
-            style={{ margin: "22px" }}
+            style={{ margin: '22px' }}
             styleName="gx-card-tabs"
             extra={
               <InstantSearch
@@ -392,7 +392,7 @@ class CampaignList extends React.Component<
             }
           >
             <Tabs
-              defaultActiveKey={this.state.key ? this.state.key : "1"}
+              defaultActiveKey={this.state.key ? this.state.key : '1'}
               onChange={this.onTabChange}
             >
               <TabPane tab="Live" key="1">
@@ -451,18 +451,18 @@ class CampaignList extends React.Component<
 export default withRouter(
   compose(
     graphql(DISABLE_CAMPAIGN, {
-      name: "disableCampaign"
+      name: 'disableCampaign',
     }),
     graphql(campaigns, {
       options: () => {
-        const { org_id }: any = jwt.decode(localStorage.getItem("jwt"));
+        const { org_id }: any = jwt.decode(localStorage.getItem('jwt'));
         return {
           variables: {
             status: DEFAULT_ACTIVE_STATUS,
             campaignType: [DEFAULT_REFINEX_CAMPAIGN],
-            organization_id: org_id
+            organization_id: org_id,
           },
-          fetchPolicy: "network-only"
+          fetchPolicy: 'network-only',
         };
       },
       props: ({ data: { loading, error, campaigns, refetch } }: any) => ({
@@ -471,15 +471,15 @@ export default withRouter(
         error,
         refetch,
         changeStatus: (status: any) => {
-          const { org_id }: any = jwt.decode(localStorage.getItem("jwt"));
+          const { org_id }: any = jwt.decode(localStorage.getItem('jwt'));
           const variables = {
             status,
             campaignType: DEFAULT_REFINEX_CAMPAIGN,
-            organization_id: org_id
+            organization_id: org_id,
           };
           refetch(variables);
-        }
-      })
+        },
+      }),
     })
   )(CampaignList)
 );

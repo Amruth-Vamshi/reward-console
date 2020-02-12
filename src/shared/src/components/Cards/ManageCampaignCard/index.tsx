@@ -1,8 +1,8 @@
-import * as React from "react";
-import { Row, Col, Tag, Button } from "antd";
-import { Widget } from "walkin-components";
+import * as React from 'react';
+import { Row, Col, Tag, Button } from 'antd';
+import { Widget } from 'walkin-components';
 
-import { History } from "history";
+import { History } from 'history';
 
 interface iProps {
   history: History;
@@ -17,7 +17,7 @@ const ManageCampaignCard = ({ campaign, history }: iProps) => {
     >
       <Row type="flex" justify="center">
         <Col>
-          <h2>{campaign.name ? campaign.name : "No Title"}</h2>
+          <h2>{campaign.name ? campaign.name : 'No Title'}</h2>
         </Col>
       </Row>
       <Row type="flex" justify="center">
@@ -33,28 +33,28 @@ const ManageCampaignCard = ({ campaign, history }: iProps) => {
       </Row>
       <Row
         style={{
-          paddingTop: "2%"
+          paddingTop: '2%',
         }}
         type="flex"
         justify="center"
       >
         <Col>
-          {campaign.status == "ACTIVE" ? (
+          {campaign.status == 'ACTIVE' ? (
             <Button
-              type={"primary"}
+              type={'primary'}
               onClick={() => {
-                console.log("clicked");
-                history.push("/refinex/campaign/" + campaign.id + "/edit");
+                console.log('clicked');
+                history.push('/refinex/campaign/' + campaign.id + '/edit');
               }}
             >
               Edit
             </Button>
           ) : (
             <Button
-              type={"primary"}
+              type={'primary'}
               onClick={() => {
-                console.log("clicked");
-                history.push("/refinex/campaign/" + campaign.id + "/edit");
+                console.log('clicked');
+                history.push('/refinex/campaign/' + campaign.id + '/edit');
               }}
             >
               Continue Editing

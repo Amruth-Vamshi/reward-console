@@ -1,19 +1,19 @@
-import * as React from "react";
-import { Col, Row, Card, Button } from "antd";
-import { Link } from "react-router-dom";
+import * as React from 'react';
+import { Col, Row, Card, Button } from 'antd';
+import { Link } from 'react-router-dom';
 
-import "./style.css";
+import './style.css';
 
 const AppList = ({ apps }: any) => {
   function random_bg_color() {
     return (
-      "rgb(" +
+      'rgb(' +
       Math.floor(Math.random() * 256) +
-      ", " +
+      ', ' +
       Math.floor(Math.random() * 256) +
-      ", " +
+      ', ' +
       Math.floor(Math.random() * 256) +
-      ")"
+      ')'
     );
   }
 
@@ -48,19 +48,19 @@ const AppList = ({ apps }: any) => {
                   </Link>
                 ) : (
                   <Card
-                    style={{ backgroundColor: "#dedede" }}
+                    style={{ backgroundColor: '#dedede' }}
                     cover={
                       <React.Fragment>
                         <Button style={{ marginBottom: 0 }} type="primary">
                           Purchase
                         </Button>
                         <i
-                          style={{ color: "#b9b5b5" }}
+                          style={{ color: '#b9b5b5' }}
                           className={`${app.inactiveIcon} gx-fs-icon-lg appInactiveIconStyle `}
                         >
                           <img
                             src={app.inactiveIcon}
-                            style={{ clip: "rect(110px)" }}
+                            style={{ clip: 'rect(110px)' }}
                           />
                         </i>
                       </React.Fragment>
@@ -68,7 +68,7 @@ const AppList = ({ apps }: any) => {
                     className="gx-product-vertical coreAppsCard"
                   >
                     <div
-                      style={{ color: "#b9b5b5" }}
+                      style={{ color: '#b9b5b5' }}
                       className="h1 gx-font-weight-semi-bold gx-text-capitalize gx-mb-10"
                     >
                       {app.title}

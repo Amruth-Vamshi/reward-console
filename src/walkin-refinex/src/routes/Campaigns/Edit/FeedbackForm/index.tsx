@@ -1,17 +1,17 @@
-import * as React from "react";
-import { Tabs, Row } from "antd";
-import Build from "./BuildQuestionnaire";
-import Design from "./DesignQuesitonnaire";
-import gql from "graphql-tag";
-import { withRouter, RouteComponentProps } from "react-router-dom";
-import { Query, compose, ApolloProviderProps, QueryResult } from "react-apollo";
-import { CircularProgress } from "walkin-components";
-import { CustomScrollbars } from "walkin-components";
+import * as React from 'react';
+import { Tabs, Row } from 'antd';
+import Build from './BuildQuestionnaire';
+import Design from './DesignQuesitonnaire';
+import gql from 'graphql-tag';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { Query, compose, ApolloProviderProps, QueryResult } from 'react-apollo';
+import { CircularProgress } from 'walkin-components';
+import { CustomScrollbars } from 'walkin-components';
 import {
   GET_QUESTIONNAIRE,
-  GET_FEEDBACK_FORM
-} from "../../../../containers/Query";
-import { ApolloQueryResult, ApolloCurrentQueryResult } from "apollo-client";
+  GET_FEEDBACK_FORM,
+} from '../../../../containers/Query';
+import { ApolloQueryResult, ApolloCurrentQueryResult } from 'apollo-client';
 const { TabPane } = Tabs;
 
 interface RouteParams {
@@ -50,7 +50,7 @@ class FeedbackFormConfig extends React.Component<
           data: campaignData,
           loading,
           error,
-          refetch: refetchFeedbackForm
+          refetch: refetchFeedbackForm,
         }: QueryResult<any>) => {
           if (loading) {
             return <CircularProgress />;
@@ -66,7 +66,7 @@ class FeedbackFormConfig extends React.Component<
                 variables={
                   feedbackForm.questionnaireRoot
                     ? { questionId: feedbackForm.questionnaireRoot.id }
-                    : { questionId: "" }
+                    : { questionId: '' }
                 }
                 displayName="questionnaire"
                 fetchPolicy="network-only"
@@ -74,14 +74,14 @@ class FeedbackFormConfig extends React.Component<
                 {({
                   data: questionnaireData,
                   refetch: refetchQuestionnaire,
-                  error: questionnaireDataError
+                  error: questionnaireDataError,
                 }) => {
                   return (
                     <Tabs
                       size="large"
                       animated={{
                         inkBar: false,
-                        tabPane: true
+                        tabPane: true,
                       }}
                       defaultActiveKey="1"
                     >

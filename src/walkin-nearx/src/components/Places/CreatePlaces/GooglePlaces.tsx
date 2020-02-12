@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 import {
   Row,
   Col,
@@ -8,17 +8,17 @@ import {
   Modal,
   Input,
   Button,
-  Icon
-} from "antd";
-import GetGooglePlaces from "./GetGooglePlaces";
-import { Link } from "react-router-dom";
-import { CREATE_GROUP_OF_PLACES } from "../../../queries";
-import GooglePlacesMap from "./GooglePlacesMap";
-import { nearXClient as client } from "../../../nearXApollo";
-import axios from "axios";
-import canUseDOM from "can-use-dom";
-import "../../../styles/styles.css";
-import { GET_CONFIGURATION, SET_CONFIGURATION } from "../../../queries";
+  Icon,
+} from 'antd';
+import GetGooglePlaces from './GetGooglePlaces';
+import { Link } from 'react-router-dom';
+import { CREATE_GROUP_OF_PLACES } from '../../../queries';
+import GooglePlacesMap from './GooglePlacesMap';
+import { nearXClient as client } from '../../../nearXApollo';
+import axios from 'axios';
+import canUseDOM from 'can-use-dom';
+import '../../../styles/styles.css';
+import { GET_CONFIGURATION, SET_CONFIGURATION } from '../../../queries';
 import {
   GOOGLE_API_KEY,
   FACEBOOK_API_KEY,
@@ -26,9 +26,9 @@ import {
   RADIUS_2,
   RADIUS_3,
   RADIUS_1_MIN,
-  TYPE
-} from "../../../Constants";
-import { History } from "history";
+  TYPE,
+} from '../../../Constants';
+import { History } from 'history';
 
 // AIzaSyCwRQqzyQuopL0CQ212q97uFVyXn5EMLbs
 
@@ -38,7 +38,7 @@ const geolocation: any =
     : {
         getCurrentPosition(success, failure) {
           failure(`Your browser doesn't support geolocation.`);
-        }
+        },
       };
 
 interface iProps {
@@ -79,14 +79,14 @@ export default class GooglePlaces extends React.Component<iProps, iState> {
 
       center: {
         lat: null,
-        lng: null
+        lng: null,
       },
       mark: { lat: null, lng: null },
       // type:null,
       noOfPlaces: 1,
       errors: {},
       markLoc: false,
-      search: "",
+      search: '',
       searchRadius: null,
       getLoc: false,
       moreOptions: false,
@@ -94,22 +94,22 @@ export default class GooglePlaces extends React.Component<iProps, iState> {
       loading: false,
       visible: false,
       loading1: false,
-      defaultRadius: [RADIUS_1_MIN]
+      defaultRadius: [RADIUS_1_MIN],
     };
   }
 
   UNSAFE_componentWillMount() {
-    let googleAPIkey = "";
+    let googleAPIkey = '';
     let defaultRadius = [RADIUS_1_MIN];
     client
       .query({
         query: GET_CONFIGURATION,
         variables: {},
-        fetchPolicy: "network-only"
+        fetchPolicy: 'network-only',
       })
       .then(res => {
         // console.log()
-        console.log("Results", res.data.getConfiguration);
+        console.log('Results', res.data.getConfiguration);
         res.data.getConfiguration.map(k => {
           if (k.name === GOOGLE_API_KEY) googleAPIkey = k.key;
           if (k.name === RADIUS_1) defaultRadius[0] = parseInt(k.key);
@@ -118,10 +118,10 @@ export default class GooglePlaces extends React.Component<iProps, iState> {
         });
 
         // console.log(googleAPIkey)
-        if (googleAPIkey !== "") this.setState({ googleAPIkey, defaultRadius });
+        if (googleAPIkey !== '') this.setState({ googleAPIkey, defaultRadius });
         else this.setState({ visible: true });
       })
-      .catch(err => console.log("Failed to get Places Details" + err));
+      .catch(err => console.log('Failed to get Places Details' + err));
   }
 
   myloc = () => {
@@ -129,7 +129,7 @@ export default class GooglePlaces extends React.Component<iProps, iState> {
       var center = this.state.center;
       center = {
         lat: position.coords.latitude,
-        lng: position.coords.longitude
+        lng: position.coords.longitude,
       };
       this.setState({ center, mark: center, markLoc: true });
     });
@@ -151,52 +151,52 @@ export default class GooglePlaces extends React.Component<iProps, iState> {
     let { googleAPIkey } = this.state;
     // e.preventDefault();
     let errors: any = {};
-    if (this.state.search.trim() == "")
-      errors.search = "* this field is mandatory";
+    if (this.state.search.trim() == '')
+      errors.search = '* this field is mandatory';
     if (this.state.searchRadius !== null && this.state.searchRadius !== NaN) {
       if (this.state.searchRadius < 100)
-        errors.searchRadius = "Radius should be greater than 100";
+        errors.searchRadius = 'Radius should be greater than 100';
       if (this.state.mark.lat === null || this.state.mark.lng === null)
-        errors.searchRadius = "Please fill Latitude and Longitude values first";
+        errors.searchRadius = 'Please fill Latitude and Longitude values first';
     }
 
     if (Object.keys(errors).length !== 0) {
       this.setState({ errors });
     } else {
-      let url = "https://maps.googleapis.com/maps/api/place/";
+      let url = 'https://maps.googleapis.com/maps/api/place/';
       if (this.state.mark.lat === null || this.state.mark.lng === null)
         url +=
-          "textsearch/json?key=" + googleAPIkey + "&query=" + this.state.search;
+          'textsearch/json?key=' + googleAPIkey + '&query=' + this.state.search;
       else {
         url +=
-          "nearbysearch/json?location=" +
+          'nearbysearch/json?location=' +
           this.state.mark.lat +
-          "," +
+          ',' +
           this.state.mark.lng +
-          "&key=" +
+          '&key=' +
           googleAPIkey;
         if (this.state.searchRadius !== null && this.state.searchRadius >= 100)
-          url += "&radius=" + this.state.searchRadius;
-        else url += "&rankby=distance";
-        url += "&keyword=" + this.state.search;
+          url += '&radius=' + this.state.searchRadius;
+        else url += '&rankby=distance';
+        url += '&keyword=' + this.state.search;
       }
 
       if (this.state.type) {
-        url += "&type=" + this.state.type;
+        url += '&type=' + this.state.type;
       }
 
       // console.log(url);
 
-      const hide = message.loading("Action in progress..", 0);
+      const hide = message.loading('Action in progress..', 0);
 
       var req = axios.create({
         headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*"
-        }
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+        },
       });
-      let proxy = "https://cors-anywhere.herokuapp.com/";
+      let proxy = 'https://cors-anywhere.herokuapp.com/';
       req
         .get(proxy + url)
         .then(response => {
@@ -204,18 +204,18 @@ export default class GooglePlaces extends React.Component<iProps, iState> {
           if (response.data.results.length) {
             this.formatePlaces(response.data.results);
             message.success(
-              "success: " + response.data.results.length + " Places Found"
+              'success: ' + response.data.results.length + ' Places Found'
             );
           } else
             message.warning(
               response.data.error_message
                 ? response.data.error_message
-                : "No Places Found"
+                : 'No Places Found'
             );
         })
         .catch(err => {
           setTimeout(hide, 0);
-          message.error("ERROR");
+          message.error('ERROR');
           console.log(err);
         });
 
@@ -247,7 +247,7 @@ export default class GooglePlaces extends React.Component<iProps, iState> {
         selected: false,
         radius: this.state.defaultRadius,
         center: i.geometry.location,
-        errors: {}
+        errors: {},
       });
     });
     // console.log(places)
@@ -255,7 +255,7 @@ export default class GooglePlaces extends React.Component<iProps, iState> {
       places: [],
       selectAll: false,
       places1: places,
-      center: places[0].center
+      center: places[0].center,
     });
   };
 
@@ -272,45 +272,45 @@ export default class GooglePlaces extends React.Component<iProps, iState> {
 
   createPlaces = () => {
     this.setState({ loading: true });
-    console.log("Create Places");
+    console.log('Create Places');
     let places = [];
     this.state.places.map(p => {
       places.push({
         geofenceName: p.placeName,
         address: p.address,
         location: p.center,
-        radii: p.radius
+        radii: p.radius,
       });
     });
     client
       .mutate({
         mutation: CREATE_GROUP_OF_PLACES,
-        variables: { groupName: this.state.search, places: places }
+        variables: { groupName: this.state.search, places: places },
       })
       .then(res => {
-        message.success("success");
-        this.props.history.push("/nearx/places");
+        message.success('success');
+        this.props.history.push('/nearx/places');
         this.setState({ loading: false });
       })
       .catch(err => {
         this.setState({ loading: false });
-        console.log("Failed to stote Places Details" + err);
-        message.warning("Failed to stote Places Details");
+        console.log('Failed to stote Places Details' + err);
+        message.warning('Failed to stote Places Details');
       });
   };
 
   handleOnChange = e => {
-    if (e.target.value.trim() != "") this.state.errors[e.target.name] = "";
+    if (e.target.value.trim() != '') this.state.errors[e.target.name] = '';
     this.setState({ [e.target.name]: e.target.value });
   };
 
   changeSearchRadius = e => {
     let val = e.target.value;
     let errors: any = {};
-    if (val < 100) errors.searchRadius = "Radius should be greater than 100";
+    if (val < 100) errors.searchRadius = 'Radius should be greater than 100';
     else if (this.state.mark.lat == null || this.state.mark.lng == null)
-      errors.searchRadius = "Please fill Latitude and Longitude values first";
-    if (val == 0 || val == null || val == NaN) errors.searchRadius = "";
+      errors.searchRadius = 'Please fill Latitude and Longitude values first';
+    if (val == 0 || val == null || val == NaN) errors.searchRadius = '';
     this.setState({ searchRadius: parseInt(e.target.value), errors });
   };
 
@@ -336,16 +336,16 @@ export default class GooglePlaces extends React.Component<iProps, iState> {
     let lat = center.lat ? parseFloat(center.lat) : null;
     let markLoc = false;
 
-    if (name == "lat") lat = val;
+    if (name == 'lat') lat = val;
     else lng = val;
 
     if (this.state.searchRadius > 100) {
-      if (lat !== null && lng !== null) errors.searchRadius = "";
+      if (lat !== null && lng !== null) errors.searchRadius = '';
       else
-        errors.searchRadius = "Please fill Latitude and Longitude values first";
+        errors.searchRadius = 'Please fill Latitude and Longitude values first';
     }
-    if (lat != null) errors.latitude = "";
-    if (lng != null) errors.longitude = "";
+    if (lat != null) errors.latitude = '';
+    if (lng != null) errors.longitude = '';
 
     center = { lat: lat, lng: lng };
     if (lat != null && lng != null) markLoc = true;
@@ -370,7 +370,7 @@ export default class GooglePlaces extends React.Component<iProps, iState> {
 
   googleKeyChange = e => {
     let { errors } = this.state;
-    errors.googleAPIkey = "";
+    errors.googleAPIkey = '';
     this.setState({ googleAPIkey: e.target.value, errors });
   };
 
@@ -379,48 +379,48 @@ export default class GooglePlaces extends React.Component<iProps, iState> {
     this.setState({ loading1: true });
     var req = axios.create({
       headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*"
-      }
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+      },
     });
     let url =
-      "https://cors-anywhere.herokuapp.com/" +
-      "https://maps.googleapis.com/maps/api/geocode/json?address=bengaluru&key=" +
+      'https://cors-anywhere.herokuapp.com/' +
+      'https://maps.googleapis.com/maps/api/geocode/json?address=bengaluru&key=' +
       this.state.googleAPIkey;
     req
       .get(url)
       .then(response => {
         if (
-          response.data.error_message === "The provided API key is invalid."
+          response.data.error_message === 'The provided API key is invalid.'
         ) {
-          errors.googleAPIkey = "Invalid API key";
+          errors.googleAPIkey = 'Invalid API key';
           this.setState({ loading1: false, errors });
-          message.warning("Invalid API key");
+          message.warning('Invalid API key');
         } else {
           // message.success('Success');
           this.setState({ loading: true });
           let keys = [
-            { name: GOOGLE_API_KEY, key: this.state.googleAPIkey, type: TYPE }
+            { name: GOOGLE_API_KEY, key: this.state.googleAPIkey, type: TYPE },
           ];
 
           client
             .mutate({
               mutation: SET_CONFIGURATION,
-              variables: { input: keys }
+              variables: { input: keys },
             })
             .then(res => {
-              message.success("success");
+              message.success('success');
               this.setState({ loading1: false, visible: false });
             })
             .catch(err => {
               this.setState({ loading1: false });
-              message.warning("ERROR in storing");
+              message.warning('ERROR in storing');
             });
         }
       })
       .catch(err => {
-        message.error("ERROR");
+        message.error('ERROR');
         console.log(err);
       });
   };
@@ -441,7 +441,7 @@ export default class GooglePlaces extends React.Component<iProps, iState> {
             </div>
           </Row> */}
 
-        <Row style={{ float: "none" }} gutter={1}>
+        <Row style={{ float: 'none' }} gutter={1}>
           <Col xs={24} sm={14} span={14}>
             <GetGooglePlaces
               formData={this.state}
@@ -456,7 +456,7 @@ export default class GooglePlaces extends React.Component<iProps, iState> {
 
             {this.state.places1.length ? (
               <Affix
-                style={{ position: "absolute", width: "100%", bottom: 0 }}
+                style={{ position: 'absolute', width: '100%', bottom: 0 }}
                 offsetBottom={10}
               >
                 <Card
@@ -467,15 +467,15 @@ export default class GooglePlaces extends React.Component<iProps, iState> {
                     <Row>
                       <Col span={16}>
                         <div className="divCenterVertical">
-                          {" "}
-                          <span>Create places with selected items</span>{" "}
+                          {' '}
+                          <span>Create places with selected items</span>{' '}
                         </div>
                       </Col>
                       <Col span={8}>
-                        {" "}
+                        {' '}
                         <Button
                           onClick={() => this.createPlaces()}
-                          style={{ float: "right", marginBottom: 0 }}
+                          style={{ float: 'right', marginBottom: 0 }}
                           loading={this.state.loading}
                           className="buttonPrimary"
                         >
@@ -487,17 +487,17 @@ export default class GooglePlaces extends React.Component<iProps, iState> {
                     <Row>
                       <Col span={16}>
                         <div className="divCenterVertical">
-                          {" "}
-                          <span>Select some places to create</span>{" "}
+                          {' '}
+                          <span>Select some places to create</span>{' '}
                         </div>
                       </Col>
                       <Col span={8}>
-                        {" "}
+                        {' '}
                         <Link to="/nearx/places/createplace/manually">
                           <Button
                             disabled
                             className="buttonPrimary"
-                            style={{ float: "right", marginBottom: 0 }}
+                            style={{ float: 'right', marginBottom: 0 }}
                           >
                             CREATE
                           </Button>
@@ -509,15 +509,15 @@ export default class GooglePlaces extends React.Component<iProps, iState> {
               </Affix>
             ) : (
               <div className="">
-                {" "}
+                {' '}
                 <br /> <br /> <br /> <br /> <br />
-                <div style={{ textAlign: "center" }}>
+                <div style={{ textAlign: 'center' }}>
                   <Icon
                     type="environment"
                     style={{
-                      color: "#CACACA",
+                      color: '#CACACA',
                       fontSize: 150,
-                      marginBottom: 20
+                      marginBottom: 20,
                     }}
                     theme="filled"
                   />
@@ -532,7 +532,7 @@ export default class GooglePlaces extends React.Component<iProps, iState> {
           <Col
             xs={24}
             sm={10}
-            style={{ height: "100hv", backgroundColor: "rgb(234, 234, 234)" }}
+            style={{ height: '100hv', backgroundColor: 'rgb(234, 234, 234)' }}
           >
             <GooglePlacesMap
               getloc={this.getloc}
@@ -546,11 +546,11 @@ export default class GooglePlaces extends React.Component<iProps, iState> {
               handleOnTypeChange={this.handleOnTypeChange}
             />
             {this.state.moreOptions ? (
-              ""
+              ''
             ) : (
               <div>
-                {" "}
-                <br /> <br /> <br /> <br /> <br /> <br />{" "}
+                {' '}
+                <br /> <br /> <br /> <br /> <br /> <br />{' '}
               </div>
             )}
           </Col>
@@ -571,7 +571,7 @@ export default class GooglePlaces extends React.Component<iProps, iState> {
               onClick={this.googleKeySubmit}
             >
               Submit
-            </Button>
+            </Button>,
           ]}
         >
           <p>Submit your Google API key to search places</p>
@@ -583,12 +583,12 @@ export default class GooglePlaces extends React.Component<iProps, iState> {
               name="googleAPIkey"
               onChange={c => this.googleKeyChange(c)}
             />
-            <span style={{ color: "Red" }}>
+            <span style={{ color: 'Red' }}>
               {this.state.errors.googleAPIkey}
             </span>
           </div>
           <div style={{ marginRight: 20, marginTop: 15 }}>
-            <div style={{ float: "right" }}>
+            <div style={{ float: 'right' }}>
               <div
                 style={{ marginBottom: 3, fontSize: 15 }}
                 className="gx-text-primary gx-pointer"

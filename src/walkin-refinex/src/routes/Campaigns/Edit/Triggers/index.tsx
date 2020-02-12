@@ -1,5 +1,5 @@
-import * as React from "react";
-import PropTypes from "prop-types";
+import * as React from 'react';
+import PropTypes from 'prop-types';
 import {
   Col,
   Row,
@@ -8,11 +8,11 @@ import {
   Form,
   Select,
   Input,
-  Button
-} from "antd";
-import Delay from "./Delay";
-import { EventTypeForm } from "./EventType";
-import Filter from "./Filter";
+  Button,
+} from 'antd';
+import Delay from './Delay';
+import { EventTypeForm } from './EventType';
+import Filter from './Filter';
 const { Title } = Typography;
 
 interface TriggersProps {
@@ -35,10 +35,10 @@ class Triggers extends React.Component<TriggersProps, {}> {
     return (
       <Row
         style={{
-          margin: "1rem",
-          height: "-webkit-fill-available",
-          paddingBottom: "5rem",
-          overflowX: "scroll"
+          margin: '1rem',
+          height: '-webkit-fill-available',
+          paddingBottom: '5rem',
+          overflowX: 'scroll',
         }}
       >
         <Row>

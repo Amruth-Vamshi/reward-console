@@ -1,8 +1,8 @@
-import * as React from "react";
-import { CardBox, ErrorBoundary } from "walkin-components";
-import throttle from "lodash.throttle";
-import gql from "graphql-tag";
-import { graphql, compose } from "react-apollo";
+import * as React from 'react';
+import { CardBox, ErrorBoundary } from 'walkin-components';
+import throttle from 'lodash.throttle';
+import gql from 'graphql-tag';
+import { graphql, compose } from 'react-apollo';
 import {
   Form,
   Slider,
@@ -14,21 +14,21 @@ import {
   Popconfirm,
   message,
   Tooltip,
-  Icon
-} from "antd";
-import { QUESTION_TYPES } from "../../../../../../../containers/Query";
-import { FormComponentProps } from "antd/lib/form";
+  Icon,
+} from 'antd';
+import { QUESTION_TYPES } from '../../../../../../../containers/Query';
+import { FormComponentProps } from 'antd/lib/form';
 
 const QUESTION_WITH_SLIDER = {
-  RATING_SCALE: "RATING_SCALE",
-  OPINION_SCALE: "OPINION_SCALE"
+  RATING_SCALE: 'RATING_SCALE',
+  OPINION_SCALE: 'OPINION_SCALE',
 };
 declare const ValidateStatuses: [
-  "success",
-  "warning",
-  "error",
-  "validating",
-  ""
+  'success',
+  'warning',
+  'error',
+  'validating',
+  ''
 ];
 interface QuestionFormProps extends FormComponentProps {
   showButton?: any;
@@ -56,8 +56,8 @@ class QuestionForm extends React.Component<
     this.state = {
       popUpVisible: false,
       newTypeValue: null,
-      validationStatus: "success",
-      showButton: false
+      validationStatus: 'success',
+      showButton: false,
     };
     this.handleClickThrottled = throttle(this.submitQuestion, 1000);
   }
@@ -67,13 +67,13 @@ class QuestionForm extends React.Component<
       questionText,
       type,
       rangeMax,
-      rangeMin
+      rangeMin,
     } = this.props.questionToEdit;
 
     this.props.form.setFieldsValue({
       questionText,
       type,
-      range: [rangeMin, rangeMax]
+      range: [rangeMin, rangeMax],
     });
   };
   componentDidMount() {
@@ -95,7 +95,7 @@ class QuestionForm extends React.Component<
     for (const questionType in questionTypes) {
       let node = null;
       if (questionTypes.hasOwnProperty(questionType)) {
-        if (typeof questionTypes[questionType] === "object") {
+        if (typeof questionTypes[questionType] === 'object') {
           node = (
             <TreeNode
               title={questionType}
@@ -136,12 +136,12 @@ class QuestionForm extends React.Component<
 
   triggerPopup = (_, __, { preValue, triggerValue }) => {
     this.props.form.setFieldsValue({
-      type: triggerValue
+      type: triggerValue,
     });
     if (preValue && preValue.value !== triggerValue) {
       this.setState({
         popUpVisible: true,
-        newTypeValue: triggerValue
+        newTypeValue: triggerValue,
         // validationStatus: "validating"
       });
     }
@@ -150,7 +150,7 @@ class QuestionForm extends React.Component<
   confirmTypeChange = () => {
     const { newTypeValue } = this.state;
     this.props.form.setFieldsValue({
-      type: newTypeValue
+      type: newTypeValue,
     });
     this.closeTypeChange();
   };
@@ -159,7 +159,7 @@ class QuestionForm extends React.Component<
     this.setState({
       popUpVisible: false,
       newTypeValue: null,
-      validationStatus: "success"
+      validationStatus: 'success',
     });
   };
 
@@ -169,22 +169,22 @@ class QuestionForm extends React.Component<
     const { Item } = Form;
     const { TextArea } = Input;
     let props = {
-      suffix: <span />
+      suffix: <span />,
     };
-    if (isFieldsTouched(["questionText"]) || isFieldsTouched(["range"])) {
+    if (isFieldsTouched(['questionText']) || isFieldsTouched(['range'])) {
       props = {
         suffix: (
           <Tooltip title="Update Question">
             <Button
               onClick={this.submitQuestion}
               type="primary"
-              style={{ margin: "auto" }}
-              size={"small"}
+              style={{ margin: 'auto' }}
+              size={'small'}
             >
               Update
             </Button>
           </Tooltip>
-        )
+        ),
       };
     }
 
@@ -198,12 +198,12 @@ class QuestionForm extends React.Component<
               onSubmit={this.submitQuestion}
             >
               <Item label="Question Text">
-                {getFieldDecorator("questionText", {
+                {getFieldDecorator('questionText', {
                   rules: [
                     {
-                      required: true
-                    }
-                  ]
+                      required: true,
+                    },
+                  ],
                 })(<Input {...props} />)}
               </Item>
               {/* <Popconfirm
@@ -236,21 +236,21 @@ class QuestionForm extends React.Component<
                   QUESTION_WITH_SLIDER[this.props.questionToEdit.type]
                     ? {}
                     : {
-                        display: "none"
+                        display: 'none',
                       }
                 }
               >
-                {getFieldDecorator("range", {
+                {getFieldDecorator('range', {
                   initialValue: [
                     this.props.questionToEdit.rangeMin,
-                    this.props.questionToEdit.rangeMax
-                  ]
+                    this.props.questionToEdit.rangeMax,
+                  ],
                 })(<Slider range />)}
               </Item>
               <Item wrapperCol={{ offset: 18 }}>
                 <Button
                   type="primary"
-                  style={{ position: "absolute", left: "-99999px" }}
+                  style={{ position: 'absolute', left: '-99999px' }}
                 />
               </Item>
             </Form>
@@ -266,17 +266,17 @@ class QuestionForm extends React.Component<
 // };
 
 const FormPane = Form.create({
-  name: "QuestionForm",
+  name: 'QuestionForm',
   onValuesChange(props: QuestionFormProps, values) {
     props.onQuestionEdited(values);
-  }
+  },
 })(QuestionForm);
 
 export default compose(
   graphql(QUESTION_TYPES, {
-    name: "questionTypesQuery",
+    name: 'questionTypesQuery',
     options: {
-      fetchPolicy: "cache-first"
-    }
+      fetchPolicy: 'cache-first',
+    },
   })
 )(FormPane);

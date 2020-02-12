@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import NewsItem from "./NewsItem";
+import React, { Component } from 'react';
+import NewsItem from './NewsItem';
 
 interface IProps {
   newsList: any[];

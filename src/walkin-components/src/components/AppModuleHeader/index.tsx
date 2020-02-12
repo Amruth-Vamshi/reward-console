@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 
 interface IProps {
   placeholder?: string;
@@ -13,14 +13,14 @@ interface IState {}
 
 class AppModuleHeader extends React.Component<IProps, IState> {
   readonly state = {
-    popoverOpen: false
+    popoverOpen: false,
   };
   constructor(
     props: IProps = {
-      styleName: "",
-      value: "",
+      styleName: '',
+      value: '',
       notification: true,
-      apps: true
+      apps: true,
     }
   ) {
     super(props);
@@ -52,7 +52,7 @@ class AppModuleHeader extends React.Component<IProps, IState> {
         </div>
         <div className="gx-module-box-header-right">
           <span className="gx-fs-xl">
-            {" "}
+            {' '}
             <i className="icon icon-apps gx-icon-btn" />
           </span>
           <span className="gx-fs-xl">

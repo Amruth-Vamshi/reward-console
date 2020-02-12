@@ -1,6 +1,6 @@
-import * as React from "react";
-import { Steps } from "antd";
-import { StepsProps } from "antd/lib/steps";
+import * as React from 'react';
+import { Steps } from 'antd';
+import { StepsProps } from 'antd/lib/steps';
 const { Step } = Steps;
 
 interface StepperProps extends StepsProps {
@@ -11,7 +11,7 @@ interface StepperProps extends StepsProps {
 const Stepper: React.FunctionComponent<StepperProps> = ({
   current,
   onChange,
-  StepperData
+  StepperData,
 }) => {
   return (
     <Steps

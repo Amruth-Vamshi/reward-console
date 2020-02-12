@@ -1,10 +1,10 @@
-import * as React from "react";
-import UserCell from "./UserCell/index";
+import * as React from 'react';
+import UserCell from './UserCell/index';
 
 const ChatUserList = ({
   chatUsers,
   selectedSectionId,
-  onSelectUser
+  onSelectUser,
 }: {
   chatUsers: any;
   selectedSectionId: any;

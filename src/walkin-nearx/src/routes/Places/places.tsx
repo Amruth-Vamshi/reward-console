@@ -1,16 +1,16 @@
-import * as React from "react";
-import { Col, Row, Spin, Pagination, message, Input, Button } from "antd";
-import { Link } from "react-router-dom";
-import { Auxiliary } from "walkin-components";
-import "../../styles/places.css";
-import { nearXClient as client } from "../../nearXApollo";
-import PlaceCard from "../../components/Places/placeCard";
+import * as React from 'react';
+import { Col, Row, Spin, Pagination, message, Input, Button } from 'antd';
+import { Link } from 'react-router-dom';
+import { Auxiliary } from 'walkin-components';
+import '../../styles/places.css';
+import { nearXClient as client } from '../../nearXApollo';
+import PlaceCard from '../../components/Places/placeCard';
 // import { getAllPlaces } from './data'
 // import { Query } from "react-apollo";
-import { GET_ALL_AND_SEARCH_PLACES, DISABLE_PLACES } from "../../queries";
-import { History } from "history";
-import { any } from "prop-types";
-import ApolloClient from "apollo-client";
+import { GET_ALL_AND_SEARCH_PLACES, DISABLE_PLACES } from '../../queries';
+import { History } from 'history';
+import { any } from 'prop-types';
+import ApolloClient from 'apollo-client';
 
 const Search = Input.Search;
 
@@ -34,9 +34,9 @@ export default class Places extends React.Component<iProps, iState> {
       places: [],
       offset: 0,
       totalPlaces: 0,
-      search: "",
+      search: '',
       errors: {},
-      spin: false
+      spin: false,
     };
   }
 
@@ -48,13 +48,13 @@ export default class Places extends React.Component<iProps, iState> {
   ) => {
     this.setState({ spin: true });
     let input: any = { limit: limit, offset: offset };
-    if (search && search.trim() !== "") input.search = search.trim();
-    let policy: any = `${fetchPolicy ? fetchPolicy : "cache-first"}`;
+    if (search && search.trim() !== '') input.search = search.trim();
+    let policy: any = `${fetchPolicy ? fetchPolicy : 'cache-first'}`;
     client
       .query({
         query: GET_ALL_AND_SEARCH_PLACES,
         variables: input,
-        fetchPolicy: policy
+        fetchPolicy: policy,
       })
       .then(res => {
         var places = [];
@@ -65,20 +65,20 @@ export default class Places extends React.Component<iProps, iState> {
             address: p.address,
             center: p.location,
             radius: p.radii,
-            hotspots: p.totalHotspot
+            hotspots: p.totalHotspot,
           });
         });
         // console.log(JSON.stringify(places))
         this.setState({
           places,
           spin: false,
-          totalPlaces: res.data.Places.pageInfo.total
+          totalPlaces: res.data.Places.pageInfo.total,
         });
       })
       .catch(err => {
         this.setState({ spin: false });
-        message.error("ERROR");
-        console.log("Failed to get Places Details" + err);
+        message.error('ERROR');
+        console.log('Failed to get Places Details' + err);
       });
   };
 
@@ -86,25 +86,25 @@ export default class Places extends React.Component<iProps, iState> {
     client
       .mutate({
         mutation: DISABLE_PLACES,
-        variables: { id: id }
+        variables: { id: id },
       })
       .then(res => {
         console.log(res);
-        this.getPlacesData(this.state.offset * 7, 7, "", "network-only");
+        this.getPlacesData(this.state.offset * 7, 7, '', 'network-only');
       })
       .catch(err => {
         this.setState({ spin: false });
-        message.error("ERROR");
-        console.log("Failed to get Places Details" + err);
+        message.error('ERROR');
+        console.log('Failed to get Places Details' + err);
       });
   };
 
   UNSAFE_componentWillMount() {
-    this.getPlacesData(0, 7, "", "network-only");
+    this.getPlacesData(0, 7, '', 'network-only');
   }
 
   pagination = (e, n) => {
-    this.getPlacesData((e - 1) * n, n, this.state.search, "cache-first");
+    this.getPlacesData((e - 1) * n, n, this.state.search, 'cache-first');
     this.setState({ offset: e - 1 });
   };
 
@@ -113,12 +113,12 @@ export default class Places extends React.Component<iProps, iState> {
   };
   handleChange = e => {
     let errors = this.state.errors;
-    if (e.target.value.trim() != "") errors[e.target.name] = "";
+    if (e.target.value.trim() != '') errors[e.target.name] = '';
     this.setState({ [e.target.name]: e.target.value, errors });
   };
 
   handleSearchChange = e => {
-    if (e.target.value.trim() == "") this.getPlacesData(0, 7, "");
+    if (e.target.value.trim() == '') this.getPlacesData(0, 7, '');
     this.setState({ [e.target.name]: e.target.value });
   };
 
@@ -129,9 +129,9 @@ export default class Places extends React.Component<iProps, iState> {
       <div style={{ margin: 0 }}>
         <Auxiliary>
           <Row className="headerRow1">
-            <div style={{ width: "100%" }}>
+            <div style={{ width: '100%' }}>
               <span style={{ fontSize: 25 }}>Places</span>
-              <div style={{ float: "right", flexFlow: "right" }}>
+              <div style={{ float: 'right', flexFlow: 'right' }}>
                 <Link to="/nearx/places/createplace">
                   <Button style={{ margin: 0 }} className="buttonPrimary">
                     Create New
@@ -151,7 +151,7 @@ export default class Places extends React.Component<iProps, iState> {
             </div>
             </Row> */}
 
-          <Row style={{ margin: "5px 0px" }}>
+          <Row style={{ margin: '5px 0px' }}>
             <Col lg={5} md={6} sm={8} xs={15}>
               {/* <Input style={{ width: "10%", marginRight: 15 }} placeholder="Sort By" /> */}
               {/* <Input style={{ width: "10%" }} placeholder="Filter" /> */}
@@ -166,7 +166,7 @@ export default class Places extends React.Component<iProps, iState> {
                 name="search"
                 onChange={c => this.handleSearchChange(c)}
               />
-              <span style={{ color: "Red" }}>{this.state.errors.search}</span>
+              <span style={{ color: 'Red' }}>{this.state.errors.search}</span>
             </Col>
           </Row>
 

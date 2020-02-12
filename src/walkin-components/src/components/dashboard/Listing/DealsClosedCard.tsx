@@ -1,21 +1,21 @@
-import * as React from "react";
-import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis } from "recharts";
-import { Badge } from "antd";
-import { Widget } from "../../Widget";
+import * as React from 'react';
+import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis } from 'recharts';
+import { Badge } from 'antd';
+import { Widget } from '../../Widget';
 
 const data = [
-  { name: "JAN", closedDeals: 200, queries: 600 },
-  { name: "FEB", closedDeals: 500, queries: 900 },
-  { name: "MAR", closedDeals: 700, queries: 1200 },
-  { name: "APR", closedDeals: 800, queries: 1300 },
-  { name: "MAY", closedDeals: 700, queries: 1200 },
-  { name: "JUN", closedDeals: 500, queries: 900 },
-  { name: "JUL", closedDeals: 600, queries: 200 },
-  { name: "AUG", closedDeals: 200, queries: 800 },
-  { name: "SEP", closedDeals: 400, queries: 400 },
-  { name: "OCT", closedDeals: 400, queries: 500 },
-  { name: "NOV", closedDeals: 400, queries: 1200 },
-  { name: "DEC", closedDeals: 200, queries: 800 }
+  { name: 'JAN', closedDeals: 200, queries: 600 },
+  { name: 'FEB', closedDeals: 500, queries: 900 },
+  { name: 'MAR', closedDeals: 700, queries: 1200 },
+  { name: 'APR', closedDeals: 800, queries: 1300 },
+  { name: 'MAY', closedDeals: 700, queries: 1200 },
+  { name: 'JUN', closedDeals: 500, queries: 900 },
+  { name: 'JUL', closedDeals: 600, queries: 200 },
+  { name: 'AUG', closedDeals: 200, queries: 800 },
+  { name: 'SEP', closedDeals: 400, queries: 400 },
+  { name: 'OCT', closedDeals: 400, queries: 500 },
+  { name: 'NOV', closedDeals: 400, queries: 1200 },
+  { name: 'DEC', closedDeals: 200, queries: 800 },
 ];
 
 const DealsClosedCard = () => {

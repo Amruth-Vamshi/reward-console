@@ -1,5 +1,5 @@
-import * as React from "react";
-import { Avatar, Badge, Checkbox } from "antd";
+import * as React from 'react';
+import { Avatar, Badge, Checkbox } from 'antd';
 
 const ToDoItem = ({
   todo,
@@ -7,7 +7,7 @@ const ToDoItem = ({
   onTodoChecked,
   onMarkAsStart,
   users,
-  labels
+  labels,
 }: {
   todo?: any;
   onTodoSelect?: any;
@@ -53,7 +53,7 @@ const ToDoItem = ({
         <div className="gx-module-todo-content">
           <div
             className={`gx-subject ${todo.completed &&
-              "gx-text-muted gx-text-strikethrough"}`}
+              'gx-text-muted gx-text-strikethrough'}`}
           >
             {todo.title}
           </div>

@@ -1,5 +1,5 @@
-import * as React from "react";
-import { Avatar, Checkbox } from "antd";
+import * as React from 'react';
+import { Avatar, Checkbox } from 'antd';
 
 interface iProps {
   place?: any;
@@ -15,10 +15,10 @@ export default class PlacesItemCard extends React.Component<iProps, {}> {
         <div className="gx-contact-item">
           <div className="gx-module-list-icon">
             <div className="gx-ml-2 gx-d-none gx-d-sm-flex">
-              {image === null || image === "" ? (
+              {image === null || image === '' ? (
                 <Avatar size="large">
-                  {" "}
-                  {placeName.charAt(0).toUpperCase()}{" "}
+                  {' '}
+                  {placeName.charAt(0).toUpperCase()}{' '}
                 </Avatar>
               ) : (
                 <Avatar size="large" alt={placeName} src={image} />
@@ -27,18 +27,18 @@ export default class PlacesItemCard extends React.Component<iProps, {}> {
           </div>
 
           <div
-            style={{ maxWidth: "calc(100% - 70px)" }}
+            style={{ maxWidth: 'calc(100% - 70px)' }}
             className="gx-module-list-info gx-contact-list-info"
           >
             <div className="gx-module-contact-content">
               <p className="gx-mb-1">
-                {" "}
-                <span className="gx-contact-name"> {placeName}</span>{" "}
+                {' '}
+                <span className="gx-contact-name"> {placeName}</span>{' '}
               </p>
               <div className="gx-text-muted">
                 <span className="gx-email gx-d-inline-block gx-mr-2">
-                  {" "}
-                  {address}{" "}
+                  {' '}
+                  {address}{' '}
                 </span>
               </div>
             </div>

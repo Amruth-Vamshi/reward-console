@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 
 function EventItem({ data }: { data: any; key: any; index: any }) {
   const { image, title, date, address } = data;

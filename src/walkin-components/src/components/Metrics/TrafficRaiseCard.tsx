@@ -1,16 +1,16 @@
-import * as React from "react";
-import { Line, LineChart, ResponsiveContainer, Tooltip } from "recharts";
-import { Col, Row } from "antd";
-import { Widget } from "../Widget";
+import * as React from 'react';
+import { Line, LineChart, ResponsiveContainer, Tooltip } from 'recharts';
+import { Col, Row } from 'antd';
+import { Widget } from '../Widget';
 
 const data = [
-  { name: "Page A", traffic: 200 },
-  { name: "Page B", traffic: 1100 },
-  { name: "Page C", traffic: 800 },
-  { name: "Page D", traffic: 1700 },
-  { name: "Page D", traffic: 600 },
-  { name: "Page D", traffic: 1800 },
-  { name: "Page D", traffic: 600 }
+  { name: 'Page A', traffic: 200 },
+  { name: 'Page B', traffic: 1100 },
+  { name: 'Page C', traffic: 800 },
+  { name: 'Page D', traffic: 1700 },
+  { name: 'Page D', traffic: 600 },
+  { name: 'Page D', traffic: 1800 },
+  { name: 'Page D', traffic: 600 },
 ];
 
 const TrafficRaiseCard = () => {

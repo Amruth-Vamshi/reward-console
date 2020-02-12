@@ -1,7 +1,7 @@
-import * as React from "react";
-import { Upload, Icon, message } from "antd";
-import "../styles/places.css";
-import * as csv from "csv";
+import * as React from 'react';
+import { Upload, Icon, message } from 'antd';
+import '../styles/places.css';
+import * as csv from 'csv';
 
 const Dragger = Upload.Dragger;
 
@@ -15,7 +15,7 @@ export default class TestUpload extends React.Component<iProps, iState> {
   constructor(props) {
     super(props);
     this.state = {
-      fileList: []
+      fileList: [],
     };
   }
 
@@ -23,12 +23,12 @@ export default class TestUpload extends React.Component<iProps, iState> {
     var _this = this;
 
     var props = {
-      name: "file",
+      name: 'file',
       // className: 'upload-list-inline',
       // listType: 'picture',
-      className: "upload-list-csv",
+      className: 'upload-list-csv',
       multiple: true,
-      accept: ".csv",
+      accept: '.csv',
       beforeUpload(file, fileList) {
         const reader: any = new FileReader();
         let input: string = reader.result;
@@ -41,11 +41,11 @@ export default class TestUpload extends React.Component<iProps, iState> {
 
         reader.readAsBinaryString(file);
 
-        file.status = "done";
+        file.status = 'done';
         return false;
       },
 
-      action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
+      action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
       onChange(info) {
         let fileList = [...info.fileList];
 
@@ -70,7 +70,7 @@ export default class TestUpload extends React.Component<iProps, iState> {
         // } else if (status === 'error') {
         //     message.error(`${info.file.name} file upload failed.`);
         // }
-      }
+      },
     };
 
     return (

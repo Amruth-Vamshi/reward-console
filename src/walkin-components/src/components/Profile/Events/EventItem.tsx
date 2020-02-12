@@ -1,5 +1,5 @@
-import * as React from "react";
-import { Tag } from "antd";
+import * as React from 'react';
+import { Tag } from 'antd';
 
 function EventItem({ data }) {
   const { image, title, address, date } = data;
@@ -28,13 +28,13 @@ function EventItem({ data }) {
           <h2 className="gx-text-primary gx-mb-1">
             <i
               className={`icon icon-calendar gx-fs-lg gx-mr-2 gx-d-inline-flex gx-vertical-align-middle`}
-            />{" "}
+            />{' '}
             <span className="gx-d-inline-flex gx-vertical-align-middle">
               {date}
             </span>
           </h2>
           <p className="gx-text-primary gx-text-truncate gx-mt-sm-auto gx-mb-0 gx-pointer">
-            Check in detail{" "}
+            Check in detail{' '}
             <i
               className={`icon icon-long-arrow-right gx-fs-xxl gx-ml-1 gx-ml-sm-2 gx-d-inline-flex gx-vertical-align-middle`}
             />

@@ -1,17 +1,17 @@
 import {
   SWITCH_LANGUAGE,
   TOGGLE_COLLAPSED_NAV,
-  WINDOW_WIDTH
-} from "walkin-components/src/constants/ActionTypes";
+  WINDOW_WIDTH,
+} from 'walkin-components/src/constants/ActionTypes';
 import {
   LAYOUT_TYPE,
   NAV_STYLE,
   THEME_COLOR_SELECTION,
-  THEME_TYPE
-} from "walkin-components/src/constants/ThemeSetting";
-import gql from "graphql-tag";
-import { decode } from "jsonwebtoken";
-import { configureClient } from "../client";
+  THEME_TYPE,
+} from 'walkin-components/src/constants/ThemeSetting';
+import gql from 'graphql-tag';
+import { decode } from 'jsonwebtoken';
+import { configureClient } from '../client';
 const toggleCollapsedSideNav = async (_, { navCollapsed }, { client }) => {
   const data = await client.writeQuery({
     query: gql`
@@ -24,9 +24,9 @@ const toggleCollapsedSideNav = async (_, { navCollapsed }, { client }) => {
     data: {
       settings: {
         navCollapsed,
-        __typename: "settings"
-      }
-    }
+        __typename: 'settings',
+      },
+    },
   });
 
   return data;
@@ -44,9 +44,9 @@ const updateWindowWidth = (_, { width }, { client }) => {
     data: {
       settings: {
         width,
-        __typename: "settings"
-      }
-    }
+        __typename: 'settings',
+      },
+    },
   });
 };
 
@@ -62,9 +62,9 @@ const setThemeType = (_, { themeType }, { client }) => {
     data: {
       settings: {
         themeType,
-        __typename: "settings"
-      }
-    }
+        __typename: 'settings',
+      },
+    },
   });
 };
 
@@ -80,9 +80,9 @@ const setThemeColorSelection = (_, { colorSelection }, { client }) => {
     data: {
       settings: {
         colorSelection,
-        __typename: "settings"
-      }
-    }
+        __typename: 'settings',
+      },
+    },
   });
 };
 
@@ -98,9 +98,9 @@ const onNavStyleChange = (_, { navStyle }, { client }) => {
     data: {
       settings: {
         navStyle,
-        __typename: "settings"
-      }
-    }
+        __typename: 'settings',
+      },
+    },
   });
 };
 
@@ -116,9 +116,9 @@ const onLayoutTypeChange = (_, { layoutType }, { client }) => {
     data: {
       settings: {
         layoutType,
-        __typename: "settings"
-      }
-    }
+        __typename: 'settings',
+      },
+    },
   });
 };
 
@@ -145,11 +145,11 @@ const switchLanguage = (_, input, { client }) => {
           languageId,
           locale,
           name,
-          __typename: "locale"
+          __typename: 'locale',
         },
-        __typename: "settings"
-      }
-    }
+        __typename: 'settings',
+      },
+    },
   });
 };
 
@@ -166,7 +166,7 @@ const signIn = async (_, { input }, { client }) => {
     const data = await client.mutate({
       mutation: LOGIN,
       variables: { input },
-      fetchPolicy: "no-cache"
+      fetchPolicy: 'no-cache',
     });
     if (!data || !data.data || !data.data.login || !data.data.login.jwt) {
       return false;
@@ -183,18 +183,18 @@ const signIn = async (_, { input }, { client }) => {
     `;
     const writeData = {
       auth: {
-        __typename: "auth",
+        __typename: 'auth',
         organizationId: org_id,
-        userId: id
-      }
+        userId: id,
+      },
     };
 
     client.writeQuery({
       query,
-      data: writeData
+      data: writeData,
     });
 
-    localStorage.setItem("jwt", jwt);
+    localStorage.setItem('jwt', jwt);
     return true;
   } catch (error) {
     console.log(error);
@@ -214,8 +214,8 @@ const setRedirectRoute = async (_, { route }, { client }) => {
       }
     `,
     data: {
-      redirectRoute: route
-    }
+      redirectRoute: route,
+    },
   });
   return route;
 };
@@ -232,8 +232,8 @@ const resolvers = {
     signIn,
     hideMessage,
     showAuthLoader,
-    setRedirectRoute
-  }
+    setRedirectRoute,
+  },
 };
 
 export default resolvers;

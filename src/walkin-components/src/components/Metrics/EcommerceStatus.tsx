@@ -1,5 +1,5 @@
-import * as React from "react";
-import { Widget } from "../Widget";
+import * as React from 'react';
+import { Widget } from '../Widget';
 
 const EcommerceStatus = ({
   icon,
@@ -7,7 +7,7 @@ const EcommerceStatus = ({
   subTitle,
   color,
   colorTitle,
-  colorSubTitle
+  colorSubTitle,
 }) => {
   return (
     <Widget styleName={`gx-card-full gx-py-4 gx-px-2 gx-bg-${color}`}>

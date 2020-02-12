@@ -1,5 +1,5 @@
-import * as React from "react";
-import { WidgetHeader } from "../../WidgetHeader";
+import * as React from 'react';
+import { WidgetHeader } from '../../WidgetHeader';
 
 const Photos = ({ photoList, title }) => {
   return (

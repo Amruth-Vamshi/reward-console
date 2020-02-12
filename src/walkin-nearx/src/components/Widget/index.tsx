@@ -1,6 +1,6 @@
-import * as React from "react";
-import { Card } from "antd";
-import PropTypes from "prop-types";
+import * as React from 'react';
+import { Card } from 'antd';
+import PropTypes from 'prop-types';
 
 const Widget = ({ title, children, styleName, cover, extra, actions }) => {
   return (
@@ -18,7 +18,7 @@ const Widget = ({ title, children, styleName, cover, extra, actions }) => {
 
 export default Widget;
 Widget.defaultProps = {
-  styleName: ""
+  styleName: '',
 };
 
 Widget.propTypes = {
@@ -26,5 +26,5 @@ Widget.propTypes = {
   extra: PropTypes.node,
   cover: PropTypes.node,
   actions: PropTypes.node,
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
 };

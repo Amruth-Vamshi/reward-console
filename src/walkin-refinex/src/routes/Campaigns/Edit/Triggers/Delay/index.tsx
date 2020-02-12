@@ -1,5 +1,5 @@
-import * as React from "react";
-import PropTypes from "prop-types";
+import * as React from 'react';
+import PropTypes from 'prop-types';
 import {
   Col,
   Row,
@@ -8,9 +8,9 @@ import {
   Form,
   Select,
   Input,
-  Button
-} from "antd";
-import { FormComponentProps } from "antd/lib/form";
+  Button,
+} from 'antd';
+import { FormComponentProps } from 'antd/lib/form';
 
 interface DelayProps extends FormComponentProps {}
 
@@ -24,27 +24,27 @@ class Delay extends React.Component<DelayProps, DelayState> {
     super(props);
     this.state = {
       delay: 0,
-      delay_type: "min"
+      delay_type: 'min',
     };
   }
 
   handleNumberChange = event => {
     const { value } = event.target;
     this.setState({
-      delay: value
+      delay: value,
     });
   };
 
   handleDelayChange = value => {
     this.setState({
-      delay_type: value
+      delay_type: value,
     });
   };
 
   render() {
     const { getFieldDecorator } = this.props.form;
     return (
-      <Row style={{ marginTop: "1rem" }}>
+      <Row style={{ marginTop: '1rem' }}>
         <Col span={6}>
           <h2>Delay</h2>
         </Col>
@@ -54,7 +54,7 @@ class Delay extends React.Component<DelayProps, DelayState> {
               type="text"
               value={this.state.delay}
               onChange={this.handleNumberChange}
-              style={{ width: "35%", marginRight: "0%" }}
+              style={{ width: '35%', marginRight: '0%' }}
             />
             <Select
               style={{ width: 100 }}
@@ -73,5 +73,5 @@ class Delay extends React.Component<DelayProps, DelayState> {
   }
 }
 
-const DelayForm = Form.create<DelayProps>({ name: "Delay" })(Delay);
+const DelayForm = Form.create<DelayProps>({ name: 'Delay' })(Delay);
 export default DelayForm;

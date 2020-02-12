@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 import {
   Col,
   Row,
@@ -8,18 +8,18 @@ import {
   Tooltip,
   Input,
   Icon,
-  Button
-} from "antd";
-import AppListCard from "./AppListCard";
+  Button,
+} from 'antd';
+import AppListCard from './AppListCard';
 import {
   GET_ALL_APPS_OF_ORGANIZATION,
   GENERATE_API_KEY,
-  DELETE_APP
-} from "walkin-core/src/PlatformQueries";
-import * as jwt from "jsonwebtoken";
-import { withApollo, ApolloProviderProps } from "react-apollo";
-import conf from "walkin-app/config";
-import { History } from "history";
+  DELETE_APP,
+} from 'walkin-core/src/PlatformQueries';
+import * as jwt from 'jsonwebtoken';
+import { withApollo, ApolloProviderProps } from 'react-apollo';
+import conf from 'walkin-app/config';
+import { History } from 'history';
 // import { nearXClient as client } from "../../nearXApollo";
 const { TextArea } = Input;
 
@@ -43,12 +43,12 @@ class AppsList extends React.Component<iProps, iState> {
     this.state = {
       visible: false,
       appsList: [],
-      spin: false
+      spin: false,
     };
   }
 
   addApp = () => {
-    this.props.history.push("/nearx/apps/create");
+    this.props.history.push('/nearx/apps/create');
   };
 
   test = () => {
@@ -81,13 +81,13 @@ class AppsList extends React.Component<iProps, iState> {
 
   UNSAFE_componentWillMount() {
     this.setState({ spin: true });
-    const jwtData = jwt.decode(localStorage.getItem("jwt"));
+    const jwtData = jwt.decode(localStorage.getItem('jwt'));
 
     if (jwtData) {
       this.getAppsList(jwtData);
     } else {
       this.setState({ spin: false });
-      console.log("Error getting JwtData");
+      console.log('Error getting JwtData');
     }
   }
 
@@ -96,7 +96,7 @@ class AppsList extends React.Component<iProps, iState> {
       .query({
         query: GET_ALL_APPS_OF_ORGANIZATION,
         variables: { id: jwtData.org_id },
-        fetchPolicy: "no-cache"
+        fetchPolicy: 'no-cache',
       })
       .then(res => {
         var apps = [];
@@ -111,7 +111,7 @@ class AppsList extends React.Component<iProps, iState> {
                 appName: app.name,
                 industry: org.name,
                 platform: app.platform,
-                discription: app.description
+                discription: app.description,
               })
             );
           if (org && org.children) org.children.map(ch => recOrg(ch, apps));
@@ -122,7 +122,7 @@ class AppsList extends React.Component<iProps, iState> {
       })
       .catch(err => {
         this.setState({ spin: false });
-        console.log("Failed to get User Details" + err);
+        console.log('Failed to get User Details' + err);
       });
   };
 
@@ -130,14 +130,14 @@ class AppsList extends React.Component<iProps, iState> {
     this.props.client
       .mutate({
         mutation: DELETE_APP,
-        variables: { id: id }
+        variables: { id: id },
       })
       .then(res => {
         // this.getAppsList(jwt.decode(localStorage.getItem("jwt")))
       })
       .catch(err => {
         this.setState({ spin: false });
-        console.log("Failed to Delete App" + err);
+        console.log('Failed to Delete App' + err);
       });
   };
 
@@ -145,7 +145,7 @@ class AppsList extends React.Component<iProps, iState> {
     this.props.client
       .mutate({
         mutation: GENERATE_API_KEY,
-        variables: { id: appId, env: process.env.NODE_ENV }
+        variables: { id: appId, env: process.env.NODE_ENV },
       })
       .then(res => {
         let { appsList } = this.state;
@@ -153,7 +153,7 @@ class AppsList extends React.Component<iProps, iState> {
         this.setState({ appsList });
       })
       .catch(err => {
-        console.log("Failed" + err);
+        console.log('Failed' + err);
       });
   };
 
@@ -163,9 +163,9 @@ class AppsList extends React.Component<iProps, iState> {
     return (
       <div>
         <Row className="headerRow1">
-          <div style={{ width: "100%" }}>
+          <div style={{ width: '100%' }}>
             <span style={{ fontSize: 25 }}>Apps</span>
-            <div style={{ float: "right", flexFlow: "right" }}>
+            <div style={{ float: 'right', flexFlow: 'right' }}>
               <Button
                 style={{ margin: 0 }}
                 onClick={() => this.addApp()}
@@ -260,8 +260,8 @@ class AppsList extends React.Component<iProps, iState> {
                 </div>
               </Col>
               <Col span={8}>
-                <div style={{ overflow: "hidden", textAlign: "right" }}>
-                  <div style={{ textAlign: "center" }}>
+                <div style={{ overflow: 'hidden', textAlign: 'right' }}>
+                  <div style={{ textAlign: 'center' }}>
                     <a
                       target="_blank"
                       href="https://drive.google.com/open?id=1W3UCxBm3LxSCdWhjvkHZIr_GmcR5Y3Jq"
@@ -270,15 +270,15 @@ class AppsList extends React.Component<iProps, iState> {
                         onClick={this.handleSubmit}
                         loading={this.state.loading}
                         className="buttonPrimary"
-                        style={{ margin: "0px 30px 10px 20px" }}
+                        style={{ margin: '0px 30px 10px 20px' }}
                       >
                         Download ARR
                       </Button>
                     </a>
                     <div>NearX ARR file</div>
                     <div>
-                      {" "}
-                      Integration reference{" "}
+                      {' '}
+                      Integration reference{' '}
                       <a
                         target="_blank"
                         href="https://nearx.getwalk.in/docs/integrations"
@@ -310,15 +310,15 @@ class AppsList extends React.Component<iProps, iState> {
                     autosize={{ minRows: 20, maxRows: 20 }}
                   />
                 </Col>
-                <Col style={{ display: "flex" }} span={10}>
+                <Col style={{ display: 'flex' }} span={10}>
                   <div
                     style={{
-                      alignContent: "baseline",
-                      display: "inline-block",
-                      alignSelf: "flex-end"
+                      alignContent: 'baseline',
+                      display: 'inline-block',
+                      alignSelf: 'flex-end',
                     }}
                   >
-                    <Timeline pending={"...Checking"}>
+                    <Timeline pending={'...Checking'}>
                       <Timeline.Item
                         dot={<Icon type="check-circle" theme="filled" />}
                         color="green"
@@ -345,7 +345,7 @@ class AppsList extends React.Component<iProps, iState> {
               <Row>
                 <Col>
                   <i
-                    style={{ margin: "20px 10px 20px 40px", fontSize: 20 }} //className='gx-text-primary gx-pointer'
+                    style={{ margin: '20px 10px 20px 40px', fontSize: 20 }} //className='gx-text-primary gx-pointer'
                   >
                     Check Now
                   </i>

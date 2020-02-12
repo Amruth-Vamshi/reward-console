@@ -1,5 +1,5 @@
-import * as React from "react";
-import { Avatar, Checkbox } from "antd";
+import * as React from 'react';
+import { Avatar, Checkbox } from 'antd';
 
 const labels = [];
 
@@ -29,9 +29,9 @@ const MailListItem = ({ mail, onMailSelect, onMailChecked, onStartSelect }) => {
         </div>
 
         <div className="gx-ml-2">
-          {mail.from.avatar === "" ? (
+          {mail.from.avatar === '' ? (
             <Avatar className="gx-avatar gx-bg-blue gx-size-40">
-              {" "}
+              {' '}
               {mail.from.name.charAt(0).toUpperCase()}
             </Avatar>
           ) : (

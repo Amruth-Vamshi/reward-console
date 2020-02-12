@@ -1,10 +1,10 @@
-import * as React from "react";
-import { Avatar, Dropdown, Menu } from "antd";
-import { CustomScrollbars } from "../../../util/CustomScrollbars";
+import * as React from 'react';
+import { Avatar, Dropdown, Menu } from 'antd';
+import { CustomScrollbars } from '../../../util/CustomScrollbars';
 
 const labels = [];
 
-const options = ["Reply", "Forward", "Print"];
+const options = ['Reply', 'Forward', 'Print'];
 
 interface IProps {
   mail?: any;
@@ -18,7 +18,7 @@ interface IState {
 
 class MailDetail extends React.Component<IProps, IState> {
   state = {
-    showDetail: false
+    showDetail: false,
   };
 
   optionMenu = () => {
@@ -86,9 +86,9 @@ class MailDetail extends React.Component<IProps, IState> {
             <hr />
 
             <div className="gx-mail-user-info gx-ml-0 gx-mb-3">
-              {mail.from.avatar === "" ? (
+              {mail.from.avatar === '' ? (
                 <Avatar className="gx-avatar gx-bg-blue gx-size-40 gx-mr-3">
-                  {" "}
+                  {' '}
                   {mail.from.name.charAt(0).toUpperCase()}
                 </Avatar>
               ) : (
@@ -104,7 +104,7 @@ class MailDetail extends React.Component<IProps, IState> {
                 <div className="gx-send-to gx-text-grey">to me</div>
               </div>
 
-              <Dropdown trigger={["click"]} overlay={this.optionMenu()}>
+              <Dropdown trigger={['click']} overlay={this.optionMenu()}>
                 <span className="gx-ml-auto">
                   <i className="icon icon-ellipse-v gx-icon-btn" />
                 </span>
@@ -117,7 +117,7 @@ class MailDetail extends React.Component<IProps, IState> {
                 this.setState({ showDetail: !this.state.showDetail });
               }}
             >
-              {this.state.showDetail ? "Hide Detail" : "Show Detail"}
+              {this.state.showDetail ? 'Hide Detail' : 'Show Detail'}
             </div>
             {this.state.showDetail && (
               <div className="gx-show-detail">
@@ -129,13 +129,13 @@ class MailDetail extends React.Component<IProps, IState> {
                   <strong> To: </strong>
                   {mail.to.map((to, index) => (
                     <span>
-                      {index > 0 && ", "} {to.email}
+                      {index > 0 && ', '} {to.email}
                     </span>
                   ))}
                 </div>
                 <div>
                   <strong>Date: </strong>
-                  {mail.time}{" "}
+                  {mail.time}{' '}
                 </div>
               </div>
             )}

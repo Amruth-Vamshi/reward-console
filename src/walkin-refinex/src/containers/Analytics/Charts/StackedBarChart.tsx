@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 import {
   Bar,
   BarChart,
@@ -7,10 +7,10 @@ import {
   ResponsiveContainer,
   Tooltip,
   XAxis,
-  YAxis
-} from "recharts";
+  YAxis,
+} from 'recharts';
 
-import { data05 } from "./data";
+import { data05 } from './data';
 
 const StackedBarChart = () => (
   <ResponsiveContainer width="100%" height={400}>

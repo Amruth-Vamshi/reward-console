@@ -1,10 +1,10 @@
-import * as React from "react";
-import { Upload, Modal, Tabs, Icon, Button } from "antd";
-import { Widget } from "walkin-components";
-import GooglePlaces from "../../../components/Places/CreatePlaces/GooglePlaces";
-import MalnualCreate from "../../../components/Places/CreatePlaces/CreatePlaceManually";
-import { History } from "history";
-import { FileUploader } from "shared";
+import * as React from 'react';
+import { Upload, Modal, Tabs, Icon, Button } from 'antd';
+import { Widget } from 'walkin-components';
+import GooglePlaces from '../../../components/Places/CreatePlaces/GooglePlaces';
+import MalnualCreate from '../../../components/Places/CreatePlaces/CreatePlaceManually';
+import { History } from 'history';
+import { FileUploader } from 'shared';
 
 const TabPane = Tabs.TabPane;
 
@@ -27,13 +27,13 @@ export default class CreatePlaces extends React.Component<iProps, iState> {
   constructor(props) {
     super(props);
     this.state = {
-      tab: "1",
+      tab: '1',
       visible: false,
       visible1: false,
       fileList: [],
-      googleAPIkey: "",
+      googleAPIkey: '',
       loading: false,
-      errors: {}
+      errors: {},
     };
   }
 
@@ -102,9 +102,9 @@ export default class CreatePlaces extends React.Component<iProps, iState> {
 
   render() {
     const props = {
-      action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
+      action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
       onChange: this.handleChange,
-      multiple: false
+      multiple: false,
     };
     return (
       <div className="createPlace">

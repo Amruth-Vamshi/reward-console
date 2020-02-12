@@ -1,12 +1,12 @@
-import * as React from "react";
-import { Table } from "antd";
+import * as React from 'react';
+import { Table } from 'antd';
 import {
   ColumnProps,
   PaginationConfig,
   SorterResult,
   TableProps,
-  TableCurrentDataSource
-} from "antd/lib/table";
+  TableCurrentDataSource,
+} from 'antd/lib/table';
 
 interface SortableDataTableProps {
   columns?: ColumnProps<any>[];
@@ -28,7 +28,7 @@ const SortableDataTable = ({
   onChange,
   pagination,
   loading,
-  rowKey
+  rowKey,
 }: SortableDataTableProps) => {
   return (
     <Table

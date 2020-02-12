@@ -1,19 +1,19 @@
-import * as React from "react";
-import "./style.css";
-import { Select, Input, Button, Switch } from "antd";
+import * as React from 'react';
+import './style.css';
+import { Select, Input, Button, Switch } from 'antd';
 
 const { Option } = Select;
 
 const SLUG_TYPE = [
-  "DATE",
-  "TIMESTAMP",
-  "TIME",
-  "SHORT_TEXT",
-  "LONG_TEXT",
-  "NUMBER",
-  "CHOICES",
-  "BOOLEAN",
-  "JSON"
+  'DATE',
+  'TIMESTAMP',
+  'TIME',
+  'SHORT_TEXT',
+  'LONG_TEXT',
+  'NUMBER',
+  'CHOICES',
+  'BOOLEAN',
+  'JSON',
 ];
 
 interface EntityVariablesFormProps {
@@ -45,22 +45,22 @@ export default class EntityVariablesForm extends React.Component<
     super(props);
     this.state = {
       entityExtendField: {
-        slug: "",
-        help: "",
-        label: "",
-        type: "DATE",
+        slug: '',
+        help: '',
+        label: '',
+        type: 'DATE',
         required: false,
-        defaultValue: "",
+        defaultValue: '',
         searchable: false,
         choices: [],
-        description: ""
-      }
+        description: '',
+      },
     };
   }
 
   UNSAFE_componentWillMount() {
     let { entityExtendField } = this.props;
-    console.log(entityExtendField, "test");
+    console.log(entityExtendField, 'test');
 
     if (entityExtendField) {
       this.setState({ entityExtendField });
@@ -75,7 +75,7 @@ export default class EntityVariablesForm extends React.Component<
       ) => {
         return {
           ...prevState,
-          [type]: value
+          [type]: value,
         };
       }
     );
@@ -88,16 +88,16 @@ export default class EntityVariablesForm extends React.Component<
   render() {
     let { entityExtendField } = this.state;
 
-    let header = "Edit Variable Details";
+    let header = 'Edit Variable Details';
     if (!entityExtendField.id) {
-      header = "Add New Variable";
+      header = 'Add New Variable';
     }
 
     return (
       <div className="entityVariablesFormContainer">
         <div
           style={{
-            width: "60%"
+            width: '60%',
           }}
         >
           <div className="entityVariableFormTitle">{header}</div>
@@ -110,9 +110,9 @@ export default class EntityVariablesForm extends React.Component<
               placeholder="Label"
               defaultValue={entityExtendField.label}
               onChange={(e: any) =>
-                this.onChange("entityExtendField", {
+                this.onChange('entityExtendField', {
                   ...entityExtendField,
-                  label: e.target.value
+                  label: e.target.value,
                 })
               }
             />
@@ -132,9 +132,9 @@ export default class EntityVariablesForm extends React.Component<
                 placeholder="Slug"
                 defaultValue={entityExtendField.slug}
                 onChange={e =>
-                  this.onChange("entityExtendField", {
+                  this.onChange('entityExtendField', {
                     ...entityExtendField,
-                    slug: e.target.value
+                    slug: e.target.value,
                   })
                 }
               />
@@ -152,15 +152,15 @@ export default class EntityVariablesForm extends React.Component<
 
               <Select
                 getPopupContainer={() =>
-                  document.getElementById("EntityInputWrapper")
+                  document.getElementById('EntityInputWrapper')
                 }
-                style={{ width: "100%" }}
+                style={{ width: '100%' }}
                 defaultValue={entityExtendField.type}
                 size="large"
                 onChange={(event: any) => {
-                  this.onChange("entityExtendField", {
+                  this.onChange('entityExtendField', {
                     ...entityExtendField,
-                    type: event
+                    type: event,
                   });
                 }}
               >
@@ -176,23 +176,23 @@ export default class EntityVariablesForm extends React.Component<
             </div>
           </div>
 
-          {entityExtendField.type === "CHOICES" && (
+          {entityExtendField.type === 'CHOICES' && (
             <div className="entityVariableInputWrapper">
               <div className="InputLabel">List of choices</div>
               <Select
                 size="large"
                 mode="tags"
-                style={{ width: "100%" }}
+                style={{ width: '100%' }}
                 placeholder="choices"
                 defaultValue={entityExtendField.choices}
                 onChange={(event: any) => {
-                  this.onChange("entityExtendField", {
+                  this.onChange('entityExtendField', {
                     ...entityExtendField,
-                    choices: event
+                    choices: event,
                   });
                 }}
                 getPopupContainer={() =>
-                  document.getElementById("EntityInputWrapper")
+                  document.getElementById('EntityInputWrapper')
                 }
               />
               <div className="inputDesc">
@@ -212,9 +212,9 @@ export default class EntityVariablesForm extends React.Component<
                 placeholder="Default Value"
                 defaultValue={entityExtendField.defaultValue}
                 onChange={e =>
-                  this.onChange("entityExtendField", {
+                  this.onChange('entityExtendField', {
                     ...entityExtendField,
-                    defaultValue: e.target.value
+                    defaultValue: e.target.value,
                   })
                 }
               />
@@ -232,9 +232,9 @@ export default class EntityVariablesForm extends React.Component<
                 placeholder="Description"
                 defaultValue={entityExtendField.description}
                 onChange={(e: any) =>
-                  this.onChange("entityExtendField", {
+                  this.onChange('entityExtendField', {
                     ...entityExtendField,
-                    description: e.target.value
+                    description: e.target.value,
                   })
                 }
               />
@@ -249,9 +249,9 @@ export default class EntityVariablesForm extends React.Component<
               <Switch
                 checked={entityExtendField.required}
                 onChange={(value: any) =>
-                  this.onChange("entityExtendField", {
+                  this.onChange('entityExtendField', {
                     ...entityExtendField,
-                    required: value
+                    required: value,
                   })
                 }
               />
@@ -268,9 +268,9 @@ export default class EntityVariablesForm extends React.Component<
               <Switch
                 checked={entityExtendField.searchable}
                 onChange={(value: any) =>
-                  this.onChange("entityExtendField", {
+                  this.onChange('entityExtendField', {
                     ...entityExtendField,
-                    searchable: value
+                    searchable: value,
                   })
                 }
               />

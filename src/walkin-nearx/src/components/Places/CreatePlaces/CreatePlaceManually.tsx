@@ -1,13 +1,13 @@
-import * as React from "react";
-import { Row, Col, message, Modal } from "antd";
-import CreatePlaceForm from "./CreatePlaceForm";
-import GeofenceMap from "../GeofenceMap";
-import canUseDOM from "can-use-dom";
-import { nearXClient as client } from "../../../nearXApollo";
-import { CREATE_PLACE, PLACES_BY_ID } from "../../../queries";
-import AddHotspot from "./AddHotspot";
-import { RADIUS_1_MIN, HOTSPOT_RADIUS } from "../../../Constants";
-import { History } from "history";
+import * as React from 'react';
+import { Row, Col, message, Modal } from 'antd';
+import CreatePlaceForm from './CreatePlaceForm';
+import GeofenceMap from '../GeofenceMap';
+import canUseDOM from 'can-use-dom';
+import { nearXClient as client } from '../../../nearXApollo';
+import { CREATE_PLACE, PLACES_BY_ID } from '../../../queries';
+import AddHotspot from './AddHotspot';
+import { RADIUS_1_MIN, HOTSPOT_RADIUS } from '../../../Constants';
+import { History } from 'history';
 
 const geolocation: any =
   canUseDOM && navigator.geolocation
@@ -15,7 +15,7 @@ const geolocation: any =
     : {
         getCurrentPosition(success, failure) {
           failure(`Your browser doesn't support geolocation.`);
-        }
+        },
       };
 
 interface iProps {
@@ -44,47 +44,47 @@ export default class CreatePlaceManually extends React.Component<
     this.state = {
       places: [
         {
-          id: "",
-          placeName: "",
-          storeId: "",
+          id: '',
+          placeName: '',
+          storeId: '',
           selected: true,
           mainPlace: true,
-          address: "",
+          address: '',
           radius: [RADIUS_1_MIN],
           center: {
             lat: null,
-            lng: null
+            lng: null,
           },
-          errors: {}
-        }
+          errors: {},
+        },
       ],
       places1: [],
 
       center: {
         lat: null,
-        lng: null
+        lng: null,
       },
 
       errors: {},
       markerPlace: 1,
       getLoc: false,
-      loading1: false
+      loading1: false,
     };
   }
 
   UNSAFE_componentWillMount() {
-    sessionStorage.getItem("placeId")
-      ? this.getPlaceDetails(JSON.parse(sessionStorage.getItem("placeId")))
+    sessionStorage.getItem('placeId')
+      ? this.getPlaceDetails(JSON.parse(sessionStorage.getItem('placeId')))
       : this.getGeoLocation(0);
 
-    sessionStorage.removeItem("placeId");
+    sessionStorage.removeItem('placeId');
   }
 
   getPlaceDetails = placeId => {
     client
       .query({
         query: PLACES_BY_ID,
-        variables: { id: placeId }
+        variables: { id: placeId },
       })
       .then(res => {
         let place = res.data.Place;
@@ -97,8 +97,8 @@ export default class CreatePlaceManually extends React.Component<
             radius: place.radii,
             mainPlace: true,
             selected: true,
-            errors: {}
-          }
+            errors: {},
+          },
         ];
         place.hotspots.map(p => {
           places.push({
@@ -108,12 +108,12 @@ export default class CreatePlaceManually extends React.Component<
             center: { lat: p.location.lat, lng: p.location.lng },
             radius: [HOTSPOT_RADIUS],
             selected: true,
-            errors: {}
+            errors: {},
           });
         });
         this.setState({ places, places1: places, center: places[0].center });
       })
-      .catch(err => console.log("Failed to get Places Details" + err));
+      .catch(err => console.log('Failed to get Places Details' + err));
   };
 
   addRadius = i => {
@@ -127,7 +127,7 @@ export default class CreatePlaceManually extends React.Component<
       let places = this.state.places;
       places[i].center = {
         lat: position.coords.latitude,
-        lng: position.coords.longitude
+        lng: position.coords.longitude,
       };
       this.setState({ places, center: places[0].center });
     });
@@ -135,12 +135,12 @@ export default class CreatePlaceManually extends React.Component<
 
   addHotspot = () => {
     let place = {
-      placeName: "",
+      placeName: '',
       //radius1: 0,  radius2: 0,  radius3: 0,
       center: { lat: null, lng: null },
       errors: {},
       radius: [RADIUS_1_MIN],
-      storeId: ""
+      storeId: '',
     };
 
     let places = [...this.state.places, place];
@@ -166,11 +166,11 @@ export default class CreatePlaceManually extends React.Component<
     let lng = places[i].center.lng;
     let lat = places[i].center.lat;
 
-    if (name == "lat") lat = parseFloat(e.target.value);
+    if (name == 'lat') lat = parseFloat(e.target.value);
     else lng = parseFloat(e.target.value);
 
-    if (lat != NaN && lat != null) places[i].errors.latitude = "";
-    if (lng != NaN && lng != null) places[i].errors.longitude = "";
+    if (lat != NaN && lat != null) places[i].errors.latitude = '';
+    if (lng != NaN && lng != null) places[i].errors.longitude = '';
 
     places[i].center = { lat: lat, lng: lng };
     i
@@ -183,7 +183,7 @@ export default class CreatePlaceManually extends React.Component<
   handleOnChange = (e, i) => {
     let places = this.state.places;
     places[i][e.target.name] = e.target.value;
-    if (e.target.value.trim() != "") places[i].errors[e.target.name] = "";
+    if (e.target.value.trim() != '') places[i].errors[e.target.name] = '';
     this.setState({ places });
   };
 
@@ -197,9 +197,9 @@ export default class CreatePlaceManually extends React.Component<
     let places = this.state.places;
     places[this.state.markerPlace].center = { lat: lat, lng: lng };
     if (lat != NaN && lat != null)
-      places[this.state.markerPlace].errors.latitude = "";
+      places[this.state.markerPlace].errors.latitude = '';
     if (lng != NaN && lng != null)
-      places[this.state.markerPlace].errors.longitude = "";
+      places[this.state.markerPlace].errors.longitude = '';
     this.setState({ places, getLoc: false });
     this.state.markerPlace
       ? this.setState({ places, getLoc: false })
@@ -211,21 +211,21 @@ export default class CreatePlaceManually extends React.Component<
     let places = this.state.places;
     places.map(place => {
       place.errors = {};
-      if (place.placeName.trim() == "")
-        place.errors.placeName = "* Place Name is mandatory";
-      if (place.address.trim() == "")
-        place.errors.address = "* Address is mandatory";
+      if (place.placeName.trim() == '')
+        place.errors.placeName = '* Place Name is mandatory';
+      if (place.address.trim() == '')
+        place.errors.address = '* Address is mandatory';
       // if(place.storeId.trim()=='') place.errors.storeId = "* storeId is mandatory"
       if (place.center.lat == null || place.center.lat == NaN)
-        place.errors.latitude = "* latitude is mandatory";
+        place.errors.latitude = '* latitude is mandatory';
       if (place.center.lng == null || place.center.lng == NaN)
-        place.errors.longitude = "* longitude is mandatory";
+        place.errors.longitude = '* longitude is mandatory';
       if (Object.keys(place.errors).length !== 0) err++;
     });
 
     if (err) {
       this.setState({ places });
-      console.log("Errors in submition");
+      console.log('Errors in submition');
     } else {
       this.setState({ loading1: true });
       let places = [];
@@ -235,7 +235,7 @@ export default class CreatePlaceManually extends React.Component<
           geofenceName: p.placeName,
           address: p.address,
           location: p.center,
-          radii: p.radius
+          radii: p.radius,
         });
       });
       places[0].mainPlace = true;
@@ -243,17 +243,17 @@ export default class CreatePlaceManually extends React.Component<
       client
         .mutate({
           mutation: CREATE_PLACE,
-          variables: { places: places }
+          variables: { places: places },
         })
         .then(res => {
-          message.success("success");
-          this.props.history.push("/nearx/places");
+          message.success('success');
+          this.props.history.push('/nearx/places');
           this.setState({ loading1: false });
         })
         .catch(err => {
           this.setState({ loading1: false });
-          console.log("Failed to store Places Details" + err);
-          message.warning("Failed to store Places Details");
+          console.log('Failed to store Places Details' + err);
+          message.warning('Failed to store Places Details');
         });
     }
   };
@@ -277,7 +277,7 @@ export default class CreatePlaceManually extends React.Component<
 
   showModal = () => {
     this.setState({
-      visible: true
+      visible: true,
     });
   };
 
@@ -305,7 +305,7 @@ export default class CreatePlaceManually extends React.Component<
         {/* <div>
            <p style={{fontSize:20 }} > CREATE  PLACES</p>    
          </div> */}
-        <Row style={{ float: "none" }} gutter={20}>
+        <Row style={{ float: 'none' }} gutter={20}>
           <Col xs={24} sm={12} span={12}>
             <CreatePlaceForm
               formData={this.state}

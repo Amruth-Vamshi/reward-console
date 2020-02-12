@@ -1,6 +1,6 @@
-import * as React from "react";
+import * as React from 'react';
 
-import UserCell from "./UserCell/index";
+import UserCell from './UserCell/index';
 
 const ChatUserList = ({ chatUsers, onSelectUser }) => {
   return (

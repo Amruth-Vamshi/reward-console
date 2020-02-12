@@ -1,6 +1,6 @@
-import * as React from "react";
+import * as React from 'react';
 
-import LineIndicator from "./LineIndicator";
+import LineIndicator from './LineIndicator';
 
 const SiteAudience = () => {
   return (

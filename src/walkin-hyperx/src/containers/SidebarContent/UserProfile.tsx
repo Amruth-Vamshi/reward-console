@@ -1,5 +1,5 @@
-import * as React from "react";
-import { Avatar, Popover } from "antd";
+import * as React from 'react';
+import { Avatar, Popover } from 'antd';
 
 class UserProfile extends React.Component<{}, {}> {
   render() {

@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 
 const SearchBox = ({ styleName, placeholder, onChange, value }) => {
   return (
@@ -21,6 +21,6 @@ const SearchBox = ({ styleName, placeholder, onChange, value }) => {
 export default SearchBox;
 
 SearchBox.defaultProps = {
-  styleName: "",
-  value: ""
+  styleName: '',
+  value: '',
 };

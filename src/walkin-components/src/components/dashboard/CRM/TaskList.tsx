@@ -1,7 +1,7 @@
-import * as React from "react";
-import { Tabs } from "antd";
-import TaskItem from "./TaskItem";
-import { Widget } from "../../Widget";
+import * as React from 'react';
+import { Tabs } from 'antd';
+import TaskItem from './TaskItem';
+import { Widget } from '../../Widget';
 
 const TabPane = Tabs.TabPane;
 
@@ -18,7 +18,7 @@ class TaskList extends React.Component<IProps, IState> {
           task.completed = !data.completed;
         }
         return task;
-      })
+      }),
     }));
   };
 
@@ -45,7 +45,7 @@ class TaskList extends React.Component<IProps, IState> {
           <TabPane tab="My Task" key="2">
             {this.state.taskList.map((task, index) => (
               <TaskItem
-                key={"2" + index}
+                key={'2' + index}
                 data={task}
                 onChange={this.onChange}
               />

@@ -1,7 +1,7 @@
-import * as React from "react";
-import "./style.css";
+import * as React from 'react';
+import './style.css';
 
-import { Modal, Input, Button, Switch } from "antd";
+import { Modal, Input, Button, Switch } from 'antd';
 
 interface createRoleModalProps {
   visible: boolean;
@@ -23,8 +23,8 @@ export default class extends React.Component<
   constructor(props: createRoleModalProps) {
     super(props);
     this.state = {
-      newRoleName: "",
-      addUsersToDuplicateRoles: false
+      newRoleName: '',
+      addUsersToDuplicateRoles: false,
     };
   }
 
@@ -36,7 +36,7 @@ export default class extends React.Component<
       ) => {
         return {
           ...prevState,
-          [type]: value
+          [type]: value,
         };
       }
     );
@@ -64,7 +64,7 @@ export default class extends React.Component<
             }}
           >
             {modalDetails.buttonLabel}
-          </Button>
+          </Button>,
         ]}
         closable={true}
         title={modalDetails.headerTitle}
@@ -77,19 +77,19 @@ export default class extends React.Component<
             <Input
               size="large"
               placeholder="Enter new role name here"
-              defaultValue={""}
+              defaultValue={''}
               onChange={e => {
-                this.onChange("newRoleName", e.target.value);
+                this.onChange('newRoleName', e.target.value);
               }}
             />
           </div>
-          {modalDetails.type === "duplicateRole" && (
+          {modalDetails.type === 'duplicateRole' && (
             <div className="display-flex ">
               <Switch
                 checked={addUsersToDuplicateRoles}
                 onChange={() => {
                   this.onChange(
-                    "addUsersToDuplicateRoles",
+                    'addUsersToDuplicateRoles',
                     !addUsersToDuplicateRoles
                   );
                 }}

@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 import {
   Col,
   Row,
@@ -8,14 +8,14 @@ import {
   Icon,
   Tooltip,
   Button,
-  Input
-} from "antd";
-import "./app.css";
-import { RouteChildrenProps } from "react-router";
+  Input,
+} from 'antd';
+import './app.css';
+import { RouteChildrenProps } from 'react-router';
 const options = [
   // 'Activate',
-  "Edit",
-  "Delete"
+  'Edit',
+  'Delete',
 ];
 
 interface AppListCardProps extends Partial<RouteChildrenProps> {
@@ -35,18 +35,18 @@ export default class AppListCard extends React.Component<AppListCardProps, {}> {
   menus = () => (
     <Menu
       onClick={e => {
-        if (e.key === "Delete") {
+        if (e.key === 'Delete') {
           this.props.deleteApp(this.props.data.id);
-        } else if (e.key === "Edit") {
-          sessionStorage.setItem("AppData", JSON.stringify(this.props.data));
-          this.props.history.push("/refinex/apps/create");
+        } else if (e.key === 'Edit') {
+          sessionStorage.setItem('AppData', JSON.stringify(this.props.data));
+          this.props.history.push('/refinex/apps/create');
           // this.onEditContact()
         } else {
           // this.onDeleteContact(this.props.contact)
         }
       }}
     >
-      {" "}
+      {' '}
       {options.map(option => (
         <Menu.Item key={option}> {option} </Menu.Item>
       ))}
@@ -56,8 +56,8 @@ export default class AppListCard extends React.Component<AppListCardProps, {}> {
   copy = () => {
     let copyText: any = document.getElementById(this.props.data.appKey);
     copyText.select();
-    document.execCommand("copy");
-    console.log("Copied Key: " + copyText.value);
+    document.execCommand('copy');
+    console.log('Copied Key: ' + copyText.value);
   };
 
   render() {
@@ -69,7 +69,7 @@ export default class AppListCard extends React.Component<AppListCardProps, {}> {
             <div className="divCenterVertical">
               <div>
                 <Row>
-                  <span style={{ color: "black", marginBottom: 5 }}>
+                  <span style={{ color: 'black', marginBottom: 5 }}>
                     {data.appName}
                   </span>
                 </Row>
@@ -77,7 +77,7 @@ export default class AppListCard extends React.Component<AppListCardProps, {}> {
             </div>
           </Col>
           <Col span={6}>
-            <div style={{ width: "100%" }} className="divCenterVertical">
+            <div style={{ width: '100%' }} className="divCenterVertical">
               <span className="gx-text-truncate gx-contact-name">
                 {data.discription}
               </span>
@@ -110,9 +110,9 @@ export default class AppListCard extends React.Component<AppListCardProps, {}> {
                     )
                   }
                 >
-                  {" "}
+                  {' '}
                   Generate Key
-                </Button>{" "}
+                </Button>{' '}
               </div>
             )}
           </Col>
@@ -121,7 +121,7 @@ export default class AppListCard extends React.Component<AppListCardProps, {}> {
               <Dropdown
                 overlay={this.menus()}
                 placement="bottomRight"
-                trigger={["click"]}
+                trigger={['click']}
               >
                 <i className="gx-icon-btn icon icon-ellipse-v" />
               </Dropdown>

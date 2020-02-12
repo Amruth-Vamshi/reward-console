@@ -1,7 +1,7 @@
-import * as React from "react";
-import { Card, Col, Row, message } from "antd";
-import Home from "../feedback-form/index";
-import Device from "./Devices/index";
+import * as React from 'react';
+import { Card, Col, Row, message } from 'antd';
+import Home from '../feedback-form/index';
+import Device from './Devices/index';
 
 interface ControlsProps {
   accentColor?: any;
@@ -25,7 +25,7 @@ export default class Controls extends React.Component<ControlsProps, {}> {
   };
 
   newWarning = () => {
-    message.warning("This is first question");
+    message.warning('This is first question');
   };
   render() {
     const {
@@ -34,14 +34,14 @@ export default class Controls extends React.Component<ControlsProps, {}> {
       isLastQuestion,
       goTopreviousQuestion,
       isFirstQuestion,
-      color
+      color,
     } = this.props;
     console.log(isLastQuestion);
     return (
       <Row
         gutter={16}
         style={{
-          backgroundColor: "white"
+          backgroundColor: 'white',
         }}
       >
         <Col span={24}>

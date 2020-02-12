@@ -1,15 +1,15 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { THEME_TYPE_DARK } from "../../constants/ThemeSetting";
-import gql from "graphql-tag";
-import { Widget } from "../Widget";
-import { graphql } from "react-apollo";
+import { THEME_TYPE_DARK } from '../../constants/ThemeSetting';
+import gql from 'graphql-tag';
+import { Widget } from '../Widget';
+import { graphql } from 'react-apollo';
 
 const IconWithTextCard = props => {
   const { icon, title, subTitle } = props;
   let { iconColor } = props;
   if (props.themeType === THEME_TYPE_DARK) {
-    iconColor = "white";
+    iconColor = 'white';
   }
 
   return (
@@ -45,5 +45,5 @@ const GET_SETTINGS = gql`
 
 export default graphql(GET_SETTINGS, {
   props: mapStateToProps,
-  name: "settings"
+  name: 'settings',
 })(IconWithTextCard);

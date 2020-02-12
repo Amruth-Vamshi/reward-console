@@ -1,4 +1,4 @@
-import gql from "graphql-tag";
+import gql from 'graphql-tag';
 
 export const GET_ALL_AND_SEARCH_PLACES = gql`
   query Places($limit: Int!, $offset: Int!, $search: String) {

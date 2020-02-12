@@ -1,7 +1,7 @@
-import * as React from "react";
-import { Slider } from "antd";
-import "./style.css";
-import * as PropTypes from "prop-types";
+import * as React from 'react';
+import { Slider } from 'antd';
+import './style.css';
+import * as PropTypes from 'prop-types';
 
 interface iProps {
   maxValueAllowed?: any;
@@ -31,13 +31,13 @@ class BasicSlider extends React.Component<iProps, {}> {
         <Slider
           marks={{
             0: {
-              style: { left: "10%", width: "100%" },
-              label: `Test Group: ${testValue ? testValue : 95}`
+              style: { left: '10%', width: '100%' },
+              label: `Test Group: ${testValue ? testValue : 95}`,
             },
             100: {
-              style: { left: "90%", width: "100%" },
-              label: `Control Group: ${controlValue}`
-            }
+              style: { left: '90%', width: '100%' },
+              label: `Control Group: ${controlValue}`,
+            },
           }}
           value={testValue ? testValue : 95}
           onChange={this.limitRange}
@@ -49,13 +49,13 @@ class BasicSlider extends React.Component<iProps, {}> {
 BasicSlider.propTypes = {
   testValue: PropTypes.number,
   controlValue: PropTypes.number,
-  maxValueAllowed: PropTypes.number
+  maxValueAllowed: PropTypes.number,
 };
 
 BasicSlider.defaultProps = {
   testValue: 95,
   controlValue: 5,
-  maxValueAllowed: 75
+  maxValueAllowed: 75,
 };
 
 export default BasicSlider;

@@ -1,13 +1,13 @@
-import * as React from "react";
-import { Form, Checkbox, Select } from "antd";
+import * as React from 'react';
+import { Form, Checkbox, Select } from 'antd';
 
 const formItemLayout = {
   labelCol: { span: 6 },
-  wrapperCol: { span: 18 }
+  wrapperCol: { span: 18 },
 };
 const dateItemLayout = {
   wrapperCol: { span: 18 },
-  labelCol: { span: 10 }
+  labelCol: { span: 10 },
 };
 
 const Option = Select.Option;
@@ -31,7 +31,7 @@ export default class Offers extends React.Component<iProps, iState> {
   constructor(props: iProps) {
     super(props);
     this.state = {
-      check: this.props.noOfferRequired ? this.props.noOfferRequired : false
+      check: this.props.noOfferRequired ? this.props.noOfferRequired : false,
     };
   }
   onChange = (e: any) => {
@@ -68,7 +68,7 @@ export default class Offers extends React.Component<iProps, iState> {
                 showSearch
                 disabled={this.state.check}
                 value={this.props.offer}
-                style={{ width: "100%" }}
+                style={{ width: '100%' }}
                 getPopupContainer={(triggerNode: any) => triggerNode.parentNode}
                 placeholder="Select Type"
                 optionFilterProp="children"
@@ -82,9 +82,9 @@ export default class Offers extends React.Component<iProps, iState> {
               >
                 {options}
               </Select>
-              <span style={{ color: "Red" }}>
-                {" "}
-                {this.props.errors.offerName}{" "}
+              <span style={{ color: 'Red' }}>
+                {' '}
+                {this.props.errors.offerName}{' '}
               </span>
             </Form.Item>
           </Form>

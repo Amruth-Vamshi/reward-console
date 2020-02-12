@@ -1,46 +1,46 @@
-import "./SelectApplicationModal.css";
-import * as React from "react";
-import { Modal, Select, Table, Button, Row, Col, TreeSelect } from "antd";
+import './SelectApplicationModal.css';
+import * as React from 'react';
+import { Modal, Select, Table, Button, Row, Col, TreeSelect } from 'antd';
 import {
   compose,
   graphql,
   withApollo,
-  ApolloProviderProps
-} from "react-apollo";
-import { Link } from "react-router-dom";
+  ApolloProviderProps,
+} from 'react-apollo';
+import { Link } from 'react-router-dom';
 import {
   GET_CHILD_ORGANIZATIONS,
-  GET_APPLICATIONS
-} from "../../../../containers/Query";
+  GET_APPLICATIONS,
+} from '../../../../containers/Query';
 
 const TreeNode = TreeSelect.TreeNode;
 
 const ApplicationList = ({ applications, onSelect }: any) => {
   const columns = [
     {
-      title: "ID",
-      dataIndex: "id"
+      title: 'ID',
+      dataIndex: 'id',
     },
     {
-      title: "Name",
-      dataIndex: "name"
+      title: 'Name',
+      dataIndex: 'name',
     },
     {
-      title: "Description",
-      dataIndex: "description"
+      title: 'Description',
+      dataIndex: 'description',
     },
     {
-      title: "Platform",
-      dataIndex: "platform"
-    }
+      title: 'Platform',
+      dataIndex: 'platform',
+    },
   ];
 
   return (
     <div>
       <Table
         rowSelection={{
-          type: "radio",
-          onSelect: onSelect
+          type: 'radio',
+          onSelect: onSelect,
         }}
         rowKey="id"
         columns={columns}
@@ -74,13 +74,13 @@ class SelectApplicationModal extends React.Component<
     this.state = {
       selectedQuestion: null,
       selectedOrganization: null,
-      applications: []
+      applications: [],
     };
   }
 
   onSelect = (selectedQuestion: any) => {
     this.setState({
-      selectedQuestion: selectedQuestion
+      selectedQuestion: selectedQuestion,
     });
   };
 
@@ -90,20 +90,20 @@ class SelectApplicationModal extends React.Component<
 
   onOrganizationChanges = async (organizationId: any) => {
     this.setState({
-      selectedOrganization: organizationId
+      selectedOrganization: organizationId,
     });
 
     const { client } = this.props;
     const applications = await client.query({
       query: GET_APPLICATIONS,
       variables: {
-        organizationId
+        organizationId,
       },
-      fetchPolicy: "network-only"
+      fetchPolicy: 'network-only',
     });
 
     this.setState({
-      applications: applications.data.organization.applications
+      applications: applications.data.organization.applications,
     });
   };
 
@@ -112,7 +112,7 @@ class SelectApplicationModal extends React.Component<
       title: org.name,
       value: org.id,
       key: org.id,
-      children: org.children.map((child: any) => this.addKeys(child))
+      children: org.children.map((child: any) => this.addKeys(child)),
     };
   };
 
@@ -127,7 +127,7 @@ class SelectApplicationModal extends React.Component<
       onConfirm,
       onCancel,
       getApplications,
-      organizationHierarchy
+      organizationHierarchy,
     } = this.props;
 
     console.log(this.props);
@@ -151,7 +151,7 @@ class SelectApplicationModal extends React.Component<
               showSearch={false}
               style={{ width: 300 }}
               value={this.state.selectedOrganization}
-              dropdownStyle={{ maxHeight: 400, overflow: "auto" }}
+              dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
               placeholder="Please select"
               allowClear
               treeDefaultExpandAll
@@ -196,6 +196,6 @@ class SelectApplicationModal extends React.Component<
 }
 
 export default compose(
-  graphql(GET_CHILD_ORGANIZATIONS, { name: "organizationHierarchy" }),
+  graphql(GET_CHILD_ORGANIZATIONS, { name: 'organizationHierarchy' }),
   withApollo
 )(SelectApplicationModal);

@@ -1,8 +1,8 @@
 import {
   SWITCH_LANGUAGE,
   TOGGLE_COLLAPSED_NAV,
-  WINDOW_WIDTH
-} from "walkin-components/src/constants/ActionTypes";
+  WINDOW_WIDTH,
+} from 'walkin-components/src/constants/ActionTypes';
 import {
   LAYOUT_TYPE,
   LAYOUT_TYPE_FULL,
@@ -11,37 +11,37 @@ import {
   THEME_COLOR_SELECTION,
   THEME_COLOR_SELECTION_PRESET,
   THEME_TYPE,
-  THEME_TYPE_SEMI_DARK
-} from "walkin-components/src/constants/ThemeSetting";
+  THEME_TYPE_SEMI_DARK,
+} from 'walkin-components/src/constants/ThemeSetting';
 
 export default {
   settings: {
-    __typename: "settings",
+    __typename: 'settings',
     navCollapsed: true,
     navStyle: NAV_STYLE_FIXED,
     layoutType: LAYOUT_TYPE_FULL,
     themeType: THEME_TYPE_SEMI_DARK,
     colorSelection: THEME_COLOR_SELECTION_PRESET,
-    pathname: "",
+    pathname: '',
     width: window.innerWidth,
     isDirectionRTL: false,
     locale: {
-      __typename: "locale",
-      languageId: "english",
-      locale: "en",
-      name: "English",
-      icon: "us"
-    }
+      __typename: 'locale',
+      languageId: 'english',
+      locale: 'en',
+      name: 'English',
+      icon: 'us',
+    },
   },
   auth: {
-    __typename: "auth",
+    __typename: 'auth',
     loader: false,
-    alertMessage: "",
+    alertMessage: '',
     showMessage: false,
-    initURL: "",
+    initURL: '',
     userId: null,
     organizationId: null,
     firstName: null,
-    lastName: null
-  }
+    lastName: null,
+  },
 };
