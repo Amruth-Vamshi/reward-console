@@ -76,6 +76,8 @@ class EditStore extends React.Component<EditStoreProps, EditStoreState> {
     let locationParams = this.props.history.location.pathname.split("/");
     if (locationParams[locationParams.length - 1] === "edit") {
       storeId = locationParams[3];
+      console.log("storeId", storeId);
+      console.log("orgId", org_id);
       this.props.client
         .query({
           query: STORE,
@@ -83,7 +85,7 @@ class EditStore extends React.Component<EditStoreProps, EditStoreState> {
           fetchPolicy: "network-only"
         })
         .then(storeDetails => {
-          console.log(storeDetails.data.store, "new");
+          console.log("store storeDetails.data.store", storeDetails.data.store);
           mapData.places[0].center = {
             lat: storeDetails.data.store.latitude,
             lng: storeDetails.data.store.longitude

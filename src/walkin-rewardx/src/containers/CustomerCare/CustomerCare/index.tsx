@@ -252,16 +252,16 @@ class CustomerCare extends React.Component<
 
       dataSource.push({
         key: transaction.id,
-        orderId: transactionData.order.externalOrderId,
-        storeId: transactionData.order.externalStoreId,
-        orderChannel: transactionData.order.orderChannel,
-        fulfillmentDate: moment(transactionData.order.fulfillmentDate).format(
-          "YYYY-MM-DD"
-        ),
-        fulfillmentTime: moment(transactionData.order.fulfillmentDate).format(
-          "h:mm:ss a"
-        ),
-        totalAmount: transactionData.order.totalAmount,
+        orderId: transactionData.orderData.order.externalOrderId,
+        storeId: transactionData.orderData.order.externalStoreId,
+        orderChannel: transactionData.orderData.order.orderChannel,
+        fulfillmentDate: moment(
+          transactionData.orderData.order.fulfillmentDate
+        ).format("YYYY-MM-DD"),
+        fulfillmentTime: moment(
+          transactionData.orderData.order.fulfillmentDate
+        ).format("h:mm:ss a"),
+        totalAmount: transactionData.orderData.order.totalAmount,
         status: transaction.statusCode.statusCode,
         pointsIssued: transaction.pointsIssued,
         pointsRedeemed: transaction.pointsRedeemed
@@ -442,7 +442,7 @@ class CustomerCare extends React.Component<
       dataSource.push({
         key: ledger.id,
         date: createdDate,
-        orderId: ledger.loyaltyTransaction.data.order.externalOrderId,
+        orderId: ledger.loyaltyTransaction.data.orderData.order.externalOrderId,
         referenceId: ledger.loyaltyLedger.id,
         points: ledger.loyaltyLedger.points,
         balance: ledger.loyaltyLedger.balanceSnapshot,
