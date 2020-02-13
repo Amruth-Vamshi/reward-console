@@ -1,5 +1,5 @@
-import * as React from "react";
-import * as PropTypes from "prop-types";
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
 
 interface CardBoxProps {
   heading?: any;
@@ -14,7 +14,7 @@ export const CardBox: React.FunctionComponent<CardBoxProps> = ({
   children,
   styleName,
   childrenStyle,
-  style
+  style,
 }) => {
   return (
     <div style={style} className={`gx-card ${styleName}`}>
@@ -29,10 +29,10 @@ export const CardBox: React.FunctionComponent<CardBoxProps> = ({
 };
 
 CardBox.propTypes = {
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
 };
 
 CardBox.defaultProps = {
-  styleName: "",
-  childrenStyle: ""
+  styleName: '',
+  childrenStyle: '',
 };

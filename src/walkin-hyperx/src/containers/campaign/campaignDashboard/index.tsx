@@ -1,25 +1,25 @@
-import { campaignOverview as Overview, WHeader } from "shared";
-import { message, Spin } from "antd";
-import moment from "moment";
-import React, { Component } from "react";
+import { campaignOverview as Overview, WHeader } from 'shared';
+import { message, Spin } from 'antd';
+import moment from 'moment';
+import React, { Component } from 'react';
 import {
   ApolloProviderProps,
   compose,
   graphql,
-  withApollo
-} from "react-apollo";
-import { RouteChildrenProps } from "react-router";
-import { withRouter } from "react-router-dom";
+  withApollo,
+} from 'react-apollo';
+import { RouteChildrenProps } from 'react-router';
+import { withRouter } from 'react-router-dom';
 
 import {
   ABANDON_CAMPAIGN,
   PAUSE_CAMPAIGN,
   PREPROCESS_LAUNCH_CAMPAIGN,
   UNPAUSE_CAMPAIGN,
-  VIEW_CAMPAIGN
-} from "../../../query/campaign";
-import { TOTAL_AUDIENCE_COUNT } from "../../../query/audience";
-import HyperXContainer from "../../../utils/HyperXContainer";
+  VIEW_CAMPAIGN,
+} from '../../../query/campaign';
+import { TOTAL_AUDIENCE_COUNT } from '../../../query/audience';
+import HyperXContainer from '../../../utils/HyperXContainer';
 
 interface IProps
   extends RouteChildrenProps<
@@ -56,7 +56,7 @@ class CampaignDashboard extends Component<IProps, Partial<IState>> {
       loading: false,
       loading1: false,
       spin: false,
-      campaign: {}
+      campaign: {},
     };
   }
 
@@ -65,28 +65,28 @@ class CampaignDashboard extends Component<IProps, Partial<IState>> {
     this.props.client
       .query({
         query: VIEW_CAMPAIGN,
-        variables: { campaignId: this.props.match.params.id }
+        variables: { campaignId: this.props.match.params.id },
         // fetchPolicy: 'network-only'
       })
       .then(res => {
-        console.log("res", res.data.viewCampaignForHyperX);
+        console.log('res', res.data.viewCampaignForHyperX);
         let {
           campaign,
           audiences,
           offers,
-          communications
+          communications,
         } = res.data.viewCampaignForHyperX;
         this.setState({
           spin: false,
           campaign,
           audiences,
           offers,
-          communications
+          communications,
         });
       })
       .catch(err => {
         this.setState({ spin: false });
-        console.log("Failed to get Campaign Details" + err);
+        console.log('Failed to get Campaign Details' + err);
       });
   }
 
@@ -94,11 +94,11 @@ class CampaignDashboard extends Component<IProps, Partial<IState>> {
     this.setState({ loading: true });
     this.props
       .launchCampaign({
-        variables: { id: this.props.location.state.campaignSelected.id }
+        variables: { id: this.props.location.state.campaignSelected.id },
       })
       .then(data => {
-        console.log("campaign data..", data);
-        message.success("Campaign Launched");
+        console.log('campaign data..', data);
+        message.success('Campaign Launched');
         // moment().isBetween(this.props.location.state.campaignSelected.startTime, this.props.location.state.campaignSelected.endTime) ?
         //     this.props.history.push('/hyperx/campaigns')
         //     : this.props.history.push({
@@ -106,77 +106,77 @@ class CampaignDashboard extends Component<IProps, Partial<IState>> {
         //         state: { tabKey: "2" }
         //     })
         this.props.history.push({
-          pathname: "/hyperx/campaigns", //tabKey: "2"
-          state: { tabKey: "2" }
+          pathname: '/hyperx/campaigns', //tabKey: "2"
+          state: { tabKey: '2' },
         });
       })
       .catch(err => {
-        console.log("Error Update campaign", err);
+        console.log('Error Update campaign', err);
         this.setState({ loading: false });
       });
   };
   pauseCampaign = () => {
-    console.log("Pause calling");
+    console.log('Pause calling');
     this.setState({ loading: true });
     this.props
       .pauseCampaign({
-        variables: { id: this.props.location.state.campaignSelected.id }
+        variables: { id: this.props.location.state.campaignSelected.id },
       })
       .then(data => {
-        console.log("campaign data..", data);
-        message.success("Campaign Paused");
+        console.log('campaign data..', data);
+        message.success('Campaign Paused');
         this.props.history.push({
-          pathname: "/hyperx/campaigns", //tabKey: "5"
-          state: { tabKey: "5" }
+          pathname: '/hyperx/campaigns', //tabKey: "5"
+          state: { tabKey: '5' },
         });
       })
       .catch(err => {
-        console.log("Error Update campaign", err);
+        console.log('Error Update campaign', err);
         this.setState({ loading: false });
       });
   };
   unpauseCampaign = () => {
-    console.log("Pause calling");
+    console.log('Pause calling');
     this.setState({ loading: true });
     this.props
       .unpauseCampaign({
-        variables: { id: this.props.location.state.campaignSelected.id }
+        variables: { id: this.props.location.state.campaignSelected.id },
       })
       .then(data => {
-        console.log("campaign data..", data);
-        message.success("Campaign unPaused");
+        console.log('campaign data..', data);
+        message.success('Campaign unPaused');
         moment().isBetween(
           this.props.location.state.campaignSelected.startTime,
           this.props.location.state.campaignSelected.endTime
         )
-          ? this.props.history.push("/hyperx/campaigns")
+          ? this.props.history.push('/hyperx/campaigns')
           : this.props.history.push({
-              pathname: "/hyperx/campaigns", //tabKey: "2"
-              state: { tabKey: "2" }
+              pathname: '/hyperx/campaigns', //tabKey: "2"
+              state: { tabKey: '2' },
             });
       })
       .catch(err => {
-        console.log("Error Update campaign", err);
+        console.log('Error Update campaign', err);
         this.setState({ loading: false });
       });
   };
   abandonCampaign = () => {
-    console.log("Abandon calling");
+    console.log('Abandon calling');
     this.setState({ loading1: true });
     this.props
       .abandonCampaign({
-        variables: { id: this.props.location.state.campaignSelected.id }
+        variables: { id: this.props.location.state.campaignSelected.id },
       })
       .then(data => {
-        console.log("campaign data..", data);
-        message.success("Abandon campaign");
+        console.log('campaign data..', data);
+        message.success('Abandon campaign');
         this.props.history.push({
-          pathname: "/hyperx/campaigns", //tabKey: "6"
-          state: { tabKey: "6" }
+          pathname: '/hyperx/campaigns', //tabKey: "6"
+          state: { tabKey: '6' },
         });
       })
       .catch(err => {
-        console.log("Error Update campaign", err);
+        console.log('Error Update campaign', err);
         this.setState({ loading1: false });
       });
   };
@@ -197,7 +197,7 @@ class CampaignDashboard extends Component<IProps, Partial<IState>> {
       communications,
       loading,
       loading1,
-      spin
+      spin,
     } = this.state;
     return (
       <div>
@@ -228,9 +228,9 @@ class CampaignDashboard extends Component<IProps, Partial<IState>> {
                     ? communications[0]
                       ? communications[0].messageTemplate
                         ? `${communications[0].messageTemplate.messageFormat} - ${communications[0].messageTemplate.templateSubjectText}`
-                        : ""
-                      : ""
-                    : ""
+                        : ''
+                      : ''
+                    : ''
                 }
               />
             </div>
@@ -259,23 +259,23 @@ export default withRouter(
     //     }
     // }),
     graphql(TOTAL_AUDIENCE_COUNT, {
-      name: "totalAudienceCount",
+      name: 'totalAudienceCount',
       options: (props: IProps) => ({
         variables: { campaignId: props.match.params.id },
-        fetchPolicy: "network-only"
-      })
+        fetchPolicy: 'network-only',
+      }),
     }),
     graphql(PREPROCESS_LAUNCH_CAMPAIGN, {
-      name: "launchCampaign"
+      name: 'launchCampaign',
     }),
     graphql(PAUSE_CAMPAIGN, {
-      name: "pauseCampaign"
+      name: 'pauseCampaign',
     }),
     graphql(UNPAUSE_CAMPAIGN, {
-      name: "unpauseCampaign"
+      name: 'unpauseCampaign',
     }),
     graphql(ABANDON_CAMPAIGN, {
-      name: "abandonCampaign"
+      name: 'abandonCampaign',
     })
     // graphql(GET_AUDIENCES, {
     //     name: "allAudiences",

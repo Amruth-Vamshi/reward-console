@@ -1,11 +1,11 @@
-import * as React from "react";
-import { Radio, Row, Col } from "antd";
+import * as React from 'react';
+import { Radio, Row, Col } from 'antd';
 import {
   SMSForm,
   PushNotificationForm,
   Email,
-  Schedule
-} from "../../molecules/communicationForm";
+  Schedule,
+} from '../../molecules/communicationForm';
 
 interface iProps {
   subTitle?: string;
@@ -54,7 +54,7 @@ const Communication = ({
   saveSchedule,
   attributeData,
   linkTypeSelect,
-  form
+  form,
 }: iProps) => {
   return (
     <div>
@@ -67,7 +67,7 @@ const Communication = ({
             buttonStyle="solid"
             defaultValue={defaultValue}
             onChange={onChange}
-            style={{ paddingTop: "20px" }}
+            style={{ paddingTop: '20px' }}
             value={value}
           >
             {communicationData &&
@@ -77,7 +77,7 @@ const Communication = ({
                 </Radio.Button>
               ))}
           </Radio.Group>
-          {value == "SMS" && (
+          {value == 'SMS' && (
             <SMSForm
               wrappedComponentRef={commWrappedComponentRef}
               formValues={communicationFormValues}
@@ -86,14 +86,14 @@ const Communication = ({
               onFormNext={onFormNext}
             />
           )}
-          {value == "PUSH" && (
+          {value == 'PUSH' && (
             <PushNotificationForm
               wrappedComponentRef={pushFormRef}
               formValues={pushFormData}
               onFormNext={onFormNext}
             />
           )}
-          {value == "EMAIL" && (
+          {value == 'EMAIL' && (
             <Email
               wrappedComponentRef={emailFormRef}
               formValues={emailFormData}

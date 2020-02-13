@@ -1,8 +1,8 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
-import IntlMessages from "../../../util/IntlMessages";
-import gql from "graphql-tag";
-import { compose, graphql } from "react-apollo";
+import IntlMessages from '../../../util/IntlMessages';
+import gql from 'graphql-tag';
+import { compose, graphql } from 'react-apollo';
 
 interface IProps {
   navCollapsed?;
@@ -59,9 +59,9 @@ const TOGGLE_COLLAPSED_SIDE_NAV = gql`
 `;
 
 export const NoHeaderNotificationModule = compose(
-  graphql(TOGGLE_COLLAPSED_SIDE_NAV, { name: "toggleCollapsedSideNav" }),
+  graphql(TOGGLE_COLLAPSED_SIDE_NAV, { name: 'toggleCollapsedSideNav' }),
   graphql(GET_SETTINGS, {
     props: mapStateToProps,
-    name: "settings"
+    name: 'settings',
   })
 )(NoHeaderNotification);

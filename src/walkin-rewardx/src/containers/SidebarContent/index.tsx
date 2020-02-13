@@ -1,19 +1,19 @@
-import * as React from "react";
-import { Menu, Icon } from "antd";
-import { Link } from "react-router-dom";
-import { withRouter } from "react-router-dom";
-import { compose, graphql } from "react-apollo";
-import gql from "graphql-tag";
-import { RouteChildrenProps } from "react-router";
+import * as React from 'react';
+import { Menu, Icon } from 'antd';
+import { Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
+import { compose, graphql } from 'react-apollo';
+import gql from 'graphql-tag';
+import { RouteChildrenProps } from 'react-router';
 
-import { Auxiliary } from "walkin-components";
+import { Auxiliary } from 'walkin-components';
 import {
   NAV_STYLE_NO_HEADER_EXPANDED_SIDEBAR,
   NAV_STYLE_NO_HEADER_MINI_SIDEBAR,
-  THEME_TYPE_LITE
-} from "walkin-components/src/constants/ThemeSetting";
-import SidebarLogo from "./SidebarLogo";
-import { CollapseSidebar } from "../../../../shared/src";
+  THEME_TYPE_LITE,
+} from 'walkin-components/src/constants/ThemeSetting';
+import SidebarLogo from './SidebarLogo';
+import { CollapseSidebar } from '../../../../shared';
 
 // import Dashboard from "../../Icons/IconComponents/dashboard";
 // import Survey from "../../Icons/IconComponents/survey";
@@ -41,33 +41,33 @@ class SidebarContent extends React.Component<
       navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR ||
       navStyle === NAV_STYLE_NO_HEADER_EXPANDED_SIDEBAR
     ) {
-      return "gx-no-header-notifications";
+      return 'gx-no-header-notifications';
     }
-    return "";
+    return '';
   };
   getNavStyleSubMenuClass = (navStyle: any) => {
     if (navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR) {
-      return "gx-no-header-submenu-popup";
+      return 'gx-no-header-submenu-popup';
     }
-    return "";
+    return '';
   };
 
   render() {
     const { themeType, navStyle, pathname, match } = this.props;
     const selectedKeys = pathname.substr(1);
-    const defaultOpenKeys = selectedKeys.split("/")[1];
+    const defaultOpenKeys = selectedKeys.split('/')[1];
     return (
       <Auxiliary>
         <SidebarLogo />
         <div
-          style={{ height: "100%" }}
+          style={{ height: '100%' }}
           className="Rewardx-Sidebar gx-sidebar-content"
         >
           <Menu
-            style={{ height: "100%" }}
+            style={{ height: '100%' }}
             defaultOpenKeys={[defaultOpenKeys]}
             selectedKeys={[defaultOpenKeys]}
-            theme={themeType === THEME_TYPE_LITE ? "light" : "dark"}
+            theme={themeType === THEME_TYPE_LITE ? 'light' : 'dark'}
             mode="inline"
           >
             <Menu.Item key="dashboard">
@@ -119,6 +119,6 @@ export default compose(
   withRouter,
   graphql(GET_SETTINGS, {
     props: mapStateToProps,
-    name: "settings"
+    name: 'settings',
   })
 )(SidebarContent);

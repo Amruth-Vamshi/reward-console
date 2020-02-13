@@ -1,6 +1,6 @@
-import * as React from "react";
-import reactCSS from "reactcss";
-import { SketchPicker } from "react-color";
+import * as React from 'react';
+import reactCSS from 'reactcss';
+import { SketchPicker } from 'react-color';
 
 interface ColorControlProps {
   colorChange?: any;
@@ -21,12 +21,12 @@ class ColorControl extends React.Component<
     this.state = {
       displayColorPicker: false,
       color: {
-        r: "241",
-        g: "112",
-        b: "19",
-        a: "1"
+        r: '241',
+        g: '112',
+        b: '19',
+        a: '1',
       },
-      hex: ""
+      hex: '',
     };
   }
 
@@ -48,31 +48,31 @@ class ColorControl extends React.Component<
     const styles = reactCSS({
       default: {
         color: {
-          width: "36px",
-          height: "14px",
-          borderRadius: "2px",
-          background: `rgba(${this.state.color.r}, ${this.state.color.g}, ${this.state.color.b}, ${this.state.color.a})`
+          width: '36px',
+          height: '14px',
+          borderRadius: '2px',
+          background: `rgba(${this.state.color.r}, ${this.state.color.g}, ${this.state.color.b}, ${this.state.color.a})`,
         },
         swatch: {
-          padding: "5px",
-          background: "#fff",
-          borderRadius: "1px",
-          boxShadow: "0 0 0 1px rgba(0,0,0,.1)",
-          display: "inline-block",
-          cursor: "pointer"
+          padding: '5px',
+          background: '#fff',
+          borderRadius: '1px',
+          boxShadow: '0 0 0 1px rgba(0,0,0,.1)',
+          display: 'inline-block',
+          cursor: 'pointer',
         },
         popover: {
-          position: "absolute",
-          zIndex: "2"
+          position: 'absolute',
+          zIndex: '2',
         },
         cover: {
-          position: "fixed",
-          top: "0px",
-          right: "0px",
-          bottom: "0px",
-          left: "0px"
-        }
-      }
+          position: 'fixed',
+          top: '0px',
+          right: '0px',
+          bottom: '0px',
+          left: '0px',
+        },
+      },
     });
 
     return (

@@ -1,20 +1,20 @@
-import * as React from "react";
-import { Menu } from "antd";
-import { Link, RouteComponentProps } from "react-router-dom";
-import { CustomScrollbars, Auxiliary, IntlMessages } from "walkin-components";
-import SidebarLogo from "./SidebarLogo";
-import "walkin-hyperx/src/styles/styles.css";
-import { withRouter } from "react-router-dom";
+import * as React from 'react';
+import { Menu } from 'antd';
+import { Link, RouteComponentProps } from 'react-router-dom';
+import { CustomScrollbars, Auxiliary, IntlMessages } from 'walkin-components';
+import SidebarLogo from './SidebarLogo';
+import 'walkin-hyperx/src/styles/styles.css';
+import { withRouter } from 'react-router-dom';
 
 import {
   NAV_STYLE_NO_HEADER_EXPANDED_SIDEBAR,
   NAV_STYLE_NO_HEADER_MINI_SIDEBAR,
-  THEME_TYPE_LITE
-} from "walkin-components/src/constants/ThemeSetting";
-import { compose, graphql } from "react-apollo";
-import gql from "graphql-tag";
-import * as jwt from "jsonwebtoken";
-import { CollapseSidebar } from "shared";
+  THEME_TYPE_LITE,
+} from 'walkin-components/src/constants/ThemeSetting';
+import { compose, graphql } from 'react-apollo';
+import gql from 'graphql-tag';
+import * as jwt from 'jsonwebtoken';
+import { CollapseSidebar } from 'shared';
 // import { MenuTheme } from "antd/lib/menu";
 
 interface SidebarContentProps extends RouteComponentProps {
@@ -35,13 +35,13 @@ class SidebarContent extends React.Component<
   constructor(props: SidebarContentProps) {
     super(props);
     this.state = {
-      orgId: "",
-      userId: ""
+      orgId: '',
+      userId: '',
     };
   }
 
   UNSAFE_componentWillMount() {
-    const jwtToken = localStorage.getItem("jwt");
+    const jwtToken = localStorage.getItem('jwt');
     const { id, org_id }: any = jwt.decode(jwtToken);
     this.setState({ userId: id, orgId: org_id });
   }
@@ -51,16 +51,16 @@ class SidebarContent extends React.Component<
       navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR ||
       navStyle === NAV_STYLE_NO_HEADER_EXPANDED_SIDEBAR
     ) {
-      return "gx-no-header-notifications";
+      return 'gx-no-header-notifications';
     }
-    return "";
+    return '';
   };
 
   getNavStyleSubMenuClass = (navStyle: any) => {
     if (navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR) {
-      return "gx-no-header-submenu-popup";
+      return 'gx-no-header-submenu-popup';
     }
-    return "";
+    return '';
   };
 
   sidebarContentSwitcher = () => {
@@ -68,24 +68,24 @@ class SidebarContent extends React.Component<
     const { orgId, userId } = this.state;
 
     const selectedKeys = pathname.substr(1);
-    const defaultOpenKeys = selectedKeys.split("/");
-    let isSettingsSideBar = defaultOpenKeys[1] === "settings";
+    const defaultOpenKeys = selectedKeys.split('/');
+    let isSettingsSideBar = defaultOpenKeys[1] === 'settings';
 
-    let sidebarTheme = "dark";
+    let sidebarTheme = 'dark';
     if (themeType === THEME_TYPE_LITE || isSettingsSideBar)
-      sidebarTheme = "light";
+      sidebarTheme = 'light';
 
     if (!isSettingsSideBar) {
       return (
         <div
-          style={{ height: "100%" }}
+          style={{ height: '100%' }}
           className="HyperX-Sidebar gx-sidebar-content"
         >
           <Menu
-            style={{ height: "100%" }}
+            style={{ height: '100%' }}
             defaultOpenKeys={[]}
             selectedKeys={[]}
-            theme={themeType === THEME_TYPE_LITE ? "light" : "dark"}
+            theme={themeType === THEME_TYPE_LITE ? 'light' : 'dark'}
             mode="inline"
           >
             <Menu.Item key="core">
@@ -103,7 +103,7 @@ class SidebarContent extends React.Component<
             </Menu.Item>
             <Menu.Item key="organizationInfo">
               <Link
-                to={`/core/organization/${orgId ? orgId : ""}`}
+                to={`/core/organization/${orgId ? orgId : ''}`}
                 // to="core/organization"
               >
                 <i className="icon icon-inbox" />
@@ -120,7 +120,7 @@ class SidebarContent extends React.Component<
             <Menu.Item key="stores">
               <Link to={`/core/stores`}>
                 <i className="icon icon-inbox" />
-                <span>Store Info</span>
+                <span>Stores</span>
               </Link>
             </Menu.Item>
           </Menu>
@@ -130,7 +130,7 @@ class SidebarContent extends React.Component<
 
     return (
       <Menu
-        style={{ height: "100%", backgroundColor: "#F3F3F3" }}
+        style={{ height: '100%', backgroundColor: '#F3F3F3' }}
         defaultOpenKeys={[defaultOpenKeys[2]]}
         selectedKeys={[defaultOpenKeys[3]]}
         // theme={sidebarTheme}
@@ -140,8 +140,8 @@ class SidebarContent extends React.Component<
           key="profile"
           title={
             <span>
-              {" "}
-              <i className="icon icon-profile" /> <span>My Profile</span>{" "}
+              {' '}
+              <i className="icon icon-profile" /> <span>My Profile</span>{' '}
             </span>
           }
         ></Menu.SubMenu>
@@ -157,7 +157,7 @@ class SidebarContent extends React.Component<
         ></Menu.SubMenu>
 
         <Menu.SubMenu
-          style={{ backgroundColor: "#F3F3F3" }}
+          style={{ backgroundColor: '#F3F3F3' }}
           key="developer"
           title={
             <span>
@@ -166,11 +166,11 @@ class SidebarContent extends React.Component<
             </span>
           }
         >
-          <Menu.Item style={{ backgroundColor: "#F3F3F3" }} key="webhooks">
+          <Menu.Item style={{ backgroundColor: '#F3F3F3' }} key="webhooks">
             <Link to="/core/settings/developer/webhooks">Webhooks</Link>
           </Menu.Item>
           <Menu.Item
-            style={{ backgroundColor: "#F3F3F3" }}
+            style={{ backgroundColor: '#F3F3F3' }}
             key="entity-extention"
           >
             <Link to="/core/settings/developer/entity-extention">
@@ -186,7 +186,7 @@ class SidebarContent extends React.Component<
     return (
       <Auxiliary>
         <SidebarLogo />
-        <div style={{ height: "100%" }} className="gx-sidebar-content">
+        <div style={{ height: '100%' }} className="gx-sidebar-content">
           {this.sidebarContentSwitcher()}
           {/* <CollapseSidebar className='collapseBarStyle' /> */}
         </div>
@@ -220,7 +220,7 @@ export default withRouter(
   compose(
     graphql(GET_SETTINGS, {
       props: mapStateToProps,
-      name: "settings"
+      name: 'settings',
     })
   )(SidebarContent)
 );

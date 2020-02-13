@@ -1,17 +1,17 @@
-import "./FormPane.css";
-import { Form, Slider, Button, Icon, Row, Col, TreeSelect, Card } from "antd";
-import * as React from "react";
-import FormHeader from "./FormHeader";
-import ChoiceForm from "./ChoiceForm";
-import QuestionForm from "./QuestionForm";
-import ShowQuestion from "./ShowQuestion";
-import CreateQuestion from "./CreateQuestion";
-import gql from "graphql-tag";
-import { graphql } from "react-apollo";
+import './FormPane.css';
+import { Form, Slider, Button, Icon, Row, Col, TreeSelect, Card } from 'antd';
+import * as React from 'react';
+import FormHeader from './FormHeader';
+import ChoiceForm from './ChoiceForm';
+import QuestionForm from './QuestionForm';
+import ShowQuestion from './ShowQuestion';
+import CreateQuestion from './CreateQuestion';
+import gql from 'graphql-tag';
+import { graphql } from 'react-apollo';
 
 const questionWithSlider = {
-  RATING_SCALE: "RATING_SCALE",
-  OPINION_SCALE: "OPINION_SCALE"
+  RATING_SCALE: 'RATING_SCALE',
+  OPINION_SCALE: 'OPINION_SCALE',
 };
 
 interface QuestionnaireFormPaneProps {
@@ -45,12 +45,12 @@ class QuestionnaireFormPane extends React.Component<
     this.state = {
       questionToEdit: {},
       choiceToEdit: {},
-      showButton: false
+      showButton: false,
     };
   }
 
   onChoiceEdited = (values, choice) => {
-    console.log("values of choices", values);
+    console.log('values of choices', values);
     if (questionWithSlider[values.type]) {
       values.rangeStart = values.range[0];
       values.rangeEnd = values.range[1];
@@ -58,18 +58,18 @@ class QuestionnaireFormPane extends React.Component<
     delete values.range;
     const assignedValue = {
       ...choice,
-      ...values
+      ...values,
     };
     this.setState({
-      choiceToEdit: Object.assign(this.state.choiceToEdit, assignedValue)
+      choiceToEdit: Object.assign(this.state.choiceToEdit, assignedValue),
     });
   };
 
   onQuestionTypeEdit = value => {
-    console.log("this.state.questionToEdit", this.state.questionToEdit);
+    console.log('this.state.questionToEdit', this.state.questionToEdit);
     const values = {
       ...this.props.questionToEdit,
-      type: value
+      type: value,
     };
     if (questionWithSlider[values.type]) {
       values.rangeMin = 1;
@@ -80,7 +80,7 @@ class QuestionnaireFormPane extends React.Component<
 
     this.setState({
       questionToEdit: values,
-      showButton: true
+      showButton: true,
     });
     this.props.onQuestionSubmitted(values);
   };
@@ -92,18 +92,18 @@ class QuestionnaireFormPane extends React.Component<
     }
     this.setState({
       questionToEdit: Object.assign(this.state.questionToEdit, values),
-      showButton: true
+      showButton: true,
     });
   };
 
   onChoiceSubmitted = () => {
     const { choiceToEdit } = this.state;
-    console.log("choiceToEdit", choiceToEdit);
+    console.log('choiceToEdit', choiceToEdit);
     this.props.onChoiceSubmitted(choiceToEdit);
   };
 
   onQuestionSubmitted = () => {
-    console.log("questionToEdit", this.state.questionToEdit);
+    console.log('questionToEdit', this.state.questionToEdit);
     console.log(this.state.questionToEdit);
     this.props.onQuestionSubmitted(this.state.questionToEdit);
   };
@@ -120,13 +120,13 @@ class QuestionnaireFormPane extends React.Component<
       isChoiceLoading,
       isQuestionLoading,
       questionnaire,
-      onLinkChoiceToQuestion
+      onLinkChoiceToQuestion,
     } = this.props;
     return (
       <Row
         style={{
-          height: "100%",
-          overflowX: "scroll"
+          height: '100%',
+          overflowX: 'scroll',
         }}
       >
         <Col span={24}>

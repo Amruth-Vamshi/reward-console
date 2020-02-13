@@ -1,7 +1,7 @@
-import * as React from "react";
-import { Card } from "antd";
-import * as PropTypes from "prop-types";
-import { CardGridProps, CardProps } from "antd/lib/card";
+import * as React from 'react';
+import { Card } from 'antd';
+import * as PropTypes from 'prop-types';
+import { CardGridProps, CardProps } from 'antd/lib/card';
 
 export const Widget = ({
   title,
@@ -11,7 +11,7 @@ export const Widget = ({
   style,
   extra,
   actions,
-  hoverable
+  hoverable,
 }: {
   title?: any;
   children?: any;
@@ -37,7 +37,7 @@ export const Widget = ({
 };
 
 Widget.defaultProps = {
-  styleName: ""
+  styleName: '',
 };
 
 Widget.propTypes = {
@@ -45,5 +45,5 @@ Widget.propTypes = {
   extra: PropTypes.node,
   cover: PropTypes.node,
   actions: PropTypes.node,
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
 };

@@ -1,5 +1,5 @@
-import gql from "graphql-tag";
-import { Query } from "react-apollo";
+import gql from 'graphql-tag';
+import { Query } from 'react-apollo';
 export const allSegments = gql`
   query segments($org_id: ID!) {
     segments(status: ACTIVE, organization_id: $org_id) {

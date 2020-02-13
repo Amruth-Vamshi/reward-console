@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import { WidgetHeader } from "../../WidgetHeader";
+import React, { Component } from 'react';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import { WidgetHeader } from '../../WidgetHeader';
 
 interface IProps {
   communitiesList: any[];

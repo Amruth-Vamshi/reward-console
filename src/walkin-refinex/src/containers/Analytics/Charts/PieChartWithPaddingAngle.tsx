@@ -1,9 +1,9 @@
-import * as React from "react";
-import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
+import * as React from 'react';
+import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts';
 
-import data from "./data";
-import { data03 } from "./data";
-const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
+import data from './data';
+import { data03 } from './data';
+const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
 class PieChartWithPaddingAngle extends React.Component {
   render() {

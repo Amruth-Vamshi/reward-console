@@ -1,28 +1,28 @@
-import * as React from "react";
-import { CampaignHeader, campaignOverview as Overview } from "shared";
-import { Button, Row, Col, message } from "antd";
+import * as React from 'react';
+import { CampaignHeader, campaignOverview as Overview } from 'shared';
+import { Button, Row, Col, message } from 'antd';
 import {
   GET_CAMPAIGN_DASHBOARD,
   LAUNCH_CAMPAIGN,
   PAUSE_CAMPAIGN,
   UNPAUSE_CAMPAIGN,
   ABANDON_CAMPAIGN,
-  AUDIENCES
-} from "../Query";
+  AUDIENCES,
+} from '../Query';
 import {
   withApollo,
   graphql,
   compose,
-  ApolloProviderProps
-} from "react-apollo";
-import { withRouter } from "react-router-dom";
+  ApolloProviderProps,
+} from 'react-apollo';
+import { withRouter } from 'react-router-dom';
 // import moment = require("moment");
-import moment from "moment";
-import * as jwt from "jsonwebtoken";
-import { RouteComponentProps } from "react-router";
-import { path } from "d3-path";
-import { GraphQLRequest } from "apollo-link";
-import { History, Location } from "history";
+import moment from 'moment';
+import * as jwt from 'jsonwebtoken';
+import { RouteComponentProps } from 'react-router';
+import { path } from 'd3-path';
+import { GraphQLRequest } from 'apollo-link';
+import { History, Location } from 'history';
 
 interface CampaignDashboardState {
   loading: boolean;
@@ -50,124 +50,124 @@ class CampaignDashboard extends React.Component<
   constructor(props: CampaignDashboardProps) {
     super(props);
     this.state = {
-      loading: false
+      loading: false,
     };
   }
   launchCampaign = () => {
     this.setState({ loading: true });
     this.props
       .launchCampaign({
-        variables: { id: this.props.location.state.campaignSelected.id }
+        variables: { id: this.props.location.state.campaignSelected.id },
       })
       .then((data: any): void => {
-        console.log("campaign data..", data);
-        message.success("Campaign Launched");
+        console.log('campaign data..', data);
+        message.success('Campaign Launched');
         moment(this.props.location.state.campaignSelected.startTime).isAfter(
           moment()
         )
           ? this.props.history.push({
-              pathname: "/refinex/feedback/overview",
-              state: { tabKey: "2" }
+              pathname: '/refinex/feedback/overview',
+              state: { tabKey: '2' },
             })
           : moment(this.props.location.state.campaignSelected.endTime).isBefore(
               moment()
             )
           ? this.props.history.push({
-              pathname: "/refinex/feedback/overview",
-              state: { tabKey: "3" }
+              pathname: '/refinex/feedback/overview',
+              state: { tabKey: '3' },
             })
           : this.props.history.push({
-              pathname: "/refinex/feedback/overview",
-              state: { patabKey: "3" }
+              pathname: '/refinex/feedback/overview',
+              state: { patabKey: '3' },
             });
       })
       .catch((err: any) => {
-        console.log("Error Update campaign", err);
+        console.log('Error Update campaign', err);
         this.setState({ loading: false });
       });
   };
   pauseCampaign = () => {
-    console.log("Pause calling");
+    console.log('Pause calling');
     this.setState({ loading: true });
     this.props
       .pauseCampaign({
-        variables: { id: this.props.location.state.campaignSelected.id }
+        variables: { id: this.props.location.state.campaignSelected.id },
       })
       .then((data: any) => {
-        console.log("campaign data..", data);
-        message.success("Campaign Paused");
+        console.log('campaign data..', data);
+        message.success('Campaign Paused');
         moment().isBetween(
           this.props.location.state.campaignSelected.startTime,
           this.props.location.state.campaignSelected.endTime
         )
           ? this.props.history.push({
-              pathname: "/refinex/feedback/overview",
-              state: { tabKey: "5" }
+              pathname: '/refinex/feedback/overview',
+              state: { tabKey: '5' },
             })
           : this.props.history.push({
-              pathname: "/refinex/feedback/overview",
-              state: { tabKey: "2" }
+              pathname: '/refinex/feedback/overview',
+              state: { tabKey: '2' },
             });
       })
       .catch((err: any) => {
-        console.log("Error Update campaign", err);
+        console.log('Error Update campaign', err);
         this.setState({ loading: false });
       });
   };
   unpauseCampaign = () => {
-    console.log("Pause calling");
+    console.log('Pause calling');
     this.setState({ loading: true });
     this.props
       .unpauseCampaign({
-        variables: { id: this.props.location.state.campaignSelected.id }
+        variables: { id: this.props.location.state.campaignSelected.id },
       })
       .then((data: any) => {
-        console.log("campaign data..", data);
-        message.success("Campaign unPaused");
+        console.log('campaign data..', data);
+        message.success('Campaign unPaused');
         moment().isBetween(
           this.props.location.state.campaignSelected.startTime,
           this.props.location.state.campaignSelected.endTime
         )
-          ? this.props.history.push("/refinex/feedback/overview")
+          ? this.props.history.push('/refinex/feedback/overview')
           : this.props.history.push({
-              pathname: "/refinex/feedback/overview",
-              state: { tabKey: "2" }
+              pathname: '/refinex/feedback/overview',
+              state: { tabKey: '2' },
             });
       })
       .catch((err: any) => {
-        console.log("Error Update campaign", err);
+        console.log('Error Update campaign', err);
         this.setState({ loading: false });
       });
   };
   abandonCampaign = () => {
-    console.log("Pause calling");
+    console.log('Pause calling');
     this.setState({ loading: true });
     this.props
       .abandonCampaign({
-        variables: { id: this.props.location.state.campaignSelected.id }
+        variables: { id: this.props.location.state.campaignSelected.id },
       })
       .then((data: any) => {
-        console.log("campaign data..", data);
-        message.success("Abandon campaign");
+        console.log('campaign data..', data);
+        message.success('Abandon campaign');
         moment().isBetween(
           this.props.location.state.campaignSelected.startTime,
           this.props.location.state.campaignSelected.endTime
         )
-          ? this.props.history.push("/refinex/feedback/overview")
+          ? this.props.history.push('/refinex/feedback/overview')
           : this.props.history.push({
-              pathname: "/refinex/feedback/overview",
-              state: { tabKey: "2" }
+              pathname: '/refinex/feedback/overview',
+              state: { tabKey: '2' },
             });
       })
       .catch((err: any) => {
-        console.log("Error Update campaign", err);
+        console.log('Error Update campaign', err);
         this.setState({ loading: false });
       });
   };
 
   render() {
-    console.log("this.props....", this.props);
-    console.log("this.state....", this.state);
+    console.log('this.props....', this.props);
+    console.log('this.state....', this.state);
 
     let audiences = this.props.allAudiences.audiences;
 
@@ -175,7 +175,7 @@ class CampaignDashboard extends React.Component<
     return (
       <div
         style={{
-          minHeight: "100vh"
+          minHeight: '100vh',
         }}
       >
         <CampaignHeader
@@ -196,7 +196,7 @@ class CampaignDashboard extends React.Component<
               campaign={
                 this.props.location.state
                   ? this.props.location.state.campaignSelected
-                  : ""
+                  : ''
               }
               launchCampaign={this.launchCampaign}
               pauseCampaign={this.pauseCampaign}
@@ -214,36 +214,36 @@ class CampaignDashboard extends React.Component<
 export default withRouter(
   compose(
     graphql(GET_CAMPAIGN_DASHBOARD, {
-      name: "campaign",
+      name: 'campaign',
       options: (props: CampaignDashboardProps) => {
         return {
           variables: { id: props.match.params.id },
-          fetchPolicy: "cache-and-network"
+          fetchPolicy: 'cache-and-network',
         };
-      }
+      },
     }),
     graphql(LAUNCH_CAMPAIGN, {
-      name: "launchCampaign"
+      name: 'launchCampaign',
     }),
     graphql(PAUSE_CAMPAIGN, {
-      name: "pauseCampaign"
+      name: 'pauseCampaign',
     }),
     graphql(UNPAUSE_CAMPAIGN, {
-      name: "unpauseCampaign"
+      name: 'unpauseCampaign',
     }),
     graphql(ABANDON_CAMPAIGN, {
-      name: "abandonCampaign"
+      name: 'abandonCampaign',
     }),
     graphql(AUDIENCES, {
-      name: "allAudiences",
+      name: 'allAudiences',
       options: (props: CampaignDashboardProps) => ({
         variables: {
-          status: "ACTIVE",
-          campaign_id: props.match.params.id
+          status: 'ACTIVE',
+          campaign_id: props.match.params.id,
           // organization_id: jwt.decode(localStorage.getItem("jwt")).org_id,
         },
-        fetchPolicy: "network-only"
-      })
+        fetchPolicy: 'network-only',
+      }),
     })
     // graphql(communications, {
     //     name: "allCommunications",

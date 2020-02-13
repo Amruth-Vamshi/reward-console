@@ -1,17 +1,17 @@
-import * as React from "react";
-import PropTypes from "prop-types";
-import { ErrorBoundary } from "walkin-components";
-import gql from "graphql-tag";
-import { graphql, compose } from "react-apollo";
-import { Form, TreeSelect, Row, Col, Popconfirm } from "antd";
-import { QUESTION_TYPES } from "../../../../../../../containers/Query";
-import { FormComponentProps, FormItemProps } from "antd/lib/form";
+import * as React from 'react';
+import PropTypes from 'prop-types';
+import { ErrorBoundary } from 'walkin-components';
+import gql from 'graphql-tag';
+import { graphql, compose } from 'react-apollo';
+import { Form, TreeSelect, Row, Col, Popconfirm } from 'antd';
+import { QUESTION_TYPES } from '../../../../../../../containers/Query';
+import { FormComponentProps, FormItemProps } from 'antd/lib/form';
 declare const ValidateStatuses: [
-  "success",
-  "warning",
-  "error",
-  "validating",
-  ""
+  'success',
+  'warning',
+  'error',
+  'validating',
+  ''
 ];
 
 interface FormHeaderProps extends FormComponentProps {
@@ -38,7 +38,7 @@ class FormHeader extends React.Component<FormHeaderProps, FormHeaderState> {
       subCategory: {},
       popUpVisible: false,
       newTypeValue: null,
-      validationStatus: "success"
+      validationStatus: 'success',
     };
   }
 
@@ -47,13 +47,13 @@ class FormHeader extends React.Component<FormHeaderProps, FormHeaderState> {
       questionText,
       type,
       rangeMax,
-      rangeMin
+      rangeMin,
     } = this.props.questionToEdit;
 
     this.props.form.setFieldsValue({
       questionText,
       type: this.props.questionType,
-      range: [rangeMin, rangeMax]
+      range: [rangeMin, rangeMax],
     });
   };
   componentDidMount() {
@@ -74,7 +74,7 @@ class FormHeader extends React.Component<FormHeaderProps, FormHeaderState> {
       let node = null;
       let subNode = null;
       if (questionTypes.hasOwnProperty(questionType)) {
-        if (typeof questionTypes[questionType] === "object") {
+        if (typeof questionTypes[questionType] === 'object') {
           node = (
             <TreeNode
               title={questionType}
@@ -101,12 +101,12 @@ class FormHeader extends React.Component<FormHeaderProps, FormHeaderState> {
 
   triggerPopup = (_, __, { preValue, triggerValue }) => {
     this.props.form.setFieldsValue({
-      type: triggerValue
+      type: triggerValue,
     });
     if (preValue && preValue.value !== triggerValue) {
       this.setState({
         popUpVisible: true,
-        newTypeValue: triggerValue ? triggerValue : this.state.newTypeValue
+        newTypeValue: triggerValue ? triggerValue : this.state.newTypeValue,
         // validationStatus: "validating"
       });
     }
@@ -115,11 +115,11 @@ class FormHeader extends React.Component<FormHeaderProps, FormHeaderState> {
   confirmTypeChange = () => {
     const { newTypeValue } = this.state;
     this.props.form.setFieldsValue({
-      type: newTypeValue
+      type: newTypeValue,
     });
     this.setState({
       popUpVisible: false,
-      validationStatus: "success"
+      validationStatus: 'success',
     });
     this.props.onQuestionTypeEdit(newTypeValue);
     //this.closeTypeChange();
@@ -127,11 +127,11 @@ class FormHeader extends React.Component<FormHeaderProps, FormHeaderState> {
 
   closeTypeChange = () => {
     this.props.form.setFieldsValue({
-      type: this.props.questionToEdit.type
+      type: this.props.questionToEdit.type,
     });
     this.setState({
       popUpVisible: false,
-      validationStatus: "success"
+      validationStatus: 'success',
     });
   };
 
@@ -181,7 +181,7 @@ class FormHeader extends React.Component<FormHeaderProps, FormHeaderState> {
       questionToEdit,
       questionType,
       form,
-      questionTypesQuery: { questionTypes }
+      questionTypesQuery: { questionTypes },
     } = this.props;
     const { getFieldDecorator } = form;
     const { Item } = Form;
@@ -189,7 +189,7 @@ class FormHeader extends React.Component<FormHeaderProps, FormHeaderState> {
       <ErrorBoundary>
         <Row
           style={{
-            height: "6rem"
+            height: '6rem',
           }}
         >
           <Col span={24}>
@@ -206,13 +206,13 @@ class FormHeader extends React.Component<FormHeaderProps, FormHeaderState> {
                   >
                     <Item validateStatus={this.state.validationStatus}>
                       <p>Question Type</p>
-                      {getFieldDecorator("type", {
+                      {getFieldDecorator('type', {
                         rules: [
                           {
-                            required: true
-                          }
+                            required: true,
+                          },
                         ],
-                        getValueFromEvent: this.triggerPopup
+                        getValueFromEvent: this.triggerPopup,
                       })(
                         <TreeSelect placeholder="Please select">
                           {this.getQuestionTypes()}
@@ -224,13 +224,13 @@ class FormHeader extends React.Component<FormHeaderProps, FormHeaderState> {
                 <Item>
                   <Item validateStatus={this.state.validationStatus}>
                     <p>Related to</p>
-                    {getFieldDecorator("type", {
+                    {getFieldDecorator('type', {
                       rules: [
                         {
-                          required: true
-                        }
+                          required: true,
+                        },
                       ],
-                      getValueFromEvent: this.triggerPopup
+                      getValueFromEvent: this.triggerPopup,
                     })(
                       <TreeSelect placeholder="Please select">
                         {this.getQuestionTypes()}
@@ -309,15 +309,15 @@ class FormHeader extends React.Component<FormHeaderProps, FormHeaderState> {
 //   onQuestionEdited(formValue);
 // };
 
-const FormPane = Form.create<FormHeaderProps>({ name: "FormHeader" })(
+const FormPane = Form.create<FormHeaderProps>({ name: 'FormHeader' })(
   FormHeader
 );
 
 export default compose(
   graphql(QUESTION_TYPES, {
-    name: "questionTypesQuery",
+    name: 'questionTypesQuery',
     options: {
-      fetchPolicy: "cache-first"
-    }
+      fetchPolicy: 'cache-first',
+    },
   })
 )(FormPane);

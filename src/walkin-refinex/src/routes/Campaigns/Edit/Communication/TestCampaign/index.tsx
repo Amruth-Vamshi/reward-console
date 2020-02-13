@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 import {
   Card,
   Row,
@@ -11,9 +11,9 @@ import {
   Icon,
   Select,
   Form,
-  message
-} from "antd";
-import { Widget } from "walkin-components";
+  message,
+} from 'antd';
+import { Widget } from 'walkin-components';
 
 interface TestComponentProps {
   text: string;
@@ -36,25 +36,25 @@ export default class TestComponent extends React.Component<
   constructor(props: TestComponentProps) {
     super(props);
     this.state = {
-      phoneNumber: "",
-      fcmToken: "",
-      email: ""
+      phoneNumber: '',
+      fcmToken: '',
+      email: '',
     };
   }
   onChange = e => {
     console.log(e.target.name, e.target.value);
     switch (e.target.name) {
-      case "EMAIL":
-        this.setState({ phoneNumber: "", fcmToken: "", email: e.target.value });
+      case 'EMAIL':
+        this.setState({ phoneNumber: '', fcmToken: '', email: e.target.value });
         break;
-      case "PUSH":
-        this.setState({ phoneNumber: "", fcmToken: e.target.value, email: "" });
+      case 'PUSH':
+        this.setState({ phoneNumber: '', fcmToken: e.target.value, email: '' });
         break;
-      case "SMS":
-        this.setState({ phoneNumber: e.target.value, fcmToken: "", email: "" });
+      case 'SMS':
+        this.setState({ phoneNumber: e.target.value, fcmToken: '', email: '' });
         break;
       default:
-        this.setState({ phoneNumber: e.target.value, fcmToken: "", email: "" });
+        this.setState({ phoneNumber: e.target.value, fcmToken: '', email: '' });
         break;
     }
   };
@@ -62,11 +62,11 @@ export default class TestComponent extends React.Component<
   getValue = (): string => {
     console.log(this.props.name);
     switch (this.props.name) {
-      case "EMAIL":
+      case 'EMAIL':
         return this.state.email;
-      case "PUSH":
+      case 'PUSH':
         return this.state.fcmToken;
-      case "SMS":
+      case 'SMS':
         return this.state.phoneNumber;
       default:
         return this.state.phoneNumber;
@@ -80,13 +80,13 @@ export default class TestComponent extends React.Component<
     );
 
     if (notify) {
-      message.success("Communication successfully sent!");
+      message.success('Communication successfully sent!');
     }
   };
   render() {
     return (
       <Widget
-        style={{ backgroundColor: "#FAFAFA" }}
+        style={{ backgroundColor: '#FAFAFA' }}
         title={
           <h1 className="gx-text-primary gx-text-capitalize gx-mb-0">
             {this.props.text}

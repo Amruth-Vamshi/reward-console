@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 interface iState {
   isHovering: any;
@@ -9,7 +9,7 @@ class HoverText extends React.Component<{}, iState> {
     super(props);
     this.handleMouseHover = this.handleMouseHover.bind(this);
     this.state = {
-      isHovering: false
+      isHovering: false,
     };
   }
 
@@ -19,7 +19,7 @@ class HoverText extends React.Component<{}, iState> {
 
   toggleHoverState(state) {
     return {
-      isHovering: !state.isHovering
+      isHovering: !state.isHovering,
     };
   }
 
@@ -30,7 +30,7 @@ class HoverText extends React.Component<{}, iState> {
         onMouseLeave={this.handleMouseHover}
       >
         {this.state.isHovering ? (
-          <span style={{ color: "#038FDE", cursor: "pointer" }}>
+          <span style={{ color: '#038FDE', cursor: 'pointer' }}>
             {this.props.children}
           </span>
         ) : (

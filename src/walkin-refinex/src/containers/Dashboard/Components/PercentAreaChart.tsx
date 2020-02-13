@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 import {
   Area,
   AreaChart,
@@ -6,17 +6,17 @@ import {
   ResponsiveContainer,
   Tooltip,
   XAxis,
-  YAxis
-} from "recharts";
+  YAxis,
+} from 'recharts';
 
 const data = [
-  { day: "27/11", promoters: 4000, neutrals: 2400, detractors: 2400 },
-  { day: "28/11", promoters: 3000, neutrals: 1398, detractors: 2210 },
-  { day: "29/11", promoters: 2000, neutrals: 9800, detractors: 2290 },
-  { day: "30/11", promoters: 2780, neutrals: 3908, detractors: 2000 },
-  { day: "01/12", promoters: 1890, neutrals: 4800, detractors: 2181 },
-  { day: "02/12", promoters: 2390, neutrals: 3800, detractors: 2500 },
-  { day: "03/12", promoters: 3490, neutrals: 4300, detractors: 2100 }
+  { day: '27/11', promoters: 4000, neutrals: 2400, detractors: 2400 },
+  { day: '28/11', promoters: 3000, neutrals: 1398, detractors: 2210 },
+  { day: '29/11', promoters: 2000, neutrals: 9800, detractors: 2290 },
+  { day: '30/11', promoters: 2780, neutrals: 3908, detractors: 2000 },
+  { day: '01/12', promoters: 1890, neutrals: 4800, detractors: 2181 },
+  { day: '02/12', promoters: 2390, neutrals: 3800, detractors: 2500 },
+  { day: '03/12', promoters: 3490, neutrals: 4300, detractors: 2100 },
 ];
 
 const getPercent = (value, total) => {

@@ -1,5 +1,5 @@
-import * as React from "react";
-import { Link } from "react-router-dom";
+import * as React from 'react';
+import { Link } from 'react-router-dom';
 
 import {
   NAV_STYLE_DRAWER,
@@ -8,10 +8,10 @@ import {
   NAV_STYLE_NO_HEADER_MINI_SIDEBAR,
   TAB_SIZE,
   TAB_SIZE_MAX,
-  THEME_TYPE_LITE
-} from "walkin-components/src/constants/ThemeSetting";
-import { compose, graphql } from "react-apollo";
-import gql from "graphql-tag";
+  THEME_TYPE_LITE,
+} from 'walkin-components/src/constants/ThemeSetting';
+import { compose, graphql } from 'react-apollo';
+import gql from 'graphql-tag';
 
 interface SidebarLogoProps {
   width?: any;
@@ -36,7 +36,7 @@ class SidebarLogo extends React.Component<SidebarLogoProps, {}> {
             <Link to="/" className="gx-pointer">
               <img
                 alt="fgd"
-                src={require("walkin-components/src/assets/images/walkin_logo_mini.png")}
+                src={require('walkin-components/src/assets/images/walkin_logo_mini.png')}
                 style={{ maxWidth: 35 }}
               />
             </Link>
@@ -44,29 +44,29 @@ class SidebarLogo extends React.Component<SidebarLogoProps, {}> {
             navStyle === NAV_STYLE_MINI_SIDEBAR ? (
             <div className="gx-linebar">
               <i
-                style={{ backgroundColor: "white" }}
+                style={{ backgroundColor: 'white' }}
                 className={`gx-icon-btn icon icon-${
                   navStyle === NAV_STYLE_MINI_SIDEBAR
-                    ? "menu-unfold"
-                    : "menu-fold"
+                    ? 'menu-unfold'
+                    : 'menu-fold'
                 }
                     gx-text-black`}
                 onClick={() => {
                   if (navStyle === NAV_STYLE_DRAWER) {
                     this.props.toggleCollapsedSideNav({
-                      variables: { navCollapsed: !navCollapsed }
+                      variables: { navCollapsed: !navCollapsed },
                     });
                   } else if (navStyle === NAV_STYLE_FIXED) {
                     this.props.onNavStyleChange({
-                      variables: { navStyle: NAV_STYLE_MINI_SIDEBAR }
+                      variables: { navStyle: NAV_STYLE_MINI_SIDEBAR },
                     });
                   } else if (navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR) {
                     this.props.toggleCollapsedSideNav({
-                      variables: { navCollapsed: !navCollapsed }
+                      variables: { navCollapsed: !navCollapsed },
                     });
                   } else {
                     this.props.onNavStyleChange({
-                      variables: { navStyle: NAV_STYLE_FIXED }
+                      variables: { navStyle: NAV_STYLE_FIXED },
                     });
                   }
                 }}
@@ -79,18 +79,18 @@ class SidebarLogo extends React.Component<SidebarLogoProps, {}> {
             width >= TAB_SIZE ? (
               <img
                 alt=""
-                src={require("walkin-components/src/assets/images/w-logo.png")}
+                src={require('walkin-components/src/assets/images/w-logo.png')}
               />
             ) : themeType === THEME_TYPE_LITE ? (
               <img
                 alt=""
-                src={require("walkin-components/src/assets/images/logo-white.png")}
+                src={require('walkin-components/src/assets/images/logo-white.png')}
               />
             ) : (
               <img
                 style={{ width: 125 }}
                 alt=""
-                src={require("walkin-components/src/assets/images/walkin_logo_whitebg.jpg")}
+                src={require('walkin-components/src/assets/images/walkin_logo_whitebg.jpg')}
               />
             )}
           </Link>
@@ -135,7 +135,7 @@ const ON_NAV_STYLE_CHANGE = gql`
 `;
 
 export default compose(
-  graphql(GET_SETTINGS, { name: "settings", props: mapStateToProps }),
-  graphql(TOGGLE_COLLAPSED_SIDENAV, { name: "toggleCollapsedSideNav" }),
-  graphql(ON_NAV_STYLE_CHANGE, { name: "onNavStyleChange" })
+  graphql(GET_SETTINGS, { name: 'settings', props: mapStateToProps }),
+  graphql(TOGGLE_COLLAPSED_SIDENAV, { name: 'toggleCollapsedSideNav' }),
+  graphql(ON_NAV_STYLE_CHANGE, { name: 'onNavStyleChange' })
 )(SidebarLogo);

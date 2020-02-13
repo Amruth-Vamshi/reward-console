@@ -1,8 +1,8 @@
-import React from "react";
-import Row from "antd/lib/row";
-import Col from "antd/lib/col";
+import React from 'react';
+import Row from 'antd/lib/row';
+import Col from 'antd/lib/col';
 
-import "./index.css";
+import './index.css';
 
 const DemoBox = props => (
   <p className={`height-${props.value}`}>{props.children}</p>

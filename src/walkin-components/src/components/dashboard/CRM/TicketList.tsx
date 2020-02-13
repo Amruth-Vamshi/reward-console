@@ -1,7 +1,7 @@
-import * as React from "react";
+import * as React from 'react';
 
-import TicketItem from "./TicketItem";
-import { Widget } from "../../Widget";
+import TicketItem from './TicketItem';
+import { Widget } from '../../Widget';
 
 const ticketList = [];
 class TicketList extends React.Component {
@@ -14,7 +14,7 @@ class TicketList extends React.Component {
         styleName="gx-card-ticketlist"
         extra={
           <h5 className="gx-text-primary gx-mb-0 gx-pointer gx-d-none gx-d-sm-block">
-            See all tickets{" "}
+            See all tickets{' '}
             <i className="icon icon-long-arrow-right gx-fs-xxl gx-ml-2 gx-d-inline-flex gx-vertical-align-middle" />
           </h5>
         }
@@ -24,7 +24,7 @@ class TicketList extends React.Component {
         ))}
         <div className="gx-task-list-item gx-d-block gx-d-sm-none">
           <h5 className="gx-text-primary gx-mb-0 gx-pointer">
-            See all tickets{" "}
+            See all tickets{' '}
             <i className="icon icon-long-arrow-right gx-fs-xxl gx-ml-2 gx-d-inline-flex gx-vertical-align-middle" />
           </h5>
         </div>

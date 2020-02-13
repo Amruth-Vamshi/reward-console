@@ -1,11 +1,11 @@
-import * as React from "react";
+import * as React from 'react';
 
-import ReceivedMessageCell from "./ReceivedMessageCell/index";
-import SentMessageCell from "./SentMessageCell/index";
+import ReceivedMessageCell from './ReceivedMessageCell/index';
+import SentMessageCell from './SentMessageCell/index';
 
 const Conversation = ({
   conversationData,
-  selectedUser
+  selectedUser,
 }: {
   conversationData: any;
   selectedUser: any;
@@ -13,7 +13,7 @@ const Conversation = ({
   return (
     <div className="gx-chat-main-content">
       {conversationData.map((conversation, index) =>
-        conversation.type === "sent" ? (
+        conversation.type === 'sent' ? (
           <SentMessageCell key={index} conversation={conversation} />
         ) : (
           <ReceivedMessageCell

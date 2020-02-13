@@ -1,5 +1,5 @@
-import * as React from "react";
-import { Icon } from "antd";
+import * as React from 'react';
+import { Icon } from 'antd';
 
 const WelComeCard = () => {
   return (

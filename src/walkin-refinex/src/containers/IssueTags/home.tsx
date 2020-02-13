@@ -1,8 +1,8 @@
-import * as React from "react";
-import { Col, Row, Icon } from "antd";
-import { Auxiliary } from "walkin-components";
-import { withApollo, ApolloProviderProps } from "react-apollo";
-import TagTree from "../TagTree/index";
+import * as React from 'react';
+import { Col, Row, Icon } from 'antd';
+import { Auxiliary } from 'walkin-components';
+import { withApollo, ApolloProviderProps } from 'react-apollo';
+import TagTree from '../TagTree/index';
 
 interface LandingProps extends ApolloProviderProps<any> {}
 
@@ -23,14 +23,14 @@ class IssueTagHome extends React.Component<
     return (
       <Auxiliary>
         <div
-          style={{ minHeight: "100vh", backgroundColor: "#F2F2F2" }}
+          style={{ minHeight: '100vh', backgroundColor: '#F2F2F2' }}
           className="gx-main-content-wrapper"
         >
           <Row>
             <Col sm={24} md={18} xl={20}>
               <span
                 className="gx-d-none gx-d-sm-flex"
-                style={{ width: "100%", fontSize: 24, color: "#5B5B5B" }}
+                style={{ width: '100%', fontSize: 24, color: '#5B5B5B' }}
               >
                 Issue Tags
               </span>
@@ -40,10 +40,10 @@ class IssueTagHome extends React.Component<
           </Row>
           <Row
             style={{
-              marginLeft: "1px",
-              height: "500px",
-              marginRight: "1px",
-              paddingBottom: "20px"
+              marginLeft: '1px',
+              height: '500px',
+              marginRight: '1px',
+              paddingBottom: '20px',
             }}
           >
             <TagTree />

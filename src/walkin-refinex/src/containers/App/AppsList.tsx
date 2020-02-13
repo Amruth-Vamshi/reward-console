@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 import {
   Col,
   Row,
@@ -10,18 +10,18 @@ import {
   Tooltip,
   Input,
   Icon,
-  Button
-} from "antd";
-import AppListCard from "./AppListCard";
+  Button,
+} from 'antd';
+import AppListCard from './AppListCard';
 import {
   GET_ALL_APPS_OF_ORGANIZATION,
   GENERATE_API_KEY,
-  DELETE_APP
-} from "walkin-core/src/PlatformQueries";
-import * as jwt from "jsonwebtoken";
-import "./app.css";
-import { withApollo, ApolloProviderProps } from "react-apollo";
-import { RouteChildrenProps } from "react-router";
+  DELETE_APP,
+} from 'walkin-core/src/PlatformQueries';
+import * as jwt from 'jsonwebtoken';
+import './app.css';
+import { withApollo, ApolloProviderProps } from 'react-apollo';
+import { RouteChildrenProps } from 'react-router';
 // import { nearXClient as client } from "../../nearXApollo";
 const { TextArea } = Input;
 
@@ -41,12 +41,12 @@ class AppsList extends React.Component<ApplistProps, ApplistState> {
     this.state = {
       visible: false,
       appsList: [],
-      spin: false
+      spin: false,
     };
   }
 
   addApp = () => {
-    this.props.history.push("/refinex/apps/create");
+    this.props.history.push('/refinex/apps/create');
   };
 
   test = () => {
@@ -73,13 +73,13 @@ class AppsList extends React.Component<ApplistProps, ApplistState> {
 
   UNSAFE_componentWillMount() {
     this.setState({ spin: true });
-    const jwtData = jwt.decode(localStorage.getItem("jwt"));
+    const jwtData = jwt.decode(localStorage.getItem('jwt'));
 
     if (jwtData) {
       this.getAppsList(jwtData);
     } else {
       this.setState({ spin: false });
-      console.log("Error getting JwtData");
+      console.log('Error getting JwtData');
     }
   }
 
@@ -88,7 +88,7 @@ class AppsList extends React.Component<ApplistProps, ApplistState> {
       .query({
         query: GET_ALL_APPS_OF_ORGANIZATION,
         variables: { id: jwtData.org_id },
-        fetchPolicy: "no-cache"
+        fetchPolicy: 'no-cache',
       })
       .then(res => {
         let apps: any = [];
@@ -103,7 +103,7 @@ class AppsList extends React.Component<ApplistProps, ApplistState> {
                 appName: app.name,
                 industry: org.name,
                 platform: app.platform,
-                discription: app.description
+                discription: app.description,
               })
             );
           if (org && org.children)
@@ -115,7 +115,7 @@ class AppsList extends React.Component<ApplistProps, ApplistState> {
       })
       .catch(err => {
         this.setState({ spin: false });
-        console.log("Failed to get User Details" + err);
+        console.log('Failed to get User Details' + err);
       });
   };
 
@@ -123,14 +123,14 @@ class AppsList extends React.Component<ApplistProps, ApplistState> {
     this.props.client
       .mutate({
         mutation: DELETE_APP,
-        variables: { id: id }
+        variables: { id: id },
       })
       .then(res => {
         // this.getAppsList(jwt.decode(localStorage.getItem("jwt")))
       })
       .catch(err => {
         this.setState({ spin: false });
-        console.log("Failed to Delete App" + err);
+        console.log('Failed to Delete App' + err);
       });
   };
 
@@ -138,7 +138,7 @@ class AppsList extends React.Component<ApplistProps, ApplistState> {
     this.props.client
       .mutate({
         mutation: GENERATE_API_KEY,
-        variables: { id: appId, env: "PROD" }
+        variables: { id: appId, env: 'PROD' },
       })
       .then(res => {
         let { appsList } = this.state;
@@ -146,7 +146,7 @@ class AppsList extends React.Component<ApplistProps, ApplistState> {
         this.setState({ appsList });
       })
       .catch(err => {
-        console.log("Failed" + err);
+        console.log('Failed' + err);
       });
   };
 
@@ -155,13 +155,13 @@ class AppsList extends React.Component<ApplistProps, ApplistState> {
     return (
       <div
         style={{
-          minHeight: "100vh"
+          minHeight: '100vh',
         }}
       >
         <Row className="headerRow1">
-          <div style={{ width: "100%" }}>
+          <div style={{ width: '100%' }}>
             <span style={{ fontSize: 25 }}>Apps</span>
-            <div style={{ float: "right", flexFlow: "right" }}>
+            <div style={{ float: 'right', flexFlow: 'right' }}>
               <Button
                 style={{ margin: 0 }}
                 onClick={() => this.addApp()}
@@ -185,7 +185,7 @@ class AppsList extends React.Component<ApplistProps, ApplistState> {
         ) : this.state.appsList.length ? (
           <div
             style={{
-              marginTop: "10px"
+              marginTop: '10px',
             }}
           >
             <Row className="placeTableHeaders">

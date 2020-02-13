@@ -1,14 +1,14 @@
-import * as React from "react";
-import { Col, Row, Button, Select, Modal } from "antd";
-import { withRouter, Redirect } from "react-router-dom";
+import * as React from 'react';
+import { Col, Row, Button, Select, Modal } from 'antd';
+import { withRouter, Redirect } from 'react-router-dom';
 import {
   Area,
   AreaChart,
   Line,
   LineChart,
   ResponsiveContainer,
-  Tooltip
-} from "recharts";
+  Tooltip,
+} from 'recharts';
 import {
   ChartCard,
   Auxiliary,
@@ -21,14 +21,14 @@ import {
   DownloadMobileApps,
   OrderHistory,
   CardBox,
-  ErrorBoundary
-} from "walkin-components";
-import { increamentData, lineData } from "../../Dashboard/data";
-import gql from "graphql-tag";
-import { compose, withApollo, Mutation, graphql } from "react-apollo";
-import CreateCampaignRow from "./CreateCampaignRow";
-import CampaignOverviewGrid from "./CampaignOverviewGrid";
-import { RouteChildrenProps } from "react-router";
+  ErrorBoundary,
+} from 'walkin-components';
+import { increamentData, lineData } from '../../Dashboard/data';
+import gql from 'graphql-tag';
+import { compose, withApollo, Mutation, graphql } from 'react-apollo';
+import CreateCampaignRow from './CreateCampaignRow';
+import CampaignOverviewGrid from './CampaignOverviewGrid';
+import { RouteChildrenProps } from 'react-router';
 
 interface CampaignOverviewProps extends RouteChildrenProps {
   auth?: string;
@@ -62,6 +62,6 @@ const GET_USER_IDENTITY = gql`
 
 export default compose(
   graphql(GET_USER_IDENTITY, {
-    name: "auth"
+    name: 'auth',
   })
 )(CampaignOverview);

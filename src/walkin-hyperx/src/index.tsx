@@ -1,6 +1,6 @@
-import * as React from "react";
-import { Route } from "react-router-dom";
-import HyperXRoutes from "./containers";
+import * as React from 'react';
+import { Route } from 'react-router-dom';
+import HyperXRoutes from './containers';
 
 interface iProps {
   match?: any;

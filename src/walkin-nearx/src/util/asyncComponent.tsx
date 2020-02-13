@@ -1,10 +1,10 @@
-import * as React from "react";
-import Nprogress from "nprogress";
-import ReactPlaceholder from "react-placeholder";
-import "nprogress/nprogress.css";
-import {} from "antd";
-import "react-placeholder/lib/reactPlaceholder.css";
-import { CircularProgress } from "walkin-components";
+import * as React from 'react';
+import Nprogress from 'nprogress';
+import ReactPlaceholder from 'react-placeholder';
+import 'nprogress/nprogress.css';
+import {} from 'antd';
+import 'react-placeholder/lib/reactPlaceholder.css';
+import { CircularProgress } from 'walkin-components';
 
 interface iProps {}
 interface iState {
@@ -16,7 +16,7 @@ export default function asyncComponent(importComponent) {
     constructor(props) {
       super(props);
       this.state = {
-        component: null
+        component: null,
       };
     }
 
@@ -34,7 +34,7 @@ export default function asyncComponent(importComponent) {
       Nprogress.done();
       if (this.mounted) {
         this.setState({
-          component: <Component {...this.props} />
+          component: <Component {...this.props} />,
         });
       }
     }

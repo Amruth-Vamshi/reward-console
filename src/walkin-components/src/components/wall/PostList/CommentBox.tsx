@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import { Avatar, Button } from "antd";
+import React, { Component } from 'react';
+import { Avatar, Button } from 'antd';
 
-import DisplayDate from "../DisplayDate/index";
+import DisplayDate from '../DisplayDate/index';
 
 interface IProps {
   commentData: {
@@ -38,14 +38,14 @@ class CommentBox extends Component<IProps, IState> {
         user: {},
         isLike: true,
         likeCount: 0,
-        date: "",
+        date: '',
         commentList: [],
-        comment: ""
-      }
+        comment: '',
+      },
     };
   }
   _handleKeyPress = e => {
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       this.handleCommentToggle();
     }
   };
@@ -62,14 +62,14 @@ class CommentBox extends Component<IProps, IState> {
         likeCount:
           previousState.commentData.isLike === true
             ? previousState.commentData.likeCount - 1
-            : previousState.commentData.likeCount + 1
-      }
+            : previousState.commentData.likeCount + 1,
+      },
     }));
   }
 
   handleCommentToggle() {
     this.setState(previousState => ({
-      isComment: !previousState.isComment
+      isComment: !previousState.isComment,
     }));
   }
 
@@ -88,7 +88,7 @@ class CommentBox extends Component<IProps, IState> {
               size="small"
               onClick={this.handleLikeToggle.bind(this)}
             >
-              {isLike === true ? "Like" : "UnLike"}
+              {isLike === true ? 'Like' : 'UnLike'}
             </Button>
             <Button
               className="gx-btn-primary-light"

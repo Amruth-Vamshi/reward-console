@@ -1,7 +1,7 @@
-import * as React from "react";
-import { Area, AreaChart, ResponsiveContainer, Tooltip } from "recharts";
-import { Col, Row } from "antd";
-import { Widget } from "../Widget";
+import * as React from 'react';
+import { Area, AreaChart, ResponsiveContainer, Tooltip } from 'recharts';
+import { Col, Row } from 'antd';
+import { Widget } from '../Widget';
 
 const TotalEncomeCard = () => {
   return (

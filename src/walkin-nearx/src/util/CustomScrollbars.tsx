@@ -1,5 +1,5 @@
-import * as React from "react";
-import { Scrollbars } from "react-custom-scrollbars";
+import * as React from 'react';
+import { Scrollbars } from 'react-custom-scrollbars';
 
 const CustomScrollbars = props => (
   <Scrollbars
@@ -8,7 +8,7 @@ const CustomScrollbars = props => (
     renderTrackHorizontal={props => (
       <div
         {...props}
-        style={{ display: "none", overflowX: "hidden" }}
+        style={{ display: 'none', overflowX: 'hidden' }}
         className="track-horizontal"
       />
     )}

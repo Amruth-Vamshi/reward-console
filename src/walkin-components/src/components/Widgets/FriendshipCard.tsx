@@ -1,6 +1,6 @@
-import * as React from "react";
-import { Col, Row } from "antd";
-import { Widget } from "../Widget";
+import * as React from 'react';
+import { Col, Row } from 'antd';
+import { Widget } from '../Widget';
 
 function FriendshipCard() {
   return (

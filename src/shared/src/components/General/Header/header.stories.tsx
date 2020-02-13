@@ -1,12 +1,12 @@
-import React from "react";
-import { storiesOf } from "@storybook/react";
-import { Header } from "shared";
-import { Breadcrumb } from "antd";
+import React from 'react';
+import { storiesOf } from '@storybook/react';
+import { Header } from 'shared';
+import { Breadcrumb } from 'antd';
 
-const stories = storiesOf("Atoms|Other/Header", module);
+const stories = storiesOf('Atoms|Other/Header', module);
 
 stories.add(
-  "Header basic",
+  'Header basic',
   () => {
     return (
       <Header>
@@ -18,5 +18,5 @@ stories.add(
       </Header>
     );
   },
-  { notes: "Notes will appear here" }
+  { notes: 'Notes will appear here' }
 );

@@ -1,7 +1,7 @@
-import * as React from "react";
-import { Steps } from "antd";
-import "./style.css";
-import { Link } from "react-router-dom";
+import * as React from 'react';
+import { Steps } from 'antd';
+import './style.css';
+import { Link } from 'react-router-dom';
 
 const { Step } = Steps;
 

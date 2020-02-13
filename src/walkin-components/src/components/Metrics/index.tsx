@@ -1,6 +1,6 @@
-import * as React from "react";
-import { Card } from "antd";
-import PropTypes from "prop-types";
+import * as React from 'react';
+import { Card } from 'antd';
+import PropTypes from 'prop-types';
 
 const Metrics = ({ title, styleName, children }) => {
   return (
@@ -12,11 +12,11 @@ const Metrics = ({ title, styleName, children }) => {
 
 export default Metrics;
 Metrics.defaultProps = {
-  styleName: ""
+  styleName: '',
 };
 
 Metrics.propTypes = {
   title: PropTypes.string.isRequired,
   styleName: PropTypes.string,
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
 };

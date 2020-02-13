@@ -1,6 +1,6 @@
-import * as React from "react";
-import { Avatar, Checkbox, Tag, Tooltip } from "antd";
-import { Auxiliary } from "../../../util/Auxiliary";
+import * as React from 'react';
+import { Avatar, Checkbox, Tag, Tooltip } from 'antd';
+import { Auxiliary } from '../../../util/Auxiliary';
 const taskTags = [];
 
 const getTags = tags => {
@@ -30,7 +30,7 @@ const TaskItem = ({ data, onChange }) => {
           <div className="gx-task-item-content-left">
             <p
               className={`gx-text-truncate gx-mb-0 ${
-                completed ? "gx-text-strikethrough" : "gx-text-hover"
+                completed ? 'gx-text-strikethrough' : 'gx-text-hover'
               }`}
             >
               {title}

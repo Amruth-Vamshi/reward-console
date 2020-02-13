@@ -1,6 +1,6 @@
-import * as React from "react";
-import { Redirect, Route, Switch } from "react-router-dom";
-import SettingsForm from "./SettingsForm";
+import * as React from 'react';
+import { Redirect, Route, Switch } from 'react-router-dom';
+import SettingsForm from './SettingsForm';
 const SettingsManager = ({ match }) => {
   // console.log("Inside NearX-Routes-index-Places ["+JSON.stringify(match.uri)+"]")
   return (

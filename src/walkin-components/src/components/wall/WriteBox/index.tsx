@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import {
   Avatar,
   Button,
@@ -7,8 +7,8 @@ import {
   Icon,
   Input,
   Modal,
-  Upload
-} from "antd";
+  Upload,
+} from 'antd';
 
 const { TextArea } = Input;
 
@@ -27,42 +27,42 @@ interface IState {
 
 class WriteBox extends Component<IProps, IState> {
   readonly state = {
-    commentText: "",
+    commentText: '',
     previewVisible: false,
-    previewImage: "",
+    previewImage: '',
     fileList: [],
-    isOpen: false
+    isOpen: false,
   };
 
   handleCancel = () => this.setState({ previewVisible: false });
 
   handlePreview = file => {
-    console.log("previewImage", file);
+    console.log('previewImage', file);
     this.setState({
       previewImage: file.url || file.thumbUrl,
-      previewVisible: true
+      previewVisible: true,
     });
   };
 
   handleChange = ({ fileList }) => {
-    console.log("fileList", fileList);
+    console.log('fileList', fileList);
     this.setState({ fileList });
   };
 
   handleClickImage() {
     this.setState(previousState => ({
-      isOpen: !previousState.isOpen
+      isOpen: !previousState.isOpen,
     }));
   }
 
   handleAddPost() {
     this.props.addPost(this.state.commentText, this.state.fileList);
     this.setState({
-      commentText: "",
+      commentText: '',
       previewVisible: false,
-      previewImage: "",
+      previewImage: '',
       fileList: [],
-      isOpen: false
+      isOpen: false,
     });
   }
 
@@ -73,7 +73,7 @@ class WriteBox extends Component<IProps, IState> {
   render() {
     const { previewVisible, previewImage, fileList } = this.state;
     const isEnabled =
-      this.state.fileList.length === 0 && this.state.commentText === "";
+      this.state.fileList.length === 0 && this.state.commentText === '';
     const uploadButton = (
       <div>
         <Icon type="plus" />
@@ -115,7 +115,7 @@ class WriteBox extends Component<IProps, IState> {
             footer={null}
             onCancel={this.handleCancel}
           >
-            <img alt="example" style={{ width: "100%" }} src={previewImage} />
+            <img alt="example" style={{ width: '100%' }} src={previewImage} />
           </Modal>
         </div>
         <Divider />

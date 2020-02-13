@@ -1,11 +1,11 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { Row, Col } from "antd";
-import { ManageCampaignCard } from "shared";
-import gql from "graphql-tag";
-import { Query } from "react-apollo";
-import { GET_CAMPAIGNS } from "../../../../containers/Query";
-import { RouteChildrenProps } from "react-router";
+import { Row, Col } from 'antd';
+import { ManageCampaignCard } from 'shared';
+import gql from 'graphql-tag';
+import { Query } from 'react-apollo';
+import { GET_CAMPAIGNS } from '../../../../containers/Query';
+import { RouteChildrenProps } from 'react-router';
 
 interface CampaignOverviewGridProps extends RouteChildrenProps {
   campaigns?: any;
@@ -49,7 +49,7 @@ class CampaignOverviewGrid extends React.Component<
         <Query
           query={GET_CAMPAIGNS}
           variables={{
-            userId: auth.auth.userId
+            userId: auth.auth.userId,
           }}
           fetchPolicy="cache-and-network"
         >

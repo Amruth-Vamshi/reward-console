@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 
 import {
   Table,
@@ -10,12 +10,12 @@ import {
   Input,
   Button,
   Checkbox,
-  Switch
-} from "antd";
-import "./style.css";
-import { withApollo, ApolloProviderProps } from "react-apollo";
-import { ROLE, EDIT_POLICY } from "./../../PlatformQueries";
-import { History, Location } from "history";
+  Switch,
+} from 'antd';
+import './style.css';
+import { withApollo, ApolloProviderProps } from 'react-apollo';
+import { ROLE, EDIT_POLICY } from './../../PlatformQueries';
+import { History, Location } from 'history';
 
 // const data = [
 //   {
@@ -80,7 +80,7 @@ class EditRole extends React.Component<AccessControlProps, AccessControlState> {
     this.state = {
       roleResponse: {},
       tableData: [],
-      isFetching: true
+      isFetching: true,
     };
   }
 
@@ -89,7 +89,7 @@ class EditRole extends React.Component<AccessControlProps, AccessControlState> {
       .query({
         query: ROLE,
         variables: { id: this.props.history.location.state.roleId },
-        fetchPolicy: "network-only"
+        fetchPolicy: 'network-only',
       })
       .then(roleResponse => {
         console.log(roleResponse);
@@ -97,7 +97,7 @@ class EditRole extends React.Component<AccessControlProps, AccessControlState> {
           this.setState({
             roleResponse: roleResponse.data.role,
             tableData,
-            isFetching: false
+            isFetching: false,
           });
         });
       });
@@ -116,15 +116,17 @@ class EditRole extends React.Component<AccessControlProps, AccessControlState> {
           resource: item.resource,
           type: item.type,
           accessLevel: item.accessLevel,
-          [item.permission]: { value: item.effect === "ALLOW", id: item.id }
+          [item.permission]: { value: item.effect === 'ALLOW', id: item.id },
         });
       } else {
         tableData[roleDictionary[item.resource]][item.permission] = {
-          value: item.effect === "ALLOW",
-          id: item.id
+          value: item.effect === 'ALLOW',
+          id: item.id,
         };
       }
     });
+    console.log(tableData, 'tableData');
+
     cb(tableData);
   };
 
@@ -136,7 +138,7 @@ class EditRole extends React.Component<AccessControlProps, AccessControlState> {
       ) => {
         return {
           ...prevState,
-          [type]: value
+          [type]: value,
         };
       }
     );
@@ -167,7 +169,7 @@ class EditRole extends React.Component<AccessControlProps, AccessControlState> {
     let { tableData } = this.state;
     tableData[index][type].value = value;
     this.onEditPolicy(tableData[index], type);
-    this.onChange("tableData", tableData);
+    this.onChange('tableData', tableData);
   };
 
   render() {
@@ -175,117 +177,117 @@ class EditRole extends React.Component<AccessControlProps, AccessControlState> {
 
     const columns = [
       {
-        title: "Entities",
-        className: "access-control-column-title",
-        dataIndex: "resource",
-        key: "entities",
-        width: "40%"
+        title: 'Entities',
+        className: 'access-control-column-title',
+        dataIndex: 'resource',
+        key: 'entities',
+        width: '40%',
       },
       {
-        title: "Create",
-        className: "access-control-column-title",
-        dataIndex: "CREATE.value",
-        key: "create",
-        width: "10%",
+        title: 'Create',
+        className: 'access-control-column-title',
+        dataIndex: 'CREATE.value',
+        key: 'create',
+        width: '10%',
         render: (text: any, record: any, index: any) => {
           return (
             <Checkbox
               onChange={e =>
-                this.onChangePolicy(e.target.checked, record, index, "CREATE")
+                this.onChangePolicy(e.target.checked, record, index, 'CREATE')
               }
               checked={text}
             />
           );
-        }
+        },
       },
 
       {
-        title: "Update",
-        className: "access-control-column-title",
-        dataIndex: "UPDATE.value",
-        key: "update",
-        width: "10%",
+        title: 'Update',
+        className: 'access-control-column-title',
+        dataIndex: 'UPDATE.value',
+        key: 'update',
+        width: '10%',
         render: (text: any, record: any, index: any) => {
           return (
             <Checkbox
               onChange={e =>
-                this.onChangePolicy(e.target.checked, record, index, "UPDATE")
+                this.onChangePolicy(e.target.checked, record, index, 'UPDATE')
               }
               checked={text}
             />
           );
-        }
+        },
       },
       {
-        title: "Delete",
-        className: "access-control-column-title",
-        dataIndex: "DELETE.value",
-        key: "delete",
-        width: "10%",
+        title: 'Delete',
+        className: 'access-control-column-title',
+        dataIndex: 'DELETE.value',
+        key: 'delete',
+        width: '10%',
         render: (text: any, record: any, index: any) => {
           return (
             <Checkbox
               onChange={e =>
-                this.onChangePolicy(e.target.checked, record, index, "DELETE")
+                this.onChangePolicy(e.target.checked, record, index, 'DELETE')
               }
               checked={text}
             />
           );
-        }
+        },
       },
       {
-        title: "Read",
-        className: "access-control-column-title",
-        dataIndex: "READ.value",
-        width: "10%",
-        key: "read",
+        title: 'Read',
+        className: 'access-control-column-title',
+        dataIndex: 'READ.value',
+        width: '10%',
+        key: 'read',
         render: (text: any, record: any, index: any) => {
           return (
             <Checkbox
               onChange={e =>
-                this.onChangePolicy(e.target.checked, record, index, "READ")
+                this.onChangePolicy(e.target.checked, record, index, 'READ')
               }
               checked={text}
             />
           );
-        }
+        },
       },
       {
-        title: "View",
-        className: "access-control-column-title",
-        dataIndex: "VIEW.value",
-        key: "view",
-        width: "10%",
+        title: 'View',
+        className: 'access-control-column-title',
+        dataIndex: 'VIEW.value',
+        key: 'view',
+        width: '10%',
         render: (text: any, record: any, index: any) => {
           return (
             <Checkbox
               onChange={e =>
-                this.onChangePolicy(e.target.checked, record, index, "VIEW")
+                this.onChangePolicy(e.target.checked, record, index, 'VIEW')
               }
               checked={text}
-              disabled={record.type === "ENTITY"}
+              disabled={record.type === 'ENTITY'}
             />
           );
-        }
+        },
       },
       {
-        title: "Modify",
-        className: "access-control-column-title",
-        dataIndex: "MODIFY.value",
-        width: "10%",
-        key: "modify",
+        title: 'Modify',
+        className: 'access-control-column-title',
+        dataIndex: 'MODIFY.value',
+        width: '10%',
+        key: 'modify',
         render: (text: any, record: any, index: any) => {
           return (
             <Checkbox
               onChange={e =>
-                this.onChangePolicy(e.target.checked, record, index, "MODIFY")
+                this.onChangePolicy(e.target.checked, record, index, 'MODIFY')
               }
               checked={text}
-              disabled={record.type === "ENTITY"}
+              disabled={record.type === 'ENTITY'}
             />
           );
-        }
-      }
+        },
+      },
     ];
 
     return (
@@ -298,7 +300,7 @@ class EditRole extends React.Component<AccessControlProps, AccessControlState> {
             className="submit-button"
             size="large"
             onClick={() => {
-              this.props.history.push("/core/access-control");
+              this.props.history.push('/core/access-control');
             }}
           >
             SAVE
@@ -314,9 +316,9 @@ class EditRole extends React.Component<AccessControlProps, AccessControlState> {
             disabled={!roleResponse.id}
             value={roleResponse.name}
             onChange={e => {
-              this.onChange("roleResponse", {
+              this.onChange('roleResponse', {
                 ...roleResponse,
-                name: e.target.value
+                name: e.target.value,
               });
             }}
           />

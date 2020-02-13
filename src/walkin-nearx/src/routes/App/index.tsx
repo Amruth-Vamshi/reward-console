@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import { Redirect, Route, Switch, RouteComponentProps } from "react-router-dom";
-import AppCreation from "./AppCreation";
-import AppList from "./AppsList";
-import {} from "history";
+import React, { Component } from 'react';
+import { Redirect, Route, Switch, RouteComponentProps } from 'react-router-dom';
+import AppCreation from './AppCreation';
+import AppList from './AppsList';
+import {} from 'history';
 
 interface iProps extends RouteComponentProps {}
 export default class AppIndex extends Component<iProps, {}> {

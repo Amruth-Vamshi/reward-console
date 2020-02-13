@@ -1,7 +1,7 @@
-import * as React from "react";
-import { Redirect, Route, Switch } from "react-router-dom";
-import CampaignList from "./campaignList";
-import CampaignCreation from "./campaignCreation";
+import * as React from 'react';
+import { Redirect, Route, Switch } from 'react-router-dom';
+import CampaignList from './campaignList';
+import CampaignCreation from './campaignCreation';
 
 const StoreGeofenceManager = ({ match }) => {
   // console.log("Inside NearX-Routes-index-Places ["+JSON.stringify(match.uri)+"]")

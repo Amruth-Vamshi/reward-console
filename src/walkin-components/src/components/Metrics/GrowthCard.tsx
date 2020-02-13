@@ -1,5 +1,5 @@
-import * as React from "react";
-import { Widget } from "../Widget";
+import * as React from 'react';
+import { Widget } from '../Widget';
 
 const GrowthCard = ({
   title,
@@ -7,7 +7,7 @@ const GrowthCard = ({
   styleName,
   desc,
   bgColor,
-  textColor
+  textColor,
 }) => {
   return (
     <Widget styleName={`gx-card-full gx-bg-${bgColor}`}>

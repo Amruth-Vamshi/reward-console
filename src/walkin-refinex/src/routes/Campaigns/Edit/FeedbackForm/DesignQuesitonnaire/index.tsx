@@ -1,10 +1,10 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { Col, Row, Spin } from "antd";
-import Preview from "./Preview";
-import Controls from "./Controls";
-import { graphql, ApolloProviderProps, compose } from "react-apollo";
-import { UPDATE_FEEDBACK_UI_CONFIG } from "../../../../../containers/Query";
+import { Col, Row, Spin } from 'antd';
+import Preview from './Preview';
+import Controls from './Controls';
+import { graphql, ApolloProviderProps, compose } from 'react-apollo';
+import { UPDATE_FEEDBACK_UI_CONFIG } from '../../../../../containers/Query';
 
 interface FormDesignProps extends ApolloProviderProps<any> {
   questionnaire?: any;
@@ -31,14 +31,14 @@ class FormDesign extends React.Component<FormDesignProps, FormDesignState> {
       counter: 0,
       isLastQuestion: false,
       isFirstQuestion: false,
-      backgroundColor: "#891732",
-      accentColor: "#891732",
-      transition: "",
-      formStructure: "",
-      headerText: "",
-      exitMessage: "",
-      buttonText: "Next",
-      layoutCode: ""
+      backgroundColor: '#891732',
+      accentColor: '#891732',
+      transition: '',
+      formStructure: '',
+      headerText: '',
+      exitMessage: '',
+      buttonText: 'Next',
+      layoutCode: '',
     };
   }
 
@@ -51,37 +51,37 @@ class FormDesign extends React.Component<FormDesignProps, FormDesignState> {
       this.setState({
         counter: newCounter,
         isFirstQuestion: false,
-        isLastQuestion: false
+        isLastQuestion: false,
       });
     }
   };
 
   onTransitionChange = code => {
     this.setState({
-      transition: code
+      transition: code,
     });
   };
 
   onLayoutChange = code => {
     this.setState({
-      layoutCode: code
+      layoutCode: code,
     });
   };
   onFormStructureChange = code => {
     this.setState({
-      formStructure: code
+      formStructure: code,
     });
   };
 
   onColorUpdate = hex => {
     this.setState({
-      backgroundColor: hex
+      backgroundColor: hex,
     });
   };
 
   onAccentColorUpdate = hex => {
     this.setState({
-      accentColor: hex
+      accentColor: hex,
     });
   };
 
@@ -96,7 +96,7 @@ class FormDesign extends React.Component<FormDesignProps, FormDesignState> {
       this.setState({
         counter: newCounter,
         isLastQuestion: false,
-        isFirstQuestion: false
+        isFirstQuestion: false,
       });
     }
   };
@@ -113,7 +113,7 @@ class FormDesign extends React.Component<FormDesignProps, FormDesignState> {
       formStructure,
       headerText,
       layoutCode,
-      transition
+      transition,
     } = this.state;
     return questionnaire && questionnaire[counter] ? (
       <Row>
@@ -134,7 +134,7 @@ class FormDesign extends React.Component<FormDesignProps, FormDesignState> {
             isLastQuestion={isLastQuestion}
           />
         </Col>
-        <Col span={7} style={{ height: "inherit", overflow: "scroll" }}>
+        <Col span={7} style={{ height: 'inherit', overflow: 'scroll' }}>
           <Controls
             onAccentColorUpdate={this.onAccentColorUpdate}
             onFormStructureChange={this.onFormStructureChange}
@@ -151,6 +151,6 @@ class FormDesign extends React.Component<FormDesignProps, FormDesignState> {
 }
 export default compose(
   graphql(UPDATE_FEEDBACK_UI_CONFIG, {
-    name: "updateFeedbackUiConfig"
+    name: 'updateFeedbackUiConfig',
   })
 )(FormDesign);

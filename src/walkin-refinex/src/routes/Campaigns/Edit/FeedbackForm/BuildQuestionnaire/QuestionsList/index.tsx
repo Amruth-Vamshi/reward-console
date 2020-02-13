@@ -1,8 +1,8 @@
-import * as React from "react";
-import AutorSizer from "react-virtualized-auto-sizer";
-import { VariableSizeList as List } from "react-window";
-import { ErrorBoundary, CardBox } from "walkin-components";
-import { Icon, Row, Col, Button, Spin } from "antd";
+import * as React from 'react';
+import AutorSizer from 'react-virtualized-auto-sizer';
+import { VariableSizeList as List } from 'react-window';
+import { ErrorBoundary, CardBox } from 'walkin-components';
+import { Icon, Row, Col, Button, Spin } from 'antd';
 
 interface QuestionsListProps {
   questionnaire?: any;
@@ -24,8 +24,8 @@ export default class QuestionsList extends React.Component<
   }
 
   getStyle(oElm, strCssRule) {
-    var strValue = "";
-    console.log("oElm", document.defaultView.getComputedStyle(oElm));
+    var strValue = '';
+    console.log('oElm', document.defaultView.getComputedStyle(oElm));
     if (document.defaultView && document.defaultView.getComputedStyle) {
       strValue = document.defaultView
         .getComputedStyle(oElm)
@@ -40,19 +40,19 @@ export default class QuestionsList extends React.Component<
   }
 
   getTextHeightWidth = (text, height, width, index) => {
-    const canvas: any = document.createElement("div");
-    const creatediv = document.createElement("div");
+    const canvas: any = document.createElement('div');
+    const creatediv = document.createElement('div');
     creatediv.innerHTML = text;
-    creatediv.setAttribute("style", `width:${width}px`);
+    creatediv.setAttribute('style', `width:${width}px`);
     creatediv.id = `${index}-randomDiv`;
     canvas.style.width = width;
     canvas.style.opacity = -1;
     canvas.append(creatediv);
     document.body.append(canvas);
     const createdDiv = document.getElementById(`${index}-randomDiv`);
-    const styles: any = this.getStyle(createdDiv, "height");
+    const styles: any = this.getStyle(createdDiv, 'height');
     canvas.remove();
-    return Math.floor(styles.replace(/[a-zA-Z]+/, ""));
+    return Math.floor(styles.replace(/[a-zA-Z]+/, ''));
   };
 
   getItemSize = (height, width, index) => {
@@ -82,7 +82,7 @@ export default class QuestionsList extends React.Component<
               this.toggleClick(index);
             }}
             style={{
-              cursor: "pointer"
+              cursor: 'pointer',
             }}
           >
             {questionnaire[index].questionText}
@@ -102,7 +102,7 @@ export default class QuestionsList extends React.Component<
               <Row
                 style={{
                   height,
-                  width
+                  width,
                 }}
               >
                 {/* <Col span={24}>
@@ -129,7 +129,7 @@ export default class QuestionsList extends React.Component<
                       itemSize={this.getItemSize.bind(this, height, width)}
                       ref={this.props.reference}
                       width={width}
-                      style={{ paddingBottom: "6rem" }}
+                      style={{ paddingBottom: '6rem' }}
                     >
                       {({ index, style }) => {
                         return this.getRow(index, style);
@@ -142,7 +142,7 @@ export default class QuestionsList extends React.Component<
               <Row
                 style={{
                   height,
-                  width
+                  width,
                 }}
               >
                 <Col span={24}>

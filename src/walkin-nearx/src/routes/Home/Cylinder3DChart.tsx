@@ -1,40 +1,40 @@
-import * as React from "react";
-import AmCharts from "@amcharts/amcharts3-react";
+import * as React from 'react';
+import AmCharts from '@amcharts/amcharts3-react';
 
 const Cylinder3DChart = () => {
   const config = {
-    theme: "light",
-    type: "serial",
+    theme: 'light',
+    type: 'serial',
     startDuration: 2,
     dataProvider: [
       {
-        country: "USA",
+        country: 'USA',
         visits: 4025,
-        color: "#FF0F00"
+        color: '#FF0F00',
       },
       {
-        country: "China",
+        country: 'China',
         visits: 1882,
-        color: "#FF6600"
+        color: '#FF6600',
         // }, {
         //   "country": "Japan",
         //   "visits": 1809,
         //   "color": "#FF9E01"
       },
       {
-        country: "Germany",
+        country: 'Germany',
         visits: 1322,
-        color: "#FCD202"
+        color: '#FCD202',
       },
       {
-        country: "UK",
+        country: 'UK',
         visits: 1122,
-        color: "#F8FF01"
+        color: '#F8FF01',
       },
       {
-        country: "France",
+        country: 'France',
         visits: 1114,
-        color: "#B0DE09"
+        color: '#B0DE09',
 
         // }, {
         //   "country": "India",
@@ -66,55 +66,55 @@ const Cylinder3DChart = () => {
         //   "color": "#754DEB"
       },
       {
-        country: "Italy",
+        country: 'Italy',
         visits: 386,
-        color: "#DDDDDD"
+        color: '#DDDDDD',
       },
       {
-        country: "Taiwan",
+        country: 'Taiwan',
         visits: 338,
-        color: "#333333"
-      }
+        color: '#333333',
+      },
     ],
     valueAxes: [
       {
-        position: "left",
+        position: 'left',
         axisAlpha: 0,
-        gridAlpha: 0
-      }
+        gridAlpha: 0,
+      },
     ],
     graphs: [
       {
-        balloonText: "[[category]]: <b>[[value]]</b>",
-        colorField: "color",
+        balloonText: '[[category]]: <b>[[value]]</b>',
+        colorField: 'color',
         fillAlphas: 0.85,
         lineAlpha: 0.1,
-        type: "column",
+        type: 'column',
         topRadius: 1,
-        valueField: "visits"
-      }
+        valueField: 'visits',
+      },
     ],
     depth3D: 40,
     angle: 30,
     chartCursor: {
       categoryBalloonEnabled: false,
       cursorAlpha: 0,
-      zoomable: false
+      zoomable: false,
     },
-    categoryField: "country",
+    categoryField: 'country',
     categoryAxis: {
-      gridPosition: "start",
+      gridPosition: 'start',
       axisAlpha: 0,
-      gridAlpha: 0
+      gridAlpha: 0,
     },
     export: {
-      enabled: true
-    }
+      enabled: true,
+    },
   };
   return (
     <div className="App">
       <AmCharts.React
-        style={{ width: "100%", height: "300px" }}
+        style={{ width: '100%', height: '300px' }}
         options={config}
       />
     </div>

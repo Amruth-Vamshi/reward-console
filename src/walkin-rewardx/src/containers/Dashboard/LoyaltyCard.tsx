@@ -1,10 +1,10 @@
-import * as React from "react";
+import * as React from 'react';
 import {
   IconWithTextCard,
   Widget,
   ChartCard,
-  Auxiliary
-} from "walkin-components";
+  Auxiliary,
+} from 'walkin-components';
 import {
   Breadcrumb,
   Input,
@@ -16,11 +16,11 @@ import {
   Icon,
   List,
   Modal,
-  Select
-} from "antd";
-import { withRouter, RouteChildrenProps } from "react-router";
-import { Link } from "react-router-dom";
-import { Location } from "history";
+  Select,
+} from 'antd';
+import { withRouter, RouteChildrenProps } from 'react-router';
+import { Link } from 'react-router-dom';
+import { Location } from 'history';
 interface LoyaltyCardProps extends RouteChildrenProps {
   location: Location<{
     record: any;
@@ -60,36 +60,36 @@ class LoyaltyCard extends React.Component<LoyaltyCardProps, LoyaltyCardState> {
       rgSelectedItem: null,
       isCurrencyModalVisible: false,
       currencyTypeList: [
-        { id: "1", title: "type1", value: "value1" },
-        { id: "2", title: "type2", value: "value2" },
-        { id: "3", title: "type3", value: "value3" }
+        { id: '1', title: 'type1', value: 'value1' },
+        { id: '2', title: 'type2', value: 'value2' },
+        { id: '3', title: 'type3', value: 'value3' },
       ],
       currencyList: [
         {
-          id: "1",
-          title: "Beans",
-          type: "type1",
-          value: "20",
-          rupees: "1",
-          active: true
+          id: '1',
+          title: 'Beans',
+          type: 'type1',
+          value: '20',
+          rupees: '1',
+          active: true,
         },
         {
-          id: "2",
-          title: "CCD Cash",
-          type: "type2",
-          value: "10",
-          rupees: "2",
-          active: false
+          id: '2',
+          title: 'CCD Cash',
+          type: 'type2',
+          value: '10',
+          rupees: '2',
+          active: false,
         },
         {
-          id: "3",
-          title: "CCD Points",
-          type: "type3",
-          value: "1",
-          rupees: "10",
-          active: false
-        }
-      ]
+          id: '3',
+          title: 'CCD Points',
+          type: 'type3',
+          value: '1',
+          rupees: '10',
+          active: false,
+        },
+      ],
     };
   }
 
@@ -131,7 +131,7 @@ class LoyaltyCard extends React.Component<LoyaltyCardProps, LoyaltyCardState> {
       type: this.state.modalCurrencyType,
       value: this.state.modalCurrencyValue,
       rupees: this.state.modalCurrencyRupees,
-      active: false
+      active: false,
     };
 
     tempArray.push(newObj);
@@ -144,10 +144,10 @@ class LoyaltyCard extends React.Component<LoyaltyCardProps, LoyaltyCardState> {
         modalCurrencyName: null,
         modalCurrencyType: null,
         modalCurrencyValue: null,
-        modalCurrencyRupees: null
+        modalCurrencyRupees: null,
       },
       () =>
-        console.log("currencyList onOkayCurrencyModal", this.state.currencyList)
+        console.log('currencyList onOkayCurrencyModal', this.state.currencyList)
     );
     // todo push the data to existing state
   };
@@ -159,7 +159,7 @@ class LoyaltyCard extends React.Component<LoyaltyCardProps, LoyaltyCardState> {
       modalCurrencyName: null,
       modalCurrencyType: null,
       modalCurrencyValue: null,
-      modalCurrencyRupees: null
+      modalCurrencyRupees: null,
     });
     // set null to all modal... values
   };
@@ -167,12 +167,12 @@ class LoyaltyCard extends React.Component<LoyaltyCardProps, LoyaltyCardState> {
   renderCurrencyModal() {
     return (
       <Modal
-        title={this.state.rgSelectedItem ? "Edit Currency" : "Add Currency"}
+        title={this.state.rgSelectedItem ? 'Edit Currency' : 'Add Currency'}
         visible={this.state.isCurrencyModalVisible}
         onOk={this.onOkayCurrencyModal}
         onCancel={this.onCancelCurrencyModal}
-        okText={"Okay"}
-        cancelText={"Cancel"}
+        okText={'Okay'}
+        cancelText={'Cancel'}
       >
         <Row>Currency Name</Row>
         <Row>
@@ -184,7 +184,7 @@ class LoyaltyCard extends React.Component<LoyaltyCardProps, LoyaltyCardState> {
         </Row>
 
         <Row style={{ margin: 10 }}>
-          <Col style={{ width: "30%" }}>
+          <Col style={{ width: '30%' }}>
             Type
             <Row>
               <Select
@@ -206,7 +206,7 @@ class LoyaltyCard extends React.Component<LoyaltyCardProps, LoyaltyCardState> {
             </Row>
           </Col>
 
-          <Col style={{ width: "30%" }}>
+          <Col style={{ width: '30%' }}>
             Value
             <Input
               placeholder="value"
@@ -215,12 +215,12 @@ class LoyaltyCard extends React.Component<LoyaltyCardProps, LoyaltyCardState> {
             />
           </Col>
 
-          <Col style={{ width: "10%" }}>
-            {" "}
+          <Col style={{ width: '10%' }}>
+            {' '}
             <div>=</div>
           </Col>
 
-          <Col style={{ width: "30%" }}>
+          <Col style={{ width: '30%' }}>
             Rupees
             <Input
               placeholder="rupees"
@@ -243,7 +243,7 @@ class LoyaltyCard extends React.Component<LoyaltyCardProps, LoyaltyCardState> {
           renderItem={item => (
             // todo handle
             <Radio
-              style={{ display: "flex", width: "100%" }}
+              style={{ display: 'flex', width: '100%' }}
               value={item.value}
             >
               <Card>
@@ -261,7 +261,7 @@ class LoyaltyCard extends React.Component<LoyaltyCardProps, LoyaltyCardState> {
                         modalCurrencyName: item.title,
                         modalCurrencyType: item.type,
                         modalCurrencyValue: item.value,
-                        modalCurrencyRupees: item.rupees
+                        modalCurrencyRupees: item.rupees,
                       });
                     }}
                     style={{ border: 1 }}
@@ -275,7 +275,7 @@ class LoyaltyCard extends React.Component<LoyaltyCardProps, LoyaltyCardState> {
     }
 
     return (
-      <Radio style={{ display: "flex" }} value={0}>
+      <Radio style={{ display: 'flex' }} value={0}>
         <Card>No currency</Card>
       </Radio>
     );
@@ -288,46 +288,46 @@ class LoyaltyCard extends React.Component<LoyaltyCardProps, LoyaltyCardState> {
     }
     return (
       <Auxiliary>
-        <Breadcrumb style={{ margin: "10px" }}>
+        <Breadcrumb style={{ margin: '10px' }}>
           <Breadcrumb.Item>
             <Link to="/rewardx/Dashboard">Dashboard</Link>
           </Breadcrumb.Item>
           <Breadcrumb.Item>
             {this.props.location.state.record
-              ? "Edit Loyalty Card"
-              : "Add Loyalty Card"}
+              ? 'Edit Loyalty Card'
+              : 'Add Loyalty Card'}
           </Breadcrumb.Item>
         </Breadcrumb>
 
         <div
           style={{
-            width: "50wv",
-            margin: "auto"
+            width: '50wv',
+            margin: 'auto',
             // maxWidth: "50vw" //html css
           }}
         >
           <Row
             style={{
-              width: "50%",
-              margin: "auto",
-              padding: "10px",
-              display: "flex",
-              justifyContent: "center",
-              fontSize: "21px",
-              fontWeight: "bold"
+              width: '50%',
+              margin: 'auto',
+              padding: '10px',
+              display: 'flex',
+              justifyContent: 'center',
+              fontSize: '21px',
+              fontWeight: 'bold',
             }}
           >
             Create a new Loyalty Card
           </Row>
-          <Row style={{ width: "50%", margin: "auto", paddingTop: "10px" }}>
+          <Row style={{ width: '50%', margin: 'auto', paddingTop: '10px' }}>
             Name of the card
           </Row>
           <Row
             style={{
-              width: "50%",
-              margin: "auto",
-              paddingBottom: "10px",
-              paddingTop: "10px"
+              width: '50%',
+              margin: 'auto',
+              paddingBottom: '10px',
+              paddingTop: '10px',
             }}
           >
             <Input
@@ -339,24 +339,24 @@ class LoyaltyCard extends React.Component<LoyaltyCardProps, LoyaltyCardState> {
           <Row
             style={{
               marginTop: 20,
-              width: "50%",
-              margin: "auto",
-              paddingTop: "10px"
+              width: '50%',
+              margin: 'auto',
+              paddingTop: '10px',
             }}
           >
-            <Col style={{ width: "50%" }}>
+            <Col style={{ width: '50%' }}>
               Chooose one currency from the list
             </Col>
             <Col
               style={{
-                width: "50%",
-                display: "flex",
-                justifyContent: "flex-end"
+                width: '50%',
+                display: 'flex',
+                justifyContent: 'flex-end',
               }}
               onClick={() =>
                 this.setState({
                   isCurrencyModalVisible: true,
-                  rgSelectedItem: null
+                  rgSelectedItem: null,
                 })
               }
             >
@@ -366,12 +366,12 @@ class LoyaltyCard extends React.Component<LoyaltyCardProps, LoyaltyCardState> {
 
           <Row
             style={{
-              width: "50%",
-              margin: "auto"
+              width: '50%',
+              margin: 'auto',
             }}
           >
             <Radio.Group
-              style={{ width: "100%", padding: "10px" }}
+              style={{ width: '100%', padding: '10px' }}
               onChange={this.onChangeRadioGroup}
               value={this.state.rgValue}
             >
@@ -380,8 +380,8 @@ class LoyaltyCard extends React.Component<LoyaltyCardProps, LoyaltyCardState> {
           </Row>
 
           <Row>
-            <Col style={{ margin: "auto" }}>
-              <Button type="primary" size={"large"}>
+            <Col style={{ margin: 'auto' }}>
+              <Button type="primary" size={'large'}>
                 Submit
               </Button>
             </Col>

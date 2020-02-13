@@ -1,7 +1,7 @@
-import * as React from "react";
+import * as React from 'react';
 
-import LineIndicator from "./LineIndicator";
-import { Widget } from "../../Widget";
+import LineIndicator from './LineIndicator';
+import { Widget } from '../../Widget';
 
 const TicketByDepartment = () => {
   return (

@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import { Col, Row } from "antd";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import React, { Component } from 'react';
+import { Col, Row } from 'antd';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
-import GreenStepItem from "./GreenStepItem";
-import { Widget } from "../Widget";
+import GreenStepItem from './GreenStepItem';
+import { Widget } from '../Widget';
 
 interface IProps {
   greenStepList: any[];
@@ -16,7 +16,7 @@ interface IState {}
 class GreenStepCard extends Component<IProps, IState> {
   state = {
     image: this.props.greenStepList[0].image,
-    loading: false
+    loading: false,
   };
 
   render() {
@@ -28,7 +28,7 @@ class GreenStepCard extends Component<IProps, IState> {
       marginLeft: 10,
       marginRight: 10,
       slidesToShow: 1,
-      slidesToScroll: 1
+      slidesToScroll: 1,
     };
 
     return (
@@ -39,8 +39,8 @@ class GreenStepCard extends Component<IProps, IState> {
               <img
                 className={
                   this.state.loading
-                    ? "fadeout gx-img-fluid"
-                    : "fadein gx-img-fluid"
+                    ? 'fadeout gx-img-fluid'
+                    : 'fadein gx-img-fluid'
                 }
                 src={this.state.image}
                 alt="..."
@@ -55,12 +55,12 @@ class GreenStepCard extends Component<IProps, IState> {
               afterChange={index => {
                 this.setState({
                   loading: false,
-                  image: this.props.greenStepList[index].image
+                  image: this.props.greenStepList[index].image,
                 });
               }}
               beforeChange={(oldIndex, newIndex) => {
                 this.setState({
-                  loading: true
+                  loading: true,
                 });
               }}
             >

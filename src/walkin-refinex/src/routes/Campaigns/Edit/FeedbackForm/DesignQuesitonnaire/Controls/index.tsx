@@ -1,6 +1,6 @@
-import * as React from "react";
-import { Card, Col, Row, Radio, Upload, Button, Icon, Divider } from "antd";
-import ColorControl from "./ColorControl/index";
+import * as React from 'react';
+import { Card, Col, Row, Radio, Upload, Button, Icon, Divider } from 'antd';
+import ColorControl from './ColorControl/index';
 
 interface ControlsProps {
   onAccentColorUpdate?: any;
@@ -24,10 +24,10 @@ export default class Controls extends React.Component<
   constructor(props: ControlsProps) {
     super(props);
     this.state = {
-      template: "",
-      transition: "",
-      layout: "",
-      color: ""
+      template: '',
+      transition: '',
+      layout: '',
+      color: '',
     };
   }
   onColorChange = hex => {
@@ -38,7 +38,7 @@ export default class Controls extends React.Component<
     this.setState(prevProps => {
       return {
         ...prevProps,
-        [e.target.name]: e.target.value
+        [e.target.name]: e.target.value,
       };
     });
   };
@@ -48,8 +48,8 @@ export default class Controls extends React.Component<
         <Col span={24}>
           <Card
             style={{
-              backgroundColor: "#EAECEB",
-              minHeight: "100vh"
+              backgroundColor: '#EAECEB',
+              minHeight: '100vh',
             }}
           >
             <Row>
@@ -116,7 +116,7 @@ export default class Controls extends React.Component<
                   value={this.state.color}
                 >
                   <span>
-                    Backgroundcolor{" "}
+                    Backgroundcolor{' '}
                     <ColorControl colorChange={this.onColorChange} />
                   </span>
                   <span>

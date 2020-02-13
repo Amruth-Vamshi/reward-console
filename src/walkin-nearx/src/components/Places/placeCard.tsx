@@ -1,9 +1,9 @@
-import * as React from "react";
-import { Col, Row, Dropdown, Menu, Card, Button, Divider } from "antd";
+import * as React from 'react';
+import { Col, Row, Dropdown, Menu, Card, Button, Divider } from 'antd';
 // import CreatePlaces from '../../routes/Places/CreatePlaces/CreatePlaces';
-import { History } from "history";
+import { History } from 'history';
 
-const options = ["Edit", "Delete"];
+const options = ['Edit', 'Delete'];
 
 interface iProps {
   history?: History;
@@ -15,15 +15,15 @@ export default class placeCard extends React.Component<iProps, {}> {
   menus = () => (
     <Menu
       onClick={e => {
-        if (e.key === "Edit") {
-          sessionStorage.setItem("placeId", JSON.stringify(this.props.data.id));
-          this.props.history.push("/nearx/places/createplace/manually");
-        } else if (e.key === "Delete") {
+        if (e.key === 'Edit') {
+          sessionStorage.setItem('placeId', JSON.stringify(this.props.data.id));
+          this.props.history.push('/nearx/places/createplace/manually');
+        } else if (e.key === 'Delete') {
           this.props.disablePlace(this.props.data.id);
         }
       }}
     >
-      {" "}
+      {' '}
       {options.map(option => (
         <Menu.Item key={option}> {option} </Menu.Item>
       ))}
@@ -39,43 +39,43 @@ export default class placeCard extends React.Component<iProps, {}> {
             <div className="divCenterVertical">
               <div>
                 <Row>
-                  <span style={{ color: "black", marginBottom: 5 }}>
+                  <span style={{ color: 'black', marginBottom: 5 }}>
                     {data.name}
                   </span>
                 </Row>
                 <Row>
-                  <span style={{ color: "#999999" }}>{data.code}</span>
+                  <span style={{ color: '#999999' }}>{data.code}</span>
                 </Row>
               </div>
             </div>
           </Col>
           <Col span={6}>
-            {" "}
+            {' '}
             <div className="divCenterVertical">
               <span>{data.address}</span>
             </div>
           </Col>
           <Col span={5}>
             <div style={{}} className="divCenterVertical">
-              {" "}
+              {' '}
               <span>
                 Radius: &nbsp;
                 {data.radius ? (
-                  <span style={{ wordBreak: "break-word" }}>
-                    {data.radius[0] ? <span>{data.radius[0]}m</span> : ""}
+                  <span style={{ wordBreak: 'break-word' }}>
+                    {data.radius[0] ? <span>{data.radius[0]}m</span> : ''}
                     {data.radius[1] ? (
                       <span>&nbsp;|&nbsp;{data.radius[1]}m</span>
                     ) : (
-                      ""
+                      ''
                     )}
                     {data.radius[2] ? (
                       <span>&nbsp;|&nbsp;{data.radius[2]}m</span>
                     ) : (
-                      ""
-                    )}{" "}
+                      ''
+                    )}{' '}
                   </span>
                 ) : (
-                  ""
+                  ''
                 )}
               </span>
             </div>
@@ -89,19 +89,19 @@ export default class placeCard extends React.Component<iProps, {}> {
           </Col>
           <Col className="placeCardLocation" span={4}>
             <Row>
-              Latitude:-{" "}
+              Latitude:-{' '}
               <span style={{ marginBottom: 5 }}>
                 {data.center.lat
                   .toString()
-                  .slice(0, data.center.lat.toString().indexOf(".") + 8)}
+                  .slice(0, data.center.lat.toString().indexOf('.') + 8)}
               </span>
             </Row>
             <Row>
-              Longitude:-{" "}
+              Longitude:-{' '}
               <span>
                 {data.center.lng
                   .toString()
-                  .slice(0, data.center.lng.toString().indexOf(".") + 8)}
+                  .slice(0, data.center.lng.toString().indexOf('.') + 8)}
               </span>
             </Row>
           </Col>
@@ -110,7 +110,7 @@ export default class placeCard extends React.Component<iProps, {}> {
               <Dropdown
                 overlay={this.menus()}
                 placement="bottomRight"
-                trigger={["click"]}
+                trigger={['click']}
               >
                 <i className="gx-icon-btn icon icon-ellipse-v" />
               </Dropdown>

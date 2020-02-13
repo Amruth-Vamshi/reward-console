@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import PostItem from "./PostItem";
-import WriteBox from "../../../components/wall/WriteBox/index";
-import { Auxiliary } from "../../../util/Auxiliary";
+import React, { Component } from 'react';
+import PostItem from './PostItem';
+import WriteBox from '../../../components/wall/WriteBox/index';
+import { Auxiliary } from '../../../util/Auxiliary';
 interface IProps {
   postList: any;
   user: any;
@@ -10,7 +10,7 @@ interface IState {}
 class PostList extends Component<IProps, IState> {
   state = {
     postList: [],
-    user: {}
+    user: {},
   };
 
   UNSAFE_componentWillMount() {
@@ -30,14 +30,14 @@ class PostList extends Component<IProps, IState> {
       likeCount: 0,
       isLike: false,
       commentCount: 0,
-      commentList: []
+      commentList: [],
     };
-    console.log("Post Data :==()==>", post);
+    console.log('Post Data :==()==>', post);
 
     let postArray = this.state.postList;
     postArray.unshift(post);
     this.setState({
-      postList: postArray
+      postList: postArray,
     });
   }
 

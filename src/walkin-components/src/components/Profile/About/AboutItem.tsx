@@ -1,5 +1,5 @@
-import * as React from "react";
-import { Auxiliary } from "../../../util/Auxiliary";
+import * as React from 'react';
+import { Auxiliary } from '../../../util/Auxiliary';
 
 const AboutItem = ({ data }) => {
   const { title, icon, desc, userList } = data;
@@ -11,8 +11,8 @@ const AboutItem = ({ data }) => {
         </div>
         <div className="gx-media-body">
           <h6 className="gx-mb-1 gx-text-grey">{title}</h6>
-          {userList === "" ? null : userList}
-          {desc === "" ? null : <p className="gx-mb-0">{desc}</p>}
+          {userList === '' ? null : userList}
+          {desc === '' ? null : <p className="gx-mb-0">{desc}</p>}
         </div>
       </div>
     </Auxiliary>

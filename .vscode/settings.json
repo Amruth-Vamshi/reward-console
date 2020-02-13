@@ -7,5 +7,5 @@
   "vscode-devtools-for-chrome.hostname": "localhost",
   "vscode-devtools-for-chrome.port": 9222,
   "files.autoSave": "onFocusChange",
-  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

@@ -1,21 +1,21 @@
-import * as React from "react";
-import { Menu } from "antd";
-import { Link } from "react-router-dom";
+import * as React from 'react';
+import { Menu } from 'antd';
+import { Link } from 'react-router-dom';
 
-import { CustomScrollbars, Auxiliary, IntlMessages } from "walkin-components";
-import SidebarLogo from "./SidebarLogo";
+import { CustomScrollbars, Auxiliary, IntlMessages } from 'walkin-components';
+import SidebarLogo from './SidebarLogo';
 
-import UserProfile from "./UserProfile";
-import AppsNavigation from "./AppsNavigation";
-import { withRouter } from "react-router-dom";
+import UserProfile from './UserProfile';
+import AppsNavigation from './AppsNavigation';
+import { withRouter } from 'react-router-dom';
 
 import {
   NAV_STYLE_NO_HEADER_EXPANDED_SIDEBAR,
   NAV_STYLE_NO_HEADER_MINI_SIDEBAR,
-  THEME_TYPE_LITE
-} from "walkin-components/src/constants/ThemeSetting";
-import { compose, graphql } from "react-apollo";
-import gql from "graphql-tag";
+  THEME_TYPE_LITE,
+} from 'walkin-components/src/constants/ThemeSetting';
+import { compose, graphql } from 'react-apollo';
+import gql from 'graphql-tag';
 
 interface IProps {
   themeType?: string;
@@ -31,21 +31,21 @@ class SidebarContent extends React.Component<IProps, IState> {
       navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR ||
       navStyle === NAV_STYLE_NO_HEADER_EXPANDED_SIDEBAR
     ) {
-      return "gx-no-header-notifications";
+      return 'gx-no-header-notifications';
     }
-    return "";
+    return '';
   };
   getNavStyleSubMenuClass = (navStyle: string) => {
     if (navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR) {
-      return "gx-no-header-submenu-popup";
+      return 'gx-no-header-submenu-popup';
     }
-    return "";
+    return '';
   };
 
   render() {
     const { themeType, navStyle, pathname } = this.props;
     const selectedKeys = pathname.substr(1);
-    const defaultOpenKeys = selectedKeys.split("/")[1];
+    const defaultOpenKeys = selectedKeys.split('/')[1];
     return (
       <Auxiliary>
         <SidebarLogo />
@@ -53,7 +53,7 @@ class SidebarContent extends React.Component<IProps, IState> {
           <Menu
             defaultOpenKeys={[defaultOpenKeys]}
             selectedKeys={[selectedKeys]}
-            theme={themeType === THEME_TYPE_LITE ? "light" : "dark"}
+            theme={themeType === THEME_TYPE_LITE ? 'light' : 'dark'}
             mode="inline"
           >
             <Menu.Item key="core">
@@ -117,6 +117,6 @@ export default compose(
   withRouter,
   graphql(GET_SETTINGS, {
     props: mapStateToProps,
-    name: "settings"
+    name: 'settings',
   })
 )(SidebarContent);

@@ -1,7 +1,7 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { Table, Input, InputNumber, Popconfirm, Form } from "antd";
-import { FormComponentProps } from "antd/lib/form";
+import { Table, Input, InputNumber, Popconfirm, Form } from 'antd';
+import { FormComponentProps } from 'antd/lib/form';
 
 const EditableContext = React.createContext({});
 
@@ -17,7 +17,7 @@ interface editableCellProps {
 
 class EditableCell extends React.Component<editableCellProps> {
   getInput = () => {
-    if (this.props.inputType === "number") {
+    if (this.props.inputType === 'number') {
       return <InputNumber />;
     }
     return <Input />;
@@ -44,10 +44,10 @@ class EditableCell extends React.Component<editableCellProps> {
               rules: [
                 {
                   required: true,
-                  message: `Please Input ${title}!`
-                }
+                  message: `Please Input ${title}!`,
+                },
               ],
-              initialValue: record[dataIndex]
+              initialValue: record[dataIndex],
             })(this.getInput())}
           </Form.Item>
         ) : (
@@ -83,7 +83,7 @@ class EditableTable extends React.Component<
 > {
   constructor(props: editableTableProps) {
     super(props);
-    this.state = { data: [], editingKey: "", loading: true };
+    this.state = { data: [], editingKey: '', loading: true };
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -100,7 +100,7 @@ class EditableTable extends React.Component<
   isEditing = record => record.key === this.state.editingKey;
 
   cancel = () => {
-    this.setState({ editingKey: "" });
+    this.setState({ editingKey: '' });
   };
 
   save(form, key) {
@@ -114,19 +114,19 @@ class EditableTable extends React.Component<
         const item = newData[index];
         newData.splice(index, 1, {
           ...item,
-          ...row
+          ...row,
         });
         this.props.onChangeData(
           {
             ...item,
-            ...row
+            ...row,
           },
           index
         );
-        this.setState({ data: newData, editingKey: "" });
+        this.setState({ data: newData, editingKey: '' });
       } else {
         newData.push(row);
-        this.setState({ data: newData, editingKey: "" });
+        this.setState({ data: newData, editingKey: '' });
       }
     });
   }
@@ -139,8 +139,8 @@ class EditableTable extends React.Component<
     return [
       ...this.props.tableHeaders,
       {
-        title: "OPERATION",
-        dataIndex: "operation",
+        title: 'OPERATION',
+        dataIndex: 'operation',
         render: (text, record) => {
           const { editingKey } = this.state;
           const editable = this.isEditing(record);
@@ -165,22 +165,22 @@ class EditableTable extends React.Component<
             </span>
           ) : (
             <a
-              className={editingKey !== "" ? "avoid-click" : null}
+              className={editingKey !== '' ? 'avoid-click' : null}
               onClick={() => this.edit(record.key)}
             >
               Edit
             </a>
           );
-        }
-      }
+        },
+      },
     ];
   };
 
   render() {
     const components = {
       body: {
-        cell: EditableCell
-      }
+        cell: EditableCell,
+      },
     };
     const columns = this.columns().map(col => {
       if (!col.editable) {
@@ -190,11 +190,11 @@ class EditableTable extends React.Component<
         ...col,
         onCell: record => ({
           record,
-          inputType: col.dataIndex === "text",
+          inputType: col.dataIndex === 'text',
           dataIndex: col.dataIndex,
           title: col.title,
-          editing: this.isEditing(record)
-        })
+          editing: this.isEditing(record),
+        }),
       };
     });
 
@@ -208,7 +208,7 @@ class EditableTable extends React.Component<
           columns={columns}
           // rowClassName="editable-row"
           pagination={{
-            onChange: this.cancel
+            onChange: this.cancel,
           }}
         />
       </EditableContext.Provider>

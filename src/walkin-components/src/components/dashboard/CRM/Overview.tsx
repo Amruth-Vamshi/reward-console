@@ -1,7 +1,7 @@
-import * as React from "react";
+import * as React from 'react';
 
-import LineIndicator from "./LineIndicator";
-import BubbleMap from "./BubbleMap/index";
+import LineIndicator from './LineIndicator';
+import BubbleMap from './BubbleMap/index';
 
 const Overview = () => {
   return (

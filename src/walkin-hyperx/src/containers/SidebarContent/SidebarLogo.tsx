@@ -1,5 +1,5 @@
-import * as React from "react";
-import { Link } from "react-router-dom";
+import * as React from 'react';
+import { Link } from 'react-router-dom';
 
 import {
   NAV_STYLE_DRAWER,
@@ -8,12 +8,12 @@ import {
   NAV_STYLE_NO_HEADER_MINI_SIDEBAR,
   TAB_SIZE,
   TAB_SIZE_MAX,
-  THEME_TYPE_LITE
-} from "walkin-components/src/constants/ThemeSetting";
-import { compose, graphql } from "react-apollo";
-import gql from "graphql-tag";
-import { CAMPAIGN_MANAGEMENT } from "../../constants/RouterConstants";
-import { Icon } from "antd";
+  THEME_TYPE_LITE,
+} from 'walkin-components/src/constants/ThemeSetting';
+import { compose, graphql } from 'react-apollo';
+import gql from 'graphql-tag';
+import { CAMPAIGN_MANAGEMENT } from '../../constants/RouterConstants';
+import { Icon } from 'antd';
 
 interface SidebarLogoProps {
   width?: any;
@@ -41,9 +41,9 @@ class SidebarLogo extends React.Component<SidebarLogoProps, {}> {
                 theme="filled"
                 className="gx-icon-btn"
                 style={{
-                  padding: "10px",
-                  color: "",
-                  backgroundColor: "#FFFFFF"
+                  padding: '10px',
+                  color: '',
+                  backgroundColor: '#FFFFFF',
                 }}
               />
               {/* <i className={`gx-icon-btn icon icon-home gx-text-white`} /> */}
@@ -77,15 +77,15 @@ class SidebarLogo extends React.Component<SidebarLogoProps, {}> {
             {navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR &&
             width >= TAB_SIZE ? (
               <img
-                src={require("walkin-components/src/assets/images/w-logo.png")}
+                src={require('walkin-components/src/assets/images/w-logo.png')}
               />
             ) : themeType === THEME_TYPE_LITE ? (
               <img
-                src={require("walkin-components/src/assets/images/logo-white.png")}
+                src={require('walkin-components/src/assets/images/logo-white.png')}
               />
             ) : (
               <img
-                src={require("walkin-components/src/assets/images/hyperx_black1.png")}
+                src={require('walkin-components/src/assets/images/hyperx_black1.png')}
                 style={{ width: 125, marginLeft: 10 }}
               />
             )}
@@ -131,7 +131,7 @@ const ON_NAV_STYLE_CHANGE = gql`
 `;
 
 export default compose(
-  graphql(GET_SETTINGS, { name: "settings", props: mapStateToProps }),
-  graphql(TOGGLE_COLLAPSED_SIDENAV, { name: "toggleCollapsedSideNav" }),
-  graphql(ON_NAV_STYLE_CHANGE, { name: "onNavStyleChange" })
+  graphql(GET_SETTINGS, { name: 'settings', props: mapStateToProps }),
+  graphql(TOGGLE_COLLAPSED_SIDENAV, { name: 'toggleCollapsedSideNav' }),
+  graphql(ON_NAV_STYLE_CHANGE, { name: 'onNavStyleChange' })
 )(SidebarLogo);

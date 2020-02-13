@@ -1,29 +1,29 @@
-import * as React from "react";
-import { Col, Card, Row, Form, Input, Button, Icon } from "antd";
-import { Auxiliary } from "walkin-components";
-import CustomScrollbars from "../../../util/CustomScrollbars";
+import * as React from 'react';
+import { Col, Card, Row, Form, Input, Button, Icon } from 'antd';
+import { Auxiliary } from 'walkin-components';
+import CustomScrollbars from '../../../util/CustomScrollbars';
 
 const formItemLayout = {
   labelCol: {
     sm: { span: 24 },
-    md: { span: 7 }
+    md: { span: 7 },
   },
   wrapperCol: {
     sm: { span: 24 },
-    md: { span: 17 }
-  }
+    md: { span: 17 },
+  },
 };
 
 const formItemLocation = {
   labelCol: {
     sm: { span: 24 },
     md: { span: 10 },
-    xl: { span: 5 }
+    xl: { span: 5 },
   },
   wrapperCol: {
     md: { span: 24 },
-    xl: { span: 19 }
-  }
+    xl: { span: 19 },
+  },
 };
 
 const tailFormItemLayout1 = {
@@ -33,9 +33,9 @@ const tailFormItemLayout1 = {
     md: { span: 24 },
     xl: {
       span: 22,
-      offset: 2
-    }
-  }
+      offset: 2,
+    },
+  },
 };
 
 interface iProps {
@@ -67,15 +67,15 @@ export default class CreateHotspot extends React.Component<iProps, iState> {
             <span>
               <Icon
                 type="environment"
-                style={{ color: "#e20464" }}
+                style={{ color: '#e20464' }}
                 theme="filled"
-              />{" "}
-              Hotspot {" " + (i + 1)}
+              />{' '}
+              Hotspot {' ' + (i + 1)}
             </span>
             <Icon
               type="close"
               onClick={() => this.props.deleteHotspot(i)}
-              style={{ float: "right", marginRight: 1 }}
+              style={{ float: 'right', marginRight: 1 }}
             />
           </p>
 
@@ -87,9 +87,9 @@ export default class CreateHotspot extends React.Component<iProps, iState> {
               name="placeName"
               onChange={c => this.props.handleOnChange(c, i)}
             />
-            <span style={{ color: "Red" }}>
-              {" "}
-              {formData.places2[i].errors.placeName}{" "}
+            <span style={{ color: 'Red' }}>
+              {' '}
+              {formData.places2[i].errors.placeName}{' '}
             </span>
           </Form.Item>
 
@@ -101,9 +101,9 @@ export default class CreateHotspot extends React.Component<iProps, iState> {
               name="address"
               onChange={c => this.props.handleOnChange(c, i)}
             />
-            <span style={{ color: "Red" }}>
-              {" "}
-              {formData.places2[i].errors.address}{" "}
+            <span style={{ color: 'Red' }}>
+              {' '}
+              {formData.places2[i].errors.address}{' '}
             </span>
           </Form.Item>
 
@@ -111,7 +111,7 @@ export default class CreateHotspot extends React.Component<iProps, iState> {
             <Card className="createPlaceCard">
               <p onClick={() => this.props.getloc(i)}>
                 <i className="gx-pointer gx-text-primary">
-                  <Icon type="plus" /> {"  "}Pick Location from map
+                  <Icon type="plus" /> {'  '}Pick Location from map
                 </i>
               </p>
 
@@ -124,11 +124,11 @@ export default class CreateHotspot extends React.Component<iProps, iState> {
                       type="number"
                       step="0.0001"
                       name="latitude"
-                      onChange={c => this.props.handleCenterChange(c, i, "lat")}
+                      onChange={c => this.props.handleCenterChange(c, i, 'lat')}
                     />
-                    <span style={{ color: "Red" }}>
-                      {" "}
-                      {formData.places2[i].errors.latitude}{" "}
+                    <span style={{ color: 'Red' }}>
+                      {' '}
+                      {formData.places2[i].errors.latitude}{' '}
                     </span>
                   </Col>
 
@@ -139,11 +139,11 @@ export default class CreateHotspot extends React.Component<iProps, iState> {
                       name="longitude"
                       type="number"
                       step="0.0001"
-                      onChange={c => this.props.handleCenterChange(c, i, "lng")}
+                      onChange={c => this.props.handleCenterChange(c, i, 'lng')}
                     />
-                    <span style={{ color: "Red" }}>
-                      {" "}
-                      {formData.places2[i].errors.longitude}{" "}
+                    <span style={{ color: 'Red' }}>
+                      {' '}
+                      {formData.places2[i].errors.longitude}{' '}
                     </span>
                   </Col>
                 </Row>
@@ -158,7 +158,7 @@ export default class CreateHotspot extends React.Component<iProps, iState> {
         <div className="gx-card">
           <div
             className="gx-card-body addHpForm"
-            style={{ overflow: "hidden" }}
+            style={{ overflow: 'hidden' }}
           >
             {/* <CustomScrollbars className="gx-layout-sider-scrollbar addHpForm"> */}
             <div>
@@ -167,13 +167,13 @@ export default class CreateHotspot extends React.Component<iProps, iState> {
                 <p>
                   <Button onClick={this.props.addHotspot}>Add Hotspot</Button>
                 </p>
-                <div style={{ overflow: "hidden" }}>
+                <div style={{ overflow: 'hidden' }}>
                   {/* <Button htmlType='submit' type="primary" style={{float:"right",marginRight:20}}>CREATE</Button> */}
                   <Button
                     disabled={!this.props.formData.places2.length}
                     onClick={this.props.handleSubmit}
                     className="buttonPrimary"
-                    style={{ float: "right", marginRight: 20 }}
+                    style={{ float: 'right', marginRight: 20 }}
                   >
                     CREATE
                   </Button>

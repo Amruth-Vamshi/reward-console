@@ -1,10 +1,10 @@
-import * as React from "react";
-import { Col, Row, Dropdown, Menu, Card } from "antd";
+import * as React from 'react';
+import { Col, Row, Dropdown, Menu, Card } from 'antd';
 
 const options = [
   // 'Activate',
-  "Edit",
-  "Delete"
+  'Edit',
+  'Delete',
 ];
 
 interface iProps {
@@ -19,15 +19,15 @@ export default class HooksListCard extends React.Component<iProps, iState> {
   menus = () => (
     <Menu
       onClick={e => {
-        if (e.key === "Edit") {
+        if (e.key === 'Edit') {
           this.props.updateHook(this.props.data);
           // this.onEditContact()
-        } else if (e.key === "Delete") {
+        } else if (e.key === 'Delete') {
           this.props.deleteHook(this.props.data.id);
         }
       }}
     >
-      {" "}
+      {' '}
       {options.map(option => (
         <Menu.Item key={option}> {option} </Menu.Item>
       ))}
@@ -37,8 +37,8 @@ export default class HooksListCard extends React.Component<iProps, iState> {
   copy = () => {
     var copyText: any = document.getElementById(this.props.data.appKey);
     copyText.select();
-    document.execCommand("copy");
-    console.log("Copied Key: " + copyText.value);
+    document.execCommand('copy');
+    console.log('Copied Key: ' + copyText.value);
   };
 
   render() {
@@ -50,7 +50,7 @@ export default class HooksListCard extends React.Component<iProps, iState> {
             <div className="divCenterVertical">
               <div>
                 <Row>
-                  <span style={{ color: "black", marginBottom: 5 }}>
+                  <span style={{ color: 'black', marginBottom: 5 }}>
                     {data.event}
                   </span>
                 </Row>
@@ -58,30 +58,30 @@ export default class HooksListCard extends React.Component<iProps, iState> {
             </div>
           </Col>
           <Col span={2}>
-            {" "}
+            {' '}
             <div className="divCenterVertical">
               <span>{data.method}</span>
             </div>
           </Col>
 
           <Col span={2}>
-            {" "}
+            {' '}
             <div className="divCenterVertical">
               <span>{data.status}</span>
             </div>
           </Col>
 
           <Col span={7}>
-            {" "}
+            {' '}
             <div className="divCenterVertical">
               <span>{JSON.stringify(data.headers)}</span>
             </div>
           </Col>
 
           <Col span={8}>
-            {" "}
+            {' '}
             <div className="divCenterVertical">
-              <span style={{ wordBreak: "break-all" }}>{data.url}</span>
+              <span style={{ wordBreak: 'break-all' }}>{data.url}</span>
             </div>
           </Col>
 
@@ -90,7 +90,7 @@ export default class HooksListCard extends React.Component<iProps, iState> {
               <Dropdown
                 overlay={this.menus()}
                 placement="bottomRight"
-                trigger={["click"]}
+                trigger={['click']}
               >
                 <i className="gx-icon-btn icon icon-ellipse-v" />
               </Dropdown>

@@ -1,5 +1,5 @@
-import * as React from "react";
-import { Spin } from "antd";
+import * as React from 'react';
+import { Spin } from 'antd';
 
 export interface IAppProps {
   children?: any;
@@ -18,14 +18,14 @@ export default class HyperXContainer extends React.Component<IAppProps> {
       headerHeightInPX,
       heightInVH,
       className,
-      spin
+      spin,
     } = this.props;
     return (
       <div
         style={{
           height: `calc(100vh - ${headerHeightInPX}px)`,
-          overflowY: "scroll",
-          overflowX: "hidden"
+          overflowY: 'scroll',
+          overflowX: 'hidden',
         }}
         className={`HyperXContainer ${className}`}
       >
@@ -35,11 +35,11 @@ export default class HyperXContainer extends React.Component<IAppProps> {
         >
           {spin ? (
             <div>
-              {" "}
+              {' '}
               <br /> <br /> <br /> <br />
               <div className="divCenter">
                 <Spin size="large" />
-              </div>{" "}
+              </div>{' '}
               <br /> <br /> <br />
             </div>
           ) : (

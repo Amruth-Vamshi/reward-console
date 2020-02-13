@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 import {
   Col,
   Card,
@@ -8,17 +8,17 @@ import {
   Button,
   Slider,
   InputNumber,
-  Icon
-} from "antd";
-import { IconProps } from "antd/lib/icon";
-import { Auxiliary } from "walkin-components";
-import HotspotCard from "./HotspotCard";
+  Icon,
+} from 'antd';
+import { IconProps } from 'antd/lib/icon';
+import { Auxiliary } from 'walkin-components';
+import HotspotCard from './HotspotCard';
 import {
   RADIUS_1_MAX,
   RADIUS_1_MIN,
   RADIUS_2_MAX,
-  RADIUS_3_MAX
-} from "../../../Constants";
+  RADIUS_3_MAX,
+} from '../../../Constants';
 
 const marks = {
   // 0: '0',
@@ -33,44 +33,44 @@ const marks = {
 const formItemLayout = {
   labelCol: {
     sm: { span: 24 },
-    md: { span: 7 }
+    md: { span: 7 },
   },
   wrapperCol: {
     sm: { span: 24 },
-    md: { span: 17 }
-  }
+    md: { span: 17 },
+  },
 };
 
 const radiusLayout = {
   labelCol: {
     md: { span: 24 },
     lg: { span: 24 },
-    xl: { span: 7 }
+    xl: { span: 7 },
   },
   wrapperCol: {
     md: { span: 24 },
     lg: { span: 24 },
-    xl: { span: 17 }
-  }
+    xl: { span: 17 },
+  },
 };
 
 const formItemLocation = {
   labelCol: {
     sm: { span: 24 },
     md: { span: 10 },
-    xl: { span: 5 }
+    xl: { span: 5 },
   },
   wrapperCol: {
     md: { span: 24 },
-    xl: { span: 19 }
-  }
+    xl: { span: 19 },
+  },
 };
 
 const tailFormItemLayout = {
   wrapperCol: {
     sm: { span: 24 },
-    md: { span: 23 }
-  }
+    md: { span: 23 },
+  },
 };
 
 const tailFormItemLayout1 = {
@@ -80,9 +80,9 @@ const tailFormItemLayout1 = {
     md: { span: 24 },
     xl: {
       span: 22,
-      offset: 2
-    }
-  }
+      offset: 2,
+    },
+  },
 };
 
 interface iProps extends IconProps {
@@ -107,8 +107,8 @@ export default class CreatePlaceForm extends React.Component<iProps, {}> {
   slideMarks = (min, max) => {
     var marks = {};
     marks[max] = {
-      style: { color: "#f50" },
-      label: <strong>{`${max}`}</strong>
+      style: { color: '#f50' },
+      label: <strong>{`${max}`}</strong>,
     };
     marks[min] = `${min}`;
     //    for(let i=max-200;i>min;i-=200){
@@ -133,7 +133,7 @@ export default class CreatePlaceForm extends React.Component<iProps, {}> {
             )}
             onChange={e => this.props.onChangeRadius(e, i, n)}
             value={
-              typeof formData.places[i].radius[n] === "number"
+              typeof formData.places[i].radius[n] === 'number'
                 ? formData.places[i].radius[n]
                 : n
                 ? formData.places[i].radius[n - 1]
@@ -141,15 +141,15 @@ export default class CreatePlaceForm extends React.Component<iProps, {}> {
             }
           />
         </Col>
-        <Col span={8} style={{ whiteSpace: "nowrap" }}>
-          <div style={{ display: "inline-block" }}>
+        <Col span={8} style={{ whiteSpace: 'nowrap' }}>
+          <div style={{ display: 'inline-block' }}>
             <InputNumber
               min={n ? formData.places[i].radius[n - 1] : RADIUS_1_MIN}
               // max={n ? (n != 1 ? RADIUS_3_MAX : RADIUS_2_MAX) : RADIUS_1_MAX}
               max={RADIUS_3_MAX}
               style={{ marginLeft: 0 }}
               value={
-                typeof formData.places[i].radius[n] === "number"
+                typeof formData.places[i].radius[n] === 'number'
                   ? formData.places[i].radius[n]
                   : n
                   ? formData.places[i].radius[n - 1]
@@ -157,17 +157,17 @@ export default class CreatePlaceForm extends React.Component<iProps, {}> {
               }
               onChange={e => this.props.onChangeRadius(e, i, n)}
             />
-          </div>{" "}
+          </div>{' '}
           {n && n == formData.places[i].radius.length - 1 ? (
-            <div style={{ display: "inline-block" }}>
-              {" "}
+            <div style={{ display: 'inline-block' }}>
+              {' '}
               <Icon
                 onClick={() => this.props.deleteRedi(i)}
                 type="close"
-              />{" "}
+              />{' '}
             </div>
           ) : (
-            ""
+            ''
           )}
         </Col>
       </Row>
@@ -197,7 +197,7 @@ export default class CreatePlaceForm extends React.Component<iProps, {}> {
               hp={formData.places1[i]}
             />
           ) : (
-            ""
+            ''
           )}
         </div>
       );
@@ -205,15 +205,15 @@ export default class CreatePlaceForm extends React.Component<iProps, {}> {
     return (
       <Auxiliary>
         <div className="gx-card">
-          <div className="gx-card-body" style={{ overflow: "hidden" }}>
+          <div className="gx-card-body" style={{ overflow: 'hidden' }}>
             <div>
               <Col>
                 <Form onSubmit={this.props.handleSubmit}>
                   <Row>
-                    <div style={{ width: "100%", marginBottom: 25 }}>
+                    <div style={{ width: '100%', marginBottom: 25 }}>
                       <Icon
                         type="environment"
-                        style={{ color: "#e20464", fontSize: 18 }}
+                        style={{ color: '#e20464', fontSize: 18 }}
                         theme="filled"
                       />
                       <span style={{ fontSize: 20 }}> Place</span>
@@ -232,7 +232,7 @@ export default class CreatePlaceForm extends React.Component<iProps, {}> {
                         name="placeName"
                         onChange={c => this.props.handleOnChange(c, 0)}
                       />
-                      <span style={{ color: "Red" }}>
+                      <span style={{ color: 'Red' }}>
                         {formData.places[0].errors.placeName}
                       </span>
                     </Form.Item>
@@ -245,7 +245,7 @@ export default class CreatePlaceForm extends React.Component<iProps, {}> {
                         name="address"
                         onChange={c => this.props.handleOnChange(c, 0)}
                       />
-                      <span style={{ color: "Red" }}>
+                      <span style={{ color: 'Red' }}>
                         {formData.places[0].errors.address}
                       </span>
                     </Form.Item>
@@ -254,7 +254,7 @@ export default class CreatePlaceForm extends React.Component<iProps, {}> {
                       <Card className="createPlaceCard">
                         <p onClick={() => this.props.getloc(0)}>
                           <i className="gx-pointer gx-text-primary">
-                            <Icon type="plus" /> {"  "}Pick Location from map
+                            <Icon type="plus" /> {'  '}Pick Location from map
                           </i>
                         </p>
 
@@ -268,10 +268,10 @@ export default class CreatePlaceForm extends React.Component<iProps, {}> {
                                 step="0.0001"
                                 name="latitude"
                                 onChange={c =>
-                                  this.props.handleCenterChange(c, 0, "lat")
+                                  this.props.handleCenterChange(c, 0, 'lat')
                                 }
                               />
-                              <span style={{ color: "Red" }}>
+                              <span style={{ color: 'Red' }}>
                                 {formData.places[0].errors.latitude}
                               </span>
                             </Col>
@@ -284,10 +284,10 @@ export default class CreatePlaceForm extends React.Component<iProps, {}> {
                                 type="number"
                                 step="0.0001"
                                 onChange={c =>
-                                  this.props.handleCenterChange(c, 0, "lng")
+                                  this.props.handleCenterChange(c, 0, 'lng')
                                 }
                               />
-                              <span style={{ color: "Red" }}>
+                              <span style={{ color: 'Red' }}>
                                 {formData.places[0].errors.longitude}
                               </span>
                             </Col>
@@ -305,13 +305,13 @@ export default class CreatePlaceForm extends React.Component<iProps, {}> {
                     formData.places[0].radius[
                       formData.places[0].radius.length - 1
                     ] == 500 ? (
-                      ""
+                      ''
                     ) : (
                       <Form.Item {...tailFormItemLayout}>
-                        <div style={{ float: "right" }}>
+                        <div style={{ float: 'right' }}>
                           <p
                             onClick={() => this.props.addRadius(0)}
-                            style={{ float: "right", color: "#34bfe2" }}
+                            style={{ float: 'right', color: '#34bfe2' }}
                           >
                             <a href="#"> + Add Fence </a>
                           </p>
@@ -327,14 +327,14 @@ export default class CreatePlaceForm extends React.Component<iProps, {}> {
                       <span>
                         <Icon
                           type="environment"
-                          style={{ color: "#e20464" }}
+                          style={{ color: '#e20464' }}
                           theme="filled"
                         />
                         Hotspot
                       </span>
                     </p>
                   ) : (
-                    ""
+                    ''
                   )}
 
                   {form}
@@ -345,15 +345,15 @@ export default class CreatePlaceForm extends React.Component<iProps, {}> {
                   <p>
                     <Button onClick={this.props.showModal}>Add Hotspot</Button>
                   </p>
-                  <div style={{ overflow: "hidden" }}>
+                  <div style={{ overflow: 'hidden' }}>
                     {/* <Button htmlType='submit' type="primary" style={{float:"right",marginRight:20}}>CREATE</Button> */}
                     <Button
                       onClick={this.props.handleSubmit}
                       loading={formData.loading1}
                       className="buttonPrimary"
-                      style={{ float: "right", marginRight: 20 }}
+                      style={{ float: 'right', marginRight: 20 }}
                     >
-                      {formData.places[0].id ? "Update" : "Create"}
+                      {formData.places[0].id ? 'Update' : 'Create'}
                     </Button>
                   </div>
                 </Form>

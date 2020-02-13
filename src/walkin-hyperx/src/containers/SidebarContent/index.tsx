@@ -1,15 +1,15 @@
-import * as React from "react";
-import { Menu, Icon } from "antd";
-import { Link, RouteComponentProps } from "react-router-dom";
-import { CustomScrollbars, Auxiliary, IntlMessages } from "walkin-components";
-import SidebarLogo from "./SidebarLogo";
-import { withRouter } from "react-router-dom";
-import campaigns from "../../Icons/campaign";
-import Segments from "../../Icons/Segment";
-import offers from "../../Icons/offers";
-import analytics from "../../Icons/analytics";
-import settings from "../../Icons/settings";
-import messages from "../../Icons/messages";
+import * as React from 'react';
+import { Menu, Icon } from 'antd';
+import { Link, RouteComponentProps } from 'react-router-dom';
+import { CustomScrollbars, Auxiliary, IntlMessages } from 'walkin-components';
+import SidebarLogo from './SidebarLogo';
+import { withRouter } from 'react-router-dom';
+import campaigns from '../../Icons/campaign';
+import Segments from '../../Icons/Segment';
+import offers from '../../Icons/offers';
+import analytics from '../../Icons/analytics';
+import settings from '../../Icons/settings';
+import messages from '../../Icons/messages';
 // import Segments from "../../Icons/IconComponents/segemnts";
 // import Analytics from "../../Icons/help.svg";
 // const help = require("../../Icons/help.svg")
@@ -17,17 +17,17 @@ import messages from "../../Icons/messages";
 import {
   NAV_STYLE_NO_HEADER_EXPANDED_SIDEBAR,
   NAV_STYLE_NO_HEADER_MINI_SIDEBAR,
-  THEME_TYPE_LITE
-} from "walkin-components/src/constants/ThemeSetting";
-import { compose, graphql } from "react-apollo";
-import gql from "graphql-tag";
+  THEME_TYPE_LITE,
+} from 'walkin-components/src/constants/ThemeSetting';
+import { compose, graphql } from 'react-apollo';
+import gql from 'graphql-tag';
 import {
   CAMPAIGN_MANAGEMENT,
   SEGMENT_LIST,
   OFFER_LIST,
-  OFFER_DASHBOARD
-} from "../../constants/RouterConstants";
-import { CollapseSidebar } from "../../../../shared/src";
+  OFFER_DASHBOARD,
+} from '../../constants/RouterConstants';
+import { CollapseSidebar } from '../../../../shared';
 
 const SubMenu = Menu.SubMenu;
 
@@ -51,21 +51,21 @@ class SidebarContent extends React.Component<
       navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR ||
       navStyle === NAV_STYLE_NO_HEADER_EXPANDED_SIDEBAR
     ) {
-      return "gx-no-header-notifications";
+      return 'gx-no-header-notifications';
     }
-    return "";
+    return '';
   };
   getNavStyleSubMenuClass = navStyle => {
     if (navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR) {
-      return "gx-no-header-submenu-popup";
+      return 'gx-no-header-submenu-popup';
     }
-    return "";
+    return '';
   };
 
   render() {
     const { themeType, navStyle, pathname } = this.props;
     const selectedKeys = pathname.substr(1);
-    const defaultOpenKeys = selectedKeys.split("/")[1];
+    const defaultOpenKeys = selectedKeys.split('/')[1];
 
     // let isSettingsSideBar = defaultOpenKeys[1] === "settings";
     // let sidebarTheme: MenuTheme = "dark";
@@ -76,7 +76,7 @@ class SidebarContent extends React.Component<
       <Auxiliary>
         <SidebarLogo />
         <div
-          style={{ height: "100%" }}
+          style={{ height: '100%' }}
           className="HyperX-Sidebar gx-sidebar-content"
         >
           {/* <div></div> */}
@@ -84,7 +84,7 @@ class SidebarContent extends React.Component<
             // style={{ height: '85vh' }}
             defaultOpenKeys={[defaultOpenKeys]}
             selectedKeys={[selectedKeys]}
-            theme={themeType === THEME_TYPE_LITE ? "light" : "dark"}
+            theme={themeType === THEME_TYPE_LITE ? 'light' : 'dark'}
             mode="inline"
           >
             <Menu.Item key="hyperx/campaigns">
@@ -163,6 +163,6 @@ export default compose(
   withRouter,
   graphql(GET_SETTINGS, {
     props: mapStateToProps,
-    name: "settings"
+    name: 'settings',
   })
 )(SidebarContent);

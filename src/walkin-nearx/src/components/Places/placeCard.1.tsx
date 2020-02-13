@@ -1,5 +1,5 @@
-import * as React from "react";
-import { Col, Row, Card, Button, Divider } from "antd";
+import * as React from 'react';
+import { Col, Row, Card, Button, Divider } from 'antd';
 
 interface iProps {
   data?: any;
@@ -14,7 +14,7 @@ export default class placeCard extends React.Component<iProps, {}> {
           <Row gutter={25} style={{ marginLeft: 0 }}>
             <Col xs={24} sm={12} md={8} style={{ marginLeft: 5 }} span={8}>
               <Row>
-                <p style={{ fontWeight: "bold" }}>{data.name}</p>
+                <p style={{ fontWeight: 'bold' }}>{data.name}</p>
               </Row>
               <Row>
                 <p>{data.code}</p>
@@ -32,7 +32,7 @@ export default class placeCard extends React.Component<iProps, {}> {
             <Col xs={24} sm={10} md={5} span={5}>
               <div style={{ maxWidth: 200, marginBottom: 20 }}>
                 <div style={{ fontWeight: 400 }}>Campaign</div>
-                <hr style={{ margin: "8px 0" }} color="#8e8e8e" />
+                <hr style={{ margin: '8px 0' }} color="#8e8e8e" />
                 <Row>
                   <Col sm={15} xs={12} md={12} xl={15}>
                     <div>

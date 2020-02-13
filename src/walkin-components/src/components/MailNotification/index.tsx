@@ -1,8 +1,8 @@
-import * as React from "react";
-import NotificationItem from "./NotificationItem";
-import { notifications } from "./data";
-import { Auxiliary } from "../../util/Auxiliary";
-import { CustomScrollbars } from "../../util/CustomScrollbars";
+import * as React from 'react';
+import NotificationItem from './NotificationItem';
+import { notifications } from './data';
+import { Auxiliary } from '../../util/Auxiliary';
+import { CustomScrollbars } from '../../util/CustomScrollbars';
 
 const MailNotification = () => {
   return (

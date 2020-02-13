@@ -1,3 +1,3 @@
-import { CustomButton, CustomTitle, CustomParagraph } from "shared";
+import { CustomButton, CustomTitle, CustomParagraph } from 'shared';
 
 export { CustomButton, CustomTitle, CustomParagraph };

@@ -1,24 +1,24 @@
-import * as React from "react";
-import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis } from "recharts";
-import { Select } from "antd";
+import * as React from 'react';
+import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis } from 'recharts';
+import { Select } from 'antd';
 
-import { Widget } from "../../Widget";
+import { Widget } from '../../Widget';
 
 const data = [
-  { name: "", balance: 200 },
-  { name: "JAN", balance: 400 },
-  { name: "FEB", balance: 150 },
-  { name: "MAR", balance: 400 },
-  { name: "APR", balance: 1000 },
-  { name: "MAY", balance: 400 },
-  { name: "JUN", balance: 1200 },
-  { name: "JUL", balance: 1000 },
-  { name: "AUG", balance: 800 },
-  { name: "SEP", balance: 750 },
-  { name: "OCT", balance: 1500 },
-  { name: "NOV", balance: 1000 },
-  { name: "DEC", balance: 1500 },
-  { name: "", balance: 500 }
+  { name: '', balance: 200 },
+  { name: 'JAN', balance: 400 },
+  { name: 'FEB', balance: 150 },
+  { name: 'MAR', balance: 400 },
+  { name: 'APR', balance: 1000 },
+  { name: 'MAY', balance: 400 },
+  { name: 'JUN', balance: 1200 },
+  { name: 'JUL', balance: 1000 },
+  { name: 'AUG', balance: 800 },
+  { name: 'SEP', balance: 750 },
+  { name: 'OCT', balance: 1500 },
+  { name: 'NOV', balance: 1000 },
+  { name: 'DEC', balance: 1500 },
+  { name: '', balance: 500 },
 ];
 
 const Option = Select.Option;

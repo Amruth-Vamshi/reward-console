@@ -1,13 +1,13 @@
-import * as React from "react";
-import { Redirect, Route, Switch } from "react-router-dom";
-import "../styles/styles.css";
-import Dashboard from "./Home/index";
-import AnalyticsManager from "./Dashboard";
-import Places from "./Places";
-import settings from "./Settings";
-import NearxApps from "./App";
-import Hooks from "./Webhooks";
-import TestUpload from "./TestUpload";
+import * as React from 'react';
+import { Redirect, Route, Switch } from 'react-router-dom';
+import '../styles/styles.css';
+import Dashboard from './Home/index';
+import AnalyticsManager from './Dashboard';
+import Places from './Places';
+import settings from './Settings';
+import NearxApps from './App';
+import Hooks from './Webhooks';
+import TestUpload from './TestUpload';
 
 export default class NearXRoutes extends React.Component {
   render() {

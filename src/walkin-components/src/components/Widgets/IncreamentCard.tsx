@@ -1,15 +1,15 @@
-import * as React from "react";
-import { Area, AreaChart, ResponsiveContainer, Tooltip } from "recharts";
-import { Widget } from "../Widget";
+import * as React from 'react';
+import { Area, AreaChart, ResponsiveContainer, Tooltip } from 'recharts';
+import { Widget } from '../Widget';
 
 const data = [
-  { name: "Page A", increment: 200 },
-  { name: "Page B", increment: 1000 },
-  { name: "Page C", increment: 600 },
-  { name: "Page D", increment: 1600 },
-  { name: "Page D", increment: 1000 },
-  { name: "Page H", increment: 2260 },
-  { name: "Page K", increment: 400 }
+  { name: 'Page A', increment: 200 },
+  { name: 'Page B', increment: 1000 },
+  { name: 'Page C', increment: 600 },
+  { name: 'Page D', increment: 1600 },
+  { name: 'Page D', increment: 1000 },
+  { name: 'Page H', increment: 2260 },
+  { name: 'Page K', increment: 400 },
 ];
 
 const IncreamentCard = () => {

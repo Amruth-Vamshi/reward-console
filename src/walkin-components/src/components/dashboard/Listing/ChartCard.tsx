@@ -1,5 +1,5 @@
-import * as React from "react";
-import { Widget } from "../../Widget";
+import * as React from 'react';
+import { Widget } from '../../Widget';
 
 interface IProps {
   chartProperties: any;
@@ -20,27 +20,27 @@ interface IState {
 class ChartCard extends React.Component<IProps, IState> {
   readonly state = {
     isHide: false,
-    children: "",
+    children: '',
     chartProperties: {
-      prize: "",
-      title: "",
-      bgColor: "",
-      styleName: "",
-      desc: "",
-      percent: 0
-    }
+      prize: '',
+      title: '',
+      bgColor: '',
+      styleName: '',
+      desc: '',
+      percent: 0,
+    },
   };
 
   componentDidMount() {
     this.setState(previousState => ({
       chartProperties: this.props.chartProperties,
-      children: this.props.children
+      children: this.props.children,
     }));
   }
 
   handleToggle() {
     this.setState(previousState => ({
-      isHide: !previousState.isHide
+      isHide: !previousState.isHide,
     }));
   }
 

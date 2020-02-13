@@ -1,5 +1,5 @@
-import * as React from "react";
-import { Input } from "antd";
+import * as React from 'react';
+import { Input } from 'antd';
 
 interface InstantSearchProps {
   placeHolder: any;
@@ -13,7 +13,7 @@ class InstantSearch extends React.Component<InstantSearchProps, {}> {
     let currentList = [];
     let newList = [];
 
-    if (e.target.value !== "") {
+    if (e.target.value !== '') {
       currentList = data;
       // Use .filter() to determine which items should be displayed
       // based on the search terms

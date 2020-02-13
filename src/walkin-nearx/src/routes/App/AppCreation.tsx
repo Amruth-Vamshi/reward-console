@@ -1,17 +1,17 @@
-import * as React from "react";
-import { Col, message, Select, Form, Input, Button, Icon } from "antd";
-import "../../styles/app.css";
+import * as React from 'react';
+import { Col, message, Select, Form, Input, Button, Icon } from 'antd';
+import '../../styles/app.css';
 import {
   GET_ALL_APPS_OF_ORGANIZATION,
   USER_DATA,
-  UPDATE_APP
-} from "walkin-core/src/PlatformQueries";
-import { nearXClient } from "../../nearXApollo";
-import { CREATE_APP } from "../../queries";
-import * as jwt from "jsonwebtoken";
-import { withApollo, compose, graphql } from "react-apollo";
-import gql from "graphql-tag";
-import { History } from "history";
+  UPDATE_APP,
+} from 'walkin-core/src/PlatformQueries';
+import { nearXClient } from '../../nearXApollo';
+import { CREATE_APP } from '../../queries';
+import * as jwt from 'jsonwebtoken';
+import { withApollo, compose, graphql } from 'react-apollo';
+import gql from 'graphql-tag';
+import { History } from 'history';
 
 const Option = Select.Option;
 const formItemLayout = {
@@ -19,14 +19,14 @@ const formItemLayout = {
     sm: { span: 24 },
     md: { span: 24 },
     lg: { span: 24 },
-    xl: { span: 8 }
+    xl: { span: 8 },
   },
   wrapperCol: {
     sm: { span: 24 },
     md: { span: 24 },
     lg: { span: 24 },
-    xl: { span: 16 }
-  }
+    xl: { span: 16 },
+  },
 };
 
 interface iProps {
@@ -57,15 +57,15 @@ class AppCreation extends React.Component<iProps, iState> {
     this.state = {
       organizations: [],
       update: false,
-      id: "",
+      id: '',
       errors: {},
       loading: false,
-      firstName: "",
-      lastName: "",
-      appName: "",
-      description: "",
-      platform: "",
-      organizationId: ""
+      firstName: '',
+      lastName: '',
+      appName: '',
+      description: '',
+      platform: '',
+      organizationId: '',
     };
   }
 
@@ -75,52 +75,52 @@ class AppCreation extends React.Component<iProps, iState> {
   };
 
   getAppDetails = appData => {
-    console.log("APPDATA>>>", appData);
+    console.log('APPDATA>>>', appData);
     this.setState({
       id: appData.id,
       appName: appData.appName,
       description: appData.discription,
       platform: appData.platform,
       organizationId: appData.org_id,
-      update: true
+      update: true,
     });
   };
 
   componentDidMount() {}
 
   UNSAFE_componentWillMount() {
-    const { id, org_id }: any = jwt.decode(localStorage.getItem("jwt"));
+    const { id, org_id }: any = jwt.decode(localStorage.getItem('jwt'));
     this.setState({ userId: id, org_id });
 
-    if (sessionStorage.getItem("AppData")) {
-      this.getAppDetails(JSON.parse(sessionStorage.getItem("AppData")));
+    if (sessionStorage.getItem('AppData')) {
+      this.getAppDetails(JSON.parse(sessionStorage.getItem('AppData')));
     }
 
-    sessionStorage.removeItem("AppData");
+    sessionStorage.removeItem('AppData');
 
     id
       ? this.props.client
           .query({
             query: USER_DATA,
             variables: { userId: id },
-            fetchPolicy: "cache-first"
+            fetchPolicy: 'cache-first',
           })
           .then(res => {
             console.log(res.data.user);
             this.setState({
               firstName: res.data.user.firstName,
-              lastName: res.data.user.lastName
+              lastName: res.data.user.lastName,
             });
           })
-          .catch(err => console.log("Failed to get User Details" + err))
-      : console.log("Error getting JwtData");
+          .catch(err => console.log('Failed to get User Details' + err))
+      : console.log('Error getting JwtData');
 
     org_id
       ? this.props.client
           .query({
             query: GET_ALL_APPS_OF_ORGANIZATION,
             variables: { id: org_id },
-            fetchPolicy: "network-only" // skip the cache
+            fetchPolicy: 'network-only', // skip the cache
           })
           .then(res => {
             console.log(res.data);
@@ -135,9 +135,9 @@ class AppCreation extends React.Component<iProps, iState> {
             this.setState({ organizations: orgs });
           })
           .catch(err => {
-            console.log("Failed to get User Details" + err);
+            console.log('Failed to get User Details' + err);
           })
-      : console.log("Error getting JwtData");
+      : console.log('Error getting JwtData');
   }
 
   handleOnChange = e => {
@@ -152,14 +152,14 @@ class AppCreation extends React.Component<iProps, iState> {
 
   handleSubmit = () => {
     let errors: any = {};
-    if (this.state.appName.trim() == "")
-      errors.appName = "* this field is mandatory";
-    if (this.state.platform == "") errors.platform = "* select your platform";
-    if (this.state.organizationId == "")
-      errors.organizationId = "* this field is mandatory";
+    if (this.state.appName.trim() == '')
+      errors.appName = '* this field is mandatory';
+    if (this.state.platform == '') errors.platform = '* select your platform';
+    if (this.state.organizationId == '')
+      errors.organizationId = '* this field is mandatory';
     if (Object.keys(errors).length !== 0) {
       this.setState({ errors });
-      console.log("Errors in submition" + Object.keys(errors).length);
+      console.log('Errors in submition' + Object.keys(errors).length);
     } else {
       if (this.state.update) {
         this.setState({ loading: true });
@@ -171,17 +171,17 @@ class AppCreation extends React.Component<iProps, iState> {
                 id: this.state.id,
                 name: this.state.appName,
                 description: this.state.description,
-                platform: this.state.platform
-              }
-            }
+                platform: this.state.platform,
+              },
+            },
           })
           .then(res => {
-            console.log("Results", res);
+            console.log('Results', res);
             this.setState({ loading: false });
-            this.props.history.push("/nearx/apps");
+            this.props.history.push('/nearx/apps');
           })
           .catch(err => {
-            console.log("Failed to get Places Details" + err);
+            console.log('Failed to get Places Details' + err);
             this.setState({ loading: false });
           });
       } else {
@@ -194,23 +194,23 @@ class AppCreation extends React.Component<iProps, iState> {
               input: {
                 name: this.state.appName,
                 description: this.state.description,
-                platform: this.state.platform
-              }
-            }
+                platform: this.state.platform,
+              },
+            },
           })
           .then(res => {
-            console.log("Results", res);
+            console.log('Results', res);
             this.setState({ loading: false });
-            this.props.history.push("/nearx/apps");
+            this.props.history.push('/nearx/apps');
             // this.setState({ organizations:res.data.organizationHierarchies })
           })
           .catch(err => {
-            console.log("Failed to get Places Details" + err.graphQLErrors);
+            console.log('Failed to get Places Details' + err.graphQLErrors);
 
             console.log(
               err && err.graphQLErrors
                 ? err.graphQLErrors[0].errorCode
-                : "Error in submitting the form"
+                : 'Error in submitting the form'
             );
 
             if (err.graphQLErrors[0].message) {
@@ -239,9 +239,9 @@ class AppCreation extends React.Component<iProps, iState> {
         <div
           className="gx-card-body"
           style={{
-            backgroundColor: "#ffffff",
-            height: "90vh",
-            minHeight: "700px"
+            backgroundColor: '#ffffff',
+            height: '90vh',
+            minHeight: '700px',
           }}
         >
           {/* <div className="appHeader">
@@ -255,16 +255,16 @@ class AppCreation extends React.Component<iProps, iState> {
           </div>
           <hr /> */}
 
-          <div style={{ height: "100%" }}>
+          <div style={{ height: '100%' }}>
             <div className="divCenter">
               <Col sm={18} md={13} lg={13} xl={12}>
-                <div style={{ textAlign: "center" }}>
+                <div style={{ textAlign: 'center' }}>
                   <p
                     style={{
                       fontSize: 25,
                       marginBottom: 50,
-                      alignContent: "center",
-                      justifyContent: "center"
+                      alignContent: 'center',
+                      justifyContent: 'center',
                     }}
                   >
                     Integrate your App with <b>NearX</b>
@@ -281,7 +281,7 @@ class AppCreation extends React.Component<iProps, iState> {
                       name="appName"
                       onChange={c => this.handleOnChange(c)}
                     />
-                    <span style={{ color: "Red" }}>
+                    <span style={{ color: 'Red' }}>
                       {this.state.errors.appName}
                     </span>
                   </Form.Item>
@@ -291,32 +291,32 @@ class AppCreation extends React.Component<iProps, iState> {
                       name="Android"
                       onClick={c => this.choosePlatform(c)}
                       type={
-                        this.state.platform === "Android" ? "primary" : null
+                        this.state.platform === 'Android' ? 'primary' : null
                       }
                     >
-                      <Icon type="android" theme="filled" /> Android{" "}
+                      <Icon type="android" theme="filled" /> Android{' '}
                     </Button>
                     <Button
                       name="IOS"
                       onClick={c => this.choosePlatform(c)}
-                      type={this.state.platform === "IOS" ? "primary" : null}
+                      type={this.state.platform === 'IOS' ? 'primary' : null}
                     >
-                      <Icon type="apple" theme="filled" /> IOS{" "}
+                      <Icon type="apple" theme="filled" /> IOS{' '}
                     </Button>
 
-                    <span style={{ color: "Red" }}>
+                    <span style={{ color: 'Red' }}>
                       {this.state.errors.platform}
                     </span>
                   </Form.Item>
 
                   {this.state.update ? (
-                    ""
+                    ''
                   ) : (
                     <Form.Item {...formItemLayout} label="Industry">
                       <Select
                         showSearch
                         size="large"
-                        style={{ width: "100%" }}
+                        style={{ width: '100%' }}
                         placeholder="Select Industy"
                         getPopupContainer={(triggerNode: any) =>
                           triggerNode.parentNode
@@ -332,7 +332,7 @@ class AppCreation extends React.Component<iProps, iState> {
                         {/* <Option value={auth.user.organization.name}>{auth.user.organization?auth.user.organization.name:''}</Option> */}
                         {options}
                       </Select>
-                      <span style={{ color: "Red" }}>
+                      <span style={{ color: 'Red' }}>
                         {this.state.errors.organizationId}
                       </span>
                     </Form.Item>
@@ -347,25 +347,25 @@ class AppCreation extends React.Component<iProps, iState> {
                       name="description"
                       onChange={c => this.handleOnChange(c)}
                     />
-                    <span style={{ color: "Red" }}>
+                    <span style={{ color: 'Red' }}>
                       {this.state.errors.description}
                     </span>
                   </Form.Item>
 
                   {/* <p><Button  onClick={this.props.showModal}>Add Hotspot</Button></p> */}
-                  <div style={{ overflow: "hidden", textAlign: "center" }}>
+                  <div style={{ overflow: 'hidden', textAlign: 'center' }}>
                     <Button
                       onClick={() => this.handleSubmit()}
                       loading={this.state.loading}
                       className="buttonPrimary"
                       style={{
-                        textAlign: "center",
-                        width: "200px",
-                        float: "none",
-                        margin: "25px 30px 20px 0"
+                        textAlign: 'center',
+                        width: '200px',
+                        float: 'none',
+                        margin: '25px 30px 20px 0',
                       }}
                     >
-                      {!this.state.update ? "Create App" : "Update App"}
+                      {!this.state.update ? 'Create App' : 'Update App'}
                     </Button>
                   </div>
                 </Form>

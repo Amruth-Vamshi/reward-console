@@ -1,8 +1,8 @@
-import React from "react";
-import Row from "antd/lib/row";
-import Col from "antd/lib/col";
-import Slider from "antd/lib/slider";
-import "./index.css";
+import React from 'react';
+import Row from 'antd/lib/row';
+import Col from 'antd/lib/col';
+import Slider from 'antd/lib/slider';
+import './index.css';
 
 interface pgstate {
   gutterKey: number;
@@ -24,7 +24,7 @@ export default class PlaygroundGrid extends React.Component<pgprops, pgstate> {
     this.state = {
       gutterKey: 1,
       vgutterKey: 1,
-      colCountKey: 2
+      colCountKey: 2,
     };
     [8, 16, 24, 32, 40, 48].forEach((value, i) => {
       this.gutters[i] = value;
@@ -53,7 +53,7 @@ export default class PlaygroundGrid extends React.Component<pgprops, pgstate> {
     const { gutterKey, vgutterKey, colCountKey } = this.state;
     const cols = [];
     const colCount = this.colCounts[colCountKey];
-    let colCode = "";
+    let colCode = '';
     for (let i = 0; i < colCount; i++) {
       cols.push(
         <Col key={i.toString()} span={24 / colCount}>
@@ -66,7 +66,7 @@ export default class PlaygroundGrid extends React.Component<pgprops, pgstate> {
       <div>
         <div style={{ marginBottom: 16 }}>
           <span style={{ marginRight: 6 }}>Horizontal Gutter (px): </span>
-          <div style={{ width: "50%" }}>
+          <div style={{ width: '50%' }}>
             <Slider
               min={0}
               max={Object.keys(this.gutters).length - 1}
@@ -77,7 +77,7 @@ export default class PlaygroundGrid extends React.Component<pgprops, pgstate> {
             />
           </div>
           <span style={{ marginRight: 6 }}>Vertical Gutter (px): </span>
-          <div style={{ width: "50%" }}>
+          <div style={{ width: '50%' }}>
             <Slider
               min={0}
               max={Object.keys(this.vgutters).length - 1}
@@ -88,7 +88,7 @@ export default class PlaygroundGrid extends React.Component<pgprops, pgstate> {
             />
           </div>
           <span style={{ marginRight: 6 }}>Column Count:</span>
-          <div style={{ width: "50%" }}>
+          <div style={{ width: '50%' }}>
             <Slider
               min={0}
               max={Object.keys(this.colCounts).length - 1}

@@ -1,6 +1,6 @@
-import * as React from "react";
-import { Avatar, Dropdown, Menu } from "antd";
-import { Widget } from "../Widget";
+import * as React from 'react';
+import { Avatar, Dropdown, Menu } from 'antd';
+import { Widget } from '../Widget';
 
 const menu = (
   <Menu>
@@ -28,7 +28,7 @@ const ProjectWidget = () => {
             <i className="icon icon-invert-color" />
           </li>
           <li>
-            <Dropdown overlay={menu} trigger={["click"]}>
+            <Dropdown overlay={menu} trigger={['click']}>
               <span className="gx-link ant-dropdown-link gx-text-grey">
                 <i className="icon icon-chevron-down" />
               </span>
@@ -41,7 +41,7 @@ const ProjectWidget = () => {
       <div className="gx-text-center gx-pt-sm-3">
         <img
           className="gx-size-60 gx-mb-3"
-          src={require("assets/images/widget/birds.png")}
+          src={require('assets/images/widget/birds.png')}
           alt="birds"
         />
 

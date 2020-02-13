@@ -1,8 +1,8 @@
-import React from "react";
-import Layout from "antd/lib/layout";
-import Menu from "antd/lib/menu";
-import Breadcrumb from "antd/lib/breadcrumb";
-import Icon from "antd/lib/icon";
+import React from 'react';
+import Layout from 'antd/lib/layout';
+import Menu from 'antd/lib/menu';
+import Breadcrumb from 'antd/lib/breadcrumb';
+import Icon from 'antd/lib/icon';
 const { Sider } = Layout;
 
 // import "./index.css";
@@ -14,14 +14,14 @@ export default class FixedSiderLayout extends React.Component {
       <Layout>
         <Sider
           style={{
-            overflow: "auto",
-            height: "100vh",
-            position: "fixed",
-            left: 0
+            overflow: 'auto',
+            height: '100vh',
+            position: 'fixed',
+            left: 0,
           }}
         >
           <div className="logo" />
-          <Menu theme="dark" mode="inline" defaultSelectedKeys={["4"]}>
+          <Menu theme="dark" mode="inline" defaultSelectedKeys={['4']}>
             <Menu.Item key="1">
               <Icon type="user" />
               <span className="nav-text">nav 1</span>
@@ -57,10 +57,10 @@ export default class FixedSiderLayout extends React.Component {
           </Menu>
         </Sider>
         <Layout style={{ marginLeft: 200 }}>
-          <Header style={{ background: "#fff", padding: 0 }} />
-          <Content style={{ margin: "24px 16px 0", overflow: "initial" }}>
+          <Header style={{ background: '#fff', padding: 0 }} />
+          <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
             <div
-              style={{ padding: 24, background: "#fff", textAlign: "center" }}
+              style={{ padding: 24, background: '#fff', textAlign: 'center' }}
             >
               ...
               <br />
@@ -159,7 +159,7 @@ export default class FixedSiderLayout extends React.Component {
               content
             </div>
           </Content>
-          <Footer style={{ textAlign: "center" }}>
+          <Footer style={{ textAlign: 'center' }}>
             Ant Design ©2018 Created by Ant UED
           </Footer>
         </Layout>

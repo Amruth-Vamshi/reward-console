@@ -1,5 +1,5 @@
-import React from "react";
-import Title from "antd/lib/typography/Title";
+import React from 'react';
+import Title from 'antd/lib/typography/Title';
 
 export default class CustomTitle extends React.Component {
   render() {

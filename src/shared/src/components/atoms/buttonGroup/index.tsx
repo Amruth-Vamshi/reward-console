@@ -1,12 +1,12 @@
-import * as React from "react";
-import { Radio } from "antd";
-import { toNumber } from "walkin-components/src/util/common";
-import "./style.css";
+import * as React from 'react';
+import { Radio } from 'antd';
+import { toNumber } from 'walkin-components/src/util/common';
+import './style.css';
 
 const ButtonGroups = ({
   selectedPriorityButton = 3,
   handleChange,
-  maxPriority = 99
+  maxPriority = 99,
 }: any) => {
   var selectedOption = toNumber(selectedPriorityButton);
   const noop = (e: any) => {
@@ -41,7 +41,7 @@ const ButtonGroups = ({
           {selectedOption ? selectedOption + 1 : 4}
         </Radio.Button>
       ) : (
-        ""
+        ''
       )}
       {selectedOption + 2 <= maxPriority && (
         <Radio.Button className="allButtonStyle" value={selectedOption + 2}>

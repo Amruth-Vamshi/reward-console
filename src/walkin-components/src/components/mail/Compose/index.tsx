@@ -1,26 +1,26 @@
-import * as React from "react";
-import { Button, Input, message, Modal, Upload } from "antd";
-import Moment from "moment";
-import { IntlMessages } from "../../..";
+import * as React from 'react';
+import { Button, Input, message, Modal, Upload } from 'antd';
+import Moment from 'moment';
+import { IntlMessages } from '../../../..';
 
 const { TextArea } = Input;
 
 const props = {
-  name: "file",
-  action: "//jsonplaceholder.typicode.com/posts/",
+  name: 'file',
+  action: '//jsonplaceholder.typicode.com/posts/',
   headers: {
-    authorization: "authorization-text"
+    authorization: 'authorization-text',
   },
   onChange(info) {
-    if (info.file.status !== "uploading") {
+    if (info.file.status !== 'uploading') {
       console.log(info.file, info.fileList);
     }
-    if (info.file.status === "done") {
+    if (info.file.status === 'done') {
       message.success(`${info.file.name} file uploaded successfully`);
-    } else if (info.file.status === "error") {
+    } else if (info.file.status === 'error') {
       message.error(`${info.file.name} file upload failed.`);
     }
-  }
+  },
 };
 
 interface IProps {
@@ -42,11 +42,11 @@ class ComposeMail extends React.Component<IProps, IState> {
   constructor(props) {
     super(props);
     this.state = {
-      to: "",
-      cc: "",
-      bcc: "",
-      subject: "",
-      message: ""
+      to: '',
+      cc: '',
+      bcc: '',
+      subject: '',
+      message: '',
     };
   }
 
@@ -60,31 +60,31 @@ class ComposeMail extends React.Component<IProps, IState> {
         title={<IntlMessages id="mail.title" />}
         closable={false}
         onOk={() => {
-          if (to === "") return;
+          if (to === '') return;
           onClose();
           onMailSend({
-            id: "15453a06c08fb021776",
+            id: '15453a06c08fb021776',
             from: {
               name: user.name,
               avatar: user.avatar,
-              email: user.email
+              email: user.email,
             },
             to: [
               {
                 name: to,
-                email: to
-              }
+                email: to,
+              },
             ],
             subject: subject,
             message: message,
-            time: Moment().format("DD MMM"),
+            time: Moment().format('DD MMM'),
             read: false,
             starred: false,
             important: false,
             hasAttachments: false,
             folder: 1,
             selected: false,
-            labels: []
+            labels: [],
           });
         }}
         style={{ zIndex: 2600 }}

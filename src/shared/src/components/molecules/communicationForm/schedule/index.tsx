@@ -1,5 +1,5 @@
-import * as React from "react";
-import "./style.css";
+import * as React from 'react';
+import './style.css';
 import {
   Card,
   Row,
@@ -11,9 +11,9 @@ import {
   Input,
   Icon,
   Select,
-  Form
-} from "antd";
-import moment from "moment";
+  Form,
+} from 'antd';
+import moment from 'moment';
 
 // const formItemLayout = {
 //     labelCol: { span: 6 },
@@ -21,13 +21,13 @@ import moment from "moment";
 // };
 
 const weekDays = [
-  "SUNDAY",
-  "MONDAY",
-  "TUESDAY",
-  "WEDNESDAY",
-  "THURSDAY",
-  "FRIDAY",
-  "SATURDAY"
+  'SUNDAY',
+  'MONDAY',
+  'TUESDAY',
+  'WEDNESDAY',
+  'THURSDAY',
+  'FRIDAY',
+  'SATURDAY',
 ];
 
 const formItemLayout = {
@@ -36,7 +36,7 @@ const formItemLayout = {
     sm: { span: 7 },
     md: { span: 24 },
     lg: { span: 24 },
-    xl: { span: 7 }
+    xl: { span: 7 },
     // xl: { span: 7 }
   },
   wrapperCol: {
@@ -44,9 +44,9 @@ const formItemLayout = {
     sm: { span: 17 },
     md: { span: 24 },
     lg: { span: 24 },
-    xl: { span: 17 }
+    xl: { span: 17 },
     // xl: { span: 17 }
-  }
+  },
 };
 
 const Option = Select.Option;
@@ -76,20 +76,20 @@ class Schedule extends React.Component<iProps, Partial<iState>> {
     super(props);
     this.state = {
       errors: {},
-      repeatType: "DAILY",
-      time: "",
+      repeatType: 'DAILY',
+      time: '',
       repeatOn: [false, false, false, false, false, false, false],
-      end: "onEndDate",
+      end: 'onEndDate',
       noOfOccurances: 10,
-      saved: this.props.saved
+      saved: this.props.saved,
     };
   }
 
-  daySelected = (e: number) => (this.state.repeatOn[e] ? "primary" : "default");
+  daySelected = (e: number) => (this.state.repeatOn[e] ? 'primary' : 'default');
 
   dClick = (e: number) => {
     let { repeatOn, errors } = this.state;
-    errors.repeatOn = "";
+    errors.repeatOn = '';
     repeatOn[e] = !repeatOn[e];
     this.setState({ repeatOn, errors, saved: false });
   };
@@ -101,14 +101,14 @@ class Schedule extends React.Component<iProps, Partial<iState>> {
   saveSchedule = () => {
     let errors: any = {};
 
-    if (this.state.repeatType === "WEEKLY") {
+    if (this.state.repeatType === 'WEEKLY') {
       if (!this.state.repeatOn.find(i => i)) {
-        errors.repeatOn = "select atleast one day";
+        errors.repeatOn = 'select atleast one day';
       }
     }
 
-    if (!this.state.time || this.state.time == "")
-      errors.time = "* this field is mandatory";
+    if (!this.state.time || this.state.time == '')
+      errors.time = '* this field is mandatory';
 
     if (Object.keys(errors).length !== 0) {
       this.setState({ errors });
@@ -116,11 +116,11 @@ class Schedule extends React.Component<iProps, Partial<iState>> {
       let { repeatType, time, repeatOn, end, noOfOccurances } = this.state,
         days: Array<any> = [];
       let ScheduleData: any = { repeatType, time };
-      if (repeatType == "WEEKLY") {
+      if (repeatType == 'WEEKLY') {
         repeatOn.map((day, i) => day && days.push(weekDays[i]));
         ScheduleData.days = days;
       }
-      end == "afterOccurrences"
+      end == 'afterOccurrences'
         ? (ScheduleData.noOfOccurances = noOfOccurances)
         : (ScheduleData.endTime = this.props.campaign.endTime);
       this.props.saveSchedule(ScheduleData);
@@ -133,9 +133,9 @@ class Schedule extends React.Component<iProps, Partial<iState>> {
     if (this.props.scheduleData) {
       let { repeatOn, end } = this.state;
       let { repeatType, time, noOfOccurances, days } = this.props.scheduleData;
-      if (repeatType == "WEEKLY" && days)
+      if (repeatType == 'WEEKLY' && days)
         repeatOn = weekDays.map(day => days.includes(day));
-      end = noOfOccurances ? "afterOccurrences" : "onEndDate";
+      end = noOfOccurances ? 'afterOccurrences' : 'onEndDate';
       noOfOccurances = noOfOccurances ? noOfOccurances : 10;
       this.setState({ repeatType, time, repeatOn, end, noOfOccurances });
     }
@@ -146,7 +146,7 @@ class Schedule extends React.Component<iProps, Partial<iState>> {
   };
 
   onChangeTime = (e: any, n: any) => {
-    this.state.errors.time = "";
+    this.state.errors.time = '';
     this.setState({ time: e, saved: false });
   };
   handleOnEndChange = (e: string) => {
@@ -167,12 +167,12 @@ class Schedule extends React.Component<iProps, Partial<iState>> {
           </Row>
           {this.props.campaign && (
             <p className="campDate">
-              {" "}
-              Campaign Date: &nbsp;{" "}
+              {' '}
+              Campaign Date: &nbsp;{' '}
               <b>
-                {moment(campaign.startTime).format("DD MMM YY HH:mm") +
-                  " - " +
-                  moment(campaign.endTime).format("DD MMM YY HH:mm")}{" "}
+                {moment(campaign.startTime).format('DD MMM YY HH:mm') +
+                  ' - ' +
+                  moment(campaign.endTime).format('DD MMM YY HH:mm')}{' '}
               </b>
             </p>
           )}
@@ -199,7 +199,7 @@ class Schedule extends React.Component<iProps, Partial<iState>> {
                 <Option value="WEEKLY">Weekly</Option>
               </Select>
             </Form.Item>
-            {this.state.repeatType == "WEEKLY" && (
+            {this.state.repeatType == 'WEEKLY' && (
               <Form.Item
                 style={{ marginTop: 10 }}
                 label="Repeat On"
@@ -213,8 +213,8 @@ class Schedule extends React.Component<iProps, Partial<iState>> {
                       type={this.daySelected(0)}
                       shape="circle"
                     >
-                      {" "}
-                      S{" "}
+                      {' '}
+                      S{' '}
                     </Button>
                     <Button
                       className="dBtn"
@@ -222,8 +222,8 @@ class Schedule extends React.Component<iProps, Partial<iState>> {
                       type={this.daySelected(1)}
                       shape="circle"
                     >
-                      {" "}
-                      M{" "}
+                      {' '}
+                      M{' '}
                     </Button>
                     <Button
                       className="dBtn"
@@ -231,8 +231,8 @@ class Schedule extends React.Component<iProps, Partial<iState>> {
                       type={this.daySelected(2)}
                       shape="circle"
                     >
-                      {" "}
-                      T{" "}
+                      {' '}
+                      T{' '}
                     </Button>
                     <Button
                       className="dBtn"
@@ -240,8 +240,8 @@ class Schedule extends React.Component<iProps, Partial<iState>> {
                       type={this.daySelected(3)}
                       shape="circle"
                     >
-                      {" "}
-                      W{" "}
+                      {' '}
+                      W{' '}
                     </Button>
                     <Button
                       className="dBtn"
@@ -249,8 +249,8 @@ class Schedule extends React.Component<iProps, Partial<iState>> {
                       type={this.daySelected(4)}
                       shape="circle"
                     >
-                      {" "}
-                      T{" "}
+                      {' '}
+                      T{' '}
                     </Button>
                     <Button
                       className="dBtn"
@@ -258,8 +258,8 @@ class Schedule extends React.Component<iProps, Partial<iState>> {
                       type={this.daySelected(5)}
                       shape="circle"
                     >
-                      {" "}
-                      F{" "}
+                      {' '}
+                      F{' '}
                     </Button>
                     <Button
                       className="dBtn"
@@ -267,11 +267,11 @@ class Schedule extends React.Component<iProps, Partial<iState>> {
                       type={this.daySelected(6)}
                       shape="circle"
                     >
-                      {" "}
-                      S{" "}
+                      {' '}
+                      S{' '}
                     </Button>
                   </div>
-                  <span style={{ color: "Red" }}>
+                  <span style={{ color: 'Red' }}>
                     {this.state.errors.repeatOn}
                   </span>
                 </div>
@@ -286,7 +286,7 @@ class Schedule extends React.Component<iProps, Partial<iState>> {
                 format="h:mm a"
                 onChange={this.onChangeTime}
               />
-              <div style={{ color: "Red" }}>{this.state.errors.time}</div>
+              <div style={{ color: 'Red' }}>{this.state.errors.time}</div>
             </Form.Item>
 
             <Form.Item
@@ -310,7 +310,7 @@ class Schedule extends React.Component<iProps, Partial<iState>> {
                 <Option value="onEndDate">On End Date</Option>
                 <Option value="afterOccurrences">After Occurrences</Option>
               </Select>
-              {this.state.end == "afterOccurrences" && (
+              {this.state.end == 'afterOccurrences' && (
                 <InputNumber
                   max={1000}
                   min={1}
@@ -319,29 +319,29 @@ class Schedule extends React.Component<iProps, Partial<iState>> {
                   style={{ width: 70 }}
                 />
               )}
-              <span style={{ color: "Red" }}>{this.state.errors.end}</span>
+              <span style={{ color: 'Red' }}>{this.state.errors.end}</span>
             </Form.Item>
 
             <Row type="flex" justify="space-around" className="saveRow">
-              <Col style={{ justifyContent: "center", flex: "auto" }} span={8}>
+              <Col style={{ justifyContent: 'center', flex: 'auto' }} span={8}>
                 {this.state.saved ? (
                   <span className="saveMark divCenterVertical">
-                    {" "}
+                    {' '}
                     <Icon type="check-circle" theme="filled" /> &nbsp; Saved
                   </span>
                 ) : (
-                  ""
+                  ''
                 )}
               </Col>
               <Col span={8}>
                 <Button
                   onClick={() => this.saveSchedule()}
-                  style={{ marginBottom: 0, float: "right" }}
+                  style={{ marginBottom: 0, float: 'right' }}
                   type="primary"
                   shape="round"
                 >
-                  {" "}
-                  Save{" "}
+                  {' '}
+                  Save{' '}
                 </Button>
               </Col>
             </Row>

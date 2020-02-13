@@ -1,21 +1,22 @@
-import React from "react";
-import "./style.css";
+import React from 'react';
+import './style.css';
 
-import { Modal, Input, Button, Select, Table, Icon } from "antd";
+import { Modal, Input, Button, Select, Table, Icon } from 'antd';
 const { Option } = Select;
 
-interface addUsersToRoleModalProps {
+interface addOrRemoveUsersToRoleModalProps {
   visible: boolean;
-  modalDetails: any;
   onClose: any;
   onSubmit: any;
   roleList: any;
-  allUsers: any;
+  allUsers?: any;
   selectedRoleIndex: any;
   onChange: any;
+  type: string;
+  isLoading: boolean;
 }
 
-interface addUsersToRoleModalState {
+interface addOrRemoveUsersToRoleModalState {
   selectedRowKeys: any;
   loading: boolean;
   searchText: String;
@@ -23,18 +24,18 @@ interface addUsersToRoleModalState {
 }
 
 export default class extends React.Component<
-  addUsersToRoleModalProps,
-  addUsersToRoleModalState
+  addOrRemoveUsersToRoleModalProps,
+  addOrRemoveUsersToRoleModalState
 > {
   private searchInput: React.RefObject<Input>;
-  constructor(props: addUsersToRoleModalProps) {
+  constructor(props: addOrRemoveUsersToRoleModalProps) {
     super(props);
     this.searchInput = React.createRef();
     this.state = {
       selectedRowKeys: [], // Check here to configure the default column
       loading: false,
-      searchText: "",
-      searchedColumn: ""
+      searchText: '',
+      searchedColumn: '',
     };
   }
 
@@ -43,7 +44,7 @@ export default class extends React.Component<
       setSelectedKeys,
       selectedKeys,
       confirm,
-      clearFilters
+      clearFilters,
     }) => (
       <div style={{ padding: 8 }}>
         <Input
@@ -56,7 +57,7 @@ export default class extends React.Component<
           onPressEnter={() =>
             this.handleSearch(selectedKeys, confirm, dataIndex)
           }
-          style={{ width: 188, marginBottom: 8, display: "block" }}
+          style={{ width: 188, marginBottom: 8, display: 'block' }}
         />
         <Button
           type="primary"
@@ -77,7 +78,7 @@ export default class extends React.Component<
       </div>
     ),
     filterIcon: filtered => (
-      <Icon type="search" style={{ color: filtered ? "#1890ff" : undefined }} />
+      <Icon type="search" style={{ color: filtered ? '#1890ff' : undefined }} />
     ),
     onFilter: (value, record) =>
       record[dataIndex]
@@ -89,123 +90,164 @@ export default class extends React.Component<
         setTimeout(() => this.searchInput.current.select());
       }
     },
-    render: text => text
+    render: text => text,
   });
 
   handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
     this.setState({
       searchText: selectedKeys[0],
-      searchedColumn: dataIndex
+      searchedColumn: dataIndex,
     });
   };
 
   handleReset = clearFilters => {
     clearFilters();
-    this.setState({ searchText: "" });
+    this.setState({ searchText: '' });
   };
 
   onChange = (type: string, value: any) => {
     this.setState(
       (
-        prevState: Readonly<addUsersToRoleModalState>,
-        props: Readonly<addUsersToRoleModalProps>
+        prevState: Readonly<addOrRemoveUsersToRoleModalState>,
+        props: Readonly<addOrRemoveUsersToRoleModalProps>
       ) => {
         return {
           ...prevState,
-          [type]: value
+          [type]: value,
         };
       }
     );
   };
 
   onSelectChange = selectedRowKeys => {
-    console.log("selectedRowKeys changed: ", selectedRowKeys);
     this.setState({ selectedRowKeys });
   };
 
+  populateRolesAssignedToRoles = user => {
+    let userRoles = '';
+    user.roles &&
+      user.roles.map((role, rolesIndex) => {
+        if (rolesIndex === user.roles.length - 1) userRoles += `${role.name}`;
+        else {
+          userRoles += `${role.name}, `;
+        }
+      });
+    return userRoles;
+  };
+
   render() {
-    let { visible, onClose, roleList, selectedRoleIndex } = this.props;
+    let {
+      visible,
+      onClose,
+      roleList,
+      selectedRoleIndex,
+      type,
+      isLoading,
+    } = this.props;
     let { selectedRowKeys } = this.state;
 
-    if (selectedRoleIndex === null || visible === false) {
+    if (selectedRoleIndex === null && visible === false) {
       return null;
     }
 
+    let rolesFilter = [];
+    roleList.map((roleItem, roleIndex) => {
+      rolesFilter.push({
+        text: roleItem.role,
+        value: roleItem.role,
+      });
+    });
+
     const columns = [
       {
-        title: "Name",
-        className: "access-control-column-title",
-        dataIndex: "name",
-        key: "name",
-        width: "20%",
-        ...this.getColumnSearchProps("name")
+        title: 'Name',
+        className: 'access-control-column-title',
+        dataIndex: 'name',
+        key: 'name',
+        width: '20%',
+        ...this.getColumnSearchProps('name'),
       },
       {
-        title: "Email",
-        className: "access-control-column-title",
-        dataIndex: "email",
-        key: "email",
-        width: "30%"
+        title: 'Email',
+        className: 'access-control-column-title',
+        dataIndex: 'email',
+        key: 'email',
+        width: '30%',
       },
       {
-        title: "Role",
-        className: "access-control-column-title",
-        dataIndex: "role",
-        key: "role",
-        filters: [
-          {
-            text: "Test",
-            value: "test"
-          },
-          {
-            text: "CCD",
-            value: "CCD"
-          }
-        ],
+        title: 'Role',
+        className: 'access-control-column-title',
+        dataIndex: 'role',
+        key: 'role',
+        filters: rolesFilter,
         onFilter: (value, record) => {
-          return record.name === value;
-        }
-      }
+          return record.role.includes(value);
+        },
+      },
     ];
 
     let usersLinkedToCurrentRole = [];
     const data = [];
-    console.log(selectedRoleIndex, roleList[selectedRoleIndex]);
 
-    if (roleList.length && roleList[selectedRoleIndex].user)
-      roleList[selectedRoleIndex].user.map((linkedUser, index) => {
-        usersLinkedToCurrentRole.push(linkedUser.id);
-      });
+    let modalDetails = {
+      headerTitle: 'Users',
+      buttonLabel: 'Remove',
+      type: 'removeUsers',
+    };
 
-    this.props.allUsers
-      .filter((allUser, alluserIndex) => {
-        return !usersLinkedToCurrentRole.includes(allUser.id);
-      })
-      .map((user, userIndex) => {
-        let currentRolesOfUser = "";
-        user.roles.map((role, rolesIndex) => {
-          if (rolesIndex === user.roles.length - 1)
-            currentRolesOfUser += `${role.name}`;
-          else {
-            currentRolesOfUser += `${role.name}, `;
-          }
+    if (type === 'removeUsers') {
+      if (roleList.length && roleList[selectedRoleIndex].user)
+        roleList[selectedRoleIndex].user.map((linkedUser, index) => {
+          let currentRolesOfUser = this.populateRolesAssignedToRoles(
+            linkedUser
+          );
+          data.push({
+            key: linkedUser.id,
+            name: linkedUser.firstName,
+            email: linkedUser.email,
+            role: currentRolesOfUser,
+          });
+        });
+    }
+
+    if (type === 'addUsers') {
+      modalDetails = {
+        headerTitle: 'Users',
+        buttonLabel: 'Remove',
+        type: 'removeUsers',
+      };
+      modalDetails = {
+        headerTitle: 'Add users to roles',
+        buttonLabel: 'Assign',
+        type: 'addUsers',
+      };
+
+      if (roleList.length && roleList[selectedRoleIndex].user)
+        roleList[selectedRoleIndex].user.map((linkedUser, index) => {
+          usersLinkedToCurrentRole.push(linkedUser.id);
         });
 
-        data.push({
-          key: user.id,
-          name: user.firstName,
-          email: user.email,
-          role: currentRolesOfUser
+      this.props.allUsers
+        .filter((allUser, alluserIndex) => {
+          return !usersLinkedToCurrentRole.includes(allUser.id);
+        })
+        .map((user, userIndex) => {
+          let currentRolesOfUser = this.populateRolesAssignedToRoles(user);
+          data.push({
+            key: user.id,
+            name: user.firstName,
+            email: user.email,
+            role: currentRolesOfUser,
+          });
         });
-      });
+    }
 
     const rowSelection = {
       selectedRowKeys,
-      onChange: this.onSelectChange
+      onChange: this.onSelectChange,
     };
     const hasSelected = selectedRowKeys.length > 0;
-    console.log(usersLinkedToCurrentRole, data, selectedRoleIndex, roleList);
 
     return (
       <Modal
@@ -221,20 +263,21 @@ export default class extends React.Component<
         closable={false}
         title={
           <div className="display-flex justify-space-between">
-            Add users to roles
+            {modalDetails.headerTitle}
             <Button
               disabled={!selectedRowKeys.length}
               type="primary"
+              loading={isLoading}
               className="submit-button"
               size="large"
               onClick={() => {
                 this.props.onSubmit(
-                  selectedRowKeys[0],
+                  selectedRowKeys,
                   roleList[selectedRoleIndex].key
                 );
               }}
             >
-              Assign
+              {modalDetails.buttonLabel}
             </Button>
           </div>
         }
@@ -245,12 +288,12 @@ export default class extends React.Component<
               Select a role<span className="requiredFieldRedColor">*</span>
             </div>
             <Select
-              style={{ width: "100%" }}
+              style={{ width: '100%' }}
               value={roleList.length ? roleList[selectedRoleIndex].role : null}
               onChange={(value: any) => {
-                this.props.onChange("selectedRoleIndex", value);
+                this.props.onChange('selectedRoleIndex', value);
               }}
-              placeholder={"select a role"}
+              placeholder={'select a role'}
             >
               {roleList.map((role, index) => {
                 return (
@@ -262,7 +305,7 @@ export default class extends React.Component<
             </Select>
           </div>
           <Table
-            loading={!data.length}
+            loading={isLoading}
             size="small"
             rowSelection={rowSelection}
             columns={columns}

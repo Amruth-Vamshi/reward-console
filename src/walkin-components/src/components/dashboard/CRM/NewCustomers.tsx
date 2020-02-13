@@ -1,28 +1,28 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { Avatar } from "antd";
-import Metrics from "../../Metrics";
+import { Avatar } from 'antd';
+import Metrics from '../../Metrics';
 
 const userImageList = [
   {
     id: 1,
-    image: "https://via.placeholder.com/150x150"
+    image: 'https://via.placeholder.com/150x150',
   },
   {
     id: 2,
-    image: "https://via.placeholder.com/150x150"
+    image: 'https://via.placeholder.com/150x150',
   },
   {
     id: 3,
-    image: "https://via.placeholder.com/150x150"
+    image: 'https://via.placeholder.com/150x150',
   },
   {
     id: 4,
-    image: "https://via.placeholder.com/150x150",
-    name: "Mila Alba",
-    rating: "5.0",
-    deals: "27 Deals"
-  }
+    image: 'https://via.placeholder.com/150x150',
+    name: 'Mila Alba',
+    rating: '5.0',
+    deals: '27 Deals',
+  },
 ];
 
 const NewCustomers = () => {

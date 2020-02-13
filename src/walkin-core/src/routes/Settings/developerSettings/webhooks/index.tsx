@@ -1,15 +1,15 @@
-import * as React from "react";
-import * as jwt from "jsonwebtoken";
-import { withApollo, ApolloProviderProps } from "react-apollo";
-import "./style.css";
-import { Button, Switch, Row, Col, Spin, Icon, List } from "antd";
-import WebhookForm from "./webhookForm";
+import * as React from 'react';
+import * as jwt from 'jsonwebtoken';
+import { withApollo, ApolloProviderProps } from 'react-apollo';
+import './style.css';
+import { Button, Switch, Row, Col, Spin, Icon, List, Pagination } from 'antd';
+import WebhookForm from './webhookForm';
 import {
   GET_WEBHOOKS,
   CREATE_WEBHOOK,
   UPDATE_WEBHOOK,
-  LIST_WEBHOOK_EVENTS
-} from "./../../../../PlatformQueries/index";
+  LIST_WEBHOOK_EVENTS,
+} from './../../../../PlatformQueries/index';
 
 interface WebhooksProps extends ApolloProviderProps<any> {}
 
@@ -19,7 +19,11 @@ interface WebhooksState {
   events: any;
   selectedWebhookIndex: any;
   isLoading: boolean;
+  isListLoading: boolean;
   org_id: string;
+  currentPage: number;
+  totalPages: number;
+  totalItems: number;
 }
 
 class Webhooks extends React.Component<WebhooksProps, WebhooksState> {
@@ -31,85 +35,116 @@ class Webhooks extends React.Component<WebhooksProps, WebhooksState> {
       events: [],
       selectedWebhookIndex: null,
       isLoading: true,
-      org_id: ""
+      isListLoading: false,
+      org_id: '',
+      currentPage: 1,
+      totalPages: 0,
+      totalItems: 0,
     };
   }
 
   UNSAFE_componentWillMount() {
-    const jwtToken: any = localStorage.getItem("jwt");
+    const jwtToken: any = localStorage.getItem('jwt');
     const { org_id }: any = jwt.decode(jwtToken);
+
+    this.getWebhooks(org_id, webhooksResponse => {
+      this.props.client
+        .query({
+          query: LIST_WEBHOOK_EVENTS,
+          variables: { org_id, status: 'ACTIVE' },
+          fetchPolicy: 'network-only',
+        })
+        .then(eventsResponse => {
+          this.setState({
+            org_id,
+            webhooks: webhooksResponse.data.webhooks.data,
+            isLoading: false,
+            events: eventsResponse.data.webhookEventTypes.data,
+            totalPages:
+              webhooksResponse.data.webhooks.paginationInfo.totalPages,
+            totalItems:
+              webhooksResponse.data.webhooks.paginationInfo.totalItems,
+          });
+        });
+    });
+  }
+
+  getWebhooks = (org_id: string, callback) => {
     this.props.client
       .query({
         query: GET_WEBHOOKS,
-        variables: { org_id, status: "ACTIVE" },
-        fetchPolicy: "network-only"
+        variables: {
+          org_id,
+          status: 'ACTIVE',
+          pageOptions: { page: this.state.currentPage, pageSize: 5 },
+        },
+        fetchPolicy: 'network-only',
       })
       .then(webhooksResponse => {
-        this.props.client
-          .query({
-            query: LIST_WEBHOOK_EVENTS,
-            variables: { org_id, status: "ACTIVE" },
-            fetchPolicy: "network-only"
-          })
-          .then(eventsResponse => {
-            this.setState({
-              org_id,
-              webhooks: webhooksResponse.data.webhooks,
-              isLoading: false,
-              events: eventsResponse.data.webhookEventTypes
-            });
-          });
+        callback(webhooksResponse);
       });
-  }
+  };
 
   createWebook = (input: any) => {
     this.props.client
       .mutate({
         mutation: CREATE_WEBHOOK,
         variables: {
-          input
-        }
+          input,
+        },
       })
       .then(res => {
-        this.setState({
-          webhooks: [...this.state.webhooks, res.data.createWebhook],
-          isWebhookFormOpen: false,
-          selectedWebhookIndex: null,
-          isLoading: false
+        this.getWebhooks(this.state.org_id, webhooksResponse => {
+          this.setState({
+            // webhooks: [res.data.createWebhook, ...this.state.webhooks],
+            webhooks: webhooksResponse.data.webhooks.data,
+            isWebhookFormOpen: false,
+            selectedWebhookIndex: null,
+            isLoading: false,
+          });
         });
       })
       .catch(error => {
         this.setState({
-          isLoading: false
+          isLoading: false,
         });
       });
   };
 
   updateWebook = (input: any, type?: string) => {
-    let { webhooks, selectedWebhookIndex } = this.state;
+    // let { webhooks, selectedWebhookIndex } = this.state;
     this.props.client
       .mutate({
         mutation: UPDATE_WEBHOOK,
         variables: {
-          input
-        }
+          input,
+        },
       })
       .then(res => {
-        if (type === "delete") {
-          webhooks.splice(selectedWebhookIndex, 1);
-        } else {
-          webhooks[selectedWebhookIndex] = res.data.updateWebhook;
-        }
-        this.setState({
-          webhooks,
-          isWebhookFormOpen: false,
-          selectedWebhookIndex: null,
-          isLoading: false
+        this.getWebhooks(this.state.org_id, webhooksResponse => {
+          this.setState({
+            // webhooks: [res.data.createWebhook, ...this.state.webhooks],
+            webhooks: webhooksResponse.data.webhooks.data,
+            isWebhookFormOpen: false,
+            selectedWebhookIndex: null,
+            isLoading: false,
+          });
         });
+        // if (type === "delete") {
+        //   webhooks.splice(selectedWebhookIndex, 1);
+        // } else {
+        //   webhooks[selectedWebhookIndex] = res.data.updateWebhook;
+        // }
+        // this.setState({
+        //   webhooks,
+        //   isWebhookFormOpen: false,
+        //   selectedWebhookIndex: null,
+        //   isLoading: false
+        // });
       })
       .catch(error => {
         this.setState({
-          isLoading: false
+          isLoading: false,
         });
       });
   };
@@ -117,7 +152,7 @@ class Webhooks extends React.Component<WebhooksProps, WebhooksState> {
   onAddOrEditWebhooks = (selectedWebhookIndex: any = null) => {
     this.setState({
       isWebhookFormOpen: !this.state.isWebhookFormOpen,
-      selectedWebhookIndex
+      selectedWebhookIndex,
     });
   };
 
@@ -127,7 +162,8 @@ class Webhooks extends React.Component<WebhooksProps, WebhooksState> {
       .enabled;
     let input = {
       id: webhooks[selectedWebhookIndex].id,
-      enabled: webhooks[selectedWebhookIndex].enabled
+      enabled: webhooks[selectedWebhookIndex].enabled,
+      organizationId: this.state.org_id,
     };
     this.setState({ isLoading: true, selectedWebhookIndex }, () => {
       this.updateWebook(input);
@@ -139,14 +175,16 @@ class Webhooks extends React.Component<WebhooksProps, WebhooksState> {
     let { webhooks } = this.state;
     let input = {
       id: webhooks[selectedWebhookIndex].id,
-      status: "INACTIVE"
+      status: 'INACTIVE',
+      organizationId: this.state.org_id,
     };
     this.setState({ isLoading: true, selectedWebhookIndex }, () => {
-      this.updateWebook(input, "delete");
+      this.updateWebook(input, 'delete');
     });
   };
 
-  onSave = (input: any) => {
+  onSave = (formInput: any) => {
+    let input = { ...formInput, organizationId: this.state.org_id };
     if (!(this.state.selectedWebhookIndex === null)) {
       this.setState({ isLoading: true }, () => this.updateWebook(input));
     } else {
@@ -154,6 +192,30 @@ class Webhooks extends React.Component<WebhooksProps, WebhooksState> {
       this.setState({ isLoading: true }, () => this.createWebook(input));
     }
   };
+
+  onLoadMore = page => {
+    this.setState({ currentPage: page, isListLoading: true }, () => {
+      this.getWebhooks(this.state.org_id, response => {
+        this.setState({
+          webhooks: response.data.webhooks.data,
+          isListLoading: false,
+        });
+      });
+    });
+  };
+
+  // renderLoadMoreUi = () => {
+  //   return <div
+  //     style={{
+  //       textAlign: 'center',
+  //       marginTop: 12,
+  //       height: 32,
+  //       lineHeight: '32px',
+  //     }}
+  //   >
+  //     <Button onClick={this.onLoadMore}>loading more</Button>
+  //   </div>
+  // }
 
   renderWebhookList = () => {
     let { isLoading, webhooks, selectedWebhookIndex } = this.state;
@@ -170,24 +232,20 @@ class Webhooks extends React.Component<WebhooksProps, WebhooksState> {
             <div className="emptyWebhookLabel">No Webhook Found</div>
           </div>
         );
+
       return (
-        <div className={"webhookListWrapper"}>
-          {/* <List
-            bordered
+        <div className={'webhookListWrapper'}>
+          <List
+            loading={this.state.isListLoading}
             itemLayout="vertical"
             size="large"
-            pagination={{
-              pageSize: 5
-            }}
             dataSource={this.state.webhooks}
             renderItem={(webhook: any, index: number) => {
-              console.log(webhook, index);
-
               return (
                 <Row className="webhookListRow" key={index}>
                   <Col
                     className="webhookUrlWrapper "
-                    xl={11}
+                    xl={8}
                     lg={24}
                     md={24}
                     sm={24}
@@ -196,19 +254,17 @@ class Webhooks extends React.Component<WebhooksProps, WebhooksState> {
                     <Col xl={6} lg={6} md={6} sm={6} xs={6}>
                       <img
                         alt=""
-                        src={require("walkin-components/src/assets/images/webhook.png")}
+                        src={require('walkin-components/src/assets/images/webhook.png')}
                       />
                     </Col>
                     <Col xl={18} lg={18} md={18} sm={18} xs={18}>
                       <div className="webhookTitle">{webhook.name}</div>
-                      <div className="webhookUrl">
-                        {webhook.url} › incoming-webhooks
-                      </div>
+                      <div className="webhookUrl">{webhook.url}</div>
                     </Col>
                   </Col>
                   <Col
                     className="webhookTypeWrapper"
-                    xl={4}
+                    xl={6}
                     lg={8}
                     md={8}
                     sm={8}
@@ -225,9 +281,9 @@ class Webhooks extends React.Component<WebhooksProps, WebhooksState> {
                     sm={8}
                     xs={24}
                   >
-                    <div>{webhook.enabled ? "Active" : "Inactive"}</div>
+                    <div>{webhook.enabled ? 'Active' : 'Inactive'}</div>
                     <Switch
-                      className={webhook.enabled ? "webhookStatusSwitch" : ""}
+                      className={webhook.enabled ? 'webhookStatusSwitch' : ''}
                       checked={webhook.enabled}
                       onChange={() => this.onEnableOrDisableWebhook(index)}
                       loading={isLoading && selectedWebhookIndex === index}
@@ -235,7 +291,7 @@ class Webhooks extends React.Component<WebhooksProps, WebhooksState> {
                   </Col>
                   <Col
                     className="webhookButtonWrapper"
-                    xl={4}
+                    xl={5}
                     lg={8}
                     md={8}
                     sm={8}
@@ -259,8 +315,9 @@ class Webhooks extends React.Component<WebhooksProps, WebhooksState> {
                 </Row>
               );
             }}
-          /> */}
-          {this.state.webhooks.map((webhook: any, index: number) => (
+          />
+
+          {/* {this.state.webhooks.map((webhook: any, index: number) => (
             <Row className="webhookListRow" key={index}>
               <Col
                 className="webhookUrlWrapper "
@@ -332,7 +389,7 @@ class Webhooks extends React.Component<WebhooksProps, WebhooksState> {
                 </Button>
               </Col>
             </Row>
-          ))}
+          ))} */}
         </div>
       );
     }
@@ -347,7 +404,7 @@ class Webhooks extends React.Component<WebhooksProps, WebhooksState> {
   };
 
   render() {
-    let { isWebhookFormOpen } = this.state;
+    let { isWebhookFormOpen, totalPages } = this.state;
     return (
       <div className="gx-main-content-wrapper">
         <div className="headerWrapper">
@@ -383,6 +440,16 @@ class Webhooks extends React.Component<WebhooksProps, WebhooksState> {
           </div>
         )}
         {this.renderWebhookList()}
+        {!isWebhookFormOpen && totalPages > 1 ? (
+          <Pagination
+            onChange={page => {
+              this.onLoadMore(page);
+            }}
+            pageSize={5}
+            total={this.state.totalItems}
+            current={this.state.currentPage}
+          />
+        ) : null}
       </div>
     );
   }

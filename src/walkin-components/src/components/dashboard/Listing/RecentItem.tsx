@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 
 const RecentItem = ({ data }) => {
   const { id, title, avatar, description, status } = data;

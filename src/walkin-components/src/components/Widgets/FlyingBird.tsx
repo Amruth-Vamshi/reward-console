@@ -1,13 +1,13 @@
-import * as React from "react";
-import { Button } from "antd";
-import { Widget } from "../Widget";
+import * as React from 'react';
+import { Button } from 'antd';
+import { Widget } from '../Widget';
 
 const FlyingBird = () => {
   return (
     <Widget>
       <div className="gx-media gx-align-items-center gx-mb-4">
         <div className="gx-mr-3">
-          <img src={require("assets/images/widget/flying.png")} alt="flying" />
+          <img src={require('assets/images/widget/flying.png')} alt="flying" />
         </div>
         <div className="gx-media-body">
           <h2 className="gx-mb-1">Flying bird</h2>

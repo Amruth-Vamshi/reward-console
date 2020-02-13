@@ -1,6 +1,6 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { Widget } from "../Widget";
+import { Widget } from '../Widget';
 const SmartHomeCard = () => {
   return (
     <Widget styleName="gx-card-full">

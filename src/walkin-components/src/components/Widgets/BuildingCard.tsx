@@ -1,6 +1,6 @@
-import * as React from "react";
-import { Badge } from "antd";
-import { Widget } from "../Widget";
+import * as React from 'react';
+import { Badge } from 'antd';
+import { Widget } from '../Widget';
 
 function BuildingCard() {
   return (
@@ -9,7 +9,7 @@ function BuildingCard() {
         <div className="gx-px-3 gx-build-box-lay">
           <img
             alt="..."
-            src={require("assets/images/widget/building.png")}
+            src={require('assets/images/widget/building.png')}
             className=""
           />
         </div>
@@ -17,7 +17,7 @@ function BuildingCard() {
           <Badge
             className="gx-badge-radius-sm gx-mb-2"
             count="34 New"
-            style={{ backgroundColor: "#52c41a" }}
+            style={{ backgroundColor: '#52c41a' }}
           />
           <h2 className="h4 gx-text-truncate gx-mb-1">Home & Offices</h2>
 

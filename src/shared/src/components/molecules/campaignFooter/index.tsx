@@ -1,6 +1,6 @@
-import * as React from "react";
-import { Button } from "antd";
-import "./foo.css";
+import * as React from 'react';
+import { Button } from 'antd';
+import './foo.css';
 
 interface iProps {
   nextButtonText?: String;
@@ -19,7 +19,7 @@ const CampaignFooter = ({
   saveDraftButtonClass,
   nextButtonClass,
   saveDraft,
-  goToPage2
+  goToPage2,
 }: iProps) => {
   return (
     <div className="">

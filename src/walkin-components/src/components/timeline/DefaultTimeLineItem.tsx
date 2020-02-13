@@ -1,5 +1,5 @@
-import * as React from "react";
-import { Avatar } from "antd";
+import * as React from 'react';
+import { Avatar } from 'antd';
 
 const DefaultTimeLineItem = ({ styleName, timeLine }) => {
   const { time, image, title, description } = timeLine;
@@ -7,7 +7,7 @@ const DefaultTimeLineItem = ({ styleName, timeLine }) => {
     <div className={`gx-timeline-item ${styleName}`}>
       <div className="gx-timeline-badge gx-timeline-img">
         <img
-          src={require("assets/images/pentagon.png")}
+          src={require('assets/images/pentagon.png')}
           alt="Pentagon"
           title="Pentagon"
         />

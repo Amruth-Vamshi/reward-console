@@ -1,13 +1,12 @@
-import React from "react";
-import * as jwt from "jsonwebtoken";
-import { Link } from "react-router-dom";
-import { History } from "history";
-import { InstantSearch } from "shared";
-import { Breadcrumb, Table, Col, Row, Button, Switch } from "antd";
-import { withApollo, ApolloProviderProps } from "react-apollo";
-import "./index.css";
+import React from 'react';
+import * as jwt from 'jsonwebtoken';
+import { Link } from 'react-router-dom';
+import { History } from 'history';
+import { Breadcrumb, Table, Col, Row, Button, Switch } from 'antd';
+import { withApollo, ApolloProviderProps } from 'react-apollo';
+import './index.css';
 
-import { GET_ALL_STORES } from "./../../PlatformQueries";
+import { GET_ALL_STORES } from './../../PlatformQueries';
 
 interface StoreListProps extends ApolloProviderProps<any> {
   history: History;
@@ -26,32 +25,29 @@ class StoreList extends React.Component<StoreListProps, StoreListState> {
     this.state = {
       dataSource: [],
       allStoresFromApi: [],
-      org_id: "",
-      isFetching: true
+      org_id: '',
+      isFetching: true,
     };
   }
 
   UNSAFE_componentWillMount() {
-    const jwtToken: any = localStorage.getItem("jwt");
+    const jwtToken: any = localStorage.getItem('jwt');
     const { org_id }: any = jwt.decode(jwtToken);
     this.props.client
       .query({
         query: GET_ALL_STORES,
-        // variables: { org_id, status: "ACTIVE" },
-        fetchPolicy: "network-only"
+        fetchPolicy: 'network-only',
       })
       .then(allStoresResponse => {
-        console.log(allStoresResponse, "new");
-
         let dataSource = [];
         allStoresResponse.data.stores.map((store, index) => {
           dataSource.push({
             key: store.id,
             name: store.name,
-            storeCode: store.externalStoreId,
+            // storeCode: store.externalStoreId,
             address: `${store.addressLine1},${store.addressLine2}`,
-            admin: "NIL",
-            STATUS: store.STATUS
+            // admin: "NIL",
+            STATUS: store.STATUS,
           });
         });
 
@@ -59,47 +55,33 @@ class StoreList extends React.Component<StoreListProps, StoreListState> {
           dataSource,
           allStoresFromApi: allStoresResponse.data.stores,
           org_id,
-          isFetching: false
+          isFetching: false,
         });
       });
   }
   onChange = () => {};
 
-  onStoreFilteredList = list => {
-    console.log(list);
-  };
+  onStoreFilteredList = list => {};
 
   render() {
     const columns = [
       {
-        title: "Store Code",
-        dataIndex: "storeCode",
-        key: "storeCode",
-        width: "10%"
+        title: 'Name',
+        dataIndex: 'name',
+        key: 'name',
+        width: '30%',
       },
       {
-        title: "Name",
-        dataIndex: "name",
-        key: "name",
-        width: "30%"
+        title: 'Address',
+        dataIndex: 'address',
+        key: 'address',
+        width: '30%',
       },
       {
-        title: "Address",
-        dataIndex: "address",
-        key: "address",
-        width: "30%"
-      },
-      {
-        title: "Admin",
-        dataIndex: "admin",
-        key: "admin",
-        width: "10%"
-      },
-      {
-        title: "Status",
-        dataIndex: "STATUS",
-        key: "STATUS",
-        width: "20%",
+        title: 'Status',
+        dataIndex: 'STATUS',
+        key: 'STATUS',
+        width: '20%',
         render: (text: any, record: any) => {
           // <Switch
           //   className={webhook.enabled ? "webhookStatusSwitch" : ""}
@@ -108,8 +90,8 @@ class StoreList extends React.Component<StoreListProps, StoreListState> {
           //   loading={isLoading && selectedWebhookIndex === index}
           // />
           return (
-            <div className={"storeFlexWrapper"}>
-              <div>{text === "ACTIVE" ? "Active" : "Inactive"}</div>
+            <div className={'storeFlexWrapper'}>
+              <div>{text === 'ACTIVE' ? 'Active' : 'Inactive'}</div>
               {/* <Switch
                 checked={text === "ACTIVE"}
                 // onChange={(value: any) => {
@@ -119,22 +101,21 @@ class StoreList extends React.Component<StoreListProps, StoreListState> {
               /> */}
             </div>
           );
-        }
-      }
+        },
+      },
     ];
 
-    console.log("storeInfo render dataSource", this.state.dataSource);
     return (
       <div>
         <Breadcrumb separator=">">
           <Breadcrumb.Item>
             <Link to="/core/organization">Organisation Home</Link>
           </Breadcrumb.Item>
-          <Breadcrumb.Item>StoreInfo</Breadcrumb.Item>
+          <Breadcrumb.Item>Stores</Breadcrumb.Item>
         </Breadcrumb>
 
         <Row className="rowStoreInfoInstantSearch">
-          <Col className="colStoreInfo">StoreInfo</Col>
+          <Col className="colStoreInfo">Stores</Col>
           <Col className="colInstantSearch">
             {/* component to be created
             <ConfigurableSearchBox
@@ -156,7 +137,7 @@ class StoreList extends React.Component<StoreListProps, StoreListState> {
               type="primary"
               size="large"
               onClick={() => {
-                this.props.history.push("/core/stores/create");
+                this.props.history.push('/core/stores/create');
               }}
               loading={false}
             >
@@ -171,9 +152,8 @@ class StoreList extends React.Component<StoreListProps, StoreListState> {
           onRow={(record: any, rowIndex: number) => {
             return {
               onClick: (event: any) => {
-                console.log(record, rowIndex);
-                this.props.history.push("/core/stores/" + record.key + "/edit");
-              }
+                this.props.history.push('/core/stores/' + record.key + '/edit');
+              },
             };
           }}
           //   onChange={this.onChange}

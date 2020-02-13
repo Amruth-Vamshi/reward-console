@@ -1,14 +1,14 @@
-import * as React from "react";
-import { Avatar, Timeline } from "antd";
-import ActivityItem from "./ActivityItem";
-import { WidgetHeader } from "../../..";
+import * as React from 'react';
+import { Avatar, Timeline } from 'antd';
+import ActivityItem from './ActivityItem';
+import { WidgetHeader } from '../../../..';
 
 const TimeLineItem = Timeline.Item;
 
 function getName(task, shape) {
-  if (task.avatar === "") {
-    let nameSplit = task.name.split(" ");
-    if (task.name.split(" ").length === 1) {
+  if (task.avatar === '') {
+    let nameSplit = task.name.split(' ');
+    if (task.name.split(' ').length === 1) {
       const initials = nameSplit[0].charAt(0).toUpperCase();
       return (
         <Avatar shape={shape} className="gx-size-40 gx-bg-primary">
@@ -46,21 +46,21 @@ class RecentActivity extends React.Component<IProps, IState> {
   constructor(props) {
     super(props);
     this.state = {
-      width: "0px",
-      height: "0px",
+      width: '0px',
+      height: '0px',
       recentList: [],
-      shape: "",
-      limit: 3
+      shape: '',
+      limit: 3,
     };
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
   }
 
   UNSAFE_componentWillMount() {
     this.setState({
-      height: window.innerHeight + "px",
-      width: window.innerWidth + "px",
+      height: window.innerHeight + 'px',
+      width: window.innerWidth + 'px',
       recentList: this.props.recentList,
-      shape: this.props.shape
+      shape: this.props.shape,
     });
     if (window.innerWidth < 575) {
       this.setState({ limit: 1 });
@@ -69,23 +69,23 @@ class RecentActivity extends React.Component<IProps, IState> {
 
   componentDidMount() {
     this.updateWindowDimensions();
-    window.addEventListener("resize", this.updateWindowDimensions);
+    window.addEventListener('resize', this.updateWindowDimensions);
   }
 
   componentWillUnmount() {
-    window.removeEventListener("resize", this.updateWindowDimensions);
+    window.removeEventListener('resize', this.updateWindowDimensions);
   }
 
   updateWindowDimensions() {
     this.setState({
-      width: window.innerWidth + "px",
-      height: window.innerHeight + "px"
+      width: window.innerWidth + 'px',
+      height: window.innerHeight + 'px',
     });
   }
 
   onLoadMore() {
     this.setState(previousState => ({
-      limit: previousState.limit + 1
+      limit: previousState.limit + 1,
     }));
   }
 
@@ -95,13 +95,13 @@ class RecentActivity extends React.Component<IProps, IState> {
       <div className="gx-entry-sec">
         <WidgetHeader title="Recent Activities" />
         {recentList.slice(0, limit).map((activity, index) => (
-          <div className="gx-timeline-info" key={"activity" + index}>
+          <div className="gx-timeline-info" key={'activity' + index}>
             <h4 className="gx-timeline-info-day">{activity.day}</h4>
             <Timeline>
               {activity.tasks.map((task, index) => {
                 return (
                   <TimeLineItem
-                    key={"timeline" + index}
+                    key={'timeline' + index}
                     dot={getName(task, shape)}
                   >
                     <ActivityItem task={task} />

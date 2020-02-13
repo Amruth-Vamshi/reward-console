@@ -1,5 +1,5 @@
-import * as React from "react";
-import { Layout } from "antd";
+import * as React from 'react';
+import { Layout } from 'antd';
 
 import {
   HorizontalDefault,
@@ -10,10 +10,10 @@ import {
   footerText,
   Customizer,
   NoHeaderNotification,
-  Topbar
-} from "walkin-components";
-import Sidebar from "../Sidebar";
-import App from "../../routes";
+  Topbar,
+} from 'walkin-components';
+import Sidebar from '../Sidebar';
+import App from '../../routes';
 
 import {
   NAV_STYLE_ABOVE_HEADER,
@@ -26,10 +26,10 @@ import {
   NAV_STYLE_MINI_SIDEBAR,
   NAV_STYLE_NO_HEADER_EXPANDED_SIDEBAR,
   NAV_STYLE_NO_HEADER_MINI_SIDEBAR,
-  TAB_SIZE
-} from "walkin-components/src/constants/ThemeSetting";
-import gql from "graphql-tag";
-import { compose, graphql } from "react-apollo";
+  TAB_SIZE,
+} from 'walkin-components/src/constants/ThemeSetting';
+import gql from 'graphql-tag';
+import { compose, graphql } from 'react-apollo';
 
 const { Content, Footer } = Layout;
 
@@ -43,17 +43,17 @@ export class MainApp extends React.Component<IProps, IState> {
   getContainerClass = (navStyle: string) => {
     switch (navStyle) {
       case NAV_STYLE_DARK_HORIZONTAL:
-        return "gx-container-wrap";
+        return 'gx-container-wrap';
       case NAV_STYLE_DEFAULT_HORIZONTAL:
-        return "gx-container-wrap";
+        return 'gx-container-wrap';
       case NAV_STYLE_INSIDE_HEADER_HORIZONTAL:
-        return "gx-container-wrap";
+        return 'gx-container-wrap';
       case NAV_STYLE_BELOW_HEADER:
-        return "gx-container-wrap";
+        return 'gx-container-wrap';
       case NAV_STYLE_ABOVE_HEADER:
-        return "gx-container-wrap";
+        return 'gx-container-wrap';
       default:
-        return "";
+        return '';
     }
   };
   getNavStyles = (navStyle: string) => {
@@ -104,7 +104,7 @@ export class MainApp extends React.Component<IProps, IState> {
   };
 
   componentDidMount() {
-    window.addEventListener("resize", () => {
+    window.addEventListener('resize', () => {
       this.props.updateWindowWidth({ variables: { width: window.innerWidth } });
     });
   }
@@ -152,9 +152,9 @@ const GET_SETTINGS = gql`
 `;
 
 export default compose(
-  graphql(UPDATE_WINDOW_WIDTH, { name: "updateWindowWidth" }),
+  graphql(UPDATE_WINDOW_WIDTH, { name: 'updateWindowWidth' }),
   graphql(GET_SETTINGS, {
     props: mapStateToProps,
-    name: "settings"
+    name: 'settings',
   })
 )(MainApp);

@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import { Button } from "antd";
-import gql from "graphql-tag";
-import { graphql } from "react-apollo";
-import { Auxiliary } from "../../../util/Auxiliary";
+import React, { Component } from 'react';
+import { Button } from 'antd';
+import gql from 'graphql-tag';
+import { graphql } from 'react-apollo';
+import { Auxiliary } from '../../../util/Auxiliary';
 
 interface IProps {
   user: any;
@@ -14,12 +14,12 @@ interface IState {
 }
 class Profile extends Component<IProps, IState> {
   state = {
-    isFollow: false
+    isFollow: false,
   };
 
   handleToggle = () => {
     this.setState(previousState => ({
-      isFollow: !previousState.isFollow
+      isFollow: !previousState.isFollow,
     }));
   };
 
@@ -63,7 +63,7 @@ class Profile extends Component<IProps, IState> {
               type="primary"
               onClick={this.handleToggle}
             >
-              {this.state.isFollow === true ? "Follow" : "Unfollow"}
+              {this.state.isFollow === true ? 'Follow' : 'Unfollow'}
             </Button>
           )}
         </div>
@@ -90,5 +90,5 @@ const GET_AUTH = gql`
 
 export default graphql(GET_AUTH, {
   props: mapStateToProps,
-  name: "auth"
+  name: 'auth',
 })(Profile as any);

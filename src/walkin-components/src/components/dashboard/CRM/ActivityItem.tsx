@@ -1,6 +1,6 @@
-import * as React from "react";
-import { Avatar } from "antd";
-import { Auxiliary } from "../../../util/Auxiliary";
+import * as React from 'react';
+import { Avatar } from 'antd';
+import { Auxiliary } from '../../../util/Auxiliary';
 
 const ActivityItem = ({ task }) => {
   return (
@@ -13,7 +13,7 @@ const ActivityItem = ({ task }) => {
               return (
                 <li className="gx-mb-1" key={index}>
                   <span className="gx-link gx-img-more">
-                    {" "}
+                    {' '}
                     +{task.imageList.length - 2} More
                   </span>
                 </li>

@@ -1,28 +1,28 @@
-import * as React from "react";
-import { Col, Row, DatePicker, Button, Icon, Empty, Spin } from "antd";
-import Auxiliary from "../../util/Auxiliary";
-import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis } from "recharts";
-import { increamentData, AnyNear } from "./data";
-import { IconWithTextCard, Widget, ChartCard } from "walkin-components";
-import moment from "moment";
-import Cylinder3DChart from "./Cylinder3DChart";
-import NewPlaceCard from "./NewPlaceCard";
-import * as jwt from "jsonwebtoken";
-import "../../styles/home.css";
-import { withApollo, WithApolloClient } from "react-apollo";
-import { Link } from "react-router-dom";
-import { GET_ANALYTICS } from "walkin-core/src/PlatformQueries";
+import * as React from 'react';
+import { Col, Row, DatePicker, Button, Icon, Empty, Spin } from 'antd';
+import Auxiliary from '../../util/Auxiliary';
+import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis } from 'recharts';
+import { increamentData, AnyNear } from './data';
+import { IconWithTextCard, Widget, ChartCard } from 'walkin-components';
+import moment from 'moment';
+import Cylinder3DChart from './Cylinder3DChart';
+import NewPlaceCard from './NewPlaceCard';
+import * as jwt from 'jsonwebtoken';
+import '../../styles/home.css';
+import { withApollo, WithApolloClient } from 'react-apollo';
+import { Link } from 'react-router-dom';
+import { GET_ANALYTICS } from 'walkin-core/src/PlatformQueries';
 
-const dateFormat = "YYYY/MM/DD";
+const dateFormat = 'YYYY/MM/DD';
 
 function now() {
-  var time = "23:59:59";
+  var time = '23:59:59';
   var value1 = moment()
-    .subtract(1, "day")
-    .format("YYYY-MM-DD");
-  var d = value1 + " " + time;
+    .subtract(1, 'day')
+    .format('YYYY-MM-DD');
+  var d = value1 + ' ' + time;
   var newdate1 = new Date(d);
-  console.log("newd", newdate1);
+  console.log('newd', newdate1);
   return newdate1;
 }
 
@@ -58,20 +58,20 @@ class Landing extends React.Component<WithApolloClient<iProps>, iState> {
       popularPlaces: [],
       recentPlaces: [],
       customerCount: 0,
-      org_id: "",
-      startDate: moment().subtract(30, "day"),
+      org_id: '',
+      startDate: moment().subtract(30, 'day'),
       endDate: now(),
       errors: {},
-      spin: false
+      spin: false,
     };
   }
 
   UNSAFE_componentWillMount() {
-    const { id, org_id }: any = jwt.decode(localStorage.getItem("jwt"));
+    const { id, org_id }: any = jwt.decode(localStorage.getItem('jwt'));
     if (org_id && id) {
       this.setState({ org_id });
       this.getMetrics(org_id, this.state.endDate);
-    } else console.log("Error getting JwtData");
+    } else console.log('Error getting JwtData');
   }
 
   getMetrics = (org_id, endDate) => {
@@ -81,19 +81,19 @@ class Landing extends React.Component<WithApolloClient<iProps>, iState> {
         query: GET_ANALYTICS,
         variables: {
           org_id: org_id,
-          product: "NEARX",
-          dates: { from: this.state.startDate, to: endDate }
+          product: 'NEARX',
+          dates: { from: this.state.startDate, to: endDate },
         },
-        fetchPolicy: "no-cache"
+        fetchPolicy: 'no-cache',
       })
       .then(res => {
-        console.log(">>>", res);
+        console.log('>>>', res);
         this.formatData(res);
         this.setState({ spin: false });
       })
       .catch(err => {
         this.setState({ spin: false });
-        console.log("Failed to get User Details" + err);
+        console.log('Failed to get User Details' + err);
         // this.formatData()
       });
   };
@@ -107,19 +107,19 @@ class Landing extends React.Component<WithApolloClient<iProps>, iState> {
       customerCount,
       customers,
       popularPlaces,
-      recentPlaces
+      recentPlaces,
     } = this.state;
     console.log(AnyNear.data.analytics);
     data.data.analytics.map(i => {
-      if (i.name === "GEOFENCE_COUNTS") totalPlaces = i.total;
-      else if (i.name === "EVENT_ENTRY_COUNTS") totalEntries = i.total;
-      else if (i.name === "EVENT_EXIT_COUNTS") totalExits = i.total;
-      else if (i.name === "EVENT_DWELL_COUNTS") totalDwell = i.total;
-      else if (i.name === "CUSTOMER_COUNTS") {
+      if (i.name === 'GEOFENCE_COUNTS') totalPlaces = i.total;
+      else if (i.name === 'EVENT_ENTRY_COUNTS') totalEntries = i.total;
+      else if (i.name === 'EVENT_EXIT_COUNTS') totalExits = i.total;
+      else if (i.name === 'EVENT_DWELL_COUNTS') totalDwell = i.total;
+      else if (i.name === 'CUSTOMER_COUNTS') {
         customerCount = i.total;
         customers = [{ count: 0 }, ...i.response];
-      } else if (i.name === "POPULAR_PLACES") popularPlaces = i.response;
-      else if (i.name === "MOST_VISITED_PLACES") recentPlaces = i.response;
+      } else if (i.name === 'POPULAR_PLACES') popularPlaces = i.response;
+      else if (i.name === 'MOST_VISITED_PLACES') recentPlaces = i.response;
     });
     this.setState({
       totalDwell,
@@ -130,9 +130,9 @@ class Landing extends React.Component<WithApolloClient<iProps>, iState> {
       customers,
       popularPlaces,
       recentPlaces,
-      spin: false
+      spin: false,
     });
-    console.log("Done");
+    console.log('Done');
   };
 
   disabledDate = current => {
@@ -141,7 +141,7 @@ class Landing extends React.Component<WithApolloClient<iProps>, iState> {
     date.hour(0);
     date.minute(0);
     date.second(0);
-    return moment(current).add(1, "day") > moment(); //current.valueOf() > date.valueOf();
+    return moment(current).add(1, 'day') > moment(); //current.valueOf() > date.valueOf();
   };
 
   disableEndDate = current => {
@@ -152,30 +152,30 @@ class Landing extends React.Component<WithApolloClient<iProps>, iState> {
     date.second(0);
     return (
       current.valueOf() <= date.valueOf() ||
-      moment().subtract(1, "day") < current
+      moment().subtract(1, 'day') < current
     );
   };
 
   handleChange2 = value => {
-    var time = "5:30:00";
-    var value1 = moment(value).format("YYYY-MM-DD");
-    var d = value1 + " " + time;
+    var time = '5:30:00';
+    var value1 = moment(value).format('YYYY-MM-DD');
+    var d = value1 + ' ' + time;
     var newdate1 = new Date(d).toISOString();
-    console.log("newd", newdate1);
-    this.setState({ startDate: newdate1, endDate: "" });
-    if (newdate1 !== "") this.state.errors.startDate = "";
+    console.log('newd', newdate1);
+    this.setState({ startDate: newdate1, endDate: '' });
+    if (newdate1 !== '') this.state.errors.startDate = '';
   };
   handleChange3 = value => {
-    var time = "5:29:59";
+    var time = '5:29:59';
     var value1 = moment(value)
-      .add(1, "day")
-      .format("YYYY-MM-DD");
-    var d = value1 + " " + time;
+      .add(1, 'day')
+      .format('YYYY-MM-DD');
+    var d = value1 + ' ' + time;
     var newdate2 = new Date(d).toISOString();
     //console.log("newd",newdate2)
     this.setState({ endDate: newdate2 });
     this.getMetrics(this.state.org_id, newdate2);
-    if (newdate2 !== "") this.state.errors.endDate = "";
+    if (newdate2 !== '') this.state.errors.endDate = '';
   };
 
   customPopup = c => {
@@ -183,10 +183,10 @@ class Landing extends React.Component<WithApolloClient<iProps>, iState> {
       return (
         <div className="recharts-default-tooltip tooltipPopup">
           <div>
-            {c.payload[0].payload.Date ? c.payload[0].payload.Date : ""}
+            {c.payload[0].payload.Date ? c.payload[0].payload.Date : ''}
           </div>
           <div className="tooltipData">
-            {c.payload[0].dataKey + " : " + c.payload[0].value}
+            {c.payload[0].dataKey + ' : ' + c.payload[0].value}
           </div>
         </div>
       );
@@ -208,10 +208,10 @@ class Landing extends React.Component<WithApolloClient<iProps>, iState> {
             <Col sm={0} md={6} xl={8}>
               <span
                 className="gx-d-none gx-d-sm-flex"
-                style={{ width: "100%", fontSize: 24, color: "#5B5B5B" }}
+                style={{ width: '100%', fontSize: 24, color: '#5B5B5B' }}
               >
                 <Icon
-                  style={{ fontSize: 26, marginRight: 14, color: "#D5003A" }}
+                  style={{ fontSize: 26, marginRight: 14, color: '#D5003A' }}
                   type="alert"
                   theme="filled"
                 />
@@ -293,11 +293,11 @@ class Landing extends React.Component<WithApolloClient<iProps>, iState> {
 
           {this.state.spin ? (
             <div>
-              {" "}
+              {' '}
               <br /> <br /> <br /> <br />
               <div className="divCenter">
                 <Spin size="large" />
-              </div>{" "}
+              </div>{' '}
               <br /> <br /> <br />
             </div>
           ) : (

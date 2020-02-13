@@ -1,6 +1,6 @@
 /* header styles */
 .headerWrapper {
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -29,7 +29,7 @@
 }
 
 .headerDescWrapper {
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
   color: #333333;
   margin-bottom: 20px;
   display: flex;
@@ -59,7 +59,7 @@
 
 .webhookListWrapper {
   border: 1px solid #cccccc;
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
   min-height: 100px;
   margin-bottom: 30px;
   display: flex;
@@ -80,11 +80,13 @@
   justify-content: center !important;
   display: flex !important;
   align-items: center !important;
+  flex-wrap: wrap;
 }
 
 .webhookType {
   padding: 0 0 0 5px;
   color: #333333;
+  /* overflow: auto; */
 }
 
 .webhookTitle {
@@ -111,7 +113,7 @@
 /* webhook form styles */
 
 .webhookFormContainer {
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
   justify-content: center;
   display: flex;
   margin-bottom: 30px;

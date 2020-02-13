@@ -1,6 +1,6 @@
-import * as React from "react";
-import { Col, Row, Input } from "antd";
-import PlacesItemCard from "./PlacesItemCard";
+import * as React from 'react';
+import { Col, Row, Input } from 'antd';
+import PlacesItemCard from './PlacesItemCard';
 
 interface iProps {
   formData?: any;
@@ -45,16 +45,16 @@ export default class GetGooglePlaces extends React.Component<iProps, {}> {
                 name="search"
                 onChange={c => this.props.handleOnChange(c)}
               />
-              <span style={{ color: "Red" }}>{formData.errors.search}</span>
+              <span style={{ color: 'Red' }}>{formData.errors.search}</span>
             </Col>
             <Col span={4}>
               <div className="divCenter">
-                {" "}
+                {' '}
                 <p
                   onClick={this.props.moreOpt}
                   className="gx-text-primary gx-pointer"
                 >
-                  {formData.moreOptions ? "Less Options" : "More Options"}
+                  {formData.moreOptions ? 'Less Options' : 'More Options'}
                 </p>
               </div>
             </Col>
@@ -96,14 +96,14 @@ export default class GetGooglePlaces extends React.Component<iProps, {}> {
                 </div>
 
               </Col> */}
-                <div style={{ width: "100%", margin: "10px 40px -15px" }}>
+                <div style={{ width: '100%', margin: '10px 40px -15px' }}>
                   <p
                     onClick={this.props.selAll}
                     className="gx-text-primary gx-pointer"
-                    style={{ float: "right", fontSize: 16 }}
+                    style={{ float: 'right', fontSize: 16 }}
                   >
-                    {" "}
-                    {formData.selectAll ? "Remove All" : "Select All"}{" "}
+                    {' '}
+                    {formData.selectAll ? 'Remove All' : 'Select All'}{' '}
                   </p>
                 </div>
               </Row>
@@ -116,7 +116,7 @@ export default class GetGooglePlaces extends React.Component<iProps, {}> {
               ))}
             </div>
           ) : (
-            ""
+            ''
           )}
         </div>
       </div>

@@ -1,11 +1,11 @@
-import * as React from "react";
+import * as React from 'react';
 import {
   Area,
   AreaChart,
   CartesianGrid,
   ResponsiveContainer,
-  Tooltip
-} from "recharts";
+  Tooltip,
+} from 'recharts';
 
 const SiteVisit = () => (
   <div className="gx-site-dash gx-pr-xl-5 gx-pt-3 gx-pt-xl-0 gx-pt-xl-2">

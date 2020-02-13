@@ -1,11 +1,11 @@
-import * as React from "react";
-import AppList from "../../components/appList";
-import * as _ from "lodash";
-import { Spin } from "antd";
-import { withApollo, ApolloProviderProps } from "react-apollo";
-import * as jwt from "jsonwebtoken";
+import * as React from 'react';
+import AppList from '../../components/appList';
+import * as _ from 'lodash';
+import { Spin } from 'antd';
+import { withApollo, ApolloProviderProps } from 'react-apollo';
+import * as jwt from 'jsonwebtoken';
 
-import { GET_PRODUCTS } from "walkin-core/src/PlatformQueries";
+import { GET_PRODUCTS } from 'walkin-core/src/PlatformQueries';
 
 interface CoreLandingPageProps extends ApolloProviderProps<any> {}
 
@@ -17,88 +17,88 @@ interface CoreLandingPageState {
 const apps = [
   {
     id: 1,
-    title: "NearX",
-    icon: "icon icon-geo-location",
-    activeIcon: require("shared/src/Product Icons/nearX.png"),
-    inactiveIcon: require("shared/src/Product Icons/nearX_grey.png"),
-    description: "Proximity direction with beacons and geofencing",
-    route: "/nearx",
-    isProductAccessible: false
+    title: 'NearX',
+    icon: 'icon icon-geo-location',
+    activeIcon: require('shared/src/Product Icons/nearX.png'),
+    inactiveIcon: require('shared/src/Product Icons/nearX_grey.png'),
+    description: 'Proximity direction with beacons and geofencing',
+    route: '/nearx',
+    isProductAccessible: false,
   },
   {
     id: 2,
-    title: "HyperX",
-    icon: "icon icon-alert",
-    activeIcon: require("shared/src/Product Icons/hyperx.png"),
-    inactiveIcon: require("shared/src/Product Icons/hyperx_grey.png"),
-    description: "Personalization and 1:1 campaigns",
-    route: "/hyperx",
-    isProductAccessible: false
+    title: 'HyperX',
+    icon: 'icon icon-alert',
+    activeIcon: require('shared/src/Product Icons/hyperx.png'),
+    inactiveIcon: require('shared/src/Product Icons/hyperx_grey.png'),
+    description: 'Personalization and 1:1 campaigns',
+    route: '/hyperx',
+    isProductAccessible: false,
   },
   {
     id: 3,
-    title: "RefineX",
-    icon: "icon icon-feedback",
-    activeIcon: require("shared/src/Product Icons/refinex.png"),
-    inactiveIcon: require("shared/src/Product Icons/refinex_grey.png"),
-    description: "Feedback engine for custoner experience management",
-    route: "/refinex",
-    isProductAccessible: false
+    title: 'RefineX',
+    icon: 'icon icon-feedback',
+    activeIcon: require('shared/src/Product Icons/refinex.png'),
+    inactiveIcon: require('shared/src/Product Icons/refinex_grey.png'),
+    description: 'Feedback engine for custoner experience management',
+    route: '/refinex',
+    isProductAccessible: false,
   },
   {
     id: 4,
-    title: "Uptyme",
-    icon: "icon icon-timepicker",
-    activeIcon: require("shared/src/Product Icons/uptyme.png"),
-    inactiveIcon: require("shared/src/Product Icons/uptyme_grey.png"),
-    description: "Field face management and work order automation",
-    isProductAccessible: false
+    title: 'Uptyme',
+    icon: 'icon icon-timepicker',
+    activeIcon: require('shared/src/Product Icons/uptyme.png'),
+    inactiveIcon: require('shared/src/Product Icons/uptyme_grey.png'),
+    description: 'Field face management and work order automation',
+    isProductAccessible: false,
   },
   {
     id: 5,
-    title: "OrderX",
-    icon: "icon icon-orders",
-    activeIcon: require("shared/src/Product Icons/orderx.png"),
-    inactiveIcon: require("shared/src/Product Icons/orderx_grey.png"),
-    description: "Ordering and payments. Omni channel order management",
-    isProductAccessible: false
+    title: 'OrderX',
+    icon: 'icon icon-orders',
+    activeIcon: require('shared/src/Product Icons/orderx.png'),
+    inactiveIcon: require('shared/src/Product Icons/orderx_grey.png'),
+    description: 'Ordering and payments. Omni channel order management',
+    isProductAccessible: false,
   },
   {
     id: 6,
-    title: "RewardX",
-    icon: "icon icon-inbuilt-apps",
-    activeIcon: require("shared/src/Product Icons/rewardx.png"),
-    inactiveIcon: require("shared/src/Product Icons/rewardx_grey.png"),
-    description: "Loyalty relationship management",
-    isProductAccessible: false
+    title: 'RewardX',
+    icon: 'icon icon-inbuilt-apps',
+    activeIcon: require('shared/src/Product Icons/rewardx.png'),
+    inactiveIcon: require('shared/src/Product Icons/rewardx_grey.png'),
+    description: 'Loyalty relationship management',
+    isProductAccessible: false,
   },
   {
     id: 7,
-    title: "You Id",
-    icon: "icon icon-profile",
-    activeIcon: require("shared/src/Product Icons/youid.png"),
-    inactiveIcon: require("shared/src/Product Icons/youid_grey.png"),
-    description: "Field face management and work order automation",
-    isProductAccessible: false
+    title: 'You Id',
+    icon: 'icon icon-profile',
+    activeIcon: require('shared/src/Product Icons/youid.png'),
+    inactiveIcon: require('shared/src/Product Icons/youid_grey.png'),
+    description: 'Field face management and work order automation',
+    isProductAccessible: false,
   },
   {
     id: 8,
-    title: "FrontX",
-    icon: "icon icon-data-display",
-    activeIcon: require("shared/src/Product Icons/frontx.png"),
-    inactiveIcon: require("shared/src/Product Icons/frontx_grey.png"),
-    description: "Channel management - modular app development platform",
-    isProductAccessible: false
+    title: 'FrontX',
+    icon: 'icon icon-data-display',
+    activeIcon: require('shared/src/Product Icons/frontx.png'),
+    inactiveIcon: require('shared/src/Product Icons/frontx_grey.png'),
+    description: 'Channel management - modular app development platform',
+    isProductAccessible: false,
   },
   {
     id: 9,
-    title: "ReportX",
-    icon: "icon icon-select",
-    activeIcon: require("shared/src/Product Icons/footprint.png"),
-    inactiveIcon: require("shared/src/Product Icons/footprint_grey.png"),
-    description: "Actionable insights, dashboards and reporting",
-    isProductAccessible: false
-  }
+    title: 'ReportX',
+    icon: 'icon icon-select',
+    activeIcon: require('shared/src/Product Icons/footprint.png'),
+    inactiveIcon: require('shared/src/Product Icons/footprint_grey.png'),
+    description: 'Actionable insights, dashboards and reporting',
+    isProductAccessible: false,
+  },
 ];
 
 class CoreLandingPage extends React.Component<
@@ -109,12 +109,12 @@ class CoreLandingPage extends React.Component<
     super(props);
     this.state = {
       apps: [],
-      spin: false
+      spin: false,
     };
   }
 
   UNSAFE_componentWillMount() {
-    const jwtToken: any = localStorage.getItem("jwt");
+    const jwtToken: any = localStorage.getItem('jwt');
     const { org_id }: any = jwt.decode(jwtToken);
     let formattedApps = apps;
 
@@ -123,11 +123,11 @@ class CoreLandingPage extends React.Component<
       this.props.client
         .query({
           query: GET_PRODUCTS,
-          variables: { id: org_id }
+          variables: { id: org_id },
           //   fetchPolicy: "network-only"
         })
         .then(res => {
-          console.log(">>>", res.data.organization.walkinProducts);
+          console.log('>>>', res.data.organization.walkinProducts);
           _.forEach(res.data.organization.walkinProducts, service => {
             const appIndex = _.findIndex(formattedApps, app => {
               return app.title.toLowerCase() === service.name.toLowerCase();
@@ -136,7 +136,7 @@ class CoreLandingPage extends React.Component<
             formattedApps = [
               { ...formattedApps[appIndex], isProductAccessible: true },
               ...formattedApps.slice(0, appIndex),
-              ...formattedApps.slice(appIndex + 1)
+              ...formattedApps.slice(appIndex + 1),
             ];
           });
 
@@ -144,11 +144,11 @@ class CoreLandingPage extends React.Component<
         })
         .catch(err => {
           this.setState({ spin: false });
-          console.log("Failed to get Apps  " + err);
+          console.log('Failed to get Apps  ' + err);
         });
     } else {
       this.setState({ spin: false });
-      console.log("Error getting JwtData");
+      console.log('Error getting JwtData');
     }
   }
 

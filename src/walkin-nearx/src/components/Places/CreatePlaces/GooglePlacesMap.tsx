@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import { Col, Row, Input, Select } from "antd";
-import { placeTypesArr } from "./data";
-import GeofenceMap from "../GeofenceMap";
+import React, { Component } from 'react';
+import { Col, Row, Input, Select } from 'antd';
+import { placeTypesArr } from './data';
+import GeofenceMap from '../GeofenceMap';
 
 const Option = Select.Option;
 
@@ -29,7 +29,7 @@ export default class GooglePlacesMap extends Component<iProps, iState> {
   render() {
     var formData = this.props.data;
     var options = placeTypesArr.map((item, index) => (
-      <Option key={index} value={item.replace(" ", "_").toLowerCase()}>
+      <Option key={index} value={item.replace(' ', '_').toLowerCase()}>
         {item}
       </Option>
     ));
@@ -44,9 +44,9 @@ export default class GooglePlacesMap extends Component<iProps, iState> {
               <span
                 onClick={() => this.props.getloc()}
                 style={{
-                  padding: "30px",
-                  whiteSpace: "nowrap",
-                  fontSize: "17px"
+                  padding: '30px',
+                  whiteSpace: 'nowrap',
+                  fontSize: '17px',
                 }}
                 className="gx-text-primary gx-pointer"
               >
@@ -56,9 +56,9 @@ export default class GooglePlacesMap extends Component<iProps, iState> {
               <span
                 onClick={() => this.props.myloc()}
                 style={{
-                  padding: "30px",
-                  whiteSpace: "nowrap",
-                  fontSize: "17px"
+                  padding: '30px',
+                  whiteSpace: 'nowrap',
+                  fontSize: '17px',
                 }}
                 className="gx-text-primary gx-pointer"
               >
@@ -67,9 +67,9 @@ export default class GooglePlacesMap extends Component<iProps, iState> {
             </p>
             {/* <Button onClick={() => this.props.getloc()} style={{ margin: "10px" }}>Get location from map</Button> */}
 
-            <Row style={{ padding: 10, paddingLeft: 30, float: "none" }}>
+            <Row style={{ padding: 10, paddingLeft: 30, float: 'none' }}>
               <Col span={10}>
-                Latitude:{" "}
+                Latitude:{' '}
                 <Input
                   required
                   placeholder="Latitude"
@@ -77,12 +77,12 @@ export default class GooglePlacesMap extends Component<iProps, iState> {
                   type="number"
                   step="0.0001"
                   name="latitude"
-                  onChange={c => this.props.handleCenterChange(c, "lat")}
+                  onChange={c => this.props.handleCenterChange(c, 'lat')}
                 />
-                <span style={{ color: "Red" }}>{formData.errors.latitude}</span>
+                <span style={{ color: 'Red' }}>{formData.errors.latitude}</span>
               </Col>
               <Col span={10}>
-                Longitude{" "}
+                Longitude{' '}
                 <Input
                   required
                   placeholder="Longitude"
@@ -90,17 +90,17 @@ export default class GooglePlacesMap extends Component<iProps, iState> {
                   name="longitude"
                   type="number"
                   step="0.0001"
-                  onChange={c => this.props.handleCenterChange(c, "lng")}
+                  onChange={c => this.props.handleCenterChange(c, 'lng')}
                 />
-                <span style={{ color: "Red" }}>
+                <span style={{ color: 'Red' }}>
                   {formData.errors.longitude}
                 </span>
               </Col>
             </Row>
 
-            <Row style={{ padding: 10, paddingLeft: 30, float: "none" }}>
+            <Row style={{ padding: 10, paddingLeft: 30, float: 'none' }}>
               <Col span={10}>
-                Search radius:{" "}
+                Search radius:{' '}
                 <Input
                   required
                   placeholder="Search Radius"
@@ -111,18 +111,18 @@ export default class GooglePlacesMap extends Component<iProps, iState> {
                   step="1"
                   onChange={c => this.props.changeSearchRadius(c)}
                 />
-                <span style={{ color: "Red" }}>
+                <span style={{ color: 'Red' }}>
                   {formData.errors.searchRadius}
                 </span>
               </Col>
 
-              <Col id="Sarea" style={{ height: "50px" }} span={10}>
+              <Col id="Sarea" style={{ height: '50px' }} span={10}>
                 Type:
                 <Select
-                  getPopupContainer={() => document.getElementById("Sarea")}
+                  getPopupContainer={() => document.getElementById('Sarea')}
                   showSearch
                   value={formData.type}
-                  style={{ width: "100%" }}
+                  style={{ width: '100%' }}
                   placeholder="Select Type"
                   optionFilterProp="children"
                   onChange={e => this.props.handleOnTypeChange(e)}
@@ -134,12 +134,12 @@ export default class GooglePlacesMap extends Component<iProps, iState> {
                 >
                   {options}
                 </Select>
-                <span style={{ color: "Red" }}>{formData.errors.type}</span>
+                <span style={{ color: 'Red' }}>{formData.errors.type}</span>
               </Col>
             </Row>
           </div>
         ) : (
-          ""
+          ''
         )}
 
         {/* <Affix style={{  top: 200 }} offsetTop={180}> */}

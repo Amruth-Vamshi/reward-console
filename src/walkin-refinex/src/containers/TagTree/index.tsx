@@ -1,13 +1,13 @@
-import * as React from "react";
+import * as React from 'react';
 import SortableTree, {
   changeNodeAtPath,
   removeNodeAtPath,
-  addNodeUnderParent
-} from "react-sortable-tree";
-import "react-sortable-tree/style.css";
-import { Select, Row, Col, Button, Modal, Input, Icon, message } from "antd";
-import CustomNodeRenderer from "./customNodeRenderer";
-import { HoverText } from "shared";
+  addNodeUnderParent,
+} from 'react-sortable-tree';
+import 'react-sortable-tree/style.css';
+import { Select, Row, Col, Button, Modal, Input, Icon, message } from 'antd';
+import CustomNodeRenderer from './customNodeRenderer';
+import { HoverText } from 'shared';
 
 const { Option } = Select;
 
@@ -23,46 +23,46 @@ interface iProps {}
 const data = [
   {
     id: 1,
-    title: "Overall Experience",
+    title: 'Overall Experience',
     children: [
       {
         id: 3,
-        title: "Store",
+        title: 'Store',
         children: [
           {
             id: 5,
-            title: "Ambience",
-            children: []
+            title: 'Ambience',
+            children: [],
           },
           {
             id: 7,
-            title: "Billing",
-            children: []
+            title: 'Billing',
+            children: [],
           },
           {
             id: 8,
-            title: "Cleanliness",
-            children: []
-          }
-        ]
+            title: 'Cleanliness',
+            children: [],
+          },
+        ],
       },
       {
         id: 4,
-        title: "Staff",
-        children: []
+        title: 'Staff',
+        children: [],
       },
       {
         id: 6,
-        title: "Stock",
-        children: []
-      }
-    ]
+        title: 'Stock',
+        children: [],
+      },
+    ],
   },
   {
     id: 2,
-    title: "Service Experience",
-    children: []
-  }
+    title: 'Service Experience',
+    children: [],
+  },
 ];
 
 class TagTree extends React.Component<iProps, iState> {
@@ -71,9 +71,9 @@ class TagTree extends React.Component<iProps, iState> {
 
     this.state = {
       treeData: [],
-      nodeTitle: "",
+      nodeTitle: '',
       visible: false,
-      nodeData: {}
+      nodeData: {},
     };
   }
 
@@ -84,7 +84,7 @@ class TagTree extends React.Component<iProps, iState> {
   onCancelNewNode() {
     this.setState({
       visible: false,
-      nodeTitle: ""
+      nodeTitle: '',
     });
   }
 
@@ -98,12 +98,12 @@ class TagTree extends React.Component<iProps, iState> {
     }
 
     var NEW_NODE = {
-      id: "Value",
+      id: 'Value',
       title: this.state.nodeTitle,
       isDirectory: true,
       expanded: true,
-      type: "nodeValue",
-      children: []
+      type: 'nodeValue',
+      children: [],
     };
 
     const replacedTree = changeNodeAtPath({
@@ -111,30 +111,30 @@ class TagTree extends React.Component<iProps, iState> {
       path: path,
       newNode: NEW_NODE,
       getNodeKey: ({ treeIndex }) => treeIndex,
-      ignoreCollapsed: true
+      ignoreCollapsed: true,
     });
 
     if (isParent) {
       var arr = replacedTree;
       arr.push({
-        id: "value",
-        title: "Add Node",
-        type: "newNode",
+        id: 'value',
+        title: 'Add Node',
+        type: 'newNode',
         expanded: true,
-        children: []
+        children: [],
       });
       this.setState({
         visible: false,
-        nodeTitle: "",
+        nodeTitle: '',
         nodeData: {},
-        treeData: arr
+        treeData: arr,
       });
     } else {
       this.setState({
         visible: false,
-        nodeTitle: "",
+        nodeTitle: '',
         nodeData: {},
-        treeData: replacedTree
+        treeData: replacedTree,
       });
     }
   }
@@ -150,12 +150,12 @@ class TagTree extends React.Component<iProps, iState> {
       el.push({
         id: element.id,
         title: element.title,
-        type: "nodeValue",
+        type: 'nodeValue',
         expanded: true,
         children:
           element.children.length === 0
             ? []
-            : this.convertNodes(element.children)
+            : this.convertNodes(element.children),
       });
     });
 
@@ -163,30 +163,30 @@ class TagTree extends React.Component<iProps, iState> {
 
     el.push({
       id: 0,
-      title: "Add Node",
-      type: "newNode",
+      title: 'Add Node',
+      type: 'newNode',
       expanded: true,
-      children: []
+      children: [],
     });
     return el;
   }
 
   getCleanedData() {
     var d = this.cleanData(this.state.treeData);
-    console.log("Cleaned Data : ", d);
+    console.log('Cleaned Data : ', d);
   }
 
   cleanData(data) {
     var el = [];
     data.forEach(element => {
-      if (element.type !== "newNode") {
+      if (element.type !== 'newNode') {
         el.push({
           id: element.id,
           title: element.title,
           children:
             element.children.length === 0
               ? []
-              : this.cleanData(element.children)
+              : this.cleanData(element.children),
         });
       }
     });
@@ -225,7 +225,7 @@ class TagTree extends React.Component<iProps, iState> {
 
     // To display Original Data
 
-    if (node.type === "nodeValue") {
+    if (node.type === 'nodeValue') {
       return (
         <Row>
           <Col
@@ -233,13 +233,13 @@ class TagTree extends React.Component<iProps, iState> {
               this.addNewNode(nodeInfo);
             }}
             span={10}
-            style={{ fontSize: "12px", paddingTop: "5px" }}
+            style={{ fontSize: '12px', paddingTop: '5px' }}
           >
             <HoverText>{node.title}</HoverText>
           </Col>
           <Col
             span={14}
-            style={{ marginRight: "-227px", paddingLeft: "218px" }}
+            style={{ marginRight: '-227px', paddingLeft: '218px' }}
           >
             <div
               onClick={() => {
@@ -255,7 +255,7 @@ class TagTree extends React.Component<iProps, iState> {
 
     // To display add node button
 
-    if (node.type === "newNode") {
+    if (node.type === 'newNode') {
       return (
         <div
           onClick={() => {
@@ -264,7 +264,7 @@ class TagTree extends React.Component<iProps, iState> {
         >
           <Col
             span={24}
-            style={{ fontSize: "12px", paddingTop: "5px", width: "100%" }}
+            style={{ fontSize: '12px', paddingTop: '5px', width: '100%' }}
           >
             {node.title}
           </Col>
@@ -277,17 +277,17 @@ class TagTree extends React.Component<iProps, iState> {
     var stopProcess = false;
 
     var NEW_NODE = {
-      title: "Add Node",
+      title: 'Add Node',
       isDirectory: true,
       expanded: true,
-      type: "newNode",
-      children: []
+      type: 'newNode',
+      children: [],
     };
 
     var child = rowInfo.node.children;
 
     child.forEach(element => {
-      if (element.type === "newNode") {
+      if (element.type === 'newNode') {
         stopProcess = true;
       }
     });
@@ -297,7 +297,7 @@ class TagTree extends React.Component<iProps, iState> {
         newNode: NEW_NODE,
         expandParent: true,
         parentKey: rowInfo ? rowInfo.treeIndex : undefined,
-        getNodeKey: ({ treeIndex }) => treeIndex
+        getNodeKey: ({ treeIndex }) => treeIndex,
       });
       this.setState({ treeData: newTree.treeData });
     }
@@ -306,13 +306,13 @@ class TagTree extends React.Component<iProps, iState> {
   removeNode(rowInfo) {
     const { path } = rowInfo;
     if (path.length === 1) {
-      message.warn("Sorry, You cannot delete parent tag.");
+      message.warn('Sorry, You cannot delete parent tag.');
       return;
     }
     const updatedTree = removeNodeAtPath({
       treeData: this.state.treeData,
       path,
-      getNodeKey: ({ treeIndex }) => treeIndex
+      getNodeKey: ({ treeIndex }) => treeIndex,
     });
     this.setState({ treeData: updatedTree });
   }
@@ -320,14 +320,14 @@ class TagTree extends React.Component<iProps, iState> {
   render() {
     const { visible, treeData, nodeTitle } = this.state;
     return (
-      <div style={{ height: "auto", width: "100%" }}>
+      <div style={{ height: 'auto', width: '100%' }}>
         <SortableTree
           canDrag={false}
           treeData={treeData}
           onChange={treeData => this.setState({ treeData })}
           nodeContentRenderer={CustomNodeRenderer}
           generateNodeProps={nodeInfo => ({
-            title: <div>{this.renderNode(nodeInfo)}</div>
+            title: <div>{this.renderNode(nodeInfo)}</div>,
           })}
         />
         <Button
@@ -345,7 +345,7 @@ class TagTree extends React.Component<iProps, iState> {
           Clean Data
         </Button>
         <Modal
-          title={"Enter Tag Name"}
+          title={'Enter Tag Name'}
           visible={visible}
           onCancel={() => {
             this.onCancelNewNode();
@@ -357,7 +357,7 @@ class TagTree extends React.Component<iProps, iState> {
             placeholder=""
             value={nodeTitle}
             onChange={this.onTitleChange}
-            style={{ fontWeight: 300, fontSize: "12px", marginTop: "10px" }}
+            style={{ fontWeight: 300, fontSize: '12px', marginTop: '10px' }}
           />
         </Modal>
       </div>
