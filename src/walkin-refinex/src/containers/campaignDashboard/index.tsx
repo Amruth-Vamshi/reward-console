@@ -218,7 +218,7 @@ export default withRouter(
       options: (props: CampaignDashboardProps) => {
         return {
           variables: { id: props.match.params.id },
-          fetchPolicy: 'cache-and-network',
+          fetchPolicy: 'network-only',
         };
       },
     }),
