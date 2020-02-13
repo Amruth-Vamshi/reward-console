@@ -50,7 +50,8 @@ class AppsList extends React.Component<iProps, iState> {
     this.props.history.push('/nearx/apps/create');
   };
 
-  test = () => {
+  test = pf => {
+    console.log(pf);
     this.setState({ visible: true });
   };
 
@@ -205,7 +206,7 @@ class AppsList extends React.Component<iProps, iState> {
                 genereteToken={this.genereteToken}
                 history={this.props.history}
                 deleteApp={this.deleteApp}
-                test={this.test}
+                test={() => this.test(item.platform.toLowerCase())}
                 key={i}
                 index={i}
                 data={item}
@@ -271,13 +272,38 @@ class AppsList extends React.Component<iProps, iState> {
                         className="buttonPrimary"
                         style={{ margin: '0px 30px 10px 20px' }}
                       >
-                        Download ARR
+                        Download Android ARR
                       </Button>
                     </a>
-                    <div>NearX ARR file</div>
+                    {/* <div>NearX ARR file</div> */}
+                    <div>
+                      Integration reference
+                      <a
+                        target="_blank"
+                        href="https://nearx.getwalk.in/docs/integrations"
+                      >
+                        here
+                      </a>
+                    </div>
+                  </div>
+                </div>{' '}
+                <br />
+                <div style={{ overflow: 'hidden', textAlign: 'right' }}>
+                  <div style={{ textAlign: 'center' }}>
+                    <a target="_blank" href="https://cocoapods.org/pods/NearX">
+                      <Button
+                        onClick={this.handleSubmit}
+                        loading={this.state.loading}
+                        className="buttonPrimary"
+                        style={{ margin: '0px 30px 10px 20px' }}
+                      >
+                        Download IOS SDK
+                      </Button>
+                    </a>
+                    {/* <div>NearX ARR file</div> */}
                     <div>
                       {' '}
-                      Integration reference{' '}
+                      Integration reference
                       <a
                         target="_blank"
                         href="https://nearx.getwalk.in/docs/integrations"
