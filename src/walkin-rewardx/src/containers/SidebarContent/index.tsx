@@ -91,6 +91,12 @@ class SidebarContent extends React.Component<
                 <span>Customer Care</span>
               </Link>
             </Menu.Item>
+            <Menu.Item>
+              <Link to="/rewardx/business_rules">
+                <Icon type="profile" />
+                <span>Business Rules</span>
+              </Link>
+            </Menu.Item>
           </Menu>
         </div>
       </Auxiliary>

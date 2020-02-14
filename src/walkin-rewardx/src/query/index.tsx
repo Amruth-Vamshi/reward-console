@@ -274,3 +274,23 @@ export const getCustomerLoyaltyLedger = gql`
   }
 `;
  * **/
+
+export const GET_BUSINESS_RULES = gql`
+  query($input: SearchBusinessRulesInput!) {
+    businessRules(input: $input) {
+      id
+      ruleType
+      ruleDefaultValue
+    }
+  }
+`;
+
+export const UPDATE_BUSINESS_RULE = gql`
+  mutation updateBusinessRule($id: ID!, $input: UpdateBusinessRuleInput!) {
+    updateBusinessRule(id: $id, input: $input) {
+      id
+      ruleType
+      ruleDefaultValue
+    }
+  }
+`;
