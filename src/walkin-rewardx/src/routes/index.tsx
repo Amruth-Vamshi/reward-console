@@ -26,13 +26,17 @@ const RewardXRoutes: React.FunctionComponent<RewardXRoutesProps> = ({
     <div className="RewardX-Main">
       <Switch>
         <Redirect exact from={`${match.url}/`} to={`${match.url}/dashboard`} />
-        <Route exact path={`${match.url}/dashboard`} component={Dashboard} />
         <Route
+          exact
+          path={`${match.url}/dashboard`}
+          component={CustomerSearch}
+        />
+        {/* <Route
           exact
           path={`${match.url}/dashboard/loyalty_card`}
           component={LoyaltyCard}
         />
-        <Route exact path={`${match.url}/reports`} component={Reports} />
+        <Route exact path={`${match.url}/reports`} component={Reports} /> */}
         <Route
           exact
           path={`${match.url}/customer_search`}
