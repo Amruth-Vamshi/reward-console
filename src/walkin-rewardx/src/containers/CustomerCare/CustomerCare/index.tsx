@@ -602,7 +602,9 @@ class CustomerCare extends React.Component<
       loyaltyTransactionsData.data.length &&
       loyaltyTransactionsData.data[0].data
     ) {
-      loyaltyBalance = loyaltyTransactionsData.data[0].data.totalAmount;
+      loyaltyBalance =
+        loyaltyTransactionsData.data[0].data.orderData.order.totalAmount;
+      // loyaltyBalance = loyaltyTransactionsData.data[0].data.totalAmount;
       if (
         moment(loyaltyTransactionsData.data[0].data.transactionDate).format(
           "YYYY-MM-DD"

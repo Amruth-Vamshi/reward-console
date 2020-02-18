@@ -125,6 +125,7 @@ class CustomerSearch extends React.Component<
         });
       })
       .catch(error => {
+        this.setState({ loading: false });
         console.log("CustomerSearch getLoyaltyTransactions error", error);
       });
   }
@@ -160,6 +161,10 @@ class CustomerSearch extends React.Component<
   render() {
     const { customer, loyaltyTransactionsData } = this.state;
     console.log("CustomerSearch render customer", customer);
+    console.log(
+      "CustomerSearch render loyaltyTransactionsData",
+      loyaltyTransactionsData
+    );
     let id = "id";
     let phoneNumber = "";
     let name = "";
@@ -183,22 +188,25 @@ class CustomerSearch extends React.Component<
       loyaltyTransactionsData.data.length
     ) {
       if (loyaltyTransactionsData.data[0].data) {
-        loyaltyBalance = loyaltyTransactionsData.data[0].data.totalAmount;
+        loyaltyBalance =
+          loyaltyTransactionsData.data[0].data.orderData.order.totalAmount;
       }
       if (
         loyaltyTransactionsData.data[0].data &&
-        loyaltyTransactionsData.data[0].data.order
+        loyaltyTransactionsData.data[0].data.orderData &&
+        loyaltyTransactionsData.data[0].data.orderData.order
       ) {
-        orderId = loyaltyTransactionsData.data[0].data.order.externalOrderId;
+        orderId =
+          loyaltyTransactionsData.data[0].data.orderData.order.externalOrderId;
         if (
-          moment(loyaltyTransactionsData.data[0].data.order.orderDate).format(
-            "YYYY-MM-DD"
-          ) === "Invalid date"
+          moment(
+            loyaltyTransactionsData.data[0].data.orderData.order.orderDate
+          ).format("YYYY-MM-DD") === "Invalid date"
         ) {
           orderDate = "";
         } else {
           orderDate = moment(
-            loyaltyTransactionsData.data[0].data.order.orderDate
+            loyaltyTransactionsData.data[0].data.orderData.order.orderDate
           ).format("YYYY-MM-DD");
         }
       }
@@ -377,9 +385,9 @@ class CustomerSearch extends React.Component<
               </div>
             ) : this.state.customer ? (
               <Table
-                title={() => (
-                  <div className="cc-table-header">Last order details</div>
-                )}
+                // title={() => (
+                //   <div className="cc-table-header">Last order details</div>
+                // )}
                 dataSource={data}
                 onChange={() => {}}
                 columns={columns}
