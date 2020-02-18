@@ -132,7 +132,8 @@ class EditStore extends React.Component<EditStoreProps, EditStoreState> {
     let { storeDetails } = this.state;
     let input = {
       parentOrganizationId: this.state.orgID,
-      ...storeDetails
+      ...storeDetails,
+      code: Math.random().toString()
     };
 
     this.props.client
@@ -389,7 +390,7 @@ class EditStore extends React.Component<EditStoreProps, EditStoreState> {
                 placeholder="Choose admin"
                 optionFilterProp="children"
                 onChange={value => {
-                  storeDetails.adminUserId = value;
+                  storeDetails.adminLevelId = value;
                   this.onChange("storeDetails", storeDetails);
                 }}
                 // onFocus={onFocus}

@@ -242,12 +242,12 @@ class CustomerSearch extends React.Component<
         key: "loyaltyBalance"
       },
       {
-        title: "Order Date",
+        title: "Last Order Date",
         dataIndex: "orderDate",
         key: "orderDate"
       },
       {
-        title: "Order Id",
+        title: "Last Order Id",
         dataIndex: "orderId",
         key: "orderId"
       },
