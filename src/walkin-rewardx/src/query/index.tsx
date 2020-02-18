@@ -122,18 +122,6 @@ export const GET_LOYALTY_TRANSACTIONS = gql`
           pointsRemaining
           details
         }
-        customerLoyalty {
-          createdTime
-          externalCustomerId
-          overallPoints
-          burnablePoints
-          overallAmount
-          burnableAmount
-          pointsBlocked
-          blockedAmount
-          loyaltyCardCode
-          loyaltyEnabled
-        }
       }
       paginationInfo {
         totalPages
@@ -142,6 +130,24 @@ export const GET_LOYALTY_TRANSACTIONS = gql`
         hasNextPage
         hasPreviousPage
       }
+    }
+  }
+`;
+
+export const GET_CUSTOMER_LOYALTY = gql`
+  query($externalCustomerId: String!) {
+    getCustomerLoyalty(externalCustomerId: $externalCustomerId) {
+      createdTime
+      lastModifiedTime
+      externalCustomerId
+      overallPoints
+      burnablePoints
+      overallAmount
+      burnableAmount
+      pointsBlocked
+      blockedAmount
+      loyaltyCardCode
+      loyaltyEnabled
     }
   }
 `;

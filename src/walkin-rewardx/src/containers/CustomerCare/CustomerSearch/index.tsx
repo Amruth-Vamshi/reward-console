@@ -6,7 +6,11 @@ import "./index.css";
 import { withApollo, ApolloProviderProps, Query } from "react-apollo";
 import { RouteComponentProps } from "react-router";
 import moment from "moment";
-import { GET_CUSTOMER_DETAILS, GET_LOYALTY_TRANSACTIONS } from "../../../query";
+import {
+  GET_CUSTOMER_DETAILS,
+  GET_LOYALTY_TRANSACTIONS,
+  GET_CUSTOMER_LOYALTY
+} from "../../../query";
 import { CircularProgress } from "walkin-components";
 
 interface CustomerSearchRouterProps {
@@ -39,6 +43,7 @@ interface CustomerSearchState {
   phoneNumber: string;
   customerId: string;
   loyaltyTransactionsData: any;
+  customerLoyaltyData: any;
 }
 
 class CustomerSearch extends React.Component<
@@ -57,7 +62,8 @@ class CustomerSearch extends React.Component<
       loadingTable: false,
       phoneNumber: null,
       customerId: null,
-      loyaltyTransactionsData: null
+      loyaltyTransactionsData: null,
+      customerLoyaltyData: null
     };
   }
 
@@ -88,6 +94,7 @@ class CustomerSearch extends React.Component<
         if (data.data.customer) {
           this.setState({ customer: data.data.customer });
           this.getLoyaltyTransactions();
+          this.getCustomerLoyaltyData();
         } else {
           this.setState({ loading: false });
           message.error(
@@ -120,13 +127,33 @@ class CustomerSearch extends React.Component<
       .then((data: any) => {
         console.log("CustomerSearch getLoyaltyTransactions data", data);
         this.setState({
-          loyaltyTransactionsData: data.data.loyaltyTransaction,
-          loading: false
+          loyaltyTransactionsData: data.data.loyaltyTransaction
         });
       })
       .catch(error => {
         this.setState({ loading: false });
         console.log("CustomerSearch getLoyaltyTransactions error", error);
+      });
+  }
+
+  getCustomerLoyaltyData() {
+    this.props.client
+      .query({
+        query: GET_CUSTOMER_LOYALTY,
+        variables: {
+          externalCustomerId: this.state.phoneNumber
+        }
+      })
+      .then((data: any) => {
+        console.log("CustomerSearch getCustomerLoyalty data", data);
+        this.setState({
+          customerLoyaltyData: data.data.getCustomerLoyalty,
+          loading: false
+        });
+      })
+      .catch(error => {
+        this.setState({ loading: false });
+        console.log("CustomerSearch getCustomerLoyalty error", error);
       });
   }
 
@@ -153,17 +180,26 @@ class CustomerSearch extends React.Component<
       pathname: "/rewardx/customer_care",
       state: {
         record: record,
-        loyaltyTransactionsData: this.state.loyaltyTransactionsData
+        loyaltyTransactionsData: this.state.loyaltyTransactionsData,
+        customerLoyaltyData: this.state.customerLoyaltyData
       }
     });
   };
 
   render() {
-    const { customer, loyaltyTransactionsData } = this.state;
+    const {
+      customer,
+      loyaltyTransactionsData,
+      customerLoyaltyData
+    } = this.state;
     console.log("CustomerSearch render customer", customer);
     console.log(
       "CustomerSearch render loyaltyTransactionsData",
       loyaltyTransactionsData
+    );
+    console.log(
+      "CustomerSearch render customerLoyaltyData",
+      customerLoyaltyData
     );
     let id = "id";
     let phoneNumber = "";
@@ -182,14 +218,17 @@ class CustomerSearch extends React.Component<
         name = customer.firstName;
       }
     }
+    if (customerLoyaltyData) {
+      loyaltyBalance = customerLoyaltyData.burnablePoints;
+    }
     if (
       loyaltyTransactionsData &&
       loyaltyTransactionsData.data &&
       loyaltyTransactionsData.data.length
     ) {
       if (loyaltyTransactionsData.data[0].data) {
-        loyaltyBalance =
-          loyaltyTransactionsData.data[0].data.orderData.order.totalAmount;
+        // loyaltyBalance =
+        //   loyaltyTransactionsData.data[0].data.orderData.order.totalAmount;
       }
       if (
         loyaltyTransactionsData.data[0].data &&

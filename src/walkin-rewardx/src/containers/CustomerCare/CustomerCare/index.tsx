@@ -38,6 +38,7 @@ interface CustomerCareProps
   location: Location<{
     record: any;
     loyaltyTransactionsData: any;
+    customerLoyaltyData: any;
   }>;
 }
 
@@ -50,6 +51,7 @@ interface CustomerCareState {
   currentPageTransactionTable: number;
   billData: any;
   loyaltyTransactionsData: any;
+  customerLoyaltyData: any;
   customerLoyaltyLedgerData: any;
 }
 
@@ -68,6 +70,7 @@ class CustomerCare extends React.Component<
       currentPageTransactionTable: 1,
       currentPageLoyaltyTable: 1,
       loyaltyTransactionsData: null,
+      customerLoyaltyData: null,
       customerLoyaltyLedgerData: null,
       billData: [
         {
@@ -92,11 +95,13 @@ class CustomerCare extends React.Component<
 
     if (
       this.props.location.state.record.phoneNumber &&
-      this.props.location.state.loyaltyTransactionsData
+      this.props.location.state.loyaltyTransactionsData &&
+      this.props.location.state.customerLoyaltyData
     ) {
       this.setState({
         loyaltyTransactionsData: this.props.location.state
-          .loyaltyTransactionsData
+          .loyaltyTransactionsData,
+        customerLoyaltyData: this.props.location.state.customerLoyaltyData
       });
       // this.getLoyaltyTransactions();
       this.getCustomerLoyaltyLedger();
@@ -594,16 +599,18 @@ class CustomerCare extends React.Component<
     const customer = this.props.location.state.record;
     const loyaltyTransactionsData = this.props.location.state
       .loyaltyTransactionsData;
+    const customerLoyaltyData = this.props.location.state.customerLoyaltyData;
     let loyaltyBalance = "";
     let loyaltyBalanceUpdatedOn = "";
     if (
       loyaltyTransactionsData &&
+      customerLoyaltyData &&
       loyaltyTransactionsData.data &&
       loyaltyTransactionsData.data.length &&
       loyaltyTransactionsData.data[0].data
     ) {
-      loyaltyBalance =
-        loyaltyTransactionsData.data[0].data.orderData.order.totalAmount;
+      loyaltyBalance = customerLoyaltyData.burnablePoints;
+      // loyaltyTransactionsData.data[0].data.orderData.order.totalAmount;
       // loyaltyBalance = loyaltyTransactionsData.data[0].data.totalAmount;
       if (
         moment(loyaltyTransactionsData.data[0].data.transactionDate).format(
