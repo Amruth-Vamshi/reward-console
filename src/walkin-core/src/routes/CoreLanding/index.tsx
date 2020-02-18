@@ -3,11 +3,18 @@ import AppList from "../../components/appList";
 import * as _ from "lodash";
 import { Spin } from "antd";
 import { withApollo, ApolloProviderProps } from "react-apollo";
+import { RouteComponentProps } from "react-router";
 import * as jwt from "jsonwebtoken";
-
+import { Location } from "history";
 import { GET_PRODUCTS } from "walkin-core/src/PlatformQueries";
 
-interface CoreLandingPageProps extends ApolloProviderProps<any> {}
+interface CoreLandingRouterProps {
+  id: string;
+}
+
+interface CoreLandingPageProps
+  extends ApolloProviderProps<any>,
+    RouteComponentProps<CoreLandingRouterProps> {}
 
 interface CoreLandingPageState {
   apps: any;
@@ -141,6 +148,12 @@ class CoreLandingPage extends React.Component<
           });
 
           this.setState({ apps: formattedApps, spin: false });
+          setTimeout(() => {
+            this.props.history.push({
+              pathname: "/rewardx/customer_search"
+            });
+            // push url
+          }, 1000);
         })
         .catch(err => {
           this.setState({ spin: false });
