@@ -51,7 +51,7 @@ class UserInfo extends Component<IProps, IState> {
       ? this.props.client
           .query({
             query: USER_DATA,
-            variables: { userId: id },
+            variables: { userId: id, organizationId: org_id },
             fetchPolicy: "cache-first"
           })
           .then(res => {
