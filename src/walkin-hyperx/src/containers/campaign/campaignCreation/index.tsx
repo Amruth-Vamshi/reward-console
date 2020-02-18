@@ -1,44 +1,44 @@
-import "../styles.css";
+import '../styles.css';
 
-import moment from "moment";
-import * as React from "react";
-import { message } from "antd";
-import { Component } from "react";
-import * as jwt from "jsonwebtoken";
-import { withRouter } from "react-router-dom";
-import { RouteChildrenProps } from "react-router";
-import { FormComponentProps } from "antd/lib/form";
+import moment from 'moment';
+import * as React from 'react';
+import { message } from 'antd';
+import { Component } from 'react';
+import * as jwt from 'jsonwebtoken';
+import { withRouter } from 'react-router-dom';
+import { RouteChildrenProps } from 'react-router';
+import { FormComponentProps } from 'antd/lib/form';
 import {
   ApolloProviderProps,
   compose,
   graphql,
-  withApollo
-} from "react-apollo";
-import { GET_ALL_APPS_OF_ORGANIZATION } from "walkin-core/src/PlatformQueries";
+  withApollo,
+} from 'react-apollo';
+import { GET_ALL_APPS_OF_ORGANIZATION } from 'walkin-core/src/PlatformQueries';
 import {
   CampaignFooter,
   campaignOverview as Overview,
   Stepper,
-  WHeader
-} from "shared";
+  WHeader,
+} from 'shared';
 import {
   Audience,
   BasicInfo,
   Communication,
-  Offer
-} from "shared/src/components/campaignCreation";
+  Offer,
+} from 'shared/src/components/campaignCreation';
 
-import { strToRule } from "../../../utils";
-import HyperXContainer from "../../../utils/HyperXContainer";
+import { strToRule } from '../../../utils';
+import HyperXContainer from '../../../utils/HyperXContainer';
 import {
   DEFAULT_ACTIVE_STATUS,
-  DEFAULT_HYPERX_CAMPAIGN
-} from "../../../constants";
+  DEFAULT_HYPERX_CAMPAIGN,
+} from '../../../constants';
 import {
   ADD_OFFER_TO_CAMPAIGN,
   getOffers,
-  UNLINK_OFFER
-} from "../../../query/offer";
+  UNLINK_OFFER,
+} from '../../../query/offer';
 import {
   allSegments,
   AUDIENCE_COUNT,
@@ -47,8 +47,8 @@ import {
   RULE_ATTRIBUTES,
   UPDATE_AUDIENCES,
   UPDATE_RULE,
-  TOTAL_AUDIENCE_COUNT
-} from "../../../query/audience";
+  TOTAL_AUDIENCE_COUNT,
+} from '../../../query/audience';
 import {
   CREATE_CAMPAIGN,
   CREATE_COMMUNICATION,
@@ -57,53 +57,53 @@ import {
   PREPROCESS_LAUNCH_CAMPAIGN,
   UPDATE_CAMPAIGN,
   UPDATE_COMMUNICATION_WITH_MESSAGE_TEMPLETE,
-  VIEW_CAMPAIGN
-} from "../../../query/campaign";
+  VIEW_CAMPAIGN,
+} from '../../../query/campaign';
 
 const stepData = [
   {
     id: 1,
-    route: "basicInfo",
-    title: "Basic Info"
+    route: 'basicInfo',
+    title: 'Basic Info',
   },
   {
     id: 2,
-    title: "Audience",
-    route: "audience"
+    title: 'Audience',
+    route: 'audience',
   },
   {
     id: 3,
-    title: "Offer",
-    route: "offer"
+    title: 'Offer',
+    route: 'offer',
   },
   {
     id: 4,
-    title: "Communication",
-    route: "ommunication"
+    title: 'Communication',
+    route: 'ommunication',
   },
   {
     id: 5,
-    title: "Overview",
-    route: "overview"
-  }
+    title: 'Overview',
+    route: 'overview',
+  },
 ];
 
 const communicationData = [
-  { value: "SMS", title: "SMS" },
-  { value: "PUSH", title: "Push Notification" },
-  { value: "EMAIL", title: "Email" }
+  { value: 'SMS', title: 'SMS' },
+  { value: 'PUSH', title: 'Push Notification' },
+  { value: 'EMAIL', title: 'Email' },
 ];
 
 interface IProps
   extends RouteChildrenProps<
-  {
-    id: string;
-  },
-  {
-    update: any;
-  }
-  >,
-  ApolloProviderProps<any> {
+      {
+        id: string;
+      },
+      {
+        update: any;
+      }
+    >,
+    ApolloProviderProps<any> {
   updateRule: (variables: any) => any;
   addOfferToCampaign: (variables: any) => any;
   updateCommunicationWithMessageTemplate: (variables: any) => any;
@@ -181,22 +181,22 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
       testValue: 95,
       totalAudienceCount: 0,
       controlValue: 5,
-      testControlSelected: "",
-      communication: "",
-      communicationSelected: "SMS",
+      testControlSelected: '',
+      communication: '',
+      communicationSelected: 'SMS',
       errors: {},
       audienceCount: 0,
       loading: false,
       noOfferRequired: false,
-      offer: "",
-      audienceFilterRuleId: "",
+      offer: '',
+      audienceFilterRuleId: '',
       scheduleData: {},
-      smsForm: { smsBody: "", smsTag: "" },
+      smsForm: { smsBody: '', smsTag: '' },
       emailForm: {},
       pushForm: {},
       scheduleSaveMark: false,
-      ruleQuery: { id: "1", combinator: "and", rules: [] },
-      selectedSegments: [""],
+      ruleQuery: { id: '1', combinator: 'and', rules: [] },
+      selectedSegments: [''],
       campaignCreated: false,
       audienceCreated: false,
       audienceFilterRuleCreated: false,
@@ -208,28 +208,28 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
       audienceChange: { audience: false, rule: false },
       spin: false,
       fileList: [],
-      campaignType: DEFAULT_HYPERX_CAMPAIGN[0]
+      campaignType: DEFAULT_HYPERX_CAMPAIGN[0],
     };
 
     // var formRef = useRef<HTMLElement | null>(null);
   }
 
   getTotalAudienceCount = () => {
-    console.log("TOTAL AUNDIENCE COUNT", this.state.campaign.id);
+    console.log('TOTAL AUNDIENCE COUNT', this.state.campaign.id);
     this.props.client
       .query({
         query: TOTAL_AUDIENCE_COUNT,
         variables: { campaignId: this.state.campaign.id },
-        fetchPolicy: "network-only"
+        fetchPolicy: 'network-only',
       })
       .then(res => {
         console.log(res.data.totalAudienceCountForCampaign.count);
         this.setState({
-          totalAudienceCount: res.data.totalAudienceCountForCampaign.count
+          totalAudienceCount: res.data.totalAudienceCountForCampaign.count,
         });
       })
       .catch(err => {
-        console.log("Failed to get Audience Count" + err);
+        console.log('Failed to get Audience Count' + err);
       });
   };
 
@@ -268,7 +268,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
   UNSAFE_componentWillMount = () => {
     const { location, match, client } = this.props;
     if (location && location.state) {
-      console.log("this...", location.state);
+      console.log('this...', location.state);
       if (location.state.update) this.setState({ update: true });
 
       this.setState({ spin: true });
@@ -276,15 +276,15 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
         .query({
           query: VIEW_CAMPAIGN,
           variables: { campaignId: match.params.id },
-          fetchPolicy: "network-only"
+          fetchPolicy: 'network-only',
         })
         .then(res => {
-          console.log("res", res.data.viewCampaignForHyperX);
+          console.log('res', res.data.viewCampaignForHyperX);
           let {
             campaign,
             audiences,
             offers,
-            communications
+            communications,
           } = res.data.viewCampaignForHyperX;
 
           this.setState({
@@ -293,7 +293,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
             formValues: campaign,
             communications,
             campaignCreated: true,
-            priorityChosen: campaign.priority
+            priorityChosen: campaign.priority,
           });
 
           if (audiences && audiences.length) {
@@ -303,11 +303,11 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
             );
             selectedSegments = selectedSegments.length
               ? selectedSegments
-              : [""];
+              : [''];
             this.setState({
               selectedSegments: selectedSegments,
               audiences,
-              audienceCreated: true
+              audienceCreated: true,
             });
           }
 
@@ -317,7 +317,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
               ruleQuery: strToRule(str),
               audienceFilterRule: campaign.audienceFilterRule.ruleConfiguration,
               audienceFilterRuleCreated: true,
-              audienceFilterRuleId: campaign.audienceFilterRule.id
+              audienceFilterRuleId: campaign.audienceFilterRule.id,
             });
           }
 
@@ -326,7 +326,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
               offer: offers[0].id,
               oldOfferId: offers[0].id,
               offerData: offers[0],
-              offerCreated: true
+              offerCreated: true,
             });
           else this.setState({ noOfferRequired: true });
 
@@ -334,12 +334,12 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
             let { smsForm, emailForm, pushForm, scheduleData } = this.state;
             let communicationSelected =
               communications[0].messageTemplate.messageFormat;
-            if (communicationSelected == "SMS") {
+            if (communicationSelected == 'SMS') {
               smsForm.smsTag =
                 communications[0].messageTemplate.templateSubjectText;
               smsForm.smsBody =
                 communications[0].messageTemplate.templateBodyText;
-            } else if (communicationSelected == "EMAIL") {
+            } else if (communicationSelected == 'EMAIL') {
               emailForm.email_subject =
                 communications[0].messageTemplate.templateSubjectText;
               emailForm.email_body =
@@ -359,12 +359,12 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
                 frequency,
                 repeatInterval,
                 noOfOccurances,
-                time
+                time,
               } = communications[0].repeatRuleConfiguration;
               scheduleData.repeatType = frequency;
-              scheduleData.time = moment(time, "HH:mm a");
+              scheduleData.time = moment(time, 'HH:mm a');
               scheduleData.days = byWeekDay;
-              if (endAfter && endAfter != "")
+              if (endAfter && endAfter != '')
                 scheduleData.endTime = moment(endAfter);
               else scheduleData.noOfOccurances = noOfOccurances;
             }
@@ -376,13 +376,13 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
               emailForm,
               pushForm,
               scheduleData,
-              createComm: true
+              createComm: true,
             });
           }
         })
         .catch(err => {
           this.setState({ spin: false });
-          console.log("Failed to get Campaign Details" + err);
+          console.log('Failed to get Campaign Details' + err);
         });
     }
   };
@@ -452,9 +452,9 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
     // this.props.history.push('/hyperx/campaigns')
     //  this.setState({ current });
     this.props.history.push({
-      pathname: "/hyperx/campaigns",
+      pathname: '/hyperx/campaigns',
       // tabKey: "4",
-      state: { tabKey: "4" }
+      state: { tabKey: '4' },
     });
     // this.props.history.push('/hyperx/campaign', { key: "4" })
   };
@@ -467,18 +467,18 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
     if (current1 == 0) {
       this.createOrUpdateBasicCampaign(current);
     } else if (current1 == 1) {
-      if (segments[0] && segments[0] != "") {
+      if (segments[0] && segments[0] != '') {
         this.createOrUpdateAudience(current);
         this.ruleQuery(current);
       } else {
-        errors.segment = "* this field is mandatory";
+        errors.segment = '* this field is mandatory';
         this.setState({ errors });
       }
     } else if (current1 == 2) {
       this.linkOffer(current);
     } else if (current1 == 3) {
       this.createComm(current);
-    } else if (e && e.target.innerText === "Launch") {
+    } else if (e && e.target.innerText === 'Launch') {
       this.launchCampaign();
     } else this.setState({ current });
   }
@@ -487,11 +487,11 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
     this.setState({ loading: true });
     this.props
       .launchCampaign({
-        variables: { id: this.state.campaign.id }
+        variables: { id: this.state.campaign.id },
       })
       .then((data: any) => {
-        console.log("campaign data..", data);
-        message.success("Campaign Launched");
+        console.log('campaign data..', data);
+        message.success('Campaign Launched');
         // moment().isBetween(this.state.campaign.startTime, this.state.campaign.endTime) ?
         // 	this.props.history.push('/hyperx/campaigns') :
         // 	this.props.history.push({
@@ -499,12 +499,12 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
         // 		state: { tabKey: "2" }
         // 	})
         this.props.history.push({
-          pathname: "/hyperx/campaigns",
-          state: { tabKey: "2" }
+          pathname: '/hyperx/campaigns',
+          state: { tabKey: '2' },
         });
       })
       .catch(err => {
-        console.log("Error Update campaign", err);
+        console.log('Error Update campaign', err);
         this.setState({ loading: false });
       });
   };
@@ -512,22 +512,22 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
   createComm = c => {
     let { communicationSelected, createComm } = this.state;
     let formRef =
-      communicationSelected == "SMS"
+      communicationSelected == 'SMS'
         ? this.smsForm
-        : communicationSelected == "EMAIL"
-          ? this.emailForm
-          : this.pushForm;
+        : communicationSelected == 'EMAIL'
+        ? this.emailForm
+        : this.pushForm;
 
-    console.log("COMM", formRef, communicationSelected);
+    console.log('COMM', formRef, communicationSelected);
     const comForm = formRef && formRef.props && formRef.props.form;
     comForm.validateFields((err, values) => {
       if (err) return;
       else {
-        if (communicationSelected == "SMS") this.setState({ smsForm: values });
-        else if (communicationSelected == "EMAIL")
+        if (communicationSelected == 'SMS') this.setState({ smsForm: values });
+        else if (communicationSelected == 'EMAIL')
           this.setState({ emailForm: values });
         else this.setState({ pushForm: values });
-        console.log("COMM", formRef, createComm);
+        console.log('COMM', formRef, createComm);
         !createComm
           ? this.createCommunicationWithMessageTemplate(c, values)
           : this.updateCommunicationWithMessageTemplate(c, values);
@@ -536,53 +536,53 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
   };
 
   updateCommunicationWithMessageTemplate = (current, values) => {
-    let { org_id }: any = jwt.decode(localStorage.getItem("jwt"));
+    let { org_id }: any = jwt.decode(localStorage.getItem('jwt'));
     let {
       communicationSelected,
       scheduleData,
       scheduleSaveMark,
-      communication
+      communication,
     } = this.state;
-    console.log("COMM", communicationSelected, values);
+    console.log('COMM', communicationSelected, values);
     this.setState({ loading: true });
     var messageTemplateInput = {
       id: communication.messageTemplate.id,
-      name: this.state.campaign.name + "_" + communicationSelected,
-      description: "",
+      name: this.state.campaign.name + '_' + communicationSelected,
+      description: '',
       // messageFormat: communicationSelected,
       templateBodyText:
-        communicationSelected == "SMS"
+        communicationSelected == 'SMS'
           ? values.smsBody
-          : communicationSelected == "EMAIL"
-            ? values.email_body
-            : values.notificationBody,
+          : communicationSelected == 'EMAIL'
+          ? values.email_body
+          : values.notificationBody,
       templateSubjectText:
-        communicationSelected == "SMS"
+        communicationSelected == 'SMS'
           ? values.smsTag
-          : communicationSelected == "EMAIL"
-            ? values.email_subject
-            : values.notificationTag,
-      templateStyle: "MUSTACHE",
-      status: DEFAULT_ACTIVE_STATUS
+          : communicationSelected == 'EMAIL'
+          ? values.email_subject
+          : values.notificationTag,
+      templateStyle: 'MUSTACHE',
+      status: DEFAULT_ACTIVE_STATUS,
     };
     var communicationInput: any = {
       id: communication.id,
-      entityId: this.state.offerData ? this.state.offerData.id : " ",
-      entityType: this.state.campaignType == "OFFER" ? "OFFER" : "CAMPAIGN",
+      entityId: this.state.offerData ? this.state.offerData.id : ' ',
+      entityType: this.state.campaignType == 'OFFER' ? 'OFFER' : 'CAMPAIGN',
       isScheduled: true,
       isRepeatable: scheduleSaveMark,
       status: DEFAULT_ACTIVE_STATUS,
-      firstScheduleDateTime: this.state.campaign.startTime
+      firstScheduleDateTime: this.state.campaign.startTime,
     };
     if (scheduleSaveMark) {
       let repeatRuleConf: any = {
         frequency: scheduleData.repeatType,
-        time: moment(scheduleData.time).format("HH:mm:ss")
+        time: moment(scheduleData.time).format('HH:mm:ss'),
       };
-      if (scheduleData.repeatType === "WEEKLY") {
+      if (scheduleData.repeatType === 'WEEKLY') {
         repeatRuleConf.byWeekDay = scheduleData.days;
       }
-      scheduleData.hasOwnProperty("endTime")
+      scheduleData.hasOwnProperty('endTime')
         ? (repeatRuleConf.endAfter = scheduleData.endTime)
         : (repeatRuleConf.noOfOccurances = scheduleData.noOfOccurances);
       communicationInput.repeatRuleConfiguration = repeatRuleConf;
@@ -592,73 +592,73 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
       .updateCommunicationWithMessageTemplate({
         variables: {
           communicationInput: communicationInput,
-          messageTemplateInput: messageTemplateInput
-        }
+          messageTemplateInput: messageTemplateInput,
+        },
       })
       .then((data: any) => {
-        console.log("Communication data..", data);
+        console.log('Communication data..', data);
         this.setState({
           loading: false,
           current,
-          communication: data.data.updateCommunicationWithMessageTempate
+          communication: data.data.updateCommunicationWithMessageTempate,
         });
       })
       .catch(err => {
         this.setState({ loading: false });
-        console.log("Error Updating communication", err);
+        console.log('Error Updating communication', err);
       });
   };
 
   createCommunicationWithMessageTemplate = (current, values) => {
-    const { org_id }: any = jwt.decode(localStorage.getItem("jwt"));
+    const { org_id }: any = jwt.decode(localStorage.getItem('jwt'));
     let { communicationSelected, scheduleData, scheduleSaveMark } = this.state;
-    console.log("COMM", communicationSelected, values);
+    console.log('COMM', communicationSelected, values);
     this.setState({ loading: true });
     var messageTemplateInput = {
-      name: this.state.campaign.name + "_" + communicationSelected,
-      description: "",
+      name: this.state.campaign.name + '_' + communicationSelected,
+      description: '',
       messageFormat: communicationSelected,
       templateBodyText:
-        communicationSelected == "SMS"
+        communicationSelected == 'SMS'
           ? values.smsBody
-          : communicationSelected == "EMAIL"
-            ? values.email_body
-            : values.notificationBody,
+          : communicationSelected == 'EMAIL'
+          ? values.email_body
+          : values.notificationBody,
       templateSubjectText:
-        communicationSelected == "SMS"
+        communicationSelected == 'SMS'
           ? values.smsTag
-          : communicationSelected == "EMAIL"
-            ? values.email_subject
-            : values.notificationTag,
-      templateStyle: "MUSTACHE",
+          : communicationSelected == 'EMAIL'
+          ? values.email_subject
+          : values.notificationTag,
+      templateStyle: 'MUSTACHE',
       organization_id: org_id,
-      status: DEFAULT_ACTIVE_STATUS
+      status: DEFAULT_ACTIVE_STATUS,
     };
     var communicationInput: any = {
       entityId:
-        this.state.campaignType == "OFFER"
+        this.state.campaignType == 'OFFER'
           ? this.state.offerData.id
           : this.state.campaign.id,
-      entityType: this.state.campaignType == "OFFER" ? "OFFER" : "CAMPAIGN",
+      entityType: this.state.campaignType == 'OFFER' ? 'OFFER' : 'CAMPAIGN',
       campaign_id: this.state.campaign.id,
       isScheduled: true,
       isRepeatable: scheduleSaveMark,
       organization_id: org_id,
       status: DEFAULT_ACTIVE_STATUS,
       firstScheduleDateTime: this.state.campaign.startTime,
-      commsChannelName: "Test"
+      commsChannelName: 'Test',
     };
     if (scheduleSaveMark) {
       console.log(this.state.scheduleData);
       let repeatRuleConf: any = {
         frequency: scheduleData.repeatType,
-        time: moment(scheduleData.time).format("HH:mm:ss")
+        time: moment(scheduleData.time).format('HH:mm:ss'),
       };
-      if (scheduleData.repeatType === "WEEKLY") {
+      if (scheduleData.repeatType === 'WEEKLY') {
         repeatRuleConf.byWeekDay = scheduleData.days;
       }
 
-      scheduleData.hasOwnProperty("endTime")
+      scheduleData.hasOwnProperty('endTime')
         ? (repeatRuleConf.endAfter = scheduleData.endTime)
         : (repeatRuleConf.noOfOccurances = scheduleData.noOfOccurances);
       communicationInput.repeatRuleConfiguration = repeatRuleConf;
@@ -668,20 +668,20 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
       .createCommunicationWithMessageTemplate({
         variables: {
           communicationInput: communicationInput,
-          messageTemplateInput: messageTemplateInput
-        }
+          messageTemplateInput: messageTemplateInput,
+        },
       })
       .then(data => {
-        console.log("Communication data..", data);
+        console.log('Communication data..', data);
         this.setState({
           loading: false,
           current,
-          communication: data.data.createCommunicationWithMessageTempate
+          communication: data.data.createCommunicationWithMessageTempate,
         });
       })
       .catch(err => {
         this.setState({ loading: false });
-        console.log("Error creating communication", err);
+        console.log('Error creating communication', err);
       });
   };
 
@@ -745,121 +745,121 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
     if (this.state.noOfferRequired) {
       if (this.state.offerCreated && this.state.update)
         this.unlinkOffer(current);
-      let campaignInput = { campaignType: "MESSAGING" };
+      let campaignInput = { campaignType: 'MESSAGING' };
       this.props
         .updateCampaign({
           variables: {
             id: this.state.campaign.id,
-            input: campaignInput
-          }
+            input: campaignInput,
+          },
         })
         .then(data => {
-          console.log("Update campaign data..", data);
+          console.log('Update campaign data..', data);
           this.setState({
             current,
             loading: false,
-            campaignType: "MESSAGING",
-            offerData: undefined
+            campaignType: 'MESSAGING',
+            offerData: undefined,
           });
         })
         .catch(err => {
-          console.log("Error Update campaign", err);
+          console.log('Error Update campaign', err);
           this.setState({ loading: false });
         });
-    } else if (this.state.offer != "") {
+    } else if (this.state.offer != '') {
       if (this.state.offerCreated && this.state.update)
         this.unlinkOffer(current);
-      let { org_id }: any = jwt.decode(localStorage.getItem("jwt"));
+      let { org_id }: any = jwt.decode(localStorage.getItem('jwt'));
       let input = {
         campaignId: this.state.campaign.id,
         offerId: this.state.offer,
-        organizationId: org_id
+        organizationId: org_id,
       };
       this.props
         .addOfferToCampaign({
-          variables: { input: input }
+          variables: { input: input },
         })
         .then(data => {
-          console.log("Add Offer..", data);
+          console.log('Add Offer..', data);
           this.setState({
             loading: false,
             current,
-            offerData: data.data.addOfferToCampaign.offer
+            offerData: data.data.addOfferToCampaign.offer,
           });
         })
         .catch(err => {
           this.setState({ loading: false });
-          console.log("Error while creating audience..", err);
+          console.log('Error while creating audience..', err);
         });
     } else {
       this.setState({ loading: false });
-      message.warn("Please Select Offer");
+      message.warn('Please Select Offer');
     }
   };
 
   unlinkOffer = current => {
     this.setState({ loading: true });
-    let { org_id }: any = jwt.decode(localStorage.getItem("jwt"));
+    let { org_id }: any = jwt.decode(localStorage.getItem('jwt'));
     let input = {
       campaignId: this.state.campaign.id,
       offerId: this.state.oldOfferId,
-      organizationId: org_id
+      organizationId: org_id,
     };
     this.props
       .unlinkOffer({
-        variables: { input: input }
+        variables: { input: input },
       })
       .then(data => {
-        console.log("Remove Offer..", data);
+        console.log('Remove Offer..', data);
         // this.setState({ offerData: {} })
       })
       .catch(err => {
         this.setState({ loading: false });
-        console.log("Error while creating audience..", err);
+        console.log('Error while creating audience..', err);
       });
   };
 
   ruleQuery = current => {
     if (this.state.audienceFilterRule.rules.length)
       if (!this.state.audienceFilterRuleCreated) {
-        let { org_id }: any = jwt.decode(localStorage.getItem("jwt"));
+        let { org_id }: any = jwt.decode(localStorage.getItem('jwt'));
         const input = {
           name: Math.random()
             .toString(36)
             .substring(7),
-          description: "",
-          type: "SIMPLE",
+          description: '',
+          type: 'SIMPLE',
           organizationId: org_id,
           status: DEFAULT_ACTIVE_STATUS,
-          ruleConfiguration: this.state.audienceFilterRule
+          ruleConfiguration: this.state.audienceFilterRule,
         };
         this.props
           .createRule({ variables: { input: input } })
           .then(data => {
-            console.log("Rule data...", data);
+            console.log('Rule data...', data);
             let campaignInput = { audienceFilterRule: data.data.createRule.id };
             this.props
               .updateCampaign({
                 variables: {
                   id: this.state.campaign.id,
-                  input: campaignInput
-                }
+                  input: campaignInput,
+                },
               })
               .then(data => {
-                console.log("Update campaign data..", data);
-                this.audienceChange(current, "rule");
+                console.log('Update campaign data..', data);
+                this.audienceChange(current, 'rule');
               })
               .catch(err => {
-                console.log("Error Update campaign", err);
+                console.log('Error Update campaign', err);
                 this.setState({ loading: false });
               });
           })
           .catch(err => {
-            console.log("Error while creating the Rule", err);
+            console.log('Error while creating the Rule', err);
             this.setState({ loading: false });
           });
       } else this.ruleUpdate(current);
-    else this.audienceChange(current, "rule");
+    else this.audienceChange(current, 'rule');
   };
 
   ruleUpdate = current => {
@@ -867,17 +867,17 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
       const input = { ruleConfiguration: this.state.audienceFilterRule };
       this.props
         .updateRule({
-          variables: { id: this.state.audienceFilterRuleId, input: input }
+          variables: { id: this.state.audienceFilterRuleId, input: input },
         })
         .then(data => {
-          console.log("Rule data...", data);
-          this.audienceChange(current, "rule");
+          console.log('Rule data...', data);
+          this.audienceChange(current, 'rule');
         })
         .catch(err => {
-          console.log("Error while update the rule", err);
+          console.log('Error while update the rule', err);
           this.setState({ loading: false });
         });
-    } else this.audienceChange(current, "rule");
+    } else this.audienceChange(current, 'rule');
   };
 
   // createAudience = current => {
@@ -910,17 +910,17 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
       .updateAudiences({
         variables: {
           campaignId: this.state.campaign.id,
-          segments: this.state.selectedSegments
-        }
+          segments: this.state.selectedSegments,
+        },
       })
       .then(data => {
-        console.log("updated Audiences", data);
-        this.audienceChange(current, "audience");
+        console.log('updated Audiences', data);
+        this.audienceChange(current, 'audience');
         this.setState({ audiences: data.data.createAudienceForCampaign });
       })
       .catch(err => {
         this.setState({ loading: false });
-        console.log("Error while update Audiences", err);
+        console.log('Error while update Audiences', err);
       });
   };
 
@@ -946,24 +946,24 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
     const input = {
       ...values,
       priority: parseInt(priorityChosen),
-      campaignControlPercent: parseInt(controlValue)
+      campaignControlPercent: parseInt(controlValue),
       // campaignType: DEFAULT_HYPERX_CAMPAIGN
     };
-    console.log("campInput", input);
+    console.log('campInput', input);
     this.setState({ loading: true });
     client
       .mutate({
         mutation: UPDATE_CAMPAIGN,
         variables: {
           input: input,
-          id: campaign.id ? campaign.id : match.params.id
-        }
+          id: campaign.id ? campaign.id : match.params.id,
+        },
       })
       .then(res =>
         this.setState({
           current,
           loading: false,
-          campaign: res.data.updateCampaign
+          campaign: res.data.updateCampaign,
         })
       )
       .catch(err => {
@@ -973,37 +973,37 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
   };
 
   createCampaign = (values, current) => {
-    console.log("Create Campaign");
+    console.log('Create Campaign');
     const { client } = this.props;
     const { priorityChosen, controlValue } = this.state;
     if (!this.props.allApplications.organization)
-      return message.error("No Applications for your organization");
+      return message.error('No Applications for your organization');
     const {
-      allApplications: { organization }
+      allApplications: { organization },
     } = this.props;
-    let { org_id }: any = jwt.decode(localStorage.getItem("jwt"));
+    let { org_id }: any = jwt.decode(localStorage.getItem('jwt'));
     console.log(organization.applications);
     const input = {
       ...values,
       priority: parseInt(priorityChosen),
       campaignControlPercent: parseInt(controlValue),
       organization_id: org_id,
-      campaignTriggerType: "SCHEDULED",
+      campaignTriggerType: 'SCHEDULED',
       application_id: organization.applications[0].id,
-      campaignType: DEFAULT_HYPERX_CAMPAIGN[0]
+      campaignType: DEFAULT_HYPERX_CAMPAIGN[0],
     };
     this.setState({ loading: true });
     client
       .mutate({
         mutation: CREATE_CAMPAIGN,
-        variables: { input: input }
+        variables: { input: input },
       })
       .then(res =>
         this.setState({
           campaignCreated: true,
           current,
           loading: false,
-          campaign: res.data.createCampaign
+          campaign: res.data.createCampaign,
         })
       )
       .catch(err => {
@@ -1026,7 +1026,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
     const { testValue, controlValue } = this.state;
     this.setState({
       testControlSelected: `${testValue} % - ${controlValue}%`,
-      showTestAndControl: false
+      showTestAndControl: false,
     });
   };
 
@@ -1042,7 +1042,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
     this.setState({ communicationSelected: e.target.value });
   };
 
-  offerChecked = e => this.setState({ noOfferRequired: e, offer: "" });
+  offerChecked = e => this.setState({ noOfferRequired: e, offer: '' });
 
   handleOnOfferChange = e => {
     this.setState({ offer: e });
@@ -1050,28 +1050,28 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 
   onValuesSelected = e => {
     // let { allApplications: { organization } } = this.props;
-    let { org_id }: any = jwt.decode(localStorage.getItem("jwt"));
+    let { org_id }: any = jwt.decode(localStorage.getItem('jwt'));
     this.setState({ selectedSegments: e });
-    this.state.errors.segment = "";
-    if (e && e[0] && e[0] != "")
+    this.state.errors.segment = '';
+    if (e && e[0] && e[0] != '')
       this.props.client
         .query({
           query: AUDIENCE_COUNT,
           variables: { segments: e, organizationId: org_id },
-          fetchPolicy: "network-only"
+          fetchPolicy: 'network-only',
         })
         .then(res => {
           console.log(res.data.audienceCount.count);
           if (
             !res.data.audienceCount.count ||
-            res.data.audienceCount.count == "0"
+            res.data.audienceCount.count == '0'
           )
-            message.warn("There are NO CUSTOMERS in selected segments");
+            message.warn('There are NO CUSTOMERS in selected segments');
           this.setState({ audienceCount: res.data.audienceCount.count });
         })
         .catch(err => {
           this.setState({ spin: false });
-          console.log("Failed to get Audience Count" + err);
+          console.log('Failed to get Audience Count' + err);
         });
     else this.setState({ audienceCount: 0 });
   };
@@ -1090,7 +1090,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 
   saveSchedule = scheduleData => {
     // console.log(scheduleData, moment(scheduleData.time).format('HH:mm:ss'));
-    message.success("schedule saved");
+    message.success('schedule saved');
     this.setState({ scheduleData, scheduleSaveMark: true });
   };
 
@@ -1105,7 +1105,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
       testControlSelected,
       update,
       scheduleData,
-      communicationSelected
+      communicationSelected,
     } = this.state;
     let attributeData = [];
     if (this.props.allAttributes)
@@ -1115,15 +1115,15 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
         this.props.allAttributes.ruleAttributes.map(el => ({
           name: el.attributeName,
           id: el.id,
-          label: el.attributeName
+          label: el.attributeName,
         }));
-    else this.state.errors.rule = "you dont have any rule attributes";
+    else this.state.errors.rule = 'you dont have any rule attributes';
     const props = {
-      name: "file",
-      action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
+      name: 'file',
+      action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
       headers: {
-        authorization: "authorization-text"
-      }
+        authorization: 'authorization-text',
+      },
     };
 
     const testAndControlText =
@@ -1132,7 +1132,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
     return (
       <div>
         <WHeader
-          title={update ? "Update Campaign" : "Create Campaign"}
+          title={update ? 'Update Campaign' : 'Create Campaign'}
           extra={
             <Stepper
               stepData={stepData}
@@ -1254,7 +1254,7 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
                   communication={
                     this.state.communication.messageTemplate
                       ? `${communicationSelected} - ${this.state.communication.messageTemplate.templateSubjectText}`
-                      : ""
+                      : ''
                   }
                 />
               </div>
@@ -1266,14 +1266,14 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
         <div style={{}}>
           <div
             className="gx-card campFooter"
-            style={{ position: "absolute", width: "100%" }}
+            style={{ position: 'absolute', width: '100%' }}
           >
-            <div className="gx-card-body" style={{ background: "#F6F6F6" }}>
+            <div className="gx-card-body" style={{ background: '#F6F6F6' }}>
               <CampaignFooter
                 loading={this.state.loading}
-                nextButtonText={current === 4 ? "Launch" : "Save and Next"}
+                nextButtonText={current === 4 ? 'Launch' : 'Save and Next'}
                 saveDraftText={
-                  update ? "Save Draft" : current === 0 ? "" : "Save Draft"
+                  update ? 'Save Draft' : current === 0 ? '' : 'Save Draft'
                 }
                 saveDraft={() => this.saveDraft(current + 1)}
                 goToPage2={this.goToNextPage.bind(this, current + 1)}
@@ -1289,46 +1289,46 @@ class CampaignCreation extends Component<IProps, Partial<IState>> {
 export default withRouter(
   compose(
     graphql(allSegments, {
-      name: "segmentList",
+      name: 'segmentList',
       options: ownProps => {
-        let { org_id }: any = jwt.decode(localStorage.getItem("jwt"));
+        let { org_id }: any = jwt.decode(localStorage.getItem('jwt'));
         return {
           variables: {
             organization_id: org_id,
-            status: "ACTIVE"
+            status: 'ACTIVE',
           },
-          fetchPolicy: "network-only"
+          fetchPolicy: 'network-only',
         };
-      }
+      },
     }),
     graphql(RULE_ATTRIBUTES, {
-      name: "allAttributes",
+      name: 'allAttributes',
       options: ownProps => {
-        let { org_id }: any = jwt.decode(localStorage.getItem("jwt"));
+        let { org_id }: any = jwt.decode(localStorage.getItem('jwt'));
         return {
           variables: {
             input: {
-              entityName: "Customer",
+              entityName: 'Customer',
               status: DEFAULT_ACTIVE_STATUS,
-              organizationId: org_id
-            }
+              organizationId: org_id,
+            },
           },
-          fetchPolicy: "network-only"
+          fetchPolicy: 'network-only',
         };
-      }
+      },
     }),
     graphql(getOffers, {
-      name: "allOffers",
+      name: 'allOffers',
       options: ownProps => {
-        let { org_id }: any = jwt.decode(localStorage.getItem("jwt"));
+        let { org_id }: any = jwt.decode(localStorage.getItem('jwt'));
         return {
           variables: {
             organizationId: org_id,
-            state: "LIVE"
+            state: 'LIVE',
           },
-          fetchPolicy: "network-only"
+          fetchPolicy: 'network-only',
         };
-      }
+      },
     }),
     // graphql(GET_AUDIENCES, {
     // 	name: 'linkedAudiences',
@@ -1342,12 +1342,12 @@ export default withRouter(
     // 	})
     // }),
     graphql(GET_ALL_APPS_OF_ORGANIZATION, {
-      name: "allApplications",
+      name: 'allApplications',
       options: props => ({
         variables: {
-          id: jwt.decode(localStorage.getItem("jwt"))["org_id"]
-        }
-      })
+          id: jwt.decode(localStorage.getItem('jwt'))['org_id'],
+        },
+      }),
     }),
     // graphql(COMMUNICATIONS, {
     // 	name: "allCommunications",
@@ -1363,40 +1363,40 @@ export default withRouter(
     // }),
 
     graphql(CREATE_RULE, {
-      name: "createRule"
+      name: 'createRule',
     }),
     graphql(UPDATE_RULE, {
-      name: "updateRule"
+      name: 'updateRule',
     }),
     graphql(ADD_OFFER_TO_CAMPAIGN, {
-      name: "addOfferToCampaign"
+      name: 'addOfferToCampaign',
     }),
     graphql(UNLINK_OFFER, {
-      name: "unlinkOffer"
+      name: 'unlinkOffer',
     }),
     graphql(UPDATE_CAMPAIGN, {
-      name: "updateCampaign"
+      name: 'updateCampaign',
     }),
     graphql(PREPROCESS_LAUNCH_CAMPAIGN, {
-      name: "launchCampaign"
+      name: 'launchCampaign',
     }),
     graphql(CREATE_AUDIENCE, {
-      name: "createAudience"
+      name: 'createAudience',
     }),
     graphql(CREATE_MESSAGE_TEMPLETE, {
-      name: "messageTemplate"
+      name: 'messageTemplate',
     }),
     graphql(CREATE_COMMUNICATION, {
-      name: "createCommunication"
+      name: 'createCommunication',
     }),
     graphql(CREATE_COMMUNICATION_WITH_MESSAGE_TEMPLETE, {
-      name: "createCommunicationWithMessageTemplate"
+      name: 'createCommunicationWithMessageTemplate',
     }),
     graphql(UPDATE_COMMUNICATION_WITH_MESSAGE_TEMPLETE, {
-      name: "updateCommunicationWithMessageTemplate"
+      name: 'updateCommunicationWithMessageTemplate',
     }),
     graphql(UPDATE_AUDIENCES, {
-      name: "updateAudiences"
+      name: 'updateAudiences',
     })
   )(withApollo(CampaignCreation))
 );

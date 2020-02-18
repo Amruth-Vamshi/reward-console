@@ -1,6 +1,6 @@
-import * as React from "react";
-import { Row, Col, Input, Empty, Spin, Icon, Button } from "antd";
-import UserCard from "./UserCard";
+import * as React from 'react';
+import { Row, Col, Input, Empty, Spin, Icon, Button } from 'antd';
+import UserCard from './UserCard';
 
 const Search = Input.Search;
 
@@ -38,13 +38,13 @@ export default class UserInfo extends React.Component<UserInfoProps, {}> {
 
         {this.props.spin ? (
           <div>
-            {" "}
-            <br /> <br />{" "}
+            {' '}
+            <br /> <br />{' '}
             <div className="divCenter">
-              {" "}
-              <Spin size="large" />{" "}
-            </div>{" "}
-            <br /> <br /> <br />{" "}
+              {' '}
+              <Spin size="large" />{' '}
+            </div>{' '}
+            <br /> <br /> <br />{' '}
           </div>
         ) : this.props.data && this.props.data.length ? (
           this.props.data.map((user: any, key: any) => (

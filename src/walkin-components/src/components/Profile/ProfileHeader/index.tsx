@@ -1,5 +1,5 @@
-import * as React from "react";
-import { Avatar } from "antd";
+import * as React from 'react';
+import { Avatar } from 'antd';
 
 const ProfileHeader = () => {
   return (
@@ -11,7 +11,7 @@ const ProfileHeader = () => {
               <Avatar
                 className="gx-size-90"
                 alt="..."
-                src={"https://via.placeholder.com/150x150"}
+                src={'https://via.placeholder.com/150x150'}
               />
             </div>
             <div className="gx-profile-banner-avatar-info">

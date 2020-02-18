@@ -1,9 +1,9 @@
-import * as React from "react";
-import ChoiceInput from "./ChoiceInput";
-import { ErrorBoundary, CardBox } from "walkin-components";
-import { Row, Col, Button, Icon, Spin, Modal, Slider, InputNumber } from "antd";
-import Includes from "lodash/includes";
-import "./index.css";
+import * as React from 'react';
+import ChoiceInput from './ChoiceInput';
+import { ErrorBoundary, CardBox } from 'walkin-components';
+import { Row, Col, Button, Icon, Spin, Modal, Slider, InputNumber } from 'antd';
+import Includes from 'lodash/includes';
+import './index.css';
 const ChoiceMap = {
   SINGLE_ANSWER: true,
   MULTIPLE_ANSWER: true,
@@ -11,7 +11,7 @@ const ChoiceMap = {
   OPINION_SCALE: true,
   RANKING: true,
   DICHOTOMOUS: true,
-  TEXT: true
+  TEXT: true,
 };
 
 interface ChoiceFormProps {
@@ -40,7 +40,7 @@ export default class ChoiceForm extends React.Component<
     super(props);
     this.state = {
       visible: false,
-      inputValue: ""
+      inputValue: '',
     };
   }
 
@@ -48,7 +48,7 @@ export default class ChoiceForm extends React.Component<
     e.preventDefault();
     if (
       Includes(
-        ["RATING_SCALE", "OPINION_SCALE", "RANKING"],
+        ['RATING_SCALE', 'OPINION_SCALE', 'RANKING'],
         this.props.questionToEdit.type
       )
     ) {
@@ -61,23 +61,23 @@ export default class ChoiceForm extends React.Component<
   onChange = value => {
     console.log(value);
     this.setState({
-      inputValue: value
+      inputValue: value,
     });
   };
 
   CancelModal = () => {
     this.setState({
-      visible: false
+      visible: false,
     });
   };
 
   hideModal = () => {
     const range = {
       rangeStart: this.state.inputValue[0],
-      rangeEnd: this.state.inputValue[1]
+      rangeEnd: this.state.inputValue[1],
     };
     this.setState({
-      visible: false
+      visible: false,
     });
     this.props.addChoice(null, range);
   };
@@ -90,7 +90,7 @@ export default class ChoiceForm extends React.Component<
         <Row
           gutter={12}
           style={{
-            marginTop: "1%"
+            marginTop: '1%',
           }}
           key={choice.id}
         >
@@ -146,7 +146,7 @@ export default class ChoiceForm extends React.Component<
           </Row>
           {isChoiceLoading ? (
             <div className="divCenter">
-              <Spin size="large" indicator={antIcon} />{" "}
+              <Spin size="large" indicator={antIcon} />{' '}
             </div>
           ) : (
             this.getChoiceRows()

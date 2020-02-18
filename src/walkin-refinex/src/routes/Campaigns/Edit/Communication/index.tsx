@@ -1,5 +1,5 @@
-import * as React from "react";
-import PropTypes from "prop-types";
+import * as React from 'react';
+import PropTypes from 'prop-types';
 import {
   Col,
   Row,
@@ -10,12 +10,12 @@ import {
   Input,
   Upload,
   Button,
-  Icon
-} from "antd";
-import SMSForm from "./SMS";
-import EmailForm from "./Email";
-import PushNotification from "./Push";
-import TestComponent from "./TestCampaign/index";
+  Icon,
+} from 'antd';
+import SMSForm from './SMS';
+import EmailForm from './Email';
+import PushNotification from './Push';
+import TestComponent from './TestCampaign/index';
 const { TabPane } = Tabs;
 const { Title } = Typography;
 
@@ -59,7 +59,7 @@ const Communication: React.FC<CommunicationProps> = ({
   scheduleSaveMark,
   saveSchedule,
   form,
-  testCommunication
+  testCommunication,
 }) => {
   return (
     <div>
@@ -72,7 +72,7 @@ const Communication: React.FC<CommunicationProps> = ({
             buttonStyle="solid"
             defaultValue={defaultValue}
             onChange={onChange}
-            style={{ paddingTop: "20px" }}
+            style={{ paddingTop: '20px' }}
             value={value}
           >
             {communicationData &&
@@ -82,22 +82,22 @@ const Communication: React.FC<CommunicationProps> = ({
                 </Radio.Button>
               ))}
           </Radio.Group>
-          <div style={{ marginTop: "20px" }}>
-            {value == "SMS" && (
+          <div style={{ marginTop: '20px' }}>
+            {value == 'SMS' && (
               <SMSForm
                 wrappedComponentRef={commWrappedComponentRef}
                 formValues={communicationFormValues}
                 onFormNext={onFormNext}
               />
             )}
-            {value == "PUSH" && (
+            {value == 'PUSH' && (
               <PushNotification
                 wrappedComponentRef={pushFormRef}
                 formValues={communicationFormValues}
                 onFormNext={onFormNext}
               />
             )}
-            {value == "EMAIL" && (
+            {value == 'EMAIL' && (
               <EmailForm
                 wrappedComponentRef={emailFormRef}
                 formValues={communicationFormValues}
@@ -112,19 +112,19 @@ const Communication: React.FC<CommunicationProps> = ({
               testCommunication={testCommunication}
               text={`Test ${value.toLowerCase()} notification`}
               label={`Enter your ${
-                value == "SMS"
-                  ? "phone number"
-                  : value == "EMAIL"
-                  ? "email address"
-                  : "fcm token"
+                value == 'SMS'
+                  ? 'phone number'
+                  : value == 'EMAIL'
+                  ? 'email address'
+                  : 'fcm token'
               }`}
               name={value}
               placeholder={
-                value == "SMS"
-                  ? "phone number"
-                  : value == "EMAIL"
-                  ? "email"
-                  : "FCM token"
+                value == 'SMS'
+                  ? 'phone number'
+                  : value == 'EMAIL'
+                  ? 'email'
+                  : 'FCM token'
               }
             />
           </div>

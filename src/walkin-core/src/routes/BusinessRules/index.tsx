@@ -1,36 +1,36 @@
-import * as React from "react";
-import "./style.css";
-import { Route, Switch, Redirect } from "react-router-dom";
-import { withApollo, ApolloProviderProps } from "react-apollo";
-import * as jwt from "jsonwebtoken";
+import * as React from 'react';
+import './style.css';
+import { Route, Switch, Redirect } from 'react-router-dom';
+import { withApollo, ApolloProviderProps } from 'react-apollo';
+import * as jwt from 'jsonwebtoken';
 
-import { EditableFormTable } from "./../../../../shared/src/index";
-import { Tabs, Spin } from "antd";
-import { RULES, UPDATE_RULE } from "./../../PlatformQueries";
+import { EditableFormTable } from '../../../../shared/index';
+import { Tabs, Spin } from 'antd';
+import { RULES, UPDATE_RULE } from './../../PlatformQueries';
 
 const { TabPane } = Tabs;
 const TABLE_HEADERS = [
   {
-    title: "NO",
-    dataIndex: "no",
-    width: "10%",
+    title: 'NO',
+    dataIndex: 'no',
+    width: '10%',
     editable: false,
-    ellipsis: true
+    ellipsis: true,
   },
   {
-    title: "RULE NAME",
-    dataIndex: "rule_name",
-    width: "35%",
+    title: 'RULE NAME',
+    dataIndex: 'rule_name',
+    width: '35%',
     editable: false,
-    ellipsis: true
+    ellipsis: true,
   },
   {
-    title: "RULE VALUE",
-    dataIndex: "rule_value",
-    width: "20%",
+    title: 'RULE VALUE',
+    dataIndex: 'rule_value',
+    width: '20%',
     editable: true,
-    ellipsis: true
-  }
+    ellipsis: true,
+  },
 ];
 
 interface BusinessRulesProps extends ApolloProviderProps<any> {}
@@ -49,19 +49,19 @@ class BusinessRules extends React.Component<
     this.state = {
       rules: [],
       tableData: [],
-      loading: true
+      loading: true,
     };
   }
 
   componentWillMount() {
-    const jwtToken: any = localStorage.getItem("jwt");
+    const jwtToken: any = localStorage.getItem('jwt');
     const { org_id }: any = jwt.decode(jwtToken);
 
     this.props.client
       .query({
         query: RULES,
-        variables: { input: { organizationId: org_id, status: "ACTIVE" } },
-        fetchPolicy: "network-only"
+        variables: { input: { organizationId: org_id, status: 'ACTIVE' } },
+        fetchPolicy: 'network-only',
       })
       .then(rulesResponse => {
         let tableData = rulesResponse.data.rules.map((item, index) => {
@@ -74,25 +74,25 @@ class BusinessRules extends React.Component<
               ? ruleAttribute.rules && ruleAttribute.rules.length
                 ? ruleAttribute.rules[0].attributeValue
                 : `null`
-              : `null`
+              : `null`,
           };
         });
         this.setState({
           rules: rulesResponse.data.rules,
           tableData,
-          loading: false
+          loading: false,
         });
       });
   }
 
   onChangeData = (row: any, index: number) => {
-    console.log(row, "row");
+    console.log(row, 'row');
     let { tableData, rules } = this.state;
     tableData[index] = row;
     let input = { ...rules[index] };
-    delete input["id"];
-    delete input["status"];
-    delete input["__typename"];
+    delete input['id'];
+    delete input['status'];
+    delete input['__typename'];
     if (!input.ruleConfiguration.rules) {
       input.ruleConfiguration.rules = [{}];
     }
@@ -113,18 +113,18 @@ class BusinessRules extends React.Component<
     this.props.client
       .mutate({
         mutation: UPDATE_RULE,
-        variables: { id: rules[index].id, input: input }
+        variables: { id: rules[index].id, input: input },
       })
       .then(updateRulesResponse => {
-        console.log(updateRulesResponse, "updateResponse");
+        console.log(updateRulesResponse, 'updateResponse');
       });
     this.setState({ tableData });
   };
 
   render() {
-    const jwtToken: any = localStorage.getItem("jwt");
+    const jwtToken: any = localStorage.getItem('jwt');
     const { org_id }: any = jwt.decode(jwtToken);
-    console.log("org_id", org_id);
+    console.log('org_id', org_id);
     let { tableData, loading } = this.state;
     return (
       <div>

@@ -1,16 +1,16 @@
-import * as React from "react";
-import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
+import * as React from 'react';
+import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
 
-import { Widget } from "../../Widget/index";
+import { Widget } from '../../Widget/index';
 
 const data = [
-  { name: "Normal", value: 58 },
-  { name: "Height", value: 20 },
-  { name: "Critical", value: 8 },
-  { name: "Low", value: 15 }
+  { name: 'Normal', value: 58 },
+  { name: 'Height', value: 20 },
+  { name: 'Critical', value: 8 },
+  { name: 'Low', value: 15 },
 ];
 
-const COLORS = ["#5797fc", "#FA8C16", "#f5222d", "#d9d9d9"];
+const COLORS = ['#5797fc', '#FA8C16', '#f5222d', '#d9d9d9'];
 
 const TaskByStatus = () => {
   return (

@@ -1,7 +1,7 @@
-import React from "react";
-import { Button, Alert } from "antd";
-import ButtonGroups from "./index";
-import { storiesOf } from "@storybook/react";
+import React from 'react';
+import { Button, Alert } from 'antd';
+import ButtonGroups from './index';
+import { storiesOf } from '@storybook/react';
 // export default { title: "ButtonGroup" };
 
 // export const withText = () => <Button>Hello Lol</Button>;
@@ -14,15 +14,15 @@ import { storiesOf } from "@storybook/react";
 //   </Button>
 // );
 
-storiesOf("ButtonGroup", module)
-  .add("unchecked", () => (
+storiesOf('ButtonGroup', module)
+  .add('unchecked', () => (
     <ButtonGroups
       selectedPriorityButton={3}
       handleChange={() => {}}
       maxPriority={99}
     />
   ))
-  .add("checked", ({ state, setState }) => (
+  .add('checked', ({ state, setState }) => (
     <ButtonGroups
       selectedPriorityButton={3}
       handleChange={e => setState({ value: e.target.value })}

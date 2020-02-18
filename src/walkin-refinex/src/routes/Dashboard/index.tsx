@@ -1,13 +1,13 @@
-import * as React from "react";
-import { Col, Row } from "antd";
+import * as React from 'react';
+import { Col, Row } from 'antd';
 import {
   Area,
   AreaChart,
   Line,
   LineChart,
   ResponsiveContainer,
-  Tooltip
-} from "recharts";
+  Tooltip,
+} from 'recharts';
 import {
   ChartCard,
   Auxiliary,
@@ -18,10 +18,10 @@ import {
   CurrencyCalculator,
   CryptoNews,
   DownloadMobileApps,
-  OrderHistory
-} from "walkin-components";
-import CampaignList from "../../containers/campaignList/index";
-import { increamentData, lineData } from "./data";
+  OrderHistory,
+} from 'walkin-components';
+import CampaignList from '../../containers/campaignList/index';
+import { increamentData, lineData } from './data';
 
 const Dashboard = () => {
   return (

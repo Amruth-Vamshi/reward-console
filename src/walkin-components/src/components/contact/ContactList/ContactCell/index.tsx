@@ -1,9 +1,9 @@
-import * as React from "react";
-import { Avatar, Checkbox, Dropdown, Menu } from "antd";
+import * as React from 'react';
+import { Avatar, Checkbox, Dropdown, Menu } from 'antd';
 
-import AddContact from "../../AddContact/index";
+import AddContact from '../../AddContact/index';
 
-const options = ["Edit", "Delete"];
+const options = ['Edit', 'Delete'];
 
 interface IProps {
   onDeleteContact?: any;
@@ -20,7 +20,7 @@ class ContactCell extends React.Component<IProps, IState> {
   constructor(props) {
     super(props);
     this.state = {
-      addContactState: false
+      addContactState: false,
     };
   }
 
@@ -37,7 +37,7 @@ class ContactCell extends React.Component<IProps, IState> {
   menus = () => (
     <Menu
       onClick={e => {
-        if (e.key === "Edit") {
+        if (e.key === 'Edit') {
           this.onEditContact();
         } else {
           this.onDeleteContact(this.props.contact);
@@ -55,7 +55,7 @@ class ContactCell extends React.Component<IProps, IState> {
       contact,
       addFavourite,
       onContactSelect,
-      onSaveContact
+      onSaveContact,
     } = this.props;
     const { addContactState } = this.state;
     const { name, thumb, email, phone, designation, starred } = contact;
@@ -84,7 +84,7 @@ class ContactCell extends React.Component<IProps, IState> {
             )}
           </div>
           <div className="gx-ml-2 gx-d-none gx-d-sm-flex">
-            {thumb === null || thumb === "" ? (
+            {thumb === null || thumb === '' ? (
               <Avatar size="large">{name.charAt(0).toUpperCase()}</Avatar>
             ) : (
               <Avatar size="large" alt={name} src={thumb} />
@@ -114,7 +114,7 @@ class ContactCell extends React.Component<IProps, IState> {
             <Dropdown
               overlay={this.menus()}
               placement="bottomRight"
-              trigger={["click"]}
+              trigger={['click']}
             >
               <i className="gx-icon-btn icon icon-ellipse-v" />
             </Dropdown>

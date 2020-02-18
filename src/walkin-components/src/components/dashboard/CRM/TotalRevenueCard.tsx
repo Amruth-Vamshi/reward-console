@@ -1,20 +1,20 @@
-import * as React from "react";
-import { Bar, BarChart, ResponsiveContainer, Tooltip } from "recharts";
-import { Col, Row } from "antd";
-import Metrics from "../../Metrics/index";
-import gql from "graphql-tag";
-import { graphql } from "react-apollo";
+import * as React from 'react';
+import { Bar, BarChart, ResponsiveContainer, Tooltip } from 'recharts';
+import { Col, Row } from 'antd';
+import Metrics from '../../Metrics/index';
+import gql from 'graphql-tag';
+import { graphql } from 'react-apollo';
 
 const data = [
-  { name: "JAN", lastYear: 200, thisYear: 600 },
-  { name: "FEB", lastYear: 500, thisYear: 900 },
-  { name: "MAR", lastYear: 700, thisYear: 1200 },
-  { name: "JUN", lastYear: 500, thisYear: 900 },
-  { name: "AUG", lastYear: 200, thisYear: 800 },
-  { name: "SEP", lastYear: 400, thisYear: 400 },
-  { name: "OCT", lastYear: 400, thisYear: 500 },
-  { name: "NOV", lastYear: 400, thisYear: 1200 },
-  { name: "DEC", lastYear: 200, thisYear: 800 }
+  { name: 'JAN', lastYear: 200, thisYear: 600 },
+  { name: 'FEB', lastYear: 500, thisYear: 900 },
+  { name: 'MAR', lastYear: 700, thisYear: 1200 },
+  { name: 'JUN', lastYear: 500, thisYear: 900 },
+  { name: 'AUG', lastYear: 200, thisYear: 800 },
+  { name: 'SEP', lastYear: 400, thisYear: 400 },
+  { name: 'OCT', lastYear: 400, thisYear: 500 },
+  { name: 'NOV', lastYear: 400, thisYear: 1200 },
+  { name: 'DEC', lastYear: 200, thisYear: 800 },
 ];
 
 const TotalRevenueCard = ({ width }) => {
@@ -69,5 +69,5 @@ const GET_SETTINGS = gql`
 
 export default graphql(GET_SETTINGS, {
   props: mapStateToProps,
-  name: "settings"
+  name: 'settings',
 })(TotalRevenueCard);

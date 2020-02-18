@@ -1,6 +1,6 @@
-import * as React from "react";
-import { Select, Button, Icon } from "antd";
-import "./style.css";
+import * as React from 'react';
+import { Select, Button, Icon } from 'antd';
+import './style.css';
 
 const { Option } = Select;
 
@@ -23,15 +23,15 @@ class AddAndDeleteSelectDynamically extends React.Component<iProps, iState> {
   constructor(props: iProps) {
     super(props);
     this.state = {
-      values: this.props.values ? this.props.values : [""],
-      errors: this.props.errors ? this.props.errors : {}
+      values: this.props.values ? this.props.values : [''],
+      errors: this.props.errors ? this.props.errors : {},
     };
   }
   addClick() {
     let { values } = this.state;
     console.log(values[values.length - 1]);
-    values[values.length - 1] != "" &&
-      this.setState({ values: [...this.state.values, ""] });
+    values[values.length - 1] != '' &&
+      this.setState({ values: [...this.state.values, ''] });
   }
 
   handleChange(i: any, value: any) {
@@ -41,7 +41,7 @@ class AddAndDeleteSelectDynamically extends React.Component<iProps, iState> {
       this.setState({ values });
       this.props.onValuesSelected(values);
     }
-    if (!values[0] || values[0] == "") this.state.errors.segment = "";
+    if (!values[0] || values[0] == '') this.state.errors.segment = '';
   }
 
   UNSAFE_componentWillReceiveProps = (p: any) => {
@@ -68,7 +68,7 @@ class AddAndDeleteSelectDynamically extends React.Component<iProps, iState> {
                 showSearch
                 placeholder="Choose from the list"
                 value={el ? el : undefined}
-                style={{ width: "50%" }}
+                style={{ width: '50%' }}
                 getPopupContainer={(triggerNode: any) => triggerNode.parentNode}
                 optionFilterProp="children"
                 onChange={this.handleChange.bind(this, i)}
@@ -76,7 +76,7 @@ class AddAndDeleteSelectDynamically extends React.Component<iProps, iState> {
                 {segmentSelectionData &&
                   segmentSelectionData.map((val: any, i: number) => (
                     <Option key={i} value={val.id}>
-                      {" "}
+                      {' '}
                       {val.name}
                     </Option>
                   ))}
@@ -85,16 +85,16 @@ class AddAndDeleteSelectDynamically extends React.Component<iProps, iState> {
             </div>
           );
         })}
-        <div style={{ color: "Red", marginTop: 10 }}>
-          {this.state.errors.segment}{" "}
+        <div style={{ color: 'Red', marginTop: 10 }}>
+          {this.state.errors.segment}{' '}
         </div>
         <Button
           className="newSegmentAddButton"
           type="primary"
           onClick={this.addClick.bind(this)}
         >
-          {" "}
-          Add{" "}
+          {' '}
+          Add{' '}
         </Button>
       </React.Fragment>
     );

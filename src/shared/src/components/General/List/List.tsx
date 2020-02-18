@@ -1,6 +1,6 @@
-import React from "react";
-import { List, Avatar, Col, Row } from "antd";
-import { CustomButton, Image } from "shared";
+import React from 'react';
+import { List, Avatar, Col, Row } from 'antd';
+import { CustomButton, Image } from 'shared';
 
 interface ListProps {
   actionableButtonText: string;
@@ -46,7 +46,7 @@ export default class CustomList extends React.Component<ListProps, ListState> {
   constructor(props: ListProps) {
     super(props);
     this.state = {
-      data: props.data
+      data: props.data,
     };
   }
 
@@ -71,7 +71,7 @@ export default class CustomList extends React.Component<ListProps, ListState> {
           scaleType={this.props.imageScaleType}
           height={this.props.imageHeight}
           width={this.props.imageWidth}
-          source={require("../../../assets/walkin.png")}
+          source={require('../../../assets/walkin.png')}
           alternate_text="image-placeholder"
           style={this.props.imageStyle}
         />
@@ -82,8 +82,8 @@ export default class CustomList extends React.Component<ListProps, ListState> {
   renderContent(item: ListItem) {
     return (
       <Col span={this.props.contentSpan} style={this.props.contentStyle}>
-        <Row>{item.title ? item.title : "Title"}</Row>
-        <Row>{item.subTitle ? item.subTitle : "SubTitle"}</Row>
+        <Row>{item.title ? item.title : 'Title'}</Row>
+        <Row>{item.subTitle ? item.subTitle : 'SubTitle'}</Row>
       </Col>
     );
   }
@@ -96,7 +96,7 @@ export default class CustomList extends React.Component<ListProps, ListState> {
             type={this.props.actionableButtonType}
             disabled={false}
             style={{}}
-            onClick={() => console.log("actionable button clicked")}
+            onClick={() => console.log('actionable button clicked')}
           >
             {this.props.actionableButtonText}
           </CustomButton>
@@ -106,12 +106,12 @@ export default class CustomList extends React.Component<ListProps, ListState> {
     return (
       <Col span={this.props.actionSpan} style={this.props.actionStyle}>
         <Row>
-          {item.actionableTitle ? item.actionableTitle : "actionableTitle"}
+          {item.actionableTitle ? item.actionableTitle : 'actionableTitle'}
         </Row>
         <Row>
           {item.actionableSubTitle
             ? item.actionableSubTitle
-            : "actionableSubTitle"}
+            : 'actionableSubTitle'}
         </Row>
       </Col>
     );

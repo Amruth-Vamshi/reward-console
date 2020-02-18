@@ -1,8 +1,8 @@
-import * as React from "react";
-import PropTypes from "prop-types";
-import { Col, Row, Form, Select, Input, Button, Icon } from "antd";
-import { AddAndDeleteSelectDynamically, WalkinQueryBuilder } from "shared";
-import { FormComponentProps } from "antd/lib/form";
+import * as React from 'react';
+import PropTypes from 'prop-types';
+import { Col, Row, Form, Select, Input, Button, Icon } from 'antd';
+import { AddAndDeleteSelectDynamically, WalkinQueryBuilder } from 'shared';
+import { FormComponentProps } from 'antd/lib/form';
 
 let id = 0;
 
@@ -19,28 +19,28 @@ class Filter extends React.Component<FilterProps, {}> {
   }
   removeFields = k => {
     const { form } = this.props;
-    const keys = form.getFieldValue("keys");
+    const keys = form.getFieldValue('keys');
     if (keys.length === 1) {
       return;
     }
     form.setFieldsValue({
-      keys: keys.filter(key => key !== k)
+      keys: keys.filter(key => key !== k),
     });
   };
 
   addFields = () => {
     const { form } = this.props;
-    const keys = form.getFieldValue("keys");
+    const keys = form.getFieldValue('keys');
     const nextKeys = keys.concat(id++);
     form.setFieldsValue({
-      keys: nextKeys
+      keys: nextKeys,
     });
   };
 
   render() {
     const { getFieldDecorator, getFieldValue } = this.props.form;
-    getFieldDecorator("keys", { initialValue: [] });
-    const keys = getFieldValue("keys");
+    getFieldDecorator('keys', { initialValue: [] });
+    const keys = getFieldValue('keys');
     const formItems = keys.map((key, index) => {
       return (
         <Form.Item key={key}>
@@ -49,9 +49,9 @@ class Filter extends React.Component<FilterProps, {}> {
               rules: [
                 {
                   required: true,
-                  message: "Please select an attribute type!"
-                }
-              ]
+                  message: 'Please select an attribute type!',
+                },
+              ],
             })(
               <Select style={{ width: 100 }} placeholder="Select an attribute">
                 <Select.Option value="ccd_event">NAME</Select.Option>
@@ -64,9 +64,9 @@ class Filter extends React.Component<FilterProps, {}> {
               rules: [
                 {
                   required: true,
-                  message: "Please select an attribute type!"
-                }
-              ]
+                  message: 'Please select an attribute type!',
+                },
+              ],
             })(
               <Select style={{ width: 100 }} placeholder="Select an attribute">
                 <Select.Option value="equal_to">EQUALS_TO</Select.Option>
@@ -79,9 +79,9 @@ class Filter extends React.Component<FilterProps, {}> {
               rules: [
                 {
                   required: true,
-                  message: "Please select an attribute value!"
-                }
-              ]
+                  message: 'Please select an attribute value!',
+                },
+              ],
             })(<Input />)}
           </Form.Item>
           {keys.length > 1 ? (
@@ -95,12 +95,12 @@ class Filter extends React.Component<FilterProps, {}> {
       );
     });
     return (
-      <Row style={{ marginTop: "1rem" }}>
+      <Row style={{ marginTop: '1rem' }}>
         <Col span={6}>
           <h2>Filter</h2>
         </Col>
         <Col span={14}>
-          <Form layout="inline" onSubmit={() => console.log("submit")}>
+          <Form layout="inline" onSubmit={() => console.log('submit')}>
             {formItems}
             <WalkinQueryBuilder
               query={this.props.query}
@@ -124,7 +124,7 @@ class Filter extends React.Component<FilterProps, {}> {
 }
 
 const FilterForm = Form.create<FilterProps>({
-  name: "Filter",
+  name: 'Filter',
   onFieldsChange(props, changedFields) {
     console.log(changedFields);
   },
@@ -140,8 +140,8 @@ const FilterForm = Form.create<FilterProps>({
   //   });
   // },
   onValuesChange(_, values) {
-    console.log("values", values);
-  }
+    console.log('values', values);
+  },
 })(Filter);
 
 export default FilterForm;

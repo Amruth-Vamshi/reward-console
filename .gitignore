@@ -119,3 +119,5 @@ yarn-error.log*
 
 /dist
 yarn.lock
+
+/storybook-static 

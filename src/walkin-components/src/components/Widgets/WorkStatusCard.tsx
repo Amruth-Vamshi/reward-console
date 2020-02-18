@@ -1,19 +1,19 @@
-import * as React from "react";
-import { Badge } from "antd";
-import { Area, AreaChart, ResponsiveContainer, Tooltip } from "recharts";
-import { Widget } from "../Widget";
+import * as React from 'react';
+import { Badge } from 'antd';
+import { Area, AreaChart, ResponsiveContainer, Tooltip } from 'recharts';
+import { Widget } from '../Widget';
 
 const data = [
-  { name: "Page A", lastWeek: 1900, thisWeek: 3200 },
-  { name: "Page B", lastWeek: 1300, thisWeek: 4000 },
-  { name: "Page C", lastWeek: 1850, thisWeek: 2500 },
-  { name: "Page D", lastWeek: 1680, thisWeek: 3000 },
-  { name: "Page H", lastWeek: 3900, thisWeek: 2560 },
-  { name: "Page I", lastWeek: 1400, thisWeek: 2700 },
-  { name: "Page J", lastWeek: 2200, thisWeek: 2000 },
-  { name: "Page K", lastWeek: 1300, thisWeek: 2000 },
-  { name: "Page L", lastWeek: 1880, thisWeek: 3408 },
-  { name: "Page M", lastWeek: 2290, thisWeek: 2960 }
+  { name: 'Page A', lastWeek: 1900, thisWeek: 3200 },
+  { name: 'Page B', lastWeek: 1300, thisWeek: 4000 },
+  { name: 'Page C', lastWeek: 1850, thisWeek: 2500 },
+  { name: 'Page D', lastWeek: 1680, thisWeek: 3000 },
+  { name: 'Page H', lastWeek: 3900, thisWeek: 2560 },
+  { name: 'Page I', lastWeek: 1400, thisWeek: 2700 },
+  { name: 'Page J', lastWeek: 2200, thisWeek: 2000 },
+  { name: 'Page K', lastWeek: 1300, thisWeek: 2000 },
+  { name: 'Page L', lastWeek: 1880, thisWeek: 3408 },
+  { name: 'Page M', lastWeek: 2290, thisWeek: 2960 },
 ];
 
 const WorkStatusCard = () => {
@@ -54,7 +54,7 @@ const WorkStatusCard = () => {
       }
     >
       <Badge className="gx-badge-up gx-badge-up-right gx-bg-white gx-text-primary gx-size-36">
-        <i className="icon icon-long-arrow-right gx-fs-lg" />{" "}
+        <i className="icon icon-long-arrow-right gx-fs-lg" />{' '}
       </Badge>
       <h4>Works Status</h4>
       <p className="gx-text-light gx-fs-sm gx-mb-0">Last week progress</p>

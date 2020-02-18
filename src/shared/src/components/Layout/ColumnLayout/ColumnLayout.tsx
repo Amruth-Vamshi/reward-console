@@ -1,6 +1,6 @@
-import React from "react";
-import Col from "antd/lib/col";
-import Row from "antd/lib/row";
+import React from 'react';
+import Col from 'antd/lib/col';
+import Row from 'antd/lib/row';
 
 interface ColumnLayoutProps {
   cstyle: any;

@@ -1,7 +1,7 @@
-import * as React from "react";
-import { Button } from "antd";
-import StarRatingComponent from "react-star-rating-component";
-import { IntlMessages } from "../..";
+import * as React from 'react';
+import { Button } from 'antd';
+import StarRatingComponent from 'react-star-rating-component';
+import { IntlMessages } from '../../..';
 
 const ProductItem = ({ product, grid }) => {
   const {
@@ -12,12 +12,12 @@ const ProductItem = ({ product, grid }) => {
     offer,
     variant,
     rating,
-    description
+    description,
   } = product;
   return (
     <div
       className={`gx-product-item  ${
-        grid ? "gx-product-vertical" : "gx-product-horizontal"
+        grid ? 'gx-product-vertical' : 'gx-product-horizontal'
       }`}
     >
       <div className="gx-product-image">
@@ -31,7 +31,7 @@ const ProductItem = ({ product, grid }) => {
       <div className="gx-product-body">
         <h3 className="gx-product-title">
           {name}
-          <small className="gx-text-grey">{", " + variant}</small>
+          <small className="gx-text-grey">{', ' + variant}</small>
         </h3>
         <div className="ant-row-flex">
           <h4>{price} </h4>

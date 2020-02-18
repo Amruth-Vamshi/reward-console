@@ -1,7 +1,7 @@
-import * as React from "react";
-import { Avatar, Input, Modal } from "antd";
+import * as React from 'react';
+import { Avatar, Input, Modal } from 'antd';
 
-import { InjectMassageModule as IntlMessages } from "../../../util/IntlMessages";
+import { InjectMassageModule as IntlMessages } from '../../../util/IntlMessages';
 
 interface IProps {
   onSaveContact?: any;
@@ -35,7 +35,7 @@ class AddContact extends React.Component<IProps, IState> {
       designation,
       selected,
       starred,
-      frequently
+      frequently,
     } = props.contact;
     this.state = {
       id,
@@ -46,7 +46,7 @@ class AddContact extends React.Component<IProps, IState> {
       designation,
       selected,
       starred,
-      frequently
+      frequently,
     };
   }
 
@@ -60,16 +60,16 @@ class AddContact extends React.Component<IProps, IState> {
       designation,
       selected,
       starred,
-      frequently
+      frequently,
     } = this.state;
     let { thumb } = this.state;
     if (!thumb) {
-      thumb = require("assets/images/placeholder.jpg");
+      thumb = require('assets/images/placeholder.jpg');
     }
     return (
       <Modal
         title={
-          contact.name === "" ? (
+          contact.name === '' ? (
             <IntlMessages id="contact.addContact" />
           ) : (
             <IntlMessages id="contact.saveContact" />
@@ -78,7 +78,7 @@ class AddContact extends React.Component<IProps, IState> {
         visible={open}
         closable={false}
         onOk={() => {
-          if (name === "") return;
+          if (name === '') return;
           onContactClose();
           onSaveContact({
             id: id,
@@ -89,15 +89,15 @@ class AddContact extends React.Component<IProps, IState> {
             designation: designation,
             selected: selected,
             starred: starred,
-            frequently: frequently
+            frequently: frequently,
           });
           this.setState({
             id: id + 1,
-            name: "",
-            thumb: "",
-            email: "",
-            phone: "",
-            designation: ""
+            name: '',
+            thumb: '',
+            email: '',
+            phone: '',
+            designation: '',
           });
         }}
         onCancel={onContactClose}

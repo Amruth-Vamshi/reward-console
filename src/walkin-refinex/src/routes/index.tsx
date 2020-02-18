@@ -1,21 +1,21 @@
-import * as React from "react";
-import { Redirect, Route, Switch } from "react-router-dom";
-import NewSegment from "../containers/segment/newSegment";
-import { NEW_SEGMENT, SEGMENT_LIST } from "../Utils";
-import RefineXApps from "../containers/App";
-import Dashboard from "../containers/Dashboard";
-import Campaign from "./Campaigns";
-import SegementLIst from "../containers/segment/segmentList";
-import NewSegement from "../containers/segment/newSegment";
-import analytics from "../containers/Analytics";
-import IssueTag from "../containers/IssueTags";
-import "./style.css";
-import { RouteChildrenProps } from "react-router";
+import * as React from 'react';
+import { Redirect, Route, Switch } from 'react-router-dom';
+import NewSegment from '../containers/segment/newSegment';
+import { NEW_SEGMENT, SEGMENT_LIST } from '../Utils';
+import RefineXApps from '../containers/App';
+import Dashboard from '../containers/Dashboard';
+import Campaign from './Campaigns';
+import SegementLIst from '../containers/segment/segmentList';
+import NewSegement from '../containers/segment/newSegment';
+import analytics from '../containers/Analytics';
+import IssueTag from '../containers/IssueTags';
+import './style.css';
+import { RouteChildrenProps } from 'react-router';
 
 interface RefineXRoutesProps extends RouteChildrenProps {}
 
 const RefineXRoutes: React.FunctionComponent<RefineXRoutesProps> = ({
-  match
+  match,
 }) => {
   return (
     <div className="RefineX-Main">

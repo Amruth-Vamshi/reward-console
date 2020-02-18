@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 import {
   Col,
   Row,
@@ -16,14 +16,14 @@ import {
   Switch,
   List,
   Avatar,
-  Skeleton
-} from "antd";
+  Skeleton,
+} from 'antd';
 import {
   IconWithTextCard,
   Widget,
   ChartCard,
-  Auxiliary
-} from "walkin-components";
+  Auxiliary,
+} from 'walkin-components';
 
 interface loyaltyProps {}
 
@@ -43,27 +43,27 @@ interface loyaltyState {
 const data = {
   results: [
     {
-      id: "1",
-      currencyName: "Beans",
-      value: "1",
-      rupee: "1",
-      disabled: true
+      id: '1',
+      currencyName: 'Beans',
+      value: '1',
+      rupee: '1',
+      disabled: true,
     },
     {
-      id: "2",
-      currencyName: "Rupee",
-      value: "1",
-      rupee: "1",
-      disabled: true
+      id: '2',
+      currencyName: 'Rupee',
+      value: '1',
+      rupee: '1',
+      disabled: true,
     },
     {
-      id: "3",
-      currencyName: "CCD Points",
-      value: "1",
-      rupee: "1",
-      disabled: true
-    }
-  ]
+      id: '3',
+      currencyName: 'CCD Points',
+      value: '1',
+      rupee: '1',
+      disabled: true,
+    },
+  ],
 };
 
 function findItemInItems(items, itemToBeFound) {
@@ -85,14 +85,14 @@ export default class Dashboard extends React.Component<
     this.state = {
       bordered: false,
       loading: false,
-      pagination: "",
+      pagination: '',
       // size: "default",
       title: undefined,
       showHeader: true,
       scroll: undefined,
       hasData: true,
       data: data.results,
-      count: 1
+      count: 1,
     };
   }
 
@@ -114,13 +114,13 @@ export default class Dashboard extends React.Component<
     const { data } = this.state;
     const newData = {
       id: new Date(),
-      currencyName: "V Points",
-      value: "1",
-      rupee: "100",
-      disabled: true
+      currencyName: 'V Points',
+      value: '1',
+      rupee: '100',
+      disabled: true,
     };
     this.setState({
-      data: [...data, newData]
+      data: [...data, newData],
     });
   };
 
@@ -131,21 +131,21 @@ export default class Dashboard extends React.Component<
 
   handleEdit = item => {
     const old = item.disabled;
-    console.log("old", old);
-    console.log("data", data);
+    console.log('old', old);
+    console.log('data', data);
 
     let itemFound = findItemInItems(this.state.data, item);
-    console.log("itemFound", itemFound);
+    console.log('itemFound', itemFound);
 
     itemFound.disabled = !old;
     const new_array: any = this.state.data.filter(obj => {
       if (obj.id === item.id) {
         return {
           id: item.id,
-          currencyName: "",
-          value: "1",
-          rupee: "100",
-          disabled: true
+          currencyName: '',
+          value: '1',
+          rupee: '100',
+          disabled: true,
         };
       } else {
         return obj;
@@ -243,7 +243,7 @@ export default class Dashboard extends React.Component<
       <Auxiliary>
         <div
           style={{
-            minHeight: "100vh"
+            minHeight: '100vh',
             // maxWidth: "50vw" //html css
           }}
           className="gx-main-content-wrapper" // wieldy class
@@ -254,30 +254,30 @@ export default class Dashboard extends React.Component<
               <span
                 className="gx-d-none gx-d-sm-flex"
                 style={{
-                  width: "100%",
+                  width: '100%',
                   fontSize: 20,
-                  color: "black"
+                  color: 'black',
                 }}
               >
                 Loyalty Cards
               </span>
             </Col>
           </Row>
-          <Card style={{ width: "60%", margin: "auto", maxWidth: "800px" }}>
+          <Card style={{ width: '60%', margin: 'auto', maxWidth: '800px' }}>
             <Row>
-              <Col style={{ width: "50%" }}>Card Name</Col>
-              <Col style={{ width: "50%" }}>Currency</Col>
+              <Col style={{ width: '50%' }}>Card Name</Col>
+              <Col style={{ width: '50%' }}>Currency</Col>
             </Row>
             <Row>
-              <Col style={{ width: "50%" }}>
+              <Col style={{ width: '50%' }}>
                 <Input placeholder="Basic usage"></Input>
               </Col>
-              <Col style={{ width: "50%" }}>
+              <Col style={{ width: '50%' }}>
                 <div style={{ marginBottom: 10 }}>
                   <Select
-                    value={"text"}
+                    value={'text'}
                     showSearch
-                    style={{ width: "100%" }}
+                    style={{ width: '100%' }}
                     placeholder="Select Frequency"
                     optionFilterProp="children"
                     // onChange={this.onChange.bind(this, record)}
@@ -297,15 +297,15 @@ export default class Dashboard extends React.Component<
               </Col>
             </Row>
             <Row>
-              <Col style={{ width: "50%" }}>
+              <Col style={{ width: '50%' }}>
                 <Input placeholder="Basic usage"></Input>
               </Col>
-              <Col style={{ width: "50%" }}>
+              <Col style={{ width: '50%' }}>
                 <div style={{ marginBottom: 10 }}>
                   <Select
-                    value={"text"}
+                    value={'text'}
                     showSearch
-                    style={{ width: "100%" }}
+                    style={{ width: '100%' }}
                     placeholder="Select Frequency"
                     optionFilterProp="children"
                     // onChange={this.onChange.bind(this, record)}
@@ -325,20 +325,20 @@ export default class Dashboard extends React.Component<
               </Col>
             </Row>
           </Card>
-          <div style={{ margin: "auto" }}>
-            <Button type="primary" size={"large"}>
+          <div style={{ margin: 'auto' }}>
+            <Button type="primary" size={'large'}>
               Download
             </Button>
           </div>
-          <Card style={{ width: "70%", margin: "auto", maxWidth: "800px" }}>
+          <Card style={{ width: '70%', margin: 'auto', maxWidth: '800px' }}>
             <Row>
-              <Col style={{ width: "50%" }}>
+              <Col style={{ width: '50%' }}>
                 Setup Currency For Loyalty Card
               </Col>
-              <Col style={{ width: "50%" }}>
+              <Col style={{ width: '50%' }}>
                 <span
                   className="gx-link "
-                  style={{ float: "right" }}
+                  style={{ float: 'right' }}
                   onClick={() => this.handleAdd()}
                 >
                   + Add new currency
@@ -346,9 +346,9 @@ export default class Dashboard extends React.Component<
               </Col>
             </Row>
             <Row style={{ marginTop: 10 }}>
-              <Col style={{ width: "40%" }}>Currency Name</Col>
-              <Col style={{ width: "40%" }}>Value</Col>
-              <Col style={{ width: "20%" }}>Rupee</Col>
+              <Col style={{ width: '40%' }}>Currency Name</Col>
+              <Col style={{ width: '40%' }}>Value</Col>
+              <Col style={{ width: '20%' }}>Rupee</Col>
             </Row>
             {/* <Table
               style={{
@@ -378,17 +378,17 @@ export default class Dashboard extends React.Component<
                       title={<a href="https://ant.design">{item.name.last}</a>}
                       description="Ant Design, a design language for background applications, is refined by Ant UED Team"
                     /> */}
-                    <div style={{ width: "40%", height: "10vh" }}>
+                    <div style={{ width: '40%', height: '10vh' }}>
                       <Input
                         value={item.currencyName}
                         disabled={item.disabled}
                       />
                     </div>
                     {/* <div>content</div> */}
-                    <div style={{ width: "40%", height: "10vh" }}>
+                    <div style={{ width: '40%', height: '10vh' }}>
                       <Input value={item.value} disabled={item.disabled} />
                     </div>
-                    <div style={{ width: "20%", height: "10vh" }}>
+                    <div style={{ width: '20%', height: '10vh' }}>
                       <Input value={item.rupee} disabled={item.disabled} />
                     </div>
                   </Skeleton>

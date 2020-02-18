@@ -1,15 +1,15 @@
-import * as React from "react";
-import { Auxiliary } from "walkin-components";
+import * as React from 'react';
+import { Auxiliary } from 'walkin-components';
 import {
   Circle,
   GoogleMap,
   InfoWindow,
   Marker,
-  withGoogleMap
-} from "react-google-maps";
-import DrawingManager from "react-google-maps/lib/components/drawing/DrawingManager";
-import canUseDOM from "can-use-dom";
-const markerIcon = require("walkin-components/src/assets/images/marker-location.png");
+  withGoogleMap,
+} from 'react-google-maps';
+import DrawingManager from 'react-google-maps/lib/components/drawing/DrawingManager';
+import canUseDOM from 'can-use-dom';
+const markerIcon = require('walkin-components/src/assets/images/marker-location.png');
 
 interface iProps {
   setlocationDetails?: any;
@@ -26,14 +26,14 @@ const geolocation: any =
     : {
         getCurrentPosition(success, failure) {
           failure(`Your browser doesn't support geolocation.`);
-        }
+        },
       };
 
 const Geofences = mapData => {
   let geoFen = [];
   geoFen = mapData.places.map((place, index) => (
     <div key={index}>
-      {" "}
+      {' '}
       {place.center.lat && place.center.lng && (
         <div>
           {/* <InfoWindow position={place.center}>    
@@ -45,33 +45,33 @@ const Geofences = mapData => {
             center={place.center}
             radius={place.radius[0]}
             options={{
-              fillColor: "#1DD9FA",
+              fillColor: '#1DD9FA',
               fillOpacity: 0.3,
-              strokeColor: "#62A7FF",
+              strokeColor: '#62A7FF',
               strokeOpacity: 1,
-              strokeWeight: 1
+              strokeWeight: 1,
             }}
           />
           <Circle
             center={place.center}
             radius={place.radius[1] ? place.radius[1] : 0}
             options={{
-              fillColor: "#1DD9FA",
+              fillColor: '#1DD9FA',
               fillOpacity: 0.2,
-              strokeColor: "#BA7EFE",
+              strokeColor: '#BA7EFE',
               strokeOpacity: 1,
-              strokeWeight: 1
+              strokeWeight: 1,
             }}
           />
           <Circle
             center={place.center}
             radius={place.radius[2] ? place.radius[2] : 0}
             options={{
-              fillColor: "#FFA6A6",
+              fillColor: '#FFA6A6',
               fillOpacity: 0.18,
-              strokeColor: "#FF8686",
+              strokeColor: '#FF8686',
               strokeOpacity: 1,
-              strokeWeight: 1
+              strokeWeight: 1,
             }}
           />
         </div>
@@ -106,7 +106,7 @@ const GeolocationExampleGoogleMap = withGoogleMap((props: any) => (
         }
       />
     ) : (
-      ""
+      ''
     )}
 
     {Geofences(props.mapData)}
@@ -116,22 +116,22 @@ const GeolocationExampleGoogleMap = withGoogleMap((props: any) => (
         center={props.mapData.mark}
         radius={props.mapData.searchRadius}
         options={{
-          fillColor: "#11FFDE",
+          fillColor: '#11FFDE',
           fillOpacity: 0.2,
-          strokeColor: "#C1FF00",
+          strokeColor: '#C1FF00',
           strokeOpacity: 1,
-          strokeWeight: 1
+          strokeWeight: 1,
         }}
       />
     ) : (
-      ""
+      ''
     )}
 
     {props.mapData.getLoc ? (
       <DrawingManager
         defaultDrawingMode={google.maps.drawing.OverlayType.MARKER}
         defaultOptions={{
-          drawingControl: true
+          drawingControl: true,
         }}
         onMarkerComplete={marker => {
           // console.log(marker.getPosition());
@@ -144,7 +144,7 @@ const GeolocationExampleGoogleMap = withGoogleMap((props: any) => (
         }}
       />
     ) : (
-      ""
+      ''
     )}
   </GoogleMap>
 ));
@@ -165,10 +165,10 @@ export default class GeofenceMap extends React.Component<iProps, iState> {
       var center = this.state.center;
       center = {
         lat: position.coords.latitude,
-        lng: position.coords.longitude
+        lng: position.coords.longitude,
       };
       this.setState({ center });
-      console.log("My Location  " + center);
+      console.log('My Location  ' + center);
     });
   }
 

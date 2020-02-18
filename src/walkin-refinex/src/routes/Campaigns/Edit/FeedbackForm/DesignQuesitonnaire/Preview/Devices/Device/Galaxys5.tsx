@@ -1,5 +1,5 @@
-import "../index.css";
-import * as React from "react";
+import '../index.css';
+import * as React from 'react';
 
 class Galaxys5 extends React.Component {
   constructor(props) {

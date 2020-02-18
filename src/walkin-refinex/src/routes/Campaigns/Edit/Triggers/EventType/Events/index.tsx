@@ -1,16 +1,16 @@
-import React, { Component } from "react";
-import { graphql, compose } from "react-apollo";
-import "./index.css";
-import { ApolloProviderProps } from "react-apollo";
+import React, { Component } from 'react';
+import { graphql, compose } from 'react-apollo';
+import './index.css';
+import { ApolloProviderProps } from 'react-apollo';
 import {
   EVENT_SUBSCRITPION_FOR_EVENT_TYPE,
   EVENT_TYPE_FOR_APPLICATION,
   CREATE_EVENT_TYPE,
-  CREATE_EVENT_SUBSCRIPTIONS
-} from "../../../../../../containers/Query";
+  CREATE_EVENT_SUBSCRIPTIONS,
+} from '../../../../../../containers/Query';
 
-import { Row, Col, Form, Select, Divider, Button, Icon, Spin } from "antd";
-import { FormComponentProps } from "antd/lib/form";
+import { Row, Col, Form, Select, Divider, Button, Icon, Spin } from 'antd';
+import { FormComponentProps } from 'antd/lib/form';
 interface EventsProps extends FormComponentProps, ApolloProviderProps<any> {
   applications?: any;
   eventType?: any;
@@ -41,7 +41,7 @@ class Events extends Component<EventsProps, EventsState> {
   getApplicationOptions = () => {
     return this.props.applications.map(app => {
       return (
-        <Select.Option style={{ margin: "13px" }} value={app.id} key={app.id}>
+        <Select.Option style={{ margin: '13px' }} value={app.id} key={app.id}>
           {app.name}
         </Select.Option>
       );
@@ -52,26 +52,26 @@ class Events extends Component<EventsProps, EventsState> {
     const { getFieldDecorator } = this.props.form;
     console.log(this.props);
     return (
-      <Row style={{ marginTop: "2rem" }}>
+      <Row style={{ marginTop: '2rem' }}>
         <Col span={24}>
           <Row>
             <Col span={6}>
               <h2>App</h2>
             </Col>
             <Col span={12}>
-              <Form layout="vertical" onSubmit={() => console.log("submit")}>
+              <Form layout="vertical" onSubmit={() => console.log('submit')}>
                 <Form.Item label="Choose an App">
-                  {getFieldDecorator("application", {
+                  {getFieldDecorator('application', {
                     rules: [
                       {
                         required: true,
-                        message: "Please select an event type!"
-                      }
-                    ]
+                        message: 'Please select an event type!',
+                      },
+                    ],
                   })(
                     <Select
                       style={{
-                        width: 250
+                        width: 250,
                       }}
                       notFoundContent={
                         this.props.eventType.loading ? (
@@ -81,13 +81,13 @@ class Events extends Component<EventsProps, EventsState> {
                       placeholder="Select an Application"
                     >
                       <Select.Option key="addnewApplication">
-                        <div style={{ padding: "8px", cursor: "pointer" }}>
-                          <Button style={{ margin: "auto", left: "15%" }}>
-                            {" "}
-                            <Icon type="plus" /> Add new App{" "}
+                        <div style={{ padding: '8px', cursor: 'pointer' }}>
+                          <Button style={{ margin: 'auto', left: '15%' }}>
+                            {' '}
+                            <Icon type="plus" /> Add new App{' '}
                           </Button>
                         </div>
-                        <Divider style={{ margin: "4px 0" }} />
+                        <Divider style={{ margin: '4px 0' }} />
                       </Select.Option>
                       {this.props.eventType.loading ? (
                         <Select.Option value="loading" key="999999">
@@ -105,7 +105,7 @@ class Events extends Component<EventsProps, EventsState> {
 
           <Divider
             style={{
-              color: "white"
+              color: 'white',
             }}
           />
           <Row>
@@ -113,19 +113,19 @@ class Events extends Component<EventsProps, EventsState> {
               <h2>Event</h2>
             </Col>
             <Col span={12}>
-              <Form layout="vertical" onSubmit={() => console.log("submit")}>
+              <Form layout="vertical" onSubmit={() => console.log('submit')}>
                 <Form.Item label="Choose an event type">
-                  {getFieldDecorator("event", {
+                  {getFieldDecorator('event', {
                     rules: [
                       {
                         required: true,
-                        message: "Please select an event type!"
-                      }
-                    ]
+                        message: 'Please select an event type!',
+                      },
+                    ],
                   })(
                     <Select
                       style={{
-                        width: 500
+                        width: 500,
                       }}
                       notFoundContent={
                         this.props.eventType.loading ? (
@@ -154,7 +154,7 @@ class Events extends Component<EventsProps, EventsState> {
 }
 
 const EventsForm = Form.create<EventsProps>({
-  name: "Events",
+  name: 'Events',
   onValuesChange(props: EventsProps, values) {
     console.log(values);
     // if (values.event) {
@@ -180,20 +180,20 @@ const EventsForm = Form.create<EventsProps>({
     //     value: selectedApplication
     //   }),
     // };
-  }
+  },
 })(Events);
 
 export default compose(
   graphql(EVENT_TYPE_FOR_APPLICATION, {
-    name: "eventType"
+    name: 'eventType',
   }),
   graphql(EVENT_SUBSCRITPION_FOR_EVENT_TYPE, {
-    name: "eventSubscrptionForEvent"
+    name: 'eventSubscrptionForEvent',
   }),
   graphql(CREATE_EVENT_TYPE, {
-    name: "createEventTYpe"
+    name: 'createEventTYpe',
   }),
   graphql(CREATE_EVENT_SUBSCRIPTIONS, {
-    name: "createEventSubscription"
+    name: 'createEventSubscription',
   })
 )(EventsForm);

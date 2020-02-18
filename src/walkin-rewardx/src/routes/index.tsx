@@ -1,24 +1,24 @@
-import * as React from "react";
-import { Redirect, Route, Switch } from "react-router-dom";
+import * as React from 'react';
+import { Redirect, Route, Switch } from 'react-router-dom';
 // import NewSegment from '../containers/segment/newSegment';
 // import { NEW_SEGMENT, SEGMENT_LIST } from "../Utils"
 // import RefineXApps from "../containers/App"
-import Dashboard from "../containers/Dashboard";
+import Dashboard from '../containers/Dashboard';
 // import Campaign from "./Campaigns"
 // import SegementLIst from '../containers/segment/segmentList'
 // import NewSegement from '../containers/segment/newSegment'
 // import analytics from '../containers/Analytics'
 // import "./style.css"
-import { RouteChildrenProps } from "react-router";
-import LoyaltyCard from "../containers/Dashboard/LoyaltyCard";
-import Reports from "../containers/Reports";
+import { RouteChildrenProps } from 'react-router';
+import LoyaltyCard from '../containers/Dashboard/LoyaltyCard';
+import Reports from '../containers/Reports';
 
 interface RewardXRoutesProps extends RouteChildrenProps {}
 
 const RewardXRoutes: React.FunctionComponent<RewardXRoutesProps> = ({
-  match
+  match,
 }) => {
-  console.log("match", match);
+  console.log('match', match);
   return (
     <div className="RewardX-Main">
       <Switch>

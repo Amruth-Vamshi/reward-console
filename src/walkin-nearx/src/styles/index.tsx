@@ -1,2 +1,2 @@
-import "./places.css";
-import "./styles.css";
+import './places.css';
+import './styles.css';

@@ -1,5 +1,5 @@
-import * as React from "react";
-import { Col, Row, Checkbox } from "antd";
+import * as React from 'react';
+import { Col, Row, Checkbox } from 'antd';
 
 interface iProps {
   hp?: any;
@@ -31,24 +31,24 @@ export default class HotspotCard extends React.Component<iProps, iState> {
         </Col>
 
         <Col
-          style={{ float: "right", marginRight: -15 }}
+          style={{ float: 'right', marginRight: -15 }}
           className="placeCardLocation"
           span={10}
         >
           <Row>
-            Latitude:-{" "}
+            Latitude:-{' '}
             <span style={{ marginBottom: 5 }}>
               {data.center.lat
                 .toString()
-                .slice(0, data.center.lat.toString().indexOf(".") + 8)}
+                .slice(0, data.center.lat.toString().indexOf('.') + 8)}
             </span>
           </Row>
           <Row>
-            Longitude:-{" "}
+            Longitude:-{' '}
             <span>
               {data.center.lng
                 .toString()
-                .slice(0, data.center.lng.toString().indexOf(".") + 8)}
+                .slice(0, data.center.lng.toString().indexOf('.') + 8)}
             </span>
           </Row>
         </Col>

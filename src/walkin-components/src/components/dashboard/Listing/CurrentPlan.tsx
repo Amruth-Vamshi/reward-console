@@ -1,6 +1,6 @@
-import * as React from "react";
-import { Button } from "antd";
-import { Widget } from "../../Widget";
+import * as React from 'react';
+import { Button } from 'antd';
+import { Widget } from '../../Widget';
 
 const CurrentPlan = () => {
   return (
@@ -10,7 +10,7 @@ const CurrentPlan = () => {
       }
       extra={
         <span className="gx-text-primary gx-fs-md gx-pointer gx-ml-auto gx-oth-plans-up">
-          Other plans{" "}
+          Other plans{' '}
           <i className="icon icon-long-arrow-right gx-fs-xxl gx-ml-2 gx-d-inline-flex gx-vertical-align-middle" />
         </span>
       }
@@ -21,11 +21,11 @@ const CurrentPlan = () => {
             $19<sub className="gx-fs-md gx-bottom-0">/month</sub>
           </h2>
           <p className="gx-mb-1">
-            <span className="gx-size-8 gx-bg-dark gx-rounded-xs gx-d-inline-block gx-mr-1" />{" "}
+            <span className="gx-size-8 gx-bg-dark gx-rounded-xs gx-d-inline-block gx-mr-1" />{' '}
             Max listing items 2K
           </p>
           <p>
-            <span className="gx-size-8 gx-bg-dark gx-rounded-xs gx-d-inline-block gx-mr-1" />{" "}
+            <span className="gx-size-8 gx-bg-dark gx-rounded-xs gx-d-inline-block gx-mr-1" />{' '}
             Max agents - 10
           </p>
         </div>
@@ -36,7 +36,7 @@ const CurrentPlan = () => {
               Renew Plan
             </Button>
             <span className="gx-text-primary gx-fs-md gx-pointer gx-mts-3 gx-oth-plans-down">
-              Other plans{" "}
+              Other plans{' '}
               <i className="icon icon-long-arrow-right gx-fs-xxl gx-ml-2 gx-d-inline-flex gx-vertical-align-middle" />
             </span>
           </div>

@@ -1,4 +1,4 @@
-import gql from "graphql-tag";
+import gql from 'graphql-tag';
 export const allSegments = gql`
   query($organization_id: ID!, $status: STATUS!) {
     segments(status: $status, organization_id: $organization_id) {

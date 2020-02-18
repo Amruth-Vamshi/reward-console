@@ -1,3 +1,3 @@
 export default {
-  footerText: "Copyright First Walkin Technologies © 2019"
+  footerText: 'Copyright First Walkin Technologies © 2019',
 };

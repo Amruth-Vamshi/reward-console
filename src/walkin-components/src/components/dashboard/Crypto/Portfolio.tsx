@@ -1,7 +1,7 @@
-import * as React from "react";
-import { Widget } from "../../Widget";
-import { Button, Col, Row } from "antd";
-import LineIndicator from "./LineIndicator";
+import * as React from 'react';
+import { Widget } from '../../Widget';
+import { Button, Col, Row } from 'antd';
+import LineIndicator from './LineIndicator';
 
 export const Portfolio = () => {
   return (
@@ -26,7 +26,7 @@ export const Portfolio = () => {
           </div>
 
           <p className="gx-text-primary gx-pointer gx-d-none gx-d-sm-block gx-mb-1">
-            <i className="icon icon-add-circle gx-fs-lg gx-d-inline-flex gx-vertical-align-middle" />{" "}
+            <i className="icon icon-add-circle gx-fs-lg gx-d-inline-flex gx-vertical-align-middle" />{' '}
             Add New Wallet
           </p>
         </Col>
@@ -63,7 +63,7 @@ export const Portfolio = () => {
               </li>
             </ul>
             <p className="gx-text-primary gx-pointer gx-d-block gx-d-sm-none gx-mb-0 gx-mt-3">
-              <i className="icon icon-add-circle gx-fs-lg gx-d-inline-flex gx-vertical-align-middle" />{" "}
+              <i className="icon icon-add-circle gx-fs-lg gx-d-inline-flex gx-vertical-align-middle" />{' '}
               Add New Wallet
             </p>
           </div>

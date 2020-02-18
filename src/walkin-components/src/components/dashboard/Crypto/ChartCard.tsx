@@ -1,6 +1,6 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { Widget } from "../../Widget";
+import { Widget } from '../../Widget';
 
 interface ChartCardProps {
   prize?: string | number;
@@ -17,7 +17,7 @@ export const ChartCard: React.FunctionComponent<ChartCardProps> = ({
   children,
   styleName,
   desc,
-  icon
+  icon,
 }) => {
   return (
     <Widget styleName="gx-card-full">
@@ -32,7 +32,7 @@ export const ChartCard: React.FunctionComponent<ChartCardProps> = ({
                 {title}% <i className="icon icon-menu-up gx-fs-sm" />
               </span>
             ) : (
-              ""
+              ''
             )}
           </h2>
           <i

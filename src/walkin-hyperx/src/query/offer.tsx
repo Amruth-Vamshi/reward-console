@@ -1,4 +1,4 @@
-import gql from "graphql-tag";
+import gql from 'graphql-tag';
 export const products = gql`
   query($organizationId: ID!) {
     products(input: { organizationId: $organizationId }) {

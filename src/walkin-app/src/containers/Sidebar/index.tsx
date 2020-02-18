@@ -1,14 +1,14 @@
-import * as React from "react";
-import { Drawer, Layout } from "antd";
+import * as React from 'react';
+import { Drawer, Layout } from 'antd';
 
-import CoreSidebarContent from "walkin-core/src/containers/SidebarContent";
-import HyperXSidebarContent from "walkin-hyperx/src/containers/SidebarContent";
-import NearXSidebarContent from "walkin-nearx/src/containers/SidebarContent";
-import RefineXSidebarContent from "walkin-refinex/src/containers/SidebarContent";
-import RewardXSidebarContent from "walkin-rewardx/src/containers/SidebarContent";
-import HomeSidebarContent from "../SidebarContent";
+import CoreSidebarContent from 'walkin-core/src/containers/SidebarContent';
+import HyperXSidebarContent from 'walkin-hyperx/src/containers/SidebarContent';
+import NearXSidebarContent from 'walkin-nearx/src/containers/SidebarContent';
+import RefineXSidebarContent from 'walkin-refinex/src/containers/SidebarContent';
+import RewardXSidebarContent from 'walkin-rewardx/src/containers/SidebarContent';
+import HomeSidebarContent from '../SidebarContent';
 
-import { withRouter } from "react-router-dom";
+import { withRouter } from 'react-router-dom';
 
 import {
   NAV_STYLE_DRAWER,
@@ -18,11 +18,11 @@ import {
   NAV_STYLE_NO_HEADER_MINI_SIDEBAR,
   TAB_SIZE,
   TAB_SIZE_MAX,
-  THEME_TYPE_LITE
-} from "walkin-components/src/constants/ThemeSetting";
-import { Query, compose, graphql } from "react-apollo";
-import gql from "graphql-tag";
-import { Location } from "history";
+  THEME_TYPE_LITE,
+} from 'walkin-components/src/constants/ThemeSetting';
+import { Query, compose, graphql } from 'react-apollo';
+import gql from 'graphql-tag';
+import { Location } from 'history';
 
 const { Sider } = Layout;
 
@@ -39,7 +39,7 @@ interface IProps {
 export class Sidebar extends React.Component<IProps, IState> {
   onToggleCollapsedNav = () => {
     this.props.toggleCollapsedSideNav({
-      variables: { navCollapsed: !this.props.navCollapsed }
+      variables: { navCollapsed: !this.props.navCollapsed },
     });
   };
 
@@ -56,23 +56,23 @@ export class Sidebar extends React.Component<IProps, IState> {
   getSideBar1() {
     // console.log("SIDEBAR>>>", this.props)
     const { location } = this.props;
-    const appName = location.pathname.split("/")[1];
+    const appName = location.pathname.split('/')[1];
     switch (appName) {
-      case "home":
+      case 'home':
         return <HomeSidebarContent />;
-      case "core":
+      case 'core':
         return <CoreSidebarContent />;
-      case "refinex":
+      case 'refinex':
         return <RefineXSidebarContent />;
       // case "hyperx":
       //   return <HyperXSidebarContent />;
       // case "refinex":
       //   return <RefineXSidebarContent />;
-      case "hyperx":
+      case 'hyperx':
         return <HyperXSidebarContent />;
-      case "nearx":
+      case 'nearx':
         return <NearXSidebarContent />;
-      case "rewardx":
+      case 'rewardx':
         return <RewardXSidebarContent />;
       default:
         return <HomeSidebarContent />;
@@ -82,18 +82,18 @@ export class Sidebar extends React.Component<IProps, IState> {
   render() {
     const { themeType, navCollapsed, width, navStyle } = this.props;
 
-    let drawerStyle = "gx-collapsed-sidebar";
+    let drawerStyle = 'gx-collapsed-sidebar';
 
     if (navStyle === NAV_STYLE_FIXED) {
-      drawerStyle = "";
+      drawerStyle = '';
     } else if (navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR) {
-      drawerStyle = "gx-mini-sidebar gx-mini-custom-sidebar";
+      drawerStyle = 'gx-mini-sidebar gx-mini-custom-sidebar';
     } else if (navStyle === NAV_STYLE_NO_HEADER_EXPANDED_SIDEBAR) {
-      drawerStyle = "gx-custom-sidebar";
+      drawerStyle = 'gx-custom-sidebar';
     } else if (navStyle === NAV_STYLE_MINI_SIDEBAR) {
-      drawerStyle = "gx-mini-sidebar";
+      drawerStyle = 'gx-mini-sidebar';
     } else if (navStyle === NAV_STYLE_DRAWER) {
-      drawerStyle = "gx-collapsed-sidebar";
+      drawerStyle = 'gx-collapsed-sidebar';
     }
     if (
       (navStyle === NAV_STYLE_FIXED ||
@@ -101,12 +101,12 @@ export class Sidebar extends React.Component<IProps, IState> {
         navStyle === NAV_STYLE_NO_HEADER_EXPANDED_SIDEBAR) &&
       width < TAB_SIZE
     ) {
-      drawerStyle = "gx-collapsed-sidebar";
+      drawerStyle = 'gx-collapsed-sidebar';
     }
     return (
       <Sider
         className={`gx-app-sidebar ${drawerStyle} ${
-          themeType !== THEME_TYPE_LITE ? "gx-layout-sider-dark" : null
+          themeType !== THEME_TYPE_LITE ? 'gx-layout-sider-dark' : null
         }`}
         trigger={null}
         collapsed={
@@ -123,7 +123,7 @@ export class Sidebar extends React.Component<IProps, IState> {
         {navStyle === NAV_STYLE_DRAWER || width < TAB_SIZE ? (
           <Drawer
             className={`gx-drawer-sidebar ${
-              themeType !== THEME_TYPE_LITE ? "gx-drawer-sidebar-dark" : null
+              themeType !== THEME_TYPE_LITE ? 'gx-drawer-sidebar-dark' : null
             }`}
             placement="left"
             closable={false}
@@ -169,7 +169,7 @@ const mapStateToProps = ({ settings }: any) => {
 
 export default compose(
   withRouter,
-  graphql(GET_SETTINGS, { name: "settings", props: mapStateToProps }),
+  graphql(GET_SETTINGS, { name: 'settings', props: mapStateToProps }),
   // graphql(UPDATE_WINDOW_WIDTH, { name: "updateWindowWidth" }),
-  graphql(TOGGLE_COLLAPSED_SIDENAV, { name: "toggleCollapsedSideNav" })
+  graphql(TOGGLE_COLLAPSED_SIDENAV, { name: 'toggleCollapsedSideNav' })
 )(Sidebar);

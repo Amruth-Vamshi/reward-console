@@ -1,6 +1,6 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
-import EventItem from "./EventItem";
+import EventItem from './EventItem';
 
 interface IProps {
   eventList: any[];

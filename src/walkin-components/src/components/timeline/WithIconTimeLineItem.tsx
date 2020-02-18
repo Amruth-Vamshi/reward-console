@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 
 const WithIconTimeLineItem = ({ styleName, color, timeLine, children }) => {
   const { time, title, description } = timeLine;

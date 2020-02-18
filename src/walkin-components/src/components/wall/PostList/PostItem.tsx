@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import { Avatar, Card } from "antd";
+import React, { Component } from 'react';
+import { Avatar, Card } from 'antd';
 
-import CommentBox from "./CommentBox";
-import MediaList from "./MediaList";
-import DisplayDate from "../DisplayDate/index";
+import CommentBox from './CommentBox';
+import MediaList from './MediaList';
+import DisplayDate from '../DisplayDate/index';
 
 interface IProps {
   postData: any;
@@ -31,31 +31,31 @@ class PostItem extends Component<IProps, IState> {
   constructor(props) {
     super(props);
     this.state = {
-      message: "",
+      message: '',
       user: {},
       post: {
         id: 0,
-        text: "",
+        text: '',
         user: {},
-        date: "",
+        date: '',
         mediaList: [],
         viewCount: 0,
         likeCount: 0,
         isLike: false,
-        commentList: []
-      }
+        commentList: [],
+      },
     };
   }
   _handleKeyPress = e => {
-    if (e.key === "Enter") {
-      console.log("user --->", this.state.user);
+    if (e.key === 'Enter') {
+      console.log('user --->', this.state.user);
       const commentData = {
         user: this.state.user,
         comment: this.state.message,
         date: new Date().toString(),
         likeCount: 0,
         isLike: true,
-        commentList: []
+        commentList: [],
       };
 
       let commentArray = this.state.post.commentList;
@@ -63,9 +63,9 @@ class PostItem extends Component<IProps, IState> {
       this.setState(previousState => ({
         post: {
           ...previousState.post,
-          commentList: commentArray
+          commentList: commentArray,
         },
-        message: ""
+        message: '',
       }));
     }
   };
@@ -76,7 +76,7 @@ class PostItem extends Component<IProps, IState> {
 
   updateCommentValue(evt) {
     this.setState({
-      message: evt.target.value
+      message: evt.target.value,
     });
   }
 
@@ -88,8 +88,8 @@ class PostItem extends Component<IProps, IState> {
         likeCount:
           previousState.post.isLike === true
             ? previousState.post.likeCount - 1
-            : previousState.post.likeCount + 1
-      }
+            : previousState.post.likeCount + 1,
+      },
     }));
   }
 
@@ -102,7 +102,7 @@ class PostItem extends Component<IProps, IState> {
       likeCount,
       isLike,
       commentList,
-      text
+      text,
     } = this.state.post;
     return (
       <Card className="gx-card">
@@ -122,7 +122,7 @@ class PostItem extends Component<IProps, IState> {
             <p className="gx-fs-sm gx-pointer gx-mr-3 gx-text-grey">
               <i className="icon icon-view-o gx-fs-lg gx-mr-2 gx-d-inline-flex gx-vertical-align-middle" />
               <span className="gx-d-inline-flex gx-vertical-align-middle">
-                {viewCount > 0 ? viewCount + " Views" : "Views"}
+                {viewCount > 0 ? viewCount + ' Views' : 'Views'}
               </span>
             </p>
             <p
@@ -132,21 +132,21 @@ class PostItem extends Component<IProps, IState> {
               {isLike === true ? (
                 <i
                   className="icon icon-like gx-fs-lg gx-mr-2 gx-d-inline-flex gx-vertical-align-middle"
-                  style={{ color: "blue" }}
+                  style={{ color: 'blue' }}
                 />
               ) : (
                 <i className="icon icon-like-o gx-fs-lg gx-mr-2 gx-d-inline-flex gx-vertical-align-middle" />
               )}
               <span className="gx-d-inline-flex gx-vertical-align-middle">
-                {likeCount > 0 ? likeCount + " Likes" : "Likes"}
+                {likeCount > 0 ? likeCount + ' Likes' : 'Likes'}
               </span>
             </p>
             <p className="gx-fs-sm gx-pointer gx-mr-3 gx-text-grey">
               <i className="icon icon-chat-bubble gx-fs-lg gx-mr-2 gx-d-inline-flex gx-vertical-align-middle" />
               <span className="gx-d-inline-flex gx-vertical-align-middle">
                 {commentList.length > 0
-                  ? commentList.length + " Comments"
-                  : "Comments"}
+                  ? commentList.length + ' Comments'
+                  : 'Comments'}
               </span>
             </p>
           </div>

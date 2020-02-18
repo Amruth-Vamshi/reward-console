@@ -1,7 +1,7 @@
-import * as React from "react";
-import { Col, Row, Tabs } from "antd";
-import AboutItem from "./AboutItem";
-import { Widget } from "../../Widget";
+import * as React from 'react';
+import { Col, Row, Tabs } from 'antd';
+import AboutItem from './AboutItem';
+import { Widget } from '../../Widget';
 
 const TabPane = Tabs.TabPane;
 

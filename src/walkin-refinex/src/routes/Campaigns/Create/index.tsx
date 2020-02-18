@@ -1,27 +1,27 @@
-import "./Create.css";
-import * as React from "react";
-import { Row, Col, Button, message } from "antd";
-import CampaignConfig from "../Edit/Campaign";
+import './Create.css';
+import * as React from 'react';
+import { Row, Col, Button, message } from 'antd';
+import CampaignConfig from '../Edit/Campaign';
 // import Audience from "./Audience";
-import Audience from "shared/src/components/campaignCreation/audience";
-import { CampaignFooter } from "shared";
-import "shared/src/components/campaignCreation/audience/style.css";
-import Comm from "shared/src/components/campaignCreation/communication";
+import Audience from 'shared/src/components/campaignCreation/audience';
+import { CampaignFooter } from 'shared';
+import 'shared/src/components/campaignCreation/audience/style.css';
+import Comm from 'shared/src/components/campaignCreation/communication';
 // import Communication from "../Edit/Communication";
-import Triggers from "../Edit/Triggers";
-import { campaignOverview as Overview } from "shared";
-import FeedbackFormConfig from "../Edit/FeedbackForm";
-import ContainerHeader from "../CampaignHeader";
-import gql from "graphql-tag";
+import Triggers from '../Edit/Triggers';
+import { campaignOverview as Overview } from 'shared';
+import FeedbackFormConfig from '../Edit/FeedbackForm';
+import ContainerHeader from '../CampaignHeader';
+import gql from 'graphql-tag';
 import {
   compose,
   graphql,
   withApollo,
   ApolloProviderProps,
-  Query
-} from "react-apollo";
-import Stepper from "../Stepper";
-import isEmpty from "lodash/isEmpty";
+  Query,
+} from 'react-apollo';
+import Stepper from '../Stepper';
+import isEmpty from 'lodash/isEmpty';
 import {
   CREATE_FEEDBACK_FORM,
   CREATE_CAMPAIGN,
@@ -31,18 +31,18 @@ import {
   UPDATE_CAMPAIGN,
   createCommunication,
   createMessageTemplate,
-  ADD_APPLICATION
-} from "../../../containers/Query";
-import { CAMPAIGN_TYPE, TEMPLATE_STYLE } from "../../../Utils";
-import jwt from "jsonwebtoken";
-import { GET_ALL_APPS_OF_ORGANIZATION } from "walkin-core/src/PlatformQueries";
-import { CustomScrollbars } from "walkin-components";
-import { RouteChildrenProps } from "react-router";
-import { Location } from "history";
+  ADD_APPLICATION,
+} from '../../../containers/Query';
+import { CAMPAIGN_TYPE, TEMPLATE_STYLE } from '../../../Utils';
+import jwt from 'jsonwebtoken';
+import { GET_ALL_APPS_OF_ORGANIZATION } from 'walkin-core/src/PlatformQueries';
+import { CustomScrollbars } from 'walkin-components';
+import { RouteChildrenProps } from 'react-router';
+import { Location } from 'history';
 const communicationData = [
-  { value: "SMS", title: "SMS" },
+  { value: 'SMS', title: 'SMS' },
   // { value: 'push', title: 'Push Notification' },
-  { value: "EMAIL", title: "EMAIL" }
+  { value: 'EMAIL', title: 'EMAIL' },
 ];
 
 interface CreateCampaignProps
@@ -93,9 +93,9 @@ class CreateCampaign extends React.Component<
   constructor(props: CreateCampaignProps) {
     super(props);
     this.state = {
-      communication: "",
-      communications: "",
-      feedbackForm: "",
+      communication: '',
+      communications: '',
+      feedbackForm: '',
       current: 0,
       loading: false,
       priorityChosen: 3,
@@ -103,40 +103,40 @@ class CreateCampaign extends React.Component<
       showTestAndControl: false,
       testValue: 95,
       controlValue: 5,
-      testControlSelected: "",
-      communicationSelected: "SMS",
+      testControlSelected: '',
+      communicationSelected: 'SMS',
       communicationFormValues: {},
       formValues: {},
       campaign: {},
       segmentList: {},
       attributeData: {},
-      query: { id: "1", combinator: "and", rules: [] },
-      formName: "default",
+      query: { id: '1', combinator: 'and', rules: [] },
+      formName: 'default',
       stepperData: [
         {
-          title: "Basic Info"
+          title: 'Basic Info',
         },
         {
-          title: "Form"
+          title: 'Form',
         },
         {
-          title: "Audience"
+          title: 'Audience',
         },
         {
-          title: "Trigger"
+          title: 'Trigger',
         },
         {
-          title: "Communication"
+          title: 'Communication',
         },
         {
-          title: "Overview"
-        }
-      ]
+          title: 'Overview',
+        },
+      ],
     };
   }
   onTestAndControlEdit = () => {
     this.setState({
-      showTestAndControl: true
+      showTestAndControl: true,
     });
   };
   onChange = current => {
@@ -147,10 +147,10 @@ class CreateCampaign extends React.Component<
     const { location } = this.props;
     if (location && location.state) {
       if (location.state.campaignSelected) {
-        if (location.state.campaignSelected.name !== "") {
+        if (location.state.campaignSelected.name !== '') {
           const newCampaign = {
             ...location.state.campaignSelected,
-            name: location.state.campaignSelected.name + " " + "copy 1"
+            name: location.state.campaignSelected.name + ' ' + 'copy 1',
           };
           this.setState({ campaign: newCampaign, formValues: newCampaign });
         }
@@ -166,8 +166,8 @@ class CreateCampaign extends React.Component<
         mutation: CREATE_FEEDBACK_FORM,
         variables: {
           campaignId: campaignId,
-          formName: formName
-        }
+          formName: formName,
+        },
       });
       console.log(createFeedbackForm);
       return createFeedbackForm;
@@ -179,37 +179,37 @@ class CreateCampaign extends React.Component<
   createCampaign = async values => {
     const { client } = this.props;
     const { priorityChosen, controlValue } = this.state;
-    const { org_id }: any = jwt.decode(localStorage.getItem("jwt"));
+    const { org_id }: any = jwt.decode(localStorage.getItem('jwt'));
     const input = {
       ...values,
       priority: parseInt(priorityChosen),
       campaignControlPercent: parseInt(controlValue),
       organization_id: org_id,
-      campaignType: CAMPAIGN_TYPE
+      campaignType: CAMPAIGN_TYPE,
     };
     this.setState({ loading: true });
     try {
       const createCampaign = await client.mutate({
         mutation: CREATE_CAMPAIGN,
         variables: {
-          input: input
-        }
+          input: input,
+        },
       });
-      console.log("createCampaign...", createCampaign);
+      console.log('createCampaign...', createCampaign);
       const feedbackForm = await this.createFeedbackForm(
         createCampaign.data.createCampaign.id
       );
       this.setState({
         loading: false,
         campaign: createCampaign.data.createCampaign,
-        feedbackForm: feedbackForm.data.createFeedbackForm
+        feedbackForm: feedbackForm.data.createFeedbackForm,
       });
       if (createCampaign.data.createCampaign.id) {
         this.props.history.push({
           pathname: `/refinex/feedback/${createCampaign.data.createCampaign.id}/edit`,
           state: {
-            current: this.state.current + 1
-          }
+            current: this.state.current + 1,
+          },
         });
       }
     } catch (err) {
@@ -231,21 +231,21 @@ class CreateCampaign extends React.Component<
       const form =
         this.formRef && this.formRef.props && this.formRef.props.form;
       if (form) {
-        let name = form.getFieldValue("name");
-        let startTime = form.getFieldValue("startTime");
-        let endTime = form.getFieldValue("endTime");
+        let name = form.getFieldValue('name');
+        let startTime = form.getFieldValue('startTime');
+        let endTime = form.getFieldValue('endTime');
 
         if (name.length === 0 || name === undefined || name === null) {
-          message.warning("Survey name is mandatory");
+          message.warning('Survey name is mandatory');
           return;
         }
         if (startTime === undefined || startTime === null) {
-          message.warning("Start Date is mandatory");
+          message.warning('Start Date is mandatory');
           return;
         }
 
         if (endTime === undefined || endTime === null) {
-          message.warning("End Date is mandatory");
+          message.warning('End Date is mandatory');
           return;
         }
 
@@ -260,124 +260,124 @@ class CreateCampaign extends React.Component<
 
             this.setState({
               formValues: values,
-              current: current
+              current: current,
             });
           }
         });
       }
     } else {
       this.setState({
-        current: current
+        current: current,
       });
     }
   }
 
   ruleQuery = current => {
-    const { org_id }: any = jwt.decode(localStorage.getItem("jwt"));
+    const { org_id }: any = jwt.decode(localStorage.getItem('jwt'));
     const input = {
       name: Math.random()
         .toString(36)
         .substring(7),
-      description: "",
-      type: "SIMPLE",
+      description: '',
+      type: 'SIMPLE',
       organizationId: org_id,
-      status: "ACTIVE",
-      ruleConfiguration: JSON.stringify(this.state.query)
+      status: 'ACTIVE',
+      ruleConfiguration: JSON.stringify(this.state.query),
     };
     this.props
       .rule({
         variables: {
-          input: input
-        }
+          input: input,
+        },
       })
       .then(data => {
-        console.log("Trigger Rule data...", data);
+        console.log('Trigger Rule data...', data);
         if (current == 2)
           var input = {
-            audienceFilterRule: data.data.createRule.id
+            audienceFilterRule: data.data.createRule.id,
           };
         if (current == 3) {
           let input = {
-            triggerRule: data.data.createRule.id
+            triggerRule: data.data.createRule.id,
           };
         }
         this.props
           .updateCampaign({
             variables: {
               id: this.state.campaign.id,
-              input: input
-            }
+              input: input,
+            },
           })
           .then(data => {
-            console.log("Update campaign data..", data);
+            console.log('Update campaign data..', data);
           });
       })
       .catch(err => {
-        console.log("Error creating the question", err);
+        console.log('Error creating the question', err);
       });
   };
 
   createCommunicationMutation = (current, values) => {
-    console.log("message format..", this.state.communicationSelected);
-    const { org_id }: any = jwt.decode(localStorage.getItem("jwt"));
+    console.log('message format..', this.state.communicationSelected);
+    const { org_id }: any = jwt.decode(localStorage.getItem('jwt'));
     var input = {
       name: this.props.campaign.campaign.name,
-      description: "",
+      description: '',
       messageFormat: this.state.communicationSelected,
       templateBodyText:
-        this.state.communicationSelected == "SMS"
+        this.state.communicationSelected == 'SMS'
           ? values.smsBody
           : values.email_body,
       templateSubjectText:
-        this.state.communicationSelected == "SMS"
+        this.state.communicationSelected == 'SMS'
           ? values.smsTag
           : values.email_subject,
       templateStyle: TEMPLATE_STYLE,
       organization_id: org_id,
-      status: "ACTIVE"
+      status: 'ACTIVE',
     };
     this.props
       .messageTemplate({
         variables: {
-          input: input
-        }
+          input: input,
+        },
       })
       .then(data => {
-        console.log("MessageTemplate data..", data);
-        const { org_id }: any = jwt.decode(localStorage.getItem("jwt"));
+        console.log('MessageTemplate data..', data);
+        const { org_id }: any = jwt.decode(localStorage.getItem('jwt'));
         let input = {
           entityId: this.props.campaign.campaign.id, // campainId
-          entityType: "Campaign",
+          entityType: 'Campaign',
           messageTemplateId: data.data.createMessageTemplate.id,
           isScheduled: true,
           isRepeatable: false,
           organization_id: org_id,
-          status: "ACTIVE",
+          status: 'ACTIVE',
           firstScheduleDateTime: this.props.campaign.campaign.startTime,
-          commsChannelName: "Test"
+          commsChannelName: 'Test',
         };
         this.props
           .communication({
             variables: {
-              input: input
-            }
+              input: input,
+            },
           })
           .then(data => {
-            console.log("Communication data..", data);
-            console.log("this.setState...", data.data.createCommunication);
+            console.log('Communication data..', data);
+            console.log('this.setState...', data.data.createCommunication);
             this.setState({ communications: data.data.createCommunication });
           })
           .catch(err => {
-            console.log("Error creating for communication", err);
+            console.log('Error creating for communication', err);
           });
       })
       .catch(err => {
-        console.log("Error creating for message template", err);
+        console.log('Error creating for message template', err);
       });
   };
 
   onFormNext = e => {
-    console.log("e", e);
+    console.log('e', e);
     e.preventDefault();
   };
 
@@ -397,7 +397,7 @@ class CreateCampaign extends React.Component<
     const { testValue, controlValue } = this.state;
     this.setState({
       testControlSelected: `${testValue} % - ${controlValue}%`,
-      showTestAndControl: false
+      showTestAndControl: false,
     });
   };
 
@@ -413,7 +413,7 @@ class CreateCampaign extends React.Component<
   setFeedbackForm = (formName, e) => {
     console.log(formName);
     this.setState({
-      formName: formName
+      formName: formName,
     });
   };
 
@@ -426,16 +426,16 @@ class CreateCampaign extends React.Component<
       testControlSelected,
       campaign,
       feedbackForm,
-      formName
+      formName,
     } = this.state;
-    console.log("This.state...", this.state);
+    console.log('This.state...', this.state);
     let attributeData =
       this.props.allAttributes &&
       this.props.allAttributes.ruleAttributes &&
       this.props.allAttributes.ruleAttributes.map(el => ({
         name: el.attributeName,
         id: el.id,
-        label: el.attributeName
+        label: el.attributeName,
       }));
     switch (this.state.current) {
       case 0:
@@ -454,7 +454,7 @@ class CreateCampaign extends React.Component<
             priorityButtonText="Custom no"
             testControlTitle="Test & Control"
             testControlPercentage={
-              testControlSelected ? testControlSelected : "95% - 5%"
+              testControlSelected ? testControlSelected : '95% - 5%'
             }
             handleButtonGroupChange={this.handleButtonGroupChange}
             testControlPercentageEditText="Edit"
@@ -463,8 +463,8 @@ class CreateCampaign extends React.Component<
             onTestAndControlEdit={this.onTestAndControlEdit}
             showTestAndControl={showTestAndControl}
             popupTitle="Test & Control"
-            handleOk={() => console.log("okay")}
-            handleCancel={() => console.log("cancel")}
+            handleOk={() => console.log('okay')}
+            handleCancel={() => console.log('cancel')}
             applyTestControlChange={this.applyTestControlChange}
             popupbodyText="Divide customers selected for a specific audience into local test and local control
             groups"
@@ -488,7 +488,7 @@ class CreateCampaign extends React.Component<
             <Audience
               audienceTitle="Audience"
               segmentSubTitle="Segment"
-              onValuesSelected={() => console.log("value selected")}
+              onValuesSelected={() => console.log('value selected')}
               segmentSelectionData={this.props.segmentList.segments}
               uploadCsvText="Upload CSV"
               // uploadProps={props}
@@ -511,13 +511,13 @@ class CreateCampaign extends React.Component<
         return (
           <Comm
             subTitle="Communication"
-            onChange={() => console.log("communication change")}
+            onChange={() => console.log('communication change')}
             communicationData={communicationData}
             defaultValue={this.state.communicationSelected}
             value={this.state.communicationSelected}
-            commWrappedComponentRef={() => console.log("reference")}
+            commWrappedComponentRef={() => console.log('reference')}
             communicationFormValues={this.state.communicationFormValues}
-            emailFormRef={() => console.log("reference")}
+            emailFormRef={() => console.log('reference')}
             emailFormData={this.state.communicationFormValues}
             // saveFormRef={this.saveComFormRef}
             onFormNext={this.onFormNext}
@@ -556,21 +556,21 @@ class CreateCampaign extends React.Component<
           }
         />
         <div className="stepperContainer">
-          <div style={{ margin: "20px 20px 20px 30px", height: "68vh" }}>
+          <div style={{ margin: '20px 20px 20px 30px', height: '68vh' }}>
             {this.getContainer()}
           </div>
         </div>
 
         <div
           className="campFooterRefinex"
-          style={{ position: "absolute", width: "100%" }}
+          style={{ position: 'absolute', width: '100%' }}
         >
-          <div className="gx-card-body" style={{ background: "#FFFFFF" }}>
+          <div className="gx-card-body" style={{ background: '#FFFFFF' }}>
             <CampaignFooter
               loading={this.state.loading}
-              nextButtonText={current > 4 ? "Launch" : "Save and Next"}
-              saveDraftText={current === 0 ? "" : "Save Draft"}
-              saveDraft={() => console.log("save to draft")}
+              nextButtonText={current > 4 ? 'Launch' : 'Save and Next'}
+              saveDraftText={current === 0 ? '' : 'Save Draft'}
+              saveDraft={() => console.log('save to draft')}
               goToPage2={this.goToNextPage.bind(this, current + 1)}
             />
           </div>
@@ -591,60 +591,60 @@ const GET_USER_IDENTITY = gql`
 
 export default compose(
   graphql(GET_ALL_APPS_OF_ORGANIZATION, {
-    name: "allApplications",
+    name: 'allApplications',
     options: props => {
-      const { org_id }: any = jwt.decode(localStorage.getItem("jwt"));
+      const { org_id }: any = jwt.decode(localStorage.getItem('jwt'));
       return {
         variables: {
-          id: org_id
+          id: org_id,
         },
-        fetchPolicy: "cache-and-network"
+        fetchPolicy: 'cache-and-network',
       };
-    }
+    },
   }),
   graphql(allSegments, {
-    name: "segmentList",
+    name: 'segmentList',
     options: ownProps => {
-      const { org_id }: any = jwt.decode(localStorage.getItem("jwt"));
+      const { org_id }: any = jwt.decode(localStorage.getItem('jwt'));
       return {
         variables: {
           org_id: org_id,
-          status: "ACTIVE"
+          status: 'ACTIVE',
         },
-        fetchPolicy: "cache-and-network"
+        fetchPolicy: 'cache-and-network',
       };
-    }
+    },
   }),
   graphql(createRule, {
-    name: "rule"
+    name: 'rule',
   }),
   graphql(UPDATE_CAMPAIGN, {
-    name: "updateCampaign"
+    name: 'updateCampaign',
   }),
   graphql(createCommunication, {
-    name: "communication"
+    name: 'communication',
   }),
   graphql(createMessageTemplate, {
-    name: "messageTemplate"
+    name: 'messageTemplate',
   }),
   graphql(attributes, {
-    name: "allAttributes",
+    name: 'allAttributes',
     options: props => {
       const input = {
-        status: "ACTIVE",
-        organizationId: "577bddb7-17df-4884-b16f-8b5db5b00b95"
+        status: 'ACTIVE',
+        organizationId: '577bddb7-17df-4884-b16f-8b5db5b00b95',
       };
       const a = {
         variables: {
-          input: input
-        }
+          input: input,
+        },
       };
       return a;
-    }
+    },
   }),
   graphql(GET_USER_IDENTITY, {
-    name: "auth"
+    name: 'auth',
   }),
-  graphql(ADD_APPLICATION, { name: "addApplication" }),
+  graphql(ADD_APPLICATION, { name: 'addApplication' }),
   withApollo
 )(CreateCampaign);

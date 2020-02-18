@@ -1,12 +1,12 @@
-import * as React from "react";
-import { Divider, Button, Upload } from "antd";
-import "./style.css";
+import * as React from 'react';
+import { Divider, Button, Upload } from 'antd';
+import './style.css';
 import {
   AddAndDeleteSelectDynamically,
   WalkinQueryBuilder,
-  FileUploader
-} from "shared";
-import { UploadProps } from "antd/lib/upload";
+  FileUploader,
+} from 'shared';
+import { UploadProps } from 'antd/lib/upload';
 
 interface iProps {
   audienceTitle?: string;
@@ -50,7 +50,7 @@ const Audience = ({
   handleCancel,
   visible,
   handleOk,
-  fileList
+  fileList,
 }: iProps) => {
   return (
     <div>
@@ -58,13 +58,13 @@ const Audience = ({
         <h3 className="gx-text-grey">{audienceTitle}</h3>
         <div>
           <p
-            style={{ paddingTop: "20px", width: "50%" }}
+            style={{ paddingTop: '20px', width: '50%' }}
             className="gx-text-grey gx-mb-1"
           >
             {segmentSubTitle}
-            <span style={{ float: "right" }}>
-              {" "}
-              Potential Reach : <b>{audienceCount}</b>{" "}
+            <span style={{ float: 'right' }}>
+              {' '}
+              Potential Reach : <b>{audienceCount}</b>{' '}
             </span>
           </p>
           <AddAndDeleteSelectDynamically
@@ -93,10 +93,10 @@ const Audience = ({
             uploadProps={uploadProps}
           />
         </div>
-        <div style={{ marginTop: "50px" }}>
+        <div style={{ marginTop: '50px' }}>
           <Divider
             className="audienceDivider"
-            style={{ color: "#000000" }}
+            style={{ color: '#000000' }}
             orientation="left"
           >
             <p className="gx-text-grey gx-mb-2">{segmentFilterText}</p>

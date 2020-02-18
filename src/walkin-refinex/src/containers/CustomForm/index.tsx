@@ -1,6 +1,6 @@
-import * as React from "react";
-import { Form, Input } from "antd";
-import { FormProps } from "antd/lib/form";
+import * as React from 'react';
+import { Form, Input } from 'antd';
+import { FormProps } from 'antd/lib/form';
 
 interface CustomFormProps extends FormProps {
   items?: any;
@@ -16,7 +16,7 @@ const CustomForm: React.FunctionComponent<CustomFormProps> = props => {
         return (
           <Form.Item label={item.label}>
             {getFieldDecorator(a, {
-              rules: item.rule
+              rules: item.rule,
             })(<Input />)}
           </Form.Item>
         );
@@ -35,14 +35,14 @@ const CustomizedForm = Form.create({
     items.map((item: any) => {
       return {
         [item.name]: Form.createFormField({
-          value: item.value
-        })
+          value: item.value,
+        }),
       };
     });
   },
   onValuesChange(_, values) {
     console.log(values);
-  }
+  },
 })(CustomForm);
 
 export default CustomizedForm;

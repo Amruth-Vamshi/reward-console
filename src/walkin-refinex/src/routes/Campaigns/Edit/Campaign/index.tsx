@@ -1,10 +1,10 @@
-import * as React from "react";
-import { Row, Col, Typography } from "antd";
-import { CampaignPriority, BasicInfoForm, Popup, BasicSlider } from "shared";
-import CreateCampaignRow from "../../Overview/CreateCampaignRow";
-import gql from "graphql-tag";
-import { compose, graphql } from "react-apollo";
-import { CustomScrollbars } from "walkin-components";
+import * as React from 'react';
+import { Row, Col, Typography } from 'antd';
+import { CampaignPriority, BasicInfoForm, Popup, BasicSlider } from 'shared';
+import CreateCampaignRow from '../../Overview/CreateCampaignRow';
+import gql from 'graphql-tag';
+import { compose, graphql } from 'react-apollo';
+import { CustomScrollbars } from 'walkin-components';
 const { Text } = Typography;
 
 interface BasicInfoProps {
@@ -76,11 +76,11 @@ const BasicInfo: React.FC<BasicInfoProps> = ({
   setFeedbackForm,
   formName,
   edit,
-  showFeedbackFormType
+  showFeedbackFormType,
 }) => {
   return (
-    <div style={{ minHeight: "100%" }}>
-      <div style={{ minHeight: "10%" }}>
+    <div style={{ minHeight: '100%' }}>
+      <div style={{ minHeight: '10%' }}>
         <h3 className="gx-text-grey">{subTitle}</h3>
       </div>
 
@@ -117,15 +117,15 @@ const BasicInfo: React.FC<BasicInfoProps> = ({
         <div
           style={{
             marginBottom: 0,
-            width: "100vw",
-            background: "#ECECEC",
-            padding: "20px"
+            width: '100vw',
+            background: '#ECECEC',
+            padding: '20px',
           }}
         >
           <Row gutter={16}>
             <h3
               className="gx-text-grey"
-              style={{ marginBottom: "30px", margin: "32px" }}
+              style={{ marginBottom: '30px', margin: '32px' }}
             >
               Choose template
             </h3>
@@ -154,6 +154,6 @@ const GET_USER_IDENTITY = gql`
 
 export default compose(
   graphql(GET_USER_IDENTITY, {
-    name: "auth"
+    name: 'auth',
   })
 )(BasicInfo);

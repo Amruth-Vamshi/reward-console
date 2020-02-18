@@ -1,13 +1,13 @@
-import * as React from "react";
+import * as React from 'react';
 
-import ContactCell from "./ContactCell/index";
+import ContactCell from './ContactCell/index';
 
 const ContactList = ({
   contactList,
   addFavourite,
   onContactSelect,
   onSaveContact,
-  onDeleteContact
+  onDeleteContact,
 }) => {
   return (
     <div className="gx-contact-main-content">

@@ -1,19 +1,19 @@
-import * as React from "react";
-import { withRouter } from "react-router-dom";
-import { allSegments, disableSegment } from "../../Query";
+import * as React from 'react';
+import { withRouter } from 'react-router-dom';
+import { allSegments, disableSegment } from '../../Query';
 import {
   withApollo,
   graphql,
   ApolloProviderProps,
-  compose
-} from "react-apollo";
-import { NEW_SEGMENT } from "../../../Utils";
-import { Card, Menu, Dropdown, Button, Col, Spin } from "antd";
-import moment from "moment";
-import { SortableDataTable, InstantSearch, CampaignHeader } from "shared";
-import { ErrorBoundary } from "walkin-components";
-import * as jwt from "jsonwebtoken";
-import { RouteChildrenProps } from "react-router";
+  compose,
+} from 'react-apollo';
+import { NEW_SEGMENT } from '../../../Utils';
+import { Card, Menu, Dropdown, Button, Col, Spin } from 'antd';
+import moment from 'moment';
+import { SortableDataTable, InstantSearch, CampaignHeader } from 'shared';
+import { ErrorBoundary } from 'walkin-components';
+import * as jwt from 'jsonwebtoken';
+import { RouteChildrenProps } from 'react-router';
 
 interface SegmentListProps
   extends RouteChildrenProps,
@@ -36,20 +36,20 @@ class SegmentList extends React.Component<SegmentListProps, SegmentListState> {
       sortedInfo: null,
       filtered: null,
       spinner: false,
-      filteredInfo: ""
+      filteredInfo: '',
     };
   }
 
   handleChange = (pagination: any, filters: any, sorter: any) => {
     this.setState({
-      sortedInfo: sorter
+      sortedInfo: sorter,
     });
   };
 
   onNewSegment = () => {
     const { history, match } = this.props;
     history.push({
-      pathname: NEW_SEGMENT
+      pathname: NEW_SEGMENT,
     });
   };
   onDeleteContact = (contact: any) => {
@@ -58,15 +58,15 @@ class SegmentList extends React.Component<SegmentListProps, SegmentListState> {
       .mutate({
         mutation: disableSegment,
         variables: {
-          id: contact.id
-        }
+          id: contact.id,
+        },
       })
       .then(({ data }) => {
         const { refetchSegments }: any = this.props;
         refetchSegments();
       })
       .catch(error => {
-        console.log("err", error);
+        console.log('err', error);
       });
   };
   onDuplicateContact = (record: any) => {
@@ -75,14 +75,14 @@ class SegmentList extends React.Component<SegmentListProps, SegmentListState> {
     history.push({
       pathname: `${NEW_SEGMENT}/${record.id}`,
       state: {
-        segmentSelected: record
-      }
+        segmentSelected: record,
+      },
     });
   };
   menus = (record: any) => (
     <Menu
       onClick={e => {
-        if (e.key === "duplicate") {
+        if (e.key === 'duplicate') {
           this.onDuplicateContact(record);
         } else {
           this.onDeleteContact(record);
@@ -96,7 +96,7 @@ class SegmentList extends React.Component<SegmentListProps, SegmentListState> {
 
   onSegmentFilteredList = (newList: any) => {
     this.setState({
-      filtered: newList
+      filtered: newList,
     });
   };
 
@@ -159,51 +159,51 @@ class SegmentList extends React.Component<SegmentListProps, SegmentListState> {
 
     const columns = [
       {
-        title: "Segment Name",
-        dataIndex: "name",
-        key: "name",
+        title: 'Segment Name',
+        dataIndex: 'name',
+        key: 'name',
         sorter: (a: any, b: any) =>
           a.name !== b.name ? (a.name < b.name ? -1 : 1) : 0,
-        sortOrder: sortedInfo.columnKey === "name" && sortedInfo.order
+        sortOrder: sortedInfo.columnKey === 'name' && sortedInfo.order,
       },
       {
-        title: "Segment type",
-        dataIndex: "segmentType",
-        key: "segmentType",
+        title: 'Segment type',
+        dataIndex: 'segmentType',
+        key: 'segmentType',
         sorter: (a: any, b: any) => a.segmentType - b.segmentType,
-        sortOrder: sortedInfo.columnKey === "segmentType" && sortedInfo.order
+        sortOrder: sortedInfo.columnKey === 'segmentType' && sortedInfo.order,
       },
       {
-        title: "Status",
-        dataIndex: "status",
-        key: "status"
+        title: 'Status',
+        dataIndex: 'status',
+        key: 'status',
       },
       {
-        title: "",
-        key: "action",
+        title: '',
+        key: 'action',
         render: (text: any, record: any) => (
           <div className="gx-module-contact-right">
             <Dropdown
               overlay={this.menus(record)}
               placement="bottomRight"
-              trigger={["click"]}
+              trigger={['click']}
             >
               <i className="gx-icon-btn icon icon-ellipse-v" />
             </Dropdown>
           </div>
-        )
-      }
+        ),
+      },
     ];
     return (
       <ErrorBoundary>
         <div
           style={{
-            minHeight: "100vh"
+            minHeight: '100vh',
           }}
         >
           <div
             style={{
-              margin: "1 32px"
+              margin: '1 32px',
             }}
           >
             <CampaignHeader
@@ -215,7 +215,7 @@ class SegmentList extends React.Component<SegmentListProps, SegmentListState> {
                     </h3>
                   </Col>
                   <Col
-                    style={{ display: "flex", justifyContent: "flex-end" }}
+                    style={{ display: 'flex', justifyContent: 'flex-end' }}
                     span={12}
                   >
                     <Button type="primary" onClick={this.onNewSegment}>
@@ -226,8 +226,8 @@ class SegmentList extends React.Component<SegmentListProps, SegmentListState> {
               }
             />
           </div>
-          <Card style={{ margin: "32px" }}>
-            <div style={{ marginBottom: "24px" }}>
+          <Card style={{ margin: '32px' }}>
+            <div style={{ marginBottom: '24px' }}>
               <InstantSearch
                 placeHolder="Search segment"
                 data={segments}
@@ -251,14 +251,14 @@ export default withRouter(
   compose(
     graphql(allSegments, {
       options: (ownProps: any) => {
-        const { org_id }: any = jwt.decode(localStorage.getItem("jwt"));
+        const { org_id }: any = jwt.decode(localStorage.getItem('jwt'));
         return {
           variables: {
             org_id: org_id,
-            status: "ACTIVE"
+            status: 'ACTIVE',
           },
           forceFetch: true,
-          fetchPolicy: "network-only"
+          fetchPolicy: 'network-only',
         };
       },
       props: ({ data: { loading, error, segments, refetch } }: any) => ({
@@ -266,15 +266,15 @@ export default withRouter(
         segments,
         error,
         refetchSegments: (ownProps: any) => {
-          const { org_id }: any = jwt.decode(localStorage.getItem("jwt"));
+          const { org_id }: any = jwt.decode(localStorage.getItem('jwt'));
           refetch({
             variables: {
               org_id: org_id, //get it from props
-              status: "ACTIVE"
-            }
+              status: 'ACTIVE',
+            },
           });
-        }
-      })
+        },
+      }),
     })
   )(withApollo(SegmentList))
 );

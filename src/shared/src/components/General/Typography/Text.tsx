@@ -1,5 +1,5 @@
-import React from "react";
-import Text from "antd/lib/typography/Text";
+import React from 'react';
+import Text from 'antd/lib/typography/Text';
 
 export default class CustomText extends React.Component {
   render() {

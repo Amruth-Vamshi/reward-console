@@ -1,5 +1,5 @@
-import * as React from "react";
-import { Row, Col } from "antd";
+import * as React from 'react';
+import { Row, Col } from 'antd';
 
 interface iProps {
   place?: any;
@@ -12,14 +12,14 @@ export default class NewPlaceCard extends React.Component<iProps, {}> {
       hotspots,
       entry_count,
       exit_count,
-      dwell_count
+      dwell_count,
     } = this.props.place;
     return (
       <Row>
         <Col
           xs={24}
           sm={12}
-          style={{ color: "black", wordBreak: "break-word", marginBottom: 8 }}
+          style={{ color: 'black', wordBreak: 'break-word', marginBottom: 8 }}
         >
           {geofence_name}
         </Col>

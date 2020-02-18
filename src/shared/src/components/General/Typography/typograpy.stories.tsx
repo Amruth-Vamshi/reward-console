@@ -1,29 +1,29 @@
-import React from "react";
-import { storiesOf } from "@storybook/react";
-import { CustomTitle, CustomParagraph, CustomText } from "shared";
+import React from 'react';
+import { storiesOf } from '@storybook/react';
+import { CustomTitle, CustomParagraph, CustomText } from 'shared';
 
-const stories = storiesOf("Atoms|Antd/General/Typography", module);
+const stories = storiesOf('Atoms|Antd/General/Typography', module);
 
 stories.add(
-  "Text",
+  'Text',
   () => {
     return <CustomText />;
   },
-  { notes: "Notes will appear here" }
+  { notes: 'Notes will appear here' }
 );
 
 stories.add(
-  "Title",
+  'Title',
   () => {
     return <CustomTitle />;
   },
-  { notes: "Notes will appear here" }
+  { notes: 'Notes will appear here' }
 );
 
 stories.add(
-  "Paragraph",
+  'Paragraph',
   () => {
     return <CustomParagraph />;
   },
-  { notes: "Notes will appear here" }
+  { notes: 'Notes will appear here' }
 );

@@ -1,17 +1,17 @@
-import { InMemoryCache } from "apollo-boost";
-import { persistCache } from "apollo-cache-persist";
-import { Redirect, Route, Switch } from "react-router-dom";
-import typeDefs from "../typeDefs";
-import resolvers from "../resolvers";
-import ApolloClient from "apollo-boost";
-import defaults from "../defaults";
-import { message } from "antd";
-import { async } from "q";
-import { includes } from "lodash";
-import { ERROR_EXCEPTIONS } from "shared/src/Constants/constants";
+import { InMemoryCache } from 'apollo-boost';
+import { persistCache } from 'apollo-cache-persist';
+import { Redirect, Route, Switch } from 'react-router-dom';
+import typeDefs from '../typeDefs';
+import resolvers from '../resolvers';
+import ApolloClient from 'apollo-boost';
+import defaults from '../defaults';
+import { message } from 'antd';
+import { async } from 'q';
+import { includes } from 'lodash';
+import { ERROR_EXCEPTIONS } from 'shared/src/Constants/constants';
 
 message.config({
-  maxCount: 2
+  maxCount: 2,
 });
 
 export const configureClient = async () => {
@@ -21,11 +21,11 @@ export const configureClient = async () => {
     cache,
     uri: process.env.REACT_APP_WCORE_URL,
     request: async operation => {
-      const token = await localStorage.getItem("jwt");
+      const token = await localStorage.getItem('jwt');
       operation.setContext({
         headers: {
-          authorization: token ? `Bearer ${token}` : ""
-        }
+          authorization: token ? `Bearer ${token}` : '',
+        },
       });
     },
     clientState: { defaults, resolvers, typeDefs },
@@ -36,7 +36,7 @@ export const configureClient = async () => {
 
         if (
           graphQLErrors[0].extensions &&
-          graphQLErrors[0].extensions.code == "UNTH"
+          graphQLErrors[0].extensions.code == 'UNTH'
         ) {
           localStorage.clear();
           sessionStorage.clear();
@@ -52,21 +52,21 @@ export const configureClient = async () => {
         }
       } else if (networkError) {
         message.error(
-          "Hey! Regret to inform that we are experiencing some issues. Please check your internet connection or try again after sometime"
+          'Hey! Regret to inform that we are experiencing some issues. Please check your internet connection or try again after sometime'
         );
         console.log(networkError);
       }
-    }
+    },
   });
 
   try {
     // See above for additional options, including other storage providers.
     await persistCache({
       cache,
-      storage: window.sessionStorage as any
+      storage: window.sessionStorage as any,
     });
   } catch (error) {
-    console.error("Error restoring Apollo cache", error);
+    console.error('Error restoring Apollo cache', error);
   }
   return client;
 };

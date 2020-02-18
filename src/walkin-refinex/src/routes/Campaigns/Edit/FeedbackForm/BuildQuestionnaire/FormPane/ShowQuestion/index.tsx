@@ -1,8 +1,8 @@
-import * as React from "react";
-import { Col, Row } from "antd";
-import FormHeader from "../FormHeader";
-import QuestionForm from "../QuestionForm";
-import ChoiceForm from "../ChoiceForm";
+import * as React from 'react';
+import { Col, Row } from 'antd';
+import FormHeader from '../FormHeader';
+import QuestionForm from '../QuestionForm';
+import ChoiceForm from '../ChoiceForm';
 
 interface ShowQuestionProps {
   onQuestionTypeEdit?: any;
@@ -36,7 +36,7 @@ const ShowQuestion: React.FC<ShowQuestionProps> = ({
   questionnaire,
   onLinkChoiceToQuestion,
   showButton,
-  onQuestionTypeEdit
+  onQuestionTypeEdit,
 }) => {
   console.log(questionnaire);
   return (
@@ -58,7 +58,7 @@ const ShowQuestion: React.FC<ShowQuestionProps> = ({
                 onQuestionEdited={onQuestionEdited}
                 onQuestionSubmitted={onQuestionSubmitted}
                 questionToEdit={questionToEdit}
-                style={{ marginTop: "4%" }}
+                style={{ marginTop: '4%' }}
               />
             </Col>
           </Row>

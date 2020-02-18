@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 import {
   Col,
   Row,
@@ -10,15 +10,15 @@ import {
   Table,
   Card,
   Select,
-  Radio
-} from "antd";
+  Radio,
+} from 'antd';
 import {
   IconWithTextCard,
   Widget,
   ChartCard,
   Auxiliary,
-  WidgetHeader
-} from "walkin-components";
+  WidgetHeader,
+} from 'walkin-components';
 import {
   ResponsiveContainer,
   PieChart,
@@ -33,16 +33,16 @@ import {
   XAxis,
   YAxis,
   RadialBarChart,
-  RadialBar
-} from "recharts";
-import { graphql, compose, withApollo } from "react-apollo";
-import { GET_ANALYTICS } from "walkin-core/src/PlatformQueries";
-import moment from "moment";
-import * as jwt from "jsonwebtoken";
-import Cylinder3DChart from "walkin-nearx/src/routes/Dashboard/Cylinder3DChart";
-import PieChartWithAngle from "../Charts/PieChartWithPaddingAngle";
-import PieChartActiveShape from "../Charts/CustomActiveShapePieChart";
-const dateFormat = "YYYY/MM/DD";
+  RadialBar,
+} from 'recharts';
+import { graphql, compose, withApollo } from 'react-apollo';
+import { GET_ANALYTICS } from 'walkin-core/src/PlatformQueries';
+import moment from 'moment';
+import * as jwt from 'jsonwebtoken';
+import Cylinder3DChart from 'walkin-nearx/src/routes/Dashboard/Cylinder3DChart';
+import PieChartWithAngle from '../Charts/PieChartWithPaddingAngle';
+import PieChartActiveShape from '../Charts/CustomActiveShapePieChart';
+const dateFormat = 'YYYY/MM/DD';
 
 export default class analytics extends React.Component {
   render() {
@@ -51,8 +51,8 @@ export default class analytics extends React.Component {
       <Widget
         title="Overall Report"
         style={{
-          backgroundColor: "#e6e6e6",
-          margin: "0px 30px 0px 30px"
+          backgroundColor: '#e6e6e6',
+          margin: '0px 30px 0px 30px',
         }}
         styleName="gx-card-tabs"
         extra={
@@ -61,7 +61,7 @@ export default class analytics extends React.Component {
               <Select
                 className="gx-mb-2 gx-select-lg"
                 defaultValue="month"
-                onChange={() => console.log("a")}
+                onChange={() => console.log('a')}
               >
                 <Option value="month">Monthly</Option>
                 <Option value="week">Weekly</Option>
@@ -76,7 +76,7 @@ export default class analytics extends React.Component {
             <Row>
               <Col
                 style={{
-                  marginTop: "4rem"
+                  marginTop: '4rem',
                 }}
                 lg={8}
                 md={8}
@@ -90,7 +90,7 @@ export default class analytics extends React.Component {
                 </div>
                 <p
                   style={{
-                    marginTop: "1rem"
+                    marginTop: '1rem',
                   }}
                   className="gx-text-grey"
                 >
@@ -99,7 +99,7 @@ export default class analytics extends React.Component {
               </Col>
               <Col
                 style={{
-                  marginTop: "4rem"
+                  marginTop: '4rem',
                 }}
                 lg={8}
                 md={8}
@@ -113,7 +113,7 @@ export default class analytics extends React.Component {
                 </div>
                 <p
                   style={{
-                    marginTop: "1rem"
+                    marginTop: '1rem',
                   }}
                   className="gx-text-grey"
                 >
@@ -122,7 +122,7 @@ export default class analytics extends React.Component {
               </Col>
               <Col
                 style={{
-                  marginTop: "4rem"
+                  marginTop: '4rem',
                 }}
                 lg={8}
                 md={8}
@@ -136,7 +136,7 @@ export default class analytics extends React.Component {
                 </div>
                 <p
                   style={{
-                    marginTop: "1rem"
+                    marginTop: '1rem',
                   }}
                   className="gx-text-grey"
                 >
@@ -145,7 +145,7 @@ export default class analytics extends React.Component {
               </Col>
               <Col
                 style={{
-                  marginTop: "4rem"
+                  marginTop: '4rem',
                 }}
                 lg={8}
                 md={8}
@@ -159,7 +159,7 @@ export default class analytics extends React.Component {
                 </div>
                 <p
                   style={{
-                    marginTop: "1rem"
+                    marginTop: '1rem',
                   }}
                   className="gx-text-grey"
                 >
@@ -168,7 +168,7 @@ export default class analytics extends React.Component {
               </Col>
               <Col
                 style={{
-                  marginTop: "4rem"
+                  marginTop: '4rem',
                 }}
                 lg={8}
                 md={8}
@@ -182,7 +182,7 @@ export default class analytics extends React.Component {
                 </div>
                 <p
                   style={{
-                    marginTop: "1rem"
+                    marginTop: '1rem',
                   }}
                   className="gx-text-grey"
                 >
@@ -194,7 +194,7 @@ export default class analytics extends React.Component {
           <Col lg={11} md={11} sm={24} xs={24}>
             <div
               style={{
-                marginLeft: "5rem"
+                marginLeft: '5rem',
               }}
             >
               <PieChartActiveShape />

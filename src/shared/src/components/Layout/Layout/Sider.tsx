@@ -1,8 +1,8 @@
-import React from "react";
-import Layout from "antd/lib/layout";
-import Menu from "antd/lib/menu";
-import Breadcrumb from "antd/lib/breadcrumb";
-import Icon from "antd/lib/icon";
+import React from 'react';
+import Layout from 'antd/lib/layout';
+import Menu from 'antd/lib/menu';
+import Breadcrumb from 'antd/lib/breadcrumb';
+import Icon from 'antd/lib/icon';
 
 // import "./index.css";
 const { SubMenu } = Menu;
@@ -20,7 +20,7 @@ export default class SiderLayout extends React.Component<
   constructor(props: siderProps) {
     super(props);
     this.state = {
-      collapsed: false
+      collapsed: false,
     };
   }
 
@@ -31,14 +31,14 @@ export default class SiderLayout extends React.Component<
 
   render() {
     return (
-      <Layout style={{ minHeight: "100vh" }}>
+      <Layout style={{ minHeight: '100vh' }}>
         <Sider
           collapsible
           collapsed={this.state.collapsed}
           onCollapse={this.onCollapse}
         >
           <div className="logo" />
-          <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline">
+          <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
             <Menu.Item key="1">
               <Icon type="pie-chart" />
               <span>Option 1</span>
@@ -79,17 +79,17 @@ export default class SiderLayout extends React.Component<
           </Menu>
         </Sider>
         <Layout>
-          <Header style={{ background: "#fff", padding: 0 }} />
-          <Content style={{ margin: "0 16px" }}>
-            <Breadcrumb style={{ margin: "16px 0" }}>
+          <Header style={{ background: '#fff', padding: 0 }} />
+          <Content style={{ margin: '0 16px' }}>
+            <Breadcrumb style={{ margin: '16px 0' }}>
               <Breadcrumb.Item>User</Breadcrumb.Item>
               <Breadcrumb.Item>Bill</Breadcrumb.Item>
             </Breadcrumb>
-            <div style={{ padding: 24, background: "#fff", minHeight: 360 }}>
+            <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
               Bill is a cat.
             </div>
           </Content>
-          <Footer style={{ textAlign: "center" }}>
+          <Footer style={{ textAlign: 'center' }}>
             Ant Design ©2018 Created by Ant UED
           </Footer>
         </Layout>

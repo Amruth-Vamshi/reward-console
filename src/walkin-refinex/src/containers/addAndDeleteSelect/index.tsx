@@ -1,7 +1,7 @@
-import * as React from "react";
-import { Select, Button, Icon } from "antd";
-import "./style.css";
-import * as PropTypes from "prop-types";
+import * as React from 'react';
+import { Select, Button, Icon } from 'antd';
+import './style.css';
+import * as PropTypes from 'prop-types';
 
 const { Option } = Select;
 
@@ -20,10 +20,10 @@ class AddAndDeleteSelectDynamically extends React.Component<
 > {
   constructor(props: AddAndDeleteSelectDynamicallyProps) {
     super(props);
-    this.state = { values: ["Choose from the list"] };
+    this.state = { values: ['Choose from the list'] };
   }
   addClick() {
-    this.setState(prevState => ({ values: [...prevState.values, ""] }));
+    this.setState(prevState => ({ values: [...prevState.values, ''] }));
   }
 
   handleChange(i: any, value: any) {
@@ -49,7 +49,7 @@ class AddAndDeleteSelectDynamically extends React.Component<
             <div key={i} className="selectSegmentBoxContainer">
               <Select
                 className="segmentSelectBoxStyle"
-                value={el || ""}
+                value={el || ''}
                 style={{ width: 200 }}
                 onChange={this.handleChange.bind(this, i)}
               >

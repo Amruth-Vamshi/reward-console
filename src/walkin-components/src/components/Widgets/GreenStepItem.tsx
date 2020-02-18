@@ -1,5 +1,5 @@
-import * as React from "react";
-import { Auxiliary } from "../../util/Auxiliary";
+import * as React from 'react';
+import { Auxiliary } from '../../util/Auxiliary';
 const GreenStepItem = ({ data }) => {
   const { title, subTitle, desc } = data;
   return (

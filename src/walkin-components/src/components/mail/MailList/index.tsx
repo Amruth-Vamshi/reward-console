@@ -1,7 +1,7 @@
-import * as React from "react";
+import * as React from 'react';
 
-import MailListItem from "./MailListItem";
-import { CustomScrollbars } from "../../../util/CustomScrollbars";
+import MailListItem from './MailListItem';
+import { CustomScrollbars } from '../../../util/CustomScrollbars';
 
 const MailList = ({ mails, onMailSelect, onMailChecked, onStartSelect }) => {
   return (

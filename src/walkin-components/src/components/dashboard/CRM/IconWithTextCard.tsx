@@ -1,8 +1,8 @@
-import * as React from "react";
-import { Icon } from "antd";
+import * as React from 'react';
+import { Icon } from 'antd';
 
-import { Widget } from "../../../index";
-import { CardProps } from "antd/lib/card";
+import { Widget } from '../../../../index';
+import { CardProps } from 'antd/lib/card';
 
 interface IconWithTextCardProps {
   cardColor?: string;
@@ -19,7 +19,7 @@ export const IconWithTextCard: React.FunctionComponent<IconWithTextCardProps> = 
   title,
   antIcon,
   subTitle,
-  iconColor
+  iconColor,
 }) => {
   return (
     <Widget styleName={`gx-card-full gx-p-3 gx-bg-${cardColor} gx-text-white`}>

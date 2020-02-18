@@ -1,10 +1,10 @@
-import * as React from "react";
-import UserCell from "./UserCell/index";
+import * as React from 'react';
+import UserCell from './UserCell/index';
 
 const ContactList = ({
   onSelectUser,
   selectedSectionId,
-  contactList
+  contactList,
 }: {
   onSelectUser: any;
   selectedSectionId: any;

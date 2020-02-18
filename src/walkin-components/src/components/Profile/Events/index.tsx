@@ -1,7 +1,7 @@
-import * as React from "react";
+import * as React from 'react';
 
-import EventItem from "./EventItem";
-import { Widget } from "../../Widget";
+import EventItem from './EventItem';
+import { Widget } from '../../Widget';
 
 const eventList = [];
 const Events = () => {

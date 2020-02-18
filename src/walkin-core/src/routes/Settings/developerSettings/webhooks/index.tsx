@@ -1,15 +1,15 @@
-import * as React from "react";
-import * as jwt from "jsonwebtoken";
-import { withApollo, ApolloProviderProps } from "react-apollo";
-import "./style.css";
-import { Button, Switch, Row, Col, Spin, Icon, List, Pagination } from "antd";
-import WebhookForm from "./webhookForm";
+import * as React from 'react';
+import * as jwt from 'jsonwebtoken';
+import { withApollo, ApolloProviderProps } from 'react-apollo';
+import './style.css';
+import { Button, Switch, Row, Col, Spin, Icon, List, Pagination } from 'antd';
+import WebhookForm from './webhookForm';
 import {
   GET_WEBHOOKS,
   CREATE_WEBHOOK,
   UPDATE_WEBHOOK,
-  LIST_WEBHOOK_EVENTS
-} from "./../../../../PlatformQueries/index";
+  LIST_WEBHOOK_EVENTS,
+} from './../../../../PlatformQueries/index';
 
 interface WebhooksProps extends ApolloProviderProps<any> { }
 
@@ -23,7 +23,7 @@ interface WebhooksState {
   org_id: string;
   currentPage: number;
   totalPages: number;
-  totalItems: number
+  totalItems: number;
 }
 
 class Webhooks extends React.Component<WebhooksProps, WebhooksState> {
@@ -36,23 +36,23 @@ class Webhooks extends React.Component<WebhooksProps, WebhooksState> {
       selectedWebhookIndex: null,
       isLoading: true,
       isListLoading: false,
-      org_id: "",
+      org_id: '',
       currentPage: 1,
       totalPages: 0,
-      totalItems: 0
+      totalItems: 0,
     };
   }
 
   UNSAFE_componentWillMount() {
-    const jwtToken: any = localStorage.getItem("jwt");
+    const jwtToken: any = localStorage.getItem('jwt');
     const { org_id }: any = jwt.decode(jwtToken);
 
     this.getWebhooks(org_id, webhooksResponse => {
       this.props.client
         .query({
           query: LIST_WEBHOOK_EVENTS,
-          variables: { org_id, status: "ACTIVE" },
-          fetchPolicy: "network-only"
+          variables: { org_id, status: 'ACTIVE' },
+          fetchPolicy: 'network-only',
         })
         .then(eventsResponse => {
           this.setState({
@@ -60,8 +60,10 @@ class Webhooks extends React.Component<WebhooksProps, WebhooksState> {
             webhooks: webhooksResponse.data.webhooks.data,
             isLoading: false,
             events: eventsResponse.data.webhookEventTypes.data,
-            totalPages: webhooksResponse.data.webhooks.paginationInfo.totalPages,
-            totalItems: webhooksResponse.data.webhooks.paginationInfo.totalItems
+            totalPages:
+              webhooksResponse.data.webhooks.paginationInfo.totalPages,
+            totalItems:
+              webhooksResponse.data.webhooks.paginationInfo.totalItems,
           });
         });
     });
@@ -73,10 +75,10 @@ class Webhooks extends React.Component<WebhooksProps, WebhooksState> {
         query: GET_WEBHOOKS,
         variables: {
           org_id,
-          status: "ACTIVE",
-          pageOptions: { page: this.state.currentPage, pageSize: 5 }
+          status: 'ACTIVE',
+          pageOptions: { page: this.state.currentPage, pageSize: 5 },
         },
-        fetchPolicy: "network-only"
+        fetchPolicy: 'network-only',
       })
       .then(webhooksResponse => {
         callback(webhooksResponse);
@@ -88,8 +90,8 @@ class Webhooks extends React.Component<WebhooksProps, WebhooksState> {
       .mutate({
         mutation: CREATE_WEBHOOK,
         variables: {
-          input
-        }
+          input,
+        },
       })
       .then(res => {
         this.getWebhooks(this.state.org_id, webhooksResponse => {
@@ -98,13 +100,13 @@ class Webhooks extends React.Component<WebhooksProps, WebhooksState> {
             webhooks: webhooksResponse.data.webhooks.data,
             isWebhookFormOpen: false,
             selectedWebhookIndex: null,
-            isLoading: false
+            isLoading: false,
           });
         });
       })
       .catch(error => {
         this.setState({
-          isLoading: false
+          isLoading: false,
         });
       });
   };
@@ -115,8 +117,8 @@ class Webhooks extends React.Component<WebhooksProps, WebhooksState> {
       .mutate({
         mutation: UPDATE_WEBHOOK,
         variables: {
-          input
-        }
+          input,
+        },
       })
       .then(res => {
         this.getWebhooks(this.state.org_id, webhooksResponse => {
@@ -125,7 +127,7 @@ class Webhooks extends React.Component<WebhooksProps, WebhooksState> {
             webhooks: webhooksResponse.data.webhooks.data,
             isWebhookFormOpen: false,
             selectedWebhookIndex: null,
-            isLoading: false
+            isLoading: false,
           });
         });
         // if (type === "delete") {
@@ -142,7 +144,7 @@ class Webhooks extends React.Component<WebhooksProps, WebhooksState> {
       })
       .catch(error => {
         this.setState({
-          isLoading: false
+          isLoading: false,
         });
       });
   };
@@ -150,7 +152,7 @@ class Webhooks extends React.Component<WebhooksProps, WebhooksState> {
   onAddOrEditWebhooks = (selectedWebhookIndex: any = null) => {
     this.setState({
       isWebhookFormOpen: !this.state.isWebhookFormOpen,
-      selectedWebhookIndex
+      selectedWebhookIndex,
     });
   };
 
@@ -161,7 +163,7 @@ class Webhooks extends React.Component<WebhooksProps, WebhooksState> {
     let input = {
       id: webhooks[selectedWebhookIndex].id,
       enabled: webhooks[selectedWebhookIndex].enabled,
-      organizationId: this.state.org_id
+      organizationId: this.state.org_id,
     };
     this.setState({ isLoading: true, selectedWebhookIndex }, () => {
       this.updateWebook(input);
@@ -173,11 +175,11 @@ class Webhooks extends React.Component<WebhooksProps, WebhooksState> {
     let { webhooks } = this.state;
     let input = {
       id: webhooks[selectedWebhookIndex].id,
-      status: "INACTIVE",
-      organizationId: this.state.org_id
+      status: 'INACTIVE',
+      organizationId: this.state.org_id,
     };
     this.setState({ isLoading: true, selectedWebhookIndex }, () => {
-      this.updateWebook(input, "delete");
+      this.updateWebook(input, 'delete');
     });
   };
 
@@ -196,7 +198,7 @@ class Webhooks extends React.Component<WebhooksProps, WebhooksState> {
       this.getWebhooks(this.state.org_id, response => {
         this.setState({
           webhooks: response.data.webhooks.data,
-          isListLoading: false
+          isListLoading: false,
         });
       });
     });
@@ -232,7 +234,7 @@ class Webhooks extends React.Component<WebhooksProps, WebhooksState> {
         );
 
       return (
-        <div className={"webhookListWrapper"}>
+        <div className={'webhookListWrapper'}>
           <List
             loading={this.state.isListLoading}
             itemLayout="vertical"
@@ -252,7 +254,7 @@ class Webhooks extends React.Component<WebhooksProps, WebhooksState> {
                     <Col xl={6} lg={6} md={6} sm={6} xs={6}>
                       <img
                         alt=""
-                        src={require("walkin-components/src/assets/images/webhook.png")}
+                        src={require('walkin-components/src/assets/images/webhook.png')}
                       />
                     </Col>
                     <Col xl={18} lg={18} md={18} sm={18} xs={18}>
@@ -279,9 +281,9 @@ class Webhooks extends React.Component<WebhooksProps, WebhooksState> {
                     sm={8}
                     xs={24}
                   >
-                    <div>{webhook.enabled ? "Active" : "Inactive"}</div>
+                    <div>{webhook.enabled ? 'Active' : 'Inactive'}</div>
                     <Switch
-                      className={webhook.enabled ? "webhookStatusSwitch" : ""}
+                      className={webhook.enabled ? 'webhookStatusSwitch' : ''}
                       checked={webhook.enabled}
                       onChange={() => this.onEnableOrDisableWebhook(index)}
                       loading={isLoading && selectedWebhookIndex === index}

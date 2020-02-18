@@ -1,11 +1,11 @@
-import * as React from "react";
-import PropTypes from "prop-types";
-import "./style.css";
-import { Col, Row, Typography, Upload, Divider, Button } from "antd";
-import { withApollo, graphql, compose } from "react-apollo";
-import { allSegments, attributes } from "../../../../containers/Query";
-import { AddAndDeleteSelectDynamically } from "shared";
-import { WalkinQueryBuilder } from "shared";
+import * as React from 'react';
+import PropTypes from 'prop-types';
+import './style.css';
+import { Col, Row, Typography, Upload, Divider, Button } from 'antd';
+import { withApollo, graphql, compose } from 'react-apollo';
+import { allSegments, attributes } from '../../../../containers/Query';
+import { AddAndDeleteSelectDynamically } from 'shared';
+import { WalkinQueryBuilder } from 'shared';
 const { Title } = Typography;
 
 interface AudienceProps {
@@ -26,14 +26,14 @@ class Audience extends React.Component<AudienceProps, AudienceState> {
   constructor(props) {
     super(props);
     this.state = {
-      formValues: "",
-      current: "",
-      rows: "",
-      values: ""
+      formValues: '',
+      current: '',
+      rows: '',
+      values: '',
     };
   }
   static propTypes = {
-    prop: PropTypes
+    prop: PropTypes,
   };
 
   render() {
@@ -41,28 +41,28 @@ class Audience extends React.Component<AudienceProps, AudienceState> {
 
     let attributeData = this.props.allAttributes.ruleAttributes.map(el => ({
       name: el.name,
-      label: el.id
+      label: el.id,
     }));
     const props = {
-      name: "file",
-      action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
+      name: 'file',
+      action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
       headers: {
-        authorization: "authorization-text"
-      }
+        authorization: 'authorization-text',
+      },
     };
     return (
       <Row
         style={{
-          margin: "1rem"
+          margin: '1rem',
         }}
       >
         <div className="marginStyle">
           <div className="marginStyle">
-            {" "}
+            {' '}
             <h3 className="gx-text-grey">Audience</h3>
             <div>
               <p
-                style={{ paddingTop: "20px" }}
+                style={{ paddingTop: '20px' }}
                 className="gx-text-grey gx-mb-1"
               >
                 Segments
@@ -74,7 +74,7 @@ class Audience extends React.Component<AudienceProps, AudienceState> {
               <span>
                 or
                 <Upload {...props}>
-                  <Button style={{ marginBottom: "0px" }} type="link">
+                  <Button style={{ marginBottom: '0px' }} type="link">
                     Upload CSV
                   </Button>
                 </Upload>
@@ -100,10 +100,10 @@ class Audience extends React.Component<AudienceProps, AudienceState> {
 export default withApollo(
   compose(
     graphql(allSegments, {
-      name: "segmentList"
+      name: 'segmentList',
     }),
     graphql(attributes, {
-      name: "allAttributes"
+      name: 'allAttributes',
     })
   )(Audience)
 );

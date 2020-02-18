@@ -1,7 +1,7 @@
-import * as React from "react";
-import { Input, Typography, Alert } from "antd";
-import "./style.css";
-import ButtonGroups from "../../atoms/buttonGroup";
+import * as React from 'react';
+import { Input, Typography, Alert } from 'antd';
+import './style.css';
+import ButtonGroups from '../../atoms/buttonGroup';
 const { Text } = Typography;
 
 interface iProps {
@@ -30,7 +30,7 @@ class PrioritySelection extends React.Component<iProps, iState> {
       priorityNumberError: false,
       maxPriority: this.props.maxPriority
         ? parseInt(this.props.maxPriority)
-        : 99
+        : 99,
     };
   }
 
@@ -46,12 +46,12 @@ class PrioritySelection extends React.Component<iProps, iState> {
     const { value } = e.target;
     if (
       (!Number.isNaN(value) && value > 0 && value <= this.state.maxPriority) ||
-      value === ""
+      value === ''
     ) {
       this.setState({ priorityChosen: value });
       this.props.onClick(e);
     } else {
-      this.displayError("priorityNumberError");
+      this.displayError('priorityNumberError');
     }
   };
 
@@ -66,7 +66,7 @@ class PrioritySelection extends React.Component<iProps, iState> {
       prioritySelectionTitle,
       priorityButtonText,
       priorityNumberInvalidErrorMessage,
-      selectedPriorityButton
+      selectedPriorityButton,
     } = this.props;
     const { priorityChosen, priorityNumberError } = this.state;
     return (

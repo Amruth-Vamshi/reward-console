@@ -1,12 +1,12 @@
-import * as React from "react";
-import { Form, Icon, Input, Button, Checkbox } from "antd";
-import { compose, graphql, Mutation, MutationFunc } from "react-apollo";
-import gql from "graphql-tag";
-import { sample } from "lodash";
-import { Link } from "react-router-dom";
-import { IntlMessages } from "walkin-components";
-import { History } from "history";
-import { FormComponentProps } from "antd/lib/form";
+import * as React from 'react';
+import { Form, Icon, Input, Button, Checkbox } from 'antd';
+import { compose, graphql, Mutation, MutationFunc } from 'react-apollo';
+import gql from 'graphql-tag';
+import { sample } from 'lodash';
+import { Link } from 'react-router-dom';
+import { IntlMessages } from 'walkin-components';
+import { History } from 'history';
+import { FormComponentProps } from 'antd/lib/form';
 
 interface IProps extends FormComponentProps {
   history?: History;
@@ -18,15 +18,15 @@ interface IState {}
 class NormalLoginForm extends React.Component<IProps, IState> {
   readonly state = {
     background: sample([
-      "linear-gradient(45deg, black, transparent)",
-      "radial-gradient(black, transparent)"
-    ])
+      'linear-gradient(45deg, black, transparent)',
+      'radial-gradient(black, transparent)',
+    ]),
   };
   constructor(props: IProps) {
     super(props);
   }
   UNSAFE_componentWillMount() {
-    if (localStorage.getItem("jwt")) this.props.history.push("/");
+    if (localStorage.getItem('jwt')) this.props.history.push('/');
   }
   render() {
     const { history, routeQuery } = this.props;
@@ -65,7 +65,7 @@ class NormalLoginForm extends React.Component<IProps, IState> {
               <div className="gx-app-logo">
                 <img
                   alt="example"
-                  src={require("walkin-components/src/assets/images/walkin_logo_white.png")}
+                  src={require('walkin-components/src/assets/images/walkin_logo_white.png')}
                   style={{ width: 100 }}
                 />
               </div>
@@ -84,22 +84,22 @@ class NormalLoginForm extends React.Component<IProps, IState> {
                             variables: {
                               input: {
                                 email,
-                                password
-                              }
-                            }
+                                password,
+                              },
+                            },
                           });
 
                           if (data && data.data && data.data.signIn) {
                             const redirectRoute = routeQuery.redirectRoute
                               ? routeQuery.redirectRoute
-                              : "/core";
+                              : '/core';
                             console.log(
-                              "Login Successfull. Redirecting...",
+                              'Login Successfull. Redirecting...',
                               redirectRoute
                             );
                             history.push(redirectRoute);
                           } else {
-                            console.log("Login Failed");
+                            console.log('Login Failed');
                           }
                         }
                       });
@@ -107,20 +107,20 @@ class NormalLoginForm extends React.Component<IProps, IState> {
                     className="login-form"
                   >
                     <Form.Item>
-                      {getFieldDecorator("email", {
+                      {getFieldDecorator('email', {
                         rules: [
                           {
                             required: true,
-                            type: "email",
-                            message: "The input is not valid E-mail!"
-                          }
-                        ]
+                            type: 'email',
+                            message: 'The input is not valid E-mail!',
+                          },
+                        ],
                       })(
                         <Input
                           prefix={
                             <Icon
                               type="mail"
-                              style={{ color: "rgba(0,0,0,.25)" }}
+                              style={{ color: 'rgba(0,0,0,.25)' }}
                             />
                           }
                           placeholder="Email"
@@ -128,19 +128,19 @@ class NormalLoginForm extends React.Component<IProps, IState> {
                       )}
                     </Form.Item>
                     <Form.Item>
-                      {getFieldDecorator("password", {
+                      {getFieldDecorator('password', {
                         rules: [
                           {
                             required: true,
-                            message: "Please input your Password!"
-                          }
-                        ]
+                            message: 'Please input your Password!',
+                          },
+                        ],
                       })(
                         <Input
                           prefix={
                             <Icon
                               type="lock"
-                              style={{ color: "rgba(0,0,0,.25)" }}
+                              style={{ color: 'rgba(0,0,0,.25)' }}
                             />
                           }
                           type="password"
@@ -149,9 +149,9 @@ class NormalLoginForm extends React.Component<IProps, IState> {
                       )}
                     </Form.Item>
                     <Form.Item>
-                      {getFieldDecorator("remember", {
-                        valuePropName: "checked",
-                        initialValue: true
+                      {getFieldDecorator('remember', {
+                        valuePropName: 'checked',
+                        initialValue: true,
                       })(<Checkbox>Remember me</Checkbox>)}
                       {/* <Link className="login-form-forgot" to="/forgotpassword">
                         Forgot password
@@ -188,7 +188,7 @@ const GET_REDIRECT_ROUTE = gql`
 
 export default compose(
   graphql(GET_REDIRECT_ROUTE, {
-    name: "routeQuery"
+    name: 'routeQuery',
   }),
-  Form.create({ name: "vertical_login" })
+  Form.create({ name: 'vertical_login' })
 )(NormalLoginForm);

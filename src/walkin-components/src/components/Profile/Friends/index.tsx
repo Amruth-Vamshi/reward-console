@@ -1,12 +1,12 @@
-import * as React from "react";
-import { Badge } from "antd";
-import { Widget } from "../../Widget/index";
+import * as React from 'react';
+import { Badge } from 'antd';
+import { Widget } from '../../Widget/index';
 
 function Status(props) {
   const isType = props.isType;
-  if (isType === "online") {
+  if (isType === 'online') {
     return <Badge status="success" />;
-  } else if (isType === "away") {
+  } else if (isType === 'away') {
     return <Badge status="warning" />;
   } else {
     return <Badge count={0} status="error" />;

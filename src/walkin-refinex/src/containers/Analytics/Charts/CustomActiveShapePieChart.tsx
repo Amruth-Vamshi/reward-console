@@ -1,7 +1,7 @@
-import * as React from "react";
-import { Pie, PieChart, ResponsiveContainer, Sector } from "recharts";
+import * as React from 'react';
+import { Pie, PieChart, ResponsiveContainer, Sector } from 'recharts';
 
-import data from "./data";
+import data from './data';
 
 const renderActiveShape = (props: any) => {
   const RADIAN = Math.PI / 180;
@@ -16,7 +16,7 @@ const renderActiveShape = (props: any) => {
     fill,
     payload,
     percent,
-    value
+    value,
   } = props;
   const sin = Math.sin(-RADIAN * midAngle);
   const cos = Math.cos(-RADIAN * midAngle);
@@ -26,7 +26,7 @@ const renderActiveShape = (props: any) => {
   const my = cy + (outerRadius + 30) * sin;
   const ex = mx + (cos >= 0 ? 1 : -1) * 22;
   const ey = my;
-  const textAnchor = cos >= 0 ? "start" : "end";
+  const textAnchor = cos >= 0 ? 'start' : 'end';
 
   return (
     <g>
@@ -93,7 +93,7 @@ class CustomActiveShapePieChart extends React.Component<
 
   onPieEnter(data: any, index: any) {
     this.setState({
-      activeIndex: index
+      activeIndex: index,
     });
   }
 

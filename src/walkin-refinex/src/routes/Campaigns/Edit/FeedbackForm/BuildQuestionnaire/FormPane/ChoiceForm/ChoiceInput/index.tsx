@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { ErrorBoundary, CardBox } from "walkin-components";
+import React, { Component } from 'react';
+import { ErrorBoundary, CardBox } from 'walkin-components';
 import {
   Row,
   Col,
@@ -9,9 +9,9 @@ import {
   Input,
   Select,
   Divider,
-  Icon
-} from "antd";
-import { FormComponentProps } from "antd/lib/form";
+  Icon,
+} from 'antd';
+import { FormComponentProps } from 'antd/lib/form';
 const { Option } = Select;
 
 const getMultiChoice = () => {
@@ -40,19 +40,19 @@ class ChoiceInput extends Component<ChoiceInputProps, {}> {
   setFieldValues = () => {
     const { choice } = this.props;
     this.props.form.setFieldsValue({
-      choiceText: choice.choiceText.trim()
+      choiceText: choice.choiceText.trim(),
     });
   };
 
   onSubmit = e => {
     e.preventDefault();
-    console.log("here", this.props.choice);
+    console.log('here', this.props.choice);
     this.props.submitChoice();
   };
 
   onChange = (choice, questionId) => {
-    console.log("choiceId,questionId", choice, questionId);
-    if (questionId == "addNewQuestion") {
+    console.log('choiceId,questionId', choice, questionId);
+    if (questionId == 'addNewQuestion') {
       this.props.addNewQuestion(choice);
     } else {
       this.props.onLinkChoiceToQuestion(questionId, choice.id);
@@ -69,7 +69,7 @@ class ChoiceInput extends Component<ChoiceInputProps, {}> {
       choice,
       addNewQuestion,
       form,
-      questionnaire
+      questionnaire,
     } = this.props;
     const ChoiceMap = {
       SINGLE_ANSWER: getMultiChoice(),
@@ -77,7 +77,7 @@ class ChoiceInput extends Component<ChoiceInputProps, {}> {
       RATING_SCALE: getRatingChoice(),
       OPINION_SCALE: getRatingChoice(),
       RANKING: getMultiChoice(),
-      DICHOTOMOUS: getMultiChoice()
+      DICHOTOMOUS: getMultiChoice(),
     };
     const { getFieldDecorator, isFieldsTouched } = form;
 
@@ -86,24 +86,24 @@ class ChoiceInput extends Component<ChoiceInputProps, {}> {
     const { toQuestion } = choice;
     if (toQuestion) {
       props = {
-        defaultValue: toQuestion.id
+        defaultValue: toQuestion.id,
       };
     }
     let propsInput = {
-      suffix: <span />
+      suffix: <span />,
     };
-    if (isFieldsTouched(["choiceText"])) {
+    if (isFieldsTouched(['choiceText'])) {
       propsInput = {
         suffix: (
           <Button
             onClick={this.onSubmit}
             type="primary"
-            style={{ margin: "auto" }}
-            size={"small"}
+            style={{ margin: 'auto' }}
+            size={'small'}
           >
             Update
           </Button>
-        )
+        ),
       };
     }
     return (
@@ -117,12 +117,12 @@ class ChoiceInput extends Component<ChoiceInputProps, {}> {
                 onSubmit={this.onSubmit}
               >
                 <Item>
-                  {getFieldDecorator("choiceText", {
+                  {getFieldDecorator('choiceText', {
                     rules: [
                       {
-                        required: true
-                      }
-                    ]
+                        required: true,
+                      },
+                    ],
                   })(<Input size="large" {...propsInput} />)}
                 </Item>
               </Form>
@@ -134,23 +134,23 @@ class ChoiceInput extends Component<ChoiceInputProps, {}> {
                 placeholder="Choose or add next question"
                 {...props}
                 onChange={this.onChange.bind(this, choice)}
-                style={{ width: "100%" }}
+                style={{ width: '100%' }}
                 size="large"
                 dropdownRender={menu => <div>{menu}</div>}
               >
                 <Option key="addNewQuestion">
-                  <div style={{ padding: "8px", cursor: "pointer" }}>
-                    <Button style={{ margin: "auto", left: "15%" }}>
-                      {" "}
-                      <Icon type="plus" /> Add new Question{" "}
+                  <div style={{ padding: '8px', cursor: 'pointer' }}>
+                    <Button style={{ margin: 'auto', left: '15%' }}>
+                      {' '}
+                      <Icon type="plus" /> Add new Question{' '}
                     </Button>
                   </div>
-                  <Divider style={{ margin: "4px 0" }} />
+                  <Divider style={{ margin: '4px 0' }} />
                 </Option>
                 {questionnaire.map(question => {
                   return (
                     <Option
-                      style={{ marginTop: "2px" }}
+                      style={{ marginTop: '2px' }}
                       key={question.id}
                       value={question.id}
                     >
@@ -184,10 +184,10 @@ class ChoiceInput extends Component<ChoiceInputProps, {}> {
 }
 
 const choiceForm = Form.create<ChoiceInputProps>({
-  name: "ChoiceInput",
+  name: 'ChoiceInput',
   onValuesChange(props: ChoiceInputProps, value) {
     props.onChoiceEdited(value, props.choice);
-  }
+  },
 })(ChoiceInput);
 
 export default choiceForm;

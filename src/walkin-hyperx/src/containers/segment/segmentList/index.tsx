@@ -2,21 +2,21 @@ import {
   CampaignHeader,
   InstantSearch,
   SortableDataTable,
-  WHeader
-} from "shared";
-import { Button, Col, Dropdown, Icon, Menu, Popconfirm, message } from "antd";
-import { History } from "history";
-import * as jwt from "jsonwebtoken";
-import React, { Component, Fragment } from "react";
-import { ApolloProviderProps, graphql, withApollo } from "react-apollo";
-import { RouteChildrenProps } from "react-router";
-import { withRouter } from "react-router-dom";
+  WHeader,
+} from 'shared';
+import { Button, Col, Dropdown, Icon, Menu, Popconfirm, message } from 'antd';
+import { History } from 'history';
+import * as jwt from 'jsonwebtoken';
+import React, { Component, Fragment } from 'react';
+import { ApolloProviderProps, graphql, withApollo } from 'react-apollo';
+import { RouteChildrenProps } from 'react-router';
+import { withRouter } from 'react-router-dom';
 
-import { allSegments, disableSegment } from "../../../query/audience";
-import { NEW_SEGMENT } from "../../../constants/RouterConstants";
-import { DEFAULT_ACTIVE_STATUS } from "../../../constants";
-import HyperXContainer from "../../../utils/HyperXContainer";
-import { Widget } from "walkin-components";
+import { allSegments, disableSegment } from '../../../query/audience';
+import { NEW_SEGMENT } from '../../../constants/RouterConstants';
+import { DEFAULT_ACTIVE_STATUS } from '../../../constants';
+import HyperXContainer from '../../../utils/HyperXContainer';
+import { Widget } from 'walkin-components';
 
 interface IProps extends RouteChildrenProps, ApolloProviderProps<any> {
   history: History;
@@ -38,20 +38,20 @@ class SegmentList extends Component<IProps, IState> {
     this.state = {
       sortedInfo: null,
       filtered: null,
-      filteredInfo: {}
+      filteredInfo: {},
     };
   }
 
   handleChange = (pagination, filters, sorter) => {
     this.setState({
-      sortedInfo: sorter
+      sortedInfo: sorter,
     });
   };
 
   onNewSegment = () => {
     const { history } = this.props;
     history.push({
-      pathname: NEW_SEGMENT
+      pathname: NEW_SEGMENT,
     });
   };
   onDeleteContact = contact => {
@@ -60,15 +60,15 @@ class SegmentList extends Component<IProps, IState> {
       .mutate({
         mutation: disableSegment,
         variables: {
-          id: contact.id
-        }
+          id: contact.id,
+        },
       })
       .then(({ data }) => {
         const { refetchSegments } = this.props;
         refetchSegments();
       })
       .catch(error => {
-        console.log("err", error);
+        console.log('err', error);
       });
   };
 
@@ -97,8 +97,8 @@ class SegmentList extends Component<IProps, IState> {
     history.push({
       pathname: `/hyperx/segments/create/${record.id}`,
       state: {
-        segmentSelected: record
-      }
+        segmentSelected: record,
+      },
     });
   };
 
@@ -108,8 +108,8 @@ class SegmentList extends Component<IProps, IState> {
       pathname: `/hyperx/segments/create/${record.id}`,
       state: {
         segmentSelected: record,
-        update: true
-      }
+        update: true,
+      },
     });
   };
 
@@ -125,9 +125,9 @@ class SegmentList extends Component<IProps, IState> {
   menus = record => (
     <Menu
       onClick={e => {
-        if (e.key === "duplicate") {
+        if (e.key === 'duplicate') {
           this.onDuplicateContact(record);
-        } else if (e.key === "delete") {
+        } else if (e.key === 'delete') {
           this.onDeleteContact(record);
         } else this.onUpdateSegment(record);
       }}
@@ -152,7 +152,7 @@ class SegmentList extends Component<IProps, IState> {
 
   onSegmentFilteredList = newList => {
     this.setState({
-      filtered: newList
+      filtered: newList,
     });
   };
 
@@ -214,26 +214,26 @@ class SegmentList extends Component<IProps, IState> {
     // );
 
     const paginationData = {
-      position: "bottom",
+      position: 'bottom',
       total: segmentData ? segmentData.length : 0,
       defaultPageSize: 6,
-      showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`
+      showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
     };
 
     const columns = [
       {
-        title: "Name",
-        dataIndex: "name",
-        key: "name",
+        title: 'Name',
+        dataIndex: 'name',
+        key: 'name',
         sorter: (a, b) => (a.name !== b.name ? (a.name < b.name ? -1 : 1) : 0),
-        sortOrder: sortedInfo.columnKey === "name" && sortedInfo.order
+        sortOrder: sortedInfo.columnKey === 'name' && sortedInfo.order,
       },
       {
-        title: "Type",
-        dataIndex: "segmentType",
-        key: "segmentType",
+        title: 'Type',
+        dataIndex: 'segmentType',
+        key: 'segmentType',
         sorter: (a, b) => a.segmentType - b.segmentType,
-        sortOrder: sortedInfo.columnKey === "segmentType" && sortedInfo.order
+        sortOrder: sortedInfo.columnKey === 'segmentType' && sortedInfo.order,
       },
       // {
       // 	title: 'Status',
@@ -250,20 +250,20 @@ class SegmentList extends Component<IProps, IState> {
       // 	sortOrder: sortedInfo.columnKey === 'createdOn' && sortedInfo.order,
       // },
       {
-        title: "",
-        key: "action",
+        title: '',
+        key: 'action',
         render: (text, record) => (
           <div className="gx-module-contact-right">
             <Dropdown
               overlay={this.menus(record)}
               placement="bottomRight"
-              trigger={["click"]}
+              trigger={['click']}
             >
               <i className="gx-icon-btn icon icon-ellipse-v" />
             </Dropdown>
           </div>
-        )
-      }
+        ),
+      },
     ];
     return (
       <Fragment>
@@ -307,14 +307,14 @@ class SegmentList extends Component<IProps, IState> {
 export default withRouter(
   graphql(allSegments, {
     options: (ownProps: IProps) => {
-      let { org_id }: any = jwt.decode(localStorage.getItem("jwt"));
+      let { org_id }: any = jwt.decode(localStorage.getItem('jwt'));
       return {
         variables: {
           organization_id: org_id,
-          status: DEFAULT_ACTIVE_STATUS
+          status: DEFAULT_ACTIVE_STATUS,
         },
         forceFetch: true,
-        fetchPolicy: "network-only"
+        fetchPolicy: 'network-only',
       };
     },
     props: ({ data: { loading, error, segments, refetch } }: any) => ({
@@ -322,14 +322,14 @@ export default withRouter(
       segments,
       error,
       refetchSegments: (ownProps: IProps) => {
-        let { org_id }: any = jwt.decode(localStorage.getItem("jwt"));
+        let { org_id }: any = jwt.decode(localStorage.getItem('jwt'));
         refetch({
           variables: {
             organization_id: org_id,
-            status: DEFAULT_ACTIVE_STATUS
-          }
+            status: DEFAULT_ACTIVE_STATUS,
+          },
         });
-      }
-    })
+      },
+    }),
   })(withApollo(SegmentList as any))
 );

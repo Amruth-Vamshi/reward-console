@@ -1,11 +1,11 @@
-import * as React from "react";
-import { Col, Row, Card, Input, Button } from "antd";
-import { Link } from "react-router-dom";
-import HomeMap from "../../components/HomeMap";
-import Auxiliary from "../../util/Auxiliary";
-import "../../styles/home.css";
-import Cylinder3DChart from "./Cylinder3DChart";
-import { getNewPlaces } from "../Places/data";
+import * as React from 'react';
+import { Col, Row, Card, Input, Button } from 'antd';
+import { Link } from 'react-router-dom';
+import HomeMap from '../../components/HomeMap';
+import Auxiliary from '../../util/Auxiliary';
+import '../../styles/home.css';
+import Cylinder3DChart from './Cylinder3DChart';
+import { getNewPlaces } from '../Places/data';
 
 interface iProps {}
 
@@ -27,29 +27,29 @@ export default class Landing extends React.Component<iProps, iState> {
       places: [
         {
           radius1: 0,
-          placeName: "Place",
+          placeName: 'Place',
           radius2: 0,
-          storeId: "",
+          storeId: '',
           radius3: 0,
           noOfRadius: 1,
           radius: [0],
           center: {
             lat: null,
-            lng: null
+            lng: null,
           },
-          errors: {}
-        }
+          errors: {},
+        },
       ],
 
       center: {
         lat: null,
-        lng: null
+        lng: null,
       },
 
       noOfPlaces: 1,
       errors: {},
       markerPlace: 1,
-      getLoc: false
+      getLoc: false,
     };
   }
   render() {
@@ -58,11 +58,11 @@ export default class Landing extends React.Component<iProps, iState> {
     return (
       <Auxiliary>
         <Row className="headerRow1">
-          <div style={{ width: "100%" }}>
+          <div style={{ width: '100%' }}>
             <div className="divCenterVertical">
               <span style={{ fontSize: 18 }}>DASHBOARD</span>
             </div>
-            <div style={{ float: "right", flexFlow: "right" }}>
+            <div style={{ float: 'right', flexFlow: 'right' }}>
               <Link to="/nearx/places/createplace">
                 <Button style={{ margin: 0 }} className="buttonPrimary">
                   Create Place
@@ -74,7 +74,7 @@ export default class Landing extends React.Component<iProps, iState> {
 
         <div>
           <div className="homeMap">
-            <HomeMap mapData={this.state} />{" "}
+            <HomeMap mapData={this.state} />{' '}
           </div>
           <div className="homeSearch">
             {/* <Row><Col span={6}> */}
@@ -150,9 +150,9 @@ export default class Landing extends React.Component<iProps, iState> {
                     <Col span={5}>Avg Dwell time: {demoData[0].avgTime}min</Col>
                   </Row>
                   {/* <Row> */}
-                  <div style={{ margin: "20px 20px 30px 0px", width: "100%" }}>
-                    <p style={{ float: "right", color: "#34bfe2" }}>
-                      {" "}
+                  <div style={{ margin: '20px 20px 30px 0px', width: '100%' }}>
+                    <p style={{ float: 'right', color: '#34bfe2' }}>
+                      {' '}
                       <a href="#"> View All </a>
                     </p>
                   </div>

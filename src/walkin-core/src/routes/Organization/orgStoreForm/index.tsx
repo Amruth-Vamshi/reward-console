@@ -1,5 +1,5 @@
-import * as React from "react";
-import { Form, Input } from "antd";
+import * as React from 'react';
+import { Form, Input } from 'antd';
 
 interface OrgStoreFormProps {
   form: any;
@@ -9,7 +9,7 @@ interface OrgStoreFormProps {
   text: string;
 }
 
-const OrgStoreForm = Form.create({ name: "form_in_modal" })(
+const OrgStoreForm = Form.create({ name: 'form_in_modal' })(
   // eslint-disable-next-line
   class OrgStoreForm extends React.Component<OrgStoreFormProps, {}> {
     render() {
@@ -17,12 +17,12 @@ const OrgStoreForm = Form.create({ name: "form_in_modal" })(
         form,
         onOrgStoreFormSubmit,
         wrappedComponentRef,
-        storeFormValues
+        storeFormValues,
       } = this.props;
       const { getFieldDecorator } = form;
       const formItemLayout = {
         labelCol: { span: 7 },
-        wrapperCol: { span: 19 }
+        wrapperCol: { span: 19 },
       };
       const { Item } = Form;
       return (
@@ -32,33 +32,33 @@ const OrgStoreForm = Form.create({ name: "form_in_modal" })(
           onSubmit={onOrgStoreFormSubmit}
         >
           <Item label="Store Code" {...formItemLayout}>
-            {getFieldDecorator("code", {
+            {getFieldDecorator('code', {
               initialValue: `${
                 Object.keys(storeFormValues).length != 0
                   ? storeFormValues.code
-                  : ""
+                  : ''
               }`,
-              rules: [{ required: true, message: "Store Code is required" }]
+              rules: [{ required: true, message: 'Store Code is required' }],
             })(<Input />)}
           </Item>
           <Item label="Name" {...formItemLayout}>
-            {getFieldDecorator("name", {
+            {getFieldDecorator('name', {
               initialValue: `${
                 Object.keys(storeFormValues).length != 0
                   ? storeFormValues.name
-                  : ""
+                  : ''
               }`,
-              rules: [{ required: true, message: "Name is required" }]
+              rules: [{ required: true, message: 'Name is required' }],
             })(<Input />)}
           </Item>
           <Item label="Address" {...formItemLayout}>
-            {getFieldDecorator("address", {
+            {getFieldDecorator('address', {
               initialValue: `${
                 Object.keys(storeFormValues).length != 0
                   ? storeFormValues.address
-                  : ""
+                  : ''
               }`,
-              rules: [{ required: true, message: "Address is required" }]
+              rules: [{ required: true, message: 'Address is required' }],
             })(<Input />)}
           </Item>
         </Form>

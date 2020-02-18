@@ -1,14 +1,14 @@
-import * as React from "react";
-import { Button, List, Row, Avatar, Col, Card, Empty, Icon } from "antd";
-import "./style.css";
-import { object } from "prop-types";
-const org = require("walkin-components/src/assets/images/org.png");
+import * as React from 'react';
+import { Button, List, Row, Avatar, Col, Card, Empty, Icon } from 'antd';
+import './style.css';
+import { object } from 'prop-types';
+const org = require('walkin-components/src/assets/images/org.png');
 
 const SubOrgDetails = ({
   subOrgDetails,
   onNewSubOrg,
   onSubOrgCardClick,
-  onSubOrgDelete
+  onSubOrgDelete,
 }: any) => {
   return (
     <React.Fragment>

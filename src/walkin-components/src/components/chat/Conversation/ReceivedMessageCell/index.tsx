@@ -1,9 +1,9 @@
-import * as React from "react";
-import { Avatar } from "antd";
+import * as React from 'react';
+import { Avatar } from 'antd';
 
 const ReceivedMessageCell = ({
   conversation,
-  user
+  user,
 }: {
   conversation: any;
   user: any;

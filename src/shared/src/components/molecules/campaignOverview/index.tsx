@@ -1,8 +1,8 @@
-import * as React from "react";
-import * as PropTypes from "prop-types";
-import { Row, Col, Icon, Typography, Progress, Button } from "antd";
-import moment from "moment";
-import "./overViewStyle.css";
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
+import { Row, Col, Icon, Typography, Progress, Button } from 'antd';
+import moment from 'moment';
+import './overViewStyle.css';
 const { Title } = Typography;
 
 interface iProps {
@@ -24,10 +24,10 @@ interface iProps {
 export default class Overview extends React.Component<iProps, {}> {
   changeState = (e: any) => {
     console.log(e.target.innerText);
-    if (e.target.innerText.trim() == "LAUNCH") this.props.launchCampaign();
-    if (e.target.innerText.trim() == "PAUSE") this.props.pauseCampaign();
-    if (e.target.innerText.trim() == "UNPAUSE") this.props.unpauseCampaign();
-    if (e.target.innerText.trim() == "FORCE STOP") this.props.abandonCampaign();
+    if (e.target.innerText.trim() == 'LAUNCH') this.props.launchCampaign();
+    if (e.target.innerText.trim() == 'PAUSE') this.props.pauseCampaign();
+    if (e.target.innerText.trim() == 'UNPAUSE') this.props.unpauseCampaign();
+    if (e.target.innerText.trim() == 'FORCE STOP') this.props.abandonCampaign();
   };
 
   render() {
@@ -37,23 +37,23 @@ export default class Overview extends React.Component<iProps, {}> {
       offer,
       communication,
       view,
-      totalAudienceCount
+      totalAudienceCount,
     } = this.props;
     var now = moment();
     var startDate = moment(campaign.startTime);
     var endDate = moment(campaign.endTime);
-    var value = "";
+    var value = '';
     if (now < startDate) {
       var diff = moment.duration(now.diff(startDate)).humanize();
-      value = "To Start";
+      value = 'To Start';
     } else if (now < endDate) {
       var diff = moment.duration(now.diff(endDate)).humanize();
-      value = "To End";
+      value = 'To End';
     } else {
-      value = "Completed";
+      value = 'Completed';
     }
-    var start = moment(campaign.startTime).format("DD-MMM-YYYY HH:mm:ss");
-    var end = moment(campaign.endTime).format("DD-MMM-YYYY HH:mm:ss");
+    var start = moment(campaign.startTime).format('DD-MMM-YYYY HH:mm:ss');
+    var end = moment(campaign.endTime).format('DD-MMM-YYYY HH:mm:ss');
     console.log(this.props);
     return (
       <div className="campaignOverview">
@@ -62,27 +62,27 @@ export default class Overview extends React.Component<iProps, {}> {
             Overview
           </Title>
         ) : (
-          ""
+          ''
         )}
-        <div style={{ margin: "20px 10px 20px 30px" }}>
+        <div style={{ margin: '20px 10px 20px 30px' }}>
           <Row>
             <Col style={{ paddingLeft: 0 }} sm={24} md={16}>
               <div className="cpName"> {campaign.name} </div>
               <div className="cpDec mb-15">
-                {campaign.description != null ? campaign.description : ""}
+                {campaign.description != null ? campaign.description : ''}
               </div>
               <div className="cpDaysLeft mb-30">
-                <b style={{ textTransform: "capitalize" }}>
-                  {diff ? diff : ""}
-                </b>{" "}
+                <b style={{ textTransform: 'capitalize' }}>
+                  {diff ? diff : ''}
+                </b>{' '}
                 &nbsp;
-                {value == "Completed" ? (
+                {value == 'Completed' ? (
                   <div>
                     <Icon
-                      style={{ color: "#00b707" }}
+                      style={{ color: '#00b707' }}
                       type="check-circle"
                       theme="filled"
-                    />{" "}
+                    />{' '}
                     &nbsp; {value}
                   </div>
                 ) : (
@@ -92,43 +92,43 @@ export default class Overview extends React.Component<iProps, {}> {
             </Col>
             <Col sm={24} md={8}>
               <div className="divCenterVertical">
-                {view && value != "Completed" ? (
-                  campaign.campaignStatus == "DRAFT" ? (
+                {view && value != 'Completed' ? (
+                  campaign.campaignStatus == 'DRAFT' ? (
                     <Button
                       shape="round"
                       type="primary"
                       style={{
-                        width: "200px",
+                        width: '200px',
                         letterSpacing: 1,
                         height: 40,
-                        fontSize: 20
+                        fontSize: 20,
                       }}
                       onClick={this.changeState}
                       loading={this.props.loading}
                     >
-                      {" "}
-                      LAUNCH{" "}
+                      {' '}
+                      LAUNCH{' '}
                     </Button>
                   ) : (
                     // (campaign.campaignStatus == 'LIVE') ?
                     <div>
-                      {(campaign.campaignStatus == "LIVE" ||
-                        campaign.campaignStatus == "PAUSE") && (
+                      {(campaign.campaignStatus == 'LIVE' ||
+                        campaign.campaignStatus == 'PAUSE') && (
                         <Button
                           type="primary"
                           shape="round"
                           onClick={this.changeState}
                           style={{
-                            width: "140px",
+                            width: '140px',
                             letterSpacing: 0,
                             height: 40,
-                            fontSize: 17
+                            fontSize: 17,
                           }}
                           loading={this.props.loading}
                         >
-                          {campaign.campaignStatus != "PAUSE"
-                            ? "PAUSE"
-                            : "UNPAUSE"}
+                          {campaign.campaignStatus != 'PAUSE'
+                            ? 'PAUSE'
+                            : 'UNPAUSE'}
                         </Button>
                       )}
 
@@ -139,7 +139,7 @@ export default class Overview extends React.Component<iProps, {}> {
                     </div>
                   )
                 ) : (
-                  ""
+                  ''
                 )}
               </div>
             </Col>
@@ -156,15 +156,15 @@ export default class Overview extends React.Component<iProps, {}> {
               <Col className="mb-10" md={24} lg={8}>
                 <Progress
                   style={{
-                    width: "250px",
-                    margin: "0px 5px 0px 5px",
-                    color: "#654665"
+                    width: '250px',
+                    margin: '0px 5px 0px 5px',
+                    color: '#654665',
                   }}
                   percent={Math.round(
-                    (moment().diff(moment(campaign.startTime), "hours") /
+                    (moment().diff(moment(campaign.startTime), 'hours') /
                       moment(campaign.endTime).diff(
                         moment(campaign.startTime),
-                        "hours"
+                        'hours'
                       )) *
                       100
                   )}
@@ -187,12 +187,12 @@ export default class Overview extends React.Component<iProps, {}> {
                   xxl={12}
                   className="overViewBg"
                 >
-                  {campaign.feedbackForm ? campaign.feedbackForm.title : ""}
+                  {campaign.feedbackForm ? campaign.feedbackForm.title : ''}
                 </Col>
               </Row>
             </div>
           ) : (
-            ""
+            ''
           )}
 
           {audience && audience.length ? (
@@ -202,7 +202,7 @@ export default class Overview extends React.Component<iProps, {}> {
                   <h3>Audience</h3>
                 </Col>
                 <Col>
-                  Total Reach : {totalAudienceCount ? totalAudienceCount : "0"}{" "}
+                  Total Reach : {totalAudienceCount ? totalAudienceCount : '0'}{' '}
                 </Col>
               </Row>
               {audience.map((i: any, n: number) => (
@@ -224,7 +224,7 @@ export default class Overview extends React.Component<iProps, {}> {
               ))}
             </div>
           ) : (
-            ""
+            ''
           )}
 
           {offer && (

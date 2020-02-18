@@ -1,17 +1,17 @@
-import * as React from "react";
-import ReactDOM from "react-dom";
-const { compose, withProps, lifecycle } = require("recompose");
-const { withScriptjs } = require("react-google-maps");
+import * as React from 'react';
+import ReactDOM from 'react-dom';
+const { compose, withProps, lifecycle } = require('recompose');
+const { withScriptjs } = require('react-google-maps');
 const {
-  StandaloneSearchBox
-} = require("react-google-maps/lib/components/places/SearchBox");
+  StandaloneSearchBox,
+} = require('react-google-maps/lib/components/places/SearchBox');
 
 const PlacesWithStandaloneSearchBox = compose(
   withProps({
     googleMapURL:
-      "https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&v=3.exp&libraries=geometry,drawing,places",
+      'https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&v=3.exp&libraries=geometry,drawing,places',
     loadingElement: <div style={{ height: `100%` }} />,
-    containerElement: <div style={{ height: `400px` }} />
+    containerElement: <div style={{ height: `400px` }} />,
   }),
   lifecycle({
     UNSAFE_componentWillMount() {
@@ -26,11 +26,11 @@ const PlacesWithStandaloneSearchBox = compose(
           const places = refs.searchBox.getPlaces();
 
           this.setState({
-            places
+            places,
           });
-        }
+        },
       });
-    }
+    },
   }),
   withScriptjs
 )(props => (
@@ -53,7 +53,7 @@ const PlacesWithStandaloneSearchBox = compose(
           boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
           fontSize: `14px`,
           outline: `none`,
-          textOverflow: `ellipses`
+          textOverflow: `ellipses`,
         }}
       />
     </StandaloneSearchBox>
@@ -62,7 +62,7 @@ const PlacesWithStandaloneSearchBox = compose(
         ({ place_id, formatted_address, geometry: { location } }) => (
           <li key={place_id}>
             {formatted_address}
-            {" at "}({location.lat()}, {location.lng()})
+            {' at '}({location.lat()}, {location.lng()})
           </li>
         )
       )}

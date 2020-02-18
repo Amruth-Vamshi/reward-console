@@ -1,21 +1,21 @@
-import * as React from "react";
-import { Col, Row, message, Button, Icon, Select } from "antd";
-import { Auxiliary } from "walkin-components";
-import moment from "moment";
-import * as jwt from "jsonwebtoken";
-import "./style.css";
-import { withApollo, ApolloProviderProps } from "react-apollo";
-import { GET_ANALYTICS } from "walkin-core/src/PlatformQueries";
-import { ColumnProps } from "antd/lib/table";
-import { CounterCard, MultipleCounterCard } from "shared";
-import PercentageAreaChart from "./Components/PercentAreaChart";
-import LineValueChart from "./Components/LineValueChart";
-import SimpleBarChart from "./Components/SimpleBarChart";
-import LiveSurvey from "./Components/LiveSurvey";
-import ProgressBars from "./Components/ProgressBars";
-import Tables from "./Components/Tables";
+import * as React from 'react';
+import { Col, Row, message, Button, Icon, Select } from 'antd';
+import { Auxiliary } from 'walkin-components';
+import moment from 'moment';
+import * as jwt from 'jsonwebtoken';
+import './style.css';
+import { withApollo, ApolloProviderProps } from 'react-apollo';
+import { GET_ANALYTICS } from 'walkin-core/src/PlatformQueries';
+import { ColumnProps } from 'antd/lib/table';
+import { CounterCard, MultipleCounterCard } from 'shared';
+import PercentageAreaChart from './Components/PercentAreaChart';
+import LineValueChart from './Components/LineValueChart';
+import SimpleBarChart from './Components/SimpleBarChart';
+import LiveSurvey from './Components/LiveSurvey';
+import ProgressBars from './Components/ProgressBars';
+import Tables from './Components/Tables';
 
-const dateFormat = "YYYY/MM/DD";
+const dateFormat = 'YYYY/MM/DD';
 const { Option } = Select;
 
 interface LandingProps extends ApolloProviderProps<any> {}
@@ -62,18 +62,18 @@ class Landing extends React.Component<LandingProps, Partial<LandingState>> {
       popularPlaces: [],
       complains: [],
       customerCount: 0,
-      org_id: "",
-      startDate: moment().subtract(30, "months"),
+      org_id: '',
+      startDate: moment().subtract(30, 'months'),
       endDate: moment(),
       errors: {},
       spin: false,
-      filterCustomerValue: "all_customers",
-      filterDateValue: "last_month"
+      filterCustomerValue: 'all_customers',
+      filterDateValue: 'last_month',
     };
   }
 
   UNSAFE_componentWillMount() {
-    console.log("This.state...", this.state);
+    console.log('This.state...', this.state);
     // const { id, org_id }: any = jwt.decode(localStorage.getItem("jwt"));
     // if (org_id && id) {
     //     this.setState({ org_id })
@@ -84,7 +84,7 @@ class Landing extends React.Component<LandingProps, Partial<LandingState>> {
   // ***********************   UI METHODS  ***************************
 
   createSurvey() {
-    message.warn("Function not attached yet!");
+    message.warn('Function not attached yet!');
   }
 
   viewDraftedSurvey() {
@@ -108,19 +108,19 @@ class Landing extends React.Component<LandingProps, Partial<LandingState>> {
         query: GET_ANALYTICS,
         variables: {
           org_id: org_id,
-          product: "REFINEX",
-          dates: { from: this.state.startDate, to: endDate }
+          product: 'REFINEX',
+          dates: { from: this.state.startDate, to: endDate },
         },
-        fetchPolicy: "no-cache"
+        fetchPolicy: 'no-cache',
       })
       .then(res => {
-        console.log(">>>", res);
+        console.log('>>>', res);
         this.formatData(res);
         this.setState({ spin: false });
       })
       .catch(err => {
         this.setState({ spin: false });
-        console.log("Failed to get User Details" + err);
+        console.log('Failed to get User Details' + err);
       });
   };
 
@@ -134,22 +134,22 @@ class Landing extends React.Component<LandingProps, Partial<LandingState>> {
       customerCount,
       customers,
       totalRefinexEvents,
-      complains
+      complains,
     } = this.state;
     // if (!data) {
     //   data = AnyNear
     // }
-    console.log("Service analytics data..", data.data.analytics);
+    console.log('Service analytics data..', data.data.analytics);
     data.data.analytics.map((i: any) => {
-      if (i.name === "TOTAL_CAMPAIGNS") totalCampaigns = i.total;
-      else if (i.name === "TOTAL_FEEDBACKS") totalFeedbacks = i.total;
-      else if (i.name === "TOTAL_FORMS") totalForms = i.total;
-      else if (i.name === "TOTAL_QUESTIONS") totalQuestions = i.total;
-      else if (i.name === "TOTAL_CHOICES") totalChoices = i.total;
-      else if (i.name == "CUSTOMER_COUNTS") {
+      if (i.name === 'TOTAL_CAMPAIGNS') totalCampaigns = i.total;
+      else if (i.name === 'TOTAL_FEEDBACKS') totalFeedbacks = i.total;
+      else if (i.name === 'TOTAL_FORMS') totalForms = i.total;
+      else if (i.name === 'TOTAL_QUESTIONS') totalQuestions = i.total;
+      else if (i.name === 'TOTAL_CHOICES') totalChoices = i.total;
+      else if (i.name == 'CUSTOMER_COUNTS') {
         customerCount = i.total;
         customers = [{ count: 0 }, ...i.response];
-      } else if (i.name == "REFINEX_EVENTS") totalRefinexEvents = i.response;
+      } else if (i.name == 'REFINEX_EVENTS') totalRefinexEvents = i.response;
     });
     this.setState({
       totalCampaigns,
@@ -161,7 +161,7 @@ class Landing extends React.Component<LandingProps, Partial<LandingState>> {
       customers,
       totalRefinexEvents,
       complains,
-      spin: false
+      spin: false,
     });
   };
 
@@ -171,21 +171,21 @@ class Landing extends React.Component<LandingProps, Partial<LandingState>> {
     return (
       <Auxiliary>
         <div
-          style={{ minHeight: "100vh", backgroundColor: "#F2F2F2" }}
+          style={{ minHeight: '100vh', backgroundColor: '#F2F2F2' }}
           className="gx-main-content-wrapper"
         >
           <Row>
             <Col sm={24} md={18} xl={20}>
               <span
                 className="gx-d-none gx-d-sm-flex"
-                style={{ width: "100%", fontSize: 24, color: "#5B5B5B" }}
+                style={{ width: '100%', fontSize: 24, color: '#5B5B5B' }}
               >
                 Dashboard
               </span>
             </Col>
-            <Col sm={0} md={6} xl={4} style={{ textAlign: "end" }}>
+            <Col sm={0} md={6} xl={4} style={{ textAlign: 'end' }}>
               <Button
-                type={"primary"}
+                type={'primary'}
                 onClick={() => {
                   this.createSurvey();
                 }}
@@ -194,26 +194,26 @@ class Landing extends React.Component<LandingProps, Partial<LandingState>> {
               </Button>
             </Col>
           </Row>
-          <Row style={{ paddingBottom: "20px" }}>
+          <Row style={{ paddingBottom: '20px' }}>
             <Col span={12}>
               <Row>
                 <Col xl={12} lg={12} md={12} sm={24} xs={24}>
                   <CounterCard
                     showComaprison={false}
                     titleColor="#545454"
-                    subtitleColor={"#999999"}
-                    title={"+37"}
+                    subtitleColor={'#999999'}
+                    title={'+37'}
                     subTitle="Net Promoter Score"
                   />
                 </Col>
                 <Col xl={12} lg={12} md={12} sm={24} xs={24}>
                   <MultipleCounterCard
-                    textColor={"#999999"}
-                    valueColor={"#000"}
-                    title={"NPS"}
+                    textColor={'#999999'}
+                    valueColor={'#000'}
+                    title={'NPS'}
                     counterArray={[
-                      { title: "New Customers", value: "+3" },
-                      { title: "Existing Customers", value: "+5" }
+                      { title: 'New Customers', value: '+3' },
+                      { title: 'Existing Customers', value: '+5' },
                     ]}
                   />
                 </Col>
@@ -225,19 +225,19 @@ class Landing extends React.Component<LandingProps, Partial<LandingState>> {
                   <CounterCard
                     showComaprison={false}
                     titleColor="#545454"
-                    subtitleColor={"#999999"}
-                    title={"06.36"}
+                    subtitleColor={'#999999'}
+                    title={'06.36'}
                     subTitle="Customer Satisfaction Score"
                   />
                 </Col>
                 <Col xl={12} lg={12} md={12} sm={24} xs={24}>
                   <MultipleCounterCard
-                    textColor={"#999999"}
-                    valueColor={"#000"}
-                    title={"CSAT"}
+                    textColor={'#999999'}
+                    valueColor={'#000'}
+                    title={'CSAT'}
                     counterArray={[
-                      { title: "New Customers", value: "0.35" },
-                      { title: "Existing Customers", value: "0.20" }
+                      { title: 'New Customers', value: '0.35' },
+                      { title: 'Existing Customers', value: '0.20' },
                     ]}
                   />
                 </Col>
@@ -246,18 +246,18 @@ class Landing extends React.Component<LandingProps, Partial<LandingState>> {
           </Row>
           <Row
             style={{
-              backgroundColor: "#FFF",
-              height: "40px",
-              marginLeft: "1px",
-              marginRight: "1px"
+              backgroundColor: '#FFF',
+              height: '40px',
+              marginLeft: '1px',
+              marginRight: '1px',
             }}
           >
-            <div style={{ textAlign: "end", width: "100%" }}>
+            <div style={{ textAlign: 'end', width: '100%' }}>
               <Select
-                size={"small"}
+                size={'small'}
                 defaultValue="all_customers"
                 value={this.state.filterCustomerValue}
-                style={{ width: 180, padding: "9px" }}
+                style={{ width: 180, padding: '9px' }}
                 onChange={val => {
                   this.handleCustomerChange(val);
                 }}
@@ -267,10 +267,10 @@ class Landing extends React.Component<LandingProps, Partial<LandingState>> {
                 <Option value="existing_customers">Existing Customers</Option>
               </Select>
               <Select
-                size={"small"}
+                size={'small'}
                 defaultValue="last_week"
                 value={this.state.filterDateValue}
-                style={{ width: 150, padding: "9px" }}
+                style={{ width: 150, padding: '9px' }}
                 onChange={val => {
                   this.handleDateChange(val);
                 }}
@@ -283,9 +283,9 @@ class Landing extends React.Component<LandingProps, Partial<LandingState>> {
           </Row>
           <Row
             style={{
-              marginLeft: "1px",
-              backgroundColor: "#FFF",
-              marginRight: "1px"
+              marginLeft: '1px',
+              backgroundColor: '#FFF',
+              marginRight: '1px',
             }}
           >
             <Col span={12}>
@@ -299,18 +299,18 @@ class Landing extends React.Component<LandingProps, Partial<LandingState>> {
               <div>
                 <Row
                   style={{
-                    backgroundColor: "#FFF",
-                    marginRight: "1px",
-                    paddingTop: "8px",
-                    paddingBottom: "8px"
+                    backgroundColor: '#FFF',
+                    marginRight: '1px',
+                    paddingTop: '8px',
+                    paddingBottom: '8px',
                   }}
                 >
                   <Col
                     span={8}
                     style={{
-                      textAlign: "start",
-                      fontWeight: "bold",
-                      fontSize: "14px"
+                      textAlign: 'start',
+                      fontWeight: 'bold',
+                      fontSize: '14px',
                     }}
                   >
                     NPS Distribution %
@@ -318,25 +318,25 @@ class Landing extends React.Component<LandingProps, Partial<LandingState>> {
                 </Row>
                 <Row
                   style={{
-                    height: "18px",
-                    backgroundColor: "#FFF",
-                    marginRight: "1px"
+                    height: '18px',
+                    backgroundColor: '#FFF',
+                    marginRight: '1px',
                   }}
                 >
                   <Col span={6} offset={2}>
                     <Row>
                       <div
                         style={{
-                          backgroundColor: "#46CB92",
-                          height: "12px",
-                          width: "12px"
+                          backgroundColor: '#46CB92',
+                          height: '12px',
+                          width: '12px',
                         }}
                       ></div>
                       <span
                         style={{
-                          fontSize: "12px",
-                          color: "#333333",
-                          paddingLeft: "2px"
+                          fontSize: '12px',
+                          color: '#333333',
+                          paddingLeft: '2px',
                         }}
                       >
                         Promoter
@@ -347,16 +347,16 @@ class Landing extends React.Component<LandingProps, Partial<LandingState>> {
                     <Row>
                       <div
                         style={{
-                          backgroundColor: "#FCAD78",
-                          height: "12px",
-                          width: "12px"
+                          backgroundColor: '#FCAD78',
+                          height: '12px',
+                          width: '12px',
                         }}
                       ></div>
                       <span
                         style={{
-                          fontSize: "12px",
-                          color: "#333333",
-                          paddingLeft: "2px"
+                          fontSize: '12px',
+                          color: '#333333',
+                          paddingLeft: '2px',
                         }}
                       >
                         Neutrals
@@ -367,16 +367,16 @@ class Landing extends React.Component<LandingProps, Partial<LandingState>> {
                     <Row>
                       <div
                         style={{
-                          backgroundColor: "#E96B81",
-                          height: "12px",
-                          width: "12px"
+                          backgroundColor: '#E96B81',
+                          height: '12px',
+                          width: '12px',
                         }}
                       ></div>
                       <span
                         style={{
-                          fontSize: "12px",
-                          color: "#333333",
-                          paddingLeft: "2px"
+                          fontSize: '12px',
+                          color: '#333333',
+                          paddingLeft: '2px',
                         }}
                       >
                         Detractors
@@ -386,9 +386,9 @@ class Landing extends React.Component<LandingProps, Partial<LandingState>> {
                 </Row>
                 <Row
                   style={{
-                    backgroundColor: "#FFF",
-                    marginRight: "1px",
-                    padding: "5px 16px 18px 5px"
+                    backgroundColor: '#FFF',
+                    marginRight: '1px',
+                    padding: '5px 16px 18px 5px',
                   }}
                 >
                   <PercentageAreaChart />
@@ -406,15 +406,15 @@ class Landing extends React.Component<LandingProps, Partial<LandingState>> {
               <ProgressBars title="CSAT" backgroundColor="#FFF" />
             </Col>
           </Row>
-          <Row style={{ marginTop: "20px", paddingBottom: "20px" }}>
+          <Row style={{ marginTop: '20px', paddingBottom: '20px' }}>
             <Col span={12}>
               <Row>
                 <Col xl={12} lg={12} md={12} sm={24} xs={24}>
                   <CounterCard
                     showComaprison={false}
                     titleColor="#038FDE"
-                    subtitleColor={"#707070"}
-                    title={"7"}
+                    subtitleColor={'#707070'}
+                    title={'7'}
                     subTitle="Total Surveys"
                   />
                 </Col>
@@ -422,19 +422,19 @@ class Landing extends React.Component<LandingProps, Partial<LandingState>> {
                   <CounterCard
                     showComaprison={false}
                     titleColor="#46CB92"
-                    subtitleColor={"#707070"}
-                    title={"4"}
+                    subtitleColor={'#707070'}
+                    title={'4'}
                     subTitle="Live Surveys"
                   />
                 </Col>
               </Row>
-              <Row style={{ marginTop: "21px" }}>
+              <Row style={{ marginTop: '21px' }}>
                 <Col xl={12} lg={12} md={12} sm={24} xs={24}>
                   <CounterCard
                     showComaprison={false}
                     titleColor="#FCAD78"
-                    subtitleColor={"#707070"}
-                    title={"3"}
+                    subtitleColor={'#707070'}
+                    title={'3'}
                     subTitle="Upcoming Surveys"
                   />
                 </Col>
@@ -442,30 +442,30 @@ class Landing extends React.Component<LandingProps, Partial<LandingState>> {
                   <CounterCard
                     showComaprison={true}
                     titleColor="#2E2E2E"
-                    subtitleColor={"#707070"}
-                    title={"120"}
+                    subtitleColor={'#707070'}
+                    title={'120'}
                     subTitle="Total Responses"
                   />
                 </Col>
               </Row>
             </Col>
             <Col span={12}>
-              <div style={{ backgroundColor: "#FFF", height: "231px" }}>
+              <div style={{ backgroundColor: '#FFF', height: '231px' }}>
                 <Row
                   style={{
-                    backgroundColor: "#FFF",
-                    marginRight: "1px",
-                    marginLeft: "1px",
-                    paddingTop: "8px",
-                    paddingBottom: "8px"
+                    backgroundColor: '#FFF',
+                    marginRight: '1px',
+                    marginLeft: '1px',
+                    paddingTop: '8px',
+                    paddingBottom: '8px',
                   }}
                 >
                   <Col
                     span={8}
                     style={{
-                      textAlign: "start",
-                      fontWeight: "bold",
-                      fontSize: "14px"
+                      textAlign: 'start',
+                      fontWeight: 'bold',
+                      fontSize: '14px',
                     }}
                   >
                     Live Survey Result
@@ -473,11 +473,11 @@ class Landing extends React.Component<LandingProps, Partial<LandingState>> {
                 </Row>
                 <Row
                   style={{
-                    backgroundColor: "#FFF",
-                    marginLeft: "1px",
-                    marginRight: "1px",
-                    paddingTop: "8px",
-                    paddingBottom: "8px"
+                    backgroundColor: '#FFF',
+                    marginLeft: '1px',
+                    marginRight: '1px',
+                    paddingTop: '8px',
+                    paddingBottom: '8px',
                   }}
                 >
                   <LiveSurvey />
@@ -487,28 +487,28 @@ class Landing extends React.Component<LandingProps, Partial<LandingState>> {
           </Row>
           <Row
             style={{
-              marginLeft: "1px",
-              marginRight: "1px",
-              paddingBottom: "20px"
+              marginLeft: '1px',
+              marginRight: '1px',
+              paddingBottom: '20px',
             }}
           >
             <Row
               style={{
-                backgroundColor: "#FFF",
-                paddingTop: "14px",
-                paddingBottom: "14px",
-                width: "100%",
-                marginLeft: "1px"
+                backgroundColor: '#FFF',
+                paddingTop: '14px',
+                paddingBottom: '14px',
+                width: '100%',
+                marginLeft: '1px',
               }}
             >
               <Col
                 span={16}
                 style={{
-                  textAlign: "start",
-                  fontWeight: "bold",
-                  fontSize: "14px",
-                  alignSelf: "center",
-                  height: "30px"
+                  textAlign: 'start',
+                  fontWeight: 'bold',
+                  fontSize: '14px',
+                  alignSelf: 'center',
+                  height: '30px',
                 }}
               >
                 Survey List
@@ -516,15 +516,15 @@ class Landing extends React.Component<LandingProps, Partial<LandingState>> {
               <Col
                 span={8}
                 style={{
-                  textAlign: "end",
-                  alignSelf: "center",
-                  height: "30px"
+                  textAlign: 'end',
+                  alignSelf: 'center',
+                  height: '30px',
                 }}
               >
                 <Button
-                  style={{ color: "#E96B81" }}
-                  type={"danger"}
-                  size={"small"}
+                  style={{ color: '#E96B81' }}
+                  type={'danger'}
+                  size={'small'}
                   ghost
                   onClick={() => {
                     this.viewDraftedSurvey();

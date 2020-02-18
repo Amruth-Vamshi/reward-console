@@ -1,6 +1,6 @@
-import * as React from "react";
-import PropTypes from "prop-types";
-import { Auxiliary } from "../../../util/Auxiliary";
+import * as React from 'react';
+import PropTypes from 'prop-types';
+import { Auxiliary } from '../../../util/Auxiliary';
 
 const LineIndicator = ({ title, title2, width, value, color }) => {
   return (
@@ -13,7 +13,7 @@ const LineIndicator = ({ title, title2, width, value, color }) => {
         <div
           className={`gx-line-indi gx-bg-${color}`}
           style={{
-            width: Number.parseInt(width, 10) * 4
+            width: Number.parseInt(width, 10) * 4,
           }}
         />
         <span className="gx-line-indi-count gx-ml-2">{value}</span>
@@ -28,5 +28,5 @@ LineIndicator.propTypes = {
   title: PropTypes.string.isRequired,
   width: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
-  color: PropTypes.string.isRequired
+  color: PropTypes.string.isRequired,
 };

@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 
 const AppsNavigation = () => (
   <ul className="gx-app-nav">

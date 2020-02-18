@@ -1,6 +1,6 @@
-import * as React from "react";
-import { Widget } from "../../Widget";
-import { Col, Row } from "antd";
+import * as React from 'react';
+import { Widget } from '../../Widget';
+import { Col, Row } from 'antd';
 
 export const DownloadMobileApps = () => {
   return (

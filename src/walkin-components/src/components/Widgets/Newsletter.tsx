@@ -1,6 +1,6 @@
-import * as React from "react";
-import { Button, Form, Input } from "antd";
-import { Widget } from "../Widget";
+import * as React from 'react';
+import { Button, Form, Input } from 'antd';
+import { Widget } from '../Widget';
 
 const Newsletter = () => {
   return (

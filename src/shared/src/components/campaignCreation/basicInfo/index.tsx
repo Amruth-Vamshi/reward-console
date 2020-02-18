@@ -1,6 +1,6 @@
-import * as React from "react";
-import { Row, Col, Typography } from "antd";
-import { CampaignPriority, BasicInfoForm, Popup, BasicSlider } from "shared";
+import * as React from 'react';
+import { Row, Col, Typography } from 'antd';
+import { CampaignPriority, BasicInfoForm, Popup, BasicSlider } from 'shared';
 const { Text } = Typography;
 
 interface iProps {
@@ -66,7 +66,7 @@ const BasicInfo = ({
   popupButtonText,
   testValue,
   edit,
-  priorityChosen
+  priorityChosen,
 }: iProps) => {
   return (
     <React.Fragment>

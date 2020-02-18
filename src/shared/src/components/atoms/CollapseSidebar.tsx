@@ -1,5 +1,5 @@
-import * as React from "react";
-import { Link } from "react-router-dom";
+import * as React from 'react';
+import { Link } from 'react-router-dom';
 
 import {
   NAV_STYLE_DRAWER,
@@ -8,10 +8,10 @@ import {
   NAV_STYLE_NO_HEADER_MINI_SIDEBAR,
   TAB_SIZE,
   TAB_SIZE_MAX,
-  THEME_TYPE_LITE
-} from "walkin-components/src/constants/ThemeSetting";
-import { compose, graphql } from "react-apollo";
-import gql from "graphql-tag";
+  THEME_TYPE_LITE,
+} from 'walkin-components/src/constants/ThemeSetting';
+import { compose, graphql } from 'react-apollo';
+import gql from 'graphql-tag';
 
 interface iProps {
   width?: any;
@@ -41,26 +41,26 @@ class CollapseSidebar extends React.Component<iProps, iState> {
           if (navStyle === NAV_STYLE_DRAWER) {
             this.props.toggleCollapsedSideNav({
               variables: {
-                navCollapsed: !navCollapsed
-              }
+                navCollapsed: !navCollapsed,
+              },
             });
           } else if (navStyle === NAV_STYLE_FIXED) {
             this.props.onNavStyleChange({
               variables: {
-                navStyle: NAV_STYLE_MINI_SIDEBAR
-              }
+                navStyle: NAV_STYLE_MINI_SIDEBAR,
+              },
             });
           } else if (navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR) {
             this.props.toggleCollapsedSideNav({
               variables: {
-                navCollapsed: !navCollapsed
-              }
+                navCollapsed: !navCollapsed,
+              },
             });
           } else {
             this.props.onNavStyleChange({
               variables: {
-                navStyle: NAV_STYLE_FIXED
-              }
+                navStyle: NAV_STYLE_FIXED,
+              },
             });
           }
         }}
@@ -70,13 +70,13 @@ class CollapseSidebar extends React.Component<iProps, iState> {
             <img
               style={
                 navStyle === NAV_STYLE_MINI_SIDEBAR
-                  ? { padding: "10px" }
-                  : { padding: "5px", marginTop: "7px" }
+                  ? { padding: '10px' }
+                  : { padding: '5px', marginTop: '7px' }
               }
               src={
                 navStyle === NAV_STYLE_MINI_SIDEBAR
-                  ? require("walkin-refinex/src/Icons/ic_right_arrow.png")
-                  : require("walkin-refinex/src/Icons/ic_left_arrow.png")
+                  ? require('walkin-refinex/src/Icons/ic_right_arrow.png')
+                  : require('walkin-refinex/src/Icons/ic_left_arrow.png')
               }
             />
           </div>
@@ -88,7 +88,7 @@ class CollapseSidebar extends React.Component<iProps, iState> {
           ) : themeType === THEME_TYPE_LITE ? (
             <div>Collapse Sidebar</div>
           ) : (
-            <div className={"gx-text-white"}>Collapse Sidebar</div>
+            <div className={'gx-text-white'}>Collapse Sidebar</div>
           )}
         </div>
       </div>
@@ -131,7 +131,7 @@ const ON_NAV_STYLE_CHANGE = gql`
 `;
 
 export default compose(
-  graphql(GET_SETTINGS, { name: "settings", props: mapStateToProps }),
-  graphql(TOGGLE_COLLAPSED_SIDENAV, { name: "toggleCollapsedSideNav" }),
-  graphql(ON_NAV_STYLE_CHANGE, { name: "onNavStyleChange" })
+  graphql(GET_SETTINGS, { name: 'settings', props: mapStateToProps }),
+  graphql(TOGGLE_COLLAPSED_SIDENAV, { name: 'toggleCollapsedSideNav' }),
+  graphql(ON_NAV_STYLE_CHANGE, { name: 'onNavStyleChange' })
 )(CollapseSidebar);

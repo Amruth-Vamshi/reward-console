@@ -1,10 +1,10 @@
-import React, { Component } from "react";
-import Nprogress from "nprogress";
-import ReactPlaceholder from "react-placeholder";
-import "nprogress/nprogress.css";
+import React, { Component } from 'react';
+import Nprogress from 'nprogress';
+import ReactPlaceholder from 'react-placeholder';
+import 'nprogress/nprogress.css';
 
-import "react-placeholder/lib/reactPlaceholder.css";
-import { CircularProgress } from "../components/CircularProgress";
+import 'react-placeholder/lib/reactPlaceholder.css';
+import { CircularProgress } from '../components/CircularProgress';
 
 interface IProps {}
 interface IState {
@@ -17,7 +17,7 @@ export function asyncComponent(importComponent) {
     constructor(props) {
       super(props);
       this.state = {
-        component: null
+        component: null,
       };
     }
 
@@ -27,19 +27,19 @@ export function asyncComponent(importComponent) {
 
     componentWillUnmount() {
       this.setState({
-        mounted: false
+        mounted: false,
       });
     }
 
     async componentDidMount() {
       this.setState({
-        mounted: true
+        mounted: true,
       });
       const { default: Component } = await importComponent();
       Nprogress.done();
       if (this.state.mounted) {
         this.setState({
-          component: <Component {...this.props} />
+          component: <Component {...this.props} />,
         });
       }
     }

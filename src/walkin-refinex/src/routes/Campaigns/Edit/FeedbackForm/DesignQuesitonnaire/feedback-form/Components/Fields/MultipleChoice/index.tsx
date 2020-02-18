@@ -1,5 +1,5 @@
-import * as React from "react";
-import { Checkbox } from "antd";
+import * as React from 'react';
+import { Checkbox } from 'antd';
 
 interface SingleAnswerProps {
   question?: any;
@@ -12,7 +12,7 @@ const SingleAnswer: React.FC<SingleAnswerProps> = ({
   question,
   value,
   radioStyle,
-  onChange
+  onChange,
 }) => {
   return (
     <Checkbox.Group onChange={onChange} value={value}>

@@ -1,25 +1,25 @@
-import * as React from "react";
-import { Form, Input, Upload, Button, message } from "antd";
-import moment from "moment";
-import { FormComponentProps } from "antd/lib/form";
+import * as React from 'react';
+import { Form, Input, Upload, Button, message } from 'antd';
+import moment from 'moment';
+import { FormComponentProps } from 'antd/lib/form';
 const { TextArea } = Input;
 
 const props = {
-  name: "file",
-  action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
+  name: 'file',
+  action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
   headers: {
-    authorization: "authorization-text"
+    authorization: 'authorization-text',
   },
   onChange(info) {
-    if (info.file.status !== "uploading") {
+    if (info.file.status !== 'uploading') {
       console.log(info.file, info.fileList);
     }
-    if (info.file.status === "done") {
+    if (info.file.status === 'done') {
       message.success(`${info.file.name} file uploaded successfully`);
-    } else if (info.file.status === "error") {
+    } else if (info.file.status === 'error') {
       message.error(`${info.file.name} file upload failed.`);
     }
-  }
+  },
 };
 
 interface SMSFormProps extends FormComponentProps {
@@ -29,7 +29,7 @@ interface SMSFormProps extends FormComponentProps {
   text?: any;
 }
 
-const SMSForm = Form.create<SMSFormProps>({ name: "form_in_modal" })(
+const SMSForm = Form.create<SMSFormProps>({ name: 'form_in_modal' })(
   // eslint-disable-next-line
   class SMSForm extends React.Component<SMSFormProps, {}> {
     constructor(props: SMSFormProps) {
@@ -41,45 +41,45 @@ const SMSForm = Form.create<SMSFormProps>({ name: "form_in_modal" })(
         onFormNext,
         wrappedComponentRef,
         formValues,
-        text
+        text,
       } = this.props;
       const { getFieldDecorator } = form;
       const formItemLayout = {
         labelCol: { span: 24 },
-        wrapperCol: { span: 24 }
+        wrapperCol: { span: 24 },
       };
       return (
         <Form
-          style={{ paddingTop: "20px" }}
+          style={{ paddingTop: '20px' }}
           layout="vertical"
           ref={wrappedComponentRef}
           onSubmit={onFormNext}
         >
           <Form.Item label="SMS tag" {...formItemLayout}>
-            {getFieldDecorator("smsTag", {
+            {getFieldDecorator('smsTag', {
               initialValue: `${
                 Object.keys(formValues).length != 0
                   ? formValues.smsTag
                     ? formValues.smsTag
-                    : ""
-                  : ""
+                    : ''
+                  : ''
               }`,
-              rules: [{ required: true, message: "SMS tag is required" }]
+              rules: [{ required: true, message: 'SMS tag is required' }],
             })(<Input />)}
           </Form.Item>
           <Form.Item label="SMS body" {...formItemLayout}>
-            {getFieldDecorator("smsBody", {
+            {getFieldDecorator('smsBody', {
               initialValue: `${
                 Object.keys(formValues).length != 0
                   ? formValues.smsBody
                     ? formValues.smsBody
-                    : ""
-                  : ""
+                    : ''
+                  : ''
               }`,
-              rules: [{ required: true, message: "SMS body is required" }]
+              rules: [{ required: true, message: 'SMS body is required' }],
             })(<TextArea rows={3} />)}
           </Form.Item>
-          <Form.Item style={{ paddingLeft: "16px" }}>
+          <Form.Item style={{ paddingLeft: '16px' }}>
             <Upload {...props}>
               <Button>Upload and link file</Button>
             </Upload>

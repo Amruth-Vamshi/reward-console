@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import { Button, Drawer, Form, message, Radio } from "antd";
+import React, { Component } from 'react';
+import { Button, Drawer, Form, message, Radio } from 'antd';
 
-import ColorPicker from "./ColorPicker";
-import { Auxiliary } from "../util/Auxiliary";
-import { CustomScrollbars } from "../util/CustomScrollbars";
+import ColorPicker from './ColorPicker';
+import { Auxiliary } from '../util/Auxiliary';
+import { CustomScrollbars } from '../util/CustomScrollbars';
 
 import {
   BLUE,
@@ -59,10 +59,10 @@ import {
   THEME_COLOR_SELECTION_PRESET,
   THEME_TYPE_DARK,
   THEME_TYPE_LITE,
-  THEME_TYPE_SEMI_DARK
-} from "../constants/ThemeSetting";
-import { compose, graphql } from "react-apollo";
-import gql from "graphql-tag";
+  THEME_TYPE_SEMI_DARK,
+} from '../constants/ThemeSetting';
+import { compose, graphql } from 'react-apollo';
+import gql from 'graphql-tag';
 
 interface IProps {
   setThemeType?;
@@ -88,7 +88,7 @@ class Customizer extends Component<IProps, IState> {
   handleColorChange = (varname, color) => {
     const { vars } = this.state;
     if (varname) vars[varname] = color;
-    console.log("vars: ", vars);
+    console.log('vars: ', vars);
   };
   getColorPicker = varName => (
     <div key={varName} className="gx-media gx-mb-1">
@@ -116,14 +116,14 @@ class Customizer extends Component<IProps, IState> {
           onChangeComplete={color => this.handleColorChange(varName, color)}
         >
           <span className="gx-pointer gx-text-capitalize gx-media-body">
-            {varName.substr(1, varName.length).replace(/-/g, " ")}
+            {varName.substr(1, varName.length).replace(/-/g, ' ')}
           </span>
         </ColorPicker>
       </div>
     </div>
   );
   resetTheme = () => {
-    sessionStorage.setItem("app-theme", "{}");
+    sessionStorage.setItem('app-theme', '{}');
     this.setState({ vars: this.state.initialValue });
     // window.less.modifyVars(this.state.initialValue).catch(error => {
     //   message.error(`Failed to reset theme`);
@@ -131,7 +131,7 @@ class Customizer extends Component<IProps, IState> {
   };
   toggleCustomizer = () => {
     this.setState(previousState => ({
-      isCustomizerOpened: !previousState.isCustomizerOpened
+      isCustomizerOpened: !previousState.isCustomizerOpened,
     }));
   };
 
@@ -153,9 +153,9 @@ class Customizer extends Component<IProps, IState> {
     const { themeType, layoutType, navStyle, colorSelection } = this.props;
 
     if (themeType === THEME_TYPE_DARK) {
-      document.body.classList.add("dark-theme");
-    } else if (document.body.classList.contains("dark-theme")) {
-      document.body.classList.remove("dark-theme");
+      document.body.classList.add('dark-theme');
+    } else if (document.body.classList.contains('dark-theme')) {
+      document.body.classList.remove('dark-theme');
     }
 
     return (
@@ -216,10 +216,10 @@ class Customizer extends Component<IProps, IState> {
     navDarkBg
   ) => {
     let modifiedVars = this.state.vars;
-    modifiedVars["@primary-color"] = primaryColor;
-    modifiedVars["@secondary-color"] = secondaryColor;
-    modifiedVars["@nav-dark-bg"] = navDarkBg;
-    modifiedVars["@nav-dark-text-color"] = navDarkTextColor;
+    modifiedVars['@primary-color'] = primaryColor;
+    modifiedVars['@secondary-color'] = secondaryColor;
+    modifiedVars['@nav-dark-bg'] = navDarkBg;
+    modifiedVars['@nav-dark-text-color'] = navDarkTextColor;
     this.setState({ vars: modifiedVars });
     // this.handleColorChange();
   };
@@ -242,10 +242,10 @@ class Customizer extends Component<IProps, IState> {
             )}
             style={{
               backgroundColor: LIGHT_PURPLE_SEC,
-              color: LIGHT_PURPLE_DARK_TEXT_COLOR
+              color: LIGHT_PURPLE_DARK_TEXT_COLOR,
             }}
             className={`gx-link gx-color-light-purple ${themeColor ===
-              LIGHT_PURPLE && "active"}`}
+              LIGHT_PURPLE && 'active'}`}
           />
         </li>
         <li>
@@ -258,7 +258,7 @@ class Customizer extends Component<IProps, IState> {
               RED_NAV_DARK_BG
             )}
             style={{ backgroundColor: RED_SEC, color: RED_DARK_TEXT_COLOR }}
-            className={`gx-link gx-color-red ${themeColor === RED && "active"}`}
+            className={`gx-link gx-color-red ${themeColor === RED && 'active'}`}
           />
         </li>
         <li>
@@ -272,7 +272,7 @@ class Customizer extends Component<IProps, IState> {
             )}
             style={{ backgroundColor: BLUE_SEC, color: BLUE_DARK_TEXT_COLOR }}
             className={`gx-link gx-color-blue ${themeColor === BLUE &&
-              "active"}`}
+              'active'}`}
           />
         </li>
         <li>
@@ -286,10 +286,10 @@ class Customizer extends Component<IProps, IState> {
             )}
             style={{
               backgroundColor: DARK_BLUE_SEC,
-              color: DARK_BLUE_DARK_TEXT_COLOR
+              color: DARK_BLUE_DARK_TEXT_COLOR,
             }}
             className={`gx-link gx-color-dark-blue ${themeColor === DARK_BLUE &&
-              "active"}`}
+              'active'}`}
           />
         </li>
 
@@ -304,10 +304,10 @@ class Customizer extends Component<IProps, IState> {
             )}
             style={{
               backgroundColor: ORANGE_SEC,
-              color: ORANGE_DARK_TEXT_COLOR
+              color: ORANGE_DARK_TEXT_COLOR,
             }}
             className={`gx-link gx-color-orange ${themeColor === ORANGE &&
-              "active"}`}
+              'active'}`}
           />
         </li>
 
@@ -322,10 +322,10 @@ class Customizer extends Component<IProps, IState> {
             )}
             style={{
               backgroundColor: LIGHT_BLUE_SEC,
-              color: LIGHT_BLUE_DARK_TEXT_COLOR
+              color: LIGHT_BLUE_DARK_TEXT_COLOR,
             }}
             className={`gx-link gx-color-light-blue ${themeColor ===
-              LIGHT_BLUE && "active"}`}
+              LIGHT_BLUE && 'active'}`}
           />
         </li>
 
@@ -340,10 +340,10 @@ class Customizer extends Component<IProps, IState> {
             )}
             style={{
               backgroundColor: DEEP_ORANGE_SEC,
-              color: DEEP_ORANGE_DARK_TEXT_COLOR
+              color: DEEP_ORANGE_DARK_TEXT_COLOR,
             }}
             className={`gx-link gx-color-deep-orange ${themeColor ===
-              DEEP_ORANGE && "active"}`}
+              DEEP_ORANGE && 'active'}`}
           />
         </li>
 
@@ -358,10 +358,10 @@ class Customizer extends Component<IProps, IState> {
             )}
             style={{
               backgroundColor: LIGHT_PURPLE_1_SEC,
-              color: LIGHT_PURPLE_1_DARK_TEXT_COLOR
+              color: LIGHT_PURPLE_1_DARK_TEXT_COLOR,
             }}
             className={`gx-link gx-color-light-purple1 ${themeColor ===
-              LIGHT_PURPLE_1 && "active"}`}
+              LIGHT_PURPLE_1 && 'active'}`}
           />
         </li>
 
@@ -376,10 +376,10 @@ class Customizer extends Component<IProps, IState> {
             )}
             style={{
               backgroundColor: LIGHT_PURPLE_2_SEC,
-              color: LIGHT_PURPLE_2_DARK_TEXT_COLOR
+              color: LIGHT_PURPLE_2_DARK_TEXT_COLOR,
             }}
             className={`gx-link gx-color-light-purple2 ${themeColor ===
-              LIGHT_PURPLE_2 && "active"}`}
+              LIGHT_PURPLE_2 && 'active'}`}
           />
         </li>
       </ul>
@@ -393,10 +393,10 @@ class Customizer extends Component<IProps, IState> {
           <span
             onClick={this.handleLayoutTypes.bind(this, LAYOUT_TYPE_FRAMED)}
             className={`gx-pointer ${layoutType === LAYOUT_TYPE_FRAMED &&
-              "active"}`}
+              'active'}`}
           >
             <img
-              src={require("../assets/images/layouts/framed.png")}
+              src={require('../assets/images/layouts/framed.png')}
               alt="framed"
             />
           </span>
@@ -405,10 +405,10 @@ class Customizer extends Component<IProps, IState> {
           <span
             onClick={this.handleLayoutTypes.bind(this, LAYOUT_TYPE_FULL)}
             className={`gx-pointer ${layoutType === LAYOUT_TYPE_FULL &&
-              "active"}`}
+              'active'}`}
           >
             <img
-              src={require("../assets/images/layouts/full width.png")}
+              src={require('../assets/images/layouts/full width.png')}
               alt="full width"
             />
           </span>
@@ -417,10 +417,10 @@ class Customizer extends Component<IProps, IState> {
           <span
             onClick={this.handleLayoutTypes.bind(this, LAYOUT_TYPE_BOXED)}
             className={`gx-pointer ${layoutType === LAYOUT_TYPE_BOXED &&
-              "active"}`}
+              'active'}`}
           >
             <img
-              src={require("../assets/images/layouts/boxed.png")}
+              src={require('../assets/images/layouts/boxed.png')}
               alt="boxed"
             />
           </span>
@@ -434,10 +434,10 @@ class Customizer extends Component<IProps, IState> {
         <li>
           <span
             onClick={this.onNavStyleChange.bind(this, NAV_STYLE_FIXED)}
-            className={`gx-pointer ${navStyle === NAV_STYLE_FIXED && "active"}`}
+            className={`gx-pointer ${navStyle === NAV_STYLE_FIXED && 'active'}`}
           >
             <img
-              src={require("../assets/images/layouts/fixed.png")}
+              src={require('../assets/images/layouts/fixed.png')}
               alt="fixed"
             />
           </span>
@@ -446,10 +446,10 @@ class Customizer extends Component<IProps, IState> {
           <span
             onClick={this.onNavStyleChange.bind(this, NAV_STYLE_MINI_SIDEBAR)}
             className={`gx-pointer ${navStyle === NAV_STYLE_MINI_SIDEBAR &&
-              "active"}`}
+              'active'}`}
           >
             <img
-              src={require("../assets/images/layouts/mini sidebar.png")}
+              src={require('../assets/images/layouts/mini sidebar.png')}
               alt="mini sidebar"
             />
           </span>
@@ -458,10 +458,10 @@ class Customizer extends Component<IProps, IState> {
           <span
             onClick={this.onNavStyleChange.bind(this, NAV_STYLE_DRAWER)}
             className={`gx-pointer ${navStyle === NAV_STYLE_DRAWER &&
-              "active"}`}
+              'active'}`}
           >
             <img
-              src={require("../assets/images/layouts/drawer nav.png")}
+              src={require('../assets/images/layouts/drawer nav.png')}
               alt="drawer nav"
             />
           </span>
@@ -473,10 +473,10 @@ class Customizer extends Component<IProps, IState> {
               NAV_STYLE_NO_HEADER_MINI_SIDEBAR
             )}
             className={`gx-pointer ${navStyle ===
-              NAV_STYLE_NO_HEADER_MINI_SIDEBAR && "active"}`}
+              NAV_STYLE_NO_HEADER_MINI_SIDEBAR && 'active'}`}
           >
             <img
-              src={require("../assets/images/layouts/no header mini sidebar.png")}
+              src={require('../assets/images/layouts/no header mini sidebar.png')}
               alt="no hader mini sidebar"
             />
           </span>
@@ -488,10 +488,10 @@ class Customizer extends Component<IProps, IState> {
               NAV_STYLE_NO_HEADER_EXPANDED_SIDEBAR
             )}
             className={`gx-pointer ${navStyle ===
-              NAV_STYLE_NO_HEADER_EXPANDED_SIDEBAR && "active"}`}
+              NAV_STYLE_NO_HEADER_EXPANDED_SIDEBAR && 'active'}`}
           >
             <img
-              src={require("../assets/images/layouts/vertical no header.png")}
+              src={require('../assets/images/layouts/vertical no header.png')}
               alt="vertical no header"
             />
           </span>
@@ -503,10 +503,10 @@ class Customizer extends Component<IProps, IState> {
               NAV_STYLE_DEFAULT_HORIZONTAL
             )}
             className={`gx-pointer ${navStyle ===
-              NAV_STYLE_DEFAULT_HORIZONTAL && "active"}`}
+              NAV_STYLE_DEFAULT_HORIZONTAL && 'active'}`}
           >
             <img
-              src={require("../assets/images/layouts/default horizontal.png")}
+              src={require('../assets/images/layouts/default horizontal.png')}
               alt="default horizontal"
             />
           </span>
@@ -518,10 +518,10 @@ class Customizer extends Component<IProps, IState> {
               NAV_STYLE_DARK_HORIZONTAL
             )}
             className={`gx-pointer ${navStyle === NAV_STYLE_DARK_HORIZONTAL &&
-              "active"}`}
+              'active'}`}
           >
             <img
-              src={require("../assets/images/layouts/dark horizontal.png")}
+              src={require('../assets/images/layouts/dark horizontal.png')}
               alt="dark horizontal"
             />
           </span>
@@ -533,10 +533,10 @@ class Customizer extends Component<IProps, IState> {
               NAV_STYLE_INSIDE_HEADER_HORIZONTAL
             )}
             className={`gx-pointer ${navStyle ===
-              NAV_STYLE_INSIDE_HEADER_HORIZONTAL && "active"}`}
+              NAV_STYLE_INSIDE_HEADER_HORIZONTAL && 'active'}`}
           >
             <img
-              src={require("../assets/images/layouts/inside header horizontal.png")}
+              src={require('../assets/images/layouts/inside header horizontal.png')}
               alt="inside header horizontal"
             />
           </span>
@@ -545,10 +545,10 @@ class Customizer extends Component<IProps, IState> {
           <span
             onClick={this.onNavStyleChange.bind(this, NAV_STYLE_BELOW_HEADER)}
             className={`gx-pointer ${navStyle === NAV_STYLE_BELOW_HEADER &&
-              "active"}`}
+              'active'}`}
           >
             <img
-              src={require("../assets/images/layouts/below header.png")}
+              src={require('../assets/images/layouts/below header.png')}
               alt="below header"
             />
           </span>
@@ -558,10 +558,10 @@ class Customizer extends Component<IProps, IState> {
           <span
             onClick={this.onNavStyleChange.bind(this, NAV_STYLE_ABOVE_HEADER)}
             className={`gx-pointer ${navStyle === NAV_STYLE_ABOVE_HEADER &&
-              "active"}`}
+              'active'}`}
           >
             <img
-              src={require("../assets/images/layouts/top to header.png")}
+              src={require('../assets/images/layouts/top to header.png')}
               alt="top to header"
             />
           </span>
@@ -573,17 +573,17 @@ class Customizer extends Component<IProps, IState> {
   constructor(props) {
     super(props);
     let initialValue = {
-      "@primary-color": "#038fde",
-      "@secondary-color": "#fa8c16",
-      "@text-color": "#545454",
-      "@heading-color": "#535353",
-      "@nav-dark-bg": "#003366",
-      "@nav-dark-text-color": "#038fdd",
-      "@header-text-color": "#262626",
-      "@layout-header-background": "#fefefe",
-      "@layout-footer-background": "#fffffd",
-      "@body-background": "#f5f5f5",
-      "@hor-nav-text-color": "#fffffd"
+      '@primary-color': '#038fde',
+      '@secondary-color': '#fa8c16',
+      '@text-color': '#545454',
+      '@heading-color': '#535353',
+      '@nav-dark-bg': '#003366',
+      '@nav-dark-text-color': '#038fdd',
+      '@header-text-color': '#262626',
+      '@layout-header-background': '#fefefe',
+      '@layout-footer-background': '#fffffd',
+      '@body-background': '#f5f5f5',
+      '@hor-nav-text-color': '#fffffd',
     };
     let vars = {};
 
@@ -591,7 +591,7 @@ class Customizer extends Component<IProps, IState> {
       vars = Object.assign(
         {},
         initialValue,
-        JSON.parse(sessionStorage.getItem("app-theme"))
+        JSON.parse(sessionStorage.getItem('app-theme'))
       );
     } finally {
       this.state = { vars, initialValue, isCustomizerOpened: false };
@@ -687,12 +687,12 @@ const mapQueryToProps = ({ settings }) => {
 };
 
 export const CustomizerModule = compose(
-  graphql(SET_THEME_TYPE, { name: "setThemeType" }),
-  graphql(ON_NAV_STYLE_CHANGE, { name: "onNavStyleChange" }),
-  graphql(ON_LAYOUT_TYPE_CHANGE, { name: "onLayoutTypeChange" }),
-  graphql(SET_THEME_COLOR_SELECTION, { name: "setThemeColorSelection" }),
+  graphql(SET_THEME_TYPE, { name: 'setThemeType' }),
+  graphql(ON_NAV_STYLE_CHANGE, { name: 'onNavStyleChange' }),
+  graphql(ON_LAYOUT_TYPE_CHANGE, { name: 'onLayoutTypeChange' }),
+  graphql(SET_THEME_COLOR_SELECTION, { name: 'setThemeColorSelection' }),
   graphql(GET_SETTINGS, {
     props: mapStateToProps,
-    name: "settings"
+    name: 'settings',
   })
 )(CustomizerForm);

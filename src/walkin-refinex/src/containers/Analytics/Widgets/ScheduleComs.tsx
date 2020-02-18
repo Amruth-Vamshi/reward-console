@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 import {
   Col,
   Row,
@@ -14,15 +14,15 @@ import {
   Switch,
   Form,
   Divider,
-  Input
-} from "antd";
+  Input,
+} from 'antd';
 import {
   IconWithTextCard,
   Widget,
   ChartCard,
   Auxiliary,
-  WidgetHeader
-} from "walkin-components";
+  WidgetHeader,
+} from 'walkin-components';
 import {
   ResponsiveContainer,
   PieChart,
@@ -37,17 +37,17 @@ import {
   XAxis,
   YAxis,
   RadialBarChart,
-  RadialBar
-} from "recharts";
-import { graphql, compose, withApollo } from "react-apollo";
-import { GET_ANALYTICS } from "walkin-core/src/PlatformQueries";
-import moment from "moment";
-import * as jwt from "jsonwebtoken";
-import Cylinder3DChart from "walkin-nearx/src/routes/Dashboard/Cylinder3DChart";
-import PieChartWithAngle from "../Charts/PieChartWithPaddingAngle";
-import PieChartActiveShape from "../Charts/CustomActiveShapePieChart";
-import { TableSize } from "antd/lib/table";
-const dateFormat = "YYYY/MM/DD";
+  RadialBar,
+} from 'recharts';
+import { graphql, compose, withApollo } from 'react-apollo';
+import { GET_ANALYTICS } from 'walkin-core/src/PlatformQueries';
+import moment from 'moment';
+import * as jwt from 'jsonwebtoken';
+import Cylinder3DChart from 'walkin-nearx/src/routes/Dashboard/Cylinder3DChart';
+import PieChartWithAngle from '../Charts/PieChartWithPaddingAngle';
+import PieChartActiveShape from '../Charts/CustomActiveShapePieChart';
+import { TableSize } from 'antd/lib/table';
+const dateFormat = 'YYYY/MM/DD';
 const { Option } = Select;
 
 const FormItem = Form.Item;
@@ -68,7 +68,7 @@ interface analyticsState {
 }
 
 const scroll = { y: 240 };
-const pagination = { position: "top" };
+const pagination = { position: 'top' };
 export default class analytics extends React.Component<
   analyticsProps,
   analyticsState
@@ -78,26 +78,26 @@ export default class analytics extends React.Component<
     this.state = {
       bordered: false,
       loading: false,
-      pagination: "",
-      size: "default",
+      pagination: '',
+      size: 'default',
       title: undefined,
       showHeader: true,
       scroll: undefined,
       hasData: true,
       data: [],
-      count: 1
+      count: 1,
     };
   }
 
   componentDidMount() {
     const data = [
       {
-        id: "1",
+        id: '1',
         enabled: false,
-        recipients: "sachin@getwalk.in",
-        date: moment("12/12/2013"),
-        frequency: "month"
-      }
+        recipients: 'sachin@getwalk.in',
+        date: moment('12/12/2013'),
+        frequency: 'month',
+      },
     ];
     const count = data.length;
     this.setState({ data: data, count });
@@ -127,23 +127,23 @@ export default class analytics extends React.Component<
 
   updateCommunication = () => {
     const { data } = this.state;
-    console.log("data", data);
+    console.log('data', data);
   };
 
   onOk = (value: any) => {
-    console.log("onOk: ", value);
+    console.log('onOk: ', value);
   };
 
   onBlur = () => {
-    console.log("blur");
+    console.log('blur');
   };
 
   onFocus = () => {
-    console.log("focus");
+    console.log('focus');
   };
 
   onSearch = (val: any) => {
-    console.log("search:", val);
+    console.log('search:', val);
   };
 
   onInputChange = (record: any, e: any) => {
@@ -174,7 +174,7 @@ export default class analytics extends React.Component<
     this.setState((prevProps: any) => {
       return {
         ...prevProps,
-        [prop]: enable
+        [prop]: enable,
       };
     });
   };
@@ -184,13 +184,13 @@ export default class analytics extends React.Component<
     const newData = {
       id: count + 1,
       enabled: true,
-      recipients: "",
+      recipients: '',
       date: moment(),
-      frequency: ""
+      frequency: '',
     };
     this.setState({
       data: [...data, newData],
-      count: count + 1
+      count: count + 1,
     });
   };
   render() {
@@ -198,8 +198,8 @@ export default class analytics extends React.Component<
     const { data } = state;
     const columns = [
       {
-        key: "1",
-        dataIndex: "enabled",
+        key: '1',
+        dataIndex: 'enabled',
         width: 140,
         render: (text: any, record: any) => (
           <div style={{ marginBottom: 10 }}>
@@ -209,12 +209,12 @@ export default class analytics extends React.Component<
               onChange={this.handleSwitchChange.bind(this, record)}
             />
           </div>
-        )
+        ),
       },
       {
-        title: "Recipients",
-        dataIndex: "recipients",
-        key: "2",
+        title: 'Recipients',
+        dataIndex: 'recipients',
+        key: '2',
         width: 300,
         render: (text: any, record: any) => (
           <div style={{ marginBottom: 10 }}>
@@ -224,12 +224,12 @@ export default class analytics extends React.Component<
               value={text}
             />
           </div>
-        )
+        ),
       },
       {
-        title: "Date & Time",
-        dataIndex: "date",
-        key: "3",
+        title: 'Date & Time',
+        dataIndex: 'date',
+        key: '3',
         width: 300,
         render: (text: any, record: any) => (
           <div style={{ marginBottom: 10 }}>
@@ -241,12 +241,12 @@ export default class analytics extends React.Component<
               onOk={this.onOk}
             />
           </div>
-        )
+        ),
       },
       {
-        title: "Frequency",
-        dataIndex: "frequency",
-        key: "4",
+        title: 'Frequency',
+        dataIndex: 'frequency',
+        key: '4',
         width: 360,
         render: (text: any, record: any) => (
           <div style={{ marginBottom: 10 }}>
@@ -270,15 +270,15 @@ export default class analytics extends React.Component<
               <Option value="week">Every Week</Option>
             </Select>
           </div>
-        )
-      }
+        ),
+      },
     ];
     return (
       <Widget
         title="Send Report Schedule"
         style={{
-          backgroundColor: "white",
-          margin: "0px 30px 30px 30px"
+          backgroundColor: 'white',
+          margin: '0px 30px 30px 30px',
         }}
         styleName="gx-card-tabs"
         extra={
@@ -287,7 +287,7 @@ export default class analytics extends React.Component<
               <Button
                 onClick={this.updateCommunication}
                 type="primary"
-                size={"large"}
+                size={'large'}
               >
                 Update
               </Button>
@@ -299,12 +299,12 @@ export default class analytics extends React.Component<
           <Col>
             <div
               style={{
-                width: "100%"
+                width: '100%',
               }}
             >
               <Table
                 style={{
-                  width: "75vw"
+                  width: '75vw',
                 }}
                 {...this.state}
                 columns={columns}

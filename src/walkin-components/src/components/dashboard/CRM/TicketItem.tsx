@@ -1,6 +1,6 @@
-import * as React from "react";
-import { Avatar } from "antd";
-import { Auxiliary } from "../../../util/Auxiliary";
+import * as React from 'react';
+import { Avatar } from 'antd';
+import { Auxiliary } from '../../../util/Auxiliary';
 
 const taskStatus = [];
 
@@ -28,7 +28,7 @@ const TicketItem = ({ data }) => {
   const { id, title, avatar, description, status } = data;
   return (
     <div
-      key={"TicketItem" + id}
+      key={'TicketItem' + id}
       className="gx-media gx-task-list-item gx-flex-nowrap"
     >
       <Avatar className="gx-mr-3 gx-size-36" src={avatar} />

@@ -1,13 +1,13 @@
-import * as React from "react";
-import { Widget } from "walkin-components";
-import { Tabs, Modal, Form, Input, Button, message } from "antd";
-import { data, data1 } from "./data";
-import UserInfo from "./UserInfo";
-import * as jwt from "jsonwebtoken";
-import { withApollo, ApolloProviderProps } from "react-apollo";
-import "./users.css";
-import { GET_ALL_USERS_OF_ORGANIZATION } from "../../PlatformQueries";
-import CreateUser from "./CreateUser";
+import * as React from 'react';
+import { Widget } from 'walkin-components';
+import { Tabs, Modal, Form, Input, Button, message } from 'antd';
+import { data, data1 } from './data';
+import UserInfo from './UserInfo';
+import * as jwt from 'jsonwebtoken';
+import { withApollo, ApolloProviderProps } from 'react-apollo';
+import './users.css';
+import { GET_ALL_USERS_OF_ORGANIZATION } from '../../PlatformQueries';
+import CreateUser from './CreateUser';
 
 const TabPane = Tabs.TabPane;
 
@@ -35,8 +35,8 @@ class Users extends React.Component<UsersProps, UsersState> {
       loading: false,
       errors: {},
       userList: [],
-      userId: "",
-      org_id: ""
+      userId: '',
+      org_id: '',
     };
   }
 
@@ -45,7 +45,7 @@ class Users extends React.Component<UsersProps, UsersState> {
   }
 
   getUsers = () => {
-    const jwtToken = localStorage.getItem("jwt");
+    const jwtToken = localStorage.getItem('jwt');
     const { id, org_id }: any = jwt.decode(jwtToken);
     this.setState({ spin: true, userId: id, org_id });
 
@@ -54,7 +54,7 @@ class Users extends React.Component<UsersProps, UsersState> {
         .query({
           query: GET_ALL_USERS_OF_ORGANIZATION,
           variables: { id: org_id },
-          fetchPolicy: "network-only"
+          fetchPolicy: 'network-only',
         })
         .then(res => {
           let users: Array<any> = [];
@@ -72,12 +72,12 @@ class Users extends React.Component<UsersProps, UsersState> {
                   role: user.roles
                     ? user.roles.name
                       ? user.roles.name
-                      : ""
-                    : "",
+                      : ''
+                    : '',
                   status: user.status,
                   email: user.email,
                   Assign: false,
-                  creator: "ADMIN"
+                  creator: 'ADMIN',
                 };
                 users.push(userObject);
               });
@@ -90,13 +90,13 @@ class Users extends React.Component<UsersProps, UsersState> {
         })
         .catch(err => {
           this.setState({ spin: false });
-          message.error("ERROR");
+          message.error('ERROR');
 
-          console.log("Failed to get User Details" + err);
+          console.log('Failed to get User Details' + err);
         });
     } else {
       this.setState({ spin: false });
-      console.log("Error getting JwtData");
+      console.log('Error getting JwtData');
     }
   };
 
@@ -116,8 +116,8 @@ class Users extends React.Component<UsersProps, UsersState> {
           styleName="gx-card-tabs UsersTabs"
           extra={
             <Button onClick={() => this.showModal()} type="primary">
-              {" "}
-              Create User{" "}
+              {' '}
+              Create User{' '}
             </Button>
           }
         >
