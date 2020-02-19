@@ -5,11 +5,12 @@ import { withApollo, ApolloProviderProps } from "react-apollo";
 import * as jwt from "jsonwebtoken";
 
 import { EditableFormTable } from "./../../../../shared/src/index";
-import { Tabs, Spin } from "antd";
+import { Tabs, Spin, message } from "antd";
 import {
   GET_BUSINESS_RULES,
   UPDATE_BUSINESS_RULE
 } from "walkin-rewardx/src/query";
+import { RouteComponentProps } from "react-router";
 // import { RULES, UPDATE_RULE } from "./../../PlatformQueries";
 
 const { TabPane } = Tabs;
@@ -37,7 +38,13 @@ const TABLE_HEADERS = [
   }
 ];
 
-interface BusinessRulesProps extends ApolloProviderProps<any> {}
+interface BusinessRulesRouterProps {
+  id: string;
+}
+
+interface BusinessRulesProps
+  extends ApolloProviderProps<any>,
+    RouteComponentProps<BusinessRulesRouterProps> {}
 interface BusinessRulesState {
   rules: any;
   tableData?: any;
@@ -58,56 +65,65 @@ class BusinessRules extends React.Component<
   }
 
   componentWillMount() {
-    const jwtToken: any = localStorage.getItem("jwt");
-    const { org_id }: any = jwt.decode(jwtToken);
-
-    this.props.client
-      .query({
-        query: GET_BUSINESS_RULES,
-        variables: { input: { ruleLevel: "LOYALTY" } },
-        fetchPolicy: "network-only"
-      })
-      .then((businessRulesResponse: any) => {
-        console.log(
-          "BusinessRules businessRulesResponse",
-          businessRulesResponse
-        );
-        let tableData = businessRulesResponse.data.businessRules.map(
-          (item: any, index: any) => {
-            return {
-              key: item.id,
-              no: index + 1,
-              rule_name: item.ruleType,
-              rule_value: item.ruleDefaultValue
-            };
-          }
-        );
-        this.setState({
-          rules: businessRulesResponse.data.businessRules,
-          tableData,
-          loading: false
-        });
+    const roles: any = localStorage.getItem("role");
+    console.log("CustomerSearch roles", roles);
+    if (roles && roles !== "ADMIN") {
+      message.warn("You do not have access to this page");
+      this.props.history.push({
+        pathname: "/rewardx/customer_search"
       });
-    //   .then(rulesResponse => {
-    //     let tableData = rulesResponse.data.rules.map((item, index) => {
-    //       let ruleAttribute = item.ruleConfiguration;
-    //       return {
-    //         key: item.id,
-    //         no: index + 1,
-    //         rule_name: item.name,
-    //         rule_value: ruleAttribute
-    //           ? ruleAttribute.rules && ruleAttribute.rules.length
-    //             ? ruleAttribute.rules[0].attributeValue
-    //             : `null`
-    //           : `null`
-    //       };
-    //     });
-    //     this.setState({
-    //       rules: businessRulesResponse.data.businessRules,
-    //       tableData,
-    //       loading: false
-    //     });
-    //   });
+    } else {
+      const jwtToken: any = localStorage.getItem("jwt");
+      const { org_id }: any = jwt.decode(jwtToken);
+
+      this.props.client
+        .query({
+          query: GET_BUSINESS_RULES,
+          variables: { input: { ruleLevel: "LOYALTY" } },
+          fetchPolicy: "network-only"
+        })
+        .then((businessRulesResponse: any) => {
+          console.log(
+            "BusinessRules businessRulesResponse",
+            businessRulesResponse
+          );
+          let tableData = businessRulesResponse.data.businessRules.map(
+            (item: any, index: any) => {
+              return {
+                key: item.id,
+                no: index + 1,
+                rule_name: item.ruleType,
+                rule_value: item.ruleDefaultValue
+              };
+            }
+          );
+          this.setState({
+            rules: businessRulesResponse.data.businessRules,
+            tableData,
+            loading: false
+          });
+        });
+      //   .then(rulesResponse => {
+      //     let tableData = rulesResponse.data.rules.map((item, index) => {
+      //       let ruleAttribute = item.ruleConfiguration;
+      //       return {
+      //         key: item.id,
+      //         no: index + 1,
+      //         rule_name: item.name,
+      //         rule_value: ruleAttribute
+      //           ? ruleAttribute.rules && ruleAttribute.rules.length
+      //             ? ruleAttribute.rules[0].attributeValue
+      //             : `null`
+      //           : `null`
+      //       };
+      //     });
+      //     this.setState({
+      //       rules: businessRulesResponse.data.businessRules,
+      //       tableData,
+      //       loading: false
+      //     });
+      //   });
+    }
   }
 
   onChangeData = (row: any, index: number) => {

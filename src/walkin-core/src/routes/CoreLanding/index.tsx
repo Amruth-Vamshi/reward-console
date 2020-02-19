@@ -6,7 +6,7 @@ import { withApollo, ApolloProviderProps } from "react-apollo";
 import { RouteComponentProps } from "react-router";
 import * as jwt from "jsonwebtoken";
 import { Location } from "history";
-import { GET_PRODUCTS } from "walkin-core/src/PlatformQueries";
+import { GET_PRODUCTS, USER_DATA } from "walkin-core/src/PlatformQueries";
 
 interface CoreLandingRouterProps {
   id: string;
@@ -122,7 +122,7 @@ class CoreLandingPage extends React.Component<
 
   UNSAFE_componentWillMount() {
     const jwtToken: any = localStorage.getItem("jwt");
-    const { org_id }: any = jwt.decode(jwtToken);
+    const { id, org_id }: any = jwt.decode(jwtToken);
     let formattedApps = apps;
 
     if (org_id) {
@@ -147,13 +147,9 @@ class CoreLandingPage extends React.Component<
             ];
           });
 
-          this.setState({ apps: formattedApps, spin: false });
-          setTimeout(() => {
-            this.props.history.push({
-              pathname: "/rewardx/customer_search"
-            });
-            // push url
-          }, 1000);
+          this.setState({ apps: formattedApps }, () =>
+            this.getUserData(id, org_id)
+          );
         })
         .catch(err => {
           this.setState({ spin: false });
@@ -163,6 +159,31 @@ class CoreLandingPage extends React.Component<
       this.setState({ spin: false });
       console.log("Error getting JwtData");
     }
+  }
+
+  getUserData(id: any, org_id: any) {
+    id
+      ? this.props.client
+          .query({
+            query: USER_DATA,
+            variables: { userId: id, organizationId: org_id }
+            // fetchPolicy: "cache-first"
+          })
+          .then(async res => {
+            console.log("CoreLandingPage userData API", res.data.user);
+            await localStorage.setItem("role", res.data.user.roles[0].name);
+            this.setState({ spin: false });
+            setTimeout(() => {
+              this.props.history.push({
+                pathname: "/rewardx/customer_search"
+              });
+              // push url
+            }, 2000);
+          })
+          .catch(err => {
+            console.log("Failed to get User Details" + err);
+          })
+      : console.log("Error getting JwtData");
   }
 
   render() {
