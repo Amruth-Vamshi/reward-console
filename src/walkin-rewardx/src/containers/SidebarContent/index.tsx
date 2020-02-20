@@ -53,7 +53,25 @@ class SidebarContent extends React.Component<
     return "";
   };
 
+  renderBusinessRules(roles: any) {
+    if (roles && roles === "ADMIN") {
+      return (
+        <Menu.Item>
+          <Link to="/rewardx/business_rules">
+            <Icon type="profile" />
+            <span>Business Rules</span>
+          </Link>
+        </Menu.Item>
+      );
+    }
+
+    return null;
+  }
+
   render() {
+    const roles: any = localStorage.getItem("role");
+    console.log("CustomerSearch roles", roles);
+
     const { themeType, navStyle, pathname, match } = this.props;
     const selectedKeys = pathname.substr(1);
     const defaultOpenKeys = selectedKeys.split("/")[1];
@@ -91,12 +109,7 @@ class SidebarContent extends React.Component<
                 <span>Customer Care</span>
               </Link>
             </Menu.Item>
-            <Menu.Item>
-              <Link to="/rewardx/business_rules">
-                <Icon type="profile" />
-                <span>Business Rules</span>
-              </Link>
-            </Menu.Item>
+            {this.renderBusinessRules(roles)}
           </Menu>
         </div>
       </Auxiliary>
