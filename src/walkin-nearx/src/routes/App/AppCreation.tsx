@@ -102,7 +102,7 @@ class AppCreation extends React.Component<iProps, iState> {
       ? this.props.client
           .query({
             query: USER_DATA,
-            variables: { userId: id },
+            variables: { id, organizationId: org_id },
             fetchPolicy: 'cache-first',
           })
           .then(res => {

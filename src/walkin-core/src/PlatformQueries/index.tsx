@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 
 export const USER_DATA = gql`
-  query userData($userId: ID!) {
-    user(id: $userId) {
+  query userData($id: ID!, $organizationId: String!) {
+    user(id: $id, organizationId: $organizationId) {
       firstName
       lastName
       email
@@ -296,7 +296,7 @@ export const RULES = gql`
 `;
 
 export const UPDATE_RULE = gql`
-  mutation updateRule($id: ID, $input: UpdateRuleInput!) {
+  mutation updateRule($id: ID!, $input: UpdateRuleInput!) {
     updateRule(id: $id, input: $input) {
       id
       name

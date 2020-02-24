@@ -114,7 +114,7 @@ class SidebarContent extends React.Component<
             <Menu.Item key="business-rules">
               <Link to={`/core/business-rules`}>
                 <i className="icon icon-inbox" />
-                <span>Business Rules</span>
+                <span>Rules</span>
               </Link>
             </Menu.Item>
             <Menu.Item key="stores">
@@ -136,7 +136,7 @@ class SidebarContent extends React.Component<
         // theme={sidebarTheme}
         mode="inline"
       >
-        <Menu.SubMenu
+        {/* <Menu.SubMenu
           key="profile"
           title={
             <span>
@@ -154,7 +154,7 @@ class SidebarContent extends React.Component<
               <span>Account & Privacy Settings</span>
             </span>
           }
-        ></Menu.SubMenu>
+        ></Menu.SubMenu> */}
 
         <Menu.SubMenu
           style={{ backgroundColor: '#F3F3F3' }}

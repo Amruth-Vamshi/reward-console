@@ -77,9 +77,9 @@ const PushNotificationForm = Form.create<iProps>({ name: 'form_in_modal' })(
             })(<TextArea rows={3} />)}
           </Form.Item>
           <Form.Item style={{ paddingLeft: '16px' }}>
-            <Upload {...this.props.uploadProps}>
+            {/* <Upload {...this.props.uploadProps}>
               <Button>Attach image</Button>
-            </Upload>
+            </Upload> */}
           </Form.Item>
           {/* <Form.Item size={'large'} label="Deep linking path" {...formItemLayout}>
 						{getFieldDecorator('deepLinking', {

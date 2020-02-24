@@ -86,19 +86,20 @@ class BusinessRules extends React.Component<
   }
 
   onChangeData = (row: any, index: number) => {
-    console.log(row, 'row');
     let { tableData, rules } = this.state;
+    // console.log(tableData, rules[index]);
+
     tableData[index] = row;
     let input = { ...rules[index] };
     delete input['id'];
     delete input['status'];
     delete input['__typename'];
     if (!input.ruleConfiguration.rules) {
-      input.ruleConfiguration.rules = [{}];
+      input.ruleConfiguration.rules = [{ attributeValue: [null] }];
     }
-    input.ruleConfiguration.rules[0].attributeValue = row.rule_value;
-    input.ruleConfiguration = JSON.stringify(input.ruleConfiguration);
-    input.ruleExpression = JSON.stringify(input.ruleExpression);
+    input.ruleConfiguration.rules[0].attributeValue[0] = row.rule_value;
+    // input.ruleConfiguration = JSON.stringify(input.ruleConfiguration);
+    // input.ruleExpression = JSON.stringify(input.ruleExpression);
 
     // // // {
     // // //   name:rules.name,
@@ -107,8 +108,6 @@ class BusinessRules extends React.Component<
     // // //   ruleConfiguration:,
     // // //   ruleEXpression:,
     // // // }
-
-    console.log(input);
 
     this.props.client
       .mutate({
@@ -124,11 +123,10 @@ class BusinessRules extends React.Component<
   render() {
     const jwtToken: any = localStorage.getItem('jwt');
     const { org_id }: any = jwt.decode(jwtToken);
-    console.log('org_id', org_id);
     let { tableData, loading } = this.state;
     return (
       <div>
-        <div className="fontSize-header">Business Rules</div>
+        <div className="fontSize-header">Rules</div>
         {loading ? (
           <div className="justifyContent-center">
             <Spin size="large" />
@@ -144,15 +142,15 @@ class BusinessRules extends React.Component<
                   onChangeData={this.onChangeData}
                 />
               </TabPane>
-              <TabPane tab="HyperX" key="2">
-                Content of Tab Pane 2
+              {/* <TabPane tab="HyperX" key="2">
+                  Content of Tab Pane 2
               </TabPane>
-              <TabPane tab="NearX" key="3">
-                Content of Tab Pane 3
+                <TabPane tab="NearX" key="3">
+                  Content of Tab Pane 3
               </TabPane>
-              <TabPane tab="RefineX" key="4">
-                Content of Tab Pane 3
-              </TabPane>
+                <TabPane tab="RefineX" key="4">
+                  Content of Tab Pane 3
+              </TabPane> */}
             </Tabs>
           </div>
         )}

@@ -81,9 +81,9 @@ const PushNotificationForm = Form.create<PushNotificationFormProps>({
             })(<TextArea rows={3} />)}
           </Form.Item>
           <Form.Item style={{ paddingLeft: '16px' }}>
-            <Upload {...this.props.uploadProps}>
+            {/* <Upload {...this.props.uploadProps}>
               <Button>Attach image</Button>
-            </Upload>
+            </Upload> */}
           </Form.Item>
         </Form>
       );
