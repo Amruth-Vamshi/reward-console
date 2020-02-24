@@ -10,8 +10,11 @@ import Dashboard from '../containers/Dashboard';
 // import analytics from '../containers/Analytics'
 // import "./style.css"
 import { RouteChildrenProps } from 'react-router';
-import LoyaltyCard from '../containers/Dashboard/LoyaltyCard';
+// import LoyaltyCard from '../containers/Dashboard/LoyaltyCard';
 import Reports from '../containers/Reports';
+import CustomerSearch from '../containers/CustomerCare/CustomerSearch';
+import CustomerCare from '../containers/CustomerCare/CustomerCare';
+import BusinessRules from '../containers/BusinessRules';
 
 interface RewardXRoutesProps extends RouteChildrenProps {}
 
@@ -23,13 +26,33 @@ const RewardXRoutes: React.FunctionComponent<RewardXRoutesProps> = ({
     <div className="RewardX-Main">
       <Switch>
         <Redirect exact from={`${match.url}/`} to={`${match.url}/dashboard`} />
-        <Route exact path={`${match.url}/dashboard`} component={Dashboard} />
         <Route
+          exact
+          path={`${match.url}/dashboard`}
+          component={CustomerSearch}
+        />
+        {/* <Route
           exact
           path={`${match.url}/dashboard/loyalty_card`}
           component={LoyaltyCard}
         />
+      */}
         <Route exact path={`${match.url}/reports`} component={Reports} />
+        <Route
+          exact
+          path={`${match.url}/customer_search`}
+          component={CustomerSearch}
+        />
+        <Route
+          exact
+          path={`${match.url}/customer_care`}
+          component={CustomerCare}
+        />
+        <Route
+          exact
+          path={`${match.url}/business_rules`}
+          component={BusinessRules}
+        />
       </Switch>
     </div>
   );

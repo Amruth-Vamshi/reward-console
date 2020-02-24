@@ -82,8 +82,7 @@ class Reports extends React.Component<ReportsProps, ReportsState> {
       const { org_id }: any = jwt.decode(localStorage.getItem('jwt'));
       let inputVariables = {
         reportDate: selectedDates[reportIndex],
-        reportConfigId:
-          this.state.reports.length && this.state.reports[reportIndex].id,
+        reportConfigId: this.state.reports[reportIndex]['id'],
         organizationId: org_id,
       };
       this.props.client

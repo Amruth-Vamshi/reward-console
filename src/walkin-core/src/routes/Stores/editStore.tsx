@@ -83,6 +83,8 @@ class EditStore extends React.Component<EditStoreProps, EditStoreState> {
     let locationParams = this.props.history.location.pathname.split('/');
     if (locationParams[locationParams.length - 1] === 'edit') {
       storeId = locationParams[3];
+      console.log('storeId', storeId);
+      console.log('orgId', org_id);
       this.props.client
         .query({
           query: STORE,
@@ -184,6 +186,7 @@ class EditStore extends React.Component<EditStoreProps, EditStoreState> {
       ...storeDetails,
       latitude: `${mapData.center.lat}`,
       longitude: `${mapData.center.lng}`,
+      code: Math.random().toString(),
     };
     this.props.client
       .mutate({
@@ -529,7 +532,8 @@ class EditStore extends React.Component<EditStoreProps, EditStoreState> {
                   if (!storeDetails.extend) {
                     storeDetails.extend = {};
                   }
-                  storeDetails.extend.extend_admin_user_id = value;
+                  // storeDetails.extend.extend_admin_user_id = value;
+                  storeDetails.adminLevelId = value;
                   this.onChange('storeDetails', storeDetails);
                 }}
                 value={

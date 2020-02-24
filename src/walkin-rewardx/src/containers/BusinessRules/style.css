@@ -1,0 +1,12 @@
+.justifyContent-center {
+  display: flex;
+  justify-content: center;
+}
+.br-fontSize-header {
+  font-size: 18px;
+  padding: 20px;
+}
+.avoid-click {
+  pointer-events: none;
+  color: grey;
+}

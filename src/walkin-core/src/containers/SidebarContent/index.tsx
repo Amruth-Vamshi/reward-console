@@ -16,6 +16,7 @@ import gql from 'graphql-tag';
 import * as jwt from 'jsonwebtoken';
 import { CollapseSidebar } from 'shared';
 // import { MenuTheme } from "antd/lib/menu";
+import '../../styles/styles.css';
 
 interface SidebarContentProps extends RouteComponentProps {
   themeType: any;

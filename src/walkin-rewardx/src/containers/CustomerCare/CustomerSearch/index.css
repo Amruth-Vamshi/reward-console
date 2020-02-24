@@ -1,0 +1,63 @@
+.cs-container {
+  padding: 20px;
+}
+
+.cs-header {
+  font-weight: bold;
+  font-size: 21px;
+  padding: 10px;
+  padding-left: 10px;
+}
+
+.cs-sub-header {
+  margin-top: 10px;
+}
+
+.cs-search-container {
+  padding-top: 0px;
+  padding-left: 20px;
+  padding-right: 10px;
+  padding-bottom: 0px;
+  /* background-color: red; */
+}
+
+.cs-input-button-container-width {
+  width: 22%;
+}
+
+.cs-input-button-container {
+  padding-top: 0px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 10px;
+  margin-top: 0px;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  /* background-color: blue; */
+}
+
+.cs-input {
+  padding-left: 0px;
+  padding-right: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.cs-button {
+  padding-left: 0px;
+  padding-right: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  display: flex;
+  align-items: flex-end;
+}
+
+.cs-loader-view {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  /* background-color: red; */
+}

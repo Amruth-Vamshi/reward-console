@@ -14,6 +14,7 @@ import {
 } from 'walkin-components/src/constants/ThemeSetting';
 import SidebarLogo from './SidebarLogo';
 import { CollapseSidebar } from '../../../../shared';
+import './index.css';
 
 // import Dashboard from "../../Icons/IconComponents/dashboard";
 // import Survey from "../../Icons/IconComponents/survey";
@@ -52,7 +53,25 @@ class SidebarContent extends React.Component<
     return '';
   };
 
+  renderBusinessRules(roles: any) {
+    if (roles && roles === 'ADMIN') {
+      return (
+        <Menu.Item>
+          <Link to="/rewardx/business_rules">
+            <Icon type="profile" />
+            <span>Business Rules</span>
+          </Link>
+        </Menu.Item>
+      );
+    }
+
+    return null;
+  }
+
   render() {
+    const roles: any = localStorage.getItem('role');
+    console.log('CustomerSearch roles', roles);
+
     const { themeType, navStyle, pathname, match } = this.props;
     const selectedKeys = pathname.substr(1);
     const defaultOpenKeys = selectedKeys.split('/')[1];
@@ -70,20 +89,35 @@ class SidebarContent extends React.Component<
             theme={themeType === THEME_TYPE_LITE ? 'light' : 'dark'}
             mode="inline"
           >
-            <Menu.Item key="dashboard">
+            {/* <Menu.Item key="dashboard">
               <Link to="/rewardx/dashboard">
                 <Icon type="dashboard" />
-                {/* <Icon component={Dashboard} style={{ fontSize: "18px" }} /> */}
+                // <Icon component={Dashboard} style={{ fontSize: "18px" }} /> 
                 <span>Dashboard</span>
               </Link>
             </Menu.Item>
             <Menu.Item key="reports">
               <Link to="/rewardx/reports">
                 <Icon type="profile" />
-                {/* <Icon component={Dashboard} style={{ fontSize: "18px" }} /> */}
+                // <Icon component={Dashboard} style={{ fontSize: "18px" }} /> 
+                <span>Reports</span>
+              </Link>
+            </Menu.Item> 
+            */}
+            <Menu.Item key="reports">
+              <Link to="/rewardx/reports">
+                <Icon type="profile" />
                 <span>Reports</span>
               </Link>
             </Menu.Item>
+
+            <Menu.Item>
+              <Link to="/rewardx/customer_search">
+                <Icon type="profile" />
+                <span>Customer Care</span>
+              </Link>
+            </Menu.Item>
+            {this.renderBusinessRules(roles)}
           </Menu>
         </div>
       </Auxiliary>

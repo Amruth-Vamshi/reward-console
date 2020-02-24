@@ -1,0 +1,49 @@
+.cc-container {
+  padding: 20px;
+}
+
+.cc-header {
+  font-weight: bold;
+  font-size: 21px;
+  padding: 10px;
+}
+
+.cc-customer-header {
+  padding: 10px;
+}
+
+.cc-tab-header {
+  margin-top: 20px;
+}
+
+.cc-row-header {
+  margin: 10px;
+  margin-top: 20px;
+  width: 30%;
+}
+
+.cc-row-input {
+  margin: 10px;
+  width: 30%;
+}
+
+.cc-loader-view {
+  color: grey;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  /* background-color: red; */
+}
+
+.cc-link {
+  text-underline-position: below;
+  text-decoration: underline;
+}
+
+.cc-table-header {
+  width: 100%;
+  /* background-color: red; */
+  text-align: center;
+}

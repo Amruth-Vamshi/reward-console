@@ -13,6 +13,7 @@ import {
 import { compose, graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { Icon, Row, Col } from 'antd';
+import './index.css';
 
 interface SidebarLogoProps {
   width?: any;
@@ -31,7 +32,7 @@ class SidebarLogo extends React.Component<SidebarLogoProps, {}> {
       navStyle = NAV_STYLE_DRAWER;
     }
     return (
-      <div className="RefineX-Logo">
+      <div className="Rewardx-Logo">
         <div className="gx-layout-sider-header">
           {width < TAB_SIZE_MAX && width > TAB_SIZE ? (
             <Link to="/rewardx/dashboard" className="gx-pointer">
