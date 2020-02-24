@@ -104,17 +104,17 @@ class SidebarContent extends React.Component<
               </Link>
             </Menu.Item> 
             */}
-            <Menu.Item key="reports">
-              <Link to="/rewardx/reports">
-                <Icon type="profile" />
-                <span>Reports</span>
-              </Link>
-            </Menu.Item>
 
             <Menu.Item>
               <Link to="/rewardx/customer_search">
                 <Icon type="profile" />
                 <span>Customer Care</span>
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="reports">
+              <Link to="/rewardx/reports">
+                <Icon type="profile" />
+                <span>Reports</span>
               </Link>
             </Menu.Item>
             {this.renderBusinessRules(roles)}

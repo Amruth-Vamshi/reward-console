@@ -23,12 +23,12 @@ interface ReportsState {
   isFetching?: boolean;
   initLoading?: boolean;
   activeReportIndex?: any;
-  currentPage: number;
-  totalPages: number;
-  totalItems: number;
+  // currentPage: number;
+  // totalPages: number;
+  // totalItems: number;
 }
 
-const PAGE_SIZE = 8;
+// const PAGE_SIZE = 8;
 class Reports extends React.Component<ReportsProps, ReportsState> {
   constructor(props: ReportsProps) {
     super(props);
@@ -36,9 +36,9 @@ class Reports extends React.Component<ReportsProps, ReportsState> {
       reports: [],
       organizationId: '',
       selectedDates: {},
-      currentPage: 1,
-      totalPages: 0,
-      totalItems: 0,
+      // currentPage: 1,
+      // totalPages: 0,
+      // totalItems: 0,
       initLoading: true,
     };
   }
@@ -50,11 +50,11 @@ class Reports extends React.Component<ReportsProps, ReportsState> {
       this.setState({
         initLoading: false,
         organizationId: org_id,
-        reports: reportsResponse.data.reportConfigs.data,
-        totalPages:
-          reportsResponse.data.reportConfigs.paginationInfo.totalPages,
-        totalItems:
-          reportsResponse.data.reportConfigs.paginationInfo.totalItems,
+        reports: reportsResponse.data.reportConfigs,
+        // totalPages:
+        //   reportsResponse.data.reportConfigs.paginationInfo.totalPages,
+        // totalItems:
+        //   reportsResponse.data.reportConfigs.paginationInfo.totalItems,
       });
     });
   }
@@ -65,7 +65,10 @@ class Reports extends React.Component<ReportsProps, ReportsState> {
         query: REPORT_CONFIGS,
         variables: {
           organizationId,
-          pageOptions: { page: this.state.currentPage, pageSize: PAGE_SIZE },
+          //   pageOptions: {
+          //     page: this.state.currentPage,
+          //     pageSize: PAGE_SIZE
+          //  },
         },
         fetchPolicy: 'network-only',
       })
@@ -189,29 +192,29 @@ class Reports extends React.Component<ReportsProps, ReportsState> {
     );
   };
 
-  onChangePage = (page: number) => {
-    this.setState(
-      {
-        currentPage: page,
-        initLoading: true,
-      },
-      () => {
-        this.getReports(this.state.organizationId, reportsResponse => {
-          this.setState({
-            initLoading: false,
-            reports: reportsResponse.data.reportConfigs.data,
-            totalPages:
-              reportsResponse.data.reportConfigs.paginationInfo.totalPages,
-            totalItems:
-              reportsResponse.data.reportConfigs.paginationInfo.totalItems,
-          });
-        });
-      }
-    );
-  };
+  // onChangePage = (page: number) => {
+  //   this.setState(
+  //     {
+  //       currentPage: page,
+  //       initLoading: true,
+  //     },
+  //     () => {
+  //       this.getReports(this.state.organizationId, reportsResponse => {
+  //         this.setState({
+  //           initLoading: false,
+  //           reports: reportsResponse.data.reportConfigs.data,
+  //           totalPages:
+  //             reportsResponse.data.reportConfigs.paginationInfo.totalPages,
+  //           totalItems:
+  //             reportsResponse.data.reportConfigs.paginationInfo.totalItems,
+  //         });
+  //       });
+  //     }
+  //   );
+  // };
 
   render() {
-    let { totalItems, currentPage, totalPages } = this.state;
+    // let { totalItems, currentPage, totalPages } = this.state;
     return (
       <div className="gx-main-content-wrapper">
         <div className="reports-flex-row reports-justify-content-space-between margin-bottom-30">
@@ -224,7 +227,7 @@ class Reports extends React.Component<ReportsProps, ReportsState> {
           </Button>
         </div>
         {this.rendeReportsList()}
-        {totalPages > 1 ? (
+        {/* {totalPages > 1 ? (
           <div className={'reports-list-wrapper'}>
             <Box width={'90%'} justifyContent="flex-end" border={'0px'}>
               <Pagination
@@ -235,7 +238,7 @@ class Reports extends React.Component<ReportsProps, ReportsState> {
               />
             </Box>
           </div>
-        ) : null}
+        ) : null} */}
       </div>
     );
   }
