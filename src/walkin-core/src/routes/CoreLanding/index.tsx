@@ -173,9 +173,18 @@ class CoreLandingPage extends React.Component<
             console.log('CoreLandingPage userData API', res.data.user);
             await localStorage.setItem('role', res.data.user.roles[0].name);
             this.setState({ spin: false });
+            let activeRoute = '/rewardx/customer_search';
+            switch (res.data.user.roles[0].name) {
+              case 'Finance':
+                activeRoute = '/rewardx/reports';
+                break;
+              case 'Customer_Care':
+                activeRoute = '/rewardx/customer_search';
+                break;
+            }
             setTimeout(() => {
               this.props.history.push({
-                pathname: '/rewardx/customer_search',
+                pathname: activeRoute,
               });
               // push url
             }, 2000);

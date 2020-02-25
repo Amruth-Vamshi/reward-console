@@ -45,18 +45,26 @@ class Reports extends React.Component<ReportsProps, ReportsState> {
 
   UNSAFE_componentWillMount() {
     const jwtToken: any = localStorage.getItem('jwt');
-    const { org_id }: any = jwt.decode(jwtToken);
-    this.getReports(org_id, reportsResponse => {
-      this.setState({
-        initLoading: false,
-        organizationId: org_id,
-        reports: reportsResponse.data.reportConfigs,
-        // totalPages:
-        //   reportsResponse.data.reportConfigs.paginationInfo.totalPages,
-        // totalItems:
-        //   reportsResponse.data.reportConfigs.paginationInfo.totalItems,
+    const roles: any = localStorage.getItem('role');
+    if (['ADMIN', 'Finance'].includes(roles)) {
+      const { org_id }: any = jwt.decode(jwtToken);
+      this.getReports(org_id, reportsResponse => {
+        this.setState({
+          initLoading: false,
+          organizationId: org_id,
+          reports: reportsResponse.data.reportConfigs,
+          // totalPages:
+          //   reportsResponse.data.reportConfigs.paginationInfo.totalPages,
+          // totalItems:
+          //   reportsResponse.data.reportConfigs.paginationInfo.totalItems,
+        });
       });
-    });
+    } else {
+      message.warn('You do not have access to this page');
+      this.props.history.push({
+        pathname: '/rewardx/customer_search',
+      });
+    }
   }
 
   getReports = (organizationId: string, callback) => {

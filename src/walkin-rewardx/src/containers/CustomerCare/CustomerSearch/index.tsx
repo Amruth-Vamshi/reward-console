@@ -58,7 +58,7 @@ class CustomerSearch extends React.Component<
         this.props.client.cache['data']['data']['$ROOT_QUERY.auth']
           .organizationId,
       customer: null,
-      loading: true,
+      loading: false,
       loadingTable: false,
       phoneNumber: null,
       customerId: null,
@@ -67,8 +67,14 @@ class CustomerSearch extends React.Component<
     };
   }
 
-  componentDidMount() {
-    this.setState({ loading: false });
+  UNSAFE_componentWillMount() {
+    const roles: any = localStorage.getItem('role');
+    if (!['ADMIN', 'Customer_Care'].includes(roles)) {
+      message.warn('You do not have access to this page');
+      this.props.history.push({
+        pathname: '/rewardx/reports',
+      });
+    }
   }
 
   getCustomerDetails() {

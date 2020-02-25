@@ -91,8 +91,6 @@ class CustomerCare extends React.Component<
 
   // hide everything from customer search except phone number
   componentDidMount() {
-    console.log('CustomerCare cdm record', this.props.location.state.record);
-
     if (
       this.props.location.state.record.phoneNumber &&
       this.props.location.state.loyaltyTransactionsData &&

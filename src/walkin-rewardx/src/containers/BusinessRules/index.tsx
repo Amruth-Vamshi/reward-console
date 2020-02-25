@@ -67,12 +67,7 @@ class BusinessRules extends React.Component<
   componentWillMount() {
     const roles: any = localStorage.getItem('role');
     console.log('CustomerSearch roles', roles);
-    if (roles && roles !== 'ADMIN') {
-      message.warn('You do not have access to this page');
-      this.props.history.push({
-        pathname: '/rewardx/customer_search',
-      });
-    } else {
+    if (['ADMIN'].includes(roles)) {
       const jwtToken: any = localStorage.getItem('jwt');
       const { org_id }: any = jwt.decode(jwtToken);
 
@@ -123,6 +118,11 @@ class BusinessRules extends React.Component<
       //       loading: false
       //     });
       //   });
+    } else {
+      message.warn('You do not have access to this page');
+      this.props.history.push({
+        pathname: '/rewardx/customer_search',
+      });
     }
   }
 
