@@ -90,9 +90,10 @@ class NormalLoginForm extends React.Component<IProps, IState> {
                           });
 
                           if (data && data.data && data.data.signIn) {
-                            const redirectRoute = routeQuery.redirectRoute
-                              ? routeQuery.redirectRoute
-                              : '/core';
+                            // const redirectRoute = routeQuery.redirectRoute
+                            //   ? routeQuery.redirectRoute
+                            //   : '/core';
+                            const redirectRoute = '/core';
                             console.log(
                               'Login Successfull. Redirecting...',
                               redirectRoute
