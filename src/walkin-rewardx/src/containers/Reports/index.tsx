@@ -227,12 +227,13 @@ class Reports extends React.Component<ReportsProps, ReportsState> {
       <div className="gx-main-content-wrapper">
         <div className="reports-flex-row reports-justify-content-space-between margin-bottom-30">
           <div className="reports-title">Reports</div>
-          <Button
+          <div />
+          {/* <Button
             disabled
             className="no-button-bottom-margin reports-auto-schedule-button"
           >
             AUTO SCHEDULE
-          </Button>
+          </Button> */}
         </div>
         {this.rendeReportsList()}
         {/* {totalPages > 1 ? (
