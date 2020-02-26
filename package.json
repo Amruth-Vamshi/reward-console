@@ -6,6 +6,7 @@
     "lint:fix": "eslint . --fix --ext 'tsx'",
     "start": "dotenv react-scripts start",
     "build": "react-scripts build",
+    "build-production": "dotenv -e .env.production react-scripts build",
     "test": "react-scripts test",
     "storybook": "start-storybook",
     "build-storybook": "build-storybook -o storybook-static"
