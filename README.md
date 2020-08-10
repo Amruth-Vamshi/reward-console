@@ -31,6 +31,8 @@ To start the Walkin platform
 
 **packages/walkin-refinex**: Present at _/refinex_ route, this module contains the app for RefineX.
 
+**packages/walkin-rewardx**: Present at _/rewardx_ route, this module contails the app for RewardX. 
+
 _For more details on the apps, please refer to the README in the individual repositories_
 
 # Developer Guidelines
