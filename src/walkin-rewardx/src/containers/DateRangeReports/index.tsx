@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { withApollo, ApolloProviderProps } from 'react-apollo';
-// import { useQuery } from "@apollo/react-hooks";
 import * as jwt from 'jsonwebtoken';
 import { RouteChildrenProps } from 'react-router';
 
@@ -23,9 +22,6 @@ interface ReportsState {
   isFetching?: boolean;
   initLoading?: boolean;
   activeReportIndex?: any;
-  // currentPage: number;
-  // totalPages: number;
-  // totalItems: number;
 }
 
 // const PAGE_SIZE = 8;
@@ -36,9 +32,6 @@ class Reports extends React.Component<ReportsProps, ReportsState> {
       reports: [],
       organizationId: '',
       selectedDates: {},
-      // currentPage: 1,
-      // totalPages: 0,
-      // totalItems: 0,
       initLoading: true,
     };
   }
@@ -53,10 +46,6 @@ class Reports extends React.Component<ReportsProps, ReportsState> {
           initLoading: false,
           organizationId: org_id,
           reports: reportsResponse.data,
-          // totalPages:
-          //   reportsResponse.data.reportConfigs.paginationInfo.totalPages,
-          // totalItems:
-          //   reportsResponse.data.reportConfigs.paginationInfo.totalItems,
         });
       });
     } else {
@@ -68,7 +57,6 @@ class Reports extends React.Component<ReportsProps, ReportsState> {
   }
 
   getReports = async (organizationId: string, callback) => {
-    console.log(process.env);
     var data = { organizationId: organizationId };
     await axios
       .post(`${process.env.REACT_APP_WCORE_API}metabase-report`, data, {
@@ -106,54 +94,16 @@ class Reports extends React.Component<ReportsProps, ReportsState> {
     );
   };
 
-  // onChangePage = (page: number) => {
-  //   this.setState(
-  //     {
-  //       currentPage: page,
-  //       initLoading: true,
-  //     },
-  //     () => {
-  //       this.getReports(this.state.organizationId, reportsResponse => {
-  //         this.setState({
-  //           initLoading: false,
-  //           reports: reportsResponse.data.reportConfigs.data,
-  //           totalPages:
-  //             reportsResponse.data.reportConfigs.paginationInfo.totalPages,
-  //           totalItems:
-  //             reportsResponse.data.reportConfigs.paginationInfo.totalItems,
-  //         });
-  //       });
-  //     }
-  //   );
-  // };
-
   render() {
-    // let { totalItems, currentPage, totalPages } = this.state;
     return (
       <div className="gx-main-content-wrapper">
         <div className="reports-flex-row reports-justify-content-space-between margin-bottom-30">
           <div className="reports-title">Date Range Reports</div>
           <div />
-          {/* <Button
-            disabled
-            className="no-button-bottom-margin reports-auto-schedule-button"
-          >
-            AUTO SCHEDULE
-          </Button> */}
+          {}
         </div>
         {this.rendeReportsList()}
-        {/* {totalPages > 1 ? (
-          <div className={'reports-list-wrapper'}>
-            <Box width={'90%'} justifyContent="flex-end" border={'0px'}>
-              <Pagination
-                onChange={page => this.onChangePage(page)}
-                pageSize={PAGE_SIZE}
-                total={totalItems}
-                current={currentPage}
-              />
-            </Box>
-          </div>
-        ) : null} */}
+        {}
       </div>
     );
   }
