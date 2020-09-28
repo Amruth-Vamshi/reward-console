@@ -113,6 +113,14 @@ class SidebarContent extends React.Component<
                 </Link>
               </Menu.Item>
             ) : null}
+            {['ADMIN', 'Finance'].includes(roles) ? (
+              <Menu.Item key="date_range_reports">
+                <Link to="/rewardx/date_range_reports">
+                  <Icon type="profile" />
+                  <span>Date Range Reports</span>
+                </Link>
+              </Menu.Item>
+            ) : null}
           </Menu>
         </div>
       </Auxiliary>

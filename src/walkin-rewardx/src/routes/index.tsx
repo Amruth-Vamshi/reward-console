@@ -15,6 +15,7 @@ import Reports from '../containers/Reports';
 import CustomerSearch from '../containers/CustomerCare/CustomerSearch';
 import CustomerCare from '../containers/CustomerCare/CustomerCare';
 import BusinessRules from '../containers/BusinessRules';
+import CustomDateReports from '../containers/DateRangeReports';
 
 interface RewardXRoutesProps extends RouteChildrenProps {}
 
@@ -38,6 +39,11 @@ const RewardXRoutes: React.FunctionComponent<RewardXRoutesProps> = ({
         />
       */}
         <Route exact path={`${match.url}/reports`} component={Reports} />
+        <Route
+          exact
+          path={`${match.url}/date_range_reports`}
+          component={CustomDateReports}
+        />
         <Route
           exact
           path={`${match.url}/customer_search`}
