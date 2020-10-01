@@ -685,7 +685,6 @@ class NewOffer extends Component<IProps, Partial<IState>> {
     } = this.state;
     const {
       loading,
-      error,
       categories,
       products,
       organizationHierarchy,
