@@ -227,7 +227,7 @@ class NewSegment extends Component<IProps, Partial<IState>> {
       isDuplicateSegment,
       update,
     } = this.state;
-    const { loading, error, ruleAttributes } = this.props;
+    const { loading, ruleAttributes } = this.props;
     if (loading) {
       return <p>Please wait...</p>;
     }
