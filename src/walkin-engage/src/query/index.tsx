@@ -180,26 +180,6 @@ export const UPDATE_LOYALTY_PROGRAM = gql`
   }
 `;
 
-export const CREATE_RULE_ENTITY = gql`
-  mutation createRuleEntity($input: CreateRuleEntityInput!) {
-    createRuleEntity(input: $input) {
-      id
-      entityName
-      entityCode
-    }
-  }
-`;
-
-export const CREATE_RULE_ATTRIBUTE = gql`
-  mutation createRuleAttribute($input: CreateRuleAttributeInput!) {
-    createRuleAttribute(input: $input) {
-      id
-      attributeName
-      status
-    }
-  }
-`;
-
 export const GET_COMMUNICATIONS = gql`
   query communications(
     $entityType: COMMUNICATION_ENTITY_TYPE
@@ -650,6 +630,46 @@ export const SEND_MESSAGE = gql`
 export const GET_MESSAGE_TEMPLATE_AND_SEND_SMS = gql`
   mutation getMessageTemplateAndSendSMS($input: MessageTemplateSMSInput) {
     getMessageTemplateAndSendSMS(input: $input) {
+      status
+    }
+  }
+`;
+
+export const GET_RULE_ENTITIES = gql`
+  query ruleEntities($input: SearchRuleEntityInput) {
+    ruleEntities(input: $input) {
+      id
+      entityName
+      entityCode
+      status
+      ruleAttributes {
+        id
+        attributeName
+        status
+      }
+    }
+  }
+`;
+export const CREATE_RULE_ENTITY = gql`
+  mutation createRuleEntity($input: CreateRuleEntityInput!) {
+    createRuleEntity(input: $input) {
+      id
+      entityName
+      entityCode
+      ruleAttributes {
+        id
+        attributeName
+        status
+      }
+    }
+  }
+`;
+
+export const CREATE_RULE_ATTRIBUTE = gql`
+  mutation createRuleAttribute($input: CreateRuleAttributeInput!) {
+    createRuleAttribute(input: $input) {
+      id
+      attributeName
       status
     }
   }

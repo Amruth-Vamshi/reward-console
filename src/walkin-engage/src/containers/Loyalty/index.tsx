@@ -14,6 +14,7 @@ import {
   CREATE_RULE_ENTITY,
   PAUSE_CAMPAIGN,
   UNPAUSE_CAMPAIGN,
+  GET_RULE_ENTITIES,
 } from '../../query/index';
 import LaunchButton from 'walkin-engage/src/components/Loyalty/LaunchButton';
 import { convertTime } from 'walkin-engage/src/utils';
@@ -90,135 +91,158 @@ class Loyalty extends React.Component<LoyaltyProps, LoyaltyState> {
     let endTime = new Date(currentDateTime);
     endTime.setDate(endTime.getDate() + parseInt(this.state.pointsValidity));
 
-    console.log('creating rule entity....');
+    console.log('creating rule entities....');
 
-    let ruleEntity;
+    let loyaltyRuleEntity, ruleAttribute;
 
     try {
-      ruleEntity = await this.props.client.mutate({
-        mutation: CREATE_RULE_ENTITY,
+      loyaltyRuleEntity = await this.props.client.query({
+        query: GET_RULE_ENTITIES,
         variables: {
           input: {
+            organizationId: org_id,
             entityName: 'Loyalty',
-            entityCode: 'Loyalty',
-            status: 'ACTIVE',
-            organizationId: org_id,
           },
         },
+        fetchPolicy: 'network-only',
       });
-    } catch (e) {
-      console.log(e);
-    }
+      if (!loyaltyRuleEntity.data.ruleEntities.length) {
+        loyaltyRuleEntity = await this.props.client.mutate({
+          mutation: CREATE_RULE_ENTITY,
+          variables: {
+            input: {
+              entityName: 'Loyalty',
+              entityCode: 'Loyalty',
+              status: 'ACTIVE',
+              organizationId: org_id,
+            },
+          },
+        });
+        loyaltyRuleEntity = loyaltyRuleEntity.data.createRuleEntity;
+        console.log(loyaltyRuleEntity);
+      } else {
+        loyaltyRuleEntity = loyaltyRuleEntity.data.ruleEntities[0];
+        console.log(loyaltyRuleEntity);
+      }
 
-    console.log(ruleEntity);
-    console.log('creating rule attribute.....');
+      console.log('creating rule attribute.....');
 
-    let ruleAttribute;
+      let attributeFound = false;
+      if (loyaltyRuleEntity.ruleAttributes != null) {
+        loyaltyRuleEntity.ruleAttributes.every(attribute => {
+          if (attribute.attributeName == 'totalAmount') {
+            attributeFound = true;
+            ruleAttribute = attribute;
+            return false;
+          }
+          return true;
+        });
+      }
 
-    try {
-      ruleAttribute = await this.props.client.mutate({
-        mutation: CREATE_RULE_ATTRIBUTE,
-        variables: {
-          input: {
-            attributeName: 'totalAmount',
-            status: 'ACTIVE',
-            attributeValueType: 'STRING',
-            ruleEntityId: ruleEntity.data.createRuleEntity.id,
-            organizationId: org_id,
+      if (!attributeFound) {
+        ruleAttribute = await this.props.client.mutate({
+          mutation: CREATE_RULE_ATTRIBUTE,
+          variables: {
+            input: {
+              attributeName: 'totalAmount',
+              status: 'ACTIVE',
+              attributeValueType: 'STRING',
+              ruleEntityId: loyaltyRuleEntity.id,
+              organizationId: org_id,
+            },
+          },
+        });
+        ruleAttribute = ruleAttribute.data.createRuleAttribute;
+        console.log(ruleAttribute);
+      } else {
+        console.log(ruleAttribute);
+      }
+
+      console.log('creating a loyalty program ....');
+
+      let loyaltyProgramInput = {
+        loyaltyCode: `LOYALTY_PROGRAM`,
+        loyaltyCardCode: this.state.loyaltyCardCode,
+        organizationId: org_id,
+        expiryUnit: 'DAY',
+        expiryValue: parseInt(this.state.pointsValidity),
+        campaign: {
+          name: 'Campaign',
+          campaignType: 'LOYALTY',
+          startTime: startTime.toISOString(),
+          endTime: endTime.toISOString(),
+          organization_id: org_id,
+        },
+        earnRuleData: {
+          name: 'EARN_RULE',
+          type: 'SIMPLE',
+          organizationId: org_id,
+          ruleConfiguration: {
+            rules: [
+              {
+                attributeName: 'total',
+                ruleAttributeId: ruleAttribute.id,
+                attributeValue: '100',
+                expressionType: 'EQUALS',
+                attributeEntityName: 'Loyalty',
+                attributeEntityId: loyaltyRuleEntity.id,
+              },
+            ],
+            combinator: 'and',
           },
         },
-      });
-    } catch (e) {
-      console.log(e);
-    }
-
-    console.log(ruleAttribute);
-
-    console.log('creating a loyalty program ....');
-
-    let loyaltyProgramInput = {
-      loyaltyCode: `LOYALTY_PROGRAM`,
-      loyaltyCardCode: this.state.loyaltyCardCode,
-      organizationId: org_id,
-      expiryUnit: 'DAY',
-      expiryValue: parseInt(this.state.pointsValidity),
-      campaign: {
-        name: 'Campaign',
-        campaignType: 'LOYALTY',
-        startTime: startTime.toISOString(),
-        endTime: endTime.toISOString(),
-        organization_id: org_id,
-      },
-      earnRuleData: {
-        name: 'EARN_RULE',
-        type: 'SIMPLE',
-        organizationId: org_id,
-        ruleConfiguration: {
-          rules: [
-            {
-              attributeName: 'total',
-              ruleAttributeId: ruleAttribute.data.createRuleAttribute.id,
-              attributeValue: '100',
-              expressionType: 'EQUALS',
-              attributeEntityName: 'Loyalty',
-              attributeEntityId: ruleEntity.data.createRuleEntity.id,
-            },
-          ],
-          combinator: 'and',
+        earnRuleValidation: {
+          type: 'PERCENTAGE_OF_TOTAL_AMOUNT',
+          value: this.state.earnPercentage.substr(
+            0,
+            this.state.earnPercentage.length - 1
+          ),
         },
-      },
-      earnRuleValidation: {
-        type: 'PERCENTAGE_OF_TOTAL_AMOUNT',
-        value: this.state.earnPercentage.substr(
-          0,
-          this.state.earnPercentage.length - 1
-        ),
-      },
-      burnRuleData: {
-        name: 'BURN_RULE',
-        type: 'SIMPLE',
-        organizationId: org_id,
-        ruleConfiguration: {
-          rules: [
-            {
-              attributeName: 'total',
-              ruleAttributeId: ruleAttribute.data.createRuleAttribute.id,
-              attributeValue: '100',
-              expressionType: 'EQUALS',
-              attributeEntityName: 'Loyalty',
-              attributeEntityId: ruleEntity.data.createRuleEntity.id,
-            },
-          ],
-          combinator: 'and',
+        burnRuleData: {
+          name: 'BURN_RULE',
+          type: 'SIMPLE',
+          organizationId: org_id,
+          ruleConfiguration: {
+            rules: [
+              {
+                attributeName: 'total',
+                ruleAttributeId: ruleAttribute.id,
+                attributeValue: '100',
+                expressionType: 'EQUALS',
+                attributeEntityName: 'Loyalty',
+                attributeEntityId: loyaltyRuleEntity.id,
+              },
+            ],
+            combinator: 'and',
+          },
         },
-      },
-      burnRuleValidation: {
-        type: 'PERCENTAGE_OF_TOTAL_AMOUNT',
-        value: this.state.burnPercentage.substr(
-          0,
-          this.state.burnPercentage.length - 1
-        ),
-      },
-      expiryRuleConfiguration: {
-        name: 'EXPIRY_RULE',
-        type: 'SIMPLE',
-        organizationId: org_id,
-        ruleConfiguration: {
-          rules: [
-            {
-              attributeName: 'total',
-              ruleAttributeId: ruleAttribute.data.createRuleAttribute.id,
-              attributeValue: '1000',
-              expressionType: 'EQUALS',
-              attributeEntityName: 'Loyalty',
-              attributeEntityId: ruleEntity.data.createRuleEntity.id,
-            },
-          ],
-          combinator: 'and',
+        burnRuleValidation: {
+          type: 'PERCENTAGE_OF_TOTAL_AMOUNT',
+          value: this.state.burnPercentage.substr(
+            0,
+            this.state.burnPercentage.length - 1
+          ),
         },
-      },
-    };
-    try {
+        expiryRuleConfiguration: {
+          name: 'EXPIRY_RULE',
+          type: 'SIMPLE',
+          organizationId: org_id,
+          ruleConfiguration: {
+            rules: [
+              {
+                attributeName: 'total',
+                ruleAttributeId: ruleAttribute.id,
+                attributeValue: '1000',
+                expressionType: 'EQUALS',
+                attributeEntityName: 'Loyalty',
+                attributeEntityId: loyaltyRuleEntity.id,
+              },
+            ],
+            combinator: 'and',
+          },
+        },
+      };
+
       let loyaltyProgramResponse = await this.props.client.mutate({
         mutation: CREATE_LOYALTY_PROGRAM,
         variables: { input: loyaltyProgramInput },
@@ -266,10 +290,10 @@ class Loyalty extends React.Component<LoyaltyProps, LoyaltyState> {
         },
       });
       console.log(pauseResponse);
+      this.setState({ showPauseConformation: false, buttonState: 'resume' });
     } catch (e) {
       console.log(e);
     }
-    this.setState({ showPauseConformation: false, buttonState: 'resume' });
   };
 
   onResumeLoyalty = async () => {
@@ -281,12 +305,12 @@ class Loyalty extends React.Component<LoyaltyProps, LoyaltyState> {
         },
       });
       console.log(unpauseResponse);
+      this.setState({
+        buttonState: 'pause',
+      });
     } catch (e) {
       console.log(e);
     }
-    this.setState({
-      buttonState: 'pause',
-    });
   };
 
   async UNSAFE_componentWillMount() {
