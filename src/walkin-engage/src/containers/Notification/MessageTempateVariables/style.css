@@ -1,0 +1,18 @@
+.text-button {
+  color: #00684c;
+  margin-right: 2px;
+  margin-left: 2px;
+}
+
+.text-button:hover {
+  text-decoration: underline;
+}
+
+.edit-input {
+  width: 46px;
+  height: 20px;
+  padding: 2px;
+  align-self: center;
+  margin-right: 5px;
+  margin-left: 5px;
+}

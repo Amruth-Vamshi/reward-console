@@ -1,0 +1,66 @@
+.btnn {
+  border: none;
+  border-radius: 4px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.btnn-primary {
+  color: #fcfcfc;
+  background-color: #00825f;
+}
+
+.btnn-primary:hover {
+  background-color: #00684c;
+}
+
+.btnn-primary-disabled {
+  background-color: #dce7e4;
+  color: #fcfcfc;
+  cursor: not-allowed;
+}
+
+.btnn-secondary {
+  color: #00825f;
+  background-color: #d3efe7;
+}
+
+.btnn-secondary:hover {
+  background-color: #96d9c6;
+}
+
+.btnn-secondary-disabled {
+  background-color: #dce7e4;
+  color: #ffffff;
+  cursor: not-allowed;
+}
+
+.btnn-danger {
+  color: #820000;
+  background-color: #efd3d3;
+}
+
+.btnn-inline-text {
+  color: #00825f;
+  background-color: #ffffff;
+}
+
+.btnn-inline-text:hover {
+  color: #00684c;
+  text-decoration: underline;
+}
+
+.btnn-inline-text-disabled {
+  color: #dce7e4;
+  cursor: not-allowed;
+}
+
+.btnn-medium {
+  font-size: 15px;
+  padding: 12px 24px;
+}
+
+.btnn-small {
+  font-size: 13px;
+  padding: 8px 16px;
+}

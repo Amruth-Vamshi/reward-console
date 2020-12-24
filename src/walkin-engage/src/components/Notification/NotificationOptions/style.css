@@ -1,0 +1,30 @@
+.notification-send-option {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background: #ffffff 0% 0% no-repeat padding-box;
+  border: 1px solid #dce7e4;
+  border-radius: 4px;
+  height: 44px;
+  max-width: 252px;
+  padding: 0 10px;
+  cursor: pointer;
+  margin: 10px 0;
+}
+
+.notification-send-option:hover {
+  background-color: #edf7f5;
+  border: 1px solid #dce7e4;
+}
+
+.active {
+  background: #ffffff 0% 0% no-repeat padding-box;
+  border: 1px solid #00825f;
+  color: #00825f;
+}
+
+.button-text {
+  margin: 0px;
+  font-size: 15px;
+}

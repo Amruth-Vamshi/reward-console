@@ -1,0 +1,42 @@
+.Engage-Main {
+  min-height: 100%;
+  background-color: #ffffff !important;
+  overflow: inherit;
+}
+
+.RewardX-Sidebar .ant-menu-item {
+  font-size: 19px;
+  margin-bottom: 20px;
+}
+
+.RewardX-Sidebar .ant-menu {
+  padding-top: 20px;
+}
+
+.RewardX-Sidebar .ant-menu-inline .ant-menu-item:not(:last-child) {
+  margin-bottom: 5px;
+}
+
+.RewardX-Logo {
+  background-color: #fcfcfc !important;
+}
+
+.RewardX-Logo .gx-layout-sider-header {
+  background-color: #fcfcfc !important;
+}
+
+.RewardX-Sidebar .ant-menu-dark {
+  background-color: #191958 !important;
+}
+
+.RewardX-Topbar {
+  background-color: #ffffff !important;
+}
+
+.RewardX-Sidebar .ant-menu-dark .ant-menu-item-selected > a {
+  /* color: #62ff77 */
+  box-sizing: border-box;
+
+  color: #3e3e85;
+  opacity: 1;
+}

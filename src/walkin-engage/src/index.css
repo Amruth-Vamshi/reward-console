@@ -1,0 +1,22 @@
+.selected_form {
+  border: 1px solid blue !important;
+}
+
+.not_selected {
+  border: 1px solid white !important;
+}
+
+.common-input {
+  border: 1px solid #e5e5e5 !important;
+  border-radius: 4px;
+}
+
+.common-input:hover {
+  border: 1px solid #00000066 !important;
+  border-radius: 4px;
+}
+
+.common-input:focus {
+  border: 1px solid #00825f !important;
+  border-radius: 4px;
+}

@@ -1,0 +1,110 @@
+.input-position {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.input-component {
+  display: flex;
+  flex-direction: column;
+}
+
+.input {
+  position: relative;
+  padding: 10px;
+  border-radius: 3px;
+  color: #00000066;
+  font-size: 15px;
+  border: 1px solid #e5e5e5;
+}
+
+.input-prefix-container {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+}
+
+.prefix {
+  position: relative;
+  font-size: 14px;
+  left: 1px;
+  border-radius: 3px 0px 0px 3px;
+  margin: 0px;
+  padding: 10px;
+  border: 1px solid #e5e5e5;
+  border-right: 0px;
+  padding-right: 4px;
+  color: #b3b3b3;
+  background-color: #ffffff;
+}
+
+.input:hover + .prefix {
+  border: 1px solid #00000066;
+  border-right: 0px;
+}
+
+.input:hover {
+  border: 1px solid #00000066;
+}
+
+input:focus {
+  outline: none;
+}
+
+.input:focus + .prefix {
+  border: 1px solid #00825f;
+  border-right: 0px;
+}
+
+.input:focus {
+  border: 1px solid #00825f;
+  color: #000000cc;
+}
+
+.input-complete + .prefix {
+  border: 1px solid #dce7e4;
+  border-right: 0px;
+}
+
+.input-complete {
+  border: 1px solid #dce7e4;
+  color: #000000cc;
+}
+
+.input-disabled + .prefix {
+  background-color: #f4f7f6;
+  border: 1px solid #e5e5e5;
+  border-right: 0px;
+  cursor: not-allowed;
+  color: #00000066;
+}
+
+.input-disabled {
+  background-color: #f4f7f6;
+  border: 1px solid #e5e5e5;
+  color: #00000066;
+  cursor: not-allowed;
+}
+
+.input-title {
+  color: #00000099;
+  margin: 0px 0px 4px 0px;
+  font-size: 12px;
+}
+
+.input:focus + .input-title {
+  color: #00825f;
+}
+
+.input-box-error + .prefix {
+  border: 1px solid #d92941 !important;
+  border-right: 0px !important;
+}
+
+.input-error {
+  color: #d92941 !important;
+  font-size: 12px;
+}
+
+.input-box-error {
+  border: 1px solid #d92941 !important;
+}

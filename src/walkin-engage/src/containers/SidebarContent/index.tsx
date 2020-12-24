@@ -31,12 +31,14 @@ interface SidebarContentState {
   orgId?: any;
   userId?: any;
 }
+
 class SidebarContent extends React.Component<
   SidebarContentProps,
   SidebarContentState
 > {
   static propTypes: any;
   static defaultProps: any;
+
   getNoHeaderClass = (navStyle: any) => {
     if (
       navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR ||
@@ -63,7 +65,7 @@ class SidebarContent extends React.Component<
         <SidebarLogo />
         <div
           style={{ height: '100%' }}
-          className="Rewardx-Sidebar gx-sidebar-content"
+          className="Engage-Sidebar gx-sidebar-content"
         >
           <Menu
             style={{ height: '100%' }}
@@ -72,59 +74,27 @@ class SidebarContent extends React.Component<
             theme={themeType === THEME_TYPE_LITE ? 'light' : 'dark'}
             mode="inline"
           >
-            {/* <Menu.Item key="dashboard">
-              <Link to="/rewardx/dashboard">
-                <Icon type="dashboard" />
-                // <Icon component={Dashboard} style={{ fontSize: "18px" }} /> 
-                <span>Dashboard</span>
+            <Menu.Item key="loyalty">
+              <Link to="/engage/loyalty">
+                <img
+                  alt="peppo"
+                  src={require(`walkin-components/src/assets/images/Loyalty${
+                    defaultOpenKeys == 'loyalty' ? '_active' : ''
+                  }.svg`)}
+                />
+                <span className="menu-item-text">Loyalty</span>
               </Link>
             </Menu.Item>
-            <Menu.Item key="reports">
-              <Link to="/rewardx/reports">
-                <Icon type="profile" />
-                // <Icon component={Dashboard} style={{ fontSize: "18px" }} /> 
-                <span>Reports</span>
-              </Link>
-            </Menu.Item> 
-            */}
 
-            {['ADMIN', 'Customer_Care'].includes(roles) ? (
-              <Menu.Item key="customer_search">
-                <Link to="/rewardx/customer_search">
-                  <Icon type="profile" />
-                  <span>Customer Care</span>
-                </Link>
-              </Menu.Item>
-            ) : null}
-
-            {['ADMIN'].includes(roles) ? (
-              <Menu.Item>
-                <Link to="/rewardx/business_rules">
-                  <Icon type="profile" />
-                  <span>Business Rules</span>
-                </Link>
-              </Menu.Item>
-            ) : null}
-            {['ADMIN', 'Finance'].includes(roles) ? (
-              <Menu.Item key="reports">
-                <Link to="/rewardx/reports">
-                  <Icon type="profile" />
-                  <span>Reports</span>
-                </Link>
-              </Menu.Item>
-            ) : null}
-            {['ADMIN', 'Finance'].includes(roles) ? (
-              <Menu.Item key="date_range_reports">
-                <Link to="/rewardx/date_range_reports">
-                  <Icon type="profile" />
-                  <span>Date Range Reports</span>
-                </Link>
-              </Menu.Item>
-            ) : null}
-            <Menu.Item key="engage">
-              <Link to="/engage/dashboard">
-                <Icon type="profile" />
-                <span>Loyalty Settings</span>
+            <Menu.Item key="notification">
+              <Link to="/engage/notification">
+                <img
+                  alt="peppo"
+                  src={require(`walkin-components/src/assets/images/notifications${
+                    defaultOpenKeys == 'notification' ? '_active' : ''
+                  }.svg`)}
+                />
+                <span className="menu-item-text">Notification</span>
               </Link>
             </Menu.Item>
           </Menu>

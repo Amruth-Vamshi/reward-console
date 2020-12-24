@@ -10,6 +10,8 @@ const HyperX = lazy(() => import('walkin-hyperx/src/index'));
 const Core = React.lazy(() => import('walkin-core/src/index'));
 const NearX = React.lazy(() => import('walkin-nearx/src/index'));
 const RewardX = React.lazy(() => import('walkin-rewardx/src/index'));
+const Engage = React.lazy(() => import('walkin-engage/src/index'));
+
 const App = () => (
   <Suspense fallback={<div>Loading...</div>}>
     <Switch>
@@ -23,6 +25,7 @@ const App = () => (
       {/* <Route path="/refinex" component={RefineX} /> */}
       {/* <Route path="/hyperx" component={HyperX} /> */}
       <Route path="/rewardx" component={RewardX} />
+      <Route path="/engage" component={Engage} />
       <Route component={ErrorPage} />
     </Switch>
   </Suspense>

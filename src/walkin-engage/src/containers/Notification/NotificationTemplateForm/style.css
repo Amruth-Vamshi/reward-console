@@ -1,0 +1,92 @@
+.notification-form {
+  padding-bottom: 20px;
+}
+
+.form-type-active::before {
+  content: '';
+  background: #ffffff 0% 0% no-repeat padding-box;
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-right: 1px solid #00825f;
+  border-bottom: 1px solid #00825f;
+  transform: rotate(45deg);
+  top: 34px;
+}
+
+.checkbox-active .ant-checkbox-checked .ant-checkbox-inner {
+  background-color: #00825f;
+  border-color: #00825f;
+}
+
+.form-section {
+  padding: 24px;
+  background-color: #ffffff;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  margin-top: 20px;
+}
+
+.form-content {
+  margin-bottom: 20px;
+}
+
+.form-lable {
+  font-size: 14px;
+  color: #2e2e2e;
+  margin-bottom: 5px;
+}
+
+.form-subLable {
+  color: #808080;
+  font-size: 13px;
+}
+
+.SMS-body-input {
+  padding: 15px;
+  font-size: 14px;
+  color: #707070;
+  margin-bottom: 10px;
+}
+
+ant-input-affix-wrapper .ant-input:not(:first-child) {
+  padding-left: 36px;
+}
+
+.mobile-input {
+  margin-right: 10px;
+  border-radius: 4px;
+}
+
+.template-preview {
+  position: relative;
+  width: 171px;
+  height: 346px;
+  background-image: url(../../../../../walkin-components/src/assets/images/Phone_bg.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.SMS-preview-bubble {
+  position: absolute;
+  background-color: #e2e2e2;
+  border-radius: 4px;
+  color: #707070;
+  font-size: 9px;
+  max-width: 74%;
+  padding: 10px;
+  top: 50px;
+  left: 20px;
+}
+
+.SMS-preview-bubble::after {
+  position: absolute;
+  content: '';
+  width: 0px;
+  height: 0px;
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+  border-right: 8px solid #e2e2e2;
+  left: -6px;
+  bottom: 4px;
+}

@@ -82,6 +82,8 @@ class Topbar extends React.Component<iProps, iState> {
         return 'HyperX-Topbar';
       case 'refinex':
         return 'RefineX-Topbar';
+      case 'engage':
+        return 'Engage-Topbar';
       default:
         return '';
     }

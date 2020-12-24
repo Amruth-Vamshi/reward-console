@@ -1,0 +1,61 @@
+.Engage-Sidebar .ant-menu-item {
+  font-size: 20px !important;
+  line-height: 50px !important;
+  height: auto !important;
+  /* margin-bottom: 25px !important; */
+}
+
+.Engage-Sidebar .ant-menu {
+  padding-top: 20px !important;
+}
+
+.Engage-Sidebar .ant-menu-inline .ant-menu-item:not(:last-child) {
+  margin-bottom: 5px !important;
+}
+
+.Engage-Sidebar .ant-menu-dark {
+  background-color: #242625 !important;
+}
+
+.Engage-Sidebar {
+  /* background-color: #37474f !important; */
+  background-color: #242625 !important;
+  overflow: hidden;
+}
+
+.gx-sidebar-content {
+  background-color: #242625 !important;
+}
+
+.ant-drawer-wrapper-body {
+  background-color: #242625 !important;
+}
+
+.Engage-Sidebar .ant-menu-dark .ant-menu-item-selected > a {
+  /* color: #62ff77 */
+  color: #ffffff;
+}
+
+.menu-item-text {
+  font-size: 14px;
+  margin-left: 31px;
+}
+
+.Engage-Topbar {
+  /* background-color: #455a64 !important;
+    background-image: linear-gradient(to left, #607d8b, #37474f) !important; */
+
+  background-color: #ffffff !important;
+}
+
+.ant-drawer-body {
+  height: 87%;
+}
+
+.Engage-Logo .anticon {
+  color: #5f5f5f;
+}
+
+.Engage-Logo .gx-layout-sider-header {
+  background-color: #ffffff !important;
+}

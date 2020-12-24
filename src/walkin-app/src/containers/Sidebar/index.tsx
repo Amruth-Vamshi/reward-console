@@ -6,6 +6,7 @@ import HyperXSidebarContent from 'walkin-hyperx/src/containers/SidebarContent';
 import NearXSidebarContent from 'walkin-nearx/src/containers/SidebarContent';
 import RefineXSidebarContent from 'walkin-refinex/src/containers/SidebarContent';
 import RewardXSidebarContent from 'walkin-rewardx/src/containers/SidebarContent';
+import EngageSidebarContent from 'walkin-engage/src/containers/SidebarContent';
 import HomeSidebarContent from '../SidebarContent';
 
 import { withRouter } from 'react-router-dom';
@@ -74,6 +75,8 @@ export class Sidebar extends React.Component<IProps, IState> {
         return <NearXSidebarContent />;
       case 'rewardx':
         return <RewardXSidebarContent />;
+      case 'engage':
+        return <EngageSidebarContent />;
       default:
         return <HomeSidebarContent />;
     }

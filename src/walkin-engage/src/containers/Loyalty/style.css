@@ -1,0 +1,61 @@
+.gx-layout-content {
+  background-color: #f6f9f8;
+}
+
+.lp-container {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 40px 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.lp-header {
+  padding: 0px 15px;
+  margin-bottom: 20px;
+}
+
+.lp-welcome {
+  font-size: 24px;
+  font-weight: 500;
+  color: #333333;
+}
+
+.lp-subHeader {
+  font-size: 16px;
+  font-weight: 450;
+  color: #00000099;
+}
+
+.lp-configure-card {
+  background-color: #ffffff;
+  border: 1px solid #dce7e4;
+  border-radius: 4px;
+  box-shadow: 0px 3px 6px #00000029;
+  opacity: 1;
+  max-width: 750px;
+  padding: 20px 11px;
+}
+
+.rule-header {
+  text-align: left;
+  font: normal normal bold 13px/18px Roboto;
+  letter-spacing: 0px;
+  color: #00000066;
+  opacity: 1;
+  margin-bottom: 0px;
+  margin-left: 15px;
+}
+
+@media only screen and (min-width: 1370px) {
+  .lp-container {
+    padding: 0 10px;
+    width: 80%;
+    max-width: 1024px;
+    height: 85vh;
+  }
+  .lp-configure-card {
+    max-width: 100%;
+  }
+}

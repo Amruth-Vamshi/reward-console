@@ -1,0 +1,65 @@
+.n-container {
+  display: flex;
+  flex-direction: column;
+  justify-self: center;
+  width: 90%;
+  max-width: 1024px;
+  margin: 0 auto;
+  padding: 30px 10px;
+}
+
+.n-title {
+  font-size: 19px;
+  color: #333333;
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+
+.n-subHeader {
+  font-size: 15px;
+  color: #333333;
+}
+
+.addExpiry-button {
+  background: #d3efe7 0% 0% no-repeat padding-box;
+  border: 1px solid #d3efe7;
+  cursor: pointer;
+  border-radius: 4px;
+  width: 146px;
+  height: 34px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 500;
+  color: #00825f;
+}
+
+.notification-button-section {
+  padding-left: 0px;
+  height: 100%;
+}
+
+.form-selection-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.form-type {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f6f9f8 0% 0% no-repeat padding-box;
+  border: 1px solid #dce7e4;
+  border-radius: 4px;
+  color: #00000066;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 10px 20px;
+  margin-right: 10px;
+}
+
+.form-type-active {
+  position: relative;
+  background: #ffffff 0% 0% no-repeat padding-box;
+  border: 1px solid #00825f;
+  color: #00825f;
+}
