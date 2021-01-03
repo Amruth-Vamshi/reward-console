@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Form, Icon, Input, Button, Checkbox } from 'antd';
+import { Form, Icon, Input, Button, Checkbox, Switch } from 'antd';
 import { compose, graphql, Mutation, MutationFunc } from 'react-apollo';
 import gql from 'graphql-tag';
 import { sample } from 'lodash';
@@ -37,40 +37,17 @@ class NormalLoginForm extends React.Component<IProps, IState> {
       }
     `;
     return (
-      <div
-        style={{ background: this.state.background }}
-        className="gx-app-login-wrap"
-      >
+      <div style={{ backgroundColor: '#00825F' }} className="gx-app-login-wrap">
         <div className="gx-app-login-container">
           <div className="gx-app-login-main-content">
-            <div className="gx-app-logo-content">
-              <div className="gx-app-logo-content-bg">
-                <img
-                  src="https://media.golfdigest.com/photos/569688b4273cde6003f797c8/master/w_768,c_limit/El-Camaleon-15-hole-Riviera-Maya.jpg"
-                  alt="Neature"
-                />
-                {/* https://via.placeholder.com/272x395 */}
-              </div>
-              <div className="gx-app-logo-wid">
-                <h1>
-                  <IntlMessages id="app.userAuth.signIn" />
-                </h1>
-                <p>
-                  <IntlMessages id="app.userAuth.bySigning" />
-                </p>
-                <p>
-                  <IntlMessages id="app.userAuth.getAccount" />
-                </p>
-              </div>
+            <div className="gx-app-login-content">
               <div className="gx-app-logo">
                 <img
                   alt="example"
-                  src={require('walkin-components/src/assets/images/walkin_logo_white.png')}
-                  style={{ width: 100 }}
+                  src={require('walkin-components/src/assets/images/Peppo_logo.svg')}
+                  style={{ width: 180 }}
                 />
               </div>
-            </div>
-            <div className="gx-app-login-content">
               <Mutation mutation={SIGN_IN} fetchPolicy="no-cache">
                 {(signIn: MutationFunc, { loading, error, data }: any) => (
                   <Form
@@ -108,6 +85,7 @@ class NormalLoginForm extends React.Component<IProps, IState> {
                     className="login-form"
                   >
                     <Form.Item>
+                      <p className="login-form-lable">Email</p>
                       {getFieldDecorator('email', {
                         rules: [
                           {
@@ -118,17 +96,18 @@ class NormalLoginForm extends React.Component<IProps, IState> {
                         ],
                       })(
                         <Input
-                          prefix={
-                            <Icon
-                              type="mail"
-                              style={{ color: 'rgba(0,0,0,.25)' }}
-                            />
-                          }
-                          placeholder="Email"
+                          // prefix={
+                          //   <Icon
+                          //     type="mail"
+                          //     style={{ color: 'rgba(0,0,0,.25)' }}
+                          //   />
+                          // }
+                          placeholder="Enter email here"
                         />
                       )}
                     </Form.Item>
                     <Form.Item>
+                      <p className="login-form-lable">Password</p>
                       {getFieldDecorator('password', {
                         rules: [
                           {
@@ -137,33 +116,63 @@ class NormalLoginForm extends React.Component<IProps, IState> {
                           },
                         ],
                       })(
-                        <Input
-                          prefix={
-                            <Icon
-                              type="lock"
-                              style={{ color: 'rgba(0,0,0,.25)' }}
-                            />
-                          }
-                          type="password"
+                        <Input.Password
+                          // prefix={
+                          //   <Icon
+                          //     type="lock"
+                          //     style={{ color: 'rgba(0,0,0,.25)' }}
+                          //   />
+                          // }
                           placeholder="Password"
                         />
                       )}
                     </Form.Item>
                     <Form.Item>
-                      {getFieldDecorator('remember', {
-                        valuePropName: 'checked',
-                        initialValue: true,
-                      })(<Checkbox>Remember me</Checkbox>)}
-                      {/* <Link className="login-form-forgot" to="/forgotpassword">
-                        Forgot password
-                      </Link> */}
+                      <div className="login-options-section">
+                        <div>
+                          {getFieldDecorator('remember', {
+                            valuePropName: 'checked',
+                            initialValue: true,
+                          })(
+                            <Switch size="small" className="remember-toggle" />
+                          )}
+                          <span
+                            style={{
+                              marginLeft: '10px',
+                              color: '#434343',
+                              fontWeight: 400,
+                            }}
+                          >
+                            Remember me
+                          </span>
+                        </div>
+                        <Link
+                          className="login-form-forgot"
+                          to="/forgotpassword"
+                        >
+                          <span style={{ fontWeight: 500 }}>
+                            Forgot password?
+                          </span>
+                        </Link>
+                      </div>
                       <br />
                       <Button
-                        type="primary"
                         htmlType="submit"
                         loading={loading}
                         className="login-form-button"
-                        style={{ marginTop: 10 }}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          width: '210px',
+                          backgroundColor: '#00825F',
+                          alignSelf: 'center',
+                          justifyContent: 'center',
+                          margin: '0px',
+                          color: '#fff',
+                          height: '50px',
+                          border: 'none',
+                          borderRadius: '4px',
+                        }}
                       >
                         Log in
                       </Button>
@@ -193,3 +202,31 @@ export default compose(
   }),
   Form.create({ name: 'vertical_login' })
 )(NormalLoginForm);
+
+//<div className="gx-app-logo-content">
+//              <div className="gx-app-logo-content-bg">
+//                <img
+//                  src="https://media.golfdigest.com/photos/569688b4273cde6003f797c8/master/w_768,c_limit/El-Camaleon-15-hole-Riviera-Maya.jpg"
+//                  alt="Neature"
+//                />
+//                {/* https://via.placeholder.com/272x395 */}
+//                </div>
+//                <div className="gx-app-logo-wid">
+//                  <h1>
+//                    <IntlMessages id="app.userAuth.signIn" />
+//                  </h1>
+//                  <p>
+//                    <IntlMessages id="app.userAuth.bySigning" />
+//                  </p>
+//                  <p>
+//                    <IntlMessages id="app.userAuth.getAccount" />
+//                  </p>
+//                </div>
+//                <div className="gx-app-logo">
+//                  <img
+//                    alt="example"
+//                    src={require('walkin-components/src/assets/images/walkin_logo_white.png')}
+//                    style={{ width: 100 }}
+//                  />
+//                </div>
+//              </div>

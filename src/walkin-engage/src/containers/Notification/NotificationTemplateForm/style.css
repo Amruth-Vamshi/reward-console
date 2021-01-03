@@ -90,3 +90,15 @@ ant-input-affix-wrapper .ant-input:not(:first-child) {
   left: -6px;
   bottom: 4px;
 }
+
+.drop-down {
+  background-color: #ffffff;
+  max-height: 250px;
+  overflow: auto;
+  padding: 12px;
+  width: 162px;
+  padding-right: 4px;
+  box-shadow: 0px 4px 8px #00000047;
+  border: 1px solid #dce7e4;
+  border-radius: 4px;
+}

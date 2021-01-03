@@ -16,3 +16,19 @@
   margin-right: 5px;
   margin-left: 5px;
 }
+
+.dropdown-item {
+  box-sizing: border-box;
+  width: 131px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+  font-size: 15px;
+  color: #00000099;
+  cursor: pointer;
+}
+
+.dropdown-item:hover {
+  background-color: #edf7f5;
+}

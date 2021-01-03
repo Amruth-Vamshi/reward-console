@@ -18,23 +18,29 @@ export const GET_LOYALTY_PROGRAM = gql`
       organizationId: $organizationId
     ) {
       data {
+        id
         loyaltyCode
+        code
         loyaltyCardCode
         code
         loyaltyBurnRule {
           id
+          ruleExpression
         }
         loyaltyEarnRule {
           id
+          ruleExpression
         }
         loyaltyExpiryRule {
           id
+          ruleExpression
         }
         expiryValue
         campaign {
           id
           name
           status
+          campaignStatus
           startTime
         }
       }
@@ -144,6 +150,14 @@ export const UPDATE_LOYALTY_PROGRAM = gql`
       expiryValue
       campaign {
         id
+        name
+        description
+        startTime
+        endTime
+        campaignType
+        status
+        priority
+        campaignStatus
       }
       code
       loyaltyCode
@@ -527,23 +541,6 @@ export const CREATE_MESSAGE_TEMPLATE_VARIABLE = gql`
   }
 `;
 
-export const UPDATE_MESSAGE_TEMPLATE_VARIABLE = gql`
-  mutation updateMessageTemplateVariable(
-    $input: UpdateMessageTemplateVariableInput!
-  ) {
-    updateMessageTemplateVariable(input: $input) {
-      id
-      name
-      key
-      type
-      format
-      defaultValue
-      required
-      status
-    }
-  }
-`;
-
 export const ADD_VARIABLE_TO_TEMPLATE = gql`
   mutation addVariableToMessageTemplate(
     $input: AddVariableToMessageTemplateInput!
@@ -595,6 +592,21 @@ export const REMOVE_VARIABLE_FROM_TEMPLATE = gql`
 export const PAUSE_CAMPAIGN = gql`
   mutation pauseCampaign($id: ID!) {
     pauseCampaign(id: $id) {
+      id
+      name
+      priority
+      campaignStatus
+      description
+      startTime
+      endTime
+      status
+    }
+  }
+`;
+
+export const LAUNCH_CAMPAIGN = gql`
+  mutation launchCampaign($id: ID!) {
+    launchCampaign(id: $id) {
       id
       name
       priority
@@ -671,6 +683,108 @@ export const CREATE_RULE_ATTRIBUTE = gql`
       id
       attributeName
       status
+    }
+  }
+`;
+
+export const GET_ALL_EXPIRY_COMMUNICATION = gql`
+  query expiryCommunications(
+    $organizationId: String
+    $loyaltyCardCode: String
+  ) {
+    expiryCommunications(
+      organizationId: $organizationId
+      loyaltyCardCode: $loyaltyCardCode
+    ) {
+      data {
+        id
+        loyaltyCard {
+          id
+          code
+          name
+          currency {
+            id
+            code
+            conversionRatio
+            name
+          }
+        }
+        communication {
+          id
+          entityId
+          entityType
+          messageTemplate {
+            id
+            name
+            description
+            messageFormat
+            templateBodyText
+            templateSubjectText
+            templateStyle
+            messageTemplateVariables {
+              id
+              key
+              defaultValue
+            }
+          }
+          isScheduled
+          firstScheduleDateTime
+          isRepeatable
+          lastProcessedDateTime
+          repeatRuleConfiguration {
+            frequency
+            repeatInterval
+            endAfter
+            byWeekDay
+            byMonthDate
+            time
+            noOfOccurances
+          }
+          commsChannelName
+          status
+        }
+        eventType
+        numberOfDays
+      }
+    }
+  }
+`;
+
+export const GET_MESSAGE_TEMPLATE = gql`
+  query messageTemplate($id: ID!, $organization_id: ID!) {
+    messageTemplate(id: $id, organization_id: $organization_id) {
+      id
+      name
+      description
+      messageFormat
+      templateBodyText
+      templateSubjectText
+      templateStyle
+      messageTemplateVariables {
+        id
+        name
+        key
+        status
+        defaultValue
+      }
+      status
+    }
+  }
+`;
+
+export const UPDATE_RULE = gql`
+  mutation updateRule($id: ID!, $input: UpdateRuleInput!) {
+    updateRule(id: $id, input: $input) {
+      id
+      name
+      description
+      status
+      type
+      ruleConfiguration
+      ruleExpression
+      organization {
+        id
+      }
     }
   }
 `;

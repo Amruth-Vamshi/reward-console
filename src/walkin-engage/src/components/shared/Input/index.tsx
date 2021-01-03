@@ -44,6 +44,16 @@ class Input extends React.Component<InputProps, InputState> {
         this.setState({ errorMessage: `Enter valid percentage!` });
         return false;
       } else {
+        value =
+          value[value.length - 1] == '%'
+            ? parseInt(value.substr(0, value.length - 1))
+            : parseInt(value);
+        if (value > 100) {
+          this.setState({
+            errorMessage: `Percentage should be less than 100!`,
+          });
+          return false;
+        }
         this.setState({ errorMessage: '' });
         return true;
       }

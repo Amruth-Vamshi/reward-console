@@ -71,9 +71,12 @@ class Notification extends React.Component<
   }
 
   addExpireRemainder = () => {
-    // this.setState({
-    //     notificationOptions: [...this.state.notificationOptions, "Expiry Reminder"]
-    // })
+    this.setState({
+      notificationOptions: [
+        ...this.state.notificationOptions,
+        'Expiry Reminder',
+      ],
+    });
   };
 
   updateNotificationOption = (prevOption, newOption, type) => {
@@ -109,8 +112,12 @@ class Notification extends React.Component<
 
           <div className="n-content" style={{ paddingTop: '20px' }}>
             <Row>
-              <Col span={7} className="notification-button-section">
-                <div>
+              <Col
+                /*span={7}*/ xs={{ span: 24 }}
+                sm={{ span: 7 }}
+                className="notification-button-section"
+              >
+                <div style={{ marginBottom: '20px' }}>
                   <p className="n-subHeader">When to send?</p>
                   {this.state.notificationOptions.map((option, i) => (
                     <NotificationOption
@@ -131,7 +138,8 @@ class Notification extends React.Component<
               </Col>
 
               <Col
-                span={17}
+                /*span={17}*/ xs={{ span: 24 }}
+                sm={{ span: 17 }}
                 style={{ paddingRight: '0px', borderLeft: '1px solid #D9D9D9' }}
               >
                 <div className="form-selection-row">

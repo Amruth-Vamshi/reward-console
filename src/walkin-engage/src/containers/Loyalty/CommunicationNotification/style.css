@@ -17,19 +17,27 @@
 .notification-edit {
   display: flex;
   justify-content: flex-end;
+  align-items: center;
   margin-top: 0px;
   flex-direction: row;
   padding: 0px 15px;
 }
 
 .edit-text {
+  font-style: italic;
   font-size: 13px;
   text-align: right;
   margin-right: 10px;
   margin-left: 15px;
+  margin-bottom: 0.5px;
   color: #00000099;
   max-width: 188px;
   line-height: 1.4;
+}
+
+.notification-box {
+  display: flex;
+  justify-content: flex-end;
 }
 
 @media screen and (max-width: 575px) {
@@ -40,5 +48,9 @@
   .edit-text {
     text-align: left;
     margin-left: 0px;
+  }
+  .notification-box {
+    display: flex;
+    justify-content: flex-start;
   }
 }

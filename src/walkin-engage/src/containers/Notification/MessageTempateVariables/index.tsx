@@ -6,8 +6,7 @@ import Input from '../../../components/shared/Input/index';
 import {
   CREATE_MESSAGE_TEMPLATE_VARIABLE,
   ADD_VARIABLE_TO_TEMPLATE,
-  UPDATE_MESSAGE_TEMPLATE_VARIABLE,
-  REMOVE_VARIABLE_FROM_TEMPLATE,
+  GET_MESSAGE_TEMPLATE,
 } from '../../../query/index';
 import * as jwt from 'jsonwebtoken';
 
@@ -48,12 +47,10 @@ export default class MessageTemplateVariables extends React.Component<
     });
   };
 
-  createTemplateVariable = async () => {
-    const jwtToken: any = localStorage.getItem('jwt');
-    const { org_id }: any = jwt.decode(jwtToken);
-
-    if (!this.state.inputValue || !this.state.inputKey) {
-      message.warn('Please Enter key and value');
+  createTemplateVariable = async (key, value, org_id) => {
+    console.log(key, value);
+    if (!value || !key) {
+      message.warn('Error while creating template variables!');
       return;
     }
 
@@ -62,11 +59,11 @@ export default class MessageTemplateVariables extends React.Component<
         mutation: CREATE_MESSAGE_TEMPLATE_VARIABLE,
         variables: {
           input: {
-            name: this.state.inputKey,
-            key: this.state.inputKey,
+            name: key,
+            key: key,
             type: 'STRING',
             format: 'NO_FORMATING',
-            defaultValue: this.state.inputValue,
+            defaultValue: value,
             required: false,
             organization_id: org_id,
             status: 'ACTIVE',
@@ -85,10 +82,6 @@ export default class MessageTemplateVariables extends React.Component<
       this.addVariable(templateVariable.key, {
         id: templateVariable.id,
         value: templateVariable.defaultValue,
-      });
-      this.setState({
-        inputKey: '',
-        inputValue: '',
       });
     } catch (e) {
       console.log(e);
@@ -112,94 +105,69 @@ export default class MessageTemplateVariables extends React.Component<
     }
   };
 
-  updateMessageTemplateVariable = async templateVariableId => {
-    const jwtToken: any = localStorage.getItem('jwt');
-    const { org_id }: any = jwt.decode(jwtToken);
-
-    if (!this.state.editValue) {
-      message.warn('Please Enter default value');
-      return;
-    }
-
-    try {
-      let templateVariableResponse = await this.props.client.mutate({
-        mutation: UPDATE_MESSAGE_TEMPLATE_VARIABLE,
-        variables: {
-          input: {
-            id: templateVariableId,
-            type: 'STRING',
-            format: 'NO_FORMATING',
-            defaultValue: this.state.editValue,
-            required: false,
-            organization_id: org_id,
-            status: 'ACTIVE',
-          },
-        },
-      });
-
-      let templateVariable =
-        templateVariableResponse.data.updateMessageTemplateVariable;
-      let currentStateTemplateVariable = this.state.templateVariables;
-      currentStateTemplateVariable[templateVariable.key].value =
-        templateVariable.defaultValue;
-      this.setState({
-        templateVariables: currentStateTemplateVariable,
-        editValue: '',
-        editMode: 0,
-      });
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  removeMessageTemplateVariable = async (templateVariableId, key) => {
-    const jwtToken: any = localStorage.getItem('jwt');
-    const { org_id }: any = jwt.decode(jwtToken);
-    try {
-      console.log(org_id, this.props.messageTemplateId, templateVariableId);
-      let templateVariableResponse = await this.props.client.mutate({
-        mutation: REMOVE_VARIABLE_FROM_TEMPLATE,
-        variables: {
-          input: {
-            organization_id: org_id,
-            templateId: this.props.messageTemplateId,
-            templateVariableId,
-          },
-        },
-      });
-      console.log(templateVariableResponse);
-      let templateVariable =
-        templateVariableResponse.data.removeVariableFromMessageTemplate;
-      let currentStateTemplateVariable = this.state.templateVariables;
-      delete currentStateTemplateVariable[key];
-      this.setState({
-        templateVariables: currentStateTemplateVariable,
-      });
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  init = (nextProps = null) => {
-    let updateMessageTemplateVariableState = () => {
-      let messageTemplateVariables = nextProps
-        ? nextProps.messageTemplateVariables
-        : this.props.messageTemplateVariables;
-      this.setState({ templateVariables: {} });
-      messageTemplateVariables.forEach(variable => {
-        this.addVariable(variable.key, {
-          id: variable.id,
-          value: variable.defaultValue,
-        });
-      });
-    };
-    if (nextProps) {
-      if (nextProps.messageTemplateId != this.props.messageTemplateId) {
-        updateMessageTemplateVariableState();
-      }
-    } else {
-      updateMessageTemplateVariableState();
-    }
+  init = async (nextProps = null) => {
+    // const jwtToken: any = localStorage.getItem('jwt');
+    // const { org_id }: any = jwt.decode(jwtToken);
+    // let defaultValues = {
+    //   pointsEarned: {
+    //     value: ' ',
+    //     defaultFor: "ISSUE"
+    //     , exists: false
+    //   },
+    //   pointsRedeemed: {
+    //     value: ' ',
+    //     defaultFor: "REDEEM"
+    //     , exists: false
+    //   },
+    //   pointsToExpire: {
+    //     value: ' ',
+    //     defaultFor: "EXPIRY"
+    //     , exists: false
+    //   },
+    //   pointsBalance: {
+    //     value: ' ',
+    //     defaultFor: "EXPIRY"
+    //     , exists: false
+    //   },
+    //   expiryDate: {
+    //     value: ' ',
+    //     defaultFor: 'EXPIRY_REMINDER'
+    //     , exists: false
+    //   },
+    //   daysToExpire: {
+    //     value: ' ',
+    //     defaultFor: 'EXPIRY_REMINDER'
+    //     , exists: false
+    //   }
+    // }
+    // let messageTemplateId = nextProps
+    //   ? nextProps.messageTemplateId
+    //   : this.props.messageTemplateId;
+    // let messageTemplateVariables, messageTemplateResponse;
+    // try {
+    //   messageTemplateResponse = await this.props.client.query({
+    //     query: GET_MESSAGE_TEMPLATE,
+    //     variables: { id: messageTemplateId, organization_id: org_id }
+    //   })
+    //   messageTemplateResponse = Object.assign(messageTemplateResponse.data.messageTemplate)
+    //   messageTemplateVariables = messageTemplateResponse.messageTemplateVariables
+    // } catch (e) {
+    //   console.log(e)
+    // }
+    // this.setState({ templateVariables: {} });
+    // messageTemplateVariables.forEach(variable => {
+    //   if (defaultValues[variable.key]) defaultValues[variable.key].exists = true
+    //   this.addVariable(variable.key, {
+    //     id: variable.id,
+    //     value: variable.defaultValue,
+    //   });
+    // });
+    // for (const key in defaultValues) {
+    //   if (messageTemplateResponse.name.indexOf(defaultValues[key].defaultFor) != -1) {
+    //     if (!defaultValues[key].exists)
+    //       this.createTemplateVariable(key, defaultValues[key].value, org_id)
+    //   }
+    // }
   };
 
   async componentWillMount() {
@@ -210,125 +178,21 @@ export default class MessageTemplateVariables extends React.Component<
     this.init(nextProps);
   }
 
-  handleInputChange = (e, value) => {
-    let state = {};
-    state[value] = e.target.value;
-    this.setState(state);
-    return e.target.value;
-  };
-
   render() {
     let menuItems = [];
-    let {
-      templateVariables,
-      inputKey,
-      inputValue,
-      editMode,
-      editValue,
-    } = this.state;
+    let { templateVariables } = this.state;
     for (const key in templateVariables) {
-      menuItems.push(
-        <Menu.Item key={key}>
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'space-around',
-              height: '100%',
-            }}
-          >
-            <p>{`${key}:`}</p>
-            {editMode == key ? (
-              <React.Fragment>
-                <input
-                  className="edit-input"
-                  value={editValue}
-                  onChange={e => {
-                    this.handleInputChange(e, 'editValue');
-                  }}
-                  placeholder={`${templateVariables[key].value}`}
-                />
-                <p
-                  className="text-button"
-                  onClick={() => {
-                    this.updateMessageTemplateVariable(
-                      templateVariables[key].id
-                    );
-                  }}
-                >
-                  Save
-                </p>
-                <p
-                  className="text-button"
-                  onClick={() => {
-                    this.setState({ editMode: 0 });
-                  }}
-                >
-                  Cancel
-                </p>
-              </React.Fragment>
-            ) : (
-              <React.Fragment>
-                <p>{`${templateVariables[key].value}`}</p>
-                <p
-                  className="text-button"
-                  onClick={() => {
-                    this.setState({ editMode: key });
-                  }}
-                >
-                  Edit
-                </p>
-                <p
-                  className="text-button"
-                  onClick={() => {
-                    this.removeMessageTemplateVariable(
-                      templateVariables[key].id,
-                      key
-                    );
-                  }}
-                >
-                  Delete
-                </p>
-              </React.Fragment>
-            )}
-          </div>
-        </Menu.Item>
-      );
+      menuItems.push(<div className="dropdown-item">{key}</div>);
     }
     return (
-      <Menu style={{ border: '1px solid #D3EFE7', borderRadius: '4px' }}>
-        {menuItems}
-        <Menu.Divider />
-        <div
-          style={{
-            padding: '10px 0px',
-            width: '200px',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <Input
-            value={inputKey}
-            placeholder="Key"
-            width="150px"
-            onChange={this.handleInputChange}
-            target1="inputKey"
-          />
-          <Input
-            value={inputValue}
-            placeholder="Default value"
-            width="150px"
-            onChange={this.handleInputChange}
-            target1="inputValue"
-          />
-          <Button
-            style="btnn-inline-text"
-            size="btnn-medium"
-            onClick={this.createTemplateVariable}
-          >
-            Add
-          </Button>
+      <Menu>
+        <div className="dropdown-container">
+          <div className="dropdown-item">pointsEarned</div>
+          <div className="dropdown-item">pointsRedeemed</div>
+          <div className="dropdown-item">pointsBalance</div>
+          <div className="dropdown-item">pointsToExpire</div>
+          <div className="dropdown-item">expiryDate</div>
+          <div className="dropdown-item">daysToExpire</div>
         </div>
       </Menu>
     );

@@ -10,7 +10,13 @@ import {
   CREATE_BUSINESS_RULE,
   UPDATE_LOYALTY_PROGRAM,
   GET_LOYALTY_PROGRAM,
+  UPDATE_RULE,
 } from '../../../query/index';
+import {
+  convertTime,
+  extractDataFromRuleExpression,
+  generateRuleExpression,
+} from 'walkin-engage/src/utils';
 
 interface RuleCardProps {
   title: string;
@@ -30,6 +36,8 @@ interface RuleCardProps {
   loyaltyId?: any;
   loyaltyCode?: any;
   loyaltyCardCode?: any;
+  earnRuleId?: any;
+  burnRuleId?: any;
 }
 
 interface RuleCardState {
@@ -67,6 +75,17 @@ class RuleCard extends React.Component<RuleCardProps, RuleCardState> {
         });
         return false;
       } else {
+        let val = burnPercentage;
+        val =
+          val[val.length - 1] == '%'
+            ? parseInt(val.substr(0, val.length - 1))
+            : parseInt(val);
+        if (val > 100) {
+          this.setState({
+            isButtonDisabled: true,
+          });
+          return false;
+        }
         this.setState({
           isButtonDisabled: false,
         });
@@ -84,6 +103,17 @@ class RuleCard extends React.Component<RuleCardProps, RuleCardState> {
         });
         return false;
       } else {
+        let val = earnPercentage;
+        val =
+          val[val.length - 1] == '%'
+            ? parseInt(val.substr(0, val.length - 1))
+            : parseInt(val);
+        if (val > 100) {
+          this.setState({
+            isButtonDisabled: true,
+          });
+          return false;
+        }
         this.setState({
           isButtonDisabled: false,
         });
@@ -101,6 +131,9 @@ class RuleCard extends React.Component<RuleCardProps, RuleCardState> {
   }
 
   applyRule = async () => {
+    if (this.state.isButtonDisabled) {
+      return;
+    }
     const jwtToken: any = localStorage.getItem('jwt');
     const { org_id }: any = jwt.decode(jwtToken);
 
@@ -109,103 +142,75 @@ class RuleCard extends React.Component<RuleCardProps, RuleCardState> {
       return;
     }
 
-    if (this.props.formName == 'Redemption rule') {
+    if (this.props.formName == 'Redemption rule' && this.props.burnRuleId) {
       try {
-        let maxBurnTransaction = await this.props.client.query({
-          query: GET_BUSINESS_RULE,
+        let updatedBurnRule = await this.props.client.mutate({
+          mutation: UPDATE_RULE,
           variables: {
-            input: { ruleLevel: 'LOYALTY', ruleType: 'TRANSACTION_BURN_LIMIT' },
+            id: this.props.burnRuleId,
+            input: {
+              type: 'CUSTOM',
+              ruleConfiguration: null,
+              ruleExpression: generateRuleExpression(
+                'burn',
+                this.props.burnPercentage,
+                this.props.maxRedeemablePointsPerTransaction,
+                this.props.maxRedeemablePointsPerDay
+              ),
+            },
           },
         });
-        if (maxBurnTransaction.data.businessRules.length) {
-          let a = Object.assign(maxBurnTransaction.data.businessRules[0]);
-          await this.props.client.mutate({
-            mutation: UPDATE_BUSINESS_RULE,
-            variables: {
-              id: a.id,
-              input: {
-                ruleDefaultValue: this.props.maxRedeemablePointsPerTransaction,
-              },
-            },
-          });
-          message.info('Redemption rule has been updated!');
-        } else {
-          await this.props.client.mutate({
-            mutation: CREATE_BUSINESS_RULE,
-            variables: {
-              input: {
-                ruleLevel: 'LOYALTY',
-                ruleDefaultValue: this.props.maxRedeemablePointsPerTransaction,
-                ruleType: 'TRANSACTION_BURN_LIMIT',
-              },
-            },
-          });
-          message.info('Redemption rule has been created!');
-        }
+        console.log(updatedBurnRule);
       } catch (e) {
         console.log(e);
       }
-    } else {
+    } else if (this.props.earnRuleId) {
       try {
-        let maxEarnTransaction = await this.props.client.query({
-          query: GET_BUSINESS_RULE,
+        let updatedEarnRule = await this.props.client.mutate({
+          mutation: UPDATE_RULE,
           variables: {
-            input: { ruleLevel: 'LOYALTY', ruleType: 'TRANSACTION_EARN_LIMIT' },
+            id: this.props.earnRuleId,
+            input: {
+              type: 'CUSTOM',
+              ruleConfiguration: null,
+              ruleExpression: generateRuleExpression(
+                'earn',
+                this.props.earnPercentage,
+                this.props.maxEarnablePointsPerTransaction,
+                this.props.maxEarnablePointsPerDay
+              ),
+            },
           },
         });
-        if (maxEarnTransaction.data.businessRules.length) {
-          let a = Object.assign(maxEarnTransaction.data.businessRules[0]);
-          await this.props.client.mutate({
-            mutation: UPDATE_BUSINESS_RULE,
-            variables: {
-              id: a.id,
-              input: {
-                ruleDefaultValue: this.props.maxEarnablePointsPerTransaction,
-              },
-            },
-          });
-          message.info('Earning rule has been updated!');
-        } else {
-          await this.props.client.mutate({
-            mutation: CREATE_BUSINESS_RULE,
-            variables: {
-              input: {
-                ruleLevel: 'LOYALTY',
-                ruleDefaultValue: this.props.maxEarnablePointsPerTransaction,
-                ruleType: 'TRANSACTION_EARN_LIMIT',
-              },
-            },
-          });
-          message.info('Earning rule has been created!');
-        }
+        console.log(updatedEarnRule);
       } catch (e) {
         console.log(e);
       }
     }
 
-    //TODO: test this
     //updating loyalty program - pointsValidity
     if (this.props.isLoyaltyActive) {
-      //    try{
-      //         await this.props.client.mutate({
-      //             mutation: UPDATE_LOYALTY_PROGRAM,
-      //             variables: {
-      //                 input: {
-      //                     id:this.props.loyaltyId,
-      //                     loyaltyCode:this.props.loyaltyCode,
-      //                     loyaltyCardCode:this.props.loyaltyCardCode,
-      //                     expiryUnit: "DAY",
-      //                     expiryValue: this.props.pointsValidity
-      //                 }
-      //             },
-      //         })
-      //    }catch(e){
-      //        console.log(e)
-      //    }
+      try {
+        await this.props.client.mutate({
+          mutation: UPDATE_LOYALTY_PROGRAM,
+          variables: {
+            input: {
+              id: this.props.loyaltyId,
+              loyaltyCode: this.props.loyaltyCode,
+              loyaltyCardCode: this.props.loyaltyCardCode,
+              expiryUnit: 'DAY',
+              expiryValue: this.props.pointsValidity,
+            },
+          },
+        });
+      } catch (e) {
+        console.log(e);
+      }
     }
     this.setState({
       showForm: false,
     });
+    message.info('Rule configuration applied!');
   };
 
   render() {
@@ -255,7 +260,10 @@ class RuleCard extends React.Component<RuleCardProps, RuleCardState> {
                 : `${displayMessage.substr(
                     0,
                     4
-                  )} ${earnPercentage} ${displayMessage.substr(7)}`}
+                  )} ${earnPercentage} ${displayMessage.substr(
+                    7,
+                    displayMessage.length - 13
+                  )}${maxEarnablePointsPerTransaction}`}
             </Col>
           </Row>
         </div>

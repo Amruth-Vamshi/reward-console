@@ -431,7 +431,7 @@ class NotificationTemplateForm extends React.Component<
                 phoneNumber: this.state.phoneNumber,
                 communicationEntityType: 'LOYALTY',
                 replacableData: { points: 10 },
-                consumerName: 'default user',
+                consumerName: 'defaultUser',
                 //userId
               },
             },
@@ -451,18 +451,22 @@ class NotificationTemplateForm extends React.Component<
           message.warn('Please Enter Email Id!');
           return;
         }
-        // let sendMessageResponse = this.props.client.mutate({
-        //     mutation: SEND_MESSAGE,
-        //     variables: {
-        //         input: {
-        //             format: this.props.templateType,
-        //             to: this.props.templateType === 'SMS' ? this.state.phoneNumber : this.state.email,
-        //             messageBody: this.state.templateBody,
-        //             messageSubject: this.props.formName
-        //         }
-        //     }
-        // })
-        // console.log(sendMessageResponse);
+        let sendMessageResponse = this.props.client.mutate({
+          mutation: SEND_MESSAGE,
+          variables: {
+            input: {
+              format: this.props.templateType,
+              to:
+                this.props.templateType === 'SMS'
+                  ? this.state.phoneNumber
+                  : this.state.email,
+              messageBody: this.state.templateBody,
+              messageSubject: this.props.formName,
+            },
+          },
+        });
+        console.log(sendMessageResponse);
+        message.info('Email has been sent!');
       }
     } catch (e) {
       console.log(e);
@@ -483,7 +487,7 @@ class NotificationTemplateForm extends React.Component<
       <React.Fragment>
         <div className="form-section">
           <Row gutter={16}>
-            <Col span={16}>
+            <Col /*span={16}*/ xs={{ span: 24 }} md={{ span: 16 }}>
               <div className="notification-form">
                 <div className="form-content">
                   <div
@@ -505,8 +509,9 @@ class NotificationTemplateForm extends React.Component<
                           client={this.props.client}
                         />
                       }
+                      overlayClassName="drop-down"
                       trigger={['click']}
-                      placement="bottomCenter"
+                      placement="bottomRight"
                     >
                       <Button style="btnn-secondary" size="btnn-small">
                         {'[{()}] '}
@@ -623,7 +628,11 @@ class NotificationTemplateForm extends React.Component<
               </Button>
             </Col>
 
-            <Col span={8} style={{ display: 'flex', justifyContent: 'center' }}>
+            <Col
+              /*span={8}*/ xs={{ span: 24 }}
+              md={{ span: 8 }}
+              style={{ display: 'flex', justifyContent: 'center' }}
+            >
               <div className="template-preview">
                 <div className="SMS-preview-bubble">{templateBody}</div>
               </div>
