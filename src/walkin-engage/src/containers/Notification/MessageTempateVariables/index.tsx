@@ -1,8 +1,7 @@
 import React from 'react';
 import './style.css';
 import { Menu, message } from 'antd';
-import Button from '../../../components/shared/Button/index';
-import Input from '../../../components/shared/Input/index';
+
 import {
   CREATE_MESSAGE_TEMPLATE_VARIABLE,
   ADD_VARIABLE_TO_TEMPLATE,
@@ -106,68 +105,72 @@ export default class MessageTemplateVariables extends React.Component<
   };
 
   init = async (nextProps = null) => {
-    // const jwtToken: any = localStorage.getItem('jwt');
-    // const { org_id }: any = jwt.decode(jwtToken);
-    // let defaultValues = {
-    //   pointsEarned: {
-    //     value: ' ',
-    //     defaultFor: "ISSUE"
-    //     , exists: false
-    //   },
-    //   pointsRedeemed: {
-    //     value: ' ',
-    //     defaultFor: "REDEEM"
-    //     , exists: false
-    //   },
-    //   pointsToExpire: {
-    //     value: ' ',
-    //     defaultFor: "EXPIRY"
-    //     , exists: false
-    //   },
-    //   pointsBalance: {
-    //     value: ' ',
-    //     defaultFor: "EXPIRY"
-    //     , exists: false
-    //   },
-    //   expiryDate: {
-    //     value: ' ',
-    //     defaultFor: 'EXPIRY_REMINDER'
-    //     , exists: false
-    //   },
-    //   daysToExpire: {
-    //     value: ' ',
-    //     defaultFor: 'EXPIRY_REMINDER'
-    //     , exists: false
-    //   }
-    // }
-    // let messageTemplateId = nextProps
-    //   ? nextProps.messageTemplateId
-    //   : this.props.messageTemplateId;
-    // let messageTemplateVariables, messageTemplateResponse;
-    // try {
-    //   messageTemplateResponse = await this.props.client.query({
-    //     query: GET_MESSAGE_TEMPLATE,
-    //     variables: { id: messageTemplateId, organization_id: org_id }
-    //   })
-    //   messageTemplateResponse = Object.assign(messageTemplateResponse.data.messageTemplate)
-    //   messageTemplateVariables = messageTemplateResponse.messageTemplateVariables
-    // } catch (e) {
-    //   console.log(e)
-    // }
-    // this.setState({ templateVariables: {} });
-    // messageTemplateVariables.forEach(variable => {
-    //   if (defaultValues[variable.key]) defaultValues[variable.key].exists = true
-    //   this.addVariable(variable.key, {
-    //     id: variable.id,
-    //     value: variable.defaultValue,
-    //   });
-    // });
-    // for (const key in defaultValues) {
-    //   if (messageTemplateResponse.name.indexOf(defaultValues[key].defaultFor) != -1) {
-    //     if (!defaultValues[key].exists)
-    //       this.createTemplateVariable(key, defaultValues[key].value, org_id)
-    //   }
-    // }
+    const jwtToken: any = localStorage.getItem('jwt');
+    const { org_id }: any = jwt.decode(jwtToken);
+    let defaultValues = {
+      pointsEarned: {
+        value: ' ',
+        //defaultFor: "ISSUE",
+        exists: false,
+      },
+      pointsRedeemed: {
+        value: ' ',
+        // defaultFor: "REDEEM".
+        exists: false,
+      },
+      pointsToExpire: {
+        value: ' ',
+        //defaultFor: "EXPIRY",
+        exists: false,
+      },
+      pointsBalance: {
+        value: ' ',
+        //defaultFor: "EXPIRY",
+        exists: false,
+      },
+      expiryDate: {
+        value: ' ',
+        //defaultFor: 'EXPIRY_REMINDER',
+        exists: false,
+      },
+      daysToExpire: {
+        value: ' ',
+        //defaultFor: 'EXPIRY_REMINDER',
+        exists: false,
+      },
+    };
+    let messageTemplateId = nextProps
+      ? nextProps.messageTemplateId
+      : this.props.messageTemplateId;
+    let messageTemplateVariables, messageTemplateResponse;
+    try {
+      messageTemplateResponse = await this.props.client.query({
+        query: GET_MESSAGE_TEMPLATE,
+        variables: { id: messageTemplateId, organization_id: org_id },
+      });
+      messageTemplateResponse = Object.assign(
+        messageTemplateResponse.data.messageTemplate
+      );
+      messageTemplateVariables =
+        messageTemplateResponse.messageTemplateVariables;
+    } catch (e) {
+      console.log(e);
+    }
+    this.setState({ templateVariables: {} });
+    messageTemplateVariables.forEach(variable => {
+      if (defaultValues[variable.key])
+        defaultValues[variable.key].exists = true;
+      this.addVariable(variable.key, {
+        id: variable.id,
+        value: variable.defaultValue,
+      });
+    });
+    for (const key in defaultValues) {
+      //if (messageTemplateResponse.name.indexOf(defaultValues[key].defaultFor) != -1) {
+      if (!defaultValues[key].exists)
+        this.createTemplateVariable(key, defaultValues[key].value, org_id);
+      //}
+    }
   };
 
   async componentWillMount() {
@@ -182,18 +185,15 @@ export default class MessageTemplateVariables extends React.Component<
     let menuItems = [];
     let { templateVariables } = this.state;
     for (const key in templateVariables) {
-      menuItems.push(<div className="dropdown-item">{key}</div>);
+      menuItems.push(
+        <div className="dropdown-item" key={`${key}-variable`}>
+          {key}
+        </div>
+      );
     }
     return (
       <Menu>
-        <div className="dropdown-container">
-          <div className="dropdown-item">pointsEarned</div>
-          <div className="dropdown-item">pointsRedeemed</div>
-          <div className="dropdown-item">pointsBalance</div>
-          <div className="dropdown-item">pointsToExpire</div>
-          <div className="dropdown-item">expiryDate</div>
-          <div className="dropdown-item">daysToExpire</div>
-        </div>
+        <div className="dropdown-container">{menuItems}</div>
       </Menu>
     );
   }

@@ -256,10 +256,10 @@ class NotificationTemplateForm extends React.Component<
           organization_id: org_id,
         },
       });
-      // if (!campaignResponse.data.campaigns.length) {
-      //     message.warn('Create campaign to create a communication!');
-      //     return;
-      // }
+      if (!campaignResponse.data.campaigns.length) {
+        message.warn('Create campaign to create a communication!');
+        return;
+      }
       console.log(campaignResponse.data.campaigns);
     } catch (e) {
       console.log(e);
@@ -283,13 +283,13 @@ class NotificationTemplateForm extends React.Component<
           entityType: 'LOYALTY',
           status: 'ACTIVE',
           isScheduled: false,
-          //firstScheduleDateTime: campaignResponse.data.campaigns[0].startTime,
+          firstScheduleDateTime: campaignResponse.data.campaigns[0].startTime,
           isRepeatable: false,
           organization_id: org_id,
           commsChannelName: `${this.commsChannelName[this.props.formName]}_${
             this.props.templateType
           }`,
-          //campaign_id: campaignResponse.data.campaigns[0].id
+          campaign_id: campaignResponse.data.campaigns[0].id,
         },
         messageTemplate: {
           name: `${this.commsChannelName[this.props.formName]}_${
@@ -342,13 +342,14 @@ class NotificationTemplateForm extends React.Component<
               entityType: 'LOYALTY',
               status: 'ACTIVE',
               isScheduled: false,
-              //firstScheduleDateTime: campaignResponse.data.campaigns[0].startTime,
+              firstScheduleDateTime:
+                campaignResponse.data.campaigns[0].startTime,
               isRepeatable: false,
               organization_id: org_id,
               commsChannelName: `${
                 this.commsChannelName[this.props.formName]
               }_${this.props.templateType}`,
-              //campaign_id: campaignResponse.data.campaigns[0].id
+              campaign_id: campaignResponse.data.campaigns[0].id,
             },
             messageTemplateInput: {
               name: `${this.commsChannelName[this.props.formName]}_${
@@ -451,22 +452,26 @@ class NotificationTemplateForm extends React.Component<
           message.warn('Please Enter Email Id!');
           return;
         }
-        let sendMessageResponse = this.props.client.mutate({
-          mutation: SEND_MESSAGE,
-          variables: {
-            input: {
-              format: this.props.templateType,
-              to:
-                this.props.templateType === 'SMS'
-                  ? this.state.phoneNumber
-                  : this.state.email,
-              messageBody: this.state.templateBody,
-              messageSubject: this.props.formName,
+        try {
+          let sendMessageResponse = this.props.client.mutate({
+            mutation: SEND_MESSAGE,
+            variables: {
+              input: {
+                format: this.props.templateType,
+                to:
+                  this.props.templateType === 'SMS'
+                    ? this.state.phoneNumber
+                    : this.state.email,
+                messageBody: this.state.templateBody,
+                messageSubject: this.props.formName,
+              },
             },
-          },
-        });
-        console.log(sendMessageResponse);
-        message.info('Email has been sent!');
+          });
+          console.log(sendMessageResponse);
+          message.info('Email has been sent!');
+        } catch (e) {
+          console.log(e);
+        }
       }
     } catch (e) {
       console.log(e);
@@ -557,7 +562,7 @@ class NotificationTemplateForm extends React.Component<
                             ? 'Enter a phone number'
                             : 'Enter a email ID'
                         }
-                        validations={['numeric']}
+                        validations={templateType == 'SMS' ? ['numeric'] : []}
                         width="100%"
                         prefix={templateType == 'SMS' ? '+91' : null}
                       />
