@@ -70,7 +70,7 @@ class NormalLoginForm extends React.Component<IProps, IState> {
                             // const redirectRoute = routeQuery.redirectRoute
                             //   ? routeQuery.redirectRoute
                             //   : '/core';
-                            const redirectRoute = '/core';
+                            const redirectRoute = '/engage/loyalty';
                             console.log(
                               'Login Successfull. Redirecting...',
                               redirectRoute
