@@ -40,34 +40,53 @@ class Notification extends React.Component<
     //TODO: should test this
 
     //getting loyalty card
-    // let loyaltyCardResponse = await this.props.client.query({
-    //     query: GET_LOYALTY_CARD,
-    //     variables: { organizationId: org_id }
-    // })
+    try {
+      let loyaltyCardResponse = await this.props.client.query({
+        query: GET_LOYALTY_CARD,
+        variables: { organizationId: org_id },
+      });
 
-    // let loyaltyCards = loyaltyCardResponse.data.loyaltyCards.data;
-    // if (!loyaltyCards.length) {
-    //     message.warn('Create a loyalty card to avail this feature!');
-    //     return;
-    // }
-    // //get expiryCommunications
-    // let expiryCommunicationsResponse = await this.props.client.query({
-    //     query: GET_EXPIRY_COMMUNICAIONS,
-    //     variables: {
-    //         organizationId: org_id,
-    //         loyaltyCardCode: loyaltyCards[0].code
-    //     }
-    // })
-    // let expiryCommunications = expiryCommunicationsResponse.data.expiryCommunicationByLoyaltyCardCodeAndEventType;
-    // let expiryCommunicationsNames = []
-    // expiryCommunications.forEach(comm => {
-    //     if (comm.eventType == 'EXPIRY_REMINDER') {
-    //         expiryCommunicationsNames.push(`Expiry Reminder (${comm.numberOfDays} Days)`)
-    //     }
-    // })
-    // this.setState({
-    //     notificationOptions: [...this.state.notificationOptions, ...expiryCommunicationsNames]
-    // })
+      let loyaltyCards = loyaltyCardResponse.data.loyaltyCards.data;
+      if (!loyaltyCards.length) {
+        message.warn('Create a loyalty card to avail this feature!');
+        return;
+      }
+      //get expiryCommunications
+      let expiryCommunicationsResponse = await this.props.client.query({
+        query: GET_EXPIRY_COMMUNICAIONS,
+        variables: {
+          organizationId: org_id,
+          loyaltyCardCode: loyaltyCards[0].code,
+          eventType: 'EXPIRY_REMINDER',
+        },
+        fetchPolicy: 'network-only',
+      });
+      let expiryCommunications = Object.assign(
+        expiryCommunicationsResponse.data
+          .expiryCommunicationByLoyaltyCardCodeAndEventType
+      );
+      console.log(expiryCommunications);
+      let expiryCommunicationsNames = [];
+      expiryCommunications.forEach((comm, index) => {
+        if (
+          comm.eventType == 'EXPIRY_REMINDER' &&
+          index != 0 &&
+          comm.communication.commsChannelName.indexOf('SMS') != -1
+        ) {
+          expiryCommunicationsNames.push(
+            `Expiry Reminder (${comm.numberOfDays} Days)`
+          );
+        }
+      });
+      this.setState({
+        notificationOptions: [
+          ...this.state.notificationOptions,
+          ...expiryCommunicationsNames,
+        ],
+      });
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   addExpireRemainder = () => {

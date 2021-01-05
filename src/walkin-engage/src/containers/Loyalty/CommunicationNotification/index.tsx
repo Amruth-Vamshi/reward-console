@@ -72,9 +72,9 @@ export default class CommunicationNotification extends React.Component<
       });
 
       communications = Object.assign(
-        communicationsResponse.data.expiryCommunications
+        communicationsResponse.data.expiryCommunications.data
       );
-
+      console.log(communications);
       communications.forEach(comm => {
         if (comm.eventType == 'EXPIRY') {
           this.setState({

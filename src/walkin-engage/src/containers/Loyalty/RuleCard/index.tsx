@@ -241,7 +241,9 @@ class RuleCard extends React.Component<RuleCardProps, RuleCardState> {
         >
           <Row>
             <Col span={18} className="rule-title">
-              {title}
+              {formName === 'Redemption rule'
+                ? `${burnPercentage} ${title.substr(3)}`
+                : title}
             </Col>
             <Col span={6} style={{ display: 'flex', justifyContent: 'center' }}>
               <Button

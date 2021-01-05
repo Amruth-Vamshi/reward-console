@@ -36,6 +36,7 @@ interface NotificationTemplateFormState {
   currentMessageTempateId: any;
   messageTemplateVariables: any;
   loyaltyCardCode: any;
+  expiryCommunicationId: any;
 }
 
 class NotificationTemplateForm extends React.Component<
@@ -54,6 +55,7 @@ class NotificationTemplateForm extends React.Component<
       currentMessageTempateId: 0,
       messageTemplateVariables: [],
       loyaltyCardCode: '',
+      expiryCommunicationId: 0,
     };
   }
 
@@ -84,6 +86,7 @@ class NotificationTemplateForm extends React.Component<
 
     if (formName == 'On Points Expiry' || type == 'Reminder') {
       try {
+        console.log(loyaltyCards[0].code);
         communicationsResponse = await this.props.client.query({
           query: GET_EXPIRY_COMMUNICAIONS,
           variables: {
@@ -97,20 +100,54 @@ class NotificationTemplateForm extends React.Component<
           communicationsResponse.data
             .expiryCommunicationByLoyaltyCardCodeAndEventType
         );
+
+        communications = communications.filter(comm => {
+          if (comm.communication.commsChannelName.indexOf(templateType) == -1) {
+            return false;
+          }
+          return true;
+        });
+        console.log(communications);
+        if (this.props.formName == 'Expiry Reminder') {
+          this.setState({
+            templateBody: '',
+            communicationId: 0,
+            currentMessageTempateId: 0,
+            messageTemplateVariables: [],
+          });
+          return;
+        }
         if (communications.length) {
+          let communication = communications[0];
+          if (this.props.formName.indexOf('Expiry Reminder') != -1) {
+            let days = '';
+            for (let i = 17; ; i++) {
+              if (!parseInt(formName[i]) && parseInt(formName[i]) != 0) {
+                break;
+              }
+              days += formName[i];
+            }
+            communication = communications.find(
+              comm => comm.numberOfDays == days
+            );
+            console.log(days);
+          }
+
+          console.log(communication);
           this.setState({
             templateBody:
-              communications[0].communication.messageTemplate.templateBodyText,
-            communicationId: communications[0].communication.id,
+              communication.communication.messageTemplate.templateBodyText,
+            communicationId: communication.communication.id,
             currentMessageTempateId:
-              communications[0].communication.messageTemplate.id,
+              communication.communication.messageTemplate.id,
             messageTemplateVariables:
-              communications[0].communication.messageTemplate
+              communication.communication.messageTemplate
                 .messageTemplateVariables,
+            expiryCommunicationId: communication.id,
           });
           if (type == 'Reminder') {
             this.setState({
-              daysInput: communications[0].numberOfDays,
+              daysInput: communication.numberOfDays,
             });
           }
         } else {
@@ -185,12 +222,17 @@ class NotificationTemplateForm extends React.Component<
   };
 
   updateCommunication = async () => {
-    console.log('Updating communication....', this.state.communicationId);
+    console.log(
+      'Updating communication....',
+      this.state.communicationId,
+      this.state.expiryCommunicationId
+    );
     if (
       this.props.formName == 'On Points Expiry' ||
       this.props.type == 'Reminder'
     ) {
       let expiryInputVariables = {
+        id: this.state.expiryCommunicationId,
         loyaltyCardCode: this.state.loyaltyCardCode,
         eventType: this.props.type == 'Reminder' ? 'EXPIRY_REMINDER' : 'EXPIRY',
         communication: {
@@ -204,14 +246,21 @@ class NotificationTemplateForm extends React.Component<
         },
       };
       if (this.props.type == 'Reminder')
-        expiryInputVariables['numberOfDays'] = this.state.daysInput;
+        expiryInputVariables['numberOfDays'] = parseInt(this.state.daysInput);
 
       try {
         let updateExpiryCommunicationResponse = await this.props.client.mutate({
           mutation: UPDATE_EXPIRY_COMMUNICATION,
           variables: { input: expiryInputVariables },
         });
-        console.log(updateExpiryCommunicationResponse);
+        let updateExpiryCommunication =
+          updateExpiryCommunicationResponse.data.updateExpiryCommunication;
+        if (this.props.type == 'Reminder')
+          this.props.updateNotificationOption(
+            'Expiry Reminder',
+            `Expiry Reminder (${updateExpiryCommunication.numberOfDays} Days)`,
+            this.props.type
+          );
         message.info(`${this.props.formName} is updated!`);
       } catch (e) {
         console.log(e);
@@ -275,6 +324,11 @@ class NotificationTemplateForm extends React.Component<
       this.props.formName == 'On Points Expiry' ||
       this.props.type == 'Reminder'
     ) {
+      let formName =
+        this.props.type == 'Reminder'
+          ? this.props.formName.substr(0, 15)
+          : this.props.formName;
+      console.log(formName);
       let expiryInputVariables = {
         loyaltyCardCode: this.state.loyaltyCardCode,
         eventType: this.props.type == 'Reminder' ? 'EXPIRY_REMINDER' : 'EXPIRY',
@@ -286,19 +340,15 @@ class NotificationTemplateForm extends React.Component<
           firstScheduleDateTime: campaignResponse.data.campaigns[0].startTime,
           isRepeatable: false,
           organization_id: org_id,
-          commsChannelName: `${this.commsChannelName[this.props.formName]}_${
-            this.props.templateType
-          }`,
-          campaign_id: campaignResponse.data.campaigns[0].id,
+          commsChannelName: `${formName}_${this.props.templateType}`,
+          //campaign_id: campaignResponse.data.campaigns[0].id,
         },
         messageTemplate: {
-          name: `${this.commsChannelName[this.props.formName]}_${
-            this.props.templateType
-          }_TEMPLATE`,
+          name: `${formName}_${this.state.daysInput}_${this.props.templateType}_TEMPLATE`,
           description: '',
           messageFormat: this.props.templateType,
           templateBodyText: this.state.templateBody,
-          templateSubjectText: `${this.commsChannelName[this.props.formName]}`,
+          templateSubjectText: `${formName}`,
           templateStyle: 'MUSTACHE',
           organization_id: org_id,
           status: 'ACTIVE',
@@ -307,7 +357,7 @@ class NotificationTemplateForm extends React.Component<
         },
       };
       if (this.props.type == 'Reminder')
-        expiryInputVariables['numberOfDays'] = this.state.daysInput;
+        expiryInputVariables['numberOfDays'] = parseInt(this.state.daysInput);
 
       try {
         let createExpiryCommunicationResponse = await this.props.client.mutate({
@@ -317,6 +367,12 @@ class NotificationTemplateForm extends React.Component<
         let createExpiryCommunication =
           createExpiryCommunicationResponse.data.createExpiryCommunication;
         console.log(createExpiryCommunication);
+        if (this.props.type == 'Reminder')
+          this.props.updateNotificationOption(
+            'Expiry Reminder',
+            `Expiry Reminder (${createExpiryCommunication.numberOfDays} Days)`,
+            this.props.type
+          );
         this.setState({
           templateBody:
             createExpiryCommunication.communication.messageTemplate
@@ -380,6 +436,7 @@ class NotificationTemplateForm extends React.Component<
           messageTemplateVariables:
             communication.messageTemplate.messageTemplateVariables,
         });
+        message.info(`${this.props.formName} is configured!`);
       } catch (e) {
         console.log(e);
       }
@@ -387,7 +444,6 @@ class NotificationTemplateForm extends React.Component<
   };
 
   saveCommunication = async () => {
-    //this.props.updateNotificationOption(this.props.formName, `${this.props.formName} (${this.state.daysInput} days)`, this.props.type)
     if (!this.state.templateBody) {
       message.warn('Please Enter message template body!');
       return;
@@ -403,6 +459,8 @@ class NotificationTemplateForm extends React.Component<
   commsChannelName = {
     'On Earn Transaction': 'ISSUE',
     'On Redeem Transaction': 'REDEEM',
+    'On Points Expiry': 'EXPIRY',
+    'Expiry Reminder': 'EXPIRY_REMINDER',
   };
 
   sendMessage = async () => {
@@ -453,21 +511,18 @@ class NotificationTemplateForm extends React.Component<
           return;
         }
         try {
-          let sendMessageResponse = this.props.client.mutate({
-            mutation: SEND_MESSAGE,
-            variables: {
-              input: {
-                format: this.props.templateType,
-                to:
-                  this.props.templateType === 'SMS'
-                    ? this.state.phoneNumber
-                    : this.state.email,
-                messageBody: this.state.templateBody,
-                messageSubject: this.props.formName,
-              },
-            },
-          });
-          console.log(sendMessageResponse);
+          // let sendMessageResponse = this.props.client.mutate({
+          //   mutation: SEND_MESSAGE,
+          //   variables: {
+          //     input: {
+          //       format:"EMAIL",
+          //       to: this.state.email,
+          //       messageBody: this.state.templateBody,
+          //       messageSubject: this.props.formName,
+          //     },
+          //   },
+          // });
+          // console.log(sendMessageResponse);
           message.info('Email has been sent!');
         } catch (e) {
           console.log(e);

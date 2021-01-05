@@ -368,12 +368,6 @@ export const GET_EXPIRY_COMMUNICAIONS = gql`
         id
         code
         name
-        currency {
-          id
-          code
-          conversionRatio
-          name
-        }
       }
       communication {
         id

@@ -89,6 +89,7 @@ export default class MessageTemplateVariables extends React.Component<
 
   addVariableToTemplate = async (templateId, org_id, templateVariableId) => {
     try {
+      console.log(templateId, org_id, templateVariableId);
       await this.props.client.mutate({
         mutation: ADD_VARIABLE_TO_TEMPLATE,
         variables: {
@@ -144,6 +145,7 @@ export default class MessageTemplateVariables extends React.Component<
       : this.props.messageTemplateId;
     let messageTemplateVariables, messageTemplateResponse;
     try {
+      if (!messageTemplateId) return;
       messageTemplateResponse = await this.props.client.query({
         query: GET_MESSAGE_TEMPLATE,
         variables: { id: messageTemplateId, organization_id: org_id },
@@ -151,20 +153,25 @@ export default class MessageTemplateVariables extends React.Component<
       messageTemplateResponse = Object.assign(
         messageTemplateResponse.data.messageTemplate
       );
-      messageTemplateVariables =
-        messageTemplateResponse.messageTemplateVariables;
+      if (messageTemplateResponse) {
+        messageTemplateVariables =
+          messageTemplateResponse.messageTemplateVariables;
+      }
     } catch (e) {
       console.log(e);
     }
     this.setState({ templateVariables: {} });
-    messageTemplateVariables.forEach(variable => {
-      if (defaultValues[variable.key])
-        defaultValues[variable.key].exists = true;
-      this.addVariable(variable.key, {
-        id: variable.id,
-        value: variable.defaultValue,
+    if (messageTemplateVariables) {
+      messageTemplateVariables.forEach(variable => {
+        if (defaultValues[variable.key])
+          defaultValues[variable.key].exists = true;
+        this.addVariable(variable.key, {
+          id: variable.id,
+          value: variable.defaultValue,
+        });
       });
-    });
+    }
+
     for (const key in defaultValues) {
       //if (messageTemplateResponse.name.indexOf(defaultValues[key].defaultFor) != -1) {
       if (!defaultValues[key].exists)
@@ -191,9 +198,21 @@ export default class MessageTemplateVariables extends React.Component<
         </div>
       );
     }
+    let display_items = (
+      <React.Fragment>
+        <div className="dropdown-item">points earned</div>
+        <div className="dropdown-item">points redeemed</div>
+        <div className="dropdown-item">points to expire</div>
+        <div className="dropdown-item">points balance</div>
+        <div className="dropdown-item">expiry date</div>
+        <div className="dropdown-item">days to expire</div>
+      </React.Fragment>
+    );
     return (
       <Menu>
-        <div className="dropdown-container">{menuItems}</div>
+        <div className="dropdown-container">
+          {!this.props.messageTemplateId ? display_items : menuItems}
+        </div>
       </Menu>
     );
   }
