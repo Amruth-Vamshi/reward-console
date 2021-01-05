@@ -3,12 +3,8 @@ import './style.css';
 import { Row, Col } from 'antd';
 import Button from '../../../components/shared/Button';
 import { Link } from 'react-router-dom';
-import {
-  GET_COMMUNICATIONS,
-  GET_ALL_EXPIRY_COMMUNICATION,
-} from '../../../query/index';
+import { GET_COMMUNICATIONS } from '../../../query/index';
 import * as jwt from 'jsonwebtoken';
-import { notifications } from 'walkin-components/src/components/AppNotification/data';
 
 interface CommunicationNotificationProps {
   client: any;
@@ -43,6 +39,10 @@ export default class CommunicationNotification extends React.Component<
       let communications = Object.assign(
         communicationsResponse.data.communications
       );
+      communications = communications.filter(
+        comm => comm.organization.id == org_id
+      );
+      console.log(communications);
       communications.forEach(comm => {
         if (comm.commsChannelName.indexOf('ISSUE') != -1) {
           this.setState({
@@ -60,23 +60,7 @@ export default class CommunicationNotification extends React.Component<
             ],
           });
         }
-      });
-
-      communicationsResponse = await this.props.client.query({
-        query: GET_ALL_EXPIRY_COMMUNICATION,
-        variables: {
-          organizationId: org_id,
-          loyaltyCardCode: this.props.loyaltyCardCode,
-        },
-        fetchPolicy: 'network-only',
-      });
-
-      communications = Object.assign(
-        communicationsResponse.data.expiryCommunications.data
-      );
-      console.log(communications);
-      communications.forEach(comm => {
-        if (comm.eventType == 'EXPIRY') {
+        if (comm.commsChannelName.indexOf('EXPIRY_POINTS') != -1) {
           this.setState({
             notificationMessages: [
               ...this.state.notificationMessages,
@@ -84,7 +68,7 @@ export default class CommunicationNotification extends React.Component<
             ],
           });
         }
-        if (comm.eventType == 'EXPIRY_REMINDER') {
+        if (comm.commsChannelName.indexOf('EXPIRY_REMINDER') != -1) {
           this.setState({
             notificationMessages: [
               ...this.state.notificationMessages,

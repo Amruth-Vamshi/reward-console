@@ -217,6 +217,9 @@ export const GET_COMMUNICATIONS = gql`
           key
         }
       }
+      organization {
+        id
+      }
       isScheduled
       status
     }
@@ -735,6 +738,10 @@ export const GET_ALL_EXPIRY_COMMUNICATION = gql`
             noOfOccurances
           }
           commsChannelName
+          organization {
+            id
+            name
+          }
           status
         }
         eventType

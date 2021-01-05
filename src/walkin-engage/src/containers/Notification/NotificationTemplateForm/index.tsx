@@ -304,6 +304,7 @@ class NotificationTemplateForm extends React.Component<
           campaignType: 'LOYALTY',
           organization_id: org_id,
         },
+        fetchPolicy: 'network-only',
       });
       if (!campaignResponse.data.campaigns.length) {
         message.warn('Create campaign to create a communication!');
@@ -340,15 +341,15 @@ class NotificationTemplateForm extends React.Component<
           firstScheduleDateTime: campaignResponse.data.campaigns[0].startTime,
           isRepeatable: false,
           organization_id: org_id,
-          commsChannelName: `${formName}_${this.props.templateType}`,
+          commsChannelName: `${this.commsChannelName[formName]}_${this.props.templateType}`,
           //campaign_id: campaignResponse.data.campaigns[0].id,
         },
         messageTemplate: {
-          name: `${formName}_${this.state.daysInput}_${this.props.templateType}_TEMPLATE`,
+          name: `${this.commsChannelName[formName]}_${this.state.daysInput}_${this.props.templateType}_TEMPLATE`,
           description: '',
           messageFormat: this.props.templateType,
           templateBodyText: this.state.templateBody,
-          templateSubjectText: `${formName}`,
+          templateSubjectText: `${this.commsChannelName[formName]}`,
           templateStyle: 'MUSTACHE',
           organization_id: org_id,
           status: 'ACTIVE',
@@ -459,7 +460,7 @@ class NotificationTemplateForm extends React.Component<
   commsChannelName = {
     'On Earn Transaction': 'ISSUE',
     'On Redeem Transaction': 'REDEEM',
-    'On Points Expiry': 'EXPIRY',
+    'On Points Expiry': 'EXPIRY_POINTS',
     'Expiry Reminder': 'EXPIRY_REMINDER',
   };
 
