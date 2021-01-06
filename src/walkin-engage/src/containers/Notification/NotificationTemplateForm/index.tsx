@@ -187,6 +187,15 @@ class NotificationTemplateForm extends React.Component<
         return true;
       });
 
+      communications = communications.filter(comm => {
+        if (comm.organization.id != org_id) {
+          return false;
+        }
+        return true;
+      });
+
+      console.log(communications);
+
       if (communications.length) {
         this.setState({
           templateBody: communications[0].messageTemplate.templateBodyText,
