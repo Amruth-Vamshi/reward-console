@@ -333,7 +333,7 @@ class NotificationTemplateForm extends React.Component<
           isRepeatable: false,
           organization_id: org_id,
           commsChannelName: `${this.commsChannelName[formName]}_${this.props.templateType}`,
-          //campaign_id: campaignResponse.data.campaigns[0].id,
+          campaign_id: campaignResponse.data.campaigns[0].id,
         },
         messageTemplate: {
           name:
@@ -478,9 +478,14 @@ class NotificationTemplateForm extends React.Component<
             mutation: GET_MESSAGE_TEMPLATE_AND_SEND_SMS,
             variables: {
               input: {
-                templateName: `${this.props.templateType}_TEMPLATE_${
-                  this.commsChannelName[this.props.formName]
-                }`,
+                templateName:
+                  this.props.type == 'Reminder'
+                    ? `${this.props.templateType}_TEMPLATE_${
+                        this.state.daysInput
+                      }_${this.commsChannelName[this.props.formName]}`
+                    : `${this.props.templateType}_TEMPLATE_${
+                        this.commsChannelName[this.props.formName]
+                      }`,
                 phoneNumber: this.state.phoneNumber,
                 communicationEntityType: 'LOYALTY',
                 replacableData: { points: 10 },

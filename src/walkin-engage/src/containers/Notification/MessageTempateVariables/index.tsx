@@ -104,72 +104,72 @@ export default class MessageTemplateVariables extends React.Component<
   };
 
   init = async (nextProps = null) => {
-    const jwtToken: any = localStorage.getItem('jwt');
-    const { org_id }: any = jwt.decode(jwtToken);
-    let defaultValues = {
-      pointsEarned: {
-        value: ' ',
-        exists: false,
-      },
-      pointsRedeemed: {
-        value: ' ',
-        exists: false,
-      },
-      pointsToExpire: {
-        value: ' ',
-        exists: false,
-      },
-      pointsBalance: {
-        value: ' ',
-        exists: false,
-      },
-      expiryDate: {
-        value: ' ',
-        exists: false,
-      },
-      daysToExpire: {
-        value: ' ',
-        exists: false,
-      },
-    };
-    let messageTemplateId = nextProps
-      ? nextProps.messageTemplateId
-      : this.props.messageTemplateId;
-    let messageTemplateVariables, messageTemplateResponse;
-    try {
-      if (!messageTemplateId) return;
-      messageTemplateResponse = await this.props.client.query({
-        query: GET_MESSAGE_TEMPLATE,
-        variables: { id: messageTemplateId, organization_id: org_id },
-      });
-      messageTemplateResponse = Object.assign(
-        messageTemplateResponse.data.messageTemplate
-      );
-      if (messageTemplateResponse) {
-        messageTemplateVariables =
-          messageTemplateResponse.messageTemplateVariables;
-      }
-    } catch (e) {
-      console.log(e);
-    }
-    this.setState({ templateVariables: {} });
-    if (messageTemplateVariables) {
-      messageTemplateVariables.forEach(variable => {
-        if (defaultValues[variable.key])
-          defaultValues[variable.key].exists = true;
-        this.addVariable(variable.key, {
-          id: variable.id,
-          value: variable.defaultValue,
-        });
-      });
-    }
-
-    for (const key in defaultValues) {
-      //if (messageTemplateResponse.name.indexOf(defaultValues[key].defaultFor) != -1) {
-      if (!defaultValues[key].exists)
-        this.createTemplateVariable(key, defaultValues[key].value, org_id);
-      //}
-    }
+    //Message template Variables are not needed for current backend.
+    // const jwtToken: any = localStorage.getItem('jwt');
+    // const { org_id }: any = jwt.decode(jwtToken);
+    // let defaultValues = {
+    //   pointsEarned: {
+    //     value: ' ',
+    //     exists: false,
+    //   },
+    //   pointsRedeemed: {
+    //     value: ' ',
+    //     exists: false,
+    //   },
+    //   pointsToExpire: {
+    //     value: ' ',
+    //     exists: false,
+    //   },
+    //   pointsBalance: {
+    //     value: ' ',
+    //     exists: false,
+    //   },
+    //   expiryDate: {
+    //     value: ' ',
+    //     exists: false,
+    //   },
+    //   daysToExpire: {
+    //     value: ' ',
+    //     exists: false,
+    //   },
+    // };
+    // let messageTemplateId = nextProps
+    //   ? nextProps.messageTemplateId
+    //   : this.props.messageTemplateId;
+    // let messageTemplateVariables, messageTemplateResponse;
+    // try {
+    //   if (!messageTemplateId) return;
+    //   messageTemplateResponse = await this.props.client.query({
+    //     query: GET_MESSAGE_TEMPLATE,
+    //     variables: { id: messageTemplateId, organization_id: org_id },
+    //   });
+    //   messageTemplateResponse = Object.assign(
+    //     messageTemplateResponse.data.messageTemplate
+    //   );
+    //   if (messageTemplateResponse) {
+    //     messageTemplateVariables =
+    //       messageTemplateResponse.messageTemplateVariables;
+    //   }
+    // } catch (e) {
+    //   console.log(e);
+    // }
+    // this.setState({ templateVariables: {} });
+    // if (messageTemplateVariables) {
+    //   messageTemplateVariables.forEach(variable => {
+    //     if (defaultValues[variable.key])
+    //       defaultValues[variable.key].exists = true;
+    //     this.addVariable(variable.key, {
+    //       id: variable.id,
+    //       value: variable.defaultValue,
+    //     });
+    //   });
+    // }
+    // for (const key in defaultValues) {
+    //   //if (messageTemplateResponse.name.indexOf(defaultValues[key].defaultFor) != -1) {
+    //   if (!defaultValues[key].exists)
+    //     this.createTemplateVariable(key, defaultValues[key].value, org_id);
+    //   //}
+    // }
   };
 
   async componentWillMount() {
@@ -203,7 +203,8 @@ export default class MessageTemplateVariables extends React.Component<
     return (
       <Menu>
         <div className="dropdown-container">
-          {!this.props.messageTemplateId ? display_items : menuItems}
+          {/*!this.props.messageTemplateId ? display_items : menuItems*/}
+          {display_items}
         </div>
       </Menu>
     );
