@@ -18,7 +18,7 @@ export default class LaunchButton extends React.Component<
         <Button
           size={`${buttonState == 'launch' ? 'btnn-medium' : 'btnn-small'}`}
           style={`${buttonState == 'pause' ? 'btnn-danger' : 'btnn-primary'}`}
-          onClick={changeButtonState}
+          onClick={e => changeButtonState(e)}
         >
           {buttonState === 'launch' ? (
             'Launch Program'

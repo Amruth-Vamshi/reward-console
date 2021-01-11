@@ -5,11 +5,13 @@ import RuleCard from './RuleCard/index';
 import Button from '../../components/shared/Button/index';
 import { withApollo, ApolloProviderProps } from 'react-apollo';
 import * as jwt from 'jsonwebtoken';
+import moment from 'moment';
+
 import {
   GET_LOYALTY_PROGRAM,
   GET_LOYALTY_CARD,
   CREATE_LOYALTY_PROGRAM,
-  GET_BUSINESS_RULE,
+  GET_ORGANIZATION,
   CREATE_RULE_ATTRIBUTE,
   CREATE_RULE_ENTITY,
   PAUSE_CAMPAIGN,
@@ -49,6 +51,7 @@ interface LoyaltyState {
   campaignId: any;
   earnRuleId: any;
   burnRuleId: any;
+  orgCode: any;
 }
 
 class Loyalty extends React.Component<LoyaltyProps, LoyaltyState> {
@@ -74,6 +77,7 @@ class Loyalty extends React.Component<LoyaltyProps, LoyaltyState> {
       endDate: '',
       earnRuleId: '',
       burnRuleId: '',
+      orgCode: '',
     };
   }
 
@@ -161,46 +165,53 @@ class Loyalty extends React.Component<LoyaltyProps, LoyaltyState> {
   createLoyaltyProgram = async () => {
     const jwtToken: any = localStorage.getItem('jwt');
     const { org_id }: any = jwt.decode(jwtToken);
-
+    const {
+      earnPercentage,
+      burnPercentage,
+      maxEarnablePointsPerTransaction,
+      maxRedeemablePointsPerTransaction,
+      pointsValidity,
+      maxEarnablePointsPerDay,
+      maxRedeemablePointsPerDay,
+      loyaltyCardCode,
+      orgCode,
+    } = this.state;
     let currentDateTime = Date.now();
     let startTime = new Date(currentDateTime);
     let endTime = new Date(currentDateTime);
     endTime.setDate(endTime.getDate() + parseInt(this.state.pointsValidity));
 
-    console.log('creating rule entities....');
-
     let loyaltyRuleEntity, ruleAttribute;
 
     try {
       loyaltyRuleEntity = await this.createRuleEntity('Loyalty', org_id);
-      console.log(loyaltyRuleEntity);
-
-      console.log('creating rule attribute.....');
       ruleAttribute = await this.createRuleAttribute(
         loyaltyRuleEntity,
         'totalAmount',
         org_id
       );
 
-      console.log('creating a loyalty program ....');
-
       let loyaltyProgramInput = {
-        name: 'Percent Cashback Program',
-        loyaltyCode: 'percent_cashback_program',
-        loyaltyCardCode: this.state.loyaltyCardCode,
+        name: `Percent Cashback Program ${orgCode}`,
+        loyaltyCode: `percent_cashback_program_${orgCode}`,
+        loyaltyCardCode: loyaltyCardCode,
         organizationId: org_id,
         expiryUnit: 'DAY',
-        expiryValue: parseInt(this.state.pointsValidity),
+        expiryValue: parseInt(pointsValidity),
         campaign: {
-          name: 'Percent Cashback Campaign',
+          name: `Percent Cashback Campaign ${orgCode}`,
           description: 'Customer will get 10% cashback on every transaction',
           campaignType: 'LOYALTY',
-          startTime: startTime.toISOString(),
-          endTime: endTime.toISOString(),
+          startTime: moment(startTime.toISOString())
+            .utc()
+            .format('YYYY-MM-DD hh:mm:ss'),
+          endTime: moment(endTime.toISOString())
+            .utc()
+            .format('YYYY-MM-DD hh:mm:ss'),
           organization_id: org_id,
         },
         earnRuleData: {
-          name: 'EARN_RULE',
+          name: `ER_pct${earnPercentage}_max${maxEarnablePointsPerTransaction}_exp${pointsValidity}_dl${maxEarnablePointsPerDay}`,
           type: 'SIMPLE',
           organizationId: org_id,
           ruleConfiguration: {
@@ -225,7 +236,7 @@ class Loyalty extends React.Component<LoyaltyProps, LoyaltyState> {
           ),
         },
         burnRuleData: {
-          name: 'BURN_RULE',
+          name: `BR_pct${burnPercentage}_max${maxRedeemablePointsPerTransaction}_exp${pointsValidity}_dl${maxRedeemablePointsPerDay}`,
           type: 'SIMPLE',
           organizationId: org_id,
           ruleConfiguration: {
@@ -276,25 +287,6 @@ class Loyalty extends React.Component<LoyaltyProps, LoyaltyState> {
       let loyaltyProgram = Object.assign(
         loyaltyProgramResponse.data.createLoyaltyProgram
       );
-      console.log(loyaltyProgram);
-      let orderRuleEnity = await this.createRuleEntity('Order', org_id);
-      await this.createRuleAttribute(
-        orderRuleEnity,
-        'billAmountBeforeTax',
-        org_id
-      );
-
-      let limitsRuleEnity = await this.createRuleEntity('Limits', org_id);
-      await this.createRuleAttribute(
-        limitsRuleEnity,
-        'pointsEarnedToday',
-        org_id
-      );
-      await this.createRuleAttribute(
-        limitsRuleEnity,
-        'pointsRedeemedToday',
-        org_id
-      );
 
       let updatedEarnRule = await this.props.client.mutate({
         mutation: UPDATE_RULE,
@@ -313,8 +305,6 @@ class Loyalty extends React.Component<LoyaltyProps, LoyaltyState> {
         },
       });
 
-      console.log(updatedEarnRule);
-
       let updatedBurnRule = await this.props.client.mutate({
         mutation: UPDATE_RULE,
         variables: {
@@ -332,14 +322,12 @@ class Loyalty extends React.Component<LoyaltyProps, LoyaltyState> {
         },
       });
 
-      console.log(updatedBurnRule);
-
       let updateLoyaltyResponse = await this.props.client.mutate({
         mutation: UPDATE_LOYALTY_PROGRAM,
         variables: {
           input: {
             id: loyaltyProgram.id,
-            loyaltyCode: 'percent_cashback_program',
+            loyaltyCode: `percent_cashback_program_${orgCode}`,
             loyaltyCardCode: this.state.loyaltyCardCode,
             earnRuleValidation: null,
             earnRuleData: null,
@@ -349,12 +337,12 @@ class Loyalty extends React.Component<LoyaltyProps, LoyaltyState> {
         },
       });
       let updatedLoyalty = updateLoyaltyResponse.data.updateLoyaltyProgram;
-      console.log(updatedLoyalty);
 
       await this.launchLoyalty(loyaltyProgram.campaign.id);
 
       this.setState({
         buttonState: 'pause',
+        showPauseConformation: false,
         pointsValidity: loyaltyProgram.expiryValue,
         startDate: convertTime(loyaltyProgram.campaign.startTime),
         endDate: loyaltyProgram.campaign.endTime,
@@ -371,30 +359,34 @@ class Loyalty extends React.Component<LoyaltyProps, LoyaltyState> {
     }
   };
 
-  changeButtonState = async () => {
+  changeButtonState = async e => {
+    e.stopPropagation();
     if (this.state.buttonState === 'launch') {
+      const hide = message.loading('Action in progress..', 0);
       await this.createLoyaltyProgram();
-    }
-    if (this.state.buttonState === 'pause') {
+      setTimeout(hide, 100);
+    } else if (this.state.buttonState === 'pause') {
       this.setState({
         showPauseConformation: true,
       });
-    }
-    if (this.state.buttonState === 'resume') {
+    } else if (this.state.buttonState === 'resume') {
+      const hide = message.loading('Action in progress..', 0);
       this.resumeLoyalty();
+      setTimeout(hide, 100);
     }
   };
 
   pauseLoyalty = async () => {
     try {
+      const hide = message.loading('Action in progress..', 0);
       let pauseResponse = await this.props.client.mutate({
         mutation: PAUSE_CAMPAIGN,
         variables: {
           id: this.state.campaignId,
         },
       });
-      console.log(pauseResponse);
       this.setState({ showPauseConformation: false, buttonState: 'resume' });
+      setTimeout(hide, 100);
     } catch (e) {
       console.log(e);
     }
@@ -402,21 +394,18 @@ class Loyalty extends React.Component<LoyaltyProps, LoyaltyState> {
 
   launchLoyalty = async id => {
     try {
-      console.log(id);
       let launchResponse = await this.props.client.mutate({
         mutation: LAUNCH_CAMPAIGN,
         variables: {
           id: id,
         },
       });
-      console.log(launchResponse);
     } catch (e) {
       console.log(e);
     }
   };
 
   resumeLoyalty = async () => {
-    console.log(this.state.loyaltyId);
     const jwtToken: any = localStorage.getItem('jwt');
     const { org_id }: any = jwt.decode(jwtToken);
 
@@ -430,7 +419,6 @@ class Loyalty extends React.Component<LoyaltyProps, LoyaltyState> {
           id: this.state.campaignId,
         },
       });
-      console.log(unpauseResponse);
       let updateLoyaltyResponse = await this.props.client.mutate({
         mutation: UPDATE_LOYALTY_PROGRAM,
         variables: {
@@ -439,9 +427,11 @@ class Loyalty extends React.Component<LoyaltyProps, LoyaltyState> {
             loyaltyCode: this.state.loyaltyCode,
             loyaltyCardCode: this.state.loyaltyCardCode,
             campaign: {
-              name: 'Percent Cashback Campaign',
+              name: `Percent Cashback Campaign ${this.state.orgCode}`,
               campaignType: 'LOYALTY',
-              startTime: startTime.toISOString(),
+              startTime: moment(startTime.toISOString())
+                .utc()
+                .format('YYYY-MM-DD hh:mm:ss'),
               endTime: this.state.endDate,
               organization_id: org_id,
             },
@@ -449,7 +439,6 @@ class Loyalty extends React.Component<LoyaltyProps, LoyaltyState> {
         },
       });
       let updatedLoyalty = updateLoyaltyResponse.data.updateLoyaltyProgram;
-      console.log(updatedLoyalty);
       this.setState({
         buttonState: 'pause',
         startDate: convertTime(updatedLoyalty.campaign.startTime),
@@ -464,6 +453,13 @@ class Loyalty extends React.Component<LoyaltyProps, LoyaltyState> {
     const { org_id }: any = jwt.decode(jwtToken);
     //getting max earnable points per transaction
     try {
+      let organizationResponse = await this.props.client.query({
+        query: GET_ORGANIZATION,
+        variables: {
+          id: org_id,
+        },
+      });
+      let orgCode = organizationResponse.data.organization.code;
       //getting loyalty card
       let loyaltyCardResponse = await this.props.client.query({
         query: GET_LOYALTY_CARD,
@@ -475,7 +471,7 @@ class Loyalty extends React.Component<LoyaltyProps, LoyaltyState> {
         message.warn('Create a loyalty card to avail this feature!');
         return;
       }
-      this.setState({ loyaltyCardCode: loyaltyCards[0].code });
+      this.setState({ loyaltyCardCode: loyaltyCards[0].code, orgCode });
       //getting the loyalty program if exists.
       let loyaltyProgramResponse = await this.props.client.query({
         query: GET_LOYALTY_PROGRAM,
@@ -487,7 +483,7 @@ class Loyalty extends React.Component<LoyaltyProps, LoyaltyState> {
       });
       let loyaltyPrograms = loyaltyProgramResponse.data.loyaltyPrograms.data;
       //setting initial button state
-      console.log(loyaltyPrograms);
+      //console.log(loyaltyPrograms);
       if (loyaltyPrograms.length) {
         //if loyalty program - filling points validity.
         let earnRuleData = extractDataFromRuleExpression(
@@ -496,7 +492,7 @@ class Loyalty extends React.Component<LoyaltyProps, LoyaltyState> {
         let burnRuleData = extractDataFromRuleExpression(
           loyaltyPrograms[0].loyaltyBurnRule.ruleExpression.expressions[0]
         );
-        console.log(loyaltyPrograms[0].campaign.campaignStatus);
+
         this.setState({
           pointsValidity: loyaltyPrograms[0].expiryValue,
           startDate: convertTime(loyaltyPrograms[0].campaign.startTime),
@@ -514,6 +510,7 @@ class Loyalty extends React.Component<LoyaltyProps, LoyaltyState> {
             burnRuleData.maxPointsPerTransaction,
           earnRuleId: loyaltyPrograms[0].loyaltyEarnRule.id,
           burnRuleId: loyaltyPrograms[0].loyaltyBurnRule.id,
+          orgCode: orgCode,
         });
         if (this.state.isLoyaltyActive) {
           this.setState({ buttonState: 'pause' });
@@ -614,7 +611,7 @@ class Loyalty extends React.Component<LoyaltyProps, LoyaltyState> {
               <Col span={12}>
                 <LaunchButton
                   buttonState={this.state.buttonState}
-                  changeButtonState={this.changeButtonState}
+                  changeButtonState={e => this.changeButtonState(e)}
                 />
               </Col>
 

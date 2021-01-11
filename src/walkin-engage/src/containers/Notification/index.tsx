@@ -5,8 +5,13 @@ import NotificationOption from '../../components/Notification/NotificationOption
 import NotificationTemplateForm from './NotificationTemplateForm';
 import Button from '../../components/shared/Button/index';
 import { withApollo, ApolloProviderProps } from 'react-apollo';
-import { GET_LOYALTY_CARD, GET_EXPIRY_COMMUNICAIONS } from '../../query/index';
+import {
+  GET_LOYALTY_CARD,
+  GET_EXPIRY_COMMUNICAIONS,
+  GET_LOYALTY_PROGRAM,
+} from '../../query/index';
 import * as jwt from 'jsonwebtoken';
+import { textChangeRangeIsUnchanged } from 'typescript';
 
 interface NotificationProps extends ApolloProviderProps<any> {}
 
@@ -14,6 +19,7 @@ interface NotificationState {
   sendNotificationState: string;
   notificationOptions: Array<string>;
   templateType: string;
+  loyaltyProgramId: number;
 }
 
 class Notification extends React.Component<
@@ -31,13 +37,13 @@ class Notification extends React.Component<
         'On Points Expiry',
         'Expiry Reminder (7 days)',
       ],
+      loyaltyProgramId: -1,
     };
   }
 
   async UNSAFE_componentWillMount() {
     const jwtToken: any = localStorage.getItem('jwt');
     const { org_id }: any = jwt.decode(jwtToken);
-    //TODO: should test this
 
     //getting loyalty card
     try {
@@ -51,6 +57,18 @@ class Notification extends React.Component<
         message.warn('Create a loyalty card to avail this feature!');
         return;
       }
+
+      let loyaltyProgramResponse = await this.props.client.query({
+        query: GET_LOYALTY_PROGRAM,
+        variables: {
+          organizationId: org_id,
+          loyaltyCardCode: loyaltyCards[0].code,
+        },
+      });
+      this.setState({
+        loyaltyProgramId:
+          loyaltyProgramResponse.data.loyaltyPrograms.data[0].id,
+      });
       //get expiryCommunications
       let expiryCommunicationsResponse = await this.props.client.query({
         query: GET_EXPIRY_COMMUNICAIONS,
@@ -65,7 +83,7 @@ class Notification extends React.Component<
         expiryCommunicationsResponse.data
           .expiryCommunicationByLoyaltyCardCodeAndEventType
       );
-      console.log(expiryCommunications);
+
       let expiryCommunicationsNames = [];
       expiryCommunications.forEach((comm, index) => {
         if (
@@ -193,6 +211,7 @@ class Notification extends React.Component<
                   }
                   updateNotificationOption={this.updateNotificationOption}
                   client={this.props.client}
+                  loyaltyProgramId={this.state.loyaltyProgramId}
                 />
               </Col>
             </Row>

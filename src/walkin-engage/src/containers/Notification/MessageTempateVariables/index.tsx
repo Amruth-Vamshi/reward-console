@@ -47,7 +47,6 @@ export default class MessageTemplateVariables extends React.Component<
   };
 
   createTemplateVariable = async (key, value, org_id) => {
-    console.log(key, value);
     if (!value || !key) {
       message.warn('Error while creating template variables!');
       return;
@@ -89,7 +88,6 @@ export default class MessageTemplateVariables extends React.Component<
 
   addVariableToTemplate = async (templateId, org_id, templateVariableId) => {
     try {
-      console.log(templateId, org_id, templateVariableId);
       await this.props.client.mutate({
         mutation: ADD_VARIABLE_TO_TEMPLATE,
         variables: {
@@ -111,32 +109,26 @@ export default class MessageTemplateVariables extends React.Component<
     let defaultValues = {
       pointsEarned: {
         value: ' ',
-        //defaultFor: "ISSUE",
         exists: false,
       },
       pointsRedeemed: {
         value: ' ',
-        // defaultFor: "REDEEM".
         exists: false,
       },
       pointsToExpire: {
         value: ' ',
-        //defaultFor: "EXPIRY",
         exists: false,
       },
       pointsBalance: {
         value: ' ',
-        //defaultFor: "EXPIRY",
         exists: false,
       },
       expiryDate: {
         value: ' ',
-        //defaultFor: 'EXPIRY_REMINDER',
         exists: false,
       },
       daysToExpire: {
         value: ' ',
-        //defaultFor: 'EXPIRY_REMINDER',
         exists: false,
       },
     };
@@ -200,12 +192,12 @@ export default class MessageTemplateVariables extends React.Component<
     }
     let display_items = (
       <React.Fragment>
-        <div className="dropdown-item">points earned</div>
-        <div className="dropdown-item">points redeemed</div>
-        <div className="dropdown-item">points to expire</div>
-        <div className="dropdown-item">points balance</div>
-        <div className="dropdown-item">expiry date</div>
-        <div className="dropdown-item">days to expire</div>
+        <div className="dropdown-item">pointsEarned</div>
+        <div className="dropdown-item">pointsRedeemed</div>
+        <div className="dropdown-item">pointsToExpire</div>
+        <div className="dropdown-item">pointsBalance</div>
+        <div className="dropdown-item">expiryDate</div>
+        <div className="dropdown-item">daysToExpire</div>
       </React.Fragment>
     );
     return (

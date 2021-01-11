@@ -6,6 +6,10 @@ export const GET_USERS = gql`
       data {
         id
         email
+        organization {
+          id
+          name
+        }
       }
     }
   }
@@ -786,6 +790,16 @@ export const UPDATE_RULE = gql`
       organization {
         id
       }
+    }
+  }
+`;
+
+export const GET_ORGANIZATION = gql`
+  query organization($id: ID!) {
+    organization(id: $id) {
+      id
+      name
+      code
     }
   }
 `;

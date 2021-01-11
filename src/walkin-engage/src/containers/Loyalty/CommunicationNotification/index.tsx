@@ -42,7 +42,9 @@ export default class CommunicationNotification extends React.Component<
       communications = communications.filter(
         comm => comm.organization.id == org_id
       );
+
       console.log(communications);
+
       communications.forEach(comm => {
         if (comm.commsChannelName.indexOf('ISSUE') != -1) {
           this.setState({
@@ -52,7 +54,7 @@ export default class CommunicationNotification extends React.Component<
             ],
           });
         }
-        if (comm.commsChannelName.indexOf('REDEEM') != -1) {
+        if (comm.commsChannelName.indexOf('REDUCE') != -1) {
           this.setState({
             notificationMessages: [
               ...this.state.notificationMessages,
@@ -60,7 +62,7 @@ export default class CommunicationNotification extends React.Component<
             ],
           });
         }
-        if (comm.commsChannelName.indexOf('EXPIRY_POINTS') != -1) {
+        if (comm.commsChannelName.indexOf('EXPIRED') != -1) {
           this.setState({
             notificationMessages: [
               ...this.state.notificationMessages,

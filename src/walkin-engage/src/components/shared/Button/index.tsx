@@ -32,8 +32,8 @@ class Button extends React.Component<ButtonProps, any> {
     return (
       <button
         className={`btnn ${this.props.style} ${this.props.size}`}
-        onClick={() => {
-          if (this.props.onClick) this.props.onClick();
+        onClick={e => {
+          if (this.props.onClick) this.props.onClick(e);
         }}
       >
         {this.props.children}

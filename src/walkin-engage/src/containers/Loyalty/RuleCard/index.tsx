@@ -160,7 +160,6 @@ class RuleCard extends React.Component<RuleCardProps, RuleCardState> {
             },
           },
         });
-        console.log(updatedBurnRule);
       } catch (e) {
         console.log(e);
       }
@@ -182,7 +181,6 @@ class RuleCard extends React.Component<RuleCardProps, RuleCardState> {
             },
           },
         });
-        console.log(updatedEarnRule);
       } catch (e) {
         console.log(e);
       }
