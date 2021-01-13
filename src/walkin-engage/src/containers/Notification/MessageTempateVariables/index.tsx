@@ -13,6 +13,7 @@ interface MessageTemplateProps {
   messageTemplateId: any;
   messageTemplateVariables: any;
   client: any;
+  addVariable: any;
 }
 
 interface MessageTemplateVariablesState {
@@ -192,12 +193,54 @@ export default class MessageTemplateVariables extends React.Component<
     }
     let display_items = (
       <React.Fragment>
-        <div className="dropdown-item">pointsEarned</div>
-        <div className="dropdown-item">pointsRedeemed</div>
-        <div className="dropdown-item">pointsToExpire</div>
-        <div className="dropdown-item">pointsBalance</div>
-        <div className="dropdown-item">expiryDate</div>
-        <div className="dropdown-item">daysToExpire</div>
+        <div
+          onClick={() => {
+            this.props.addVariable('pointsEarned');
+          }}
+          className="dropdown-item"
+        >
+          pointsEarned
+        </div>
+        <div
+          onClick={() => {
+            this.props.addVariable('pointsRedeemed');
+          }}
+          className="dropdown-item"
+        >
+          pointsRedeemed
+        </div>
+        <div
+          onClick={() => {
+            this.props.addVariable('pointsToExpire');
+          }}
+          className="dropdown-item"
+        >
+          pointsToExpire
+        </div>
+        <div
+          onClick={() => {
+            this.props.addVariable('pointsBalance');
+          }}
+          className="dropdown-item"
+        >
+          pointsBalance
+        </div>
+        <div
+          onClick={() => {
+            this.props.addVariable('expiryDate');
+          }}
+          className="dropdown-item"
+        >
+          expiryDate
+        </div>
+        <div
+          onClick={() => {
+            this.props.addVariable('daysToExpire');
+          }}
+          className="dropdown-item"
+        >
+          daysToExpire
+        </div>
       </React.Fragment>
     );
     return (

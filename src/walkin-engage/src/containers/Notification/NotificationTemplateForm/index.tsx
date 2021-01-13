@@ -17,6 +17,7 @@ import {
 } from '../../../query/index';
 import MessageTemplateVariables from '../MessageTempateVariables/index';
 import * as jwt from 'jsonwebtoken';
+import moment from 'moment';
 
 interface NotificationTemplateFormProps {
   formName: string;
@@ -38,6 +39,7 @@ interface NotificationTemplateFormState {
   messageTemplateVariables: any;
   loyaltyCardCode: any;
   expiryCommunicationId: any;
+  isDropdownVisible: boolean;
 }
 
 class NotificationTemplateForm extends React.Component<
@@ -57,6 +59,7 @@ class NotificationTemplateForm extends React.Component<
       messageTemplateVariables: [],
       loyaltyCardCode: '',
       expiryCommunicationId: 0,
+      isDropdownVisible: false,
     };
   }
 
@@ -488,7 +491,14 @@ class NotificationTemplateForm extends React.Component<
                       }`,
                 phoneNumber: this.state.phoneNumber,
                 communicationEntityType: 'LOYALTY',
-                replacableData: { points: 10 },
+                replacableData: {
+                  pointsEarned: 10,
+                  pointsRedeemed: 20,
+                  pointsToExpire: 100,
+                  pointsBalance: 500,
+                  expiryDate: moment.utc().format('YYYY-MM-DD'),
+                  daysToExpire: 7,
+                },
                 consumerName: 'defaultUser',
                 //userId
               },
@@ -530,6 +540,29 @@ class NotificationTemplateForm extends React.Component<
     }
   };
 
+  addVariable = value => {
+    this.setState({
+      templateBody: `${this.state.templateBody} {{${value}}}`,
+      isDropdownVisible: false,
+    });
+  };
+
+  replaceVariables = msg => {
+    let replacableData = {
+      pointsEarned: 10,
+      pointsRedeemed: 20,
+      pointsToExpire: 100,
+      pointsBalance: 500,
+      expiryDate: moment.utc().format('YYYY-MM-DD'),
+      daysToExpire: 7,
+    };
+
+    for (let key in replacableData) {
+      msg = msg.replace(`{{${key}}}`, replacableData[key]);
+    }
+    return msg;
+  };
+
   render() {
     const {
       templateBody,
@@ -557,6 +590,7 @@ class NotificationTemplateForm extends React.Component<
                   >
                     <p className="form-lable">{templateType} body</p>
                     <Dropdown
+                      visible={this.state.isDropdownVisible}
                       overlay={
                         <MessageTemplateVariables
                           messageTemplateId={this.state.currentMessageTempateId}
@@ -564,13 +598,22 @@ class NotificationTemplateForm extends React.Component<
                             this.state.messageTemplateVariables
                           }
                           client={this.props.client}
+                          addVariable={this.addVariable}
                         />
                       }
                       overlayClassName="drop-down"
                       trigger={['click']}
                       placement="bottomRight"
                     >
-                      <Button style="btnn-secondary" size="btnn-small">
+                      <Button
+                        style="btnn-secondary"
+                        size="btnn-small"
+                        onClick={() => {
+                          this.setState({
+                            isDropdownVisible: !this.state.isDropdownVisible,
+                          });
+                        }}
+                      >
                         {'[{()}] '}
                         <Icon
                           type="down"
@@ -691,7 +734,9 @@ class NotificationTemplateForm extends React.Component<
               style={{ display: 'flex', justifyContent: 'center' }}
             >
               <div className="template-preview">
-                <div className="SMS-preview-bubble">{templateBody}</div>
+                <div className="SMS-preview-bubble">
+                  {this.replaceVariables(templateBody)}
+                </div>
               </div>
             </Col>
           </Row>

@@ -134,7 +134,14 @@ class NormalLoginForm extends React.Component<IProps, IState> {
                             valuePropName: 'checked',
                             initialValue: true,
                           })(
-                            <Switch size="small" className="remember-toggle" />
+                            <Switch
+                              size="small"
+                              className={
+                                this.props.form.getFieldValue('remember')
+                                  ? 'remember-toggle'
+                                  : ''
+                              }
+                            />
                           )}
                           <span
                             style={{
