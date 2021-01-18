@@ -11,7 +11,6 @@ import {
   GET_LOYALTY_PROGRAM,
 } from '../../query/index';
 import * as jwt from 'jsonwebtoken';
-import { textChangeRangeIsUnchanged } from 'typescript';
 
 interface NotificationProps extends ApolloProviderProps<any> {}
 
@@ -20,6 +19,8 @@ interface NotificationState {
   notificationOptions: Array<string>;
   templateType: string;
   loyaltyProgramId: number;
+  checkedSMS: boolean;
+  checkedEmail: boolean;
 }
 
 class Notification extends React.Component<
@@ -38,6 +39,8 @@ class Notification extends React.Component<
         'Expiry Reminder (7 days)',
       ],
       loyaltyProgramId: -1,
+      checkedSMS: false,
+      checkedEmail: false,
     };
   }
 
@@ -122,6 +125,7 @@ class Notification extends React.Component<
       currentOptions.splice(currentOptions.indexOf(prevOption), 1, newOption);
       this.setState({
         notificationOptions: currentOptions,
+        sendNotificationState: newOption,
       });
     }
   };
@@ -129,6 +133,18 @@ class Notification extends React.Component<
   changeNotificationOption = option => {
     this.setState({
       sendNotificationState: option,
+    });
+  };
+
+  changeSMSStatus = value => {
+    this.setState({
+      checkedSMS: value,
+    });
+  };
+
+  changeEmailStatus = value => {
+    this.setState({
+      checkedEmail: value,
     });
   };
 
@@ -182,22 +198,30 @@ class Notification extends React.Component<
                 <div className="form-selection-row">
                   {this.templateTypes.map((type, i) => (
                     <div
+                      onClick={() => {
+                        this.setState({ templateType: type });
+                      }}
                       key={`form-type-${i}`}
                       className={`form-type ${
                         templateType == type ? 'form-type-active' : null
                       }`}
                     >
                       <Checkbox
-                        className={`${
-                          templateType == type ? 'checkbox-active' : null
-                        }`}
-                        checked={templateType == type}
-                        onClick={() => {
-                          this.setState({ templateType: type });
+                        className="checkbox-active"
+                        checked={
+                          type == 'SMS'
+                            ? this.state.checkedSMS
+                            : this.state.checkedEmail
+                        }
+                        onClick={e => {
+                          type == 'SMS'
+                            ? this.changeSMSStatus(!this.state.checkedSMS)
+                            : this.changeEmailStatus(!this.state.checkedEmail);
                         }}
-                      >
+                      ></Checkbox>
+                      <span style={{ paddingLeft: '10px', fontSize: '14px' }}>
                         Send {type}
-                      </Checkbox>
+                      </span>
                     </div>
                   ))}
                 </div>
@@ -212,6 +236,10 @@ class Notification extends React.Component<
                   updateNotificationOption={this.updateNotificationOption}
                   client={this.props.client}
                   loyaltyProgramId={this.state.loyaltyProgramId}
+                  changeSMSStatus={this.changeSMSStatus}
+                  changeEmailStatus={this.changeEmailStatus}
+                  isSMSActive={this.state.checkedSMS}
+                  isEmailActive={this.state.checkedEmail}
                 />
               </Col>
             </Row>

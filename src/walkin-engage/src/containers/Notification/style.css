@@ -55,6 +55,7 @@
   font-weight: 500;
   padding: 10px 20px;
   margin-right: 10px;
+  cursor: pointer;
 }
 
 .form-type-active {

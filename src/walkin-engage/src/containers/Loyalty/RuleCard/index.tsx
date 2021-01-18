@@ -197,7 +197,7 @@ class RuleCard extends React.Component<RuleCardProps, RuleCardState> {
               loyaltyCode: this.props.loyaltyCode,
               loyaltyCardCode: this.props.loyaltyCardCode,
               expiryUnit: 'DAY',
-              expiryValue: this.props.pointsValidity,
+              expiryValue: parseInt(this.props.pointsValidity),
             },
           },
         });
