@@ -198,9 +198,6 @@ class Notification extends React.Component<
                 <div className="form-selection-row">
                   {this.templateTypes.map((type, i) => (
                     <div
-                      onClick={() => {
-                        this.setState({ templateType: type });
-                      }}
                       key={`form-type-${i}`}
                       className={`form-type ${
                         templateType == type ? 'form-type-active' : null
@@ -219,7 +216,12 @@ class Notification extends React.Component<
                             : this.changeEmailStatus(!this.state.checkedEmail);
                         }}
                       ></Checkbox>
-                      <span style={{ paddingLeft: '10px', fontSize: '14px' }}>
+                      <span
+                        onClick={() => {
+                          this.setState({ templateType: type });
+                        }}
+                        style={{ paddingLeft: '10px', fontSize: '14px' }}
+                      >
                         Send {type}
                       </span>
                     </div>
