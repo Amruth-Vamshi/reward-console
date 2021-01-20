@@ -67,6 +67,7 @@ class Notification extends React.Component<
           organizationId: org_id,
           loyaltyCardCode: loyaltyCards[0].code,
         },
+        fetchPolicy: 'network-only',
       });
       this.setState({
         loyaltyProgramId:

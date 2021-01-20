@@ -143,7 +143,7 @@ class NotificationTemplateForm extends React.Component<
               expiryCommunicationsSMS.communication.status == 'ACTIVE'
             );
         } else {
-          this.props.changeSMSStatus(false);
+          if (this.props.isSMSActive) this.props.changeSMSStatus(false);
         }
 
         let expiryCommunicationsEmail = expiryCommunications.find(
@@ -542,6 +542,10 @@ class NotificationTemplateForm extends React.Component<
       message.warn('Please Enter message template body!');
       return;
     }
+    if (this.props.type == 'Reminder') {
+      message.warn('Please Enter all required fields!');
+      return;
+    }
     if (this.state.communicationId) {
       this.updateCommunication();
     } else {
@@ -820,7 +824,15 @@ class NotificationTemplateForm extends React.Component<
               </div>
 
               <Button
-                style={`btnn-primary${!templateBody ? '-disabled' : ''}`}
+                style={`btnn-primary${
+                  this.props.type !== 'Reminder'
+                    ? !templateBody
+                      ? '-disabled'
+                      : ''
+                    : !templateBody || !daysInput || !timeInput
+                    ? '-disabled'
+                    : ''
+                }`}
                 size="btnn-medium"
                 onClick={this.saveCommunication}
               >

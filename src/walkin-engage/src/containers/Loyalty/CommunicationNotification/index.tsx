@@ -43,8 +43,6 @@ export default class CommunicationNotification extends React.Component<
         comm => comm.organization.id == org_id
       );
 
-      console.log(communications);
-
       communications.forEach(comm => {
         if (comm.commsChannelName.indexOf('ISSUE') != -1) {
           this.setState({
