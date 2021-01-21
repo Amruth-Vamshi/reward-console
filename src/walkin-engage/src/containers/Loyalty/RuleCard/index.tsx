@@ -181,30 +181,30 @@ class RuleCard extends React.Component<RuleCardProps, RuleCardState> {
             },
           },
         });
+
+        if (this.props.isLoyaltyActive) {
+          try {
+            await this.props.client.mutate({
+              mutation: UPDATE_LOYALTY_PROGRAM,
+              variables: {
+                input: {
+                  id: this.props.loyaltyId,
+                  loyaltyCode: this.props.loyaltyCode,
+                  loyaltyCardCode: this.props.loyaltyCardCode,
+                  expiryUnit: 'DAY',
+                  expiryValue: parseInt(this.props.pointsValidity),
+                },
+              },
+            });
+          } catch (e) {
+            console.log(e);
+          }
+        }
       } catch (e) {
         console.log(e);
       }
     }
 
-    //updating loyalty program - pointsValidity
-    if (this.props.isLoyaltyActive) {
-      try {
-        await this.props.client.mutate({
-          mutation: UPDATE_LOYALTY_PROGRAM,
-          variables: {
-            input: {
-              id: this.props.loyaltyId,
-              loyaltyCode: this.props.loyaltyCode,
-              loyaltyCardCode: this.props.loyaltyCardCode,
-              expiryUnit: 'DAY',
-              expiryValue: parseInt(this.props.pointsValidity),
-            },
-          },
-        });
-      } catch (e) {
-        console.log(e);
-      }
-    }
     this.setState({
       showForm: false,
     });

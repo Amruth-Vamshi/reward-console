@@ -204,10 +204,12 @@ class Loyalty extends React.Component<LoyaltyProps, LoyaltyState> {
           campaignType: 'LOYALTY',
           startTime: moment(startTime.toISOString())
             .utc()
-            .format('YYYY-MM-DD hh:mm:ss'),
+            .local()
+            .format('YYYY-MM-DD HH:mm:ss'),
           endTime: moment(endTime.toISOString())
             .utc()
-            .format('YYYY-MM-DD hh:mm:ss'),
+            .local()
+            .format('YYYY-MM-DD HH:mm:ss'),
           organization_id: org_id,
         },
         earnRuleData: {
@@ -431,7 +433,8 @@ class Loyalty extends React.Component<LoyaltyProps, LoyaltyState> {
               campaignType: 'LOYALTY',
               startTime: moment(startTime.toISOString())
                 .utc()
-                .format('YYYY-MM-DD hh:mm:ss'),
+                .local()
+                .format('YYYY-MM-DD HH:mm:ss'),
               endTime: this.state.endDate,
               organization_id: org_id,
             },
@@ -643,7 +646,11 @@ class Loyalty extends React.Component<LoyaltyProps, LoyaltyState> {
                         color: '#000000CC',
                       }}
                     >
-                      {this.state.startDate}
+                      {`${this.state.startDate.substr(0, 5)} `}
+                      <span
+                        style={{ fontSize: '12px' }}
+                      >{`${this.state.startDate.substr(6, 2)} `}</span>
+                      {this.state.startDate.substr(8)}
                     </p>
                   </div>
                 </Col>
