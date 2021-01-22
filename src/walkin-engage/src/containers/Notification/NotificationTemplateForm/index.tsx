@@ -543,8 +543,14 @@ class NotificationTemplateForm extends React.Component<
       return;
     }
     if (this.props.type == 'Reminder') {
-      message.warn('Please Enter all required fields!');
-      return;
+      if (
+        !this.state.templateBody ||
+        !this.state.timeInput ||
+        !this.state.daysInput
+      ) {
+        message.warn('Please Enter all required fields!');
+        return;
+      }
     }
     if (this.state.communicationId) {
       this.updateCommunication();
