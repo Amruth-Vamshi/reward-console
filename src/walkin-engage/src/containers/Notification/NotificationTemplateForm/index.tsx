@@ -18,6 +18,7 @@ import {
 import MessageTemplateVariables from '../MessageTempateVariables/index';
 import * as jwt from 'jsonwebtoken';
 import moment from 'moment';
+import { convertTime12to24 } from '../../../utils';
 
 interface NotificationTemplateFormProps {
   formName: string;
@@ -44,6 +45,7 @@ interface NotificationTemplateFormState {
   loyaltyCardCode: any;
   expiryCommunicationId: any;
   isDropdownVisible: boolean;
+  AMorPM: string;
 }
 
 class NotificationTemplateForm extends React.Component<
@@ -64,6 +66,7 @@ class NotificationTemplateForm extends React.Component<
       loyaltyCardCode: '',
       expiryCommunicationId: 0,
       isDropdownVisible: false,
+      AMorPM: 'PM',
     };
   }
 
@@ -187,6 +190,18 @@ class NotificationTemplateForm extends React.Component<
           if (type == 'Reminder') {
             this.setState({
               daysInput: expiryCommunication.numberOfDays,
+              timeInput: moment(
+                expiryCommunication.communication.repeatRuleConfiguration.time,
+                'HH:mm'
+              )
+                .format('hh:mm A')
+                .split(' ')[0],
+              AMorPM: moment(
+                expiryCommunication.communication.repeatRuleConfiguration.time,
+                'HH:mm'
+              )
+                .format('hh:mm A')
+                .split(' ')[1],
             });
           }
         } else {
@@ -314,6 +329,7 @@ class NotificationTemplateForm extends React.Component<
               : this.props.isEmailActive
               ? 'ACTIVE'
               : 'INACTIVE',
+          isRepeatable: false,
         },
         messageTemplate: {
           id: this.state.currentMessageTempateId,
@@ -321,8 +337,14 @@ class NotificationTemplateForm extends React.Component<
           templateSubjectText: 'Loyalty Points Update',
         },
       };
-      if (this.props.type == 'Reminder')
+      if (this.props.type == 'Reminder') {
         expiryInputVariables['numberOfDays'] = parseInt(this.state.daysInput);
+        expiryInputVariables.communication['repeatRuleConfiguration'] = {
+          time: convertTime12to24(
+            `${this.state.timeInput} ${this.state.AMorPM}`
+          ),
+        };
+      }
 
       try {
         let updateExpiryCommunicationResponse = await this.props.client.mutate({
@@ -446,8 +468,14 @@ class NotificationTemplateForm extends React.Component<
           //imageUrl: "https://dummyurl.com"
         },
       };
-      if (this.props.type == 'Reminder')
+      if (this.props.type == 'Reminder') {
         expiryInputVariables['numberOfDays'] = parseInt(this.state.daysInput);
+        expiryInputVariables.communication['repeatRuleConfiguration'] = {
+          time: convertTime12to24(
+            `${this.state.timeInput} ${this.state.AMorPM}`
+          ),
+        };
+      }
 
       try {
         let createExpiryCommunicationResponse = await this.props.client.mutate({
@@ -519,7 +547,7 @@ class NotificationTemplateForm extends React.Component<
             },
           },
         });
-        console.log(createCommunicationResponse);
+
         let communication =
           createCommunicationResponse.data
             .createCommunicationWithMessageTempate;
@@ -551,6 +579,34 @@ class NotificationTemplateForm extends React.Component<
         message.warn('Please Enter all required fields!');
         return;
       }
+      let hh = this.state.timeInput.split(':')[0];
+      let mm = this.state.timeInput.split(':')[1];
+      if (isNaN(parseInt(hh)) || isNaN(parseInt(mm))) {
+        message.warn('please enter valid time!');
+        return;
+      }
+      if (hh.length == 2 && mm.length == 2) {
+        if (isNaN(parseInt(hh[1])) || isNaN(parseInt(mm[1]))) {
+          message.warn('please enter valid time!');
+          return;
+        }
+      } else {
+        message.warn('please enter valid time!');
+        return;
+      }
+      if (
+        parseInt(hh) > 12 ||
+        parseInt(hh) < 1 ||
+        parseInt(mm) > 60 ||
+        parseInt(mm) < 0
+      ) {
+        message.warn('please enter valid time!');
+        return;
+      }
+      if (isNaN(parseInt(this.state.daysInput))) {
+        message.warn('please enter number for days!');
+        return;
+      }
     }
     if (this.state.communicationId) {
       this.updateCommunication();
@@ -559,7 +615,7 @@ class NotificationTemplateForm extends React.Component<
     }
   };
 
-  // because communication is picked up based on commsChannel name like "ISSUE, REDUCE, EXPIRED".(I might be wrong)
+  // because communication is picked up based on commsChannel name like "ISSUE, REDUCE, EXPIRED".
   commsChannelName = {
     'On Earn Transaction': 'ISSUE',
     'On Redeem Transaction': 'REDUCE',
@@ -817,7 +873,18 @@ class NotificationTemplateForm extends React.Component<
                       <Col span={7}>
                         <Input
                           value={timeInput}
-                          suffix={<span style={{ color: '#B3B3B3' }}>PM</span>}
+                          suffix={
+                            <span
+                              style={{ color: '#B3B3B3', cursor: 'pointer' }}
+                              onClick={() => {
+                                if (this.state.AMorPM == 'AM')
+                                  this.setState({ AMorPM: 'PM' });
+                                else this.setState({ AMorPM: 'AM' });
+                              }}
+                            >
+                              {this.state.AMorPM}
+                            </span>
+                          }
                           className="mobile-input"
                           onChange={e => {
                             this.handleInputChange(e, 'timeInput');
