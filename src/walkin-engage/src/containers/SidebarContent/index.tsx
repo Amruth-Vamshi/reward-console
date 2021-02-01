@@ -97,6 +97,18 @@ class SidebarContent extends React.Component<
                 <span className="menu-item-text">Notification</span>
               </Link>
             </Menu.Item>
+
+            <Menu.Item key="customercare">
+              <Link to="/engage/customercare">
+                <img
+                  alt="peppo"
+                  src={require(`walkin-components/src/assets/images/customercare${
+                    defaultOpenKeys == 'customercare' ? 'active' : ''
+                  }.svg`)}
+                />
+                <span className="menu-item-text">Customer Care</span>
+              </Link>
+            </Menu.Item>
           </Menu>
         </div>
       </Auxiliary>

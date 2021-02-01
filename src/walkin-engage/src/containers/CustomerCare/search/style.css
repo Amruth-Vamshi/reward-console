@@ -1,0 +1,97 @@
+.customerSearchContainer {
+  width: 100%;
+  margin: auto;
+  background-color: #edf7f5;
+  border-bottom: 0.7px solid #dce7e4;
+  padding: 30px 0;
+}
+
+.customerSearchContainer div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60%;
+  flex-direction: column;
+  margin-left: 0;
+}
+
+.customerSearchContainer .searchOption {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-left: 2%;
+}
+
+.customerSearchContainer .searchOption div {
+  display: flex;
+  width: 60%;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.customerSearchContainer .searchOption span {
+  font-size: 16px;
+  font-weight: 500;
+  padding: 0 15px;
+  color: #afb6b4;
+}
+
+.customerSearchContainer .searchOption span:first-child {
+  border-right: 2px solid #e4efec;
+}
+
+.customerSearchContainer div {
+  width: 100%;
+}
+
+.customerSearchContainer .searchInputButton div {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  margin-left: 0;
+  padding-left: 0;
+}
+
+.customerSearchContainer .searchInputButton div .inputGroup {
+  width: 50%;
+}
+
+.customerSearchContainer .searchInputButton .inputGroup input {
+  width: 100%;
+  outline: unset;
+  height: 45px;
+  border-radius: 4px;
+  border: 1.5px solid #dce7e4;
+  padding: 20px 40px;
+}
+
+.customerSearchContainer .searchInputButton .inputGroup input:focus {
+  outline: unset;
+}
+
+.customerSearchContainer .searchInputButton button {
+  margin-left: 15px;
+  outline: unset;
+  height: 45px;
+  color: white;
+  background-color: #00825f;
+  padding: 0 20px;
+  border: none;
+  outline: unset;
+  border-radius: 4px;
+  margin-top: auto;
+}
+
+.customerSearchContainer .searchInputButton .inputGroup .searchImage {
+  position: relative;
+  display: inline;
+  left: 30px !important;
+}
+
+.customerSearchContainer .searchInputButton .inputGroup .cancelImage {
+  position: relative;
+  display: inline;
+  right: 30px !important;
+  height: 15px;
+}

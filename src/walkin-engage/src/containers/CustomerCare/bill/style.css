@@ -1,0 +1,107 @@
+.billContainer {
+  margin-top: 20px;
+  width: 90%;
+  margin: auto;
+  height: 100px;
+  padding: 20px;
+  justify-content: space-between;
+  display: flex;
+  flex-direction: row;
+  font-size: 12px;
+}
+
+.billContainer .firstColumn {
+  width: 68%;
+  display: flex;
+  flex-direction: column;
+}
+
+.billContainer .firstColumn div {
+  width: 100%;
+  border: 1px solid #dce7e4;
+  display: flex;
+  flex-direction: column;
+  padding: 5px;
+  border-radius: 4px;
+}
+
+.billContainer .firstColumn div:first-child {
+  margin-bottom: 20px;
+}
+
+.billContainer .firstColumn div div {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  border: none !important;
+  margin-bottom: -5px;
+}
+
+.billContainer .firstColumn div div:first-child {
+  margin-bottom: 5px;
+}
+
+.billContainer .secondColumn {
+  width: 30%;
+}
+
+.billContainer .secondColumn div {
+  width: 100%;
+  border: 1px solid #dce7e4;
+  display: flex;
+  flex-direction: column;
+  padding: 5px;
+  border-radius: 4px;
+}
+
+.billContainer .secondColumn div div {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  border: none !important;
+  margin-bottom: -5px;
+}
+
+.billContainer .secondColumn div:first-child {
+  margin-bottom: 20px;
+}
+
+.leftValue {
+  float: left !important;
+}
+
+.rightValue {
+  margin-left: auto;
+}
+
+.title-lg {
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.coloredbackground {
+  background-color: #f4f7f6;
+  margin-bottom: 10px !important;
+}
+
+.itemDiv {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.itemDiv .itemvalues {
+  width: 40% !important;
+  display: flex;
+  margin-bottom: 0 !important;
+  justify-content: right;
+  margin-right: 0 !important;
+  padding-right: 0 !important;
+}
+
+.itemDiv .itemvalues span {
+  width: 33%;
+  text-align: right;
+}

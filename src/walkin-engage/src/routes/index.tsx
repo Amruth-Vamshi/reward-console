@@ -3,6 +3,7 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import { RouteChildrenProps } from 'react-router';
 import Loyalty from '../containers/Loyalty';
 import Notification from '../containers/Notification';
+import { CustomerTable, Bill } from '../containers/CustomerCare';
 
 interface EngageRoutesProps extends RouteChildrenProps {}
 
@@ -26,6 +27,12 @@ const EngageRoutes: React.FunctionComponent<EngageRoutesProps> = ({
           path={`${match.url}/notification`}
           component={Notification}
         />
+        <Route
+          exact
+          path={`${match.url}/customercare`}
+          component={CustomerTable}
+        />
+        <Route exact path={`${match.url}/customercare/:id`} component={Bill} />
       </Switch>
     </div>
   );

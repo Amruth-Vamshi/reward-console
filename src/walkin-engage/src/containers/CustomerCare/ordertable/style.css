@@ -1,0 +1,55 @@
+.customer {
+  background-color: #f4f7f6;
+}
+
+.customerTableContainer {
+  margin-top: 15px !important;
+  width: 97%;
+  margin: auto;
+  border: 0.7px solid#DCE7E4;
+  padding: 15px;
+  border-radius: 8px;
+  background-color: white;
+}
+
+.customerTableContainer span {
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.customerTableContainer table {
+  width: 100%;
+  margin-top: 10px !important;
+}
+
+.customerTableContainer table thead tr {
+  width: 100%;
+  margin: auto;
+  background-color: #dce7e4;
+  height: 40px;
+}
+
+.customerTableContainer table thead tr th {
+  text-align: center;
+  font-size: 12px !important;
+  font-weight: 500;
+}
+
+.customerTableContainer table tbody tr {
+  height: 60px;
+  border-top: 0.5px solid #edf3f1;
+  border-bottom: 0.5px solid #edf3f1;
+}
+
+.customerTableContainer table tbody tr:hover {
+  background-color: #f4f7f6;
+}
+
+.customerTableContainer table tbody tr td {
+  text-align: center;
+  font-size: 12px;
+}
+
+.customerTableContainer table tbody tr .idColumn {
+  color: #108a69;
+}
