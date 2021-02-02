@@ -549,8 +549,8 @@ class Loyalty extends React.Component<LoyaltyProps, LoyaltyState> {
       <React.Fragment>
         <div className="lp-container">
           <div className="lp-header">
-            <Row className="lp-welcome">Hi! Welcome</Row>
-            <Row className="lp-subHeader">Configure Your Loyalty Program</Row>
+            <Row className="lp-welcome">Loyalty Program</Row>
+            <Row className="lp-subHeader">Configure Program Rules</Row>
           </div>
 
           <div className="lp-configure-card">

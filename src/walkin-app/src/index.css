@@ -44485,6 +44485,98 @@ textarea.gx-chat-textarea {
   color: #00000099;
 }
 
+/*Forgot password screen styles*/
+.gx-app-forgot-password-content {
+  padding: 34px;
+  width: 100%;
+  background: #ffffff 0% 0% no-repeat padding-box;
+  box-shadow: 0px 3px 6px #00000029;
+  border-radius: 12px;
+  padding-bottom: 3px;
+}
+
+.forgot-password-heading {
+  font-size: 20px;
+  font-weight: 500;
+  color: #000000de;
+  margin-bottom: 10px;
+}
+
+.forgot-password-subheading {
+  font-size: 15px;
+  color: #00000099;
+  font-weight: 400;
+  margin-bottom: 25px;
+}
+
+.header-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.forgot-password-close {
+  font-size: 14px;
+  color: #000000;
+  cursor: pointer;
+}
+
+.gx-app-forgot-logo {
+  display: flex;
+  justify-content: center;
+}
+
+.email-sent-popup {
+  max-width: 372px;
+}
+.email-sent-logo {
+  display: flex;
+  justify-content: center;
+}
+
+.email-sent-header {
+  font-size: 20px;
+  color: #000000de;
+  font-weight: 500;
+  margin: 10px 0px 24px 0px;
+}
+
+.email-sent-body {
+  font-size: 15px;
+  color: #00000099;
+  margin-bottom: 10px;
+}
+
+.email-sent-footer {
+  font-size: 15px;
+  color: #00000099;
+  margin: 0px;
+}
+
+.email-sent-link {
+  color: #00825f;
+  cursor: pointer;
+}
+
+.check-email-header {
+  margin: -8px 0px 16px 0px;
+  color: #000000de;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.check-email-body {
+  margin: 0px;
+  padding-left: 18px;
+}
+
+.check-email-listElement {
+  color: #00000099;
+  font-size: 15px;
+  margin-bottom: 20px;
+  padding-left: 5px;
+}
+
 /*Dashboard Styles*/
 .ant-list-item-meta {
   flex-wrap: wrap;
