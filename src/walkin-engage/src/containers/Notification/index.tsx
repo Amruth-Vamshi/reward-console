@@ -149,7 +149,7 @@ class Notification extends React.Component<
     });
   };
 
-  templateTypes = ['SMS', 'EMAIL'];
+  templateTypes = ['SMS'];
 
   render() {
     const { templateType } = this.state;
