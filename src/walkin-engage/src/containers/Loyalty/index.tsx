@@ -5,7 +5,7 @@ import RuleCard from './RuleCard/index';
 import Button from '../../components/shared/Button/index';
 import { withApollo, ApolloProviderProps } from 'react-apollo';
 import * as jwt from 'jsonwebtoken';
-import moment from 'moment';
+import moment from 'moment-timezone';
 
 import {
   GET_LOYALTY_PROGRAM,
@@ -204,11 +204,9 @@ class Loyalty extends React.Component<LoyaltyProps, LoyaltyState> {
           campaignType: 'LOYALTY',
           startTime: moment(startTime.toISOString())
             .utc()
-            .local()
             .format('YYYY-MM-DD HH:mm:ss'),
           endTime: moment(endTime.toISOString())
             .utc()
-            .local()
             .format('YYYY-MM-DD HH:mm:ss'),
           organization_id: org_id,
         },
@@ -410,10 +408,8 @@ class Loyalty extends React.Component<LoyaltyProps, LoyaltyState> {
   resumeLoyalty = async () => {
     const jwtToken: any = localStorage.getItem('jwt');
     const { org_id }: any = jwt.decode(jwtToken);
-
     let currentDateTime = Date.now();
     let startTime = new Date(currentDateTime);
-
     try {
       let unpauseResponse = await this.props.client.mutate({
         mutation: UNPAUSE_CAMPAIGN,
@@ -433,7 +429,6 @@ class Loyalty extends React.Component<LoyaltyProps, LoyaltyState> {
               campaignType: 'LOYALTY',
               startTime: moment(startTime.toISOString())
                 .utc()
-                .local()
                 .format('YYYY-MM-DD HH:mm:ss'),
               endTime: this.state.endDate,
               organization_id: org_id,

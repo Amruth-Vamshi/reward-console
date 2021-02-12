@@ -1,8 +1,6 @@
-import moment from 'moment';
+import moment from 'moment-timezone';
 export const convertTime = UTCdate => {
-  return moment(UTCdate)
-    .local()
-    .format('hh:mm A DD MMM YYYY');
+  return moment(UTCdate).format('hh:mm A DD MMM YYYY');
 };
 
 export const generateRuleExpression = (
