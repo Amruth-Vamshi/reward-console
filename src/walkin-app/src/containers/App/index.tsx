@@ -150,7 +150,7 @@ class App extends React.Component<IProps, IState> {
     }
 
     if (location.pathname === '/') {
-      return <Redirect to={'/core'} />;
+      return <Redirect to={'/engage/loyalty'} />;
     }
 
     this.setLayoutType(layoutType);
