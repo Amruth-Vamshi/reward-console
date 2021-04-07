@@ -363,7 +363,8 @@ class Loyalty extends React.Component<LoyaltyProps, LoyaltyState> {
     e.stopPropagation();
     if (this.state.buttonState === 'launch') {
       const hide = message.loading('Action in progress..', 0);
-      await this.createLoyaltyProgram();
+      if (this.state.loyaltyId == '') await this.createLoyaltyProgram();
+      else this.launchLoyalty(this.state.loyaltyId);
       setTimeout(hide, 100);
     } else if (this.state.buttonState === 'pause') {
       this.setState({
@@ -400,6 +401,39 @@ class Loyalty extends React.Component<LoyaltyProps, LoyaltyState> {
           id: id,
         },
       });
+      if (this.state.loyaltyId !== '') {
+        const jwtToken: any = localStorage.getItem('jwt');
+        const { org_id }: any = jwt.decode(jwtToken);
+        let currentDateTime = Date.now();
+        let startTime = new Date(currentDateTime);
+        let updateLoyaltyResponse = await this.props.client.mutate({
+          mutation: UPDATE_LOYALTY_PROGRAM,
+          variables: {
+            input: {
+              id: this.state.loyaltyId,
+              loyaltyCode: this.state.loyaltyCode,
+              loyaltyCardCode: this.state.loyaltyCardCode,
+              campaign: {
+                name: `Percent Cashback Campaign ${this.state.orgCode}`,
+                campaignType: 'LOYALTY',
+                startTime: moment(startTime.toISOString())
+                  .utc()
+                  .format('YYYY-MM-DD HH:mm:ss'),
+                endTime: moment(startTime.toISOString())
+                  .add(this.state.pointsValidity, 'days')
+                  .utc()
+                  .format('YYYY-MM-DD HH:mm:ss'),
+                organization_id: org_id,
+              },
+            },
+          },
+        });
+        let updatedLoyalty = updateLoyaltyResponse.data.updateLoyaltyProgram;
+        this.setState({
+          buttonState: 'pause',
+          startDate: convertTime(updatedLoyalty.campaign.startTime),
+        });
+      }
     } catch (e) {
       console.log(e);
     }
@@ -510,10 +544,14 @@ class Loyalty extends React.Component<LoyaltyProps, LoyaltyState> {
           burnRuleId: loyaltyPrograms[0].loyaltyBurnRule.id,
           orgCode: orgCode,
         });
-        if (this.state.isLoyaltyActive) {
-          this.setState({ buttonState: 'pause' });
+        if (loyaltyPrograms[0].campaign.campaignStatus == 'DRAFT') {
+          this.setState({ buttonState: 'launch' });
         } else {
-          this.setState({ buttonState: 'resume' });
+          if (this.state.isLoyaltyActive) {
+            this.setState({ buttonState: 'pause' });
+          } else {
+            this.setState({ buttonState: 'resume' });
+          }
         }
       } else {
         this.setState({ buttonState: 'launch' });
