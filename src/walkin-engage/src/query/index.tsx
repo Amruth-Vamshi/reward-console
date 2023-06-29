@@ -43,7 +43,6 @@ export const GET_LOYALTY_PROGRAM = gql`
         campaign {
           id
           name
-          status
           campaignStatus
           startTime
         }
@@ -108,7 +107,6 @@ export const CREATE_LOYALTY_PROGRAM = gql`
         startTime
         endTime
         campaignType
-        status
         priority
         campaignStatus
       }
@@ -159,7 +157,6 @@ export const UPDATE_LOYALTY_PROGRAM = gql`
         startTime
         endTime
         campaignType
-        status
         priority
         campaignStatus
       }
@@ -337,16 +334,8 @@ export const CREATE_COMMUNICATION = gql`
 `;
 
 export const GET_CAMPAIGNS = gql`
-  query campaigns(
-    $status: STATUS!
-    $campaignType: [String]
-    $organization_id: ID
-  ) {
-    campaigns(
-      status: $status
-      campaignType: $campaignType
-      organization_id: $organization_id
-    ) {
+  query campaigns($status: CAMPAIGN_STATUS!, $campaignType: [CAMPAIGN_TYPE]) {
+    campaigns(campaignStatus: $status, campaignType: $campaignType) {
       id
       name
       priority
@@ -354,7 +343,6 @@ export const GET_CAMPAIGNS = gql`
       description
       startTime
       endTime
-      status
     }
   }
 `;
@@ -369,6 +357,7 @@ export const GET_EXPIRY_COMMUNICAIONS = gql`
       organizationId: $organizationId
       eventType: $eventType
       loyaltyCardCode: $loyaltyCardCode
+      loyaltyProgramCode: "CASHBACK_10"
     ) {
       id
       loyaltyCard {

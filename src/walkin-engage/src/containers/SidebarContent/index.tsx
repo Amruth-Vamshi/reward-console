@@ -74,6 +74,18 @@ class SidebarContent extends React.Component<
             theme={themeType === THEME_TYPE_LITE ? 'light' : 'dark'}
             mode="inline"
           >
+            <Menu.Item key="loyalty card">
+              <Link to="/engage/loyalty_card">
+                <img
+                  alt="peppo"
+                  src={require(`walkin-components/src/assets/images/Loyalty${
+                    defaultOpenKeys == 'loyalty_card' ? '_active' : ''
+                  }.svg`)}
+                />
+                <span className="menu-item-text">Loyalty Card</span>
+              </Link>
+            </Menu.Item>
+
             <Menu.Item key="loyalty">
               <Link to="/engage/loyalty">
                 <img

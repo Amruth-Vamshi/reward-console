@@ -199,7 +199,11 @@ class Loyalty extends React.Component<LoyaltyProps, LoyaltyState> {
         expiryUnit: 'DAY',
         expiryValue: parseInt(pointsValidity),
         campaign: {
-          name: `Percent Cashback Campaign ${orgCode}`,
+          name: `Percent Cashback Campaign ${orgCode} ${moment(
+            startTime.toISOString()
+          )
+            .utc()
+            .format('YYYY-MM-DD HH:mm:ss')}`,
           description: 'Customer will get 10% cashback on every transaction',
           campaignType: 'LOYALTY',
           startTime: moment(startTime.toISOString())
@@ -209,9 +213,17 @@ class Loyalty extends React.Component<LoyaltyProps, LoyaltyState> {
             .utc()
             .format('YYYY-MM-DD HH:mm:ss'),
           organization_id: org_id,
+          campaignTriggerType: 'EVENT',
+          campaignStatus: 'ACTIVE',
+          applicationMethod: 'ALWAYS',
+          eventTypeId: 'd55b6a79-6fd8-4771-9fdb-d1154e80ecbe',
         },
         earnRuleData: {
-          name: `ER_pct${earnPercentage}_max${maxEarnablePointsPerTransaction}_exp${pointsValidity}_dl${maxEarnablePointsPerDay}`,
+          name: `ER_pct${earnPercentage}_max${maxEarnablePointsPerTransaction}_exp${pointsValidity}_dl${maxEarnablePointsPerDay}_${moment(
+            startTime.toISOString()
+          )
+            .utc()
+            .format('YYYY-MM-DD HH:mm:ss')}`,
           type: 'SIMPLE',
           organizationId: org_id,
           ruleConfiguration: {
@@ -236,7 +248,11 @@ class Loyalty extends React.Component<LoyaltyProps, LoyaltyState> {
           ),
         },
         burnRuleData: {
-          name: `BR_pct${burnPercentage}_max${maxRedeemablePointsPerTransaction}_exp${pointsValidity}_dl${maxRedeemablePointsPerDay}`,
+          name: `BR_pct${burnPercentage}_max${maxRedeemablePointsPerTransaction}_exp${pointsValidity}_dl${maxRedeemablePointsPerDay}_${moment(
+            startTime.toISOString()
+          )
+            .utc()
+            .format('YYYY-MM-DD HH:mm:ss')}`,
           type: 'SIMPLE',
           organizationId: org_id,
           ruleConfiguration: {

@@ -10,7 +10,7 @@ import Dashboard from '../containers/Dashboard';
 // import analytics from '../containers/Analytics'
 // import "./style.css"
 import { RouteChildrenProps } from 'react-router';
-// import LoyaltyCard from '../containers/Dashboard/LoyaltyCard';
+import LoyaltyCard from '../containers/Dashboard/LoyaltyCard';
 import Reports from '../containers/Reports';
 import CustomerSearch from '../containers/CustomerCare/CustomerSearch';
 import CustomerCare from '../containers/CustomerCare/CustomerCare';

@@ -1,4 +1,4 @@
-import QueryBuilder from '@walkin-frontend/walkin-react-querybuilder';
+// import QueryBuilder from '@walkin-frontend/walkin-react-querybuilder';
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import './style.css';
@@ -64,7 +64,7 @@ class WalkinQueryBuilder extends React.Component<iProps, {}> {
         <hr />
         <div className="flex-box">
           <div className="scroll">
-            <QueryBuilder
+            {/* <QueryBuilder
               fields={fields}
               controlClassnames={{ fields: 'form-control' }}
               onQueryChange={this.renameQueryProperties}
@@ -87,7 +87,7 @@ class WalkinQueryBuilder extends React.Component<iProps, {}> {
               // 		);
               // 	},
               // }}
-            />
+    // />*/}
           </div>
         </div>
       </div>

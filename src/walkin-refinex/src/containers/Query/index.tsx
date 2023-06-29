@@ -525,20 +525,11 @@ export const EVENT_SUBSCRIPTION = gql`
 `;
 
 export const campaigns = gql`
-  query campaigns(
-    $status: STATUS!
-    $campaignType: [String]
-    $organization_id: ID
-  ) {
-    campaigns(
-      status: $status
-      campaignType: $campaignType
-      organization_id: $organization_id
-    ) {
+  query campaigns($status: CAMPAIGN_STATUS!, $campaignType: [CAMPAIGN_TYPE]) {
+    campaigns(campaignStatus: $status, campaignType: $campaignType) {
       id
       name
       description
-      status
       campaignStatus
       startTime
       endTime
