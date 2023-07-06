@@ -47,7 +47,7 @@ class SidebarLogo extends React.Component<SidebarLogoProps, {}> {
           ) : navStyle === NAV_STYLE_FIXED ||
             navStyle === NAV_STYLE_MINI_SIDEBAR ? (
             <div className="gx-linebar">
-              <Link to="/">
+              <Link to="/engage/dashboard">
                 <Icon
                   type="home"
                   theme="filled"
@@ -62,7 +62,7 @@ class SidebarLogo extends React.Component<SidebarLogoProps, {}> {
             </div>
           ) : null}
 
-          <Link to="/rewardx/dashboard" className="gx-site-logo">
+          <Link to="/engage/dashboard" className="gx-site-logo">
             {navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR &&
             width >= TAB_SIZE ? (
               <div className="Core-Engage-Logo">

@@ -74,7 +74,7 @@ class UserInfo extends Component<IProps, IState> {
     const userMenuOptions = (
       <ul className="gx-user-popover">
         {/* <li>My Account</li>*/}
-        <li
+        {/* <li
           onClick={() =>
             this.onUrlHistoryPush(`/core/organization/${this.state.org_id}`)
           }
@@ -83,14 +83,14 @@ class UserInfo extends Component<IProps, IState> {
             {' '}
             Organization{' '}
           </Link>
-        </li>
-        <li
+        </li> */}
+        {/* <li
           onClick={() =>
             this.onUrlHistoryPush(`/core/settings/developer/webhooks`)
           }
         >
           <Link to={`/core/settings/developer`}> Developer Settings </Link>
-        </li>
+        </li> */}
         <li onClick={() => this.logout()}>
           <Link to="/signin"> Logout </Link>
         </li>
