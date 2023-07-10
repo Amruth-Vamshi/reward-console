@@ -800,6 +800,7 @@ class Loyalty extends React.Component<LoyaltyProps, LoyaltyState> {
                     localStorage.getItem('loyaltyCode') || loyaltyCode
                   }
                   burnRuleId={localStorage.getItem('burnRuleId') || burnRuleId}
+                  type="Onboarding"
                 />
               </Col>
             </Row>
