@@ -74,7 +74,7 @@ class SidebarContent extends React.Component<
             theme={themeType === THEME_TYPE_LITE ? 'light' : 'dark'}
             mode="inline"
           >
-            <Menu.Item key="loyalty card">
+            {/* <Menu.Item key="loyalty card">
               <Link to="/engage/loyalty_card">
                 <img
                   alt="peppo"
@@ -84,7 +84,7 @@ class SidebarContent extends React.Component<
                 />
                 <span className="menu-item-text">Loyalty Card</span>
               </Link>
-            </Menu.Item>
+            </Menu.Item> */}
 
             <Menu.Item key="loyalty">
               <Link to="/engage/loyalty">

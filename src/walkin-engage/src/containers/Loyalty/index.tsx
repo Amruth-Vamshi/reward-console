@@ -88,6 +88,9 @@ class Loyalty extends React.Component<LoyaltyProps, LoyaltyState> {
     } else {
       state[earnValue] = e.target.value;
     }
+    Object.keys(state).forEach(key => {
+      localStorage.setItem(key, state[`${key}`]);
+    });
     this.setState(state);
     return e.target.value;
   };
@@ -379,8 +382,16 @@ class Loyalty extends React.Component<LoyaltyProps, LoyaltyState> {
     e.stopPropagation();
     if (this.state.buttonState === 'launch') {
       const hide = message.loading('Action in progress..', 0);
-      if (this.state.loyaltyId == '') await this.createLoyaltyProgram();
-      else this.launchLoyalty(this.state.loyaltyId);
+      localStorage.setItem('buttonState', 'pause');
+      localStorage.setItem('startDate', convertTime(Date.now()));
+      localStorage.setItem('campaignStatus', 'LIVE');
+      localStorage.setItem('isLoyaltyActive', `${true}`);
+      this.setState({
+        buttonState: 'pause',
+        startDate: convertTime(Date.now()),
+      });
+      // if (this.state.loyaltyId == '') await this.createLoyaltyProgram();
+      // else this.launchLoyalty(this.state.loyaltyId);
       setTimeout(hide, 100);
     } else if (this.state.buttonState === 'pause') {
       this.setState({
@@ -388,7 +399,15 @@ class Loyalty extends React.Component<LoyaltyProps, LoyaltyState> {
       });
     } else if (this.state.buttonState === 'resume') {
       const hide = message.loading('Action in progress..', 0);
-      this.resumeLoyalty();
+      // this.resumeLoyalty();
+      localStorage.setItem('buttonState', 'pause');
+      localStorage.setItem('startDate', convertTime(Date.now()));
+      localStorage.setItem('campaignStatus', 'LIVE');
+      localStorage.setItem('isLoyaltyActive', `${true}`);
+      this.setState({
+        buttonState: 'pause',
+        startDate: convertTime(Date.now()),
+      });
       setTimeout(hide, 100);
     }
   };
@@ -396,12 +415,15 @@ class Loyalty extends React.Component<LoyaltyProps, LoyaltyState> {
   pauseLoyalty = async () => {
     try {
       const hide = message.loading('Action in progress..', 0);
-      let pauseResponse = await this.props.client.mutate({
-        mutation: PAUSE_CAMPAIGN,
-        variables: {
-          id: this.state.campaignId,
-        },
-      });
+      // let pauseResponse = await this.props.client.mutate({
+      //   mutation: PAUSE_CAMPAIGN,
+      //   variables: {
+      //     id: this.state.campaignId,
+      //   },
+      // });
+      localStorage.setItem('campaignStatus', 'LIVE');
+      localStorage.setItem('buttonState', 'resume');
+      localStorage.setItem('isLoyaltyActive', `${false}`);
       this.setState({ showPauseConformation: false, buttonState: 'resume' });
       setTimeout(hide, 100);
     } catch (e) {
@@ -497,6 +519,7 @@ class Loyalty extends React.Component<LoyaltyProps, LoyaltyState> {
   };
 
   async UNSAFE_componentWillMount() {
+    console.log('INSIDE, UNSAFE_componentWillMount');
     const jwtToken: any = localStorage.getItem('jwt');
     const { org_id }: any = jwt.decode(jwtToken);
     //getting max earnable points per transaction
@@ -533,14 +556,102 @@ class Loyalty extends React.Component<LoyaltyProps, LoyaltyState> {
       //setting initial button state
       //console.log(loyaltyPrograms);
       if (loyaltyPrograms.length) {
-        //if loyalty program - filling points validity.
-        let earnRuleData = extractDataFromRuleExpression(
+        console.log('setting local data');
+        console.log(
           loyaltyPrograms[0].loyaltyEarnRule.ruleExpression.expressions[0]
         );
-        let burnRuleData = extractDataFromRuleExpression(
-          loyaltyPrograms[0].loyaltyBurnRule.ruleExpression.expressions[0]
+        //if loyalty program - filling points validity.
+        let earnRuleData = {
+          percentage: '10',
+          maxPointsPerDay: '100',
+          maxPointsPerTransaction: '100',
+        };
+        let burnRuleData = {
+          percentage: '10',
+          maxPointsPerDay: '100',
+          maxPointsPerTransaction: '100',
+        };
+        console.log(
+          'setting local data1',
+          localStorage.getItem('pointsValidity'),
+          loyaltyPrograms[0].expiryValue
         );
-
+        localStorage.setItem(
+          'pointsValidity',
+          localStorage.getItem('pointsValidity') ||
+            loyaltyPrograms[0].expiryValue
+        );
+        localStorage.setItem(
+          'startDate',
+          localStorage.getItem('startDate') ||
+            convertTime(loyaltyPrograms[0].campaign.startTime)
+        );
+        localStorage.setItem(
+          'isLoyaltyActive',
+          localStorage.getItem('isLoyaltyActive') ||
+            `${loyaltyPrograms[0].campaign.campaignStatus == 'LIVE'}`
+        );
+        localStorage.setItem(
+          'loyaltyCode',
+          localStorage.getItem('loyaltyCode') ||
+            loyaltyPrograms[0].loyaltyCode ||
+            loyaltyPrograms[0].code
+        );
+        localStorage.setItem(
+          'loyaltyId',
+          localStorage.getItem('loyaltyId') || loyaltyPrograms[0].id
+        );
+        localStorage.setItem(
+          'campaignId',
+          localStorage.getItem('campaignId') || loyaltyPrograms[0].campaign.id
+        );
+        localStorage.setItem(
+          'earnPercentage',
+          localStorage.getItem('earnPercentage') || earnRuleData.percentage
+        );
+        localStorage.setItem(
+          'burnPercentage',
+          localStorage.getItem('burnPercentage') || burnRuleData.percentage
+        );
+        localStorage.setItem(
+          'maxEarnablePointsPerDay',
+          localStorage.getItem('maxEarnablePointsPerDay') ||
+            earnRuleData.maxPointsPerDay
+        );
+        localStorage.setItem(
+          'maxRedeemablePointsPerDay',
+          localStorage.getItem('maxRedeemablePointsPerDay') ||
+            burnRuleData.maxPointsPerDay
+        );
+        localStorage.setItem(
+          'maxEarnablePointsPerTransaction',
+          localStorage.getItem('maxEarnablePointsPerTransaction') ||
+            earnRuleData.maxPointsPerTransaction
+        );
+        localStorage.setItem(
+          'maxRedeemablePointsPerTransaction',
+          localStorage.getItem('maxRedeemablePointsPerTransaction') ||
+            burnRuleData.maxPointsPerTransaction
+        );
+        localStorage.setItem(
+          'earnRuleId',
+          localStorage.getItem('earnRuleId') ||
+            loyaltyPrograms[0].loyaltyEarnRule.id
+        );
+        localStorage.setItem(
+          'burnRuleId',
+          localStorage.getItem('burnRuleId') ||
+            loyaltyPrograms[0].loyaltyBurnRule.id
+        );
+        localStorage.setItem(
+          'orgCode',
+          localStorage.getItem('orgCode') || orgCode
+        );
+        localStorage.setItem(
+          'campaignStatus',
+          localStorage.getItem('campaignStatus') ||
+            loyaltyPrograms[0].campaign.campaignStatus
+        );
         this.setState({
           pointsValidity: loyaltyPrograms[0].expiryValue,
           startDate: convertTime(loyaltyPrograms[0].campaign.startTime),
@@ -560,19 +671,31 @@ class Loyalty extends React.Component<LoyaltyProps, LoyaltyState> {
           burnRuleId: loyaltyPrograms[0].loyaltyBurnRule.id,
           orgCode: orgCode,
         });
-        if (loyaltyPrograms[0].campaign.campaignStatus == 'DRAFT') {
+        if (
+          (localStorage.getItem('campaignStatus') ||
+            loyaltyPrograms[0].campaign.campaignStatus) == 'DRAFT'
+        ) {
+          localStorage.setItem('buttonState', 'launch');
           this.setState({ buttonState: 'launch' });
         } else {
-          if (this.state.isLoyaltyActive) {
+          if (
+            localStorage.getItem('isLoyaltyActive')
+              ? localStorage.getItem('isLoyaltyActive') == 'true'
+              : this.state.isLoyaltyActive
+          ) {
+            localStorage.setItem('buttonState', 'pause');
             this.setState({ buttonState: 'pause' });
           } else {
+            localStorage.setItem('buttonState', 'resume');
             this.setState({ buttonState: 'resume' });
           }
         }
       } else {
+        localStorage.setItem('buttonState', 'launch');
         this.setState({ buttonState: 'launch' });
       }
     } catch (e) {
+      console.log('aarror');
       console.log(e);
     }
   }
@@ -614,18 +737,32 @@ class Loyalty extends React.Component<LoyaltyProps, LoyaltyState> {
                   changeFormStatus={() => {
                     this.setState({ currentRuleFormName: 'Earning rule' });
                   }}
-                  earnPercentage={earnPercentage}
-                  maxEarnablePointsPerDay={maxEarnablePointsPerDay}
+                  earnPercentage={
+                    localStorage.getItem('earnPercentage') || earnPercentage
+                  }
+                  maxEarnablePointsPerDay={
+                    localStorage.getItem('maxEarnablePointsPerDay') ||
+                    maxEarnablePointsPerDay
+                  }
                   maxEarnablePointsPerTransaction={
+                    localStorage.getItem('maxEarnablePointsPerTransaction') ||
                     maxEarnablePointsPerTransaction
                   }
-                  pointsValidity={pointsValidity}
+                  pointsValidity={
+                    localStorage.getItem('pointsValidity') || pointsValidity
+                  }
                   handleOnInputChange={this.handleOnInputChange}
-                  isLoyaltyActive={isLoyaltyActive}
-                  loyaltyId={loyaltyId}
-                  loyaltyCardCode={loyaltyCardCode}
-                  loyaltyCode={loyaltyCode}
-                  earnRuleId={earnRuleId}
+                  isLoyaltyActive={
+                    localStorage.getItem('isLoyaltyActive') || isLoyaltyActive
+                  }
+                  loyaltyId={localStorage.getItem('loyaltyId') || loyaltyId}
+                  loyaltyCardCode={
+                    localStorage.getItem('loyaltyCardCode') || loyaltyCardCode
+                  }
+                  loyaltyCode={
+                    localStorage.getItem('loyaltyCode') || loyaltyCode
+                  }
+                  earnRuleId={localStorage.getItem('earnRuleId') || earnRuleId}
                 />
               </Col>
 
@@ -639,30 +776,47 @@ class Loyalty extends React.Component<LoyaltyProps, LoyaltyState> {
                   changeFormStatus={() => {
                     this.setState({ currentRuleFormName: 'Redemption rule' });
                   }}
-                  burnPercentage={burnPercentage}
-                  maxRedeemablePointsPerDay={maxRedeemablePointsPerDay}
+                  burnPercentage={
+                    localStorage.getItem('burnPercentage') || burnPercentage
+                  }
+                  maxRedeemablePointsPerDay={
+                    localStorage.getItem('maxRedeemablePointsPerDay') ||
+                    maxRedeemablePointsPerDay
+                  }
                   maxRedeemablePointsPerTransaction={
+                    localStorage.getItem('maxRedeemablePointsPerTransaction') ||
                     maxRedeemablePointsPerTransaction
                   }
                   handleOnInputChange={this.handleOnInputChange}
-                  isLoyaltyActive={isLoyaltyActive}
-                  loyaltyId={loyaltyId}
-                  loyaltyCardCode={loyaltyCardCode}
-                  loyaltyCode={loyaltyCode}
-                  burnRuleId={burnRuleId}
+                  isLoyaltyActive={
+                    localStorage.getItem('isLoyaltyActive') || isLoyaltyActive
+                  }
+                  loyaltyId={localStorage.getItem('loyaltyId') || loyaltyId}
+                  loyaltyCardCode={
+                    localStorage.getItem('loyaltyCardCode') || loyaltyCardCode
+                  }
+                  loyaltyCode={
+                    localStorage.getItem('loyaltyCode') || loyaltyCode
+                  }
+                  burnRuleId={localStorage.getItem('burnRuleId') || burnRuleId}
                 />
               </Col>
             </Row>
 
             <CommunicationNotification
               client={this.props.client}
-              loyaltyCardCode={loyaltyCardCode}
+              loyaltyCardCode={
+                localStorage.getItem('loyaltyCardCode') || loyaltyCardCode
+              }
             />
 
             <Row>
               <Col span={12}>
                 <LaunchButton
-                  buttonState={this.state.buttonState}
+                  buttonState={
+                    localStorage.getItem('buttonState') ||
+                    this.state.buttonState
+                  }
                   changeButtonState={e => this.changeButtonState(e)}
                 />
               </Col>
@@ -695,11 +849,17 @@ class Loyalty extends React.Component<LoyaltyProps, LoyaltyState> {
                         color: '#000000CC',
                       }}
                     >
-                      {`${this.state.startDate.substr(0, 5)} `}
-                      <span
-                        style={{ fontSize: '12px' }}
-                      >{`${this.state.startDate.substr(6, 2)} `}</span>
-                      {this.state.startDate.substr(8)}
+                      {localStorage.getItem('startDate')
+                        ? `${localStorage.getItem('startDate').substr(0, 5)} `
+                        : `${this.state.startDate.substr(0, 5)} `}
+                      <span style={{ fontSize: '12px' }}>
+                        {localStorage.getItem('startDate')
+                          ? `${localStorage.getItem('startDate').substr(6, 2)} `
+                          : `${this.state.startDate.substr(6, 2)} `}
+                      </span>
+                      {localStorage.getItem('startDate')
+                        ? `${localStorage.getItem('startDate').substr(8)} `
+                        : this.state.startDate.substr(8)}
                     </p>
                   </div>
                 </Col>

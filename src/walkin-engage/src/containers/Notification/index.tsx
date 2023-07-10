@@ -32,12 +32,7 @@ class Notification extends React.Component<
     this.state = {
       sendNotificationState: 'On Earn Transaction',
       templateType: 'SMS',
-      notificationOptions: [
-        'On Earn Transaction',
-        'On Redeem Transaction',
-        'On Points Expiry',
-        'Expiry Reminder (7 days)',
-      ],
+      notificationOptions: ['On Earn Transaction', 'On Redeem Transaction'],
       loyaltyProgramId: -1,
       checkedSMS: false,
       checkedEmail: false,
@@ -113,10 +108,7 @@ class Notification extends React.Component<
 
   addExpireRemainder = () => {
     this.setState({
-      notificationOptions: [
-        ...this.state.notificationOptions,
-        'Expiry Reminder',
-      ],
+      notificationOptions: [...this.state.notificationOptions],
     });
   };
 
@@ -181,13 +173,13 @@ class Notification extends React.Component<
                       changeNotificationOption={this.changeNotificationOption}
                     />
                   ))}
-                  <Button
+                  {/* <Button
                     style="btnn-secondary"
                     size="btnn-small"
                     onClick={this.addExpireRemainder}
                   >
                     Add Expire Reminder
-                  </Button>
+                  </Button> */}
                 </div>
               </Col>
 

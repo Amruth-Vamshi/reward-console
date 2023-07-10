@@ -144,58 +144,58 @@ class RuleCard extends React.Component<RuleCardProps, RuleCardState> {
 
     if (this.props.formName == 'Redemption rule' && this.props.burnRuleId) {
       try {
-        let updatedBurnRule = await this.props.client.mutate({
-          mutation: UPDATE_RULE,
-          variables: {
-            id: this.props.burnRuleId,
-            input: {
-              type: 'CUSTOM',
-              ruleConfiguration: null,
-              ruleExpression: generateRuleExpression(
-                'burn',
-                this.props.burnPercentage,
-                this.props.maxRedeemablePointsPerTransaction,
-                this.props.maxRedeemablePointsPerDay
-              ),
-            },
-          },
-        });
+        // let updatedBurnRule = await this.props.client.mutate({
+        //   mutation: UPDATE_RULE,
+        //   variables: {
+        //     id: this.props.burnRuleId,
+        //     input: {
+        //       type: 'CUSTOM',
+        //       ruleConfiguration: null,
+        //       ruleExpression: generateRuleExpression(
+        //         'burn',
+        //         this.props.burnPercentage,
+        //         this.props.maxRedeemablePointsPerTransaction,
+        //         this.props.maxRedeemablePointsPerDay
+        //       ),
+        //     },
+        //   },
+        // });
       } catch (e) {
         console.log(e);
       }
     } else if (this.props.earnRuleId) {
       try {
-        let updatedEarnRule = await this.props.client.mutate({
-          mutation: UPDATE_RULE,
-          variables: {
-            id: this.props.earnRuleId,
-            input: {
-              type: 'CUSTOM',
-              ruleConfiguration: null,
-              ruleExpression: generateRuleExpression(
-                'earn',
-                this.props.earnPercentage,
-                this.props.maxEarnablePointsPerTransaction,
-                this.props.maxEarnablePointsPerDay
-              ),
-            },
-          },
-        });
+        // let updatedEarnRule = await this.props.client.mutate({
+        //   mutation: UPDATE_RULE,
+        //   variables: {
+        //     id: this.props.earnRuleId,
+        //     input: {
+        //       type: 'CUSTOM',
+        //       ruleConfiguration: null,
+        //       ruleExpression: generateRuleExpression(
+        //         'earn',
+        //         this.props.earnPercentage,
+        //         this.props.maxEarnablePointsPerTransaction,
+        //         this.props.maxEarnablePointsPerDay
+        //       ),
+        //     },
+        //   },
+        // });
 
         if (this.props.isLoyaltyActive) {
           try {
-            await this.props.client.mutate({
-              mutation: UPDATE_LOYALTY_PROGRAM,
-              variables: {
-                input: {
-                  id: this.props.loyaltyId,
-                  loyaltyCode: this.props.loyaltyCode,
-                  loyaltyCardCode: this.props.loyaltyCardCode,
-                  expiryUnit: 'DAY',
-                  expiryValue: parseInt(this.props.pointsValidity),
-                },
-              },
-            });
+            // await this.props.client.mutate({
+            //   mutation: UPDATE_LOYALTY_PROGRAM,
+            //   variables: {
+            //     input: {
+            //       id: this.props.loyaltyId,
+            //       loyaltyCode: this.props.loyaltyCode,
+            //       loyaltyCardCode: this.props.loyaltyCardCode,
+            //       expiryUnit: 'DAY',
+            //       expiryValue: parseInt(this.props.pointsValidity),
+            //     },
+            //   },
+            // });
           } catch (e) {
             console.log(e);
           }
