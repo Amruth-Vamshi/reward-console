@@ -763,6 +763,7 @@ class Loyalty extends React.Component<LoyaltyProps, LoyaltyState> {
                     localStorage.getItem('loyaltyCode') || loyaltyCode
                   }
                   earnRuleId={localStorage.getItem('earnRuleId') || earnRuleId}
+                  type="Onboarding"
                 />
               </Col>
 

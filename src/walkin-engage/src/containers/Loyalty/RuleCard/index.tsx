@@ -38,6 +38,7 @@ interface RuleCardProps {
   loyaltyCardCode?: any;
   earnRuleId?: any;
   burnRuleId?: any;
+  type?: any;
 }
 
 interface RuleCardState {
@@ -226,6 +227,7 @@ class RuleCard extends React.Component<RuleCardProps, RuleCardState> {
       maxRedeemablePointsPerDay,
       maxRedeemablePointsPerTransaction,
       handleOnInputChange,
+      type,
     } = this.props;
 
     return (
@@ -351,7 +353,11 @@ class RuleCard extends React.Component<RuleCardProps, RuleCardState> {
                 <div className="form-subHeader">
                   <span>
                     {formName === 'Redemption rule'
-                      ? 'Max Redeemable Points Per Day'
+                      ? type == 'Onboarding'
+                        ? 'Upload coupons'
+                        : 'Max Redeemable Points Per Day'
+                      : type == 'Onboarding'
+                      ? 'Upload coupons'
                       : 'Max Earnable Points Per Day'}
                   </span>
                 </div>
@@ -380,7 +386,7 @@ class RuleCard extends React.Component<RuleCardProps, RuleCardState> {
             size="btnn-medium"
             onClick={this.applyRule}
           >
-            Apply
+            {type == 'Onboarding' ? 'upload' : 'Apply'}
           </Button>
         </Modal>
       </React.Fragment>
