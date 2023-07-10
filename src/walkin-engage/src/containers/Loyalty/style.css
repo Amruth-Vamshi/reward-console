@@ -1,10 +1,10 @@
 .lp-container {
   max-width: 760px;
   margin: 0 auto;
-  padding: 40px 10px;
-  display: flex;
+  /* padding: 40px 10px; */
+  /* display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: center; */
 }
 
 .lp-header {
@@ -46,10 +46,10 @@
 
 @media only screen and (min-width: 1370px) {
   .lp-container {
-    padding: 0 10px;
+    padding: 10px 10px;
     width: 80%;
     max-width: 1024px;
-    height: 85vh;
+    height: 60vh;
   }
   .lp-configure-card {
     max-width: 100%;

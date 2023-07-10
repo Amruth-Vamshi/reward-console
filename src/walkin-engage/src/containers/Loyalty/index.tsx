@@ -721,7 +721,305 @@ class Loyalty extends React.Component<LoyaltyProps, LoyaltyState> {
       <React.Fragment>
         <div className="lp-container">
           <div className="lp-header">
-            <Row className="lp-welcome">Loyalty Program</Row>
+            <Row className="lp-welcome">Onboarding Program</Row>
+            <Row className="lp-subHeader">Configure Program Rules</Row>
+          </div>
+
+          <div className="lp-configure-card">
+            <Row gutter={16} style={{ marginBottom: '20px' }}>
+              <Col xs={{ span: 24 }} md={{ span: 12 }}>
+                <p className="rule-header">Earning rule</p>
+                <RuleCard
+                  title="Percentage Cashback"
+                  displayMessage="Get 10% on pre-tax bill amount up to ₹100.00"
+                  formName="Earning rule"
+                  client={this.props.client}
+                  changeFormStatus={() => {
+                    this.setState({ currentRuleFormName: 'Earning rule' });
+                  }}
+                  earnPercentage={
+                    localStorage.getItem('earnPercentage') || earnPercentage
+                  }
+                  maxEarnablePointsPerDay={
+                    localStorage.getItem('maxEarnablePointsPerDay') ||
+                    maxEarnablePointsPerDay
+                  }
+                  maxEarnablePointsPerTransaction={
+                    localStorage.getItem('maxEarnablePointsPerTransaction') ||
+                    maxEarnablePointsPerTransaction
+                  }
+                  pointsValidity={
+                    localStorage.getItem('pointsValidity') || pointsValidity
+                  }
+                  handleOnInputChange={this.handleOnInputChange}
+                  isLoyaltyActive={
+                    localStorage.getItem('isLoyaltyActive') || isLoyaltyActive
+                  }
+                  loyaltyId={localStorage.getItem('loyaltyId') || loyaltyId}
+                  loyaltyCardCode={
+                    localStorage.getItem('loyaltyCardCode') || loyaltyCardCode
+                  }
+                  loyaltyCode={
+                    localStorage.getItem('loyaltyCode') || loyaltyCode
+                  }
+                  earnRuleId={localStorage.getItem('earnRuleId') || earnRuleId}
+                />
+              </Col>
+
+              <Col xs={{ span: 24 }} md={{ span: 12 }}>
+                <p className="rule-header">Redemption rule</p>
+                <RuleCard
+                  title="10% on total bill value"
+                  displayMessage="1 points = 1 rupees"
+                  formName="Redemption rule"
+                  client={this.props.client}
+                  changeFormStatus={() => {
+                    this.setState({ currentRuleFormName: 'Redemption rule' });
+                  }}
+                  burnPercentage={
+                    localStorage.getItem('burnPercentage') || burnPercentage
+                  }
+                  maxRedeemablePointsPerDay={
+                    localStorage.getItem('maxRedeemablePointsPerDay') ||
+                    maxRedeemablePointsPerDay
+                  }
+                  maxRedeemablePointsPerTransaction={
+                    localStorage.getItem('maxRedeemablePointsPerTransaction') ||
+                    maxRedeemablePointsPerTransaction
+                  }
+                  handleOnInputChange={this.handleOnInputChange}
+                  isLoyaltyActive={
+                    localStorage.getItem('isLoyaltyActive') || isLoyaltyActive
+                  }
+                  loyaltyId={localStorage.getItem('loyaltyId') || loyaltyId}
+                  loyaltyCardCode={
+                    localStorage.getItem('loyaltyCardCode') || loyaltyCardCode
+                  }
+                  loyaltyCode={
+                    localStorage.getItem('loyaltyCode') || loyaltyCode
+                  }
+                  burnRuleId={localStorage.getItem('burnRuleId') || burnRuleId}
+                />
+              </Col>
+            </Row>
+
+            <CommunicationNotification
+              client={this.props.client}
+              loyaltyCardCode={
+                localStorage.getItem('loyaltyCardCode') || loyaltyCardCode
+              }
+            />
+
+            <Row>
+              <Col span={12}>
+                <LaunchButton
+                  buttonState={
+                    localStorage.getItem('buttonState') ||
+                    this.state.buttonState
+                  }
+                  changeButtonState={e => this.changeButtonState(e)}
+                />
+              </Col>
+
+              {this.state.buttonState == 'pause' ? (
+                <Col span={12}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'flex-end',
+                      flexDirection: 'column',
+                      textAlign: 'right',
+                      padding: '0 15px',
+                    }}
+                  >
+                    <p
+                      style={{
+                        margin: '0px',
+                        fontSize: '13px',
+                        color: '#00000099',
+                      }}
+                    >
+                      Started Date and Time
+                    </p>
+
+                    <p
+                      style={{
+                        margin: '0px',
+                        fontSize: '15px',
+                        color: '#000000CC',
+                      }}
+                    >
+                      {localStorage.getItem('startDate')
+                        ? `${localStorage.getItem('startDate').substr(0, 5)} `
+                        : `${this.state.startDate.substr(0, 5)} `}
+                      <span style={{ fontSize: '12px' }}>
+                        {localStorage.getItem('startDate')
+                          ? `${localStorage.getItem('startDate').substr(6, 2)} `
+                          : `${this.state.startDate.substr(6, 2)} `}
+                      </span>
+                      {localStorage.getItem('startDate')
+                        ? `${localStorage.getItem('startDate').substr(8)} `
+                        : this.state.startDate.substr(8)}
+                    </p>
+                  </div>
+                </Col>
+              ) : null}
+            </Row>
+          </div>
+        </div>
+
+        <div className="lp-container">
+          <div className="lp-header">
+            <Row className="lp-welcome">Referral Program</Row>
+            <Row className="lp-subHeader">Configure Program Rules</Row>
+          </div>
+
+          <div className="lp-configure-card">
+            <Row gutter={16} style={{ marginBottom: '20px' }}>
+              <Col xs={{ span: 24 }} md={{ span: 12 }}>
+                <p className="rule-header">Earning rule</p>
+                <RuleCard
+                  title="Percentage Cashback"
+                  displayMessage="Get 10% on pre-tax bill amount up to ₹100.00"
+                  formName="Earning rule"
+                  client={this.props.client}
+                  changeFormStatus={() => {
+                    this.setState({ currentRuleFormName: 'Earning rule' });
+                  }}
+                  earnPercentage={
+                    localStorage.getItem('earnPercentage') || earnPercentage
+                  }
+                  maxEarnablePointsPerDay={
+                    localStorage.getItem('maxEarnablePointsPerDay') ||
+                    maxEarnablePointsPerDay
+                  }
+                  maxEarnablePointsPerTransaction={
+                    localStorage.getItem('maxEarnablePointsPerTransaction') ||
+                    maxEarnablePointsPerTransaction
+                  }
+                  pointsValidity={
+                    localStorage.getItem('pointsValidity') || pointsValidity
+                  }
+                  handleOnInputChange={this.handleOnInputChange}
+                  isLoyaltyActive={
+                    localStorage.getItem('isLoyaltyActive') || isLoyaltyActive
+                  }
+                  loyaltyId={localStorage.getItem('loyaltyId') || loyaltyId}
+                  loyaltyCardCode={
+                    localStorage.getItem('loyaltyCardCode') || loyaltyCardCode
+                  }
+                  loyaltyCode={
+                    localStorage.getItem('loyaltyCode') || loyaltyCode
+                  }
+                  earnRuleId={localStorage.getItem('earnRuleId') || earnRuleId}
+                />
+              </Col>
+
+              <Col xs={{ span: 24 }} md={{ span: 12 }}>
+                <p className="rule-header">Redemption rule</p>
+                <RuleCard
+                  title="10% on total bill value"
+                  displayMessage="1 points = 1 rupees"
+                  formName="Redemption rule"
+                  client={this.props.client}
+                  changeFormStatus={() => {
+                    this.setState({ currentRuleFormName: 'Redemption rule' });
+                  }}
+                  burnPercentage={
+                    localStorage.getItem('burnPercentage') || burnPercentage
+                  }
+                  maxRedeemablePointsPerDay={
+                    localStorage.getItem('maxRedeemablePointsPerDay') ||
+                    maxRedeemablePointsPerDay
+                  }
+                  maxRedeemablePointsPerTransaction={
+                    localStorage.getItem('maxRedeemablePointsPerTransaction') ||
+                    maxRedeemablePointsPerTransaction
+                  }
+                  handleOnInputChange={this.handleOnInputChange}
+                  isLoyaltyActive={
+                    localStorage.getItem('isLoyaltyActive') || isLoyaltyActive
+                  }
+                  loyaltyId={localStorage.getItem('loyaltyId') || loyaltyId}
+                  loyaltyCardCode={
+                    localStorage.getItem('loyaltyCardCode') || loyaltyCardCode
+                  }
+                  loyaltyCode={
+                    localStorage.getItem('loyaltyCode') || loyaltyCode
+                  }
+                  burnRuleId={localStorage.getItem('burnRuleId') || burnRuleId}
+                />
+              </Col>
+            </Row>
+
+            <CommunicationNotification
+              client={this.props.client}
+              loyaltyCardCode={
+                localStorage.getItem('loyaltyCardCode') || loyaltyCardCode
+              }
+            />
+
+            <Row>
+              <Col span={12}>
+                <LaunchButton
+                  buttonState={
+                    localStorage.getItem('buttonState') ||
+                    this.state.buttonState
+                  }
+                  changeButtonState={e => this.changeButtonState(e)}
+                />
+              </Col>
+
+              {this.state.buttonState == 'pause' ? (
+                <Col span={12}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'flex-end',
+                      flexDirection: 'column',
+                      textAlign: 'right',
+                      padding: '0 15px',
+                    }}
+                  >
+                    <p
+                      style={{
+                        margin: '0px',
+                        fontSize: '13px',
+                        color: '#00000099',
+                      }}
+                    >
+                      Started Date and Time
+                    </p>
+
+                    <p
+                      style={{
+                        margin: '0px',
+                        fontSize: '15px',
+                        color: '#000000CC',
+                      }}
+                    >
+                      {localStorage.getItem('startDate')
+                        ? `${localStorage.getItem('startDate').substr(0, 5)} `
+                        : `${this.state.startDate.substr(0, 5)} `}
+                      <span style={{ fontSize: '12px' }}>
+                        {localStorage.getItem('startDate')
+                          ? `${localStorage.getItem('startDate').substr(6, 2)} `
+                          : `${this.state.startDate.substr(6, 2)} `}
+                      </span>
+                      {localStorage.getItem('startDate')
+                        ? `${localStorage.getItem('startDate').substr(8)} `
+                        : this.state.startDate.substr(8)}
+                    </p>
+                  </div>
+                </Col>
+              ) : null}
+            </Row>
+          </div>
+        </div>
+
+        <div className="lp-container">
+          <div className="lp-header">
+            <Row className="lp-welcome">Transactions Program</Row>
             <Row className="lp-subHeader">Configure Program Rules</Row>
           </div>
 

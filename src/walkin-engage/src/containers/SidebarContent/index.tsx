@@ -94,7 +94,7 @@ class SidebarContent extends React.Component<
                     defaultOpenKeys == 'loyalty' ? '_active' : ''
                   }.svg`)}
                 />
-                <span className="menu-item-text">Loyalty</span>
+                <span className="menu-item-text">Rule Engine</span>
               </Link>
             </Menu.Item>
 
@@ -118,7 +118,7 @@ class SidebarContent extends React.Component<
                     defaultOpenKeys == 'customercare' ? 'active' : ''
                   }.svg`)}
                 />
-                <span className="menu-item-text">Customer Care</span>
+                <span className="menu-item-text">Transactions</span>
               </Link>
             </Menu.Item>
           </Menu>

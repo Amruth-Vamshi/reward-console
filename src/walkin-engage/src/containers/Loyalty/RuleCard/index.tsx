@@ -325,7 +325,7 @@ class RuleCard extends React.Component<RuleCardProps, RuleCardState> {
               <Row gutter={16}>
                 <Col xs={{ span: 24 }} sm={{ span: 12 }}>
                   <div className="form-subHeader">
-                    <span>Point's Validity</span>
+                    <span>Unlock Amount</span>
                   </div>
                 </Col>
                 <Col xs={{ span: 24 }} sm={{ span: 12 }} className="input-box">
@@ -338,7 +338,7 @@ class RuleCard extends React.Component<RuleCardProps, RuleCardState> {
                       placeholder="Enter points validity"
                       validations={['numeric', 'required']}
                     />
-                    <span style={{ marginLeft: '10px' }}>Days</span>
+                    <span style={{ marginLeft: '10px' }}>Rupees</span>
                   </div>
                 </Col>
               </Row>
