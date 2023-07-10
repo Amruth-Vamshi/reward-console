@@ -374,7 +374,7 @@ class RuleCard extends React.Component<RuleCardProps, RuleCardState> {
                     target1="maxRedeemablePointsPerDay"
                     target2="maxEarnablePointsPerDay"
                     placeholder="Enter points"
-                    validations={['numeric', 'required']}
+                    validations={['required']}
                   />
                 </div>
               </Col>
